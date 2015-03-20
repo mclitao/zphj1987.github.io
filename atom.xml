@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title><![CDATA[zphj1987'Blog]]></title>
+  <subtitle><![CDATA[现在所学，终有所用]]></subtitle>
+  <link href="/atom.xml" rel="self"/>
+  <link href="http://yoursite.com/"/>
+  <updated>2015-03-20T05:41:38.384Z</updated>
+  <id>http://yoursite.com/</id>
+  
+  <author>
+    <name><![CDATA[zphj1987]]></name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[test1]]></title>
+    <link href="http://yoursite.com/2015/03/19/test/"/>
+    <id>http://yoursite.com/2015/03/19/test/</id>
+    <published>2015-03-19T15:27:00.000Z</published>
+    <updated>2015-03-20T05:41:38.384Z</updated>
+    <content type="html"><![CDATA[<p>av<br>sd<br>sad<br>as<br>da<br>sd<br>as<br>da<br>sdasddddddddddddddddd</p>
+<p>a</p>
+<p>a<br>a</p>
+<p>asdasd<br>as<br>d<br>asd<br>as<br>da</p>
+<p>as<br>das<br>d<br>as</p>
+<p>asds</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>av<br>sd<br>sad<br>as<br>da<br>sd<br>as<br>da<br>sdasddddddddddddddddd</p>
+<p>a</p>
+<p>a<br>a</p>
+<p>asdasd<br>as<br>d<br>asd<br>as<br>da]]>
+    </summary>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[the fist day]]></title>
+    <link href="http://yoursite.com/2015/03/19/the-fist-day/"/>
+    <id>http://yoursite.com/2015/03/19/the-fist-day/</id>
+    <published>2015-03-19T14:54:59.000Z</published>
+    <updated>2015-03-19T15:11:25.413Z</updated>
+    <content type="html"><![CDATA[<h2 id="为什么写这个博客">为什么写这个博客</h2><p>博客转移了很多地方,从最开始的人人小站,到后来的CSDN,再到简书,换来换去直到看到还有个hexo,这个是搭建在github上的一个博客,只不过排版什么的可能需要自己来处理了,这个博客最大的优点就是简洁,可以很方便的找到自己需要了,打算用这个还有个原因是,看到了几个写的很好的技术文章正好来自这个平台,自己也尝试着把好东西都放到这里汇总</p>
+<p>很多东西真的非常喜欢,比如goagent,比如google,比如github,以及一些其他的开源的东西,也许很多人无法理解share是个什么感觉</p>
+<p>这个博客是我技术文章开始的地方,也是我和嘎嘎开始减肥的日子,也该活的有生气一些,准备数据化我们的减肥数据,也许这样更能激励自己</p>
+<p>谷歌的十大信条:</p>
+<pre><code>1、以用户为中心,其他一切自然水到渠成
+2、专心将一件事做到极致
+3、越快越好
+4、网络上也讲民主
+5、信息随时随地可得
+6、赚钱不必作恶
+7、信息无极限
+8、信息需求无国界
+9、认真不在着装
+10、追求无止境
+</code></pre>]]></content>
+    <summary type="html">
+    <![CDATA[<h2 id="为什么写这个博客">为什么写这个博客</h2><p>博客转移了很多地方,从最开始的人人小站,到后来的CSDN,再到简书,换来换去直到看到还有个hexo,这个是搭建在github上的一个博客,只不过排版什么的可能需要自己来处理了,这个博客最大的优点就是简洁,可以很方]]>
+    </summary>
+    
+  </entry>
+  
+</feed>
