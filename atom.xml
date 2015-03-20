@@ -4,7 +4,7 @@
   <subtitle><![CDATA[现在所学，终有所用]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://yoursite.com/"/>
-  <updated>2015-03-20T05:41:38.384Z</updated>
+  <updated>2015-03-20T09:45:18.216Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,11 +15,43 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title><![CDATA[Debian 64位内核升级步骤]]></title>
+    <link href="http://yoursite.com/2015/03/20/Debian-64%E4%BD%8D%E5%86%85%E6%A0%B8%E5%8D%87%E7%BA%A7%E6%AD%A5%E9%AA%A4/"/>
+    <id>http://yoursite.com/2015/03/20/Debian-64位内核升级步骤/</id>
+    <published>2015-03-20T09:21:21.000Z</published>
+    <updated>2015-03-20T09:45:18.216Z</updated>
+    <content type="html"><![CDATA[<h3 id="安装相关依赖包">安装相关依赖包</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ apt-get install bzip2 libncurses5-dev kernel-package zlib1g-dev gcc make kernel-package wget module-init-tools procps libncurses5-dev</span><br></pre></td></tr></table></figure>
+<h3 id="下载源码">下载源码</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/src</span><br><span class="line">wget http://www.kernel.org/pub/linux/kernel/v2.<span class="number">6</span>/linux-<span class="number">2.6</span>.<span class="number">35.9</span>.tar.bz2</span><br><span class="line">tar -xvjf linux-<span class="number">2.6</span>.<span class="number">35.9</span>.tar.bz2</span><br><span class="line">cp /boot/config-`uname -r` /usr/src/linux-<span class="number">2.6</span>.<span class="number">35.9</span>/.config</span><br><span class="line">Then we must configure the new kernel:</span><br><span class="line"><span class="built_in">cd</span> linux-<span class="number">2.6</span>.<span class="number">35.9</span></span><br><span class="line">make menuconfig</span><br></pre></td></tr></table></figure>
+<h3 id="裁剪不需要的东西">裁剪不需要的东西</h3><p>我们在内核配置里面至少有几个地方要修改。如下所示:</p>
+<blockquote>
+<p>File systems -&gt; Btrfs filesystem (EXPERIMENTAL) Unstable disk format<br>在”Btrfs filesystem”之前标上&lt;*&gt;<br>Processor type and features -&gt; Processor Family -&gt; “our processor”<br>删除Dell laptop support、Toshiba Laptop support。<br>裁减sound card support。<br>裁减Bluetooth subsystem support。<br>裁减Wireless。<br>裁减Kernel hacking 。<br>多次点击“ESC”退出,保存<br>make-kpkg linux-image linux-headers —initrd<br>编译成功后执行</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> ..</span><br><span class="line">$ dpkg -i linux-image-<span class="number">2.6</span>.<span class="number">29</span>_2.<span class="number">6.35</span>.<span class="number">9</span>-<span class="number">10.00</span>.Custom_i386.deb</span><br><span class="line">$ dpkg -i linux-headers-<span class="number">2.6</span>.<span class="number">29</span>_2.<span class="number">6.35</span>.<span class="number">9</span>-<span class="number">10.00</span>.Custom_i386.deb</span><br></pre></td></tr></table></figure>
+<p>重启,用 uname-a 查看内核版本</p>
+<h3 id="错误处理">错误处理</h3><p>编译完成后生成linux deb 包,先dpkg -i装image,再装headers</p>
+<p>安装完成以后再update-grub 进入/boot/grub/menu.lst 中选择启动的内核项 默认的第一项为0</p>
+<p>在编译完成内核后开机可能出现 Kernel panic - not syncing: VFS: Unable to mount root fs on unknown-block(1,0)的错误 在/boot/grub/menu.lst中可以发现新加的内核可能是没有 initrd   /initrd.img-2.6.37.6 未生成的原因不明 可以手动生成<br>执行命令<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ mkinitramfs -o /boot/initrd.img-<span class="number">2.6</span>.<span class="number">34.10</span> <span class="number">2.6</span>.<span class="number">34.10</span></span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>/boot/initrd.img-2.6.34.10是这个启动加载文件的生成路径<br>2.6.34.10是 /lib/modules/2.6.34.10</p>
+</blockquote>
+<p>然后update-grub 再启动新内核就没有问题了<br>卸载一个已经安装的内核包<br>debian卸载旧内核要先看看有哪些旧的内核,用命令<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ dpkg --get-selections |grep linux</span><br></pre></td></tr></table></figure></p>
+<p>如果你的内核是以kernel开头的就把上面的linux改成kernel,之后再用</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ dpkg --purge --force-remove-essential linux-image-XXX</span><br></pre></td></tr></table></figure>
+<hr>
+<p>写于  : 2011年12月16日<br>更新于: 2015年3月20日</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<h3 id="安装相关依赖包">安装相关依赖包</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td]]>
+    </summary>
+    
+  </entry>
+  
+  <entry>
     <title><![CDATA[test1]]></title>
     <link href="http://yoursite.com/2015/03/19/test/"/>
     <id>http://yoursite.com/2015/03/19/test/</id>
     <published>2015-03-19T15:27:00.000Z</published>
-    <updated>2015-03-20T05:41:38.384Z</updated>
+    <updated>2015-03-20T08:53:32.778Z</updated>
     <content type="html"><![CDATA[<p>av<br>sd<br>sad<br>as<br>da<br>sd<br>as<br>da<br>sdasddddddddddddddddd</p>
 <p>a</p>
 <p>a<br>a</p>
