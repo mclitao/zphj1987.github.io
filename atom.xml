@@ -4,7 +4,7 @@
   <subtitle><![CDATA[现在所学，终有所用]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://yoursite.com/"/>
-  <updated>2015-03-21T13:14:10.228Z</updated>
+  <updated>2015-03-21T13:24:37.948Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -13,6 +13,113 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[ubuntu配置bonding]]></title>
+    <link href="http://yoursite.com/2015/03/21/ubuntu%E9%85%8D%E7%BD%AEbonding/"/>
+    <id>http://yoursite.com/2015/03/21/ubuntu配置bonding/</id>
+    <published>2015-03-21T13:16:33.000Z</published>
+    <updated>2015-03-21T13:24:37.948Z</updated>
+    <content type="html"><![CDATA[<p>如果节点上有多个网络接口时可以通过bonding将多个网络接口虚拟为一个网络接口，bonding可以提供高可用及负载均衡功能，从而提高节点的网络接口性能及可用性。</p>
+<p>一、使用如下命令安装</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">T01-MON11:~<span class="comment"># apt-get install ifenslave-2.6</span></span><br></pre></td></tr></table></figure>
+<p>二、配置bonding</p>
+<p>修改网络接口配置文件/etc/network/interfaces</p>
+<p>配置一个bond</p>
+<pre><code><span class="attribute">auto</span> lo
+iface lo inet loopback
+
+<span class="attribute">auto</span> eth8
+iface eth8 inet manual
+bond-master bond0
+
+<span class="attribute">auto</span> eth7
+iface eth7 inet manual
+bond-master bond0
+
+<span class="attribute">auto</span> eth6
+iface eth6 inet manual
+bond-master bond0
+
+<span class="attribute">auto</span> eth5
+iface eth5 inet manual
+bond-master bond0
+
+<span class="attribute">auto</span> eth0
+iface eth0 inet static
+<span class="tag">address</span> <span class="number">192.168</span>.<span class="number">8.102</span>
+netmask <span class="number">255.255</span>.<span class="number">0.0</span>
+gateway <span class="number">192.168</span>.<span class="number">1.1</span>
+dns-nameservers <span class="number">8.8</span>.<span class="number">8.8</span>
+
+<span class="attribute">auto</span> bond0
+iface bond0 inet static
+<span class="tag">address</span> <span class="number">10.0</span>.<span class="number">0.102</span>
+netmask <span class="number">255.255</span>.<span class="number">0.0</span>
+
+bond-slaves <span class="attribute">none</span>
+bond-miimon <span class="number">100</span>
+bond-mode balance-alb
+</code></pre><p>配置双bond</p>
+<pre><code><span class="attribute">auto</span> lo
+iface lo inet loopback
+
+<span class="attribute">auto</span> eth2
+iface eth2 inet manual
+bond-master bond0
+
+<span class="attribute">auto</span> eth3
+iface eth3 inet manual
+bond-master bond0
+
+<span class="attribute">auto</span> eth4
+iface eth4 inet manual
+bond-master bond0
+
+<span class="attribute">auto</span> eth0
+iface eth0 inet static
+<span class="tag">address</span> <span class="number">10.0</span>.<span class="number">0.103</span>
+netmask <span class="number">255.255</span>.<span class="number">0.0</span>
+
+<span class="attribute">auto</span> bond0
+iface bond0 inet static
+<span class="tag">address</span> <span class="number">192.168</span>.<span class="number">9.103</span>
+netmask <span class="number">255.255</span>.<span class="number">0.0</span>
+gateway <span class="number">192.168</span>.<span class="number">1.1</span>
+dns-nameservers <span class="number">8.8</span>.<span class="number">8.8</span>
+bond-slaves <span class="attribute">none</span>
+bond-miimon <span class="number">100</span>
+bond-mode balance-alb
+
+<span class="attribute">auto</span> eth5
+iface eth5 inet manual
+bond-master bond1
+
+<span class="attribute">auto</span> eth6
+iface eth6 inet manual
+bond-master bond1
+
+<span class="attribute">auto</span> eth7
+iface eth7 inet manual
+bond-master bond1
+
+<span class="attribute">auto</span> bond1
+iface bond1 inet static
+<span class="tag">address</span> <span class="number">10.1</span>.<span class="number">0.103</span>
+netmask <span class="number">255.255</span>.<span class="number">0.0</span>
+bond-slaves <span class="attribute">none</span>
+bond-miimon <span class="number">100</span>
+bond-mode balance-alb
+</code></pre><p>配置过程需要按照顺序配置,配置网卡,然后写bond的配置,两组错开就可以了</p>
+<p>写于:2011年12月30日,2013年10月20日<br>更新于:2015年03年21日</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>如果节点上有多个网络接口时可以通过bonding将多个网络接口虚拟为一个网络接口，bonding可以提供高可用及负载均衡功能，从而提高节点的网络接口性能及可用性。</p>
+<p>一、使用如下命令安装</p>
+<figure class="highlight bash"><t]]>
+    </summary>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[利用移动硬盘安装windows7系统]]></title>

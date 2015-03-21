@@ -62,6 +62,131 @@
   <header>
     
       <div class="icon"></div>
+      <a href="/2015/03/21/ubuntu配置bonding/">
+  <time datetime="2015-03-21T13:16:33.000Z">
+    2015-03-21
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/03/21/ubuntu配置bonding/">ubuntu配置bonding</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>如果节点上有多个网络接口时可以通过bonding将多个网络接口虚拟为一个网络接口，bonding可以提供高可用及负载均衡功能，从而提高节点的网络接口性能及可用性。</p>
+<p>一、使用如下命令安装</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">T01-MON11:~<span class="comment"># apt-get install ifenslave-2.6</span></span><br></pre></td></tr></table></figure>
+<p>二、配置bonding</p>
+<p>修改网络接口配置文件/etc/network/interfaces</p>
+<p>配置一个bond</p>
+<pre><code><span class="attribute">auto</span> lo
+iface lo inet loopback
+
+<span class="attribute">auto</span> eth8
+iface eth8 inet manual
+bond-master bond0
+
+<span class="attribute">auto</span> eth7
+iface eth7 inet manual
+bond-master bond0
+
+<span class="attribute">auto</span> eth6
+iface eth6 inet manual
+bond-master bond0
+
+<span class="attribute">auto</span> eth5
+iface eth5 inet manual
+bond-master bond0
+
+<span class="attribute">auto</span> eth0
+iface eth0 inet static
+<span class="tag">address</span> <span class="number">192.168</span>.<span class="number">8.102</span>
+netmask <span class="number">255.255</span>.<span class="number">0.0</span>
+gateway <span class="number">192.168</span>.<span class="number">1.1</span>
+dns-nameservers <span class="number">8.8</span>.<span class="number">8.8</span>
+
+<span class="attribute">auto</span> bond0
+iface bond0 inet static
+<span class="tag">address</span> <span class="number">10.0</span>.<span class="number">0.102</span>
+netmask <span class="number">255.255</span>.<span class="number">0.0</span>
+
+bond-slaves <span class="attribute">none</span>
+bond-miimon <span class="number">100</span>
+bond-mode balance-alb
+</code></pre><p>配置双bond</p>
+<pre><code><span class="attribute">auto</span> lo
+iface lo inet loopback
+
+<span class="attribute">auto</span> eth2
+iface eth2 inet manual
+bond-master bond0
+
+<span class="attribute">auto</span> eth3
+iface eth3 inet manual
+bond-master bond0
+
+<span class="attribute">auto</span> eth4
+iface eth4 inet manual
+bond-master bond0
+
+<span class="attribute">auto</span> eth0
+iface eth0 inet static
+<span class="tag">address</span> <span class="number">10.0</span>.<span class="number">0.103</span>
+netmask <span class="number">255.255</span>.<span class="number">0.0</span>
+
+<span class="attribute">auto</span> bond0
+iface bond0 inet static
+<span class="tag">address</span> <span class="number">192.168</span>.<span class="number">9.103</span>
+netmask <span class="number">255.255</span>.<span class="number">0.0</span>
+gateway <span class="number">192.168</span>.<span class="number">1.1</span>
+dns-nameservers <span class="number">8.8</span>.<span class="number">8.8</span>
+bond-slaves <span class="attribute">none</span>
+bond-miimon <span class="number">100</span>
+bond-mode balance-alb
+
+<span class="attribute">auto</span> eth5
+iface eth5 inet manual
+bond-master bond1
+
+<span class="attribute">auto</span> eth6
+iface eth6 inet manual
+bond-master bond1
+
+<span class="attribute">auto</span> eth7
+iface eth7 inet manual
+bond-master bond1
+
+<span class="attribute">auto</span> bond1
+iface bond1 inet static
+<span class="tag">address</span> <span class="number">10.1</span>.<span class="number">0.103</span>
+netmask <span class="number">255.255</span>.<span class="number">0.0</span>
+bond-slaves <span class="attribute">none</span>
+bond-miimon <span class="number">100</span>
+bond-mode balance-alb
+</code></pre><p>配置过程需要按照顺序配置,配置网卡,然后写bond的配置,两组错开就可以了</p>
+<p>写于:2011年12月30日,2013年10月20日<br>更新于:2015年03年21日</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
       <a href="/2015/03/21/利用移动硬盘安装windows7系统/">
   <time datetime="2015-03-21T10:34:02.000Z">
     2015-03-21
@@ -224,58 +349,6 @@ bootsect /nt60 <span class="keyword">G</span>
       
         <div class="alignleft">
           <a href="/2015/03/20/单独编译一个ext4模块/#more" class="more-link">阅读全文</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-  
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2015/03/20/Debian-64位内核升级步骤/">
-  <time datetime="2015-03-20T09:21:21.000Z">
-    2015-03-20
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2015/03/20/Debian-64位内核升级步骤/">Debian 64位内核升级步骤</a></h1>
-  
-
-  </header>
-  
-    <div class="gallery">
-  <div class="photoset">
-    
-      
-        <img src="http://7xi6lo.com1.z0.glb.clouddn.com/debianlogo.jpg">
-      
-    
-  </div>
-  <div class="control">
-    <div class="prev"></div>
-    <div class="next"></div>
-  </div>
-</div>
-  
-  <div class="entry">
-    
-      <h3 id="安装相关依赖包">安装相关依赖包</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ apt-get install bzip2 libncurses5-dev kernel-package zlib1g-dev gcc make kernel-package wget module-init-tools procps libncurses5-dev</span><br></pre></td></tr></table></figure>
-<h3 id="下载源码">下载源码</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/src</span><br><span class="line">wget http://www.kernel.org/pub/linux/kernel/v2.<span class="number">6</span>/linux-<span class="number">2.6</span>.<span class="number">35.9</span>.tar.bz2</span><br><span class="line">tar -xvjf linux-<span class="number">2.6</span>.<span class="number">35.9</span>.tar.bz2</span><br><span class="line">cp /boot/config-`uname -r` /usr/src/linux-<span class="number">2.6</span>.<span class="number">35.9</span>/.config</span><br><span class="line">Then we must configure the new kernel:</span><br><span class="line"><span class="built_in">cd</span> linux-<span class="number">2.6</span>.<span class="number">35.9</span></span><br><span class="line">make menuconfig</span><br></pre></td></tr></table></figure>
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2015/03/20/Debian-64位内核升级步骤/#more" class="more-link">阅读全文</a>
         </div>
       
       
