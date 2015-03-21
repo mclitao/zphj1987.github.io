@@ -1,0 +1,160 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  
+  <title>利用移动硬盘安装windows7系统 | zphj1987&#39;Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  
+    <meta name="author" content="zphj1987">
+  
+  
+    <meta name="description" content="首先把win7系统镜像的iso文件解压到移动硬盘中将移动硬盘设置为活动分区设置活动分区的方法Diskpart程序实现U盘安装WIN7的方法: 
+将Win7安装盘中的所有文件拷贝到硬盘文件夹中,我们这里选择D盘win7back。在开始菜单程序栏中输入cmd进入命令行模式，敲入diskpart进入磁盘分区管理程序,逐行输入
+select disk 1 (选择磁盘。此为disk 0硬盘,disk 1 U">
+  
+  <meta name="description" content="首先把win7系统镜像的iso文件解压到移动硬盘中将移动硬盘设置为活动分区设置活动分区的方法Diskpart程序实现U盘安装WIN7的方法: 
+将Win7安装盘中的所有文件拷贝到硬盘文件夹中,我们这里选择D盘win7back。在开始菜单程序栏中输入cmd进入命令行模式，敲入diskpart进入磁盘分区管理程序,逐行输入
+select disk 1 (选择磁盘。此为disk 0硬盘,disk 1 U">
+<meta property="og:type" content="article">
+<meta property="og:title" content="利用移动硬盘安装windows7系统">
+<meta property="og:url" content="http://yoursite.com/2015/03/21/利用移动硬盘安装windows7系统/index.html">
+<meta property="og:site_name" content="zphj1987'Blog">
+<meta property="og:description" content="首先把win7系统镜像的iso文件解压到移动硬盘中将移动硬盘设置为活动分区设置活动分区的方法Diskpart程序实现U盘安装WIN7的方法: 
+将Win7安装盘中的所有文件拷贝到硬盘文件夹中,我们这里选择D盘win7back。在开始菜单程序栏中输入cmd进入命令行模式，敲入diskpart进入磁盘分区管理程序,逐行输入
+select disk 1 (选择磁盘。此为disk 0硬盘,disk 1 U">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="利用移动硬盘安装windows7系统">
+<meta name="twitter:description" content="首先把win7系统镜像的iso文件解压到移动硬盘中将移动硬盘设置为活动分区设置活动分区的方法Diskpart程序实现U盘安装WIN7的方法: 
+将Win7安装盘中的所有文件拷贝到硬盘文件夹中,我们这里选择D盘win7back。在开始菜单程序栏中输入cmd进入命令行模式，敲入diskpart进入磁盘分区管理程序,逐行输入
+select disk 1 (选择磁盘。此为disk 0硬盘,disk 1 U">
+  
+  
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+<body>
+  <div class="wrapper">
+    <header id="header">
+  <div class="title">
+    <h1><a href="/">zphj1987&#39;Blog</a></h1>
+    <p><a href="/">现在所学，终有所用</a></p>
+  </div>
+  <nav class="nav">
+    <ul>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/archives">Archives</a></li>
+      
+        <li><a href="/atom.xml">rss</a></li>
+      
+        <li><a href="/about">About</a></li>
+      
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+  <div class="clearfix"></div>
+</header>
+    <div class="content"><article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/21/利用移动硬盘安装windows7系统/">
+  <time datetime="2015-03-21T10:34:02.000Z">
+    2015-03-21
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title">利用移动硬盘安装windows7系统</h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>首先把win7系统镜像的iso文件解压到移动硬盘中<br>将移动硬盘设置为活动分区<br>设置活动分区的方法<br>Diskpart程序实现U盘安装WIN7的方法: </p>
+<p>将Win7安装盘中的所有文件拷贝到硬盘文件夹中,我们这里选择D盘win7back。<br>在开始菜单程序栏中输入cmd进入命令行模式，敲入diskpart进入磁盘分区管理程序,逐行输入</p>
+<pre><code>select disk <span class="number">1</span> (选择磁盘。此为disk <span class="number">0</span>硬盘,disk <span class="number">1</span> <span class="variable">U</span>盘情况下,多硬盘时可输入list disk查询) 
+<span class="function"><span class="title">clean</span> <span class="params">(清除该磁盘)</span> 
+<span class="title">create</span> <span class="title">partition</span> <span class="title">primary</span> <span class="params">(创建主分区)</span> 
+<span class="title">select</span> <span class="title">partition</span> 1 <span class="params">(选择刚刚创建的<span class="number">1</span>号分区)</span> 
+<span class="title">active</span> <span class="params">(激活该分区)</span> 
+<span class="title">format</span> <span class="title">fs</span>=<span class="title">fat32</span> <span class="params">(格式化为<span class="variable">FAT32</span>，<span class="number">8</span><span class="variable">GB</span>闪盘的格式化需要较长时间)</span> 
+<span class="title">assign</span> <span class="params">(为该分区注册盘符)</span> 
+<span class="title">exit</span> <span class="params">(退出diskpart程序)</span> </span>
+</code></pre><p>注:以上操作必须在Vista/Win7下完成，XP虽然也带有diskpart程序,但无法格式化U盘。</p>
+<p>这里我们只使用上面的active选项 或者在win7的磁盘管理中将移动硬盘标记为活动分区<br>假设你的移动硬盘的活动分区的盘符为G盘<br>在win7运行cmd</p>
+<pre><code><span class="keyword">G</span>:
+<span class="keyword">cd</span> <span class="keyword">boot</span>
+bootsect /nt60 <span class="keyword">G</span> 
+</code></pre><p>命令将引导区写进你的移动硬盘G盘符<br>在开机启动项中选择移动设备启动就可以了</p>
+
+    
+  </div>
+  <footer>
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">评论</h1>
+  <div class="ds-thread" data-thread-key="2015/03/21/利用移动硬盘安装windows7系统/"  data-title="利用移动硬盘安装windows7系统">
+  </div>
+</section>
+</div>
+  </div>
+  <footer id="footer"><div class="copyright">
+  
+  &copy; 2015 <a href="/">zphj1987</a>
+  
+</div>
+<div class="theme-copyright">
+  Theme by <a href="https://github.com/orderedlist" target="_blank">orderedlist</a>
+   | 
+  Redesign by <a href="http://heroicyang.com/" target="_blank">Heroic Yang</a>
+</div>
+<div class="clearfix"></div></footer>
+  <script src="/js/jquery.min.js"></script>
+<script src="/js/scale.fix.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = { short_name: 'zphj1987' };
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';
+    ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox();
+  })(jQuery);
+</script>
+
+</body>
+</html>

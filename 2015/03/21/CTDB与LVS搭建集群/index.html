@@ -93,6 +93,7 @@
 <li><p>E5400采用2.6.39内核客户端挂在集群<br>IP:192.168.0.212<br>GW:192.168.1.1<br>NETMASK:255.255.0.0<br>samba node3</p>
 </li>
 </ul>
+<a id="more"></a>
 <h3 id="二、配置samba_CTDB">二、配置samba CTDB</h3><p>1、在三个节点上使用如下命令安装samba，CTDB。<br>更新源以后执行<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">T02-APP210:~<span class="comment">#apt-get update</span></span><br><span class="line">T02-APP210:~<span class="comment">#apt-get install samba ctdb</span></span><br></pre></td></tr></table></figure></p>
 <p>2、在三个节点的/etc/services文件中增加如下内容。</p>
 <pre><code><span class="title">ctdb</span> <span class="number">9999</span>/tcp
@@ -143,7 +144,7 @@ takeip)
 ;;
 <span class="keyword">esac</span>
 <span class="built_in">exit</span> <span class="number">0</span>
-</code></pre><h2 id="第二步:Lvs的配置及搭建">第二步:Lvs的配置及搭建</h2><p>LVS是Linux Virtual Server的简写,意即Linux虚拟服务器是一个虚拟的服务器集群系统。本项目在1998年5月由章文嵩博士成立,是中国国内最早出现的自由软件项目之一。目前有三种IP负载均衡技术:VS/NAT、VS/TUN和VS/DR<br>十种调度算法(rrr|wrr|lc|wlc|lblc|lblcr|dh|sh|sed|nq)。<br>官方网站:<a href="http://[www.linuxvirtualserver.org](www.linuxvirtualserver.org" target="_blank" rel="external">http://[www.linuxvirtualserver.org](www.linuxvirtualserver.org</a>)<br>本次采用的是三个samba服务器节点上做lvs的调度,其中一台既是虚拟主机,又是真实服务器,下面将介绍搭建lvs服务器的步骤</p>
+</code></pre><h2 id="第二步:Lvs的配置及搭建">第二步:Lvs的配置及搭建</h2><p>LVS是Linux Virtual Server的简写,意即Linux虚拟服务器是一个虚拟的服务器集群系统。本项目在1998年5月由章文嵩博士成立,是中国国内最早出现的自由软件项目之一。目前有三种IP负载均衡技术:VS/NAT、VS/TUN和VS/DR<br>十种调度算法(rrr|wrr|lc|wlc|lblc|lblcr|dh|sh|sed|nq)。<br>官方网站:<a href="www.linuxvirtualserver.org">www.linuxvirtualserver.org</a><br>本次采用的是三个samba服务器节点上做lvs的调度,其中一台既是虚拟主机,又是真实服务器,下面将介绍搭建lvs服务器的步骤</p>
 <p>1.基础环境配置<br>三台samba节点分别配置IP为:</p>
 <blockquote>
 <p>192.168.0.80    #这三个IP为之前CTDB配置的虚拟IP,publicaddress<br>192.168.0.81<br>192.168.0.82</p>

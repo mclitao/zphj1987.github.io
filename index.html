@@ -62,6 +62,94 @@
   <header>
     
       <div class="icon"></div>
+      <a href="/2015/03/21/利用移动硬盘安装windows7系统/">
+  <time datetime="2015-03-21T10:34:02.000Z">
+    2015-03-21
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/03/21/利用移动硬盘安装windows7系统/">利用移动硬盘安装windows7系统</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>首先把win7系统镜像的iso文件解压到移动硬盘中<br>将移动硬盘设置为活动分区<br>设置活动分区的方法<br>Diskpart程序实现U盘安装WIN7的方法: </p>
+<p>将Win7安装盘中的所有文件拷贝到硬盘文件夹中,我们这里选择D盘win7back。<br>在开始菜单程序栏中输入cmd进入命令行模式，敲入diskpart进入磁盘分区管理程序,逐行输入</p>
+<pre><code>select disk <span class="number">1</span> (选择磁盘。此为disk <span class="number">0</span>硬盘,disk <span class="number">1</span> <span class="variable">U</span>盘情况下,多硬盘时可输入list disk查询) 
+<span class="function"><span class="title">clean</span> <span class="params">(清除该磁盘)</span> 
+<span class="title">create</span> <span class="title">partition</span> <span class="title">primary</span> <span class="params">(创建主分区)</span> 
+<span class="title">select</span> <span class="title">partition</span> 1 <span class="params">(选择刚刚创建的<span class="number">1</span>号分区)</span> 
+<span class="title">active</span> <span class="params">(激活该分区)</span> 
+<span class="title">format</span> <span class="title">fs</span>=<span class="title">fat32</span> <span class="params">(格式化为<span class="variable">FAT32</span>，<span class="number">8</span><span class="variable">GB</span>闪盘的格式化需要较长时间)</span> 
+<span class="title">assign</span> <span class="params">(为该分区注册盘符)</span> 
+<span class="title">exit</span> <span class="params">(退出diskpart程序)</span> </span>
+</code></pre><p>注:以上操作必须在Vista/Win7下完成，XP虽然也带有diskpart程序,但无法格式化U盘。</p>
+<p>这里我们只使用上面的active选项 或者在win7的磁盘管理中将移动硬盘标记为活动分区<br>假设你的移动硬盘的活动分区的盘符为G盘<br>在win7运行cmd</p>
+<pre><code><span class="keyword">G</span>:
+<span class="keyword">cd</span> <span class="keyword">boot</span>
+bootsect /nt60 <span class="keyword">G</span> 
+</code></pre><p>命令将引导区写进你的移动硬盘G盘符<br>在开机启动项中选择移动设备启动就可以了</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/21/alias重启终端失效的问题/">
+  <time datetime="2015-03-21T10:26:09.000Z">
+    2015-03-21
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/03/21/alias重启终端失效的问题/">alias重启终端失效的问题</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>如果使用命令:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">alias</span> xx=<span class="string">'xxxx'</span></span><br></pre></td></tr></table></figure></p>
+<p>那么登出以后,别名就会失效。下次登入的时候就不能用了。<br>为了保持别名可以把它写入 /root/.bashrc<br>在.bashrc的最后写入想要的别名,比如:</p>
+<pre><code><span class="built_in">alias</span> zp=<span class="string">'ll -al'</span>
+</code></pre><p>然后退出,重新登入的时候就可以用了。<br>或者直接运行命令<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span> ~/.bashrc</span><br></pre></td></tr></table></figure></p>
+<p>这样不用重新登入就可以使用了。</p>
+<p>写于: 2011年12月22日<br>更新于: 2015年03月21日</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
       <a href="/2015/03/21/CTDB与LVS搭建集群/">
   <time datetime="2015-03-21T09:13:43.000Z">
     2015-03-21
@@ -88,108 +176,14 @@
 <li><p>E5400采用2.6.39内核客户端挂在集群<br>IP:192.168.0.212<br>GW:192.168.1.1<br>NETMASK:255.255.0.0<br>samba node3</p>
 </li>
 </ul>
-<h3 id="二、配置samba_CTDB">二、配置samba CTDB</h3><p>1、在三个节点上使用如下命令安装samba，CTDB。<br>更新源以后执行<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">T02-APP210:~<span class="comment">#apt-get update</span></span><br><span class="line">T02-APP210:~<span class="comment">#apt-get install samba ctdb</span></span><br></pre></td></tr></table></figure></p>
-<p>2、在三个节点的/etc/services文件中增加如下内容。</p>
-<pre><code><span class="title">ctdb</span> <span class="number">9999</span>/tcp
-</code></pre><p>3、在三个节点中修改/etc/samba/smb.conf文件为如下内容,其中/smbcluster是后端集群存储系统的挂载点,/smbcluster/public为用户通过samba访问到的目录</p>
-<pre><code>[global]
-<span class="variable">clustering =</span> yes
-idmap <span class="variable">backend =</span> tdb2
-private <span class="variable">dir=</span>/smbcluster/ctdb
-fileid:<span class="variable">mapping =</span> fsname
-use <span class="variable">mmap =</span> no
-nt acl <span class="variable">support =</span> yes
-ea <span class="variable">support =</span> yes
-[public]
-<span class="variable">comment =</span> public share
-<span class="variable">path =</span> /smbcluster/public
-<span class="variable">public =</span> yes
-<span class="variable">writeable =</span> yes
-</code></pre><p>4、在三个节点在修改/etc/default/ctdb文件的如下内容。</p>
-<pre><code><span class="variable">CTDB_RECOVERY_LOCK=</span><span class="string">"/smbcluster/ctdb/lock"</span>
-<span class="variable">CTDB_PUBLIC_INTERFACE=</span>eth0
-<span class="variable">CTDB_PUBLIC_ADDRESSES=</span>/etc/ctdb/public_addresses
-<span class="variable">CTDB_MANAGES_SAMBA=</span>yes
-ulimit -n <span class="number">10000</span>
-<span class="variable">CTDB_NODES=</span>/etc/ctdb/nodes
-<span class="variable">CTDB_LOGFILE=</span>/var/log/ctdb.log
-<span class="variable">CTDB_DEBUGLEVEL=</span><span class="number">2</span>
-<span class="variable">CTDB_PUBLIC_NETWORK=</span><span class="string">"192.168.0.0/24"</span>
-<span class="variable">CTDB_PUBLIC_GATEWAY=</span><span class="string">"192.168.1.1"</span>
-</code></pre><p>5、在三个节点在修改/etc/ctdb/public_addresses文件中增加如下内容，该文件记录Samba CTDB集群提供给客户访问的虚拟IP地址。</p>
-<pre><code>192.168.0.80/24
-192.168.0.81/24
-192.168.0.82/24
-</code></pre><p>6、在三个节点上修改/etc/ctdb/nodes文件中增加如下内容，该文件记录Samba CTDB集群节点的IP地址。</p>
-<pre><code>192.168.0.210
-192.168.0.211
-192.168.0.212
-</code></pre><p>7、在三个节点上修改/etc/ctdb/events.d/11.route文件中增加如下内容。</p>
-<pre><code><span class="shebang">#!/bin/sh</span>
-. /etc/ctdb/<span class="built_in">functions</span>
-loadconfig ctdb
-cmd=<span class="string">"<span class="variable">$1</span>"</span>
-<span class="built_in">shift</span>
-<span class="keyword">case</span> <span class="variable">$cmd</span> <span class="keyword">in</span>
-takeip)
-<span class="comment"># we ignore errors from this, as the route might be up already when we're grabbing</span>
-<span class="comment"># a 2nd IP on this interface</span>
-/sbin/ip route add <span class="variable">$CTDB_PUBLIC_NETWORK</span> via <span class="variable">$CTDB_PUBLIC_GATEWAY</span> dev <span class="variable">$1</span> <span class="number">2</span>&gt; /dev/null
-;;
-<span class="keyword">esac</span>
-<span class="built_in">exit</span> <span class="number">0</span>
-</code></pre><h2 id="第二步:Lvs的配置及搭建">第二步:Lvs的配置及搭建</h2><p>LVS是Linux Virtual Server的简写,意即Linux虚拟服务器是一个虚拟的服务器集群系统。本项目在1998年5月由章文嵩博士成立,是中国国内最早出现的自由软件项目之一。目前有三种IP负载均衡技术:VS/NAT、VS/TUN和VS/DR<br>十种调度算法(rrr|wrr|lc|wlc|lblc|lblcr|dh|sh|sed|nq)。<br>官方网站:<a href="http://[www.linuxvirtualserver.org](www.linuxvirtualserver.org" target="_blank" rel="external">http://[www.linuxvirtualserver.org](www.linuxvirtualserver.org</a>)<br>本次采用的是三个samba服务器节点上做lvs的调度,其中一台既是虚拟主机,又是真实服务器,下面将介绍搭建lvs服务器的步骤</p>
-<p>1.基础环境配置<br>三台samba节点分别配置IP为:</p>
-<blockquote>
-<p>192.168.0.80    #这三个IP为之前CTDB配置的虚拟IP,publicaddress<br>192.168.0.81<br>192.168.0.82</p>
-</blockquote>
-<p>2.下载和安装LVS</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">T02-APP210:~<span class="comment">#apt-get install ipvsadm</span></span><br></pre></td></tr></table></figure>
-<p>3.配置虚拟IP服务和负载均衡<br>以192.168.0.11作为LVS的主机,为其设置一个虚拟IP作为samba服务器的接口<br>192.168.0.85为LVS主机的虚拟IP<br>LVS SERVER 配置<br>在192.168.0.11LVS虚拟服务器上执行:<br>设置本级的虚拟IP,作为LVS的虚拟IP</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ifconfig eth0:<span class="number">0</span> <span class="number">192.168</span>.<span class="number">0.85</span> netmask <span class="number">255.255</span>.<span class="number">0.0</span> broadcast <span class="number">192.168</span>.<span class="number">0.85</span> up</span><br></pre></td></tr></table></figure>
-<p>打开IP转发开关</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="number">1</span>&gt;/proc/sys/net/ipv4/ip_forward</span><br></pre></td></tr></table></figure>
-<p>添加虚拟服务器,虚拟IP为192.168.0.85,端口为137,调度算法为rr</p>
-<pre><code><span class="comment">#! /bin/sh</span>
-<span class="title">ipvsadm</span> -C
-ipvsadm -A -u <span class="number">192.168.0.85:137</span> -s rr
-ipvsadm -A -u <span class="number">192.168.0.85:138</span> -s rr
-ipvsadm -A -t <span class="number">192.168.0.85:139</span> -s rr
-ipvsadm -A -t <span class="number">192.168.0.85:445</span> -s rr
-
-ipvsadm -a -u <span class="number">192.168.0.85:137</span> -r <span class="number">192.168.0.81:137</span> -g
-ipvsadm -a -u <span class="number">192.168.0.85:137</span> -r <span class="number">192.168.0.80:137</span> -g
-ipvsadm -a -u <span class="number">192.168.0.85:137</span> -r <span class="number">192.168.0.82:137</span> -g
-
-ipvsadm -a -u <span class="number">192.168.0.85:138</span> -r <span class="number">192.168.0.82:138</span> -g
-ipvsadm -a -u <span class="number">192.168.0.85:138</span> -r <span class="number">192.168.0.80:138</span> -g
-ipvsadm -a -u <span class="number">192.168.0.85:138</span> -r <span class="number">192.168.0.81:138</span> -g
-
-ipvsadm -a -t <span class="number">192.168.0.85:139</span> -r <span class="number">192.168.0.80:139</span> -g
-ipvsadm -a -t <span class="number">192.168.0.85:139</span> -r <span class="number">192.168.0.81:139</span> -g
-ipvsadm -a -t <span class="number">192.168.0.85:139</span> -r <span class="number">192.168.0.82:139</span> -g
-
-ipvsadm -a -t <span class="number">192.168.0.85:445</span> -r <span class="number">192.168.0.82:445</span> -g
-ipvsadm -a -t <span class="number">192.168.0.85:445</span> -r <span class="number">192.168.0.81:445</span> -g
-ipvsadm -a -t <span class="number">192.168.0.85:445</span> -r <span class="number">192.168.0.80:445</span> -g 
-</code></pre><p>启动lvs</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">ipvsadm</span><br><span class="line">IP Virtual Server version <span class="number">1.2</span>.<span class="number">1</span> (size=<span class="number">4096</span>) </span><br><span class="line">Prot LocalAddress:Port Scheduler Flags </span><br><span class="line">  -&gt; RemoteAddress:Port           Forward Weight ActiveConn InActConn </span><br><span class="line">TCP  <span class="number">192.168</span>.<span class="number">91.9</span>:http rr </span><br><span class="line">  -&gt; <span class="number">192.168</span>.<span class="number">91.12</span>:http           Route   <span class="number">1</span>      <span class="number">0</span>          <span class="number">0</span>          </span><br><span class="line">  -&gt; <span class="number">192.168</span>.<span class="number">91.11</span>:http           Route   <span class="number">1</span>      <span class="number">0</span>          <span class="number">0</span></span><br><span class="line">``` </span><br><span class="line">在<span class="number">192.168</span>.<span class="number">0.11</span>虚拟服务器上运行查询命令 </span><br><span class="line"></span><br><span class="line">```bash</span><br><span class="line">[root@hadoop00 ~]<span class="comment"># ipvsadm -l --stats </span></span><br><span class="line">IP Virtual Server version <span class="number">1.2</span>.<span class="number">1</span> (size=<span class="number">4096</span>) </span><br><span class="line">Prot LocalAddress:Port               Conns   InPkts  OutPkts  InBytes OutBytes </span><br><span class="line">  -&gt; RemoteAddress:Port </span><br><span class="line">TCP  <span class="number">192.168</span>.<span class="number">0.80</span>:http                   <span class="number">0</span>        <span class="number">0</span>        <span class="number">0</span>        <span class="number">0</span>        <span class="number">0</span> </span><br><span class="line">  -&gt; <span class="number">192.168</span>.<span class="number">0.81</span>:http                  <span class="number">0</span>        <span class="number">0</span>        <span class="number">0</span>        <span class="number">0</span>        <span class="number">0</span> </span><br><span class="line">  -&gt; <span class="number">192.168</span>.<span class="number">0.82</span>:http                  <span class="number">0</span>        <span class="number">0</span>        <span class="number">0</span>        <span class="number">0</span>        <span class="number">0</span></span><br></pre></td></tr></table></figure>
-<p>在真实服务器上执行下列脚本</p>
-<pre><code><span class="comment">#! /bin/sh</span>
-/sbin/ifconfig lo:<span class="number">0</span> <span class="number">192</span>.<span class="number">168</span>.<span class="number">0</span>.<span class="number">91</span> broadcast <span class="number">192</span>.<span class="number">168</span>.<span class="number">0</span>.<span class="number">91</span> netmask <span class="number">255</span>.<span class="number">255</span>.<span class="number">255</span>.<span class="number">255</span> up
-echo <span class="number">1</span> &gt; /<span class="keyword">proc</span>/sys/net/ipv4/conf/lo/arp_ignore
-echo <span class="number">2</span> &gt; /<span class="keyword">proc</span>/sys/net/ipv4/conf/lo/arp_announce
-echo <span class="number">1</span> &gt; /<span class="keyword">proc</span>/sys/net/ipv4/conf/all/arp_ignore
-echo <span class="number">2</span> &gt; /<span class="keyword">proc</span>/sys/net/ipv4/conf/all/arp_announce
-</code></pre><p>到这里整个集群就搭建成功，挂载samba服务器即可</p>
-<p>参考文档:</p>
-<p><a href="http://zh.linuxvirtualserver.org/node/5" target="_blank" rel="external">http://zh.linuxvirtualserver.org/node/5</a><br><a href="http://zp820705.iteye.com/blog/1151921" target="_blank" rel="external">http://zp820705.iteye.com/blog/1151921</a><br><a href="http://onlyzq.blog.51cto.com/1228/593940/" target="_blank" rel="external">http://onlyzq.blog.51cto.com/1228/593940/</a></p>
-<p>写于:  2011年12月10日<br>更新于:2015年03月21日</p>
-
     
   </div>
   <footer class="end-sep">
     
+      
+        <div class="alignleft">
+          <a href="/2015/03/21/CTDB与LVS搭建集群/#more" class="more-link">阅读全文</a>
+        </div>
       
       
     
@@ -291,113 +285,11 @@ echo <span class="number">2</span> &gt; /<span class="keyword">proc</span>/sys/n
 
 
   
-    <article class="photo">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2015/03/19/test/">
-  <time datetime="2015-03-19T15:27:00.000Z">
-    2015-03-19
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2015/03/19/test/">test1</a></h1>
-  
-
-  </header>
-  
-    <div class="gallery">
-  <div class="photoset">
-    
-      
-        <img src="http://bruce.u.qiniudn.com/2013/11/27/reading/photos-0.jpg">
-      
-        <img src="http://bruce.u.qiniudn.com/2013/11/27/reading/photos-1.jpg">
-      
-        <img src="http://7xi6lo.com1.z0.glb.clouddn.com/testwailian.png">
-      
-    
-  </div>
-  <div class="control">
-    <div class="prev"></div>
-    <div class="next"></div>
-  </div>
-</div>
-  
-  <div class="entry">
-    
-      <p>av<br>sd<br>sad<br>as<br>da<br>sd<br>as<br>da<br>sdasddddddddddddddddd</p>
-<p>a</p>
-<p>a<br>a</p>
-<p>asdasd<br>as<br>d<br>asd<br>as<br>da</p>
-<p>as<br>das<br>d<br>as</p>
-<p>asds</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-  
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2015/03/19/the-fist-day/">
-  <time datetime="2015-03-19T14:54:59.000Z">
-    2015-03-19
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2015/03/19/the-fist-day/">the fist day</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <h2 id="为什么写这个博客">为什么写这个博客</h2><p>博客转移了很多地方,从最开始的人人小站,到后来的CSDN,再到简书,换来换去直到看到还有个hexo,这个是搭建在github上的一个博客,只不过排版什么的可能需要自己来处理了,这个博客最大的优点就是简洁,可以很方便的找到自己需要了,打算用这个还有个原因是,看到了几个写的很好的技术文章正好来自这个平台,自己也尝试着把好东西都放到这里汇总</p>
-<p>很多东西真的非常喜欢,比如goagent,比如google,比如github,以及一些其他的开源的东西,也许很多人无法理解share是个什么感觉</p>
-<p>这个博客是我技术文章开始的地方,也是我和嘎嘎开始减肥的日子,也该活的有生气一些,准备数据化我们的减肥数据,也许这样更能激励自己</p>
-<p>谷歌的十大信条:</p>
-<pre><code>1、以用户为中心,其他一切自然水到渠成
-2、专心将一件事做到极致
-3、越快越好
-4、网络上也讲民主
-5、信息随时随地可得
-6、赚钱不必作恶
-7、信息无极限
-8、信息需求无国界
-9、认真不在着装
-10、追求无止境
-</code></pre>
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-  
 
   <nav id="pagination">
   
+  
+    <a href="/page/2/" class="next">下一页</a>
   
   <div class="clearfix"></div>
 </nav>

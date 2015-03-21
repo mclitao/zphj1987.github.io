@@ -4,7 +4,7 @@
   <subtitle><![CDATA[现在所学，终有所用]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://yoursite.com/"/>
-  <updated>2015-03-21T09:42:06.948Z</updated>
+  <updated>2015-03-21T10:35:45.114Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,11 +15,60 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title><![CDATA[利用移动硬盘安装windows7系统]]></title>
+    <link href="http://yoursite.com/2015/03/21/%E5%88%A9%E7%94%A8%E7%A7%BB%E5%8A%A8%E7%A1%AC%E7%9B%98%E5%AE%89%E8%A3%85windows7%E7%B3%BB%E7%BB%9F/"/>
+    <id>http://yoursite.com/2015/03/21/利用移动硬盘安装windows7系统/</id>
+    <published>2015-03-21T10:34:02.000Z</published>
+    <updated>2015-03-21T10:35:45.114Z</updated>
+    <content type="html"><![CDATA[<p>首先把win7系统镜像的iso文件解压到移动硬盘中<br>将移动硬盘设置为活动分区<br>设置活动分区的方法<br>Diskpart程序实现U盘安装WIN7的方法: </p>
+<p>将Win7安装盘中的所有文件拷贝到硬盘文件夹中,我们这里选择D盘win7back。<br>在开始菜单程序栏中输入cmd进入命令行模式，敲入diskpart进入磁盘分区管理程序,逐行输入</p>
+<pre><code>select disk <span class="number">1</span> (选择磁盘。此为disk <span class="number">0</span>硬盘,disk <span class="number">1</span> <span class="variable">U</span>盘情况下,多硬盘时可输入list disk查询) 
+<span class="function"><span class="title">clean</span> <span class="params">(清除该磁盘)</span> 
+<span class="title">create</span> <span class="title">partition</span> <span class="title">primary</span> <span class="params">(创建主分区)</span> 
+<span class="title">select</span> <span class="title">partition</span> 1 <span class="params">(选择刚刚创建的<span class="number">1</span>号分区)</span> 
+<span class="title">active</span> <span class="params">(激活该分区)</span> 
+<span class="title">format</span> <span class="title">fs</span>=<span class="title">fat32</span> <span class="params">(格式化为<span class="variable">FAT32</span>，<span class="number">8</span><span class="variable">GB</span>闪盘的格式化需要较长时间)</span> 
+<span class="title">assign</span> <span class="params">(为该分区注册盘符)</span> 
+<span class="title">exit</span> <span class="params">(退出diskpart程序)</span> </span>
+</code></pre><p>注:以上操作必须在Vista/Win7下完成，XP虽然也带有diskpart程序,但无法格式化U盘。</p>
+<p>这里我们只使用上面的active选项 或者在win7的磁盘管理中将移动硬盘标记为活动分区<br>假设你的移动硬盘的活动分区的盘符为G盘<br>在win7运行cmd</p>
+<pre><code><span class="keyword">G</span>:
+<span class="keyword">cd</span> <span class="keyword">boot</span>
+bootsect /nt60 <span class="keyword">G</span> 
+</code></pre><p>命令将引导区写进你的移动硬盘G盘符<br>在开机启动项中选择移动设备启动就可以了</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>首先把win7系统镜像的iso文件解压到移动硬盘中<br>将移动硬盘设置为活动分区<br>设置活动分区的方法<br>Diskpart程序实现U盘安装WIN7的方法: </p>
+<p>将Win7安装盘中的所有文件拷贝到硬盘文件夹中,我们这里选择D盘win7back。<br>在]]>
+    </summary>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[alias重启终端失效的问题]]></title>
+    <link href="http://yoursite.com/2015/03/21/alias%E9%87%8D%E5%90%AF%E7%BB%88%E7%AB%AF%E5%A4%B1%E6%95%88%E7%9A%84%E9%97%AE%E9%A2%98/"/>
+    <id>http://yoursite.com/2015/03/21/alias重启终端失效的问题/</id>
+    <published>2015-03-21T10:26:09.000Z</published>
+    <updated>2015-03-21T10:33:10.907Z</updated>
+    <content type="html"><![CDATA[<p>如果使用命令:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">alias</span> xx=<span class="string">'xxxx'</span></span><br></pre></td></tr></table></figure></p>
+<p>那么登出以后,别名就会失效。下次登入的时候就不能用了。<br>为了保持别名可以把它写入 /root/.bashrc<br>在.bashrc的最后写入想要的别名,比如:</p>
+<pre><code><span class="built_in">alias</span> zp=<span class="string">'ll -al'</span>
+</code></pre><p>然后退出,重新登入的时候就可以用了。<br>或者直接运行命令<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span> ~/.bashrc</span><br></pre></td></tr></table></figure></p>
+<p>这样不用重新登入就可以使用了。</p>
+<p>写于: 2011年12月22日<br>更新于: 2015年03月21日</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>如果使用命令:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><]]>
+    </summary>
+    
+  </entry>
+  
+  <entry>
     <title><![CDATA[CTDB与LVS搭建集群]]></title>
     <link href="http://yoursite.com/2015/03/21/CTDB%E4%B8%8ELVS%E6%90%AD%E5%BB%BA%E9%9B%86%E7%BE%A4/"/>
     <id>http://yoursite.com/2015/03/21/CTDB与LVS搭建集群/</id>
     <published>2015-03-21T09:13:43.000Z</published>
-    <updated>2015-03-21T09:42:06.948Z</updated>
+    <updated>2015-03-21T10:28:58.669Z</updated>
     <content type="html"><![CDATA[<p>搭建一个采用lvs进行负载均衡的CTDB集群，整个集群的架构是采用如图所示</p>
 <p><img src="http://7xi6lo.com1.z0.glb.clouddn.com/ctdb.jpg" alt="ctdb"></p>
 <p>在上图所示的架构图中，后端采用的集群是我们的存储,集群存储的三个samba服务器的node在作为CTDB的节点的同时,也是运行着我们的内核客户端,将三个内核客户端挂载到后端的集群中,同时这三个samba客户端对外采用三个虚拟的IP,然后采用LVS的网络负载均衡技术,虚拟成一个对外的IP,这样就实现了samba的带宽聚合以及负载均衡。</p>
@@ -31,6 +80,7 @@
 <li><p>E5400采用2.6.39内核客户端挂在集群<br>IP:192.168.0.212<br>GW:192.168.1.1<br>NETMASK:255.255.0.0<br>samba node3</p>
 </li>
 </ul>
+<a id="more"></a>
 <h3 id="二、配置samba_CTDB">二、配置samba CTDB</h3><p>1、在三个节点上使用如下命令安装samba，CTDB。<br>更新源以后执行<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">T02-APP210:~<span class="comment">#apt-get update</span></span><br><span class="line">T02-APP210:~<span class="comment">#apt-get install samba ctdb</span></span><br></pre></td></tr></table></figure></p>
 <p>2、在三个节点的/etc/services文件中增加如下内容。</p>
 <pre><code><span class="title">ctdb</span> <span class="number">9999</span>/tcp
@@ -81,7 +131,7 @@ takeip)
 ;;
 <span class="keyword">esac</span>
 <span class="built_in">exit</span> <span class="number">0</span>
-</code></pre><h2 id="第二步:Lvs的配置及搭建">第二步:Lvs的配置及搭建</h2><p>LVS是Linux Virtual Server的简写,意即Linux虚拟服务器是一个虚拟的服务器集群系统。本项目在1998年5月由章文嵩博士成立,是中国国内最早出现的自由软件项目之一。目前有三种IP负载均衡技术:VS/NAT、VS/TUN和VS/DR<br>十种调度算法(rrr|wrr|lc|wlc|lblc|lblcr|dh|sh|sed|nq)。<br>官方网站:<a href="http://[www.linuxvirtualserver.org](www.linuxvirtualserver.org" target="_blank" rel="external">http://[www.linuxvirtualserver.org](www.linuxvirtualserver.org</a>)<br>本次采用的是三个samba服务器节点上做lvs的调度,其中一台既是虚拟主机,又是真实服务器,下面将介绍搭建lvs服务器的步骤</p>
+</code></pre><h2 id="第二步:Lvs的配置及搭建">第二步:Lvs的配置及搭建</h2><p>LVS是Linux Virtual Server的简写,意即Linux虚拟服务器是一个虚拟的服务器集群系统。本项目在1998年5月由章文嵩博士成立,是中国国内最早出现的自由软件项目之一。目前有三种IP负载均衡技术:VS/NAT、VS/TUN和VS/DR<br>十种调度算法(rrr|wrr|lc|wlc|lblc|lblcr|dh|sh|sed|nq)。<br>官方网站:<a href="www.linuxvirtualserver.org">www.linuxvirtualserver.org</a><br>本次采用的是三个samba服务器节点上做lvs的调度,其中一台既是虚拟主机,又是真实服务器,下面将介绍搭建lvs服务器的步骤</p>
 <p>1.基础环境配置<br>三台samba节点分别配置IP为:</p>
 <blockquote>
 <p>192.168.0.80    #这三个IP为之前CTDB配置的虚拟IP,publicaddress<br>192.168.0.81<br>192.168.0.82</p>
@@ -132,7 +182,16 @@ echo <span class="number">2</span> &gt; /<span class="keyword">proc</span>/sys/n
     <summary type="html">
     <![CDATA[<p>搭建一个采用lvs进行负载均衡的CTDB集群，整个集群的架构是采用如图所示</p>
 <p><img src="http://7xi6lo.com1.z0.glb.clouddn.com/ctdb.jpg" alt="ctdb"></p>
-<p>在上图所示的架构图中，后端采用]]>
+<p>在上图所示的架构图中，后端采用的集群是我们的存储,集群存储的三个samba服务器的node在作为CTDB的节点的同时,也是运行着我们的内核客户端,将三个内核客户端挂载到后端的集群中,同时这三个samba客户端对外采用三个虚拟的IP,然后采用LVS的网络负载均衡技术,虚拟成一个对外的IP,这样就实现了samba的带宽聚合以及负载均衡。</p>
+<h2 id="第一步,搭建一个CTDB集群">第一步,搭建一个CTDB集群</h2><h3 id="一、配置环境">一、配置环境</h3><ul>
+<li><p>E5400采用2.6.39内核客户端挂在集群<br>IP:192.168.0.210<br>GW:192.168.1.1<br>NETMASK:255.255.0.0<br>samba node1</p>
+</li>
+<li><p>E5400采用2.6.39内核客户端挂在集群<br>IP:192.168.0.211<br>GW:192.168.1.1<br>NETMASK：255.255.0.0<br>samba node2 </p>
+</li>
+<li><p>E5400采用2.6.39内核客户端挂在集群<br>IP:192.168.0.212<br>GW:192.168.1.1<br>NETMASK:255.255.0.0<br>samba node3</p>
+</li>
+</ul>]]>
+    
     </summary>
     
   </entry>
