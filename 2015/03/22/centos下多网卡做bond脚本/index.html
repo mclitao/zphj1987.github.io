@@ -1,0 +1,228 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  
+  <title>centos下多网卡做bond脚本 | zphj1987&#39;Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  
+    <meta name="author" content="zphj1987">
+  
+  
+    <meta name="description" content="多网卡或者单网卡形式下的网卡bonding
+#! /bin/sh
+#获取当前网卡数
+ethnum=`lspci | grep Ethernet | wc -l`
+echo $ethnum
+#如果网卡数小于等于1则什么都不做
+if [ $ethnum -le 1 ]
+        then
+        echo &quot;do nothing!&quot;
+fi
+#如果网卡数大于等于2则
+if [ $ethnu">
+  
+  <meta name="description" content="多网卡或者单网卡形式下的网卡bonding
+#! /bin/sh
+#获取当前网卡数
+ethnum=`lspci | grep Ethernet | wc -l`
+echo $ethnum
+#如果网卡数小于等于1则什么都不做
+if [ $ethnum -le 1 ]
+        then
+        echo &quot;do nothing!&quot;
+fi
+#如果网卡数大于等于2则
+if [ $ethnu">
+<meta property="og:type" content="article">
+<meta property="og:title" content="centos下多网卡做bond脚本">
+<meta property="og:url" content="http://yoursite.com/2015/03/22/centos下多网卡做bond脚本/index.html">
+<meta property="og:site_name" content="zphj1987'Blog">
+<meta property="og:description" content="多网卡或者单网卡形式下的网卡bonding
+#! /bin/sh
+#获取当前网卡数
+ethnum=`lspci | grep Ethernet | wc -l`
+echo $ethnum
+#如果网卡数小于等于1则什么都不做
+if [ $ethnum -le 1 ]
+        then
+        echo &quot;do nothing!&quot;
+fi
+#如果网卡数大于等于2则
+if [ $ethnu">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="centos下多网卡做bond脚本">
+<meta name="twitter:description" content="多网卡或者单网卡形式下的网卡bonding
+#! /bin/sh
+#获取当前网卡数
+ethnum=`lspci | grep Ethernet | wc -l`
+echo $ethnum
+#如果网卡数小于等于1则什么都不做
+if [ $ethnum -le 1 ]
+        then
+        echo &quot;do nothing!&quot;
+fi
+#如果网卡数大于等于2则
+if [ $ethnu">
+  
+  
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+<body>
+  <div class="wrapper">
+    <header id="header">
+  <div class="title">
+    <h1><a href="/">zphj1987&#39;Blog</a></h1>
+    <p><a href="/">现在所学，终有所用</a></p>
+  </div>
+  <nav class="nav">
+    <ul>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/archives">Archives</a></li>
+      
+        <li><a href="/atom.xml">rss</a></li>
+      
+        <li><a href="/about">About</a></li>
+      
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+  <div class="clearfix"></div>
+</header>
+    <div class="content"><article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/22/centos下多网卡做bond脚本/">
+  <time datetime="2015-03-22T14:54:52.000Z">
+    2015-03-22
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title">centos下多网卡做bond脚本</h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>多网卡或者单网卡形式下的网卡bonding</p>
+<pre><code><span class="shebang">#! /bin/sh</span>
+<span class="comment">#获取当前网卡数</span>
+ethnum=`lspci | grep Ethernet | wc <span class="operator">-l</span>`
+<span class="built_in">echo</span> <span class="variable">$ethnum</span>
+<span class="comment">#如果网卡数小于等于1则什么都不做</span>
+<span class="keyword">if</span> [ <span class="variable">$ethnum</span> -le <span class="number">1</span> ]
+        <span class="keyword">then</span>
+        <span class="built_in">echo</span> <span class="string">"do nothing!"</span>
+<span class="keyword">fi</span>
+<span class="comment">#如果网卡数大于等于2则</span>
+<span class="keyword">if</span> [ <span class="variable">$ethnum</span> -ge <span class="number">2</span> ]
+        <span class="keyword">then</span>
+</code></pre><a id="more"></a>
+<pre><code><span class="comment">#-------  添加一个bond0的网卡</span>
+    echo <span class="string">"DEVICE=bond0"</span> &gt; <span class="regexp">/etc/sysconfig</span><span class="regexp">/network-scripts/ifcfg</span>-bond<span class="number">0</span>
+    echo <span class="string">"ONBOOT=yes"</span> <span class="prompt">&gt;&gt; </span>/etc/sysconfig/network-scripts/ifcfg-bond<span class="number">0</span>
+    echo <span class="string">"IPADDR=192.168.3.104"</span> <span class="prompt">&gt;&gt; </span>/etc/sysconfig/network-scripts/ifcfg-bond<span class="number">0</span>
+    echo <span class="string">"NETMASK=255.255.0.0"</span> <span class="prompt">&gt;&gt; </span>/etc/sysconfig/network-scripts/ifcfg-bond<span class="number">0</span>
+    echo <span class="string">"GATEWAY=192.168.1.1"</span> <span class="prompt">&gt;&gt; </span>/etc/sysconfig/network-scripts/ifcfg-bond<span class="number">0</span>
+    echo <span class="string">"BOOTPROTO=static"</span> <span class="prompt">&gt;&gt; </span>/etc/sysconfig/network-scripts/ifcfg-bond<span class="number">0</span>
+    echo <span class="string">"USERCTL=no"</span> <span class="prompt">&gt;&gt; </span>/etc/sysconfig/network-scripts/ifcfg-bond<span class="number">0</span>
+<span class="comment">#--------</span>
+    echo <span class="string">"ifenslave bond0"</span> <span class="prompt">&gt;&gt; </span>/etc/rc.local
+<span class="comment">#--------写其他网卡的配置文件</span>
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="variable">$(</span>seq <span class="variable">$ethnum</span>);
+    <span class="keyword">do</span>
+num=<span class="string">`expr $i - 1`</span>
+     echo <span class="string">"BOOTPROTO=none"</span> &gt;  <span class="regexp">/etc/sysconfig</span><span class="regexp">/network-scripts/ifcfg</span>-eth<span class="variable">$num</span>
+     echo <span class="string">"DEVICE=eth$num"</span> <span class="prompt">&gt;&gt;  </span>/etc/sysconfig/network-scripts/ifcfg-eth<span class="variable">$num</span>
+     echo <span class="string">"ONBOOT=yes"</span> <span class="prompt">&gt;&gt;  </span>/etc/sysconfig/network-scripts/ifcfg-eth<span class="variable">$num</span>
+     echo <span class="string">"MASTER=bond0"</span> <span class="prompt">&gt;&gt;  </span>/etc/sysconfig/network-scripts/ifcfg-eth<span class="variable">$num</span>
+     echo <span class="string">"USERCTL=no"</span> <span class="prompt">&gt;&gt;  </span>/etc/sysconfig/network-scripts/ifcfg-eth<span class="variable">$num</span>
+     echo <span class="string">"SLAVE=yes"</span> <span class="prompt">&gt;&gt;  </span>/etc/sysconfig/network-scripts/ifcfg-eth<span class="variable">$num</span>
+     sed -i <span class="string">'s/ifenslave.*/&amp; eth'</span><span class="string">"$num"</span><span class="string">'/g'</span> /etc/rc.local
+    done;
+echo <span class="string">"alias bond0 bonding"</span> &gt; <span class="regexp">/etc/modprobe</span>.d/modprobe.conf
+echo <span class="string">"options bond0 miimon=100 mode=balance-rr"</span> <span class="prompt">&gt;&gt; </span>/etc/modprobe.d/modprobe.conf
+        modprobe bonding
+    /etc/init.d/network   restart
+fi
+</code></pre><p>写于: 2013年08月06日<br>更新于: 2015年03月22日</p>
+
+    
+  </div>
+  <footer>
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">评论</h1>
+  <div class="ds-thread" data-thread-key="2015/03/22/centos下多网卡做bond脚本/"  data-title="centos下多网卡做bond脚本">
+  </div>
+</section>
+</div>
+  </div>
+  <footer id="footer"><div class="copyright">
+  
+  &copy; 2015 <a href="/">zphj1987</a>
+  
+</div>
+<div class="theme-copyright">
+  Theme by <a href="https://github.com/orderedlist" target="_blank">orderedlist</a>
+   | 
+  Redesign by <a href="http://heroicyang.com/" target="_blank">Heroic Yang</a>
+</div>
+<div class="clearfix"></div></footer>
+  <script src="/js/jquery.min.js"></script>
+<script src="/js/scale.fix.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = { short_name: 'zphj1987' };
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';
+    ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox();
+  })(jQuery);
+</script>
+
+
+<div id="totop" style="position:fixed;bottom:150px;right:50px;cursor: pointer;">
+<a title="Top"><img src="/imgs/scrollup.png"/></a>
+</div>
+<script src="/js/totop.js"></script>
+
+</body>
+</html>

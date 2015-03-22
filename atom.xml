@@ -4,7 +4,7 @@
   <subtitle><![CDATA[现在所学，终有所用]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://yoursite.com/"/>
-  <updated>2015-03-22T14:45:26.306Z</updated>
+  <updated>2015-03-22T15:10:04.943Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -13,6 +13,162 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[linux系统启动的时候用脚本生成ssh密钥对（免输入enter）]]></title>
+    <link href="http://yoursite.com/2015/03/22/linux%E7%B3%BB%E7%BB%9F%E5%90%AF%E5%8A%A8%E7%9A%84%E6%97%B6%E5%80%99%E7%94%A8%E8%84%9A%E6%9C%AC%E7%94%9F%E6%88%90ssh%E5%AF%86%E9%92%A5%E5%AF%B9%EF%BC%88%E5%85%8D%E8%BE%93%E5%85%A5enter%EF%BC%89/"/>
+    <id>http://yoursite.com/2015/03/22/linux系统启动的时候用脚本生成ssh密钥对（免输入enter）/</id>
+    <published>2015-03-22T15:07:52.000Z</published>
+    <updated>2015-03-22T15:10:04.943Z</updated>
+    <content type="html"><![CDATA[<p>默认执行ssh-keygen的时候会需要连续输入enter,脚本里面不能有交互,所以去掉enter的操作,脚本如下,脚本执行完成以后的效果是自己对自己免登陆,需要免登陆其他服务器就把自己本机的id_rsa.pub拷贝到其他机器的authorized_keys当中就可以了</p>
+<pre><code><span class="shebang">#! /bin/sh</span>
+ssh-keygen -t rsa <span class="operator">-f</span> /root/.ssh/id_rsa -q -N <span class="string">""</span>
+cat /root/.ssh/id_rsa.pub &gt;&gt; /root/.ssh/authorized_keys
+</code></pre><p>写于: 2013年08月07日<br>更新于: 2015年03月22日</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>默认执行ssh-keygen的时候会需要连续输入enter,脚本里面不能有交互,所以去掉enter的操作,脚本如下,脚本执行完成以后的效果是自己对自己免登陆,需要免登陆其他服务器就把自己本机的id_rsa.pub拷贝到其他机器的authorized_keys当中就可以了</]]>
+    </summary>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[centos做时间同步服务器]]></title>
+    <link href="http://yoursite.com/2015/03/22/centos%E5%81%9A%E6%97%B6%E9%97%B4%E5%90%8C%E6%AD%A5%E6%9C%8D%E5%8A%A1%E5%99%A8/"/>
+    <id>http://yoursite.com/2015/03/22/centos做时间同步服务器/</id>
+    <published>2015-03-22T15:02:10.000Z</published>
+    <updated>2015-03-22T15:05:16.600Z</updated>
+    <content type="html"><![CDATA[<p>修改同步服务器的配置文件/etc/ntp.conf ,删除所有的内容,添加</p>
+<pre><code><span class="title">restrict</span> default nomodify
+server  <span class="number">127.127.1.0</span>     <span class="comment"># local clock</span>
+fudge   <span class="number">127.127.1.0</span> stratum <span class="number">8</span>
+</code></pre><p>重启ntpd</p>
+<pre><code><span class="regexp">/etc/i</span>nit.d<span class="regexp">/ntpd restart</span>
+</code></pre><p>等待ntp服务器自身同步完成</p>
+<pre><code><span class="title">watch</span> ntpq -p
+</code></pre><a id="more"></a>
+<p><img src="http://7xi6lo.com1.z0.glb.clouddn.com/centosntp1.jpg" alt=""></p>
+<p>观察这个reach需要超过17<br>否则其他机器ntpdate同步的时候会报错</p>
+<p><img src="http://7xi6lo.com1.z0.glb.clouddn.com/centosntp2.jpg" alt=""></p>
+<p>写于: 2013年08月06日<br>更新于: 2015年03月22日</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>修改同步服务器的配置文件/etc/ntp.conf ,删除所有的内容,添加</p>
+<pre><code><span class="title">restrict</span> default nomodify
+server  <span class="number">127.127.1.0</span>     <span class="comment"># local clock</span>
+fudge   <span class="number">127.127.1.0</span> stratum <span class="number">8</span>
+</code></pre><p>重启ntpd</p>
+<pre><code><span class="regexp">/etc/i</span>nit.d<span class="regexp">/ntpd restart</span>
+</code></pre><p>等待ntp服务器自身同步完成</p>
+<pre><code><span class="title">watch</span> ntpq -p
+</code></pre>]]>
+    
+    </summary>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[centos下多网卡做bond脚本]]></title>
+    <link href="http://yoursite.com/2015/03/22/centos%E4%B8%8B%E5%A4%9A%E7%BD%91%E5%8D%A1%E5%81%9Abond%E8%84%9A%E6%9C%AC/"/>
+    <id>http://yoursite.com/2015/03/22/centos下多网卡做bond脚本/</id>
+    <published>2015-03-22T14:54:52.000Z</published>
+    <updated>2015-03-22T14:58:50.487Z</updated>
+    <content type="html"><![CDATA[<p>多网卡或者单网卡形式下的网卡bonding</p>
+<pre><code><span class="shebang">#! /bin/sh</span>
+<span class="comment">#获取当前网卡数</span>
+ethnum=`lspci | grep Ethernet | wc <span class="operator">-l</span>`
+<span class="built_in">echo</span> <span class="variable">$ethnum</span>
+<span class="comment">#如果网卡数小于等于1则什么都不做</span>
+<span class="keyword">if</span> [ <span class="variable">$ethnum</span> -le <span class="number">1</span> ]
+        <span class="keyword">then</span>
+        <span class="built_in">echo</span> <span class="string">"do nothing!"</span>
+<span class="keyword">fi</span>
+<span class="comment">#如果网卡数大于等于2则</span>
+<span class="keyword">if</span> [ <span class="variable">$ethnum</span> -ge <span class="number">2</span> ]
+        <span class="keyword">then</span>
+</code></pre><a id="more"></a>
+<pre><code><span class="comment">#-------  添加一个bond0的网卡</span>
+    echo <span class="string">"DEVICE=bond0"</span> &gt; <span class="regexp">/etc/sysconfig</span><span class="regexp">/network-scripts/ifcfg</span>-bond<span class="number">0</span>
+    echo <span class="string">"ONBOOT=yes"</span> <span class="prompt">&gt;&gt; </span>/etc/sysconfig/network-scripts/ifcfg-bond<span class="number">0</span>
+    echo <span class="string">"IPADDR=192.168.3.104"</span> <span class="prompt">&gt;&gt; </span>/etc/sysconfig/network-scripts/ifcfg-bond<span class="number">0</span>
+    echo <span class="string">"NETMASK=255.255.0.0"</span> <span class="prompt">&gt;&gt; </span>/etc/sysconfig/network-scripts/ifcfg-bond<span class="number">0</span>
+    echo <span class="string">"GATEWAY=192.168.1.1"</span> <span class="prompt">&gt;&gt; </span>/etc/sysconfig/network-scripts/ifcfg-bond<span class="number">0</span>
+    echo <span class="string">"BOOTPROTO=static"</span> <span class="prompt">&gt;&gt; </span>/etc/sysconfig/network-scripts/ifcfg-bond<span class="number">0</span>
+    echo <span class="string">"USERCTL=no"</span> <span class="prompt">&gt;&gt; </span>/etc/sysconfig/network-scripts/ifcfg-bond<span class="number">0</span>
+<span class="comment">#--------</span>
+    echo <span class="string">"ifenslave bond0"</span> <span class="prompt">&gt;&gt; </span>/etc/rc.local
+<span class="comment">#--------写其他网卡的配置文件</span>
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="variable">$(</span>seq <span class="variable">$ethnum</span>);
+    <span class="keyword">do</span>
+num=<span class="string">`expr $i - 1`</span>
+     echo <span class="string">"BOOTPROTO=none"</span> &gt;  <span class="regexp">/etc/sysconfig</span><span class="regexp">/network-scripts/ifcfg</span>-eth<span class="variable">$num</span>
+     echo <span class="string">"DEVICE=eth$num"</span> <span class="prompt">&gt;&gt;  </span>/etc/sysconfig/network-scripts/ifcfg-eth<span class="variable">$num</span>
+     echo <span class="string">"ONBOOT=yes"</span> <span class="prompt">&gt;&gt;  </span>/etc/sysconfig/network-scripts/ifcfg-eth<span class="variable">$num</span>
+     echo <span class="string">"MASTER=bond0"</span> <span class="prompt">&gt;&gt;  </span>/etc/sysconfig/network-scripts/ifcfg-eth<span class="variable">$num</span>
+     echo <span class="string">"USERCTL=no"</span> <span class="prompt">&gt;&gt;  </span>/etc/sysconfig/network-scripts/ifcfg-eth<span class="variable">$num</span>
+     echo <span class="string">"SLAVE=yes"</span> <span class="prompt">&gt;&gt;  </span>/etc/sysconfig/network-scripts/ifcfg-eth<span class="variable">$num</span>
+     sed -i <span class="string">'s/ifenslave.*/&amp; eth'</span><span class="string">"$num"</span><span class="string">'/g'</span> /etc/rc.local
+    done;
+echo <span class="string">"alias bond0 bonding"</span> &gt; <span class="regexp">/etc/modprobe</span>.d/modprobe.conf
+echo <span class="string">"options bond0 miimon=100 mode=balance-rr"</span> <span class="prompt">&gt;&gt; </span>/etc/modprobe.d/modprobe.conf
+        modprobe bonding
+    /etc/init.d/network   restart
+fi
+</code></pre><p>写于: 2013年08月06日<br>更新于: 2015年03月22日</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>多网卡或者单网卡形式下的网卡bonding</p>
+<pre><code><span class="shebang">#! /bin/sh</span>
+<span class="comment">#获取当前网卡数</span>
+ethnum=`lspci | grep Ethernet | wc <span class="operator">-l</span>`
+<span class="built_in">echo</span> <span class="variable">$ethnum</span>
+<span class="comment">#如果网卡数小于等于1则什么都不做</span>
+<span class="keyword">if</span> [ <span class="variable">$ethnum</span> -le <span class="number">1</span> ]
+        <span class="keyword">then</span>
+        <span class="built_in">echo</span> <span class="string">"do nothing!"</span>
+<span class="keyword">fi</span>
+<span class="comment">#如果网卡数大于等于2则</span>
+<span class="keyword">if</span> [ <span class="variable">$ethnum</span> -ge <span class="number">2</span> ]
+        <span class="keyword">then</span>
+</code></pre>]]>
+    
+    </summary>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[ubuntu12.10安装sun java jdk]]></title>
+    <link href="http://yoursite.com/2015/03/22/ubuntu12-10%E5%AE%89%E8%A3%85sun-java-jdk/"/>
+    <id>http://yoursite.com/2015/03/22/ubuntu12-10安装sun-java-jdk/</id>
+    <published>2015-03-22T14:52:27.000Z</published>
+    <updated>2015-03-22T14:54:24.808Z</updated>
+    <content type="html"><![CDATA[<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">add-apt-repository ppa:webupd8team/java  </span><br><span class="line">apt-get update  </span><br><span class="line">apt-get install oracle-java6-installer</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">root@kangear:/etc/apt<span class="comment"># java -version</span></span><br><span class="line">java version <span class="string">"1.6.0_41"</span></span><br><span class="line">Java(TM) SE Runtime Environment (build <span class="number">1.6</span>.<span class="number">0</span>_41-b02)</span><br><span class="line">Java HotSpot(TM) Server VM (build <span class="number">20.14</span>-b01, mixed mode)</span><br></pre></td></tr></table></figure>
+<p>说明:sun-java6-jre,sun-java6-plugin,sun-java6-fonts都同样的由的软件包 oracle-java6-installer 提供的虚拟软件包所以安装 oracle-java6-installer就可以了</p>
+<p>写于: 2013年08月03日<br>更新于: 2015年03月22日</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class=]]>
+    </summary>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[ Bad magic number ImportError in python]]></title>
+    <link href="http://yoursite.com/2015/03/22/Bad-magic-number-ImportError-in-python/"/>
+    <id>http://yoursite.com/2015/03/22/Bad-magic-number-ImportError-in-python/</id>
+    <published>2015-03-22T14:50:44.000Z</published>
+    <updated>2015-03-22T14:52:07.719Z</updated>
+    <content type="html"><![CDATA[<p>是源码编译里面版本不对，删除掉源码pyc然后重新编译就可以了</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">find .-name <span class="string">'*.pyc'</span>-delete</span><br><span class="line">python -m compileall .</span><br></pre></td></tr></table></figure>
+<p>写于: 2013年08月01日<br>更新于: 2015年03月22日</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>是源码编译里面版本不对，删除掉源码pyc然后重新编译就可以了</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span]]>
+    </summary>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[修改centos6启动动画（plymouth方式）]]></title>
@@ -60,11 +216,11 @@ plymouth <span class="comment">--quit</span>
   </entry>
   
   <entry>
-    <title><![CDATA[用grub4dos来实现移动硬盘安装linux系统]]></title>
+    <title><![CDATA[用grub4dos来实现移动硬盘安装linux系统(图重弄)]]></title>
     <link href="http://yoursite.com/2015/03/22/%E7%94%A8grub4dos%E6%9D%A5%E5%AE%9E%E7%8E%B0%E7%A7%BB%E5%8A%A8%E7%A1%AC%E7%9B%98%E5%AE%89%E8%A3%85linux%E7%B3%BB%E7%BB%9F/"/>
     <id>http://yoursite.com/2015/03/22/用grub4dos来实现移动硬盘安装linux系统/</id>
     <published>2015-03-22T14:27:07.000Z</published>
-    <updated>2015-03-22T14:37:34.532Z</updated>
+    <updated>2015-03-22T15:01:14.250Z</updated>
     <content type="html"><![CDATA[<p>网上看了一些grub4dos相关教程,虽然相关资料很多,但是一步步做下来还是会出现一些问题,并且有些地方也没有说清楚,现在写下来供自己以后查看</p>
 <p>由于使用utraliso软件做centos6.4系统盘的时候,由于centos系统盘超过4G,而utraliso软件做系统盘的时候默认文件系统ext格式,而ext格式不支持超过4G的文件,所以就无法启动,所以研究了下用grub4dos这个软件来实现移动硬盘安装linux系统</p>
 <p>首先需要准备两个文件<br>grub4dos-0.4.4.zip<br>grubinst-1.1-bin-w32-2008-01-01.zip</p>
@@ -559,156 +715,6 @@ comment=beifen
     <summary type="html">
     <![CDATA[<p>修改默认的22的ssh端口只需要修改 /etc/ssh/sshd_config 中的 port 字段为你想要的端口就可以了<br>以后用其他机器ssh登录这台机器只需要:</p>
 <pre><code>ssh -p <span class="comment">(port)<]]>
-    </summary>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[debian修改crontab默认编辑器为vim]]></title>
-    <link href="http://yoursite.com/2015/03/22/debian%E4%BF%AE%E6%94%B9crontab%E9%BB%98%E8%AE%A4%E7%BC%96%E8%BE%91%E5%99%A8%E4%B8%BAvim/"/>
-    <id>http://yoursite.com/2015/03/22/debian修改crontab默认编辑器为vim/</id>
-    <published>2015-03-22T08:46:03.000Z</published>
-    <updated>2015-03-22T08:48:25.906Z</updated>
-    <content type="html"><![CDATA[<p>debian终端下默认编辑器为nano,比如crontab -e就会打开nano,这个编辑器用起来很不习惯,想修改为vim,当然,你的debian系统必须先安装vim.如果已经安装vim,请输入如下命令:<br>输入命令:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">update-alternatives --config editor</span><br></pre></td></tr></table></figure>
-<p>然后选择/usr/vim/vim.basic就OK了</p>
-<p>vim.tiny与vim.basic的区别是vim.basic为完全的vim,而vim.tiny为简化版,功能上有所区别,如不支持高亮等等.</p>
-<p>写于: 2012年5月04日<br>更新于: 2015年03月22日</p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>debian终端下默认编辑器为nano,比如crontab -e就会打开nano,这个编辑器用起来很不习惯,想修改为vim,当然,你的debian系统必须先安装vim.如果已经安装vim,请输入如下命令:<br>输入命令:</p>
-<figure class="highli]]>
-    </summary>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[正确用DD测试磁盘读写速度]]></title>
-    <link href="http://yoursite.com/2015/03/22/%E6%AD%A3%E7%A1%AE%E7%94%A8DD%E6%B5%8B%E8%AF%95%E7%A3%81%E7%9B%98%E8%AF%BB%E5%86%99%E9%80%9F%E5%BA%A6/"/>
-    <id>http://yoursite.com/2015/03/22/正确用DD测试磁盘读写速度/</id>
-    <published>2015-03-22T08:36:15.000Z</published>
-    <updated>2015-03-22T08:45:31.629Z</updated>
-    <content type="html"><![CDATA[<p>问: 以下几种方式测试磁盘读写速度有什么区别?</p>
-<pre><code>dd <span class="variable">if=</span>/dev/zero <span class="variable">of=</span>test <span class="variable">bs=</span><span class="number">1</span>M <span class="variable">count=</span><span class="number">128</span> 
-dd <span class="variable">if=</span>/dev/zero <span class="variable">of=</span>test <span class="variable">bs=</span><span class="number">1</span>M <span class="variable">count=</span><span class="number">128</span> ; sync
-dd <span class="variable">if=</span>/dev/zero <span class="variable">of=</span>test <span class="variable">bs=</span><span class="number">1</span>M <span class="variable">count=</span><span class="number">128</span> <span class="variable">conv=</span>fdatasync
-dd <span class="variable">if=</span>/dev/zero <span class="variable">of=</span>test <span class="variable">bs=</span><span class="number">1</span>M <span class="variable">count=</span><span class="number">128</span> <span class="variable">oflag=</span>dsync
-</code></pre><p>答:区别在于内存中写缓存的处理方式。</p>
-<a id="more"></a>
-<p>1.dd if=/dev/zero of=test bs=1M count=128<br>没有加任何参数,dd默认的方式不包括“同步(sync)”命令。也就是说,dd命令完成前并没有让系统真正把文件写到磁盘上。所以以上命令只是单纯地把这128MB的数据读到内存缓冲当中,写缓存[write cache]。所以你得到的将是一个超级快的速度。因为其实dd给你的只是读取到缓存的速度,直到dd完成后系统才开始真正往磁盘上写数据,但这个速度你是看不到了。所以如果这个速度很快,先不要偷着乐。呵呵</p>
-<p>2.dd if=/dev/zero of=test bs=1M count=128 ; sync<br>和前面1中的完全一样。分号隔开的只是先后两个独立的命令。当sync命令准备开始往磁盘上真正写入数据的时候,前面dd命令已经把错误的“写入速度”值显示在屏幕上了。所以你还是得不到真正的写入速度。</p>
-<p>3.dd if=/dev/zero of=test bs=1M count=128 conv=fdatasync<br>加入这个参数后,dd命令执行到最后会真正执行一次“同步(sync)”操作,所以这时候你得到的是读取这128M数据到内存并写入到磁盘上所需的时间,这样算出来的时间才是比较符合实际的。</p>
-<p>4.dd if=/dev/zero of=test bs=1M count=128 oflag=dsync<br>加入这个参数后,dd在执行时每次都会进行同步写入操作。也就是说,这条命令每次读取1M后就要先把这1M写入磁盘,然后再读取下面这1M,一共重复128次。这可能是最慢的一种方式了,因为基本上没有用到写缓存(write cache)。</p>
-<p>问:那应该用哪一种呢?<br>答:建议使用</p>
-<pre><code>dd <span class="variable">bs=</span><span class="number">1</span>M <span class="variable">count=</span><span class="number">128</span> <span class="variable">if=</span>/dev/zero <span class="variable">of=</span>test <span class="variable">conv=</span>fdatasync
-</code></pre><p>因为这种方式最接近计算机实际操作,所以测出来的数据最有参考价值</p>
-<p>写于: 2012年05月02日<br>更新于: 2015年03月22日</p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>问: 以下几种方式测试磁盘读写速度有什么区别?</p>
-<pre><code>dd <span class="variable">if=</span>/dev/zero <span class="variable">of=</span>test <span class="variable">bs=</span><span class="number">1</span>M <span class="variable">count=</span><span class="number">128</span> 
-dd <span class="variable">if=</span>/dev/zero <span class="variable">of=</span>test <span class="variable">bs=</span><span class="number">1</span>M <span class="variable">count=</span><span class="number">128</span> ; sync
-dd <span class="variable">if=</span>/dev/zero <span class="variable">of=</span>test <span class="variable">bs=</span><span class="number">1</span>M <span class="variable">count=</span><span class="number">128</span> <span class="variable">conv=</span>fdatasync
-dd <span class="variable">if=</span>/dev/zero <span class="variable">of=</span>test <span class="variable">bs=</span><span class="number">1</span>M <span class="variable">count=</span><span class="number">128</span> <span class="variable">oflag=</span>dsync
-</code></pre><p>答:区别在于内存中写缓存的处理方式。</p>]]>
-    
-    </summary>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[西数WD2T硬盘分区对齐的方法]]></title>
-    <link href="http://yoursite.com/2015/03/22/%E8%A5%BF%E6%95%B0WD2T%E7%A1%AC%E7%9B%98%E5%88%86%E5%8C%BA%E5%AF%B9%E9%BD%90%E7%9A%84%E6%96%B9%E6%B3%95/"/>
-    <id>http://yoursite.com/2015/03/22/西数WD2T硬盘分区对齐的方法/</id>
-    <published>2015-03-22T08:25:08.000Z</published>
-    <updated>2015-03-22T08:35:42.722Z</updated>
-    <content type="html"><![CDATA[<p>新购一个西数2T硬盘,也就是绿盘的那种,淘宝500左右,支持高级格式化。 </p>
-<p>到手以后,分区格式化,前几天格式化完成以后,fdisk -l 发现如下文字 </p>
-<p>引用<br>Partition 1 does not start on physical sector boundary.</p>
-<p>网上找了下,说是软件的问题,后来折腾了下,应该是分区没有对齐的原因,至于为什么要对齐,优点很多,好像这个是跟神马高级分区格式化有关,具体的原理神马的,我就不讨论了,反正有一点,对齐后,性能会有提升。 </p>
-<a id="more"></a>
-<p>对齐后,用fdisk -lu 查看的结果如下</p>
-<pre><code>Disk /dev/sdc: <span class="number">2000.4</span> GB, <span class="number">2000398934016</span> <span class="keyword">bytes</span>
-<span class="number">255</span> heads, <span class="number">63</span> sectors/track, <span class="number">243201</span> cylinders, total <span class="number">3907029168</span> sectors
-Units = sectors <span class="operator">of</span> <span class="number">1</span> * <span class="number">512</span> = <span class="number">512</span> <span class="keyword">bytes</span>
-Sector size (logical/physical): <span class="number">512</span> <span class="keyword">bytes</span> / <span class="number">512</span> <span class="keyword">bytes</span>
-I/O size (minimum/optimal): <span class="number">512</span> <span class="keyword">bytes</span> / <span class="number">512</span> <span class="keyword">bytes</span>
-Disk identifier: <span class="number">0x2fa8ebd1</span>
-
-   Device Boot      Start         End      Blocks   Id  System
-/dev/sdc1            <span class="number">2048</span>  <span class="number">3907028991</span>  <span class="number">1953513472</span>   <span class="number">83</span>  Linux
-</code></pre><p>怎么样个对齐的方法呢,就是分区的时候,要注意,不要用 fdisk 来分区,不是说fdisk不行,经过我的测试,用 fdisk 分区,我明明分的是2T,结果却是1T大小，用 parted 分区就没有这个问题 </p>
-<p>debian 下面,如果没有 parted 这个工具,apt-get 安装,安装完成以后,就可以使用了 </p>
-<p>引用</p>
-<pre><code>root@localhost ~]<span class="comment"># parted /dev/sdb # 使用parted来对GPT磁盘操作,进入交互式模式</span>
-GNU Parted <span class="number">1.8</span><span class="number">.1</span> Using /dev/sdb Welcome <span class="keyword">to</span> GNU Parted! Type ‘help’ <span class="keyword">to</span> view a <span class="type">list</span> <span class="keyword">of</span> commands.
-(parted) mklabel msdos           <span class="comment"># 将MBR磁盘格式化为msdos 2T的硬盘 msdos 没有问题</span>
-(parted) p                      <span class="comment">#打印当前分区</span>
-(parted) mkpart primary <span class="number">1</span> <span class="number">2</span>TB                <span class="comment"># 分一个2T的主分区,这里输入1,否则会提示性能问题</span>
-(parted) p                         <span class="comment">#打印当前分区</span>
-(parted) q 退出
-Information: Don’t forget <span class="keyword">to</span> update /etc/fstab, <span class="keyword">if</span> necessary.
-</code></pre><p>退出后,用 mkfs.ext4 格式化就好了 </p>
-<p>然后再用 fdisk -lu 查看,已经没有那个提示了 </p>
-<p>这里说明下,对齐,就是说分区的时候,开始的扇区要以 8 的倍数来开始,而 fisk 默认是 63 ,对老硬盘没有什么问题,但是对西数的新硬盘, 4k 扇区的,就会有对齐的问题,会导致性能下降</p>
-<p>写于: 2012年05月02日<br>更新于:2015年03月22日</p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>新购一个西数2T硬盘,也就是绿盘的那种,淘宝500左右,支持高级格式化。 </p>
-<p>到手以后,分区格式化,前几天格式化完成以后,fdisk -l 发现如下文字 </p>
-<p>引用<br>Partition 1 does not start on physical sector boundary.</p>
-<p>网上找了下,说是软件的问题,后来折腾了下,应该是分区没有对齐的原因,至于为什么要对齐,优点很多,好像这个是跟神马高级分区格式化有关,具体的原理神马的,我就不讨论了,反正有一点,对齐后,性能会有提升。 </p>]]>
-    
-    </summary>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[Check Host:实时监控网站或者服务器是否可以访问]]></title>
-    <link href="http://yoursite.com/2015/03/22/Check-Host-%E5%AE%9E%E6%97%B6%E7%9B%91%E6%8E%A7%E7%BD%91%E7%AB%99%E6%88%96%E8%80%85%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%98%AF%E5%90%A6%E5%8F%AF%E4%BB%A5%E8%AE%BF%E9%97%AE/"/>
-    <id>http://yoursite.com/2015/03/22/Check-Host-实时监控网站或者服务器是否可以访问/</id>
-    <published>2015-03-22T08:15:10.000Z</published>
-    <updated>2015-03-22T08:24:03.487Z</updated>
-    <content type="html"><![CDATA[<p>如果你拥有一个网站，那么最重要的事情就是要保证它24小时都能够访问。不过国内的虚拟主机服务非常糟糕，经常会出现各种状况,所以我们需要一个软件,可以让我们第一时间知道网站出现了无法访问的情况,从而通知售后人员解决。而Check Host就是这么一个windows下的免费网站时时监控工具。</p>
-<p>服务器无法访问,那么对网站是非常不利的,而搜索引擎也会知道这个状况,因为蜘蛛不能爬行你的网页了。所以对访客以及搜索引擎排名都是不利的。不过这个事情肯定会发生,我们能做的就是提高反应速度,让这样的情况在最短的时间内解决。</p>
-<p>如此一来,对于网站的实时监控就非常有必要的,但是我们又不能每隔一段时间就手动打开网站一次,这样太过于麻烦,甚至是愚蠢的,所以我们必须要使用一个软件,让其代劳，当发生状况的时候还会给你发出警告，而Check Host就可以满足你的愿望。</p>
-<p>Check Host是一个windows下的小软件，只有2.2M,十分的小巧,它的原理是每隔一段时间就自动ping一下你设定的网址。如果无法ping通的话,那么就会通过几种方法告诉你。</p>
-<a id="more"></a>
-<p>这个软件对监控的网站和服务器没有数量方面的限制,所以你同时可以监控多个网站。</p>
-<p><img src="http://7xi6lo.com1.z0.glb.clouddn.com/checkhost1.jpg" alt=""></p>
-<p>使用方法: </p>
-<p>当你安装运行后,点击左上角的“new”按钮添加一个任务,在出现界面的“hostname”下面输入网址。“check interval”是让你设置测试间隔,这个默认是10秒,建议间隔长一点,不然可能会谎报军情。“timeout”是超时的时间,默认1000毫秒,建议也是填较短的时间,不然可能会导致软件无法响应。如果发生这样的状况,只需等待就可以了。</p>
-<p>而在新建任务界面右侧的是当ping不通是触发什么行为,如果又再次ping通又触发什么。</p>
-<p>这个你有三种选择,桌面提醒、往指定邮箱发送邮件、启动某个程序或者批处理命令。并且这个是可以多选的。<br>默认情况下,桌面提醒是被激活的,一旦出现状况,你就会在桌面右侧看到小的弹窗,上面会显示不能访问的网站网址。而系统托盘的图标也会从“勾”变成“叉”。</p>
-<p>而触发程序的话，你可以指定音乐播放器,那么这样就会在网站无法访问时使用声音提醒你。</p>
-<p>“check interval”在软件默认设置中是10秒,不过希望你在使用的时候改成1分钟以上，这样就不会非常敏感了。</p>
-<p><img src="http://7xi6lo.com1.z0.glb.clouddn.com/checkhost2.jpg" alt=""></p>
-<p>写于:2012年04月26日<br>更新于: 2015年03月22日</p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>如果你拥有一个网站，那么最重要的事情就是要保证它24小时都能够访问。不过国内的虚拟主机服务非常糟糕，经常会出现各种状况,所以我们需要一个软件,可以让我们第一时间知道网站出现了无法访问的情况,从而通知售后人员解决。而Check Host就是这么一个windows下的免费网站时时监控工具。</p>
-<p>服务器无法访问,那么对网站是非常不利的,而搜索引擎也会知道这个状况,因为蜘蛛不能爬行你的网页了。所以对访客以及搜索引擎排名都是不利的。不过这个事情肯定会发生,我们能做的就是提高反应速度,让这样的情况在最短的时间内解决。</p>
-<p>如此一来,对于网站的实时监控就非常有必要的,但是我们又不能每隔一段时间就手动打开网站一次,这样太过于麻烦,甚至是愚蠢的,所以我们必须要使用一个软件,让其代劳，当发生状况的时候还会给你发出警告，而Check Host就可以满足你的愿望。</p>
-<p>Check Host是一个windows下的小软件，只有2.2M,十分的小巧,它的原理是每隔一段时间就自动ping一下你设定的网址。如果无法ping通的话,那么就会通过几种方法告诉你。</p>]]>
-    
-    </summary>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[清理win7注册表后，没有了右键新建选项处理办法]]></title>
-    <link href="http://yoursite.com/2015/03/22/%E6%B8%85%E7%90%86win7%E6%B3%A8%E5%86%8C%E8%A1%A8%E5%90%8E%EF%BC%8C%E6%B2%A1%E6%9C%89%E4%BA%86%E5%8F%B3%E9%94%AE%E6%96%B0%E5%BB%BA%E9%80%89%E9%A1%B9%E5%A4%84%E7%90%86%E5%8A%9E%E6%B3%95/"/>
-    <id>http://yoursite.com/2015/03/22/清理win7注册表后，没有了右键新建选项处理办法/</id>
-    <published>2015-03-22T08:09:11.000Z</published>
-    <updated>2015-03-22T08:12:37.289Z</updated>
-    <content type="html"><![CDATA[<p>今天清理win7注册表的右键选项,发现清理完了后,居然没有了右键新建,什么文件都无法创建,搜索了下,发现有人给出了解决办法,如下:</p>
-<pre><code>REGEDIT4 <span class="special">[</span>HKEY_CLASSES_ROOT<span class="command">\Directory</span><span class="command">\Background</span><span class="command">\shellex</span><span class="command">\ContextMenuHandlers</span><span class="command">\New</span><span class="special">]</span> @="<span class="special">{</span>D969A300-E7FF-11d0-A93B-00A0C90F2719<span class="special">}</span>" <span class="special">[</span>HKEY_CLASSES_ROOT<span class="command">\Directory</span><span class="command">\Background</span><span class="command">\shellex</span><span class="command">\ContextMenuHandlers</span><span class="command">\New</span><span class="command">\command</span><span class="special">]</span> @=hex(2): 
-</code></pre><p>建一个文本文件,把上面的内容拷过去,然后把文件后缀改成.reg。双击执行就可以了</p>
-<p>写于: 2012年04月25日<br>更新于: 2015年03月22日</p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>今天清理win7注册表的右键选项,发现清理完了后,居然没有了右键新建,什么文件都无法创建,搜索了下,发现有人给出了解决办法,如下:</p>
-<pre><code>REGEDIT4 <span class="special">[</span>HKEY_CLASSES_ROOT]]>
     </summary>
     
   </entry>

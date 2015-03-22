@@ -62,32 +62,190 @@
   <header>
     
       <div class="icon"></div>
-      <a href="/2015/03/21/alias重启终端失效的问题/">
-  <time datetime="2015-03-21T10:26:09.000Z">
+      <a href="/2015/03/22/symbol-lookup-error-usr-lib-x86-64-linux-gnu-libstdc-so-6错误的解决办法/">
+  <time datetime="2015-03-22T04:46:35.000Z">
+    2015-03-22
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/03/22/symbol-lookup-error-usr-lib-x86-64-linux-gnu-libstdc-so-6错误的解决办法/">symbol lookup error: /usr/lib/x86_64-linux-gnu/libstdc++.so.6错误的解决办法</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>当出现</p>
+<pre><code>$ apt-<span class="string">get:</span> symbol lookup <span class="string">error:</span> <span class="regexp">/usr/</span>lib<span class="regexp">/x86_64-linux-gnu/</span>libstdc++.so<span class="number">.6</span>: undefined <span class="string">symbol:</span> _ZNSt8messagesIcE2idE, version GLIBCXX_3<span class="number">.4</span>的时候
+</code></pre><p>需要重新配置下一个包</p>
+<p>Fixed by manually downloading testing version of libc6 from here<br><a href="http://packages.debian.org/wheezy/libc6" target="_blank" rel="external">http://packages.debian.org/wheezy/libc6</a> and installed it</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ dpkg -i --auto-deconfigure libc6_2.<span class="number">13</span>-<span class="number">16</span>_amd64.deb</span><br></pre></td></tr></table></figure>
+<p>重新配置下libc6_2.13-16_amd64.deb就可以了</p>
+<pre><code class="bash">strings /usr/lib/libstdc++.so.<span class="number">6</span>| grep GLIBC
+</code></pre>
+<p>查看版本,然后安装 libstdc++6 即可</p>
+<p>写于: 2011年12月31日<br>更新于: 2015年03月22日</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/22/error-while-loading-shared-libraries的解決方法/">
+  <time datetime="2015-03-22T04:33:15.000Z">
+    2015-03-22
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/03/22/error-while-loading-shared-libraries的解決方法/">error while loading shared libraries的解決方法</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>在linux下运行程序时,发现了error while loading shared libraries这种错误,一时间不知道解决办法,在网上搜索,终于解决了.</p>
+<pre><code><span class="keyword">error</span> <span class="keyword">while</span> loading shared libraries: xxx.<span class="keyword">so</span>.0:cannot <span class="keyword">open</span> shared object <span class="keyword">file</span>: <span class="keyword">No</span> such <span class="keyword">file</span> or directory
+</code></pre><p>出现这类错误表示,系统不知道xxx.so放在哪个目录下,这时候就要在/etc/ld.so.conf中加入xxx.so所在的目录。<br>一般而言,有很多的so会存放在/usr/local/lib这个目录底下,去这个目录底下找，果然发现自己所需要的.so文件。<br>所以在/etc/ld.so.conf中加入/usr/local/lib这一行,保存之后,再运行,/sbin/ldconfig –v更新一下配置即可。<br>centos下安装qt时出现/usr/lib/libstdc++.so.6: version `GLIBCXX_3.4.9’ not found<br>在安装qt-creator的时候运行这个IDE就出现了这个问题,是由于libstdc++.so.6的版本过低,需要下载个新的重新建立软连接</p>
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2015/03/22/error-while-loading-shared-libraries的解決方法/#more" class="more-link">阅读全文</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/22/linux下内存释放/">
+  <time datetime="2015-03-22T04:24:24.000Z">
+    2015-03-22
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/03/22/linux下内存释放/">linux下内存释放</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>细心的朋友会注意到,当你在linux下频繁存取文件后,物理内存会很快被用光,当程序结束后,内存不会被正常释放,而是一直作为caching.这个问题,貌似有不少人在问,不过都没有看到有什么很好解决的办法.那么我来谈谈这个问题.<br>先来说说free命令<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@server ~]<span class="comment"># free -m </span></span><br><span class="line">             total       used       free     shared    buffers     cached </span><br><span class="line">Mem:           <span class="number">249</span>        <span class="number">163</span>         <span class="number">86</span>          <span class="number">0</span>         <span class="number">10</span>         <span class="number">94</span> </span><br><span class="line">-/+ buffers/cache:         <span class="number">58</span>        <span class="number">191</span> </span><br><span class="line">Swap:          <span class="number">511</span>          <span class="number">0</span>        <span class="number">511</span></span><br></pre></td></tr></table></figure></p>
+<p>其中:<br>total 内存总数<br>used 已经使用的内存数<br>free 空闲的内存数<br>shared 多个进程共享的内存总额<br>buffers Buffer Cache和cached Page Cache 磁盘缓存的大小<br>-buffers/cache 的内存数:used - buffers - cached<br>+buffers/cache 的内存数:free + buffers + cached<br>可用的memory=free memory+buffers+cached<br>有了这个基础后,可以得知,我现在used为163MB,free为86,buffer和cached分别为10,94<br>那么我们来看看,如果我执行复制文件,内存会发生什么变化. </p>
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2015/03/22/linux下内存释放/#more" class="more-link">阅读全文</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/21/ubuntu配置bonding/">
+  <time datetime="2015-03-21T13:16:33.000Z">
     2015-03-21
   </time>
 </a>
     
     
   
-    <h1 class="title"><a href="/2015/03/21/alias重启终端失效的问题/">alias重启终端失效的问题</a></h1>
+    <h1 class="title"><a href="/2015/03/21/ubuntu配置bonding/">ubuntu配置bonding</a></h1>
   
 
   </header>
   
   <div class="entry">
     
-      <p>如果使用命令:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">alias</span> xx=<span class="string">'xxxx'</span></span><br></pre></td></tr></table></figure></p>
-<p>那么登出以后,别名就会失效。下次登入的时候就不能用了。<br>为了保持别名可以把它写入 /root/.bashrc<br>在.bashrc的最后写入想要的别名,比如:</p>
-<pre><code><span class="built_in">alias</span> zp=<span class="string">'ll -al'</span>
-</code></pre><p>然后退出,重新登入的时候就可以用了。<br>或者直接运行命令<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span> ~/.bashrc</span><br></pre></td></tr></table></figure></p>
-<p>这样不用重新登入就可以使用了。</p>
-<p>写于: 2011年12月22日<br>更新于: 2015年03月21日</p>
+      <p>如果节点上有多个网络接口时可以通过bonding将多个网络接口虚拟为一个网络接口，bonding可以提供高可用及负载均衡功能，从而提高节点的网络接口性能及可用性。</p>
+<p>一、使用如下命令安装</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">T01-MON11:~<span class="comment"># apt-get install ifenslave-2.6</span></span><br></pre></td></tr></table></figure>
+<p>二、配置bonding</p>
+<p>修改网络接口配置文件/etc/network/interfaces</p>
+<p>配置一个bond</p>
+<pre><code><span class="attribute">auto</span> lo
+iface lo inet loopback
 
+<span class="attribute">auto</span> eth8
+iface eth8 inet manual
+bond-master bond0
+
+<span class="attribute">auto</span> eth7
+iface eth7 inet manual
+bond-master bond0
+
+<span class="attribute">auto</span> eth6
+iface eth6 inet manual
+bond-master bond0
+
+<span class="attribute">auto</span> eth5
+iface eth5 inet manual
+bond-master bond0
+
+<span class="attribute">auto</span> eth0
+iface eth0 inet static
+<span class="tag">address</span> <span class="number">192.168</span>.<span class="number">8.102</span>
+netmask <span class="number">255.255</span>.<span class="number">0.0</span>
+gateway <span class="number">192.168</span>.<span class="number">1.1</span>
+dns-nameservers <span class="number">8.8</span>.<span class="number">8.8</span>
+
+<span class="attribute">auto</span> bond0
+iface bond0 inet static
+<span class="tag">address</span> <span class="number">10.0</span>.<span class="number">0.102</span>
+netmask <span class="number">255.255</span>.<span class="number">0.0</span>
+
+bond-slaves <span class="attribute">none</span>
+bond-miimon <span class="number">100</span>
+bond-mode balance-alb
+</code></pre>
     
   </div>
   <footer class="end-sep">
     
+      
+        <div class="alignleft">
+          <a href="/2015/03/21/ubuntu配置bonding/#more" class="more-link">阅读全文</a>
+        </div>
       
       
     
@@ -101,184 +259,38 @@
   <header>
     
       <div class="icon"></div>
-      <a href="/2015/03/21/CTDB与LVS搭建集群/">
-  <time datetime="2015-03-21T09:13:43.000Z">
+      <a href="/2015/03/21/利用移动硬盘安装windows7系统/">
+  <time datetime="2015-03-21T10:34:02.000Z">
     2015-03-21
   </time>
 </a>
     
     
   
-    <h1 class="title"><a href="/2015/03/21/CTDB与LVS搭建集群/">CTDB与LVS搭建集群</a></h1>
+    <h1 class="title"><a href="/2015/03/21/利用移动硬盘安装windows7系统/">利用移动硬盘安装windows7系统</a></h1>
   
 
   </header>
   
   <div class="entry">
     
-      <p>搭建一个采用lvs进行负载均衡的CTDB集群，整个集群的架构是采用如图所示</p>
-<p><img src="http://7xi6lo.com1.z0.glb.clouddn.com/ctdb.jpg" alt="ctdb"></p>
-<p>在上图所示的架构图中，后端采用的集群是我们的存储,集群存储的三个samba服务器的node在作为CTDB的节点的同时,也是运行着我们的内核客户端,将三个内核客户端挂载到后端的集群中,同时这三个samba客户端对外采用三个虚拟的IP,然后采用LVS的网络负载均衡技术,虚拟成一个对外的IP,这样就实现了samba的带宽聚合以及负载均衡。</p>
-<h2 id="第一步,搭建一个CTDB集群">第一步,搭建一个CTDB集群</h2><h3 id="一、配置环境">一、配置环境</h3><ul>
-<li><p>E5400采用2.6.39内核客户端挂在集群<br>IP:192.168.0.210<br>GW:192.168.1.1<br>NETMASK:255.255.0.0<br>samba node1</p>
-</li>
-<li><p>E5400采用2.6.39内核客户端挂在集群<br>IP:192.168.0.211<br>GW:192.168.1.1<br>NETMASK：255.255.0.0<br>samba node2 </p>
-</li>
-<li><p>E5400采用2.6.39内核客户端挂在集群<br>IP:192.168.0.212<br>GW:192.168.1.1<br>NETMASK:255.255.0.0<br>samba node3</p>
-</li>
-</ul>
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2015/03/21/CTDB与LVS搭建集群/#more" class="more-link">阅读全文</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-  
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2015/03/20/单独编译一个ext4模块/">
-  <time datetime="2015-03-20T09:49:26.000Z">
-    2015-03-20
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2015/03/20/单独编译一个ext4模块/">单独编译一个ext4模块</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <p>当我们需要使用一个内核模块的时候,在当前使用版本内核编译的时候又没有加进去,在不改变内核版本的时候,再编译整个内核,可能会覆盖原来的内核,导致系统无法启动</p>
-<p>现在我们能够单独选择需要的模块,然后加载进内核</p>
-<h3 id="准备工作">准备工作</h3><p>首先进入你当前使用的系统查看当前的使用内核版本,在这里是 2.3.39</p>
-<p>下载对应内核源码包 linux-2.6.39.tar.bz2 将源码包放入 /usr/src/ 下<br>解压源码包<br>更新编译工具包</p>
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2015/03/20/单独编译一个ext4模块/#more" class="more-link">阅读全文</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-  
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2015/03/20/Debian-64位内核升级步骤/">
-  <time datetime="2015-03-20T09:21:21.000Z">
-    2015-03-20
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2015/03/20/Debian-64位内核升级步骤/">Debian 64位内核升级步骤</a></h1>
-  
-
-  </header>
-  
-    <div class="gallery">
-  <div class="photoset">
-    
-      
-        <img src="http://7xi6lo.com1.z0.glb.clouddn.com/debianlogo.jpg">
-      
-    
-  </div>
-  <div class="control">
-    <div class="prev"></div>
-    <div class="next"></div>
-  </div>
-</div>
-  
-  <div class="entry">
-    
-      <h3 id="安装相关依赖包">安装相关依赖包</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ apt-get install bzip2 libncurses5-dev kernel-package zlib1g-dev gcc make kernel-package wget module-init-tools procps libncurses5-dev</span><br></pre></td></tr></table></figure>
-<h3 id="下载源码">下载源码</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/src</span><br><span class="line">wget http://www.kernel.org/pub/linux/kernel/v2.<span class="number">6</span>/linux-<span class="number">2.6</span>.<span class="number">35.9</span>.tar.bz2</span><br><span class="line">tar -xvjf linux-<span class="number">2.6</span>.<span class="number">35.9</span>.tar.bz2</span><br><span class="line">cp /boot/config-`uname -r` /usr/src/linux-<span class="number">2.6</span>.<span class="number">35.9</span>/.config</span><br><span class="line">Then we must configure the new kernel:</span><br><span class="line"><span class="built_in">cd</span> linux-<span class="number">2.6</span>.<span class="number">35.9</span></span><br><span class="line">make menuconfig</span><br></pre></td></tr></table></figure>
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2015/03/20/Debian-64位内核升级步骤/#more" class="more-link">阅读全文</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-  
-    <article class="photo">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2015/03/19/test/">
-  <time datetime="2015-03-19T15:27:00.000Z">
-    2015-03-19
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2015/03/19/test/">test1</a></h1>
-  
-
-  </header>
-  
-    <div class="gallery">
-  <div class="photoset">
-    
-      
-        <img src="http://bruce.u.qiniudn.com/2013/11/27/reading/photos-0.jpg">
-      
-        <img src="http://bruce.u.qiniudn.com/2013/11/27/reading/photos-1.jpg">
-      
-        <img src="http://7xi6lo.com1.z0.glb.clouddn.com/testwailian.png">
-      
-    
-  </div>
-  <div class="control">
-    <div class="prev"></div>
-    <div class="next"></div>
-  </div>
-</div>
-  
-  <div class="entry">
-    
-      <p>av<br>sd<br>sad<br>as<br>da<br>sd<br>as<br>da<br>sdasddddddddddddddddd</p>
-<p>a</p>
-<p>a<br>a</p>
-<p>asdasd<br>as<br>d<br>asd<br>as<br>da</p>
-<p>as<br>das<br>d<br>as</p>
-<p>asds</p>
+      <p>首先把win7系统镜像的iso文件解压到移动硬盘中<br>将移动硬盘设置为活动分区<br>设置活动分区的方法<br>Diskpart程序实现U盘安装WIN7的方法: </p>
+<p>将Win7安装盘中的所有文件拷贝到硬盘文件夹中,我们这里选择D盘win7back。<br>在开始菜单程序栏中输入cmd进入命令行模式，敲入diskpart进入磁盘分区管理程序,逐行输入</p>
+<pre><code>select disk <span class="number">1</span> (选择磁盘。此为disk <span class="number">0</span>硬盘,disk <span class="number">1</span> <span class="variable">U</span>盘情况下,多硬盘时可输入list disk查询) 
+<span class="function"><span class="title">clean</span> <span class="params">(清除该磁盘)</span> 
+<span class="title">create</span> <span class="title">partition</span> <span class="title">primary</span> <span class="params">(创建主分区)</span> 
+<span class="title">select</span> <span class="title">partition</span> 1 <span class="params">(选择刚刚创建的<span class="number">1</span>号分区)</span> 
+<span class="title">active</span> <span class="params">(激活该分区)</span> 
+<span class="title">format</span> <span class="title">fs</span>=<span class="title">fat32</span> <span class="params">(格式化为<span class="variable">FAT32</span>，<span class="number">8</span><span class="variable">GB</span>闪盘的格式化需要较长时间)</span> 
+<span class="title">assign</span> <span class="params">(为该分区注册盘符)</span> 
+<span class="title">exit</span> <span class="params">(退出diskpart程序)</span> </span>
+</code></pre><p>注:以上操作必须在Vista/Win7下完成，XP虽然也带有diskpart程序,但无法格式化U盘。</p>
+<p>这里我们只使用上面的active选项 或者在win7的磁盘管理中将移动硬盘标记为活动分区<br>假设你的移动硬盘的活动分区的盘符为G盘<br>在win7运行cmd</p>
+<pre><code><span class="keyword">G</span>:
+<span class="keyword">cd</span> <span class="keyword">boot</span>
+bootsect /nt60 <span class="keyword">G</span> 
+</code></pre><p>命令将引导区写进你的移动硬盘G盘符<br>在开机启动项中选择移动设备启动就可以了</p>
+<p>写于:2011年12月16日<br>更新于:2015年03月21日</p>
 
     
   </div>

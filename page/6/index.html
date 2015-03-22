@@ -62,35 +62,77 @@
   <header>
     
       <div class="icon"></div>
-      <a href="/2015/03/22/卸载python安装的软件/">
-  <time datetime="2015-03-22T07:26:12.000Z">
+      <a href="/2015/03/22/把你的常用文件夹直接显示在“计算机”中/">
+  <time datetime="2015-03-22T08:05:43.000Z">
     2015-03-22
   </time>
 </a>
     
     
   
-    <h1 class="title"><a href="/2015/03/22/卸载python安装的软件/">卸载python安装的软件</a></h1>
+    <h1 class="title"><a href="/2015/03/22/把你的常用文件夹直接显示在“计算机”中/">把你的常用文件夹直接显示在“计算机”中</a></h1>
   
 
   </header>
   
   <div class="entry">
     
-      <p>python源码安装的软件是无法通过命令卸载的,这个可以通过记录安装过程的形式来卸载安装的软件</p>
-<p>以 python2.7.2 为例,在这个目录中有一个 setup.py 的文件,很显然这是安装程序,还是python写的,用 python 写 python 到安装程序,大开眼界了。在这里,需要写一个 shell 脚本,把在重新安装中提到的安装位置全部删除,就实现了卸载到目的了</p>
-<h3 id="一、创建del-sh脚本内容(在源码目录):">一、创建del.sh脚本内容(在源码目录):</h3><pre><code><span class="shebang">#!/bin/bash  </span>
-<span class="keyword">for</span> i <span class="keyword">in</span> $(less files.txt)  
-<span class="keyword">do</span>  rm -rf <span class="variable">$i</span>  
-<span class="keyword">done</span>  
-</code></pre><p>脚本说明: files.txt 是需要事先在目录下创建的文件,目的是记录安装过程中提到到路径。脚本很简单,详细的就不说了,学过 shell 编程到肯定没问题,没学过到有其他语言编程基础的,仔细看看也可以看懂。</p>
+      <p>win7 中“我的电脑”改名为了“计算机”,而且计算机中不再有我的文档共享文档等链接,虽然计算机左侧的链接中有常用文件夹的链接，用户也可以把自己的快捷方式放入其中。<br>但某些东西还是想直接放在计算机中，很简单，只要把文件或文件夹或它们的快捷方式放到以下目录即可。</p>
+<pre><code>C:<span class="command">\Users</span><span class="command">\你</span>的用户名<span class="command">\AppData</span><span class="command">\Roaming</span><span class="command">\Microsoft</span><span class="command">\Windows</span><span class="command">\Network</span> Shortcuts
+</code></pre><p>即可在“计算机”中显示。</p>
+<p>写于: 2012年4月24日<br>更新于: 2015年03月22日</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/22/关于nginx-upstream的几种配置方式/">
+  <time datetime="2015-03-22T07:55:56.000Z">
+    2015-03-22
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/03/22/关于nginx-upstream的几种配置方式/">关于nginx upstream的几种配置方式</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>平时一直依赖硬件来作load blance,最近研究Nginx来做负载设备,记录下upstream的几种配置方式。</p>
+<p>第一种:轮询</p>
+<pre><code><span class="title">upstream</span> test{
+    <span class="title">server</span> <span class="number">192.168.0.1:3000</span>;
+    <span class="title">server</span> <span class="number">192.168.0.1:3001</span>;
+}
+</code></pre><p>第二种:权重</p>
+<pre><code><span class="title">upstream</span> test{
+    <span class="title">server</span> <span class="number">192.168.0.1</span> weight=<span class="number">2</span>;
+    <span class="title">server</span> <span class="number">192.168.0.2</span> weight=<span class="number">3</span>;
+}
+</code></pre><p>这种模式可解决服务器性能不等的情况下轮询比率的调配</p>
     
   </div>
   <footer class="end-sep">
     
       
         <div class="alignleft">
-          <a href="/2015/03/22/卸载python安装的软件/#more" class="more-link">阅读全文</a>
+          <a href="/2015/03/22/关于nginx-upstream的几种配置方式/#more" class="more-link">阅读全文</a>
         </div>
       
       
@@ -105,32 +147,70 @@
   <header>
     
       <div class="icon"></div>
-      <a href="/2015/03/22/常用linux源列表/">
-  <time datetime="2015-03-22T07:16:16.000Z">
+      <a href="/2015/03/22/win7安装系统出现“安装程序无法创建新的系统分区，也无法定位现有的系统分区”解决方法/">
+  <time datetime="2015-03-22T07:52:01.000Z">
     2015-03-22
   </time>
 </a>
     
     
   
-    <h1 class="title"><a href="/2015/03/22/常用linux源列表/">常用linux源列表</a></h1>
+    <h1 class="title"><a href="/2015/03/22/win7安装系统出现“安装程序无法创建新的系统分区，也无法定位现有的系统分区”解决方法/">win7安装系统出现“安装程序无法创建新的系统分区，也无法定位现有的系统分区”解决方法</a></h1>
   
 
   </header>
   
   <div class="entry">
     
-      <p>centos6 源:</p>
-<p>epel源:</p>
-<pre><code>wget  <span class="symbol">http:</span>/<span class="regexp">/mirrors.aliyun.com/epel</span><span class="regexp">/6/x</span>86_64/epel-release-<span class="number">6</span>-<span class="number">8</span>.noarch.rpm
-</code></pre>
+      <p>原来服务器上的系统是debian的系统，现在需要在原系统和机器不动的基础上在这台服务器上安装一个win7系统,在安装过程中出现了标题中所说的问题,上网搜索了一下,发现最有效的解决办法就是修改bios中的磁盘的启动项:</p>
+<p>由于原来的系统盘插在第一个sata口,应该是占据着磁盘0,那么在热插拔的机器上插入的一块新的硬盘应该是占据着磁盘1</p>
+<p>而实际情况是在开机进行磁盘选择启动时 原来的debian系统盘是占据这第一启动项,后插入的硬盘占据着第二启动项,在进入到win7的安装程序的时候,会发现,后插入的那个硬盘居然占据着磁盘0,由于这个地方的显示跟bios启动看到的启动顺序对不上,所以就出现了安装程序无法创建新的系统分区,也无法定位现有系统。</p>
+<p>所以需要进入bios进行小的修改<br>进入bios修改界面<br>选择boot选项<br>选择Hard Disk Drivers<br>可以看到1st drive  对应的是原系统盘,在这里修改为后插入的那块硬盘<br>然后保存设置 重启<br>然后安装系统就不会有问题了<br>新插入的硬盘现在应该占据着磁盘1的位子了,安装win7到磁盘1 即可</p>
+<p>写于:2012年4月20日<br>更新于:2015年03月22日</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/22/系统运行后修改linux系统时区/">
+  <time datetime="2015-03-22T07:43:22.000Z">
+    2015-03-22
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/03/22/系统运行后修改linux系统时区/">系统运行后修改linux系统时区</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>在网上看了很多改时间的帖子,都没能最终解决问题。最后还是下面的博客最终解决的时间的问题,感谢原作者<br>安装系统过程时没有选对当前的时区,即CST,Asia/Shanghai,而是按默认的，EDT时区,这样跟我们的系统就都对不上,因此得改回CST,仔细琢磨一下,方法如下:</p>
+<p>更改/etc/timezone里面的内容为:Asia/Shanghai</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ mv /etc/localtime /etc/localtime-bk</span><br><span class="line">$ cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime</span><br></pre></td></tr></table></figure>
+<p>再用命令date看一下,就是我们要的CST。</p>
     
   </div>
   <footer class="end-sep">
     
       
         <div class="alignleft">
-          <a href="/2015/03/22/常用linux源列表/#more" class="more-link">阅读全文</a>
+          <a href="/2015/03/22/系统运行后修改linux系统时区/#more" class="more-link">阅读全文</a>
         </div>
       
       
@@ -145,127 +225,40 @@
   <header>
     
       <div class="icon"></div>
-      <a href="/2015/03/22/监控磁盘读写状况/">
-  <time datetime="2015-03-22T06:41:09.000Z">
+      <a href="/2015/03/22/更新租约和检测数据完整性脚本/">
+  <time datetime="2015-03-22T07:37:55.000Z">
     2015-03-22
   </time>
 </a>
     
     
   
-    <h1 class="title"><a href="/2015/03/22/监控磁盘读写状况/">监控磁盘读写状况</a></h1>
+    <h1 class="title"><a href="/2015/03/22/更新租约和检测数据完整性脚本/">更新租约和检测数据完整性脚本</a></h1>
   
 
   </header>
   
   <div class="entry">
     
-      <p>您有没有碰到过:没有运行任何程序，磁盘却不断执行读写动作,io指示灯常亮,各种操作迟缓甚至卡顿。碰到这种状况往往会感到束手无策,因为并不是 cpu 居高不下,可以立即结束相关进程。而突然结束进程中断磁盘 io 操作甚至可能导致正在写入的数据丢失。</p>
-<h4 id="什么进程在读写磁盘?">什么进程在读写磁盘?</h4><p>可能是 firefox,可能是 updatedb,也可能是正在运行的 pacman -Syu,一切皆有可能 ……<br>怎么查看是什么进程在不断的读写磁盘呢?<br>请使用 iotop 命令查看:<br>通过输出结果我们可以清楚地知晓是什么程序在读写磁盘，速度以及命令行, pid 等信息。</p>
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2015/03/22/监控磁盘读写状况/#more" class="more-link">阅读全文</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-  
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2015/03/22/du查看的目录大小与df查看的大小不同的时候用lsof查找/">
-  <time datetime="2015-03-22T06:21:07.000Z">
-    2015-03-22
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2015/03/22/du查看的目录大小与df查看的大小不同的时候用lsof查找/">du查看的目录大小与df查看的大小不同的时候用lsof查找</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <p>首先MAN一下两个命令,看一下解释的区别:</p>
-<pre><code>du - estimate <span class="built_in">file</span> <span class="constant">space</span> usage
-df - report <span class="built_in">file</span> <span class="keyword">system</span> disk <span class="constant">space</span> usage
-</code></pre><p>du估计文件空间占用情况,df报告文件系统磁盘空间使用情况。两个命令所要获取的对象时不同的。在linux下,几乎所有东西都可以称为文件,常规文件,二进制文件,socket流。所以,通常情况下,使用du得到到的根路径文件空间占用情况应当与df得到的文件系统磁盘占用的情况是一致的或者说相差无几。但是在某些情况下却会出现du得到的空间占用情况要远小于df得到的。</p>
-<p>后通过查询,发现问题出现在deleted文件上。</p>
-<p>root下 lsof | grep deleted会发现多多少少有些文件状态出于deleted状态。</p>
-<pre><code>[root<span class="comment">@eb152 ~]# lsof |grep deleted</span>
-进程名   PID       USER    FD   文件类型        大小(字节)  索引节点  文件名  [(状态)]
-java       3311    AuSP    8w      REG              253,0         778   10879268 <span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>.log (deleted)
-java       3311    AuSP    9w      REG              253,0        3275   10879269 <span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>.log (deleted)
-java       3311    AuSP   10w      REG              253,0           0   10879815 <span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>.log (deleted)
-java       3311    AuSP   11w      REG              253,0           0   10879816 <span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>.log (deleted)
-oracle     4195  oracle    7u      REG              253,0           0   14254321 <span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span> (deleted)
-</code></pre><p>状态为deleted为标记被删除,其实该文件并没有从磁盘中删除,类似windows下的回收站状态。</p>
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2015/03/22/du查看的目录大小与df查看的大小不同的时候用lsof查找/#more" class="more-link">阅读全文</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-  
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2015/03/22/遍历指定目录并且从子目录开始将目录输出到指定文件/">
-  <time datetime="2015-03-22T06:18:05.000Z">
-    2015-03-22
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2015/03/22/遍历指定目录并且从子目录开始将目录输出到指定文件/">遍历指定目录并且从子目录开始将目录输出到指定文件</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <p>shell脚本:</p>
-<pre><code><span class="shebang">#! /bin/sh</span>
-<span class="built_in">echo</span> <span class="string">"type a backup directory name:"</span>
-<span class="built_in">read</span> <span class="operator">-e</span> r
-<span class="built_in">echo</span> <span class="variable">$r</span>   
-python /zp/bianli.py <span class="variable">$r</span>                 <span class="comment">#传递参数到python脚本文件中</span>
-<span class="keyword">for</span> dir <span class="keyword">in</span> `cat /zp/mulu.txt`
-<span class="keyword">do</span>
-<span class="built_in">echo</span> <span class="variable">$dir</span>
-<span class="keyword">done</span>
-</code></pre><p>python脚本:</p>
-<pre><code>#! /usr/bin/env python
-import os,sys
-r=sys<span class="class">.argv</span>[<span class="number">1</span>]                #将第一个参数值传入到r当中
-<span class="keyword">for</span> root,dirs,files <span class="keyword">in</span> os.<span class="function"><span class="title">walk</span><span class="params">(r,topdown=False)</span></span>:
-        <span class="keyword">for</span> dir <span class="keyword">in</span> dirs:
-                print os<span class="class">.path</span><span class="class">.join</span>(root,dir)            #输出路径
-</code></pre><p>写于: 2012年3月13日<br>更新于: 2015年03月22日</p>
+      <p>这个是针对tahoe这个文件系统做的一个更新租约和检查数据完整性的脚本,并且把结果保存下来,先要把所有的caps保存到一个文本当中</p>
+<pre><code><span class="comment">#! /bin/sh</span>
+   a=<span class="variable">$(</span>cat /home/cap-list.txt |wc -l)
+   c=<span class="string">`date`</span>
+   echo <span class="variable">$a</span>
+   <span class="keyword">for</span>((i=<span class="number">1</span>;i&lt;=a;i++))
+   <span class="keyword">do</span>
+       b=<span class="variable">$(</span> head -<span class="variable">$i</span> /home/cap-list.txt |tail -<span class="number">1</span>)
+       echo <span class="variable">$b</span> <span class="prompt">&gt;&gt; </span>/home/checktime.txt
+       echo <span class="string">"start time:"</span> <span class="prompt">&gt;&gt; </span>/home/checktime.txt
+       echo <span class="string">`date`</span> <span class="prompt">&gt;&gt; </span>/home/checktime.txt
+       tahoe deep-check --add-lease --repair --dir-cap=<span class="variable">$b</span> <span class="prompt">&gt;&gt; </span>/home/checktime.txt
+       echo <span class="string">"end time:"</span> <span class="prompt">&gt;&gt; </span>/home/checktime.txt
+       echo <span class="string">`date`</span> <span class="prompt">&gt;&gt; </span>/home/checktime.txt
+   done
+   d=<span class="string">`date`</span>
+   echo <span class="variable">$c</span> <span class="prompt">&gt;&gt; </span>/home/checktime.txt
+   echo <span class="variable">$d</span> <span class="prompt">&gt;&gt; </span>/home/checktime.txt
+</code></pre><p>写于: 2012年4月14日<br>更新于: 2015年03月22日</p>
 
     
   </div>

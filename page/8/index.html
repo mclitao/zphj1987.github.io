@@ -62,31 +62,29 @@
   <header>
     
       <div class="icon"></div>
-      <a href="/2015/03/22/symbol-lookup-error-usr-lib-x86-64-linux-gnu-libstdc-so-6错误的解决办法/">
-  <time datetime="2015-03-22T04:46:35.000Z">
+      <a href="/2015/03/22/利用现有的网络产品实现内网linux服务器文件的公网同步/">
+  <time datetime="2015-03-22T05:23:41.000Z">
     2015-03-22
   </time>
 </a>
     
     
   
-    <h1 class="title"><a href="/2015/03/22/symbol-lookup-error-usr-lib-x86-64-linux-gnu-libstdc-so-6错误的解决办法/">symbol lookup error: /usr/lib/x86_64-linux-gnu/libstdc++.so.6错误的解决办法</a></h1>
+    <h1 class="title"><a href="/2015/03/22/利用现有的网络产品实现内网linux服务器文件的公网同步/">利用现有的网络产品实现内网linux服务器文件的公网同步</a></h1>
   
 
   </header>
   
   <div class="entry">
     
-      <p>当出现</p>
-<pre><code>$ apt-<span class="string">get:</span> symbol lookup <span class="string">error:</span> <span class="regexp">/usr/</span>lib<span class="regexp">/x86_64-linux-gnu/</span>libstdc++.so<span class="number">.6</span>: undefined <span class="string">symbol:</span> _ZNSt8messagesIcE2idE, version GLIBCXX_3<span class="number">.4</span>的时候
-</code></pre><p>需要重新配置下一个包</p>
-<p>Fixed by manually downloading testing version of libc6 from here<br><a href="http://packages.debian.org/wheezy/libc6" target="_blank" rel="external">http://packages.debian.org/wheezy/libc6</a> and installed it</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ dpkg -i --auto-deconfigure libc6_2.<span class="number">13</span>-<span class="number">16</span>_amd64.deb</span><br></pre></td></tr></table></figure>
-<p>重新配置下libc6_2.13-16_amd64.deb就可以了</p>
-<pre><code class="bash">strings /usr/lib/libstdc++.so.<span class="number">6</span>| grep GLIBC
-</code></pre>
-<p>查看版本,然后安装 libstdc++6 即可</p>
-<p>写于: 2011年12月31日<br>更新于: 2015年03月22日</p>
+      <p>更新这篇文章的时候发现原来引用的互联网产品everbox已经不在了,作为国内第一批网盘产品,模仿dropbox做出来的,说实话,这个产品真的还不错,不过可能由于盛大运营方向的改变,对于这个短期内不会有收益的产品，最终被废掉了,其实对于技术发展很快的今天,拥有数据才是重点,进行数据重复删除以后,对于企业的存储压力其实不太大了,该淘汰的终归要淘汰，就像盛大的没落</p>
+<p>下面介绍的是通用的方法,网盘产品很多,都可以使用:</p>
+<p>现在可能会出现这样的情况,你在用你的linux服务器开发一个产品,在公司的时候,你可以通过内网连接到你的机器进行开发,但是回家以后,这些东西怎么带回家,怎么实现在线同步,这是一个问题,最近公司在开发产品的时候就面临这个问题,正好在寻找怎么远程连接内网服务器的时候想到了这个办法,内网服务器的连接办法另外一篇介绍:</p>
+<p>注册网盘账号,方法就不在这里介绍了</p>
+<p>在你的linux机器上安装samba,将你需要使用的目录设置为共享目录<br>这个在/etc/samba/smb.conf中配置就可以</p>
+<p>然后找一台windows机器,将需要备份的目录映射到本地盘,然后将同步的目录指定到这个盘,就可以进行同步了,有的同步软件不支持指定到根目录,那么可以在本地运行一个同步软件,将盘符与本地目录同步起来,然后将同步的盘指定到这个目录即可</p>
+<p>现在有支持可以同步linux和windows的软件了,btsync,这个很简单,需要两边都可以上网即可</p>
+<p>写于: 2012年02月03日<br>更新于: 2015年03月22日</p>
 
     
   </div>
@@ -105,31 +103,37 @@
   <header>
     
       <div class="icon"></div>
-      <a href="/2015/03/22/error-while-loading-shared-libraries的解決方法/">
-  <time datetime="2015-03-22T04:33:15.000Z">
+      <a href="/2015/03/22/利用脚本自动下载ftp列表中的文件/">
+  <time datetime="2015-03-22T05:09:35.000Z">
     2015-03-22
   </time>
 </a>
     
     
   
-    <h1 class="title"><a href="/2015/03/22/error-while-loading-shared-libraries的解決方法/">error while loading shared libraries的解決方法</a></h1>
+    <h1 class="title"><a href="/2015/03/22/利用脚本自动下载ftp列表中的文件/">利用脚本自动下载ftp列表中的文件</a></h1>
   
 
   </header>
   
   <div class="entry">
     
-      <p>在linux下运行程序时,发现了error while loading shared libraries这种错误,一时间不知道解决办法,在网上搜索,终于解决了.</p>
-<pre><code><span class="keyword">error</span> <span class="keyword">while</span> loading shared libraries: xxx.<span class="keyword">so</span>.0:cannot <span class="keyword">open</span> shared object <span class="keyword">file</span>: <span class="keyword">No</span> such <span class="keyword">file</span> or directory
-</code></pre><p>出现这类错误表示,系统不知道xxx.so放在哪个目录下,这时候就要在/etc/ld.so.conf中加入xxx.so所在的目录。<br>一般而言,有很多的so会存放在/usr/local/lib这个目录底下,去这个目录底下找，果然发现自己所需要的.so文件。<br>所以在/etc/ld.so.conf中加入/usr/local/lib这一行,保存之后,再运行,/sbin/ldconfig –v更新一下配置即可。<br>centos下安装qt时出现/usr/lib/libstdc++.so.6: version `GLIBCXX_3.4.9’ not found<br>在安装qt-creator的时候运行这个IDE就出现了这个问题,是由于libstdc++.so.6的版本过低,需要下载个新的重新建立软连接</p>
+      <p>我们可能会遇到这种场景，在某个机构订阅了一个邮件列表,然后这个机构会定期的发送带有ftp目录的url地址到你的邮件,现在你想在你的服务器上能够方便的下载这个列表上的文件,而不是手动的一个个去下,那么我们可以用脚本来完成这个功能,我将这个过程分为两部分,第一步获取到ftp页面的所有文件名称,第二步是通过获得的文件名来下载文件<br>下面以一个卫星数据的下载为例:</p>
+<p>ftp://oceans.gsfc.nasa.gov/subscriptions/1227</p>
+<p>这个是邮件中收到的url地址,在浏览器中可以查看到文件名,由于这个数据是0,这个是这样设计的.</p>
+<h3 id="第一步:我们只需要获取他的文件名,用下面这个脚本">第一步:我们只需要获取他的文件名,用下面这个脚本</h3><pre><code><span class="shebang">#! /bin/sh</span>
+<span class="built_in">echo</span> <span class="string">"请输入你的FTP目录编号"</span>
+<span class="built_in">read</span> <span class="operator">-e</span> id
+wget -r  ftp://oceans.gsfc.nasa.gov/subscriptions/<span class="variable">$id</span>
+ls  /usr/src/oceans.gsfc.nasa.gov/subscriptions/<span class="variable">$id</span>/ &gt; /usr/src/filename.txt
+</code></pre><p>这样文件名就被下载到了/usr/src/filename.txt中了</p>
     
   </div>
   <footer class="end-sep">
     
       
         <div class="alignleft">
-          <a href="/2015/03/22/error-while-loading-shared-libraries的解決方法/#more" class="more-link">阅读全文</a>
+          <a href="/2015/03/22/利用脚本自动下载ftp列表中的文件/#more" class="more-link">阅读全文</a>
         </div>
       
       
@@ -144,31 +148,42 @@
   <header>
     
       <div class="icon"></div>
-      <a href="/2015/03/22/linux下内存释放/">
-  <time datetime="2015-03-22T04:24:24.000Z">
+      <a href="/2015/03/22/syntax-error-Bad-for-loop-variable解决办法-ubuntu/">
+  <time datetime="2015-03-22T05:04:00.000Z">
     2015-03-22
   </time>
 </a>
     
     
   
-    <h1 class="title"><a href="/2015/03/22/linux下内存释放/">linux下内存释放</a></h1>
+    <h1 class="title"><a href="/2015/03/22/syntax-error-Bad-for-loop-variable解决办法-ubuntu/">syntax error: Bad for loop variable解决办法(ubuntu)</a></h1>
   
 
   </header>
   
   <div class="entry">
     
-      <p>细心的朋友会注意到,当你在linux下频繁存取文件后,物理内存会很快被用光,当程序结束后,内存不会被正常释放,而是一直作为caching.这个问题,貌似有不少人在问,不过都没有看到有什么很好解决的办法.那么我来谈谈这个问题.<br>先来说说free命令<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@server ~]<span class="comment"># free -m </span></span><br><span class="line">             total       used       free     shared    buffers     cached </span><br><span class="line">Mem:           <span class="number">249</span>        <span class="number">163</span>         <span class="number">86</span>          <span class="number">0</span>         <span class="number">10</span>         <span class="number">94</span> </span><br><span class="line">-/+ buffers/cache:         <span class="number">58</span>        <span class="number">191</span> </span><br><span class="line">Swap:          <span class="number">511</span>          <span class="number">0</span>        <span class="number">511</span></span><br></pre></td></tr></table></figure></p>
-<p>其中:<br>total 内存总数<br>used 已经使用的内存数<br>free 空闲的内存数<br>shared 多个进程共享的内存总额<br>buffers Buffer Cache和cached Page Cache 磁盘缓存的大小<br>-buffers/cache 的内存数:used - buffers - cached<br>+buffers/cache 的内存数:free + buffers + cached<br>可用的memory=free memory+buffers+cached<br>有了这个基础后,可以得知,我现在used为163MB,free为86,buffer和cached分别为10,94<br>那么我们来看看,如果我执行复制文件,内存会发生什么变化. </p>
+      <p>Ubuntu中写了一个简单的shell脚本,利用for..do..done结构计算1+2+3……+100的值,结果总是报错。<br>脚本:</p>
+<pre><code><span class="shebang">#!/bin/bash </span>
+<span class="built_in">read</span> -p <span class="string">"Please input a num "</span> num 
+sum=<span class="number">0</span> 
+<span class="keyword">for</span> ((a=<span class="number">0</span>; a&lt;=<span class="variable">$num</span>; a=a+<span class="number">1</span>)) 
+<span class="keyword">do</span>  
+sum=$((<span class="variable">$sum</span> + <span class="variable">$a</span>)) 
+<span class="keyword">done</span> 
+<span class="built_in">echo</span> <span class="string">"the sum is ==&gt; <span class="variable">$sum</span>"</span> 
+<span class="built_in">exit</span> <span class="number">0</span> 
+</code></pre><p>错误为: Syntax error: Bad for loop variable </p>
+<p>解决办法:<br>sudo dpkg-reconfigure dash<br>在选择项中选 No </p>
+<p>从 ubuntu 6.10 开始,ubuntu 就将先前默认的bash shell 更换成了dash shell,其表现为 /bin/sh 链接倒了/bin/dash 而不是传统的 /bin/bash。<br>ubuntu edgy 是第一个将dash作为默认shell来发行的版本,这似乎是受了debian的影响。wiki 里面有官方的解释: <a href="https://wiki.ubuntu.com/DashAsBinSh" target="_blank" rel="external">https://wiki.ubuntu.com/DashAsBinSh</a>,主要原因是dash更小,运行更快,还与POSIX兼容。<br>但目前存在的问题是,由于shell的更换,致使很多脚本出错,毕竟现在的很多脚本不是100%POSIX兼容。<br>在wiki里面也说到,如何将默认的 shell 改回 bash,方法就是:<br>在终端执行 </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo dpkg-reconfigure dash</span><br></pre></td></tr></table></figure>
+<p>然后选择 no</p>
+<p>写于: 2012年01月17日<br>更新于: 2015年03月22日</p>
+
     
   </div>
   <footer class="end-sep">
     
-      
-        <div class="alignleft">
-          <a href="/2015/03/22/linux下内存释放/#more" class="more-link">阅读全文</a>
-        </div>
       
       
     
@@ -182,70 +197,35 @@
   <header>
     
       <div class="icon"></div>
-      <a href="/2015/03/21/ubuntu配置bonding/">
-  <time datetime="2015-03-21T13:16:33.000Z">
-    2015-03-21
+      <a href="/2015/03/22/linux修改网卡的mac地址/">
+  <time datetime="2015-03-22T04:55:25.000Z">
+    2015-03-22
   </time>
 </a>
     
     
   
-    <h1 class="title"><a href="/2015/03/21/ubuntu配置bonding/">ubuntu配置bonding</a></h1>
+    <h1 class="title"><a href="/2015/03/22/linux修改网卡的mac地址/">linux修改网卡的mac地址</a></h1>
   
 
   </header>
   
   <div class="entry">
     
-      <p>如果节点上有多个网络接口时可以通过bonding将多个网络接口虚拟为一个网络接口，bonding可以提供高可用及负载均衡功能，从而提高节点的网络接口性能及可用性。</p>
-<p>一、使用如下命令安装</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">T01-MON11:~<span class="comment"># apt-get install ifenslave-2.6</span></span><br></pre></td></tr></table></figure>
-<p>二、配置bonding</p>
-<p>修改网络接口配置文件/etc/network/interfaces</p>
-<p>配置一个bond</p>
-<pre><code><span class="attribute">auto</span> lo
-iface lo inet loopback
+      <p>linux在安装一些软件的时候可能会用到修改主机的mac地址的问题,在网卡配置文件<code>/etc/network/interface</code>中添加mac地址的方式我在修改重启机器后没有生效,所以采用其他方式</p>
+<p>在这里推荐使用脚本修改,将脚本写在开机启动配置文件中,这样开机后就能生成你需要的mac地址<br>在/etc/rc.local 中添加</p>
+<pre><code><span class="tag">ifconfig</span> <span class="tag">eth0</span> <span class="tag">down</span>
+<span class="tag">ifconfig</span> <span class="tag">eth0</span> <span class="tag">hw</span> <span class="tag">ether</span>  00<span class="pseudo">:e0</span><span class="pseudo">:34</span><span class="pseudo">:5b</span><span class="pseudo">:b4</span><span class="pseudo">:i8</span>
+<span class="tag">ifconfig</span> <span class="tag">eth0</span> <span class="tag">up</span>
+</code></pre><p>这样修改后重启机器的mac地址就是你设置的地址了<br>这个时候会出现连不上外网的问题,使用命令route查看你会发现default默认网关路由项不见了,所以这个时候需要添加默认路由</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">route add default gw <span class="number">192.168</span>.<span class="number">1.1</span></span><br></pre></td></tr></table></figure>
+<p>将这句加在/etc/rc.local 中的 ifconfig eth0 up 后面让他开机启动,这样就完成了机器网卡mac地址的修改了</p>
+<p>写于: 2012年1月14日<br>更新于: 2015年03月22日</p>
 
-<span class="attribute">auto</span> eth8
-iface eth8 inet manual
-bond-master bond0
-
-<span class="attribute">auto</span> eth7
-iface eth7 inet manual
-bond-master bond0
-
-<span class="attribute">auto</span> eth6
-iface eth6 inet manual
-bond-master bond0
-
-<span class="attribute">auto</span> eth5
-iface eth5 inet manual
-bond-master bond0
-
-<span class="attribute">auto</span> eth0
-iface eth0 inet static
-<span class="tag">address</span> <span class="number">192.168</span>.<span class="number">8.102</span>
-netmask <span class="number">255.255</span>.<span class="number">0.0</span>
-gateway <span class="number">192.168</span>.<span class="number">1.1</span>
-dns-nameservers <span class="number">8.8</span>.<span class="number">8.8</span>
-
-<span class="attribute">auto</span> bond0
-iface bond0 inet static
-<span class="tag">address</span> <span class="number">10.0</span>.<span class="number">0.102</span>
-netmask <span class="number">255.255</span>.<span class="number">0.0</span>
-
-bond-slaves <span class="attribute">none</span>
-bond-miimon <span class="number">100</span>
-bond-mode balance-alb
-</code></pre>
     
   </div>
   <footer class="end-sep">
     
-      
-        <div class="alignleft">
-          <a href="/2015/03/21/ubuntu配置bonding/#more" class="more-link">阅读全文</a>
-        </div>
       
       
     
@@ -259,38 +239,23 @@ bond-mode balance-alb
   <header>
     
       <div class="icon"></div>
-      <a href="/2015/03/21/利用移动硬盘安装windows7系统/">
-  <time datetime="2015-03-21T10:34:02.000Z">
-    2015-03-21
+      <a href="/2015/03/22/Microsoft-Visual-C-2005-SP1无法安装/">
+  <time datetime="2015-03-22T04:52:20.000Z">
+    2015-03-22
   </time>
 </a>
     
     
   
-    <h1 class="title"><a href="/2015/03/21/利用移动硬盘安装windows7系统/">利用移动硬盘安装windows7系统</a></h1>
+    <h1 class="title"><a href="/2015/03/22/Microsoft-Visual-C-2005-SP1无法安装/">Microsoft Visual C++ 2005 SP1无法安装</a></h1>
   
 
   </header>
   
   <div class="entry">
     
-      <p>首先把win7系统镜像的iso文件解压到移动硬盘中<br>将移动硬盘设置为活动分区<br>设置活动分区的方法<br>Diskpart程序实现U盘安装WIN7的方法: </p>
-<p>将Win7安装盘中的所有文件拷贝到硬盘文件夹中,我们这里选择D盘win7back。<br>在开始菜单程序栏中输入cmd进入命令行模式，敲入diskpart进入磁盘分区管理程序,逐行输入</p>
-<pre><code>select disk <span class="number">1</span> (选择磁盘。此为disk <span class="number">0</span>硬盘,disk <span class="number">1</span> <span class="variable">U</span>盘情况下,多硬盘时可输入list disk查询) 
-<span class="function"><span class="title">clean</span> <span class="params">(清除该磁盘)</span> 
-<span class="title">create</span> <span class="title">partition</span> <span class="title">primary</span> <span class="params">(创建主分区)</span> 
-<span class="title">select</span> <span class="title">partition</span> 1 <span class="params">(选择刚刚创建的<span class="number">1</span>号分区)</span> 
-<span class="title">active</span> <span class="params">(激活该分区)</span> 
-<span class="title">format</span> <span class="title">fs</span>=<span class="title">fat32</span> <span class="params">(格式化为<span class="variable">FAT32</span>，<span class="number">8</span><span class="variable">GB</span>闪盘的格式化需要较长时间)</span> 
-<span class="title">assign</span> <span class="params">(为该分区注册盘符)</span> 
-<span class="title">exit</span> <span class="params">(退出diskpart程序)</span> </span>
-</code></pre><p>注:以上操作必须在Vista/Win7下完成，XP虽然也带有diskpart程序,但无法格式化U盘。</p>
-<p>这里我们只使用上面的active选项 或者在win7的磁盘管理中将移动硬盘标记为活动分区<br>假设你的移动硬盘的活动分区的盘符为G盘<br>在win7运行cmd</p>
-<pre><code><span class="keyword">G</span>:
-<span class="keyword">cd</span> <span class="keyword">boot</span>
-bootsect /nt60 <span class="keyword">G</span> 
-</code></pre><p>命令将引导区写进你的移动硬盘G盘符<br>在开机启动项中选择移动设备启动就可以了</p>
-<p>写于:2011年12月16日<br>更新于:2015年03月21日</p>
+      <p>安装时出现需要Microsoft Visual C++ 2005 Redistributble对话框,<br>里面说Command line option syntax error . Type Command/?for Help<br>先解压 先脱一层,得到 VCREDI~3.EXE 这么个exe文件,执行安装。<br>使用WINRAR打开这个exe文件,得到vcredis1.cab 和 vcredist.msi 这两个安装程序,现在安装起来没有问题了</p>
+<p>写于: 2012年01月13日<br>更新于: 2015年03月22日</p>
 
     
   </div>
