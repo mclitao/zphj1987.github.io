@@ -1,0 +1,332 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  
+  <title>zphj1987&#39;Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  
+    <meta name="author" content="zphj1987">
+  
+  
+  <meta name="description">
+<meta property="og:type" content="website">
+<meta property="og:title" content="zphj1987'Blog">
+<meta property="og:url" content="http://yoursite.com/page/7/index.html">
+<meta property="og:site_name" content="zphj1987'Blog">
+<meta property="og:description">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="zphj1987'Blog">
+<meta name="twitter:description">
+  
+  
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+<body>
+  <div class="wrapper">
+    <header id="header">
+  <div class="title">
+    <h1><a href="/">zphj1987&#39;Blog</a></h1>
+    <p><a href="/">现在所学，终有所用</a></p>
+  </div>
+  <nav class="nav">
+    <ul>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/archives">Archives</a></li>
+      
+        <li><a href="/atom.xml">rss</a></li>
+      
+        <li><a href="/about">About</a></li>
+      
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+  <div class="clearfix"></div>
+</header>
+    <div class="content">
+
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/22/利用现有的网络产品实现内网linux服务器文件的公网同步/">
+  <time datetime="2015-03-22T05:23:41.000Z">
+    2015-03-22
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/03/22/利用现有的网络产品实现内网linux服务器文件的公网同步/">利用现有的网络产品实现内网linux服务器文件的公网同步</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>更新这篇文章的时候发现原来引用的互联网产品everbox已经不在了,作为国内第一批网盘产品,模仿dropbox做出来的,说实话,这个产品真的还不错,不过可能由于盛大运营方向的改变,对于这个短期内不会有收益的产品，最终被废掉了,其实对于技术发展很快的今天,拥有数据才是重点,进行数据重复删除以后,对于企业的存储压力其实不太大了,该淘汰的终归要淘汰，就像盛大的没落</p>
+<p>下面介绍的是通用的方法,网盘产品很多,都可以使用:</p>
+<p>现在可能会出现这样的情况,你在用你的linux服务器开发一个产品,在公司的时候,你可以通过内网连接到你的机器进行开发,但是回家以后,这些东西怎么带回家,怎么实现在线同步,这是一个问题,最近公司在开发产品的时候就面临这个问题,正好在寻找怎么远程连接内网服务器的时候想到了这个办法,内网服务器的连接办法另外一篇介绍:</p>
+<p>注册网盘账号,方法就不在这里介绍了</p>
+<p>在你的linux机器上安装samba,将你需要使用的目录设置为共享目录<br>这个在/etc/samba/smb.conf中配置就可以</p>
+<p>然后找一台windows机器,将需要备份的目录映射到本地盘,然后将同步的目录指定到这个盘,就可以进行同步了,有的同步软件不支持指定到根目录,那么可以在本地运行一个同步软件,将盘符与本地目录同步起来,然后将同步的盘指定到这个目录即可</p>
+<p>现在有支持可以同步linux和windows的软件了,btsync,这个很简单,需要两边都可以上网即可</p>
+<p>写于: 2012年02月03日<br>更新于: 2015年03月22日</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/22/利用脚本自动下载ftp列表中的文件/">
+  <time datetime="2015-03-22T05:09:35.000Z">
+    2015-03-22
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/03/22/利用脚本自动下载ftp列表中的文件/">利用脚本自动下载ftp列表中的文件</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>我们可能会遇到这种场景，在某个机构订阅了一个邮件列表,然后这个机构会定期的发送带有ftp目录的url地址到你的邮件,现在你想在你的服务器上能够方便的下载这个列表上的文件,而不是手动的一个个去下,那么我们可以用脚本来完成这个功能,我将这个过程分为两部分,第一步获取到ftp页面的所有文件名称,第二步是通过获得的文件名来下载文件<br>下面以一个卫星数据的下载为例:</p>
+<p>ftp://oceans.gsfc.nasa.gov/subscriptions/1227</p>
+<p>这个是邮件中收到的url地址,在浏览器中可以查看到文件名,由于这个数据是0,这个是这样设计的.</p>
+<h3 id="第一步:我们只需要获取他的文件名,用下面这个脚本">第一步:我们只需要获取他的文件名,用下面这个脚本</h3><pre><code><span class="shebang">#! /bin/sh</span>
+<span class="built_in">echo</span> <span class="string">"请输入你的FTP目录编号"</span>
+<span class="built_in">read</span> <span class="operator">-e</span> id
+wget -r  ftp://oceans.gsfc.nasa.gov/subscriptions/<span class="variable">$id</span>
+ls  /usr/src/oceans.gsfc.nasa.gov/subscriptions/<span class="variable">$id</span>/ &gt; /usr/src/filename.txt
+</code></pre><p>这样文件名就被下载到了/usr/src/filename.txt中了</p>
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2015/03/22/利用脚本自动下载ftp列表中的文件/#more" class="more-link">阅读全文</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/22/syntax-error-Bad-for-loop-variable解决办法-ubuntu/">
+  <time datetime="2015-03-22T05:04:00.000Z">
+    2015-03-22
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/03/22/syntax-error-Bad-for-loop-variable解决办法-ubuntu/">syntax error: Bad for loop variable解决办法(ubuntu)</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>Ubuntu中写了一个简单的shell脚本,利用for..do..done结构计算1+2+3……+100的值,结果总是报错。<br>脚本:</p>
+<pre><code><span class="shebang">#!/bin/bash </span>
+<span class="built_in">read</span> -p <span class="string">"Please input a num "</span> num 
+sum=<span class="number">0</span> 
+<span class="keyword">for</span> ((a=<span class="number">0</span>; a&lt;=<span class="variable">$num</span>; a=a+<span class="number">1</span>)) 
+<span class="keyword">do</span>  
+sum=$((<span class="variable">$sum</span> + <span class="variable">$a</span>)) 
+<span class="keyword">done</span> 
+<span class="built_in">echo</span> <span class="string">"the sum is ==&gt; <span class="variable">$sum</span>"</span> 
+<span class="built_in">exit</span> <span class="number">0</span> 
+</code></pre><p>错误为: Syntax error: Bad for loop variable </p>
+<p>解决办法:<br>sudo dpkg-reconfigure dash<br>在选择项中选 No </p>
+<p>从 ubuntu 6.10 开始,ubuntu 就将先前默认的bash shell 更换成了dash shell,其表现为 /bin/sh 链接倒了/bin/dash 而不是传统的 /bin/bash。<br>ubuntu edgy 是第一个将dash作为默认shell来发行的版本,这似乎是受了debian的影响。wiki 里面有官方的解释: <a href="https://wiki.ubuntu.com/DashAsBinSh" target="_blank" rel="external">https://wiki.ubuntu.com/DashAsBinSh</a>,主要原因是dash更小,运行更快,还与POSIX兼容。<br>但目前存在的问题是,由于shell的更换,致使很多脚本出错,毕竟现在的很多脚本不是100%POSIX兼容。<br>在wiki里面也说到,如何将默认的 shell 改回 bash,方法就是:<br>在终端执行 </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo dpkg-reconfigure dash</span><br></pre></td></tr></table></figure>
+<p>然后选择 no</p>
+<p>写于: 2012年01月17日<br>更新于: 2015年03月22日</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/22/linux修改网卡的mac地址/">
+  <time datetime="2015-03-22T04:55:25.000Z">
+    2015-03-22
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/03/22/linux修改网卡的mac地址/">linux修改网卡的mac地址</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>linux在安装一些软件的时候可能会用到修改主机的mac地址的问题,在网卡配置文件<code>/etc/network/interface</code>中添加mac地址的方式我在修改重启机器后没有生效,所以采用其他方式</p>
+<p>在这里推荐使用脚本修改,将脚本写在开机启动配置文件中,这样开机后就能生成你需要的mac地址<br>在/etc/rc.local 中添加</p>
+<pre><code><span class="tag">ifconfig</span> <span class="tag">eth0</span> <span class="tag">down</span>
+<span class="tag">ifconfig</span> <span class="tag">eth0</span> <span class="tag">hw</span> <span class="tag">ether</span>  00<span class="pseudo">:e0</span><span class="pseudo">:34</span><span class="pseudo">:5b</span><span class="pseudo">:b4</span><span class="pseudo">:i8</span>
+<span class="tag">ifconfig</span> <span class="tag">eth0</span> <span class="tag">up</span>
+</code></pre><p>这样修改后重启机器的mac地址就是你设置的地址了<br>这个时候会出现连不上外网的问题,使用命令route查看你会发现default默认网关路由项不见了,所以这个时候需要添加默认路由</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">route add default gw <span class="number">192.168</span>.<span class="number">1.1</span></span><br></pre></td></tr></table></figure>
+<p>将这句加在/etc/rc.local 中的 ifconfig eth0 up 后面让他开机启动,这样就完成了机器网卡mac地址的修改了</p>
+<p>写于: 2012年1月14日<br>更新于: 2015年03月22日</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/22/Microsoft-Visual-C-2005-SP1无法安装/">
+  <time datetime="2015-03-22T04:52:20.000Z">
+    2015-03-22
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/03/22/Microsoft-Visual-C-2005-SP1无法安装/">Microsoft Visual C++ 2005 SP1无法安装</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>安装时出现需要Microsoft Visual C++ 2005 Redistributble对话框,<br>里面说Command line option syntax error . Type Command/?for Help<br>先解压 先脱一层,得到 VCREDI~3.EXE 这么个exe文件,执行安装。<br>使用WINRAR打开这个exe文件,得到vcredis1.cab 和 vcredist.msi 这两个安装程序,现在安装起来没有问题了</p>
+<p>写于: 2012年01月13日<br>更新于: 2015年03月22日</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+
+  <nav id="pagination">
+  
+    <a href="/page/6/" class="prev">上一页</a>
+  
+  
+    <a href="/page/8/" class="next">下一页</a>
+  
+  <div class="clearfix"></div>
+</nav>
+
+</div>
+  </div>
+  <footer id="footer"><div class="copyright">
+  
+  &copy; 2015 <a href="/">zphj1987</a>
+  
+</div>
+<div class="theme-copyright">
+  Theme by <a href="https://github.com/orderedlist" target="_blank">orderedlist</a>
+   | 
+  Redesign by <a href="http://heroicyang.com/" target="_blank">Heroic Yang</a>
+</div>
+<div class="clearfix"></div></footer>
+  <script src="/js/jquery.min.js"></script>
+<script src="/js/scale.fix.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = { short_name: 'zphj1987' };
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';
+    ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox();
+  })(jQuery);
+</script>
+
+
+<div id="totop" style="position:fixed;bottom:150px;right:50px;cursor: pointer;">
+<a title="Top"><img src="/imgs/scrollup.png"/></a>
+</div>
+<script src="/js/totop.js"></script>
+
+</body>
+</html>

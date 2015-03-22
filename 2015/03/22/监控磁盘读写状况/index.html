@@ -1,0 +1,230 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  
+  <title>监控磁盘读写状况 | zphj1987&#39;Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  
+    <meta name="author" content="zphj1987">
+  
+  
+    <meta name="description" content="您有没有碰到过:没有运行任何程序，磁盘却不断执行读写动作,io指示灯常亮,各种操作迟缓甚至卡顿。碰到这种状况往往会感到束手无策,因为并不是 cpu 居高不下,可以立即结束相关进程。而突然结束进程中断磁盘 io 操作甚至可能导致正在写入的数据丢失。
+什么进程在读写磁盘?可能是 firefox,可能是 updatedb,也可能是正在运行的 pacman -Syu,一切皆有可能 ……怎么查看是什么进程在">
+  
+  <meta name="description" content="您有没有碰到过:没有运行任何程序，磁盘却不断执行读写动作,io指示灯常亮,各种操作迟缓甚至卡顿。碰到这种状况往往会感到束手无策,因为并不是 cpu 居高不下,可以立即结束相关进程。而突然结束进程中断磁盘 io 操作甚至可能导致正在写入的数据丢失。
+什么进程在读写磁盘?可能是 firefox,可能是 updatedb,也可能是正在运行的 pacman -Syu,一切皆有可能 ……怎么查看是什么进程在">
+<meta property="og:type" content="article">
+<meta property="og:title" content="监控磁盘读写状况">
+<meta property="og:url" content="http://yoursite.com/2015/03/22/监控磁盘读写状况/index.html">
+<meta property="og:site_name" content="zphj1987'Blog">
+<meta property="og:description" content="您有没有碰到过:没有运行任何程序，磁盘却不断执行读写动作,io指示灯常亮,各种操作迟缓甚至卡顿。碰到这种状况往往会感到束手无策,因为并不是 cpu 居高不下,可以立即结束相关进程。而突然结束进程中断磁盘 io 操作甚至可能导致正在写入的数据丢失。
+什么进程在读写磁盘?可能是 firefox,可能是 updatedb,也可能是正在运行的 pacman -Syu,一切皆有可能 ……怎么查看是什么进程在">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="监控磁盘读写状况">
+<meta name="twitter:description" content="您有没有碰到过:没有运行任何程序，磁盘却不断执行读写动作,io指示灯常亮,各种操作迟缓甚至卡顿。碰到这种状况往往会感到束手无策,因为并不是 cpu 居高不下,可以立即结束相关进程。而突然结束进程中断磁盘 io 操作甚至可能导致正在写入的数据丢失。
+什么进程在读写磁盘?可能是 firefox,可能是 updatedb,也可能是正在运行的 pacman -Syu,一切皆有可能 ……怎么查看是什么进程在">
+  
+  
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+<body>
+  <div class="wrapper">
+    <header id="header">
+  <div class="title">
+    <h1><a href="/">zphj1987&#39;Blog</a></h1>
+    <p><a href="/">现在所学，终有所用</a></p>
+  </div>
+  <nav class="nav">
+    <ul>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/archives">Archives</a></li>
+      
+        <li><a href="/atom.xml">rss</a></li>
+      
+        <li><a href="/about">About</a></li>
+      
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+  <div class="clearfix"></div>
+</header>
+    <div class="content"><article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/22/监控磁盘读写状况/">
+  <time datetime="2015-03-22T06:41:09.000Z">
+    2015-03-22
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title">监控磁盘读写状况</h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>您有没有碰到过:没有运行任何程序，磁盘却不断执行读写动作,io指示灯常亮,各种操作迟缓甚至卡顿。碰到这种状况往往会感到束手无策,因为并不是 cpu 居高不下,可以立即结束相关进程。而突然结束进程中断磁盘 io 操作甚至可能导致正在写入的数据丢失。</p>
+<h4 id="什么进程在读写磁盘?">什么进程在读写磁盘?</h4><p>可能是 firefox,可能是 updatedb,也可能是正在运行的 pacman -Syu,一切皆有可能 ……<br>怎么查看是什么进程在不断的读写磁盘呢?<br>请使用 iotop 命令查看:<br>通过输出结果我们可以清楚地知晓是什么程序在读写磁盘，速度以及命令行, pid 等信息。</p>
+<a id="more"></a>
+<pre><code># iotop    
+Total DISK <span class="string">READ:</span> <span class="number">0.00</span> B<span class="regexp">/s | Total DISK WRITE: 0.00 B/</span>s
+  TID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN     IO&gt;    COMMAND              
+    <span class="number">1</span> be<span class="regexp">/4 root        0.00 B/</span>s    <span class="number">0.00</span> B/s  <span class="number">0.00</span> %  <span class="number">0.00</span> % init
+    <span class="number">2</span> be<span class="regexp">/4 root        0.00 B/</span>s    <span class="number">0.00</span> B/s  <span class="number">0.00</span> %  <span class="number">0.00</span> % [kthreadd]
+    <span class="number">3</span> be<span class="regexp">/4 root        0.00 B/</span>s    <span class="number">0.00</span> B<span class="regexp">/s  0.00 %  0.00 % [ksoftirqd/</span><span class="number">0</span>]
+    <span class="number">5</span> be<span class="regexp">/0 root        0.00 B/</span>s    <span class="number">0.00</span> B<span class="regexp">/s  0.00 %  0.00 % [kworker/</span><span class="number">0</span>:<span class="number">0</span>H]
+    <span class="number">7</span> be<span class="regexp">/4 root        0.00 B/</span>s    <span class="number">0.00</span> B/s  <span class="number">0.00</span> %  <span class="number">0.00</span> % [rcu_sched]
+    <span class="number">8</span> be<span class="regexp">/4 root        0.00 B/</span>s    <span class="number">0.00</span> B/s  <span class="number">0.00</span> %  <span class="number">0.00</span> % [rcu_bh]
+    <span class="number">9</span> rt<span class="regexp">/4 root        0.00 B/</span>s    <span class="number">0.00</span> B<span class="regexp">/s  0.00 %  0.00 % [migration/</span><span class="number">0</span>]
+   <span class="number">10</span> rt<span class="regexp">/4 root        0.00 B/</span>s    <span class="number">0.00</span> B<span class="regexp">/s  0.00 %  0.00 % [migration/</span><span class="number">1</span>]
+   <span class="number">11</span> be<span class="regexp">/4 root        0.00 B/</span>s    <span class="number">0.00</span> B<span class="regexp">/s  0.00 %  0.00 % [ksoftirqd/</span><span class="number">1</span>]
+   <span class="number">13</span> be<span class="regexp">/0 root        0.00 B/</span>s    <span class="number">0.00</span> B<span class="regexp">/s  0.00 %  0.00 % [kworker/</span><span class="number">1</span>:<span class="number">0</span>H]
+   <span class="number">14</span> rt<span class="regexp">/4 root        0.00 B/</span>s    <span class="number">0.00</span> B<span class="regexp">/s  0.00 %  0.00 % [migration/</span><span class="number">2</span>]
+   <span class="number">15</span> be<span class="regexp">/4 root        0.00 B/</span>s    <span class="number">0.00</span> B<span class="regexp">/s  0.00 %  0.00 % [ksoftirqd/</span><span class="number">2</span>]
+   <span class="number">17</span> be<span class="regexp">/0 root        0.00 B/</span>s    <span class="number">0.00</span> B<span class="regexp">/s  0.00 %  0.00 % [kworker/</span><span class="number">2</span>:<span class="number">0</span>H]
+   <span class="number">18</span> rt<span class="regexp">/4 root        0.00 B/</span>s    <span class="number">0.00</span> B<span class="regexp">/s  0.00 %  0.00 % [migration/</span><span class="number">3</span>]
+   <span class="number">19</span> be<span class="regexp">/4 root        0.00 B/</span>s    <span class="number">0.00</span> B<span class="regexp">/s  0.00 %  0.00 % [ksoftirqd/</span><span class="number">3</span>]
+</code></pre><p>使用 arrow 键移动表头焦点,使列表排序,通过 iotop 我们可以轻松辨识频繁读写磁盘的程序。<br>可以用左右箭头操作,按 r 是相反方向, 按 o 是动态切换</p>
+<p>用法 iotop -参数<br>–version 查看版本信息的<br>-h, –help 查看帮助信息的<br>-o, –only 只显示在划硬盘的程序<br>-b, –batch 批量处理 用来记录日志的<br>-n NUM  设定循环几次<br>-d SEC, –delay=SEC  设定显示时间间隔</p>
+<h4 id="进一步思考:该程序在读写什么文件?">进一步思考:该程序在读写什么文件?</h4><p>这个问题其实很简单,通过 lsof 命令我们就可以达到目的:</p>
+<pre><code>lsof -c APPNAME      <span class="comment">//后面接程序名称</span>
+lsof <span class="keyword">FILE</span>            <span class="comment">// 也可以根据文件进行查询 </span>
+lsof | <span class="keyword">grep</span> PATH     <span class="comment">// 也可以根据目录进行查询 </span>
+</code></pre><p>其他命令</p>
+<pre><code>top   <span class="comment">// 亦可使用 iostat 命令查看,请安装 sysstat 以使用该命令</span>
+
+[root<span class="variable">@lab8107</span> ~]# top
+top - <span class="number">14</span>:<span class="number">57</span>:<span class="number">05</span> up <span class="number">11</span> days,  <span class="number">4</span>:<span class="number">37</span>,  <span class="number">2</span> users,  load average: <span class="number">0.09</span>, <span class="number">0.06</span>, <span class="number">0.05</span>
+Tasks: <span class="number">220</span> total,   <span class="number">2</span> running, <span class="number">218</span> sleeping,   <span class="number">0</span> stopped,   <span class="number">0</span> zombie
+Cpu(s):  <span class="number">0.2</span><span class="variable">%us</span>,  <span class="number">0.2</span><span class="variable">%sy</span>,  <span class="number">0.0</span><span class="variable">%ni</span>, <span class="number">99.5</span><span class="variable">%id</span>,  <span class="number">0.0</span><span class="variable">%wa</span>,  <span class="number">0.0</span><span class="variable">%hi</span>,  <span class="number">0.0</span><span class="variable">%si</span>,  <span class="number">0.0</span><span class="variable">%st</span>
+Mem:  <span class="number">24711544</span>k total,  <span class="number">2407312</span>k used, <span class="number">22304232</span>k free,   <span class="number">219808</span>k buffers
+Swap:  <span class="number">2097148</span>k total,        <span class="number">0</span>k used,  <span class="number">2097148</span>k free,  <span class="number">1319932</span>k cached
+
+  PID USER      PR  NI  VIRT  RES  SHR S <span class="variable">%CPU</span> <span class="variable">%MEM</span>    TIME+  COMMAND               
+ <span class="number">2025</span> root      <span class="number">20</span>   <span class="number">0</span>  <span class="number">178</span>m  <span class="number">10</span>m <span class="number">3488</span> S  <span class="number">3.0</span>  <span class="number">0.0</span>   <span class="number">0</span>:<span class="number">21.43</span> iotop                  
+   <span class="number">76</span> root      <span class="number">39</span>  <span class="number">19</span>     <span class="number">0</span>    <span class="number">0</span>    <span class="number">0</span> S  <span class="number">1.3</span>  <span class="number">0.0</span> <span class="number">172</span>:<span class="number">23.93</span> kipmi0                 
+ <span class="number">5347</span> root      <span class="number">20</span>   <span class="number">0</span>  <span class="number">393</span>m  <span class="number">59</span>m <span class="number">1836</span> S  <span class="number">1.0</span>  <span class="number">0.2</span> <span class="number">164</span>:<span class="number">34.60</span> glusterfs              
+ <span class="number">2189</span> root      <span class="number">20</span>   <span class="number">0</span> <span class="number">15228</span> <span class="number">1216</span>  <span class="number">852</span> R  <span class="number">0.3</span>  <span class="number">0.0</span>   <span class="number">0</span>:<span class="number">00.01</span> top                    
+ <span class="number">9065</span> zabbix    <span class="number">20</span>   <span class="number">0</span>  <span class="number">505</span>m <span class="number">7732</span> <span class="number">5976</span> S  <span class="number">0.3</span>  <span class="number">0.0</span>   <span class="number">0</span>:<span class="number">13.75</span> zabbix_server          
+<span class="number">20306</span> zabbix    <span class="number">20</span>   <span class="number">0</span> <span class="number">77568</span> <span class="number">1588</span> <span class="number">1164</span> S  <span class="number">0.3</span>  <span class="number">0.0</span>   <span class="number">1</span>:<span class="number">33.32</span> zabbix_agentd          
+    <span class="number">1</span> root      <span class="number">20</span>   <span class="number">0</span> <span class="number">19412</span> <span class="number">1428</span> <span class="number">1128</span> S  <span class="number">0.0</span>  <span class="number">0.0</span>   <span class="number">0</span>:<span class="number">01.45</span> init                   
+    <span class="number">2</span> root      <span class="number">20</span>   <span class="number">0</span>     <span class="number">0</span>    <span class="number">0</span>    <span class="number">0</span> S  <span class="number">0.0</span>  <span class="number">0.0</span>   <span class="number">0</span>:<span class="number">00.10</span> kthreadd   
+</code></pre><p>在 cpu(s) 一行,我们可以看到 wa 项,它就是 io waiting,如果该值过大且持续很久,就证明遇到了 io 瓶颈。需要对软件进行优化,或对硬件进行升级。</p>
+<h4 id="如何进行_io_瓶颈测试?">如何进行 io 瓶颈测试?</h4><p>大文件 io 测试命令:</p>
+<pre><code>$ <span class="tag">time</span> <span class="tag">dd</span> <span class="keyword">if</span>=/dev/zero of=test<span class="class">.file</span> bs=<span class="number">1</span>G count=<span class="number">5</span> <span class="comment">// 生成 5g 大小的文件并输出时间,执行速度等信息</span>
+</code></pre><p>小文件io 测试脚本:</p>
+<pre><code><span class="shebang">#!/bin/bash</span>
+ var1=<span class="number">1</span>
+ <span class="keyword">while</span> <span class="built_in">test</span> <span class="variable">$var1</span> -le <span class="variable">$1</span>
+ <span class="keyword">do</span>
+ touch <span class="variable">$var1</span>
+ var1=`expr  <span class="variable">$var1</span> + <span class="number">1</span>`
+ <span class="keyword">done</span>
+</code></pre><p>执行该 shell 脚本前,请先运行 iotop 等程序监控 io 状况。运行脚本:</p>
+<pre><code><span class="keyword">sh</span> ./<span class="keyword">test</span>.<span class="keyword">sh</span> NUM    <span class="comment">//    NUM 为生成的文件数</span>
+</code></pre><h4 id="为什么会产生_io_瓶颈?">为什么会产生 io 瓶颈?</h4><p>原因是多种多样的，可能是坏道,也可能是程序bug,甚至是电压不稳<br>曾经碰到 io 100%,读写速率却只有 2m/s 的移动硬盘,经过检测,大概有 80% 以上区域是坏道部分,还有可能是因为 pv 的直线上升.服务器无法承受如此大的荷载而导致 io 增高,或者 gnome 的 tracker 正在制作索引,也许您忘记了后台正在 making 的程序<br>由于原因是多种多样的,在此不能一一列举。读者发现 io 瓶颈后,可以对症下药,先软后硬排除问题,使系统恢复到最佳状态。</p>
+<h4 id="查看磁盘读速度:">查看磁盘读速度:</h4><pre><code>[root<span class="annotation">@localhost</span> ~]# <span class="regexp">/sbin/</span>hdparm -t <span class="regexp">/dev/</span>sda
+<span class="regexp">/dev/</span><span class="string">sda:</span>
+ Timing buffered disk <span class="string">reads:</span>   <span class="number">84</span> MB <span class="keyword">in</span>  <span class="number">4.21</span> seconds =  <span class="number">19.95</span> MB/sec
+</code></pre><h4 id="磁盘坏道检测">磁盘坏道检测</h4><p>建议使用livecd或者liveusb对本地磁盘进行检测。如果是对移动存储设备进行检测,请umount后再进行检测,以免数据受损。</p>
+<pre><code>umount /dev/sd<span class="keyword">*</span>
+</code></pre><p>对磁盘进行read-only检测:</p>
+<pre><code>sudo badblocks <span class="operator">-s</span>  -v  /dev/sd*
+</code></pre><p>因为需要对磁盘进行检测,所以速度非常缓慢,在检测过程中注意不要断电,不要对硬盘进行任何操作,不要移除硬盘,不要物理损伤,不要震动等。<br>检测过程可以中途终止,也可以指定区块重新开始。</p>
+<pre><code><span class="title">sudo</span> badblock -s -v  /dev/sd*   <span class="built_in">last</span>  start
+</code></pre><p>如果您检测完成后看到 </p>
+<pre><code><span class="title">Pass</span> completed, <span class="number">0</span> bad blocks found.那么恭喜,此磁盘通过测试,没有坏道,坏块。您可以放心使用。
+</code></pre><h4 id="坏道的修复/屏蔽">坏道的修复/屏蔽</h4><p>常见坏道分为以下几种类型:</p>
+<ul>
+<li>逻辑坏道</li>
+<li>0磁道损坏</li>
+<li>物理坏道</li>
+</ul>
+<p>坏道一般以单独或者组合形式出现。</p>
+<h5 id="逻辑坏道修复">逻辑坏道修复</h5><pre><code>fsck -<span class="tag">a</span> /dev/sd*
+</code></pre><p>就这么简单<br>更多fsck用法您可以查看这里或者查看man手册。</p>
+<h5 id="0磁道损坏修复:">0磁道损坏修复:</h5><p>使用1磁道代替零磁道,操作危险需谨慎:<br>大致流程就是全盘格式化,然后重新分区,编辑分区表使用1磁道,从而复活硬盘。</p>
+<h5 id="物理坏道">物理坏道</h5><p>物理坏道没有修复可能性,只能进行屏蔽。<br>如果您已经进行了坏道检测,那么您肯定已经知道坏道,坏块,大致位置以及坏块大小,您需要,备份硬盘数据,删除所有硬盘分区,根据坏块位置以及大小,估算出所占空间,例如共100个区块,磁盘大小为100g,20-30损坏,则坏块在20-30g这个区间<br>进行分区,接上,分区应为 0-15|15-35|35-100,中间的15-35g为有坏道的分区。要对有坏道的分区进行扩容处理,数值不要过小,以免坏道被分到其他分区。隔离15-35g这个分区,即不挂载,不读写,不操作）,您的磁盘可用空间减少,但是剩余空间均可用,坏道已经屏蔽<br>由于物理坏道具有扩散性,所以建议尽早让磁盘“退休”才是……</p>
+<h5 id="分区表修复工具">分区表修复工具</h5><p>如果您的分区表已经被损坏,建议使用testdisk进行修复。他可以快速回复分区表,真的非常好用,修复我的硬盘n次利器</p>
+<p>写于: 2012年03月23日<br>更新于: 2015年03月22日</p>
+
+    
+  </div>
+  <footer>
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">评论</h1>
+  <div class="ds-thread" data-thread-key="2015/03/22/监控磁盘读写状况/"  data-title="监控磁盘读写状况">
+  </div>
+</section>
+</div>
+  </div>
+  <footer id="footer"><div class="copyright">
+  
+  &copy; 2015 <a href="/">zphj1987</a>
+  
+</div>
+<div class="theme-copyright">
+  Theme by <a href="https://github.com/orderedlist" target="_blank">orderedlist</a>
+   | 
+  Redesign by <a href="http://heroicyang.com/" target="_blank">Heroic Yang</a>
+</div>
+<div class="clearfix"></div></footer>
+  <script src="/js/jquery.min.js"></script>
+<script src="/js/scale.fix.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = { short_name: 'zphj1987' };
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';
+    ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox();
+  })(jQuery);
+</script>
+
+
+<div id="totop" style="position:fixed;bottom:150px;right:50px;cursor: pointer;">
+<a title="Top"><img src="/imgs/scrollup.png"/></a>
+</div>
+<script src="/js/totop.js"></script>
+
+</body>
+</html>

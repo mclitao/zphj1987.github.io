@@ -4,7 +4,7 @@
   <subtitle><![CDATA[现在所学，终有所用]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://yoursite.com/"/>
-  <updated>2015-03-21T13:26:59.142Z</updated>
+  <updated>2015-03-22T14:45:26.306Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,146 +15,44 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title><![CDATA[ubuntu配置bonding]]></title>
-    <link href="http://yoursite.com/2015/03/21/ubuntu%E9%85%8D%E7%BD%AEbonding/"/>
-    <id>http://yoursite.com/2015/03/21/ubuntu配置bonding/</id>
-    <published>2015-03-21T13:16:33.000Z</published>
-    <updated>2015-03-21T13:26:59.142Z</updated>
-    <content type="html"><![CDATA[<p>如果节点上有多个网络接口时可以通过bonding将多个网络接口虚拟为一个网络接口，bonding可以提供高可用及负载均衡功能，从而提高节点的网络接口性能及可用性。</p>
-<p>一、使用如下命令安装</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">T01-MON11:~<span class="comment"># apt-get install ifenslave-2.6</span></span><br></pre></td></tr></table></figure>
-<p>二、配置bonding</p>
-<p>修改网络接口配置文件/etc/network/interfaces</p>
-<p>配置一个bond</p>
-<pre><code><span class="attribute">auto</span> lo
-iface lo inet loopback
-
-<span class="attribute">auto</span> eth8
-iface eth8 inet manual
-bond-master bond0
-
-<span class="attribute">auto</span> eth7
-iface eth7 inet manual
-bond-master bond0
-
-<span class="attribute">auto</span> eth6
-iface eth6 inet manual
-bond-master bond0
-
-<span class="attribute">auto</span> eth5
-iface eth5 inet manual
-bond-master bond0
-
-<span class="attribute">auto</span> eth0
-iface eth0 inet static
-<span class="tag">address</span> <span class="number">192.168</span>.<span class="number">8.102</span>
-netmask <span class="number">255.255</span>.<span class="number">0.0</span>
-gateway <span class="number">192.168</span>.<span class="number">1.1</span>
-dns-nameservers <span class="number">8.8</span>.<span class="number">8.8</span>
-
-<span class="attribute">auto</span> bond0
-iface bond0 inet static
-<span class="tag">address</span> <span class="number">10.0</span>.<span class="number">0.102</span>
-netmask <span class="number">255.255</span>.<span class="number">0.0</span>
-
-bond-slaves <span class="attribute">none</span>
-bond-miimon <span class="number">100</span>
-bond-mode balance-alb
-</code></pre><a id="more"></a> 
-<p>配置双bond</p>
-<pre><code><span class="attribute">auto</span> lo
-iface lo inet loopback
-
-<span class="attribute">auto</span> eth2
-iface eth2 inet manual
-bond-master bond0
-
-<span class="attribute">auto</span> eth3
-iface eth3 inet manual
-bond-master bond0
-
-<span class="attribute">auto</span> eth4
-iface eth4 inet manual
-bond-master bond0
-
-<span class="attribute">auto</span> eth0
-iface eth0 inet static
-<span class="tag">address</span> <span class="number">10.0</span>.<span class="number">0.103</span>
-netmask <span class="number">255.255</span>.<span class="number">0.0</span>
-
-<span class="attribute">auto</span> bond0
-iface bond0 inet static
-<span class="tag">address</span> <span class="number">192.168</span>.<span class="number">9.103</span>
-netmask <span class="number">255.255</span>.<span class="number">0.0</span>
-gateway <span class="number">192.168</span>.<span class="number">1.1</span>
-dns-nameservers <span class="number">8.8</span>.<span class="number">8.8</span>
-bond-slaves <span class="attribute">none</span>
-bond-miimon <span class="number">100</span>
-bond-mode balance-alb
-
-<span class="attribute">auto</span> eth5
-iface eth5 inet manual
-bond-master bond1
-
-<span class="attribute">auto</span> eth6
-iface eth6 inet manual
-bond-master bond1
-
-<span class="attribute">auto</span> eth7
-iface eth7 inet manual
-bond-master bond1
-
-<span class="attribute">auto</span> bond1
-iface bond1 inet static
-<span class="tag">address</span> <span class="number">10.1</span>.<span class="number">0.103</span>
-netmask <span class="number">255.255</span>.<span class="number">0.0</span>
-bond-slaves <span class="attribute">none</span>
-bond-miimon <span class="number">100</span>
-bond-mode balance-alb
-</code></pre><p>配置过程需要按照顺序配置,配置网卡,然后写bond的配置,两组错开就可以了</p>
-<p>写于:2011年12月30日,2013年10月20日<br>更新于:2015年03年21日</p>
+    <title><![CDATA[修改centos6启动动画（plymouth方式）]]></title>
+    <link href="http://yoursite.com/2015/03/22/%E4%BF%AE%E6%94%B9centos6%E5%90%AF%E5%8A%A8%E5%8A%A8%E7%94%BB%EF%BC%88plymouth%E6%96%B9%E5%BC%8F%EF%BC%89/"/>
+    <id>http://yoursite.com/2015/03/22/修改centos6启动动画（plymouth方式）/</id>
+    <published>2015-03-22T14:38:36.000Z</published>
+    <updated>2015-03-22T14:45:26.306Z</updated>
+    <content type="html"><![CDATA[<p>centos6默认的启动动画是一个白蓝色的进度条,背景全黑色,现在需要对centos的启动动画进行定制<br>在查询了一些资料以后,发现有一个软件是可以对启动动画进行定制的，名字叫plymouth<br>这<br>个在centos6操作系统安装完成以后默认就带了的,主要涉及的是如下的几个操作<br>列出当前所有主题:</p>
+<pre><code>plymouth-<span class="built_in">set</span>-<span class="keyword">default</span>-theme --<span class="built_in">list</span>  
+</code></pre><p>主题存放目录:<br>/usr/share/plymouth/themes/</p>
+<p>不重启查看主题运行效果 Ctrl + Alt + F2(一定不要在F1操作)</p>
+<pre><code>plymouthd
+plymouth <span class="comment">--show-splash</span>
+plymouth <span class="comment">--quit</span>
+</code></pre><a id="more"></a>
+<p>如果想调试:</p>
+<pre><code><span class="comment">plymouthd</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">debug</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">debug</span><span class="literal">-</span><span class="comment">file=/tmp/plydebug</span>
+<span class="comment">plymouth</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">show</span><span class="literal">-</span><span class="comment">splash</span>
+<span class="comment">plymouth</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">quit</span>
+</code></pre><p>如果在虚拟机下进行测试<br>需要修改grub里面的vga参数为785</p>
+<p><img src="http://7xi6lo.com1.z0.glb.clouddn.com/centos动画.jpg" alt=""></p>
+<p>其他环境无需设置<br>测试通过以后,进行设置:</p>
+<pre><code><span class="title">plymouth</span>-set-<span class="default"><span class="keyword">default</span>-theme details        <span class="container">(后面的<span class="title">detail</span>为设置的主题)</span></span>
+<span class="title">plymouth</span>-set-<span class="default"><span class="keyword">default</span>-theme -<span class="type">R</span> details     <span class="container">(本操作会将启动画面加入到内核当中,时间比较久,可以<span class="title">ps</span> -<span class="title">ef</span> 查看后台操作)</span></span>
+</code></pre><p>重启电脑就可以看到效果了<br>下面是在github上找到的一个源码包,可以使用</p>
+<p>链接:<a href="http://pan.baidu.com/s/1kTMMo55" target="_blank" rel="external">http://pan.baidu.com/s/1kTMMo55</a> 密码:7doc</p>
+<p>centos下使用自编译主题script形式需要安装依赖包</p>
+<pre><code>plymouth-graphics-libs-<span class="number">0.8</span>.<span class="number">3</span>-<span class="number">27</span><span class="class">.el6</span><span class="class">.centos</span><span class="class">.x86_64</span><span class="class">.rpm</span>
+plymouth-plugin-script-<span class="number">0.8</span>.<span class="number">3</span>-<span class="number">27</span><span class="class">.el6</span><span class="class">.centos</span><span class="class">.x86_64</span><span class="class">.rpm</span>
+</code></pre><p>安装完成后,将wheat解压后目录放/usr/share/plymouth/themes/下到就可以设置这个主题了</p>
+<p>写于: 2013年07月30日<br>更新于: 2015年03月22日</p>
 ]]></content>
     <summary type="html">
-    <![CDATA[<p>如果节点上有多个网络接口时可以通过bonding将多个网络接口虚拟为一个网络接口，bonding可以提供高可用及负载均衡功能，从而提高节点的网络接口性能及可用性。</p>
-<p>一、使用如下命令安装</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">T01-MON11:~<span class="comment"># apt-get install ifenslave-2.6</span></span><br></pre></td></tr></table></figure>
-<p>二、配置bonding</p>
-<p>修改网络接口配置文件/etc/network/interfaces</p>
-<p>配置一个bond</p>
-<pre><code><span class="attribute">auto</span> lo
-iface lo inet loopback
-
-<span class="attribute">auto</span> eth8
-iface eth8 inet manual
-bond-master bond0
-
-<span class="attribute">auto</span> eth7
-iface eth7 inet manual
-bond-master bond0
-
-<span class="attribute">auto</span> eth6
-iface eth6 inet manual
-bond-master bond0
-
-<span class="attribute">auto</span> eth5
-iface eth5 inet manual
-bond-master bond0
-
-<span class="attribute">auto</span> eth0
-iface eth0 inet static
-<span class="tag">address</span> <span class="number">192.168</span>.<span class="number">8.102</span>
-netmask <span class="number">255.255</span>.<span class="number">0.0</span>
-gateway <span class="number">192.168</span>.<span class="number">1.1</span>
-dns-nameservers <span class="number">8.8</span>.<span class="number">8.8</span>
-
-<span class="attribute">auto</span> bond0
-iface bond0 inet static
-<span class="tag">address</span> <span class="number">10.0</span>.<span class="number">0.102</span>
-netmask <span class="number">255.255</span>.<span class="number">0.0</span>
-
-bond-slaves <span class="attribute">none</span>
-bond-miimon <span class="number">100</span>
-bond-mode balance-alb
+    <![CDATA[<p>centos6默认的启动动画是一个白蓝色的进度条,背景全黑色,现在需要对centos的启动动画进行定制<br>在查询了一些资料以后,发现有一个软件是可以对启动动画进行定制的，名字叫plymouth<br>这<br>个在centos6操作系统安装完成以后默认就带了的,主要涉及的是如下的几个操作<br>列出当前所有主题:</p>
+<pre><code>plymouth-<span class="built_in">set</span>-<span class="keyword">default</span>-theme --<span class="built_in">list</span>  
+</code></pre><p>主题存放目录:<br>/usr/share/plymouth/themes/</p>
+<p>不重启查看主题运行效果 Ctrl + Alt + F2(一定不要在F1操作)</p>
+<pre><code>plymouthd
+plymouth <span class="comment">--show-splash</span>
+plymouth <span class="comment">--quit</span>
 </code></pre>]]>
     
     </summary>
@@ -162,303 +60,655 @@ bond-mode balance-alb
   </entry>
   
   <entry>
-    <title><![CDATA[利用移动硬盘安装windows7系统]]></title>
-    <link href="http://yoursite.com/2015/03/21/%E5%88%A9%E7%94%A8%E7%A7%BB%E5%8A%A8%E7%A1%AC%E7%9B%98%E5%AE%89%E8%A3%85windows7%E7%B3%BB%E7%BB%9F/"/>
-    <id>http://yoursite.com/2015/03/21/利用移动硬盘安装windows7系统/</id>
-    <published>2015-03-21T10:34:02.000Z</published>
-    <updated>2015-03-21T13:14:10.228Z</updated>
-    <content type="html"><![CDATA[<p>首先把win7系统镜像的iso文件解压到移动硬盘中<br>将移动硬盘设置为活动分区<br>设置活动分区的方法<br>Diskpart程序实现U盘安装WIN7的方法: </p>
-<p>将Win7安装盘中的所有文件拷贝到硬盘文件夹中,我们这里选择D盘win7back。<br>在开始菜单程序栏中输入cmd进入命令行模式，敲入diskpart进入磁盘分区管理程序,逐行输入</p>
-<pre><code>select disk <span class="number">1</span> (选择磁盘。此为disk <span class="number">0</span>硬盘,disk <span class="number">1</span> <span class="variable">U</span>盘情况下,多硬盘时可输入list disk查询) 
-<span class="function"><span class="title">clean</span> <span class="params">(清除该磁盘)</span> 
-<span class="title">create</span> <span class="title">partition</span> <span class="title">primary</span> <span class="params">(创建主分区)</span> 
-<span class="title">select</span> <span class="title">partition</span> 1 <span class="params">(选择刚刚创建的<span class="number">1</span>号分区)</span> 
-<span class="title">active</span> <span class="params">(激活该分区)</span> 
-<span class="title">format</span> <span class="title">fs</span>=<span class="title">fat32</span> <span class="params">(格式化为<span class="variable">FAT32</span>，<span class="number">8</span><span class="variable">GB</span>闪盘的格式化需要较长时间)</span> 
-<span class="title">assign</span> <span class="params">(为该分区注册盘符)</span> 
-<span class="title">exit</span> <span class="params">(退出diskpart程序)</span> </span>
-</code></pre><p>注:以上操作必须在Vista/Win7下完成，XP虽然也带有diskpart程序,但无法格式化U盘。</p>
-<p>这里我们只使用上面的active选项 或者在win7的磁盘管理中将移动硬盘标记为活动分区<br>假设你的移动硬盘的活动分区的盘符为G盘<br>在win7运行cmd</p>
-<pre><code><span class="keyword">G</span>:
-<span class="keyword">cd</span> <span class="keyword">boot</span>
-bootsect /nt60 <span class="keyword">G</span> 
-</code></pre><p>命令将引导区写进你的移动硬盘G盘符<br>在开机启动项中选择移动设备启动就可以了</p>
-<p>写于:2011年12月16日<br>更新于:2015年03月21日</p>
+    <title><![CDATA[用grub4dos来实现移动硬盘安装linux系统]]></title>
+    <link href="http://yoursite.com/2015/03/22/%E7%94%A8grub4dos%E6%9D%A5%E5%AE%9E%E7%8E%B0%E7%A7%BB%E5%8A%A8%E7%A1%AC%E7%9B%98%E5%AE%89%E8%A3%85linux%E7%B3%BB%E7%BB%9F/"/>
+    <id>http://yoursite.com/2015/03/22/用grub4dos来实现移动硬盘安装linux系统/</id>
+    <published>2015-03-22T14:27:07.000Z</published>
+    <updated>2015-03-22T14:37:34.532Z</updated>
+    <content type="html"><![CDATA[<p>网上看了一些grub4dos相关教程,虽然相关资料很多,但是一步步做下来还是会出现一些问题,并且有些地方也没有说清楚,现在写下来供自己以后查看</p>
+<p>由于使用utraliso软件做centos6.4系统盘的时候,由于centos系统盘超过4G,而utraliso软件做系统盘的时候默认文件系统ext格式,而ext格式不支持超过4G的文件,所以就无法启动,所以研究了下用grub4dos这个软件来实现移动硬盘安装linux系统</p>
+<p>首先需要准备两个文件<br>grub4dos-0.4.4.zip<br>grubinst-1.1-bin-w32-2008-01-01.zip</p>
+<p>解压grub4dos-0.4.4.zip</p>
+<p><img src="http://fmn.rrimg.com/fmn061/20130605/2150/b_large_LQAI_39a3000004ac1262.jpg" alt=""></p>
+<p>&lt;这里需要注意下，如果用移动硬盘想实现的是只装一种系统话，那么就不需要对硬盘分区，如果想装多个系统的话就可以对移动硬盘分几个区，每个分区可以放一种操作系统&gt;</p>
+<p>在win7的开始菜单中搜索 计算机管理&gt;磁盘管理<br>然后选择你的移动硬盘,然后将第一个盘符标记为活动分区,这样移动硬盘这个区才能被识别,从而作为启动分区</p>
+<p><img src="http://fmn.rrimg.com/fmn063/20130605/2200/b_large_VXDK_39a3000004d91262.jpg" alt=""></p>
+<p>解压grubinst-1.1-bin-w32-2008-01-01.zip 运行<br>grubinst_gui.exe<br>磁盘选择你的移动硬盘<br>然后点分区列表右边的刷新<br>然后选择整个磁盘(MBR),然后点击安装</p>
+<p><img src="http://fmn.rrfmn.com/fmn058/20130605/2215/b_large_1Zyp_5715000001f51263.jpg" alt=""></p>
+<p>将刚刚解压得到的grub4dos-0.4.4这个目录下的chinese目录下的三个文件拷贝到你准备用来做安装系统移动硬盘,也就是刚刚设置为活动主分区那个盘还有grub4dos-0.4.4目录下menu.lst也拷贝到移动硬盘活动分区那个盘的根目录下，这个移动硬盘目录下最后看到的文件如下截图</p>
+<p><img src="http://fmn.rrimg.com/fmn065/20130605/2210/b_large_qb9c_30620000080c1263.jpg" alt=""></p>
+<p>如果这个时候你移动硬盘没分区的话，就将你的系统盘的iso全部解压到你的这个目录,系统iso解压可以用360压缩工具<br>然后修改menu.lst  ,如果比较熟悉,可以进行自定义,如果不熟悉,这里直接在下面加几行:</p>
+<pre><code>title centos6.<span class="number">4</span> install
+<span class="function"><span class="title">kernel</span> <span class="params">(hd0,<span class="number">0</span>)</span>/<span class="title">isolinux</span>/<span class="title">vmlinuz</span>
+<span class="title">initrd</span> <span class="params">(hd0,<span class="number">0</span>)</span>/<span class="title">isolinux</span>/<span class="title">initrd</span>.<span class="title">img</span></span>
+</code></pre><p>上面的title后面写的字段会在系统安装的时候显示，然后安装的时候选择这个centos6.4 install就行,其中(hd0,0)的前面的0是代表第一个盘,也就是你的移动盘,后面的0代表分区,代表第一个分区,如果你把系统iso解压到移动硬盘的第二个分区,那么就把这个改为1<br>isolinux/vmlinuz 就是你解压的iso里面的文件<br>到这里,系统盘已经做好了,在电脑的启动项里面选择centos6.4 install 就可以安装这个linux系统了</p>
+<p>此方法对于centos6.4还是有问题 所以需要多做些工作<br>思路是把第二个分区做成linux的ext2格式就能放4G以上的iso,但是win7又无法识别ext2的盘符,所以需要做两步,第一步将第二分区格式化为ext2<br>使用这个工具:<br>ParagonPartitionManager.rar<br>使用这个工具把盘格式化为ext2<br>使用这个工具是win7下能查看ext2格式的盘符<br>Ext2Fsd-0.51.zip</p>
+<p><img src="http://fmn.xnpic.com/fmn057/20130606/2145/b_large_jgCI_5038000002631263.jpg" alt=""></p>
+<p><img src="http://fmn.rrimg.com/fmn060/20130606/2145/b_large_uSUd_588c000003ba1262.jpg" alt=""></p>
+<p><img src="http://fmn.rrimg.com/fmn061/20130606/2155/b_large_LzJv_2a51000012851262.jpg" alt=""></p>
+<p>写于: 2013年06月05日<br>更新于: 2015年03月22日</p>
 ]]></content>
     <summary type="html">
-    <![CDATA[<p>首先把win7系统镜像的iso文件解压到移动硬盘中<br>将移动硬盘设置为活动分区<br>设置活动分区的方法<br>Diskpart程序实现U盘安装WIN7的方法: </p>
-<p>将Win7安装盘中的所有文件拷贝到硬盘文件夹中,我们这里选择D盘win7back。<br>在]]>
+    <![CDATA[<p>网上看了一些grub4dos相关教程,虽然相关资料很多,但是一步步做下来还是会出现一些问题,并且有些地方也没有说清楚,现在写下来供自己以后查看</p>
+<p>由于使用utraliso软件做centos6.4系统盘的时候,由于centos系统盘超过4G,而utraliso软件]]>
     </summary>
     
   </entry>
   
   <entry>
-    <title><![CDATA[alias重启终端失效的问题]]></title>
-    <link href="http://yoursite.com/2015/03/21/alias%E9%87%8D%E5%90%AF%E7%BB%88%E7%AB%AF%E5%A4%B1%E6%95%88%E7%9A%84%E9%97%AE%E9%A2%98/"/>
-    <id>http://yoursite.com/2015/03/21/alias重启终端失效的问题/</id>
-    <published>2015-03-21T10:26:09.000Z</published>
-    <updated>2015-03-21T10:33:10.907Z</updated>
-    <content type="html"><![CDATA[<p>如果使用命令:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">alias</span> xx=<span class="string">'xxxx'</span></span><br></pre></td></tr></table></figure></p>
-<p>那么登出以后,别名就会失效。下次登入的时候就不能用了。<br>为了保持别名可以把它写入 /root/.bashrc<br>在.bashrc的最后写入想要的别名,比如:</p>
-<pre><code><span class="built_in">alias</span> zp=<span class="string">'ll -al'</span>
-</code></pre><p>然后退出,重新登入的时候就可以用了。<br>或者直接运行命令<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span> ~/.bashrc</span><br></pre></td></tr></table></figure></p>
-<p>这样不用重新登入就可以使用了。</p>
-<p>写于: 2011年12月22日<br>更新于: 2015年03月21日</p>
+    <title><![CDATA[手机中没有该应用所需的共享库（解决手机无法安装Google plus）]]></title>
+    <link href="http://yoursite.com/2015/03/22/%E6%89%8B%E6%9C%BA%E4%B8%AD%E6%B2%A1%E6%9C%89%E8%AF%A5%E5%BA%94%E7%94%A8%E6%89%80%E9%9C%80%E7%9A%84%E5%85%B1%E4%BA%AB%E5%BA%93%EF%BC%88%E8%A7%A3%E5%86%B3%E6%89%8B%E6%9C%BA%E6%97%A0%E6%B3%95%E5%AE%89%E8%A3%85Google-plus%EF%BC%89/"/>
+    <id>http://yoursite.com/2015/03/22/手机中没有该应用所需的共享库（解决手机无法安装Google-plus）/</id>
+    <published>2015-03-22T14:24:09.000Z</published>
+    <updated>2015-03-22T14:26:13.955Z</updated>
+    <content type="html"><![CDATA[<p>国行安卓手机阉割了一些google服务，需要加这三个文件:</p>
+<p>com.google.android.maps.jar<br>com.google.android.maps.xml<br>NetworkLocation.apk</p>
+<p>你只需将上述文件放到手机中的相应位置,重启手机就好了。<br>方法:<br>首先机器要ROOT,然后用RE管理器，把要复制的文件复制到相应的位置,修改三个文件的权限,就是竖着3行,左边全选,中间最上面选上,右边全空。</p>
+<pre><code>com<span class="class">.google</span><span class="class">.android</span><span class="class">.maps</span><span class="class">.jar</span>   安装到  /system/framework
+google<span class="class">.android</span><span class="class">.maps</span><span class="class">.xml</span>       安装到  /system/etc/permissions
+NetworkLocation<span class="class">.apk</span>           安装到  /data/app_s        
+</code></pre><p>app_s目录需要自己建立</p>
+<p>上述三个文件在下面这个地址可以下载到:<br><a href="http://vdisk.weibo.com/s/BFtBO" target="_blank" rel="external">http://vdisk.weibo.com/s/BFtBO</a> </p>
+<p>写于: 2013年05月16日<br>更新于: 2015年03月22日</p>
 ]]></content>
     <summary type="html">
-    <![CDATA[<p>如果使用命令:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><]]>
+    <![CDATA[<p>国行安卓手机阉割了一些google服务，需要加这三个文件:</p>
+<p>com.google.android.maps.jar<br>com.google.android.maps.xml<br>NetworkLocation.apk</p>
+<p>你只需将上述文件放到手]]>
     </summary>
     
   </entry>
   
   <entry>
-    <title><![CDATA[CTDB与LVS搭建集群]]></title>
-    <link href="http://yoursite.com/2015/03/21/CTDB%E4%B8%8ELVS%E6%90%AD%E5%BB%BA%E9%9B%86%E7%BE%A4/"/>
-    <id>http://yoursite.com/2015/03/21/CTDB与LVS搭建集群/</id>
-    <published>2015-03-21T09:13:43.000Z</published>
-    <updated>2015-03-21T10:28:58.669Z</updated>
-    <content type="html"><![CDATA[<p>搭建一个采用lvs进行负载均衡的CTDB集群，整个集群的架构是采用如图所示</p>
-<p><img src="http://7xi6lo.com1.z0.glb.clouddn.com/ctdb.jpg" alt="ctdb"></p>
-<p>在上图所示的架构图中，后端采用的集群是我们的存储,集群存储的三个samba服务器的node在作为CTDB的节点的同时,也是运行着我们的内核客户端,将三个内核客户端挂载到后端的集群中,同时这三个samba客户端对外采用三个虚拟的IP,然后采用LVS的网络负载均衡技术,虚拟成一个对外的IP,这样就实现了samba的带宽聚合以及负载均衡。</p>
-<h2 id="第一步,搭建一个CTDB集群">第一步,搭建一个CTDB集群</h2><h3 id="一、配置环境">一、配置环境</h3><ul>
-<li><p>E5400采用2.6.39内核客户端挂在集群<br>IP:192.168.0.210<br>GW:192.168.1.1<br>NETMASK:255.255.0.0<br>samba node1</p>
-</li>
-<li><p>E5400采用2.6.39内核客户端挂在集群<br>IP:192.168.0.211<br>GW:192.168.1.1<br>NETMASK：255.255.0.0<br>samba node2 </p>
-</li>
-<li><p>E5400采用2.6.39内核客户端挂在集群<br>IP:192.168.0.212<br>GW:192.168.1.1<br>NETMASK:255.255.0.0<br>samba node3</p>
-</li>
-</ul>
+    <title><![CDATA[如何配置谷歌框架与市场（解决google play 闪退）]]></title>
+    <link href="http://yoursite.com/2015/03/22/%E5%A6%82%E4%BD%95%E9%85%8D%E7%BD%AE%E8%B0%B7%E6%AD%8C%E6%A1%86%E6%9E%B6%E4%B8%8E%E5%B8%82%E5%9C%BA%EF%BC%88%E8%A7%A3%E5%86%B3google-play-%E9%97%AA%E9%80%80%EF%BC%89/"/>
+    <id>http://yoursite.com/2015/03/22/如何配置谷歌框架与市场（解决google-play-闪退）/</id>
+    <published>2015-03-22T14:18:20.000Z</published>
+    <updated>2015-03-22T14:23:24.093Z</updated>
+    <content type="html"><![CDATA[<p>没有谷歌电子市场。好多游戏都不能玩。像狂野之血,超凡蜘蛛侠。。。等等大型游戏。</p>
+<p>大家都知道国产机的ROM包把谷歌的GMS和谐掉了,所以直接装谷歌电子市场肯定会出现闪退,这样就又牵扯到另一个基础服务——谷歌框架,估计想玩大型游戏的机友对这个词都不陌生,但是可能大家按照许多热心机友说的最终还是没能把这个电子市场搞定,接下来大家按这个步骤,可以成功,亲测。</p>
+<p>步骤如下:<br>第一步:需要有root权限和RE管理器</p>
+<p>第二步:下载GoogleServiesFramework.apk(谷歌<br>服务框架,必需),将GoogleServiesFramework.apk复制到文件夹/system/app 下,然后点击安装,但是貌似不点安装也行,但是权限一定得改,然后修改权限——第一行,第一个、第二个打勾,第二行,第一个打勾,第三行,第一个打勾。(这个权限一定要搞好,有可能大家都是少了这步) </p>
+<p>第三步:下载谷歌电子市场，无论下载过来的电子市场文件名叫什么,都把它重命名为Vending.apk,像GoogleServiesFramework.apk一样移动到文件夹 /system/app 下,安装(这个必须安装)。然后修改权限,与GoogleServiesFramework.apk一样.</p>
+<p>第四步:重启手机<br>ok,联网,打开谷歌电子市场,就可以登录了。</p>
+<p>写于: 2013年05月16日<br>更新于: 2015年03月22日</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>没有谷歌电子市场。好多游戏都不能玩。像狂野之血,超凡蜘蛛侠。。。等等大型游戏。</p>
+<p>大家都知道国产机的ROM包把谷歌的GMS和谐掉了,所以直接装谷歌电子市场肯定会出现闪退,这样就又牵扯到另一个基础服务——谷歌框架,估计想玩大型游戏的机友对这个词都不陌生,但是可能大]]>
+    </summary>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[samba配置独立访问配置方法]]></title>
+    <link href="http://yoursite.com/2015/03/22/samba%E9%85%8D%E7%BD%AE%E7%8B%AC%E7%AB%8B%E8%AE%BF%E9%97%AE%E9%85%8D%E7%BD%AE%E6%96%B9%E6%B3%95/"/>
+    <id>http://yoursite.com/2015/03/22/samba配置独立访问配置方法/</id>
+    <published>2015-03-22T14:07:59.000Z</published>
+    <updated>2015-03-22T14:17:38.328Z</updated>
+    <content type="html"><![CDATA[<h3 id="配置目的:">配置目的:</h3><p>为了给指定用户一个独立访问目录</p>
+<p>首先在samba服务器安装samba软件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ apt-get install samba</span><br></pre></td></tr></table></figure>
+<p>然后配置独立访问用户<br>配置samba用户前提需要是linux的用户,所以要创建linux用户</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ useradd    zp</span><br><span class="line">$ passwd     zp</span><br></pre></td></tr></table></figure>
+<p>用户创建完了以后<br>需要创建samba用户</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ smbpasswd <span class="operator">-a</span>  zp</span><br></pre></td></tr></table></figure>
+<p>然后输入密码,记住密码,这个是客户端访问samba的密码<br><a id="more"></a><br>在服务器的/etc/samba/smb.conf文件的</p>
+<p>[global]字段下面添加:<br>    client lanman auth = yes<br>    security = user</p>
+<p>在文件末尾添加:</p>
+<pre><code>[hj]
+    <span class="variable">path=</span>/hj
+    <span class="variable">comment=</span>zhangpengdemulu
+    <span class="variable">writeable=</span>yes
+    valid <span class="variable">users =</span> @zp
+</code></pre><p>修改配置文件以后,重启samba服务<br>注意 /hj 目录需要有读写执行权限,在samba服务器执行:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ chmod <span class="number">777</span> /hj</span><br></pre></td></tr></table></figure>
+<h4 id="客户端访问方法">客户端访问方法</h4><p>linux下两种方式<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ smbmount <span class="number">192.168</span>.<span class="number">0.194</span>:/hj /zp/<span class="built_in">test</span> -o username=zp</span><br><span class="line">$ mount -t cifs //<span class="number">192.168</span>.<span class="number">0.194</span>/hj /zp/<span class="built_in">test</span> -o username=zp</span><br></pre></td></tr></table></figure></p>
+<p>windows直接挂载</p>
+<h3 id="附加命令:">附加命令:</h3><p>查看samba的用户</p>
+<pre><code><span class="title">sudo</span> pdbedit -L
+</code></pre><p>增加一个用户到samba</p>
+<pre><code>sudo pdbedit -<span class="tag">a</span> username
+</code></pre><p>从samba账户中删除一个用户</p>
+<pre><code><span class="title">sudo</span> pdbedit -x username
+</code></pre><p>显示samba账户信息</p>
+<pre><code><span class="title">sudo</span> pdbedit -r username
+</code></pre><p>测试samba账户是否正常</p>
+<pre><code>smbclient -<span class="keyword">L</span> 192.168.1.1 -<span class="keyword">U</span> username -<span class="keyword">d</span> 3
+</code></pre><p>写于: 2013年04月17日<br>更新于: 2015年03月22日</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<h3 id="配置目的:">配置目的:</h3><p>为了给指定用户一个独立访问目录</p>
+<p>首先在samba服务器安装samba软件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ apt-get install samba</span><br></pre></td></tr></table></figure>
+<p>然后配置独立访问用户<br>配置samba用户前提需要是linux的用户,所以要创建linux用户</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ useradd    zp</span><br><span class="line">$ passwd     zp</span><br></pre></td></tr></table></figure>
+<p>用户创建完了以后<br>需要创建samba用户</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ smbpasswd <span class="operator">-a</span>  zp</span><br></pre></td></tr></table></figure>
+<p>然后输入密码,记住密码,这个是客户端访问samba的密码<br>]]>
+    
+    </summary>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Ubuntu12.10 设置默认命令行启动]]></title>
+    <link href="http://yoursite.com/2015/03/22/Ubuntu12-10-%E8%AE%BE%E7%BD%AE%E9%BB%98%E8%AE%A4%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%90%AF%E5%8A%A8/"/>
+    <id>http://yoursite.com/2015/03/22/Ubuntu12-10-设置默认命令行启动/</id>
+    <published>2015-03-22T14:00:27.000Z</published>
+    <updated>2015-03-22T14:07:11.768Z</updated>
+    <content type="html"><![CDATA[<p>在虚拟机当中安装ubuntu12.10的时候默认把图形界面给装上了,由于不需要使用桌面,所以为了省去每次进入到图形界面然后再用ctrl+F1的方式切换到命令行的步骤,希望能够默认进入的是命令行模式,那么设置的方法如下:<br>终端执行:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/default/grub</span><br></pre></td></tr></table></figure></p>
+<p>将 GRUB_CMDLINE_LINUX_DEFAULT=”quiet splash” 改为:<br>GRUB_CMDLINE_LINUX_DEFAULT=”quiet splash text”</p>
+<p>然后执行:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">update-grub</span><br></pre></td></tr></table></figure></p>
 <a id="more"></a>
-<h3 id="二、配置samba_CTDB">二、配置samba CTDB</h3><p>1、在三个节点上使用如下命令安装samba，CTDB。<br>更新源以后执行<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">T02-APP210:~<span class="comment">#apt-get update</span></span><br><span class="line">T02-APP210:~<span class="comment">#apt-get install samba ctdb</span></span><br></pre></td></tr></table></figure></p>
-<p>2、在三个节点的/etc/services文件中增加如下内容。</p>
-<pre><code><span class="title">ctdb</span> <span class="number">9999</span>/tcp
-</code></pre><p>3、在三个节点中修改/etc/samba/smb.conf文件为如下内容,其中/smbcluster是后端集群存储系统的挂载点,/smbcluster/public为用户通过samba访问到的目录</p>
-<pre><code>[global]
-<span class="variable">clustering =</span> yes
-idmap <span class="variable">backend =</span> tdb2
-private <span class="variable">dir=</span>/smbcluster/ctdb
-fileid:<span class="variable">mapping =</span> fsname
-use <span class="variable">mmap =</span> no
-nt acl <span class="variable">support =</span> yes
-ea <span class="variable">support =</span> yes
-[public]
-<span class="variable">comment =</span> public share
-<span class="variable">path =</span> /smbcluster/public
-<span class="variable">public =</span> yes
-<span class="variable">writeable =</span> yes
-</code></pre><p>4、在三个节点在修改/etc/default/ctdb文件的如下内容。</p>
-<pre><code><span class="variable">CTDB_RECOVERY_LOCK=</span><span class="string">"/smbcluster/ctdb/lock"</span>
-<span class="variable">CTDB_PUBLIC_INTERFACE=</span>eth0
-<span class="variable">CTDB_PUBLIC_ADDRESSES=</span>/etc/ctdb/public_addresses
-<span class="variable">CTDB_MANAGES_SAMBA=</span>yes
-ulimit -n <span class="number">10000</span>
-<span class="variable">CTDB_NODES=</span>/etc/ctdb/nodes
-<span class="variable">CTDB_LOGFILE=</span>/var/log/ctdb.log
-<span class="variable">CTDB_DEBUGLEVEL=</span><span class="number">2</span>
-<span class="variable">CTDB_PUBLIC_NETWORK=</span><span class="string">"192.168.0.0/24"</span>
-<span class="variable">CTDB_PUBLIC_GATEWAY=</span><span class="string">"192.168.1.1"</span>
-</code></pre><p>5、在三个节点在修改/etc/ctdb/public_addresses文件中增加如下内容，该文件记录Samba CTDB集群提供给客户访问的虚拟IP地址。</p>
-<pre><code>192.168.0.80/24
-192.168.0.81/24
-192.168.0.82/24
-</code></pre><p>6、在三个节点上修改/etc/ctdb/nodes文件中增加如下内容，该文件记录Samba CTDB集群节点的IP地址。</p>
-<pre><code>192.168.0.210
-192.168.0.211
-192.168.0.212
-</code></pre><p>7、在三个节点上修改/etc/ctdb/events.d/11.route文件中增加如下内容。</p>
-<pre><code><span class="shebang">#!/bin/sh</span>
-. /etc/ctdb/<span class="built_in">functions</span>
-loadconfig ctdb
-cmd=<span class="string">"<span class="variable">$1</span>"</span>
-<span class="built_in">shift</span>
-<span class="keyword">case</span> <span class="variable">$cmd</span> <span class="keyword">in</span>
-takeip)
-<span class="comment"># we ignore errors from this, as the route might be up already when we're grabbing</span>
-<span class="comment"># a 2nd IP on this interface</span>
-/sbin/ip route add <span class="variable">$CTDB_PUBLIC_NETWORK</span> via <span class="variable">$CTDB_PUBLIC_GATEWAY</span> dev <span class="variable">$1</span> <span class="number">2</span>&gt; /dev/null
-;;
-<span class="keyword">esac</span>
-<span class="built_in">exit</span> <span class="number">0</span>
-</code></pre><h2 id="第二步:Lvs的配置及搭建">第二步:Lvs的配置及搭建</h2><p>LVS是Linux Virtual Server的简写,意即Linux虚拟服务器是一个虚拟的服务器集群系统。本项目在1998年5月由章文嵩博士成立,是中国国内最早出现的自由软件项目之一。目前有三种IP负载均衡技术:VS/NAT、VS/TUN和VS/DR<br>十种调度算法(rrr|wrr|lc|wlc|lblc|lblcr|dh|sh|sed|nq)。<br>官方网站:<a href="www.linuxvirtualserver.org">www.linuxvirtualserver.org</a><br>本次采用的是三个samba服务器节点上做lvs的调度,其中一台既是虚拟主机,又是真实服务器,下面将介绍搭建lvs服务器的步骤</p>
-<p>1.基础环境配置<br>三台samba节点分别配置IP为:</p>
-<blockquote>
-<p>192.168.0.80    #这三个IP为之前CTDB配置的虚拟IP,publicaddress<br>192.168.0.81<br>192.168.0.82</p>
-</blockquote>
-<p>2.下载和安装LVS</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">T02-APP210:~<span class="comment">#apt-get install ipvsadm</span></span><br></pre></td></tr></table></figure>
-<p>3.配置虚拟IP服务和负载均衡<br>以192.168.0.11作为LVS的主机,为其设置一个虚拟IP作为samba服务器的接口<br>192.168.0.85为LVS主机的虚拟IP<br>LVS SERVER 配置<br>在192.168.0.11LVS虚拟服务器上执行:<br>设置本级的虚拟IP,作为LVS的虚拟IP</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ifconfig eth0:<span class="number">0</span> <span class="number">192.168</span>.<span class="number">0.85</span> netmask <span class="number">255.255</span>.<span class="number">0.0</span> broadcast <span class="number">192.168</span>.<span class="number">0.85</span> up</span><br></pre></td></tr></table></figure>
-<p>打开IP转发开关</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="number">1</span>&gt;/proc/sys/net/ipv4/ip_forward</span><br></pre></td></tr></table></figure>
-<p>添加虚拟服务器,虚拟IP为192.168.0.85,端口为137,调度算法为rr</p>
-<pre><code><span class="comment">#! /bin/sh</span>
-<span class="title">ipvsadm</span> -C
-ipvsadm -A -u <span class="number">192.168.0.85:137</span> -s rr
-ipvsadm -A -u <span class="number">192.168.0.85:138</span> -s rr
-ipvsadm -A -t <span class="number">192.168.0.85:139</span> -s rr
-ipvsadm -A -t <span class="number">192.168.0.85:445</span> -s rr
-
-ipvsadm -a -u <span class="number">192.168.0.85:137</span> -r <span class="number">192.168.0.81:137</span> -g
-ipvsadm -a -u <span class="number">192.168.0.85:137</span> -r <span class="number">192.168.0.80:137</span> -g
-ipvsadm -a -u <span class="number">192.168.0.85:137</span> -r <span class="number">192.168.0.82:137</span> -g
-
-ipvsadm -a -u <span class="number">192.168.0.85:138</span> -r <span class="number">192.168.0.82:138</span> -g
-ipvsadm -a -u <span class="number">192.168.0.85:138</span> -r <span class="number">192.168.0.80:138</span> -g
-ipvsadm -a -u <span class="number">192.168.0.85:138</span> -r <span class="number">192.168.0.81:138</span> -g
-
-ipvsadm -a -t <span class="number">192.168.0.85:139</span> -r <span class="number">192.168.0.80:139</span> -g
-ipvsadm -a -t <span class="number">192.168.0.85:139</span> -r <span class="number">192.168.0.81:139</span> -g
-ipvsadm -a -t <span class="number">192.168.0.85:139</span> -r <span class="number">192.168.0.82:139</span> -g
-
-ipvsadm -a -t <span class="number">192.168.0.85:445</span> -r <span class="number">192.168.0.82:445</span> -g
-ipvsadm -a -t <span class="number">192.168.0.85:445</span> -r <span class="number">192.168.0.81:445</span> -g
-ipvsadm -a -t <span class="number">192.168.0.85:445</span> -r <span class="number">192.168.0.80:445</span> -g 
-</code></pre><p>启动lvs</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">ipvsadm</span><br><span class="line">IP Virtual Server version <span class="number">1.2</span>.<span class="number">1</span> (size=<span class="number">4096</span>) </span><br><span class="line">Prot LocalAddress:Port Scheduler Flags </span><br><span class="line">  -&gt; RemoteAddress:Port           Forward Weight ActiveConn InActConn </span><br><span class="line">TCP  <span class="number">192.168</span>.<span class="number">91.9</span>:http rr </span><br><span class="line">  -&gt; <span class="number">192.168</span>.<span class="number">91.12</span>:http           Route   <span class="number">1</span>      <span class="number">0</span>          <span class="number">0</span>          </span><br><span class="line">  -&gt; <span class="number">192.168</span>.<span class="number">91.11</span>:http           Route   <span class="number">1</span>      <span class="number">0</span>          <span class="number">0</span></span><br><span class="line">``` </span><br><span class="line">在<span class="number">192.168</span>.<span class="number">0.11</span>虚拟服务器上运行查询命令 </span><br><span class="line"></span><br><span class="line">```bash</span><br><span class="line">[root@hadoop00 ~]<span class="comment"># ipvsadm -l --stats </span></span><br><span class="line">IP Virtual Server version <span class="number">1.2</span>.<span class="number">1</span> (size=<span class="number">4096</span>) </span><br><span class="line">Prot LocalAddress:Port               Conns   InPkts  OutPkts  InBytes OutBytes </span><br><span class="line">  -&gt; RemoteAddress:Port </span><br><span class="line">TCP  <span class="number">192.168</span>.<span class="number">0.80</span>:http                   <span class="number">0</span>        <span class="number">0</span>        <span class="number">0</span>        <span class="number">0</span>        <span class="number">0</span> </span><br><span class="line">  -&gt; <span class="number">192.168</span>.<span class="number">0.81</span>:http                  <span class="number">0</span>        <span class="number">0</span>        <span class="number">0</span>        <span class="number">0</span>        <span class="number">0</span> </span><br><span class="line">  -&gt; <span class="number">192.168</span>.<span class="number">0.82</span>:http                  <span class="number">0</span>        <span class="number">0</span>        <span class="number">0</span>        <span class="number">0</span>        <span class="number">0</span></span><br></pre></td></tr></table></figure>
-<p>在真实服务器上执行下列脚本</p>
-<pre><code><span class="comment">#! /bin/sh</span>
-/sbin/ifconfig lo:<span class="number">0</span> <span class="number">192</span>.<span class="number">168</span>.<span class="number">0</span>.<span class="number">91</span> broadcast <span class="number">192</span>.<span class="number">168</span>.<span class="number">0</span>.<span class="number">91</span> netmask <span class="number">255</span>.<span class="number">255</span>.<span class="number">255</span>.<span class="number">255</span> up
-echo <span class="number">1</span> &gt; /<span class="keyword">proc</span>/sys/net/ipv4/conf/lo/arp_ignore
-echo <span class="number">2</span> &gt; /<span class="keyword">proc</span>/sys/net/ipv4/conf/lo/arp_announce
-echo <span class="number">1</span> &gt; /<span class="keyword">proc</span>/sys/net/ipv4/conf/all/arp_ignore
-echo <span class="number">2</span> &gt; /<span class="keyword">proc</span>/sys/net/ipv4/conf/all/arp_announce
-</code></pre><p>到这里整个集群就搭建成功，挂载samba服务器即可</p>
-<p>参考文档:</p>
-<p><a href="http://zh.linuxvirtualserver.org/node/5" target="_blank" rel="external">http://zh.linuxvirtualserver.org/node/5</a><br><a href="http://zp820705.iteye.com/blog/1151921" target="_blank" rel="external">http://zp820705.iteye.com/blog/1151921</a><br><a href="http://onlyzq.blog.51cto.com/1228/593940/" target="_blank" rel="external">http://onlyzq.blog.51cto.com/1228/593940/</a></p>
-<p>写于:  2011年12月10日<br>更新于:2015年03月21日</p>
+<p>重启ubuntu,这时默认就从命令行模式启动了。</p>
+<p><img src="http://7xi6lo.com1.z0.glb.clouddn.com/ubuntu命令行.jpg" alt=""></p>
+<p>写于: 2013年03月09日<br>更新于:2015年03月22日</p>
 ]]></content>
     <summary type="html">
-    <![CDATA[<p>搭建一个采用lvs进行负载均衡的CTDB集群，整个集群的架构是采用如图所示</p>
-<p><img src="http://7xi6lo.com1.z0.glb.clouddn.com/ctdb.jpg" alt="ctdb"></p>
-<p>在上图所示的架构图中，后端采用的集群是我们的存储,集群存储的三个samba服务器的node在作为CTDB的节点的同时,也是运行着我们的内核客户端,将三个内核客户端挂载到后端的集群中,同时这三个samba客户端对外采用三个虚拟的IP,然后采用LVS的网络负载均衡技术,虚拟成一个对外的IP,这样就实现了samba的带宽聚合以及负载均衡。</p>
-<h2 id="第一步,搭建一个CTDB集群">第一步,搭建一个CTDB集群</h2><h3 id="一、配置环境">一、配置环境</h3><ul>
-<li><p>E5400采用2.6.39内核客户端挂在集群<br>IP:192.168.0.210<br>GW:192.168.1.1<br>NETMASK:255.255.0.0<br>samba node1</p>
-</li>
-<li><p>E5400采用2.6.39内核客户端挂在集群<br>IP:192.168.0.211<br>GW:192.168.1.1<br>NETMASK：255.255.0.0<br>samba node2 </p>
-</li>
-<li><p>E5400采用2.6.39内核客户端挂在集群<br>IP:192.168.0.212<br>GW:192.168.1.1<br>NETMASK:255.255.0.0<br>samba node3</p>
-</li>
-</ul>]]>
+    <![CDATA[<p>在虚拟机当中安装ubuntu12.10的时候默认把图形界面给装上了,由于不需要使用桌面,所以为了省去每次进入到图形界面然后再用ctrl+F1的方式切换到命令行的步骤,希望能够默认进入的是命令行模式,那么设置的方法如下:<br>终端执行:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/default/grub</span><br></pre></td></tr></table></figure></p>
+<p>将 GRUB_CMDLINE_LINUX_DEFAULT=”quiet splash” 改为:<br>GRUB_CMDLINE_LINUX_DEFAULT=”quiet splash text”</p>
+<p>然后执行:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">update-grub</span><br></pre></td></tr></table></figure></p>]]>
     
     </summary>
     
   </entry>
   
   <entry>
-    <title><![CDATA[单独编译一个ext4模块]]></title>
-    <link href="http://yoursite.com/2015/03/20/%E5%8D%95%E7%8B%AC%E7%BC%96%E8%AF%91%E4%B8%80%E4%B8%AAext4%E6%A8%A1%E5%9D%97/"/>
-    <id>http://yoursite.com/2015/03/20/单独编译一个ext4模块/</id>
-    <published>2015-03-20T09:49:26.000Z</published>
-    <updated>2015-03-20T10:01:18.487Z</updated>
-    <content type="html"><![CDATA[<p>当我们需要使用一个内核模块的时候,在当前使用版本内核编译的时候又没有加进去,在不改变内核版本的时候,再编译整个内核,可能会覆盖原来的内核,导致系统无法启动</p>
-<p>现在我们能够单独选择需要的模块,然后加载进内核</p>
-<h3 id="准备工作">准备工作</h3><p>首先进入你当前使用的系统查看当前的使用内核版本,在这里是 2.3.39</p>
-<p>下载对应内核源码包 linux-2.6.39.tar.bz2 将源码包放入 /usr/src/ 下<br>解压源码包<br>更新编译工具包</p>
+    <title><![CDATA[Ubuntu 12.10设置root用户登录图形界面]]></title>
+    <link href="http://yoursite.com/2015/03/22/Ubuntu-12-10%E8%AE%BE%E7%BD%AEroot%E7%94%A8%E6%88%B7%E7%99%BB%E5%BD%95%E5%9B%BE%E5%BD%A2%E7%95%8C%E9%9D%A2/"/>
+    <id>http://yoursite.com/2015/03/22/Ubuntu-12-10设置root用户登录图形界面/</id>
+    <published>2015-03-22T13:53:06.000Z</published>
+    <updated>2015-03-22T13:56:54.463Z</updated>
+    <content type="html"><![CDATA[<p>Ubuntu 12.04默认是不允许root登录的,在登录窗口只能看到普通用户和访客登录。以普通身份登陆Ubuntu后我们需要做一些修改,普通用户登录后,修改系统配置文件需要切换到超级用户模式,在终端窗口里面输入: </p>
+<pre><code>sudo  <span class="operator">-s</span>
+</code></pre><p>然后输入普通用户登陆的密码,回车即可进入 root用户权限模式。<br>启用root用户的前提是需要先给root设置一个密码:</p>
+<pre><code><span class="title">sudo</span> passwd root 
+</code></pre><p>输入root 密码即可</p>
 <a id="more"></a>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ apt-get install bzip2 libncurses5-dev kernel-package zlib1g-dev gcc make kernel-package wget module-init-tools procps libncurses5-dev</span><br></pre></td></tr></table></figure>
-<p>进入到你需要的模块的文件夹下面<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> /usr/src/linux-<span class="number">2.6</span>.<span class="number">39</span>/fs/ext4/</span><br></pre></td></tr></table></figure></p>
-<p>进入 Makefile 查看模块信息</p>
-<p>编译模块<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ T02-APP205:/usr/src/linux-<span class="number">2.6</span>.<span class="number">39</span>/fs/ext4<span class="comment"># make CONFIG_EXT4_FS=m -C /lib/module s /`uname -r` / build M=`pwd` modules</span></span><br></pre></td></tr></table></figure></p>
-<p>可能会报错</p>
-<p>找不到编译的文件路径,做一个软连接</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ln <span class="operator">-s</span> /usr/src/linux-headers-<span class="number">2.6</span>.<span class="number">39</span>/ /lib/modules/<span class="number">2.6</span>.<span class="number">39</span>/build</span><br></pre></td></tr></table></figure>
-<p>再做一次</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ make CONFIG_EXT4_FS=m -C /lib/module s /`uname -r` / build M=`<span class="built_in">pwd</span>` modules</span><br></pre></td></tr></table></figure>
-<p>就生成了两个模块 ，将这两个模块拷到你的当前使用内核的模块的路径<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ mkdir /lib/modules/<span class="number">2.6</span>.<span class="number">39</span>/kernel/fs/ext4</span><br><span class="line"></span><br><span class="line">$ T02-APP205:/usr/src/linux-<span class="number">2.6</span>.<span class="number">39</span>/fs/ext4<span class="comment"># cp ext4.mod.o /lib/modules/2.6.39/kernel/fs/ext4</span></span><br><span class="line"></span><br><span class="line">$ T02-APP205:/usr/src/linux-<span class="number">2.6</span>.<span class="number">39</span>/fs/ext4<span class="comment"># cp ext4.ko /lib/modules/2.6.39/kernel/fs/ext4</span></span><br><span class="line"></span><br><span class="line">$ T02-APP205:/usr/src/linux-<span class="number">2.6</span>.<span class="number">39</span>/fs/ext4<span class="comment"># depmod</span></span><br><span class="line"></span><br><span class="line">$ T02-APP205:/usr/src/linux-<span class="number">2.6</span>.<span class="number">39</span>/fs/ext4<span class="comment">#modprobe ext4</span></span><br></pre></td></tr></table></figure></p>
-<p>就可以看到 ext4 模块了</p>
+<p>然后执行: </p>
+<pre><code>vi /etc/lightdm/lightdm<span class="class">.conf</span>.
+</code></pre><p>增加<br>    greeter-show-manual-login=true<br>    allow-guest=false  </p>
+<p>修改完的整个配置文件是</p>
+<pre><code>[SeatDefaults]
+<span class="variable">greeter-session=</span>unity-greeter
+<span class="variable">user-session=</span>ubuntu
+<span class="variable">greeter-show-manual-login=</span><span class="constant">true</span> <span class="comment">#手工输入登陆系统的用户名和密码</span>
+<span class="variable">allow-guest=</span><span class="constant">false</span>   <span class="comment">#不允许guest登录</span>
+</code></pre><p>然后我们启动root帐号:</p>
+<pre><code><span class="title">sudo</span> passwd root
+</code></pre><p>根据提示输入root帐号密码。</p>
+<p>重启ubuntu,登录窗口会有“登录”选项,这时候我们就可以通过root登录了。</p>
+<p>注意:如果root登陆后还没声音,又查了查,如下方法:<br>Ubuntu root登录没有声音这个问题的根本原因是使用root登录后pulseaudio没有启动。<br>将root加到pulse-access组:</p>
+<pre><code>sudo usermod -<span class="tag">a</span> -G
+</code></pre><p>后修改配置文件/etc/default/pulseaudio,将PULSEAUDIO_SYSTEM_START设为1</p>
+<p>写于: 2012年12月14日<br>更新于: 2015年03月22日</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>Ubuntu 12.04默认是不允许root登录的,在登录窗口只能看到普通用户和访客登录。以普通身份登陆Ubuntu后我们需要做一些修改,普通用户登录后,修改系统配置文件需要切换到超级用户模式,在终端窗口里面输入: </p>
+<pre><code>sudo  <span class="operator">-s</span>
+</code></pre><p>然后输入普通用户登陆的密码,回车即可进入 root用户权限模式。<br>启用root用户的前提是需要先给root设置一个密码:</p>
+<pre><code><span class="title">sudo</span> passwd root 
+</code></pre><p>输入root 密码即可</p>]]>
+    
+    </summary>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Vmware Tools is currently being installed on your system]]></title>
+    <link href="http://yoursite.com/2015/03/22/Vmware-Tools-is-currently-being-installed-on-your-system/"/>
+    <id>http://yoursite.com/2015/03/22/Vmware-Tools-is-currently-being-installed-on-your-system/</id>
+    <published>2015-03-22T13:47:15.000Z</published>
+    <updated>2015-03-22T13:52:14.548Z</updated>
+    <content type="html"><![CDATA[<p>问题描述:<br>使用虚拟机安装Ubuntu过程中一直停留在“PLEASE WAIT! Vmware Tools is currently<br>being installed on your system”如下图:</p>
+<p><img src="http://7xi6lo.com1.z0.glb.clouddn.com/vmware1.jpg" alt="">]</p>
+<p>软件环境<br>VMWare 8<br>Ubuntu 12.10</p>
+<p>解决方案如下</p>
+<a id="more"></a>
+<p>做下面三步操作后重启系统 :</p>
+<p>Restore the /etc/issue file:</p>
+<pre><code>sudo mv <span class="regexp">/etc/i</span>ssue.backup <span class="regexp">/etc/i</span>ssue
+</code></pre><p>Restore the /etc/rc.local file:</p>
+<pre><code>sudo mv /etc/rc<span class="class">.local</span><span class="class">.backup</span> /etc/rc.local
+</code></pre><p>Restore the /etc/init/lightdm.conf file:</p>
+<pre><code>sudo mv <span class="regexp">/opt/</span>vmware-tools-installer<span class="regexp">/lightdm.conf /</span>etc<span class="regexp">/init</span>
+</code></pre><p>Then reboot.</p>
+<p>写于: 2012年12月14日<br>更新于: 2015年03月22日</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>问题描述:<br>使用虚拟机安装Ubuntu过程中一直停留在“PLEASE WAIT! Vmware Tools is currently<br>being installed on your system”如下图:</p>
+<p><img src="http://7xi6lo.com1.z0.glb.clouddn.com/vmware1.jpg" alt="">]</p>
+<p>软件环境<br>VMWare 8<br>Ubuntu 12.10</p>
+<p>解决方案如下</p>]]>
+    
+    </summary>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[win7问题步骤记录器 （远程协助）]]></title>
+    <link href="http://yoursite.com/2015/03/22/win7%E9%97%AE%E9%A2%98%E6%AD%A5%E9%AA%A4%E8%AE%B0%E5%BD%95%E5%99%A8-%EF%BC%88%E8%BF%9C%E7%A8%8B%E5%8D%8F%E5%8A%A9%EF%BC%89/"/>
+    <id>http://yoursite.com/2015/03/22/win7问题步骤记录器-（远程协助）/</id>
+    <published>2015-03-22T11:39:23.000Z</published>
+    <updated>2015-03-22T11:41:20.833Z</updated>
+    <content type="html"><![CDATA[<p>win7问题步骤记录器<br>有很多时候,身在远方的家人或者是朋友会要求您辅导他们计算机问题,但是又不知道该如何明确向您表达这个问题，这个处境是很令人沮丧的。<br>微软在Windows 7中添加的问题步骤记录器,将会帮助您与您的朋友摆脱沮丧。在这种情况下,您的朋友只要单击开始菜单、键入PSR,按住Enter键，再点击开始记录按钮即可。启用这项功能后,当您的朋友进行问题操作时,该记录器将会逐一记录您的朋友的操作步骤,并将它们压缩在一个MHTML文件中发送给您即可。无疑,这是个快捷、简单与高效的方法,这将有助于缩短您的故障排除时间。 </p>
+<p>写于: 2012年08月23日<br>更新于: 2015年03月23日 </p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>win7问题步骤记录器<br>有很多时候,身在远方的家人或者是朋友会要求您辅导他们计算机问题,但是又不知道该如何明确向您表达这个问题，这个处境是很令人沮丧的。<br>微软在Windows 7中添加的问题步骤记录器,将会帮助您与您的朋友摆脱沮丧。在这种情况下,您的朋友只要单击]]>
+    </summary>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[检查linux下服务器的带宽]]></title>
+    <link href="http://yoursite.com/2015/03/22/%E6%A3%80%E6%9F%A5linux%E4%B8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9A%84%E5%B8%A6%E5%AE%BD/"/>
+    <id>http://yoursite.com/2015/03/22/检查linux下服务器的带宽/</id>
+    <published>2015-03-22T11:25:43.000Z</published>
+    <updated>2015-03-22T11:33:25.168Z</updated>
+    <content type="html"><![CDATA[<p>设想:公司 A 有一个名为 bsdocfs 的存储服务器,并通过名为 beckham 的客户端节点装载 NFS。公司 A 确定他们需要从 bsdocfs得到更多的带宽,因为有大量的节点需要访问 bsdocfs 的共享文件系统。<br>实现此操作的最常用和最便宜的方式是将两个千兆网卡组合在一起。这是最便宜的,因为您通常会有一个额外的可用 NIC 和一个额外的端口。<br>所以采取此这个方法。不过现在的问题是?到底需要多少带宽?</p>
+<p>千兆网卡以太网理论上的限制是 128MBit/s。这个数字从何而来,看看这些计算:<br>1Gb = 1024Mb;1024Mb/8 = 128MB;”b” = “bits,”、”B” = “bytes”</p>
+<p>但实际看到的是什么呢,有什么好的测量方法呢,我推荐一个工具 iperf。可以按照以下方法获得 iperf</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ wget http://dast.nlanr.net/Projects/Iperf2.<span class="number">0</span>/iperf-<span class="number">2.0</span>.<span class="number">2</span>.tar.gz</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<p>或者:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ apt-get install iperf</span><br></pre></td></tr></table></figure>
+<p>需要在 bsdocfs 和 beckham 均可见的共享文件系统上安装此工具,或者在两个节点上编译并安装。<br>在 bsdocfs 上,运行:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ iperf <span class="operator">-s</span> <span class="operator">-f</span> M</span><br></pre></td></tr></table></figure>
+<p>这台机器将用作服务器并以 MBit/s 为单位输出执行速度。<br>在 beckham 节点上,运行:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ iperf -c bsdocfs -P <span class="number">4</span> <span class="operator">-f</span> M -w <span class="number">256</span>k -t <span class="number">60</span></span><br></pre></td></tr></table></figure>
+<p>两个屏幕上的结果都指示了速度是多少。在使用千兆网卡的普通服务器上,可能会看到速度约为 112MBit/s。这是 TCP 堆栈和物理电缆中的常用带宽。通过以端到端的方式连接两台服务器,每台服务器使用两个联结的以太网卡,我获得了约 220MBit/s 的带宽。<br>事实上,在联结的网络上看到的 NFS 约为 150-160MBit/s。这仍然表示带宽可以达到预期效果。如果看到更小的值,则应该检查是否有问题。</p>
+<p>我最近碰到一种情况,即通过连接驱动程序连接两个使用了不同驱动程序的 NIC。这导致性能非常低,带宽约为 20MBit/s,比不连接以太网卡时的带宽还小,做bond聚合一定要使用同型号网卡。</p>
+<p>写于: 2013年08月07日<br>更新于: 2015年03月22日</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>设想:公司 A 有一个名为 bsdocfs 的存储服务器,并通过名为 beckham 的客户端节点装载 NFS。公司 A 确定他们需要从 bsdocfs得到更多的带宽,因为有大量的节点需要访问 bsdocfs 的共享文件系统。<br>实现此操作的最常用和最便宜的方式是将两个千兆网卡组合在一起。这是最便宜的,因为您通常会有一个额外的可用 NIC 和一个额外的端口。<br>所以采取此这个方法。不过现在的问题是?到底需要多少带宽?</p>
+<p>千兆网卡以太网理论上的限制是 128MBit/s。这个数字从何而来,看看这些计算:<br>1Gb = 1024Mb;1024Mb/8 = 128MB;”b” = “bits,”、”B” = “bytes”</p>
+<p>但实际看到的是什么呢,有什么好的测量方法呢,我推荐一个工具 iperf。可以按照以下方法获得 iperf</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ wget http://dast.nlanr.net/Projects/Iperf2.<span class="number">0</span>/iperf-<span class="number">2.0</span>.<span class="number">2</span>.tar.gz</span><br></pre></td></tr></table></figure>]]>
+    
+    </summary>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[linux利用screen进行shell下的屏幕协作]]></title>
+    <link href="http://yoursite.com/2015/03/22/linux%E5%88%A9%E7%94%A8screen%E8%BF%9B%E8%A1%8Cshell%E4%B8%8B%E7%9A%84%E5%B1%8F%E5%B9%95%E5%8D%8F%E4%BD%9C/"/>
+    <id>http://yoursite.com/2015/03/22/linux利用screen进行shell下的屏幕协作/</id>
+    <published>2015-03-22T11:22:22.000Z</published>
+    <updated>2015-03-22T11:24:55.108Z</updated>
+    <content type="html"><![CDATA[<p>我们都知道linux是支持多终端并行处理的<br>但是某些时候我们可能有比较特殊的需求需要两个人同时处理一个终端,screen 正好能满足这个要求</p>
+<p>首先需要安装screen软件:</p>
+<p>debian和ubuntu下面都是通过:</p>
+<pre><code>apt-<span class="keyword">get</span> install screen
+</code></pre><p>进行安装的.</p>
+<a id="more"></a>
+<p>假如现在有a和b需要进行屏幕协作,那么操作步骤如下:<br>a在终端运行:</p>
+<pre><code><span class="title">screen</span> -S   zp        
+</code></pre><p>b然后在终端运行:   </p>
+<pre><code><span class="title">screen</span> -x  zp  
+</code></pre><p>这个时候两边的用户的操作是实时同步的。</p>
+<p>写于: 2012年08月07日<br>更新于: 2015年03月22日</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>我们都知道linux是支持多终端并行处理的<br>但是某些时候我们可能有比较特殊的需求需要两个人同时处理一个终端,screen 正好能满足这个要求</p>
+<p>首先需要安装screen软件:</p>
+<p>debian和ubuntu下面都是通过:</p>
+<pre><code>apt-<span class="keyword">get</span> install screen
+</code></pre><p>进行安装的.</p>]]>
+    
+    </summary>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[使用Ganglia监控系统监控集群(debian)]]></title>
+    <link href="http://yoursite.com/2015/03/22/%E4%BD%BF%E7%94%A8Ganglia%E7%9B%91%E6%8E%A7%E7%B3%BB%E7%BB%9F%E7%9B%91%E6%8E%A7%E9%9B%86%E7%BE%A4-debian/"/>
+    <id>http://yoursite.com/2015/03/22/使用Ganglia监控系统监控集群-debian/</id>
+    <published>2015-03-22T09:20:06.000Z</published>
+    <updated>2015-03-22T11:21:27.329Z</updated>
+    <content type="html"><![CDATA[<p>anglia是一个集群监控软件,底层使用RRDTool获得数据。<br>Ganglia分为ganglia-monitor和gmetad两部分,前者运行在集群每个节点上(被监控机器)收集RRDTool产生的数据,后者运行在监控服务器上,收集每个ganglia-monitor的数据,通过Web UI可以看到直观的各种图表。</p>
+<p>在debian上安装Ganglia非常简单,首先安装下面三个包。因为要使用Web服务器才能看到图表,所以如果没有安装apache的话,会自动安装apache服务器。</p>
+<pre><code>apt-<span class="keyword">get</span> installganglia-monitor  <span class="comment">#这个包安装在被监控机器即可</span>
+apt-<span class="keyword">get</span> install ganglia-webfront gmetad  <span class="comment">#这两个包安装在监控服务器，前者提供web页面，后者收集其他机器的监控数据</span>
+</code></pre><p>被监控安装完成之后，gmond服务会运行起来，使用下面的命令可以启动这个服务。</p>
+<pre><code><span class="regexp">/etc/i</span>nit.d<span class="regexp">/ganglia-monitor restart     </span>
+</code></pre><p>(配置文件的路径在/etc/ganglia/gmond.conf)基本不用配置就可以启用</p>
+<a id="more"></a>
+<p>配置监控服务器(展示页面的服务器)</p>
+<p>因为ganglia-webfront这个包默认将Web相关的代码安装在”/usr/share/ganglia-webfrontend/”路径下,这样apache访问不到。可以使用软链接或者直接将目录移到”/var/www/”目录下。</p>
+<pre><code>ln-s <span class="regexp">/usr/</span>share<span class="regexp">/ganglia-webfrontend/</span><span class="regexp">/var/</span>www<span class="regexp">/ganglia</span>
+</code></pre><p>接着在浏览器输入”<a href="http://localhost/ganglia”就可以看到Web" target="_blank" rel="external">http://localhost/ganglia”就可以看到Web</a> UI了</p>
+<p>需要监控更多机器的时候，只需要在机器上安装ganglia-monitor 启动服务即可</p>
+<p>补充说明:<br>一、主页的显示的时间为格林威治时间,所以看起来很奇怪,想要显示为本地时间,需要修改提供网页机器的php.ini文件<br>路径为:/etc/php5/apache2/php.ini </p>
+<p>将[Date]下的设置为date.timezone =Asia/Shanghai</p>
+<p>重启apache2 </p>
+<pre><code><span class="regexp">/etc/i</span>nit.d<span class="regexp">/apache2 restart</span>
+</code></pre><p>再看主页,时间变成了当前机器时间</p>
+<p>二、python监控插件的扩展<br>为了确保Ganglia的安装有了Python支持的设置,检查一下以下设置<br>gmond.conf 有一行  include (“/etc/ganglia/conf.d/*.conf”) ,这是你应该放置.conf格式的python模块配置文件所在的目录。<br>modpython.conf 这个文件应该存在于/etc/ganglia/conf.d 中,它包含了pyconf文件的所在位置<br>modpython.so应该在/usr/lib/ganglia中<br>/usr/lib/ganglia/python_modules这个目录应该存在,这是你放置以.py结尾的python模块文件所在的目录</p>
+<p>写于: 2012年08月02日<br>更新于: 2015年03月22日</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>anglia是一个集群监控软件,底层使用RRDTool获得数据。<br>Ganglia分为ganglia-monitor和gmetad两部分,前者运行在集群每个节点上(被监控机器)收集RRDTool产生的数据,后者运行在监控服务器上,收集每个ganglia-monitor的数据,通过Web UI可以看到直观的各种图表。</p>
+<p>在debian上安装Ganglia非常简单,首先安装下面三个包。因为要使用Web服务器才能看到图表,所以如果没有安装apache的话,会自动安装apache服务器。</p>
+<pre><code>apt-<span class="keyword">get</span> installganglia-monitor  <span class="comment">#这个包安装在被监控机器即可</span>
+apt-<span class="keyword">get</span> install ganglia-webfront gmetad  <span class="comment">#这两个包安装在监控服务器，前者提供web页面，后者收集其他机器的监控数据</span>
+</code></pre><p>被监控安装完成之后，gmond服务会运行起来，使用下面的命令可以启动这个服务。</p>
+<pre><code><span class="regexp">/etc/i</span>nit.d<span class="regexp">/ganglia-monitor restart     </span>
+</code></pre><p>(配置文件的路径在/etc/ganglia/gmond.conf)基本不用配置就可以启用</p>]]>
+    
+    </summary>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Linux下如何创建loop device]]></title>
+    <link href="http://yoursite.com/2015/03/22/Linux%E4%B8%8B%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BAloop-device/"/>
+    <id>http://yoursite.com/2015/03/22/Linux下如何创建loop-device/</id>
+    <published>2015-03-22T09:07:24.000Z</published>
+    <updated>2015-03-22T09:14:03.539Z</updated>
+    <content type="html"><![CDATA[<p>在Linux中,有一种特殊的块设备叫loop device,这种loop device设备是通过映射操作系统上的正常的文件而形成的虚拟块设备</p>
+<p>因为这种设备的存在,就为我们提供了一种创建一个存在于其他文件中的虚拟文件系统的机制.下面是一个示例:<br>第一步:用dd创建一个大文件:</p>
+<pre><code>dd <span class="variable">if=</span>/dev/zero <span class="variable">of=</span>node1 <span class="variable">bs=</span><span class="number">4</span>M <span class="variable">count=</span><span class="number">500</span>
+</code></pre><p>这样就在当前目录下创建了一个2G的文件”node1”</p>
+<p>第二步:使用losetup命令创建一个loop device</p>
+<pre><code>losetup /dev/loop<span class="number">0</span> <span class="label">node1</span>
+</code></pre><a id="more"></a>
+<p>第三步:创建一个文件系统</p>
+<pre><code>mkfs -t ext3 <span class="regexp">/dev/</span>loop0
+</code></pre><p>第四步:挂载这个文件系统</p>
+<pre><code>mount <span class="regexp">/dev/</span>loop0 <span class="regexp">/mnt/</span>
+</code></pre><p>最后:如果要删除刚才创建的这些对象:依次执行如下步骤:</p>
+<pre><code><span class="variable">$ </span>umount /dev/loop<span class="number">0</span>
+<span class="variable">$ </span>losetup -d /dev/loop<span class="number">0</span>
+<span class="variable">$ </span>rm node1
+</code></pre><p>说明:<br>详细的losetup命令如下:</p>
+<pre><code>[root@vm11g ~]<span class="comment"># losetup</span>
+usage:
+losetup loop_device <span class="comment"># give info</span>
+losetup -d loop_device <span class="comment"># delete</span>
+losetup [ -e encryption ] [ -o <span class="command">offset</span> ] loop_device <span class="type">file</span> <span class="comment"># setup</span>
+</code></pre><p>其中加密选项有如下几种方式:<br>NONE use no encryption (default).<br>XOR use a simple XOR encryption.<br>DES use DES encryption. </p>
+<p>DES encryption is only available if the optional DES package has been added to the kernel.<br>DES encryption uses an additional start value that is used to protect passwords against dictionary attacks.</p>
+<p>默认情况下系统支持的loop device是8个</p>
+<pre><code>[root<span class="annotation">@vm</span>11g dev]# ls -ltr <span class="regexp">/dev/</span>loop*
+brw-r----- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">0</span> Jul <span class="number">19</span> <span class="number">2009</span> <span class="regexp">/dev/</span>loop0
+brw-r----- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">1</span> Jul <span class="number">19</span> <span class="number">2009</span> <span class="regexp">/dev/</span>loop1
+brw-r----- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">2</span> Jul <span class="number">19</span> <span class="number">2009</span> <span class="regexp">/dev/</span>loop2
+brw-r----- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">3</span> Jul <span class="number">19</span> <span class="number">2009</span> <span class="regexp">/dev/</span>loop3
+brw-r----- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">4</span> Jul <span class="number">19</span> <span class="number">2009</span> <span class="regexp">/dev/</span>loop4
+brw-r----- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">5</span> Jul <span class="number">19</span> <span class="number">2009</span> <span class="regexp">/dev/</span>loop5
+brw-r----- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">6</span> Jul <span class="number">19</span> <span class="number">2009</span> <span class="regexp">/dev/</span>loop6
+brw-r----- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">7</span> Jul <span class="number">19</span> <span class="number">2009</span> <span class="regexp">/dev/</span>loop7
+</code></pre><p>　<br>如果需要超过8个loop device,那么使用losetup命令的时候可能会遇到类似的错误 ‘no such device’,这是因为超过了可用</p>
+<p>loop device设备的最大限制,依据你的Linux系统,可以通过修改/etc/modprobe.conf 配置文件,增加如下参数的方式进行扩展:</p>
+<pre><code>options <span class="keyword">loop</span> max_loop=<span class="number">20</span> <span class="comment">--比如我增加到20个</span>
+</code></pre><p>保存退出,如果要了马上生效的话,可以通过</p>
+<pre><code>modprobe -v <span class="keyword">loop</span>
+</code></pre><p>命令立即加载该模块。</p>
+<pre><code>[root<span class="annotation">@vm</span>11g dev]# cat <span class="regexp">/etc/</span>modprobe.conf|grep loop
+options loop max_loop=<span class="number">20</span>
+[root<span class="annotation">@vm</span>11g dev]# modprobe -v loop
+insmod <span class="regexp">/lib/</span>modules<span class="regexp">/2.6.9-42.0.0.0.1.ELsmp/</span>kernel<span class="regexp">/drivers/</span>block/loop.ko max_loop=<span class="number">20</span>
+[root<span class="annotation">@vm</span>11g dev]# ls -ltr <span class="regexp">/dev/</span>loop*
+brw-rw---- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">8</span> Jul <span class="number">19</span> <span class="number">07</span>:<span class="number">44</span> <span class="regexp">/dev/</span>loop8
+brw-rw---- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">9</span> Jul <span class="number">19</span> <span class="number">07</span>:<span class="number">44</span> <span class="regexp">/dev/</span>loop9
+brw-rw---- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">10</span> Jul <span class="number">19</span> <span class="number">07</span>:<span class="number">44</span> <span class="regexp">/dev/</span>loop10
+brw-rw---- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">11</span> Jul <span class="number">19</span> <span class="number">07</span>:<span class="number">44</span> <span class="regexp">/dev/</span>loop11
+brw-rw---- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">12</span> Jul <span class="number">19</span> <span class="number">07</span>:<span class="number">44</span> <span class="regexp">/dev/</span>loop12
+brw-rw---- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">13</span> Jul <span class="number">19</span> <span class="number">07</span>:<span class="number">44</span> <span class="regexp">/dev/</span>loop13
+brw-rw---- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">14</span> Jul <span class="number">19</span> <span class="number">07</span>:<span class="number">44</span> <span class="regexp">/dev/</span>loop14
+brw-rw---- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">15</span> Jul <span class="number">19</span> <span class="number">07</span>:<span class="number">44</span> <span class="regexp">/dev/</span>loop15
+brw-rw---- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">16</span> Jul <span class="number">19</span> <span class="number">07</span>:<span class="number">44</span> <span class="regexp">/dev/</span>loop16
+brw-rw---- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">17</span> Jul <span class="number">19</span> <span class="number">07</span>:<span class="number">44</span> <span class="regexp">/dev/</span>loop17
+brw-rw---- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">18</span> Jul <span class="number">19</span> <span class="number">07</span>:<span class="number">44</span> <span class="regexp">/dev/</span>loop18
+brw-rw---- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">19</span> Jul <span class="number">19</span> <span class="number">07</span>:<span class="number">44</span> <span class="regexp">/dev/</span>loop19
+brw-rw---- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">0</span> Jul <span class="number">19</span> <span class="number">2009</span> <span class="regexp">/dev/</span>loop0
+brw-rw---- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">1</span> Jul <span class="number">19</span> <span class="number">2009</span> <span class="regexp">/dev/</span>loop1
+brw-rw---- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">2</span> Jul <span class="number">19</span> <span class="number">2009</span> <span class="regexp">/dev/</span>loop2
+brw-rw---- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">3</span> Jul <span class="number">19</span> <span class="number">2009</span> <span class="regexp">/dev/</span>loop3
+brw-rw---- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">4</span> Jul <span class="number">19</span> <span class="number">2009</span> <span class="regexp">/dev/</span>loop4
+brw-rw---- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">5</span> Jul <span class="number">19</span> <span class="number">2009</span> <span class="regexp">/dev/</span>loop5
+brw-rw---- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">6</span> Jul <span class="number">19</span> <span class="number">2009</span> <span class="regexp">/dev/</span>loop6
+brw-rw---- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">7</span> Jul <span class="number">19</span> <span class="number">2009</span> <span class="regexp">/dev/</span>loop7
+</code></pre><p>有了这个东西,在Linux下就可以用文件来生成块设备进行测试了</p>
+<p>写于: 2012年08月02日<br>更新于: 2015年03月22日</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>在Linux中,有一种特殊的块设备叫loop device,这种loop device设备是通过映射操作系统上的正常的文件而形成的虚拟块设备</p>
+<p>因为这种设备的存在,就为我们提供了一种创建一个存在于其他文件中的虚拟文件系统的机制.下面是一个示例:<br>第一步:用dd创建一个大文件:</p>
+<pre><code>dd <span class="variable">if=</span>/dev/zero <span class="variable">of=</span>node1 <span class="variable">bs=</span><span class="number">4</span>M <span class="variable">count=</span><span class="number">500</span>
+</code></pre><p>这样就在当前目录下创建了一个2G的文件”node1”</p>
+<p>第二步:使用losetup命令创建一个loop device</p>
+<pre><code>losetup /dev/loop<span class="number">0</span> <span class="label">node1</span>
+</code></pre>]]>
+    
+    </summary>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[用rsync备份一台linux服务器上的数据]]></title>
+    <link href="http://yoursite.com/2015/03/22/%E7%94%A8rsync%E5%A4%87%E4%BB%BD%E4%B8%80%E5%8F%B0linux%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E7%9A%84%E6%95%B0%E6%8D%AE/"/>
+    <id>http://yoursite.com/2015/03/22/用rsync备份一台linux服务器上的数据/</id>
+    <published>2015-03-22T08:53:33.000Z</published>
+    <updated>2015-03-22T09:06:44.704Z</updated>
+    <content type="html"><![CDATA[<p>rsync是安装完linux后都会自带的,在机器上运行rsync命令看是否有安装即可</p>
+<h2 id="备份到远程服务器">备份到远程服务器</h2><p>这里介绍的rsync的用途是备份一台linux服务器上的数据到另外一台机器</p>
+<h3 id="环境">环境</h3><p>将需要备份机器叫做服务器端  (192.168.0.195)<br>将备份后数据存放机器叫做客户端 (192.168.0.196)</p>
+<h3 id="配置">配置</h3><h4 id="1-服务器端的配置:">1.服务器端的配置:</h4><p>这里是准备备份/chinfotech/kernel/zp/这个目录,修改配置文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/rsyncd.conf (没有就创建)</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<p>配置文件如下:</p>
+<pre><code>uid=root
+gid=root
+max connections=10     
+<span class="operator"><span class="keyword">use</span> chroot=<span class="keyword">no</span>
+<span class="keyword">log</span> file=/<span class="keyword">var</span>/<span class="keyword">log</span>/rsyncd.<span class="keyword">log</span>
+pid file=/<span class="keyword">var</span>/run/rsyncd.pid
+<span class="keyword">lock</span> file=/<span class="keyword">var</span>/run/rsyncd.<span class="keyword">lock</span>
+
+[zp]
+path=/chinfotech/kernel/zp/ 
+comment=beifen
+<span class="keyword">ignore</span> <span class="keyword">errors</span>
+<span class="keyword">read</span> <span class="keyword">only</span> = <span class="keyword">no</span>
+<span class="keyword">hosts</span> allow=*</span>
+</code></pre><p>启动进程:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rsync --daemon --config=/etc/rsyncd.conf</span><br></pre></td></tr></table></figure>
+<p>服务器端就配置好了.</p>
+<h4 id="2-客户端机器的配置">2.客户端机器的配置</h4><p>在客户端不需要太多配置只需要执行:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rsync -avz --bwlimit=<span class="number">30000</span> root@<span class="number">192.168</span>.<span class="number">0.195</span>::zp /back/zp/</span><br></pre></td></tr></table></figure>
+<p>参数解释:<br>-a, —archive 归档模式，表示以递归方式传输文件,并保持所有文件属性<br>-v, —verbose 详细模式输出<br>-z, —compress 对备份的文件在传输时进行压缩处理<br>—bwlimit=KBPS 限制I/O带宽，KBytes per second (最好限速,不然长时间数据传输硬盘受不了)<br>::zp这个是上面服务器配置当中的[zp]</p>
+<p>这样备份就开始了</p>
 <hr>
-<p>写于:2011年12月16日</p>
-<h2 id="更新于:2015年03月20日">更新于:2015年03月20日</h2>]]></content>
+<h2 id="配置rsync的本地同步">配置rsync的本地同步</h2><p>使用命令进行同步,这个是从lsyncd这个软件里面提取的命令，也可以用那个做实时同步,这个是定期同步</p>
+<p>每天的三点过5分执行同步,加超时:</p>
+<pre><code>5 3 <span class="keyword">*</span> <span class="keyword">*</span> <span class="keyword">*</span> root timeout 7200  rsync -qvzrtopg    /zbkc /sdl
+5 3 <span class="keyword">*</span> <span class="keyword">*</span> <span class="keyword">*</span> root timeout 7200  rsync -qvzrtopg --delete   /zbkc /sdl
+</code></pre><p>让配置文件生效</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">crontab /etc/crontab</span><br></pre></td></tr></table></figure>
+<p>重启服务</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/etc/init.d/cron restart</span><br></pre></td></tr></table></figure>
+<p>写于: 2012年07月20日,2014年06月24日<br>更新于: 2015年03月22日</p>
+]]></content>
     <summary type="html">
-    <![CDATA[<p>当我们需要使用一个内核模块的时候,在当前使用版本内核编译的时候又没有加进去,在不改变内核版本的时候,再编译整个内核,可能会覆盖原来的内核,导致系统无法启动</p>
-<p>现在我们能够单独选择需要的模块,然后加载进内核</p>
-<h3 id="准备工作">准备工作</h3><p>首先进入你当前使用的系统查看当前的使用内核版本,在这里是 2.3.39</p>
-<p>下载对应内核源码包 linux-2.6.39.tar.bz2 将源码包放入 /usr/src/ 下<br>解压源码包<br>更新编译工具包</p>]]>
+    <![CDATA[<p>rsync是安装完linux后都会自带的,在机器上运行rsync命令看是否有安装即可</p>
+<h2 id="备份到远程服务器">备份到远程服务器</h2><p>这里介绍的rsync的用途是备份一台linux服务器上的数据到另外一台机器</p>
+<h3 id="环境">环境</h3><p>将需要备份机器叫做服务器端  (192.168.0.195)<br>将备份后数据存放机器叫做客户端 (192.168.0.196)</p>
+<h3 id="配置">配置</h3><h4 id="1-服务器端的配置:">1.服务器端的配置:</h4><p>这里是准备备份/chinfotech/kernel/zp/这个目录,修改配置文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/rsyncd.conf (没有就创建)</span><br></pre></td></tr></table></figure>]]>
     
     </summary>
     
   </entry>
   
   <entry>
-    <title><![CDATA[Debian 64位内核升级步骤]]></title>
-    <link href="http://yoursite.com/2015/03/20/Debian-64%E4%BD%8D%E5%86%85%E6%A0%B8%E5%8D%87%E7%BA%A7%E6%AD%A5%E9%AA%A4/"/>
-    <id>http://yoursite.com/2015/03/20/Debian-64位内核升级步骤/</id>
-    <published>2015-03-20T09:21:21.000Z</published>
-    <updated>2015-03-20T10:02:26.312Z</updated>
-    <content type="html"><![CDATA[<h3 id="安装相关依赖包">安装相关依赖包</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ apt-get install bzip2 libncurses5-dev kernel-package zlib1g-dev gcc make kernel-package wget module-init-tools procps libncurses5-dev</span><br></pre></td></tr></table></figure>
-<h3 id="下载源码">下载源码</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/src</span><br><span class="line">wget http://www.kernel.org/pub/linux/kernel/v2.<span class="number">6</span>/linux-<span class="number">2.6</span>.<span class="number">35.9</span>.tar.bz2</span><br><span class="line">tar -xvjf linux-<span class="number">2.6</span>.<span class="number">35.9</span>.tar.bz2</span><br><span class="line">cp /boot/config-`uname -r` /usr/src/linux-<span class="number">2.6</span>.<span class="number">35.9</span>/.config</span><br><span class="line">Then we must configure the new kernel:</span><br><span class="line"><span class="built_in">cd</span> linux-<span class="number">2.6</span>.<span class="number">35.9</span></span><br><span class="line">make menuconfig</span><br></pre></td></tr></table></figure>
+    <title><![CDATA[修改ssh的默认22端口，并使用scp的方法]]></title>
+    <link href="http://yoursite.com/2015/03/22/%E4%BF%AE%E6%94%B9ssh%E7%9A%84%E9%BB%98%E8%AE%A422%E7%AB%AF%E5%8F%A3%EF%BC%8C%E5%B9%B6%E4%BD%BF%E7%94%A8scp%E7%9A%84%E6%96%B9%E6%B3%95/"/>
+    <id>http://yoursite.com/2015/03/22/修改ssh的默认22端口，并使用scp的方法/</id>
+    <published>2015-03-22T08:49:01.000Z</published>
+    <updated>2015-03-22T08:52:57.246Z</updated>
+    <content type="html"><![CDATA[<p>修改默认的22的ssh端口只需要修改 /etc/ssh/sshd_config 中的 port 字段为你想要的端口就可以了<br>以后用其他机器ssh登录这台机器只需要:</p>
+<pre><code>ssh -p <span class="comment">(port)</span>  <span class="comment">(ip)</span>  
+</code></pre><p>使用scp 就是:</p>
+<pre><code>scp -<span class="constant">P</span> (port) /usr/myfile   <span class="constant">IP</span><span class="symbol">:/tmp</span>
+</code></pre><p>写于: 2012年05月05日<br>更新于: 2015年03月02日</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>修改默认的22的ssh端口只需要修改 /etc/ssh/sshd_config 中的 port 字段为你想要的端口就可以了<br>以后用其他机器ssh登录这台机器只需要:</p>
+<pre><code>ssh -p <span class="comment">(port)<]]>
+    </summary>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[debian修改crontab默认编辑器为vim]]></title>
+    <link href="http://yoursite.com/2015/03/22/debian%E4%BF%AE%E6%94%B9crontab%E9%BB%98%E8%AE%A4%E7%BC%96%E8%BE%91%E5%99%A8%E4%B8%BAvim/"/>
+    <id>http://yoursite.com/2015/03/22/debian修改crontab默认编辑器为vim/</id>
+    <published>2015-03-22T08:46:03.000Z</published>
+    <updated>2015-03-22T08:48:25.906Z</updated>
+    <content type="html"><![CDATA[<p>debian终端下默认编辑器为nano,比如crontab -e就会打开nano,这个编辑器用起来很不习惯,想修改为vim,当然,你的debian系统必须先安装vim.如果已经安装vim,请输入如下命令:<br>输入命令:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">update-alternatives --config editor</span><br></pre></td></tr></table></figure>
+<p>然后选择/usr/vim/vim.basic就OK了</p>
+<p>vim.tiny与vim.basic的区别是vim.basic为完全的vim,而vim.tiny为简化版,功能上有所区别,如不支持高亮等等.</p>
+<p>写于: 2012年5月04日<br>更新于: 2015年03月22日</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>debian终端下默认编辑器为nano,比如crontab -e就会打开nano,这个编辑器用起来很不习惯,想修改为vim,当然,你的debian系统必须先安装vim.如果已经安装vim,请输入如下命令:<br>输入命令:</p>
+<figure class="highli]]>
+    </summary>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[正确用DD测试磁盘读写速度]]></title>
+    <link href="http://yoursite.com/2015/03/22/%E6%AD%A3%E7%A1%AE%E7%94%A8DD%E6%B5%8B%E8%AF%95%E7%A3%81%E7%9B%98%E8%AF%BB%E5%86%99%E9%80%9F%E5%BA%A6/"/>
+    <id>http://yoursite.com/2015/03/22/正确用DD测试磁盘读写速度/</id>
+    <published>2015-03-22T08:36:15.000Z</published>
+    <updated>2015-03-22T08:45:31.629Z</updated>
+    <content type="html"><![CDATA[<p>问: 以下几种方式测试磁盘读写速度有什么区别?</p>
+<pre><code>dd <span class="variable">if=</span>/dev/zero <span class="variable">of=</span>test <span class="variable">bs=</span><span class="number">1</span>M <span class="variable">count=</span><span class="number">128</span> 
+dd <span class="variable">if=</span>/dev/zero <span class="variable">of=</span>test <span class="variable">bs=</span><span class="number">1</span>M <span class="variable">count=</span><span class="number">128</span> ; sync
+dd <span class="variable">if=</span>/dev/zero <span class="variable">of=</span>test <span class="variable">bs=</span><span class="number">1</span>M <span class="variable">count=</span><span class="number">128</span> <span class="variable">conv=</span>fdatasync
+dd <span class="variable">if=</span>/dev/zero <span class="variable">of=</span>test <span class="variable">bs=</span><span class="number">1</span>M <span class="variable">count=</span><span class="number">128</span> <span class="variable">oflag=</span>dsync
+</code></pre><p>答:区别在于内存中写缓存的处理方式。</p>
 <a id="more"></a>
-<h3 id="裁剪不需要的东西">裁剪不需要的东西</h3><p>我们在内核配置里面至少有几个地方要修改。如下所示:</p>
-<blockquote>
-<p>File systems -&gt; Btrfs filesystem (EXPERIMENTAL) Unstable disk format<br>在”Btrfs filesystem”之前标上&lt;*&gt;<br>Processor type and features -&gt; Processor Family -&gt; “our processor”<br>删除Dell laptop support、Toshiba Laptop support。<br>裁减sound card support。<br>裁减Bluetooth subsystem support。<br>裁减Wireless。<br>裁减Kernel hacking 。<br>多次点击“ESC”退出,保存<br>make-kpkg linux-image linux-headers —initrd<br>编译成功后执行</p>
-</blockquote>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> ..</span><br><span class="line">$ dpkg -i linux-image-<span class="number">2.6</span>.<span class="number">29</span>_2.<span class="number">6.35</span>.<span class="number">9</span>-<span class="number">10.00</span>.Custom_i386.deb</span><br><span class="line">$ dpkg -i linux-headers-<span class="number">2.6</span>.<span class="number">29</span>_2.<span class="number">6.35</span>.<span class="number">9</span>-<span class="number">10.00</span>.Custom_i386.deb</span><br></pre></td></tr></table></figure>
-<p>重启,用 uname-a 查看内核版本</p>
-<h3 id="错误处理">错误处理</h3><p>编译完成后生成linux deb 包,先dpkg -i装image,再装headers</p>
-<p>安装完成以后再update-grub 进入/boot/grub/menu.lst 中选择启动的内核项 默认的第一项为0</p>
-<p>在编译完成内核后开机可能出现 Kernel panic - not syncing: VFS: Unable to mount root fs on unknown-block(1,0)的错误 在/boot/grub/menu.lst中可以发现新加的内核可能是没有 initrd   /initrd.img-2.6.37.6 未生成的原因不明 可以手动生成<br>执行命令<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ mkinitramfs -o /boot/initrd.img-<span class="number">2.6</span>.<span class="number">34.10</span> <span class="number">2.6</span>.<span class="number">34.10</span></span><br></pre></td></tr></table></figure></p>
-<blockquote>
-<p>/boot/initrd.img-2.6.34.10是这个启动加载文件的生成路径<br>2.6.34.10是 /lib/modules/2.6.34.10</p>
-</blockquote>
-<p>然后update-grub 再启动新内核就没有问题了<br>卸载一个已经安装的内核包<br>debian卸载旧内核要先看看有哪些旧的内核,用命令<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ dpkg --get-selections |grep linux</span><br></pre></td></tr></table></figure></p>
-<p>如果你的内核是以kernel开头的就把上面的linux改成kernel,之后再用</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ dpkg --purge --force-remove-essential linux-image-XXX</span><br></pre></td></tr></table></figure>
-<hr>
-<p>写于  : 2011年12月16日<br>更新于: 2015年3月20日</p>
+<p>1.dd if=/dev/zero of=test bs=1M count=128<br>没有加任何参数,dd默认的方式不包括“同步(sync)”命令。也就是说,dd命令完成前并没有让系统真正把文件写到磁盘上。所以以上命令只是单纯地把这128MB的数据读到内存缓冲当中,写缓存[write cache]。所以你得到的将是一个超级快的速度。因为其实dd给你的只是读取到缓存的速度,直到dd完成后系统才开始真正往磁盘上写数据,但这个速度你是看不到了。所以如果这个速度很快,先不要偷着乐。呵呵</p>
+<p>2.dd if=/dev/zero of=test bs=1M count=128 ; sync<br>和前面1中的完全一样。分号隔开的只是先后两个独立的命令。当sync命令准备开始往磁盘上真正写入数据的时候,前面dd命令已经把错误的“写入速度”值显示在屏幕上了。所以你还是得不到真正的写入速度。</p>
+<p>3.dd if=/dev/zero of=test bs=1M count=128 conv=fdatasync<br>加入这个参数后,dd命令执行到最后会真正执行一次“同步(sync)”操作,所以这时候你得到的是读取这128M数据到内存并写入到磁盘上所需的时间,这样算出来的时间才是比较符合实际的。</p>
+<p>4.dd if=/dev/zero of=test bs=1M count=128 oflag=dsync<br>加入这个参数后,dd在执行时每次都会进行同步写入操作。也就是说,这条命令每次读取1M后就要先把这1M写入磁盘,然后再读取下面这1M,一共重复128次。这可能是最慢的一种方式了,因为基本上没有用到写缓存(write cache)。</p>
+<p>问:那应该用哪一种呢?<br>答:建议使用</p>
+<pre><code>dd <span class="variable">bs=</span><span class="number">1</span>M <span class="variable">count=</span><span class="number">128</span> <span class="variable">if=</span>/dev/zero <span class="variable">of=</span>test <span class="variable">conv=</span>fdatasync
+</code></pre><p>因为这种方式最接近计算机实际操作,所以测出来的数据最有参考价值</p>
+<p>写于: 2012年05月02日<br>更新于: 2015年03月22日</p>
 ]]></content>
     <summary type="html">
-    <![CDATA[<h3 id="安装相关依赖包">安装相关依赖包</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ apt-get install bzip2 libncurses5-dev kernel-package zlib1g-dev gcc make kernel-package wget module-init-tools procps libncurses5-dev</span><br></pre></td></tr></table></figure>
-<h3 id="下载源码">下载源码</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/src</span><br><span class="line">wget http://www.kernel.org/pub/linux/kernel/v2.<span class="number">6</span>/linux-<span class="number">2.6</span>.<span class="number">35.9</span>.tar.bz2</span><br><span class="line">tar -xvjf linux-<span class="number">2.6</span>.<span class="number">35.9</span>.tar.bz2</span><br><span class="line">cp /boot/config-`uname -r` /usr/src/linux-<span class="number">2.6</span>.<span class="number">35.9</span>/.config</span><br><span class="line">Then we must configure the new kernel:</span><br><span class="line"><span class="built_in">cd</span> linux-<span class="number">2.6</span>.<span class="number">35.9</span></span><br><span class="line">make menuconfig</span><br></pre></td></tr></table></figure>]]>
+    <![CDATA[<p>问: 以下几种方式测试磁盘读写速度有什么区别?</p>
+<pre><code>dd <span class="variable">if=</span>/dev/zero <span class="variable">of=</span>test <span class="variable">bs=</span><span class="number">1</span>M <span class="variable">count=</span><span class="number">128</span> 
+dd <span class="variable">if=</span>/dev/zero <span class="variable">of=</span>test <span class="variable">bs=</span><span class="number">1</span>M <span class="variable">count=</span><span class="number">128</span> ; sync
+dd <span class="variable">if=</span>/dev/zero <span class="variable">of=</span>test <span class="variable">bs=</span><span class="number">1</span>M <span class="variable">count=</span><span class="number">128</span> <span class="variable">conv=</span>fdatasync
+dd <span class="variable">if=</span>/dev/zero <span class="variable">of=</span>test <span class="variable">bs=</span><span class="number">1</span>M <span class="variable">count=</span><span class="number">128</span> <span class="variable">oflag=</span>dsync
+</code></pre><p>答:区别在于内存中写缓存的处理方式。</p>]]>
     
     </summary>
     
   </entry>
   
   <entry>
-    <title><![CDATA[test1]]></title>
-    <link href="http://yoursite.com/2015/03/19/test/"/>
-    <id>http://yoursite.com/2015/03/19/test/</id>
-    <published>2015-03-19T15:27:00.000Z</published>
-    <updated>2015-03-20T08:53:32.778Z</updated>
-    <content type="html"><![CDATA[<p>av<br>sd<br>sad<br>as<br>da<br>sd<br>as<br>da<br>sdasddddddddddddddddd</p>
-<p>a</p>
-<p>a<br>a</p>
-<p>asdasd<br>as<br>d<br>asd<br>as<br>da</p>
-<p>as<br>das<br>d<br>as</p>
-<p>asds</p>
+    <title><![CDATA[西数WD2T硬盘分区对齐的方法]]></title>
+    <link href="http://yoursite.com/2015/03/22/%E8%A5%BF%E6%95%B0WD2T%E7%A1%AC%E7%9B%98%E5%88%86%E5%8C%BA%E5%AF%B9%E9%BD%90%E7%9A%84%E6%96%B9%E6%B3%95/"/>
+    <id>http://yoursite.com/2015/03/22/西数WD2T硬盘分区对齐的方法/</id>
+    <published>2015-03-22T08:25:08.000Z</published>
+    <updated>2015-03-22T08:35:42.722Z</updated>
+    <content type="html"><![CDATA[<p>新购一个西数2T硬盘,也就是绿盘的那种,淘宝500左右,支持高级格式化。 </p>
+<p>到手以后,分区格式化,前几天格式化完成以后,fdisk -l 发现如下文字 </p>
+<p>引用<br>Partition 1 does not start on physical sector boundary.</p>
+<p>网上找了下,说是软件的问题,后来折腾了下,应该是分区没有对齐的原因,至于为什么要对齐,优点很多,好像这个是跟神马高级分区格式化有关,具体的原理神马的,我就不讨论了,反正有一点,对齐后,性能会有提升。 </p>
+<a id="more"></a>
+<p>对齐后,用fdisk -lu 查看的结果如下</p>
+<pre><code>Disk /dev/sdc: <span class="number">2000.4</span> GB, <span class="number">2000398934016</span> <span class="keyword">bytes</span>
+<span class="number">255</span> heads, <span class="number">63</span> sectors/track, <span class="number">243201</span> cylinders, total <span class="number">3907029168</span> sectors
+Units = sectors <span class="operator">of</span> <span class="number">1</span> * <span class="number">512</span> = <span class="number">512</span> <span class="keyword">bytes</span>
+Sector size (logical/physical): <span class="number">512</span> <span class="keyword">bytes</span> / <span class="number">512</span> <span class="keyword">bytes</span>
+I/O size (minimum/optimal): <span class="number">512</span> <span class="keyword">bytes</span> / <span class="number">512</span> <span class="keyword">bytes</span>
+Disk identifier: <span class="number">0x2fa8ebd1</span>
+
+   Device Boot      Start         End      Blocks   Id  System
+/dev/sdc1            <span class="number">2048</span>  <span class="number">3907028991</span>  <span class="number">1953513472</span>   <span class="number">83</span>  Linux
+</code></pre><p>怎么样个对齐的方法呢,就是分区的时候,要注意,不要用 fdisk 来分区,不是说fdisk不行,经过我的测试,用 fdisk 分区,我明明分的是2T,结果却是1T大小，用 parted 分区就没有这个问题 </p>
+<p>debian 下面,如果没有 parted 这个工具,apt-get 安装,安装完成以后,就可以使用了 </p>
+<p>引用</p>
+<pre><code>root@localhost ~]<span class="comment"># parted /dev/sdb # 使用parted来对GPT磁盘操作,进入交互式模式</span>
+GNU Parted <span class="number">1.8</span><span class="number">.1</span> Using /dev/sdb Welcome <span class="keyword">to</span> GNU Parted! Type ‘help’ <span class="keyword">to</span> view a <span class="type">list</span> <span class="keyword">of</span> commands.
+(parted) mklabel msdos           <span class="comment"># 将MBR磁盘格式化为msdos 2T的硬盘 msdos 没有问题</span>
+(parted) p                      <span class="comment">#打印当前分区</span>
+(parted) mkpart primary <span class="number">1</span> <span class="number">2</span>TB                <span class="comment"># 分一个2T的主分区,这里输入1,否则会提示性能问题</span>
+(parted) p                         <span class="comment">#打印当前分区</span>
+(parted) q 退出
+Information: Don’t forget <span class="keyword">to</span> update /etc/fstab, <span class="keyword">if</span> necessary.
+</code></pre><p>退出后,用 mkfs.ext4 格式化就好了 </p>
+<p>然后再用 fdisk -lu 查看,已经没有那个提示了 </p>
+<p>这里说明下,对齐,就是说分区的时候,开始的扇区要以 8 的倍数来开始,而 fisk 默认是 63 ,对老硬盘没有什么问题,但是对西数的新硬盘, 4k 扇区的,就会有对齐的问题,会导致性能下降</p>
+<p>写于: 2012年05月02日<br>更新于:2015年03月22日</p>
 ]]></content>
     <summary type="html">
-    <![CDATA[<p>av<br>sd<br>sad<br>as<br>da<br>sd<br>as<br>da<br>sdasddddddddddddddddd</p>
-<p>a</p>
-<p>a<br>a</p>
-<p>asdasd<br>as<br>d<br>asd<br>as<br>da]]>
+    <![CDATA[<p>新购一个西数2T硬盘,也就是绿盘的那种,淘宝500左右,支持高级格式化。 </p>
+<p>到手以后,分区格式化,前几天格式化完成以后,fdisk -l 发现如下文字 </p>
+<p>引用<br>Partition 1 does not start on physical sector boundary.</p>
+<p>网上找了下,说是软件的问题,后来折腾了下,应该是分区没有对齐的原因,至于为什么要对齐,优点很多,好像这个是跟神马高级分区格式化有关,具体的原理神马的,我就不讨论了,反正有一点,对齐后,性能会有提升。 </p>]]>
+    
     </summary>
     
   </entry>
   
   <entry>
-    <title><![CDATA[the fist day]]></title>
-    <link href="http://yoursite.com/2015/03/19/the-fist-day/"/>
-    <id>http://yoursite.com/2015/03/19/the-fist-day/</id>
-    <published>2015-03-19T14:54:59.000Z</published>
-    <updated>2015-03-19T15:11:25.413Z</updated>
-    <content type="html"><![CDATA[<h2 id="为什么写这个博客">为什么写这个博客</h2><p>博客转移了很多地方,从最开始的人人小站,到后来的CSDN,再到简书,换来换去直到看到还有个hexo,这个是搭建在github上的一个博客,只不过排版什么的可能需要自己来处理了,这个博客最大的优点就是简洁,可以很方便的找到自己需要了,打算用这个还有个原因是,看到了几个写的很好的技术文章正好来自这个平台,自己也尝试着把好东西都放到这里汇总</p>
-<p>很多东西真的非常喜欢,比如goagent,比如google,比如github,以及一些其他的开源的东西,也许很多人无法理解share是个什么感觉</p>
-<p>这个博客是我技术文章开始的地方,也是我和嘎嘎开始减肥的日子,也该活的有生气一些,准备数据化我们的减肥数据,也许这样更能激励自己</p>
-<p>谷歌的十大信条:</p>
-<pre><code>1、以用户为中心,其他一切自然水到渠成
-2、专心将一件事做到极致
-3、越快越好
-4、网络上也讲民主
-5、信息随时随地可得
-6、赚钱不必作恶
-7、信息无极限
-8、信息需求无国界
-9、认真不在着装
-10、追求无止境
-</code></pre>]]></content>
+    <title><![CDATA[Check Host:实时监控网站或者服务器是否可以访问]]></title>
+    <link href="http://yoursite.com/2015/03/22/Check-Host-%E5%AE%9E%E6%97%B6%E7%9B%91%E6%8E%A7%E7%BD%91%E7%AB%99%E6%88%96%E8%80%85%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%98%AF%E5%90%A6%E5%8F%AF%E4%BB%A5%E8%AE%BF%E9%97%AE/"/>
+    <id>http://yoursite.com/2015/03/22/Check-Host-实时监控网站或者服务器是否可以访问/</id>
+    <published>2015-03-22T08:15:10.000Z</published>
+    <updated>2015-03-22T08:24:03.487Z</updated>
+    <content type="html"><![CDATA[<p>如果你拥有一个网站，那么最重要的事情就是要保证它24小时都能够访问。不过国内的虚拟主机服务非常糟糕，经常会出现各种状况,所以我们需要一个软件,可以让我们第一时间知道网站出现了无法访问的情况,从而通知售后人员解决。而Check Host就是这么一个windows下的免费网站时时监控工具。</p>
+<p>服务器无法访问,那么对网站是非常不利的,而搜索引擎也会知道这个状况,因为蜘蛛不能爬行你的网页了。所以对访客以及搜索引擎排名都是不利的。不过这个事情肯定会发生,我们能做的就是提高反应速度,让这样的情况在最短的时间内解决。</p>
+<p>如此一来,对于网站的实时监控就非常有必要的,但是我们又不能每隔一段时间就手动打开网站一次,这样太过于麻烦,甚至是愚蠢的,所以我们必须要使用一个软件,让其代劳，当发生状况的时候还会给你发出警告，而Check Host就可以满足你的愿望。</p>
+<p>Check Host是一个windows下的小软件，只有2.2M,十分的小巧,它的原理是每隔一段时间就自动ping一下你设定的网址。如果无法ping通的话,那么就会通过几种方法告诉你。</p>
+<a id="more"></a>
+<p>这个软件对监控的网站和服务器没有数量方面的限制,所以你同时可以监控多个网站。</p>
+<p><img src="http://7xi6lo.com1.z0.glb.clouddn.com/checkhost1.jpg" alt=""></p>
+<p>使用方法: </p>
+<p>当你安装运行后,点击左上角的“new”按钮添加一个任务,在出现界面的“hostname”下面输入网址。“check interval”是让你设置测试间隔,这个默认是10秒,建议间隔长一点,不然可能会谎报军情。“timeout”是超时的时间,默认1000毫秒,建议也是填较短的时间,不然可能会导致软件无法响应。如果发生这样的状况,只需等待就可以了。</p>
+<p>而在新建任务界面右侧的是当ping不通是触发什么行为,如果又再次ping通又触发什么。</p>
+<p>这个你有三种选择,桌面提醒、往指定邮箱发送邮件、启动某个程序或者批处理命令。并且这个是可以多选的。<br>默认情况下,桌面提醒是被激活的,一旦出现状况,你就会在桌面右侧看到小的弹窗,上面会显示不能访问的网站网址。而系统托盘的图标也会从“勾”变成“叉”。</p>
+<p>而触发程序的话，你可以指定音乐播放器,那么这样就会在网站无法访问时使用声音提醒你。</p>
+<p>“check interval”在软件默认设置中是10秒,不过希望你在使用的时候改成1分钟以上，这样就不会非常敏感了。</p>
+<p><img src="http://7xi6lo.com1.z0.glb.clouddn.com/checkhost2.jpg" alt=""></p>
+<p>写于:2012年04月26日<br>更新于: 2015年03月22日</p>
+]]></content>
     <summary type="html">
-    <![CDATA[<h2 id="为什么写这个博客">为什么写这个博客</h2><p>博客转移了很多地方,从最开始的人人小站,到后来的CSDN,再到简书,换来换去直到看到还有个hexo,这个是搭建在github上的一个博客,只不过排版什么的可能需要自己来处理了,这个博客最大的优点就是简洁,可以很方]]>
+    <![CDATA[<p>如果你拥有一个网站，那么最重要的事情就是要保证它24小时都能够访问。不过国内的虚拟主机服务非常糟糕，经常会出现各种状况,所以我们需要一个软件,可以让我们第一时间知道网站出现了无法访问的情况,从而通知售后人员解决。而Check Host就是这么一个windows下的免费网站时时监控工具。</p>
+<p>服务器无法访问,那么对网站是非常不利的,而搜索引擎也会知道这个状况,因为蜘蛛不能爬行你的网页了。所以对访客以及搜索引擎排名都是不利的。不过这个事情肯定会发生,我们能做的就是提高反应速度,让这样的情况在最短的时间内解决。</p>
+<p>如此一来,对于网站的实时监控就非常有必要的,但是我们又不能每隔一段时间就手动打开网站一次,这样太过于麻烦,甚至是愚蠢的,所以我们必须要使用一个软件,让其代劳，当发生状况的时候还会给你发出警告，而Check Host就可以满足你的愿望。</p>
+<p>Check Host是一个windows下的小软件，只有2.2M,十分的小巧,它的原理是每隔一段时间就自动ping一下你设定的网址。如果无法ping通的话,那么就会通过几种方法告诉你。</p>]]>
+    
+    </summary>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[清理win7注册表后，没有了右键新建选项处理办法]]></title>
+    <link href="http://yoursite.com/2015/03/22/%E6%B8%85%E7%90%86win7%E6%B3%A8%E5%86%8C%E8%A1%A8%E5%90%8E%EF%BC%8C%E6%B2%A1%E6%9C%89%E4%BA%86%E5%8F%B3%E9%94%AE%E6%96%B0%E5%BB%BA%E9%80%89%E9%A1%B9%E5%A4%84%E7%90%86%E5%8A%9E%E6%B3%95/"/>
+    <id>http://yoursite.com/2015/03/22/清理win7注册表后，没有了右键新建选项处理办法/</id>
+    <published>2015-03-22T08:09:11.000Z</published>
+    <updated>2015-03-22T08:12:37.289Z</updated>
+    <content type="html"><![CDATA[<p>今天清理win7注册表的右键选项,发现清理完了后,居然没有了右键新建,什么文件都无法创建,搜索了下,发现有人给出了解决办法,如下:</p>
+<pre><code>REGEDIT4 <span class="special">[</span>HKEY_CLASSES_ROOT<span class="command">\Directory</span><span class="command">\Background</span><span class="command">\shellex</span><span class="command">\ContextMenuHandlers</span><span class="command">\New</span><span class="special">]</span> @="<span class="special">{</span>D969A300-E7FF-11d0-A93B-00A0C90F2719<span class="special">}</span>" <span class="special">[</span>HKEY_CLASSES_ROOT<span class="command">\Directory</span><span class="command">\Background</span><span class="command">\shellex</span><span class="command">\ContextMenuHandlers</span><span class="command">\New</span><span class="command">\command</span><span class="special">]</span> @=hex(2): 
+</code></pre><p>建一个文本文件,把上面的内容拷过去,然后把文件后缀改成.reg。双击执行就可以了</p>
+<p>写于: 2012年04月25日<br>更新于: 2015年03月22日</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>今天清理win7注册表的右键选项,发现清理完了后,居然没有了右键新建,什么文件都无法创建,搜索了下,发现有人给出了解决办法,如下:</p>
+<pre><code>REGEDIT4 <span class="special">[</span>HKEY_CLASSES_ROOT]]>
     </summary>
     
   </entry>

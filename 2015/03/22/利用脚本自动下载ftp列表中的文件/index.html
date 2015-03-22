@@ -1,0 +1,217 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  
+  <title>利用脚本自动下载ftp列表中的文件 | zphj1987&#39;Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  
+    <meta name="author" content="zphj1987">
+  
+  
+    <meta name="description" content="我们可能会遇到这种场景，在某个机构订阅了一个邮件列表,然后这个机构会定期的发送带有ftp目录的url地址到你的邮件,现在你想在你的服务器上能够方便的下载这个列表上的文件,而不是手动的一个个去下,那么我们可以用脚本来完成这个功能,我将这个过程分为两部分,第一步获取到ftp页面的所有文件名称,第二步是通过获得的文件名来下载文件下面以一个卫星数据的下载为例:
+ftp://oceans.gsfc.nasa">
+  
+  <meta name="description" content="我们可能会遇到这种场景，在某个机构订阅了一个邮件列表,然后这个机构会定期的发送带有ftp目录的url地址到你的邮件,现在你想在你的服务器上能够方便的下载这个列表上的文件,而不是手动的一个个去下,那么我们可以用脚本来完成这个功能,我将这个过程分为两部分,第一步获取到ftp页面的所有文件名称,第二步是通过获得的文件名来下载文件下面以一个卫星数据的下载为例:
+ftp://oceans.gsfc.nasa">
+<meta property="og:type" content="article">
+<meta property="og:title" content="利用脚本自动下载ftp列表中的文件">
+<meta property="og:url" content="http://yoursite.com/2015/03/22/利用脚本自动下载ftp列表中的文件/index.html">
+<meta property="og:site_name" content="zphj1987'Blog">
+<meta property="og:description" content="我们可能会遇到这种场景，在某个机构订阅了一个邮件列表,然后这个机构会定期的发送带有ftp目录的url地址到你的邮件,现在你想在你的服务器上能够方便的下载这个列表上的文件,而不是手动的一个个去下,那么我们可以用脚本来完成这个功能,我将这个过程分为两部分,第一步获取到ftp页面的所有文件名称,第二步是通过获得的文件名来下载文件下面以一个卫星数据的下载为例:
+ftp://oceans.gsfc.nasa">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="利用脚本自动下载ftp列表中的文件">
+<meta name="twitter:description" content="我们可能会遇到这种场景，在某个机构订阅了一个邮件列表,然后这个机构会定期的发送带有ftp目录的url地址到你的邮件,现在你想在你的服务器上能够方便的下载这个列表上的文件,而不是手动的一个个去下,那么我们可以用脚本来完成这个功能,我将这个过程分为两部分,第一步获取到ftp页面的所有文件名称,第二步是通过获得的文件名来下载文件下面以一个卫星数据的下载为例:
+ftp://oceans.gsfc.nasa">
+  
+  
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+<body>
+  <div class="wrapper">
+    <header id="header">
+  <div class="title">
+    <h1><a href="/">zphj1987&#39;Blog</a></h1>
+    <p><a href="/">现在所学，终有所用</a></p>
+  </div>
+  <nav class="nav">
+    <ul>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/archives">Archives</a></li>
+      
+        <li><a href="/atom.xml">rss</a></li>
+      
+        <li><a href="/about">About</a></li>
+      
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+  <div class="clearfix"></div>
+</header>
+    <div class="content"><article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/22/利用脚本自动下载ftp列表中的文件/">
+  <time datetime="2015-03-22T05:09:35.000Z">
+    2015-03-22
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title">利用脚本自动下载ftp列表中的文件</h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>我们可能会遇到这种场景，在某个机构订阅了一个邮件列表,然后这个机构会定期的发送带有ftp目录的url地址到你的邮件,现在你想在你的服务器上能够方便的下载这个列表上的文件,而不是手动的一个个去下,那么我们可以用脚本来完成这个功能,我将这个过程分为两部分,第一步获取到ftp页面的所有文件名称,第二步是通过获得的文件名来下载文件<br>下面以一个卫星数据的下载为例:</p>
+<p>ftp://oceans.gsfc.nasa.gov/subscriptions/1227</p>
+<p>这个是邮件中收到的url地址,在浏览器中可以查看到文件名,由于这个数据是0,这个是这样设计的.</p>
+<h3 id="第一步:我们只需要获取他的文件名,用下面这个脚本">第一步:我们只需要获取他的文件名,用下面这个脚本</h3><pre><code><span class="shebang">#! /bin/sh</span>
+<span class="built_in">echo</span> <span class="string">"请输入你的FTP目录编号"</span>
+<span class="built_in">read</span> <span class="operator">-e</span> id
+wget -r  ftp://oceans.gsfc.nasa.gov/subscriptions/<span class="variable">$id</span>
+ls  /usr/src/oceans.gsfc.nasa.gov/subscriptions/<span class="variable">$id</span>/ &gt; /usr/src/filename.txt
+</code></pre><p>这样文件名就被下载到了/usr/src/filename.txt中了</p>
+<a id="more"></a>
+<h3 id="第二步:提取文件名下载数据">第二步:提取文件名下载数据</h3><pre><code><span class="shebang">#! /bin/sh</span>
+a=$(cat /usr/src/filename.txt |wc <span class="operator">-l</span>)
+<span class="built_in">echo</span> <span class="string">"请输入你要下载的文件的存放路径"</span>
+<span class="built_in">read</span> <span class="operator">-e</span> dir
+mkdir -p <span class="variable">$dir</span>
+<span class="built_in">cd</span> <span class="variable">$dir</span>
+<span class="keyword">for</span>((i=<span class="number">1</span>;i&lt;=a;i++))
+<span class="keyword">do</span>
+b=$( head -<span class="variable">$i</span> /usr/src/filename.txt |tail -<span class="number">1</span>)
+wget -T <span class="number">20</span> -c -t <span class="number">0</span> http://oceandata.sci.gsfc.nasa.gov/cgi/getfile/<span class="variable">$b</span>
+<span class="keyword">done</span>
+</code></pre><p>这样数据就被下载到指定位子了</p>
+<hr>
+<p>上面是功能的分块实现,下面对脚本进行了优化:</p>
+<pre><code><span class="shebang">#!/bin/bash</span>
+input=
+until
+ <span class="built_in">echo</span> <span class="string">"----------------------------------"</span>
+ <span class="built_in">echo</span> <span class="string">"您想做下列哪项操作"</span>
+ <span class="built_in">echo</span> <span class="string">"(1) 获取指定目录文件名(需知道目录编号)"</span>
+ <span class="built_in">echo</span> <span class="string">"(2) 请输入你要下载的FTP目录编号"</span>
+ <span class="built_in">echo</span> <span class="string">"(3) 检查文件是否下载完整,需指定目录编号:"</span>
+ <span class="built_in">echo</span> <span class="string">"(4) 不做操作退出"</span>
+ <span class="built_in">echo</span> <span class="string">"----------------------------------"</span>
+ <span class="built_in">read</span> <span class="operator">-e</span> input                   <span class="comment">#读入用户输入的内容,并存入变量</span>
+ <span class="built_in">test</span> <span class="variable">$input</span> <span class="operator">-eq</span> <span class="number">4</span>               <span class="comment">#若输入为4,则退出,否则继续</span>
+ <span class="keyword">do</span>
+  <span class="keyword">case</span> <span class="variable">$input</span> <span class="keyword">in</span>                 <span class="comment">#开始CASE  IN  CASE结构</span>
+ <span class="number">1</span>)
+        <span class="built_in">echo</span> <span class="string">"请输入你的FTP目录编号"</span>
+        <span class="built_in">read</span> <span class="operator">-e</span> id
+        wget -r -T <span class="number">20</span> -t <span class="number">0</span> ftp://oceans.gsfc.nasa.gov/subscriptions/<span class="variable">$id</span>
+        ls  /usr/src/oceans.gsfc.nasa.gov/subscriptions/<span class="variable">$id</span>/ &gt; /usr/src/filename<span class="variable">$id</span>.txt;;
+ <span class="number">2</span>)
+        <span class="built_in">echo</span> <span class="string">"请输入你要下载的FTP目录编号"</span>
+        <span class="built_in">read</span> <span class="operator">-e</span> id1
+        a=$(cat /usr/src/filename<span class="variable">$id1</span>.txt |wc <span class="operator">-l</span>)
+        <span class="built_in">echo</span> <span class="string">"有 <span class="variable">$a</span> 个 文件"</span>
+        <span class="built_in">echo</span> <span class="string">"请输入你要下载的文件的存放路径"</span>
+        <span class="built_in">read</span> <span class="operator">-e</span> dir
+        mkdir -p <span class="variable">$dir</span>
+        <span class="built_in">cd</span> <span class="variable">$dir</span>
+        <span class="keyword">for</span>((i=<span class="number">1</span>;i&lt;=a;i++))
+        <span class="keyword">do</span>
+        b=$( head -<span class="variable">$i</span> /usr/src/filename<span class="variable">$id1</span>.txt |tail -<span class="number">1</span>)
+        wget  -c -t <span class="number">0</span> -T <span class="number">20</span>  http://oceandata.sci.gsfc.nasa.gov/cgi/getfile/<span class="variable">$b</span>
+        <span class="keyword">done</span>
+   ;;
+ <span class="number">3</span>)
+        <span class="built_in">echo</span> <span class="string">"请输入你要检查的FTP目录编号"</span>      
+        <span class="built_in">read</span> <span class="operator">-e</span> id2
+        <span class="built_in">echo</span> <span class="string">"请输入你存放这个目录编号文件的存放路径"</span>
+        <span class="built_in">read</span> <span class="operator">-e</span> dir1
+        c=$(ls <span class="variable">$dir1</span> |wc <span class="operator">-l</span>)
+        d=$(cat /usr/src/filename<span class="variable">$id2</span>.txt |wc <span class="operator">-l</span>)
+        <span class="built_in">echo</span> <span class="string">"你希望下载的文件数目是<span class="variable">$d</span>"</span>
+        <span class="built_in">echo</span> <span class="string">"你实际下载的文件数目是<span class="variable">$c</span>"</span>
+        ;;
+        <span class="keyword">esac</span>                    <span class="comment">#结束CASE结构</span>
+  <span class="keyword">done</span>
+</code></pre><p>写于: 2012年01月18日<br>更新于: 2015年03月22日                                                         </p>
+
+    
+  </div>
+  <footer>
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">评论</h1>
+  <div class="ds-thread" data-thread-key="2015/03/22/利用脚本自动下载ftp列表中的文件/"  data-title="利用脚本自动下载ftp列表中的文件">
+  </div>
+</section>
+</div>
+  </div>
+  <footer id="footer"><div class="copyright">
+  
+  &copy; 2015 <a href="/">zphj1987</a>
+  
+</div>
+<div class="theme-copyright">
+  Theme by <a href="https://github.com/orderedlist" target="_blank">orderedlist</a>
+   | 
+  Redesign by <a href="http://heroicyang.com/" target="_blank">Heroic Yang</a>
+</div>
+<div class="clearfix"></div></footer>
+  <script src="/js/jquery.min.js"></script>
+<script src="/js/scale.fix.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = { short_name: 'zphj1987' };
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';
+    ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox();
+  })(jQuery);
+</script>
+
+
+<div id="totop" style="position:fixed;bottom:150px;right:50px;cursor: pointer;">
+<a title="Top"><img src="/imgs/scrollup.png"/></a>
+</div>
+<script src="/js/totop.js"></script>
+
+</body>
+</html>

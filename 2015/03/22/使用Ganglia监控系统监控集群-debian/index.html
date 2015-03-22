@@ -1,0 +1,166 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  
+  <title>使用Ganglia监控系统监控集群(debian) | zphj1987&#39;Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  
+    <meta name="author" content="zphj1987">
+  
+  
+    <meta name="description" content="anglia是一个集群监控软件,底层使用RRDTool获得数据。Ganglia分为ganglia-monitor和gmetad两部分,前者运行在集群每个节点上(被监控机器)收集RRDTool产生的数据,后者运行在监控服务器上,收集每个ganglia-monitor的数据,通过Web UI可以看到直观的各种图表。
+在debian上安装Ganglia非常简单,首先安装下面三个包。因为要使用Web服务器">
+  
+  <meta name="description" content="anglia是一个集群监控软件,底层使用RRDTool获得数据。Ganglia分为ganglia-monitor和gmetad两部分,前者运行在集群每个节点上(被监控机器)收集RRDTool产生的数据,后者运行在监控服务器上,收集每个ganglia-monitor的数据,通过Web UI可以看到直观的各种图表。
+在debian上安装Ganglia非常简单,首先安装下面三个包。因为要使用Web服务器">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用Ganglia监控系统监控集群(debian)">
+<meta property="og:url" content="http://yoursite.com/2015/03/22/使用Ganglia监控系统监控集群-debian/index.html">
+<meta property="og:site_name" content="zphj1987'Blog">
+<meta property="og:description" content="anglia是一个集群监控软件,底层使用RRDTool获得数据。Ganglia分为ganglia-monitor和gmetad两部分,前者运行在集群每个节点上(被监控机器)收集RRDTool产生的数据,后者运行在监控服务器上,收集每个ganglia-monitor的数据,通过Web UI可以看到直观的各种图表。
+在debian上安装Ganglia非常简单,首先安装下面三个包。因为要使用Web服务器">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用Ganglia监控系统监控集群(debian)">
+<meta name="twitter:description" content="anglia是一个集群监控软件,底层使用RRDTool获得数据。Ganglia分为ganglia-monitor和gmetad两部分,前者运行在集群每个节点上(被监控机器)收集RRDTool产生的数据,后者运行在监控服务器上,收集每个ganglia-monitor的数据,通过Web UI可以看到直观的各种图表。
+在debian上安装Ganglia非常简单,首先安装下面三个包。因为要使用Web服务器">
+  
+  
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+<body>
+  <div class="wrapper">
+    <header id="header">
+  <div class="title">
+    <h1><a href="/">zphj1987&#39;Blog</a></h1>
+    <p><a href="/">现在所学，终有所用</a></p>
+  </div>
+  <nav class="nav">
+    <ul>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/archives">Archives</a></li>
+      
+        <li><a href="/atom.xml">rss</a></li>
+      
+        <li><a href="/about">About</a></li>
+      
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+  <div class="clearfix"></div>
+</header>
+    <div class="content"><article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/22/使用Ganglia监控系统监控集群-debian/">
+  <time datetime="2015-03-22T09:20:06.000Z">
+    2015-03-22
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title">使用Ganglia监控系统监控集群(debian)</h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>anglia是一个集群监控软件,底层使用RRDTool获得数据。<br>Ganglia分为ganglia-monitor和gmetad两部分,前者运行在集群每个节点上(被监控机器)收集RRDTool产生的数据,后者运行在监控服务器上,收集每个ganglia-monitor的数据,通过Web UI可以看到直观的各种图表。</p>
+<p>在debian上安装Ganglia非常简单,首先安装下面三个包。因为要使用Web服务器才能看到图表,所以如果没有安装apache的话,会自动安装apache服务器。</p>
+<pre><code>apt-<span class="keyword">get</span> installganglia-monitor  <span class="comment">#这个包安装在被监控机器即可</span>
+apt-<span class="keyword">get</span> install ganglia-webfront gmetad  <span class="comment">#这两个包安装在监控服务器，前者提供web页面，后者收集其他机器的监控数据</span>
+</code></pre><p>被监控安装完成之后，gmond服务会运行起来，使用下面的命令可以启动这个服务。</p>
+<pre><code><span class="regexp">/etc/i</span>nit.d<span class="regexp">/ganglia-monitor restart     </span>
+</code></pre><p>(配置文件的路径在/etc/ganglia/gmond.conf)基本不用配置就可以启用</p>
+<a id="more"></a>
+<p>配置监控服务器(展示页面的服务器)</p>
+<p>因为ganglia-webfront这个包默认将Web相关的代码安装在”/usr/share/ganglia-webfrontend/”路径下,这样apache访问不到。可以使用软链接或者直接将目录移到”/var/www/”目录下。</p>
+<pre><code>ln-s <span class="regexp">/usr/</span>share<span class="regexp">/ganglia-webfrontend/</span><span class="regexp">/var/</span>www<span class="regexp">/ganglia</span>
+</code></pre><p>接着在浏览器输入”<a href="http://localhost/ganglia”就可以看到Web" target="_blank" rel="external">http://localhost/ganglia”就可以看到Web</a> UI了</p>
+<p>需要监控更多机器的时候，只需要在机器上安装ganglia-monitor 启动服务即可</p>
+<p>补充说明:<br>一、主页的显示的时间为格林威治时间,所以看起来很奇怪,想要显示为本地时间,需要修改提供网页机器的php.ini文件<br>路径为:/etc/php5/apache2/php.ini </p>
+<p>将[Date]下的设置为date.timezone =Asia/Shanghai</p>
+<p>重启apache2 </p>
+<pre><code><span class="regexp">/etc/i</span>nit.d<span class="regexp">/apache2 restart</span>
+</code></pre><p>再看主页,时间变成了当前机器时间</p>
+<p>二、python监控插件的扩展<br>为了确保Ganglia的安装有了Python支持的设置,检查一下以下设置<br>gmond.conf 有一行  include (“/etc/ganglia/conf.d/*.conf”) ,这是你应该放置.conf格式的python模块配置文件所在的目录。<br>modpython.conf 这个文件应该存在于/etc/ganglia/conf.d 中,它包含了pyconf文件的所在位置<br>modpython.so应该在/usr/lib/ganglia中<br>/usr/lib/ganglia/python_modules这个目录应该存在,这是你放置以.py结尾的python模块文件所在的目录</p>
+<p>写于: 2012年08月02日<br>更新于: 2015年03月22日</p>
+
+    
+  </div>
+  <footer>
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">评论</h1>
+  <div class="ds-thread" data-thread-key="2015/03/22/使用Ganglia监控系统监控集群-debian/"  data-title="使用Ganglia监控系统监控集群(debian)">
+  </div>
+</section>
+</div>
+  </div>
+  <footer id="footer"><div class="copyright">
+  
+  &copy; 2015 <a href="/">zphj1987</a>
+  
+</div>
+<div class="theme-copyright">
+  Theme by <a href="https://github.com/orderedlist" target="_blank">orderedlist</a>
+   | 
+  Redesign by <a href="http://heroicyang.com/" target="_blank">Heroic Yang</a>
+</div>
+<div class="clearfix"></div></footer>
+  <script src="/js/jquery.min.js"></script>
+<script src="/js/scale.fix.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = { short_name: 'zphj1987' };
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';
+    ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox();
+  })(jQuery);
+</script>
+
+
+<div id="totop" style="position:fixed;bottom:150px;right:50px;cursor: pointer;">
+<a title="Top"><img src="/imgs/scrollup.png"/></a>
+</div>
+<script src="/js/totop.js"></script>
+
+</body>
+</html>

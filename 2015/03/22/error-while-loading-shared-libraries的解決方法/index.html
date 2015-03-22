@@ -1,0 +1,178 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  
+  <title>error while loading shared libraries的解決方法 | zphj1987&#39;Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  
+    <meta name="author" content="zphj1987">
+  
+  
+    <meta name="description" content="在linux下运行程序时,发现了error while loading shared libraries这种错误,一时间不知道解决办法,在网上搜索,终于解决了.
+error while loading shared libraries: xxx.so.0:cannot open shared object file: No such file or directory
+出现这类错误表示,系统不知道">
+  
+  <meta name="description" content="在linux下运行程序时,发现了error while loading shared libraries这种错误,一时间不知道解决办法,在网上搜索,终于解决了.
+error while loading shared libraries: xxx.so.0:cannot open shared object file: No such file or directory
+出现这类错误表示,系统不知道">
+<meta property="og:type" content="article">
+<meta property="og:title" content="error while loading shared libraries的解決方法">
+<meta property="og:url" content="http://yoursite.com/2015/03/22/error-while-loading-shared-libraries的解決方法/index.html">
+<meta property="og:site_name" content="zphj1987'Blog">
+<meta property="og:description" content="在linux下运行程序时,发现了error while loading shared libraries这种错误,一时间不知道解决办法,在网上搜索,终于解决了.
+error while loading shared libraries: xxx.so.0:cannot open shared object file: No such file or directory
+出现这类错误表示,系统不知道">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="error while loading shared libraries的解決方法">
+<meta name="twitter:description" content="在linux下运行程序时,发现了error while loading shared libraries这种错误,一时间不知道解决办法,在网上搜索,终于解决了.
+error while loading shared libraries: xxx.so.0:cannot open shared object file: No such file or directory
+出现这类错误表示,系统不知道">
+  
+  
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+<body>
+  <div class="wrapper">
+    <header id="header">
+  <div class="title">
+    <h1><a href="/">zphj1987&#39;Blog</a></h1>
+    <p><a href="/">现在所学，终有所用</a></p>
+  </div>
+  <nav class="nav">
+    <ul>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/archives">Archives</a></li>
+      
+        <li><a href="/atom.xml">rss</a></li>
+      
+        <li><a href="/about">About</a></li>
+      
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+  <div class="clearfix"></div>
+</header>
+    <div class="content"><article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/22/error-while-loading-shared-libraries的解決方法/">
+  <time datetime="2015-03-22T04:33:15.000Z">
+    2015-03-22
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title">error while loading shared libraries的解決方法</h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>在linux下运行程序时,发现了error while loading shared libraries这种错误,一时间不知道解决办法,在网上搜索,终于解决了.</p>
+<pre><code><span class="keyword">error</span> <span class="keyword">while</span> loading shared libraries: xxx.<span class="keyword">so</span>.0:cannot <span class="keyword">open</span> shared object <span class="keyword">file</span>: <span class="keyword">No</span> such <span class="keyword">file</span> or directory
+</code></pre><p>出现这类错误表示,系统不知道xxx.so放在哪个目录下,这时候就要在/etc/ld.so.conf中加入xxx.so所在的目录。<br>一般而言,有很多的so会存放在/usr/local/lib这个目录底下,去这个目录底下找，果然发现自己所需要的.so文件。<br>所以在/etc/ld.so.conf中加入/usr/local/lib这一行,保存之后,再运行,/sbin/ldconfig –v更新一下配置即可。<br>centos下安装qt时出现/usr/lib/libstdc++.so.6: version `GLIBCXX_3.4.9’ not found<br>在安装qt-creator的时候运行这个IDE就出现了这个问题,是由于libstdc++.so.6的版本过低,需要下载个新的重新建立软连接</p>
+<a id="more"></a>
+<p>linux 执行 <code>strings /usr/lib/libstdc++.so.6 | grep GLIBC</code><br>返回结果没有GLIBCXX_3.4.9</p>
+<pre><code>GLIBCXX_3.4
+GLIBCXX_3.4.1
+GLIBCXX_3.4.2
+GLIBCXX_3.4.3
+GLIBCXX_3.4.4
+GLIBCXX_3.4.5
+GLIBCXX_3.4.6
+GLIBCXX_3.4.7
+GLIBCXX_3.4.8
+GLIBC_2.0
+GLIBC_2.3
+GLIBC_2.4
+GLIBC_2.3.4
+GLIBC_2.1
+GLIBC_2.1.3
+GLIBC_2.2
+GLIBCXX_FORCE_NEW
+GLIBCXX_DEBUG_MESSAGE_LENGTH
+</code></pre><p>执行:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ls <span class="operator">-l</span>  /usr/lib/libstdc++.so.<span class="number">6</span></span><br></pre></td></tr></table></figure>
+<p>发现/usr/lib/libstdc++.so.6 -&gt; /usr/lib/libstdc++.so.6.0.8<br>其实这里需要使用libstdc++.so.6.0.10<br>从网上下载这个文件,然后 <code>rm -rf /usr/lib/libstdc++.so.6 -&gt; /usr/lib/libstdc++.so.6.0.8</code> 软链接删除,重新做</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ln <span class="operator">-s</span> /usr/lib/libstdc++.so.<span class="number">6.10</span>  /usr/lib/libstdc++.so.<span class="number">6</span></span><br></pre></td></tr></table></figure>
+<p>写于: 2011年12月31日<br>更新于: 2015年03月22日</p>
+
+    
+  </div>
+  <footer>
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">评论</h1>
+  <div class="ds-thread" data-thread-key="2015/03/22/error-while-loading-shared-libraries的解決方法/"  data-title="error while loading shared libraries的解決方法">
+  </div>
+</section>
+</div>
+  </div>
+  <footer id="footer"><div class="copyright">
+  
+  &copy; 2015 <a href="/">zphj1987</a>
+  
+</div>
+<div class="theme-copyright">
+  Theme by <a href="https://github.com/orderedlist" target="_blank">orderedlist</a>
+   | 
+  Redesign by <a href="http://heroicyang.com/" target="_blank">Heroic Yang</a>
+</div>
+<div class="clearfix"></div></footer>
+  <script src="/js/jquery.min.js"></script>
+<script src="/js/scale.fix.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = { short_name: 'zphj1987' };
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';
+    ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox();
+  })(jQuery);
+</script>
+
+
+<div id="totop" style="position:fixed;bottom:150px;right:50px;cursor: pointer;">
+<a title="Top"><img src="/imgs/scrollup.png"/></a>
+</div>
+<script src="/js/totop.js"></script>
+
+</body>
+</html>

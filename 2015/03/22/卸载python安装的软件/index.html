@@ -1,0 +1,162 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  
+  <title>卸载python安装的软件 | zphj1987&#39;Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  
+    <meta name="author" content="zphj1987">
+  
+  
+    <meta name="description" content="python源码安装的软件是无法通过命令卸载的,这个可以通过记录安装过程的形式来卸载安装的软件
+以 python2.7.2 为例,在这个目录中有一个 setup.py 的文件,很显然这是安装程序,还是python写的,用 python 写 python 到安装程序,大开眼界了。在这里,需要写一个 shell 脚本,把在重新安装中提到的安装位置全部删除,就实现了卸载到目的了
+一、创建del.sh脚本">
+  
+  <meta name="description" content="python源码安装的软件是无法通过命令卸载的,这个可以通过记录安装过程的形式来卸载安装的软件
+以 python2.7.2 为例,在这个目录中有一个 setup.py 的文件,很显然这是安装程序,还是python写的,用 python 写 python 到安装程序,大开眼界了。在这里,需要写一个 shell 脚本,把在重新安装中提到的安装位置全部删除,就实现了卸载到目的了
+一、创建del.sh脚本">
+<meta property="og:type" content="article">
+<meta property="og:title" content="卸载python安装的软件">
+<meta property="og:url" content="http://yoursite.com/2015/03/22/卸载python安装的软件/index.html">
+<meta property="og:site_name" content="zphj1987'Blog">
+<meta property="og:description" content="python源码安装的软件是无法通过命令卸载的,这个可以通过记录安装过程的形式来卸载安装的软件
+以 python2.7.2 为例,在这个目录中有一个 setup.py 的文件,很显然这是安装程序,还是python写的,用 python 写 python 到安装程序,大开眼界了。在这里,需要写一个 shell 脚本,把在重新安装中提到的安装位置全部删除,就实现了卸载到目的了
+一、创建del.sh脚本">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="卸载python安装的软件">
+<meta name="twitter:description" content="python源码安装的软件是无法通过命令卸载的,这个可以通过记录安装过程的形式来卸载安装的软件
+以 python2.7.2 为例,在这个目录中有一个 setup.py 的文件,很显然这是安装程序,还是python写的,用 python 写 python 到安装程序,大开眼界了。在这里,需要写一个 shell 脚本,把在重新安装中提到的安装位置全部删除,就实现了卸载到目的了
+一、创建del.sh脚本">
+  
+  
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+<body>
+  <div class="wrapper">
+    <header id="header">
+  <div class="title">
+    <h1><a href="/">zphj1987&#39;Blog</a></h1>
+    <p><a href="/">现在所学，终有所用</a></p>
+  </div>
+  <nav class="nav">
+    <ul>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/archives">Archives</a></li>
+      
+        <li><a href="/atom.xml">rss</a></li>
+      
+        <li><a href="/about">About</a></li>
+      
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+  <div class="clearfix"></div>
+</header>
+    <div class="content"><article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/22/卸载python安装的软件/">
+  <time datetime="2015-03-22T07:26:12.000Z">
+    2015-03-22
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title">卸载python安装的软件</h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>python源码安装的软件是无法通过命令卸载的,这个可以通过记录安装过程的形式来卸载安装的软件</p>
+<p>以 python2.7.2 为例,在这个目录中有一个 setup.py 的文件,很显然这是安装程序,还是python写的,用 python 写 python 到安装程序,大开眼界了。在这里,需要写一个 shell 脚本,把在重新安装中提到的安装位置全部删除,就实现了卸载到目的了</p>
+<h3 id="一、创建del-sh脚本内容(在源码目录):">一、创建del.sh脚本内容(在源码目录):</h3><pre><code><span class="shebang">#!/bin/bash  </span>
+<span class="keyword">for</span> i <span class="keyword">in</span> $(less files.txt)  
+<span class="keyword">do</span>  rm -rf <span class="variable">$i</span>  
+<span class="keyword">done</span>  
+</code></pre><p>脚本说明: files.txt 是需要事先在目录下创建的文件,目的是记录安装过程中提到到路径。脚本很简单,详细的就不说了,学过 shell 编程到肯定没问题,没学过到有其他语言编程基础的,仔细看看也可以看懂。</p>
+<a id="more"></a>
+<h3 id="二、重新安装软件">二、重新安装软件</h3><p>在此过程中用 files.txt 记录安装的路径,比如安装 python2.7.2 ,进入安装目录,执行命令:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python setup.py  install --record files.txt</span><br></pre></td></tr></table></figure>
+<p>在此过程中会向 files.txt 中写入很多路径</p>
+<h3 id="三、执行脚本-/del-sh">三、执行脚本./del.sh</h3><p>写于: 2012年04月09日<br>更新于: 2015年03月22日</p>
+
+    
+  </div>
+  <footer>
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">评论</h1>
+  <div class="ds-thread" data-thread-key="2015/03/22/卸载python安装的软件/"  data-title="卸载python安装的软件">
+  </div>
+</section>
+</div>
+  </div>
+  <footer id="footer"><div class="copyright">
+  
+  &copy; 2015 <a href="/">zphj1987</a>
+  
+</div>
+<div class="theme-copyright">
+  Theme by <a href="https://github.com/orderedlist" target="_blank">orderedlist</a>
+   | 
+  Redesign by <a href="http://heroicyang.com/" target="_blank">Heroic Yang</a>
+</div>
+<div class="clearfix"></div></footer>
+  <script src="/js/jquery.min.js"></script>
+<script src="/js/scale.fix.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = { short_name: 'zphj1987' };
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';
+    ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox();
+  })(jQuery);
+</script>
+
+
+<div id="totop" style="position:fixed;bottom:150px;right:50px;cursor: pointer;">
+<a title="Top"><img src="/imgs/scrollup.png"/></a>
+</div>
+<script src="/js/totop.js"></script>
+
+</body>
+</html>

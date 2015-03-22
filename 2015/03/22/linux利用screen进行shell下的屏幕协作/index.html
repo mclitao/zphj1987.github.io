@@ -1,0 +1,170 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  
+  <title>linux利用screen进行shell下的屏幕协作 | zphj1987&#39;Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  
+    <meta name="author" content="zphj1987">
+  
+  
+    <meta name="description" content="我们都知道linux是支持多终端并行处理的但是某些时候我们可能有比较特殊的需求需要两个人同时处理一个终端,screen 正好能满足这个要求
+首先需要安装screen软件:
+debian和ubuntu下面都是通过:
+apt-get install screen
+进行安装的.">
+  
+  <meta name="description" content="我们都知道linux是支持多终端并行处理的但是某些时候我们可能有比较特殊的需求需要两个人同时处理一个终端,screen 正好能满足这个要求
+首先需要安装screen软件:
+debian和ubuntu下面都是通过:
+apt-get install screen
+进行安装的.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="linux利用screen进行shell下的屏幕协作">
+<meta property="og:url" content="http://yoursite.com/2015/03/22/linux利用screen进行shell下的屏幕协作/index.html">
+<meta property="og:site_name" content="zphj1987'Blog">
+<meta property="og:description" content="我们都知道linux是支持多终端并行处理的但是某些时候我们可能有比较特殊的需求需要两个人同时处理一个终端,screen 正好能满足这个要求
+首先需要安装screen软件:
+debian和ubuntu下面都是通过:
+apt-get install screen
+进行安装的.">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="linux利用screen进行shell下的屏幕协作">
+<meta name="twitter:description" content="我们都知道linux是支持多终端并行处理的但是某些时候我们可能有比较特殊的需求需要两个人同时处理一个终端,screen 正好能满足这个要求
+首先需要安装screen软件:
+debian和ubuntu下面都是通过:
+apt-get install screen
+进行安装的.">
+  
+  
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+<body>
+  <div class="wrapper">
+    <header id="header">
+  <div class="title">
+    <h1><a href="/">zphj1987&#39;Blog</a></h1>
+    <p><a href="/">现在所学，终有所用</a></p>
+  </div>
+  <nav class="nav">
+    <ul>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/archives">Archives</a></li>
+      
+        <li><a href="/atom.xml">rss</a></li>
+      
+        <li><a href="/about">About</a></li>
+      
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+  <div class="clearfix"></div>
+</header>
+    <div class="content"><article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/22/linux利用screen进行shell下的屏幕协作/">
+  <time datetime="2015-03-22T11:22:22.000Z">
+    2015-03-22
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title">linux利用screen进行shell下的屏幕协作</h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>我们都知道linux是支持多终端并行处理的<br>但是某些时候我们可能有比较特殊的需求需要两个人同时处理一个终端,screen 正好能满足这个要求</p>
+<p>首先需要安装screen软件:</p>
+<p>debian和ubuntu下面都是通过:</p>
+<pre><code>apt-<span class="keyword">get</span> install screen
+</code></pre><p>进行安装的.</p>
+<a id="more"></a>
+<p>假如现在有a和b需要进行屏幕协作,那么操作步骤如下:<br>a在终端运行:</p>
+<pre><code><span class="title">screen</span> -S   zp        
+</code></pre><p>b然后在终端运行:   </p>
+<pre><code><span class="title">screen</span> -x  zp  
+</code></pre><p>这个时候两边的用户的操作是实时同步的。</p>
+<p>写于: 2012年08月07日<br>更新于: 2015年03月22日</p>
+
+    
+  </div>
+  <footer>
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">评论</h1>
+  <div class="ds-thread" data-thread-key="2015/03/22/linux利用screen进行shell下的屏幕协作/"  data-title="linux利用screen进行shell下的屏幕协作">
+  </div>
+</section>
+</div>
+  </div>
+  <footer id="footer"><div class="copyright">
+  
+  &copy; 2015 <a href="/">zphj1987</a>
+  
+</div>
+<div class="theme-copyright">
+  Theme by <a href="https://github.com/orderedlist" target="_blank">orderedlist</a>
+   | 
+  Redesign by <a href="http://heroicyang.com/" target="_blank">Heroic Yang</a>
+</div>
+<div class="clearfix"></div></footer>
+  <script src="/js/jquery.min.js"></script>
+<script src="/js/scale.fix.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = { short_name: 'zphj1987' };
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';
+    ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox();
+  })(jQuery);
+</script>
+
+
+<div id="totop" style="position:fixed;bottom:150px;right:50px;cursor: pointer;">
+<a title="Top"><img src="/imgs/scrollup.png"/></a>
+</div>
+<script src="/js/totop.js"></script>
+
+</body>
+</html>

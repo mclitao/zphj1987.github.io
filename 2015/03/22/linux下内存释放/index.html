@@ -1,0 +1,168 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  
+  <title>linux下内存释放 | zphj1987&#39;Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  
+    <meta name="author" content="zphj1987">
+  
+  
+    <meta name="description" content="细心的朋友会注意到,当你在linux下频繁存取文件后,物理内存会很快被用光,当程序结束后,内存不会被正常释放,而是一直作为caching.这个问题,貌似有不少人在问,不过都没有看到有什么很好解决的办法.那么我来谈谈这个问题.先来说说free命令12345[root@server ~]# free -m              total       used       free     sha">
+  
+  <meta name="description" content="细心的朋友会注意到,当你在linux下频繁存取文件后,物理内存会很快被用光,当程序结束后,内存不会被正常释放,而是一直作为caching.这个问题,貌似有不少人在问,不过都没有看到有什么很好解决的办法.那么我来谈谈这个问题.先来说说free命令12345[root@server ~]# free -m              total       used       free     sha">
+<meta property="og:type" content="article">
+<meta property="og:title" content="linux下内存释放">
+<meta property="og:url" content="http://yoursite.com/2015/03/22/linux下内存释放/index.html">
+<meta property="og:site_name" content="zphj1987'Blog">
+<meta property="og:description" content="细心的朋友会注意到,当你在linux下频繁存取文件后,物理内存会很快被用光,当程序结束后,内存不会被正常释放,而是一直作为caching.这个问题,貌似有不少人在问,不过都没有看到有什么很好解决的办法.那么我来谈谈这个问题.先来说说free命令12345[root@server ~]# free -m              total       used       free     sha">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="linux下内存释放">
+<meta name="twitter:description" content="细心的朋友会注意到,当你在linux下频繁存取文件后,物理内存会很快被用光,当程序结束后,内存不会被正常释放,而是一直作为caching.这个问题,貌似有不少人在问,不过都没有看到有什么很好解决的办法.那么我来谈谈这个问题.先来说说free命令12345[root@server ~]# free -m              total       used       free     sha">
+  
+  
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+<body>
+  <div class="wrapper">
+    <header id="header">
+  <div class="title">
+    <h1><a href="/">zphj1987&#39;Blog</a></h1>
+    <p><a href="/">现在所学，终有所用</a></p>
+  </div>
+  <nav class="nav">
+    <ul>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/archives">Archives</a></li>
+      
+        <li><a href="/atom.xml">rss</a></li>
+      
+        <li><a href="/about">About</a></li>
+      
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+  <div class="clearfix"></div>
+</header>
+    <div class="content"><article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/22/linux下内存释放/">
+  <time datetime="2015-03-22T04:24:24.000Z">
+    2015-03-22
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title">linux下内存释放</h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>细心的朋友会注意到,当你在linux下频繁存取文件后,物理内存会很快被用光,当程序结束后,内存不会被正常释放,而是一直作为caching.这个问题,貌似有不少人在问,不过都没有看到有什么很好解决的办法.那么我来谈谈这个问题.<br>先来说说free命令<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@server ~]<span class="comment"># free -m </span></span><br><span class="line">             total       used       free     shared    buffers     cached </span><br><span class="line">Mem:           <span class="number">249</span>        <span class="number">163</span>         <span class="number">86</span>          <span class="number">0</span>         <span class="number">10</span>         <span class="number">94</span> </span><br><span class="line">-/+ buffers/cache:         <span class="number">58</span>        <span class="number">191</span> </span><br><span class="line">Swap:          <span class="number">511</span>          <span class="number">0</span>        <span class="number">511</span></span><br></pre></td></tr></table></figure></p>
+<p>其中:<br>total 内存总数<br>used 已经使用的内存数<br>free 空闲的内存数<br>shared 多个进程共享的内存总额<br>buffers Buffer Cache和cached Page Cache 磁盘缓存的大小<br>-buffers/cache 的内存数:used - buffers - cached<br>+buffers/cache 的内存数:free + buffers + cached<br>可用的memory=free memory+buffers+cached<br>有了这个基础后,可以得知,我现在used为163MB,free为86,buffer和cached分别为10,94<br>那么我们来看看,如果我执行复制文件,内存会发生什么变化. </p>
+<a id="more"></a>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@server ~]<span class="comment"># cp -r /etc ~/test/ </span></span><br><span class="line">[root@server ~]<span class="comment"># free -m </span></span><br><span class="line">             total       used       free     shared    buffers     cached </span><br><span class="line">Mem:           <span class="number">249</span>        <span class="number">244</span>          <span class="number">4</span>          <span class="number">0</span>          <span class="number">8</span>        <span class="number">174</span> </span><br><span class="line">-/+ buffers/cache:         <span class="number">62</span>        <span class="number">187</span> </span><br><span class="line">Swap:          <span class="number">511</span>          <span class="number">0</span>        <span class="number">511</span></span><br></pre></td></tr></table></figure>
+<p>在我命令执行结束后,used为244MB,free为4MB,buffers为8MB,cached为174MB,天呐都被cached吃掉了.别紧张,这是为了提高文件读取效率的做法.<br>为了提高磁盘存取效率, Linux做了一些精心的设计, 除了对dentry进行缓存(用于VFS,加速文件路径名到inode的转换), 还采取了两种主要Cache方式:Buffer Cache和Page Cache。前者针对磁盘块的读写,后者针对文件inode的读写。这些Cache有效缩短了 I/O系统调用(比如read,write,getdents)的时间<br>那么有人说过段时间,linux会自动释放掉所用的内存,我们使用free再来试试,看看是否有释放 </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@server <span class="built_in">test</span>]<span class="comment"># free -m </span></span><br><span class="line">             total       used       free     shared    buffers     cached </span><br><span class="line">Mem:           <span class="number">249</span>        <span class="number">244</span>          <span class="number">5</span>          <span class="number">0</span>          <span class="number">8</span>        <span class="number">174</span> </span><br><span class="line">-/+ buffers/cache:         <span class="number">61</span>        <span class="number">188</span> </span><br><span class="line">Swap:          <span class="number">511</span>          <span class="number">0</span>        <span class="number">511</span></span><br></pre></td></tr></table></figure>
+<p>貌似没有任何变化,那么我能否手动释放掉这些内存呢?回答是可以的!<br>/proc是一个虚拟文件系统,我们可以通过对它的读写操作做为与kernel实体间进行通信的一种手段.也就是说可以通过修改/proc中的文件,来对当前kernel的行为做出调整.那么我们可以通过调整/proc/sys/vm/drop_caches来释放内存.操作如下: </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@server <span class="built_in">test</span>]<span class="comment"># cat /proc/sys/vm/drop_caches </span></span><br><span class="line"><span class="number">0</span></span><br></pre></td></tr></table></figure>
+<p>首先,/proc/sys/vm/drop_caches的值,默认为0 </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@server <span class="built_in">test</span>]<span class="comment"># sync</span></span><br></pre></td></tr></table></figure>
+<p>手动执行sync命令(描述:sync 命令运行 sync 子例程。如果必须停止系统，则运行 sync 命令以确保文件系统的完整性。sync 命令将所有未写的系统缓冲区写到磁盘中，包含已修改的 i-node、已延迟的块 I/O 和读写映射文件) </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@server <span class="built_in">test</span>]<span class="comment"># echo 3 &gt; /proc/sys/vm/drop_caches </span></span><br><span class="line">[root@server <span class="built_in">test</span>]<span class="comment"># cat /proc/sys/vm/drop_caches </span></span><br><span class="line"><span class="number">3</span></span><br></pre></td></tr></table></figure>
+<p>将/proc/sys/vm/drop_caches值设为3 </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@server <span class="built_in">test</span>]<span class="comment"># free -m </span></span><br><span class="line">             total       used       free     shared    buffers     cached </span><br><span class="line">Mem:           <span class="number">249</span>         <span class="number">66</span>        <span class="number">182</span>          <span class="number">0</span>          <span class="number">0</span>         <span class="number">11</span> </span><br><span class="line">-/+ buffers/cache:         <span class="number">55</span>        <span class="number">194</span> </span><br><span class="line">Swap:          <span class="number">511</span>          <span class="number">0</span>        <span class="number">511</span></span><br></pre></td></tr></table></figure>
+<p>再来运行free命令,发现现在的used为66MB,free为182MB,buffers为0MB,cached为11MB.那么有效的释放了buffer和cache.<br>有关/proc/sys/vm/drop_caches的用法在下面进行了说明 </p>
+<p>/proc/sys/vm/drop_caches (since Linux 2.6.16) </p>
+<pre><code><span class="type">Writing</span>  to  this  file  causes the kernel to drop clean caches, 
+dentries <span class="keyword">and</span> inodes <span class="keyword">from</span> memory, causing that memory  to  become 
+free. 
+<span class="type">To</span>  free  pagecache,  use  echo <span class="number">1</span> &gt; /<span class="keyword">proc</span>/sys/vm/drop_caches; to 
+free dentries <span class="keyword">and</span> inodes, use echo <span class="number">2</span> &gt; /<span class="keyword">proc</span>/sys/vm/drop_caches; 
+to   free   pagecache,   dentries  <span class="keyword">and</span>  inodes,  use  echo  <span class="number">3</span>  &gt; 
+/<span class="keyword">proc</span>/sys/vm/drop_caches. 
+<span class="type">Because</span> this <span class="keyword">is</span> a non-destructive operation  <span class="keyword">and</span>  dirty  objects 
+are <span class="keyword">not</span> freeable, the user should run sync(<span class="number">8</span>) first. 
+</code></pre><p>写于: 2011年12月31日<br>更新于: 2015年03月22日</p>
+
+    
+  </div>
+  <footer>
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">评论</h1>
+  <div class="ds-thread" data-thread-key="2015/03/22/linux下内存释放/"  data-title="linux下内存释放">
+  </div>
+</section>
+</div>
+  </div>
+  <footer id="footer"><div class="copyright">
+  
+  &copy; 2015 <a href="/">zphj1987</a>
+  
+</div>
+<div class="theme-copyright">
+  Theme by <a href="https://github.com/orderedlist" target="_blank">orderedlist</a>
+   | 
+  Redesign by <a href="http://heroicyang.com/" target="_blank">Heroic Yang</a>
+</div>
+<div class="clearfix"></div></footer>
+  <script src="/js/jquery.min.js"></script>
+<script src="/js/scale.fix.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = { short_name: 'zphj1987' };
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';
+    ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox();
+  })(jQuery);
+</script>
+
+
+<div id="totop" style="position:fixed;bottom:150px;right:50px;cursor: pointer;">
+<a title="Top"><img src="/imgs/scrollup.png"/></a>
+</div>
+<script src="/js/totop.js"></script>
+
+</body>
+</html>

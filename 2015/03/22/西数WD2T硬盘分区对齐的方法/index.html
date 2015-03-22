@@ -1,0 +1,184 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  
+  <title>西数WD2T硬盘分区对齐的方法 | zphj1987&#39;Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  
+    <meta name="author" content="zphj1987">
+  
+  
+    <meta name="description" content="新购一个西数2T硬盘,也就是绿盘的那种,淘宝500左右,支持高级格式化。 
+到手以后,分区格式化,前几天格式化完成以后,fdisk -l 发现如下文字 
+引用Partition 1 does not start on physical sector boundary.
+网上找了下,说是软件的问题,后来折腾了下,应该是分区没有对齐的原因,至于为什么要对齐,优点很多,好像这个是跟神马高级分区格式化有关">
+  
+  <meta name="description" content="新购一个西数2T硬盘,也就是绿盘的那种,淘宝500左右,支持高级格式化。 
+到手以后,分区格式化,前几天格式化完成以后,fdisk -l 发现如下文字 
+引用Partition 1 does not start on physical sector boundary.
+网上找了下,说是软件的问题,后来折腾了下,应该是分区没有对齐的原因,至于为什么要对齐,优点很多,好像这个是跟神马高级分区格式化有关">
+<meta property="og:type" content="article">
+<meta property="og:title" content="西数WD2T硬盘分区对齐的方法">
+<meta property="og:url" content="http://yoursite.com/2015/03/22/西数WD2T硬盘分区对齐的方法/index.html">
+<meta property="og:site_name" content="zphj1987'Blog">
+<meta property="og:description" content="新购一个西数2T硬盘,也就是绿盘的那种,淘宝500左右,支持高级格式化。 
+到手以后,分区格式化,前几天格式化完成以后,fdisk -l 发现如下文字 
+引用Partition 1 does not start on physical sector boundary.
+网上找了下,说是软件的问题,后来折腾了下,应该是分区没有对齐的原因,至于为什么要对齐,优点很多,好像这个是跟神马高级分区格式化有关">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="西数WD2T硬盘分区对齐的方法">
+<meta name="twitter:description" content="新购一个西数2T硬盘,也就是绿盘的那种,淘宝500左右,支持高级格式化。 
+到手以后,分区格式化,前几天格式化完成以后,fdisk -l 发现如下文字 
+引用Partition 1 does not start on physical sector boundary.
+网上找了下,说是软件的问题,后来折腾了下,应该是分区没有对齐的原因,至于为什么要对齐,优点很多,好像这个是跟神马高级分区格式化有关">
+  
+  
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+<body>
+  <div class="wrapper">
+    <header id="header">
+  <div class="title">
+    <h1><a href="/">zphj1987&#39;Blog</a></h1>
+    <p><a href="/">现在所学，终有所用</a></p>
+  </div>
+  <nav class="nav">
+    <ul>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/archives">Archives</a></li>
+      
+        <li><a href="/atom.xml">rss</a></li>
+      
+        <li><a href="/about">About</a></li>
+      
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+  <div class="clearfix"></div>
+</header>
+    <div class="content"><article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/22/西数WD2T硬盘分区对齐的方法/">
+  <time datetime="2015-03-22T08:25:08.000Z">
+    2015-03-22
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title">西数WD2T硬盘分区对齐的方法</h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>新购一个西数2T硬盘,也就是绿盘的那种,淘宝500左右,支持高级格式化。 </p>
+<p>到手以后,分区格式化,前几天格式化完成以后,fdisk -l 发现如下文字 </p>
+<p>引用<br>Partition 1 does not start on physical sector boundary.</p>
+<p>网上找了下,说是软件的问题,后来折腾了下,应该是分区没有对齐的原因,至于为什么要对齐,优点很多,好像这个是跟神马高级分区格式化有关,具体的原理神马的,我就不讨论了,反正有一点,对齐后,性能会有提升。 </p>
+<a id="more"></a>
+<p>对齐后,用fdisk -lu 查看的结果如下</p>
+<pre><code>Disk /dev/sdc: <span class="number">2000.4</span> GB, <span class="number">2000398934016</span> <span class="keyword">bytes</span>
+<span class="number">255</span> heads, <span class="number">63</span> sectors/track, <span class="number">243201</span> cylinders, total <span class="number">3907029168</span> sectors
+Units = sectors <span class="operator">of</span> <span class="number">1</span> * <span class="number">512</span> = <span class="number">512</span> <span class="keyword">bytes</span>
+Sector size (logical/physical): <span class="number">512</span> <span class="keyword">bytes</span> / <span class="number">512</span> <span class="keyword">bytes</span>
+I/O size (minimum/optimal): <span class="number">512</span> <span class="keyword">bytes</span> / <span class="number">512</span> <span class="keyword">bytes</span>
+Disk identifier: <span class="number">0x2fa8ebd1</span>
+
+   Device Boot      Start         End      Blocks   Id  System
+/dev/sdc1            <span class="number">2048</span>  <span class="number">3907028991</span>  <span class="number">1953513472</span>   <span class="number">83</span>  Linux
+</code></pre><p>怎么样个对齐的方法呢,就是分区的时候,要注意,不要用 fdisk 来分区,不是说fdisk不行,经过我的测试,用 fdisk 分区,我明明分的是2T,结果却是1T大小，用 parted 分区就没有这个问题 </p>
+<p>debian 下面,如果没有 parted 这个工具,apt-get 安装,安装完成以后,就可以使用了 </p>
+<p>引用</p>
+<pre><code>root@localhost ~]<span class="comment"># parted /dev/sdb # 使用parted来对GPT磁盘操作,进入交互式模式</span>
+GNU Parted <span class="number">1.8</span><span class="number">.1</span> Using /dev/sdb Welcome <span class="keyword">to</span> GNU Parted! Type ‘help’ <span class="keyword">to</span> view a <span class="type">list</span> <span class="keyword">of</span> commands.
+(parted) mklabel msdos           <span class="comment"># 将MBR磁盘格式化为msdos 2T的硬盘 msdos 没有问题</span>
+(parted) p                      <span class="comment">#打印当前分区</span>
+(parted) mkpart primary <span class="number">1</span> <span class="number">2</span>TB                <span class="comment"># 分一个2T的主分区,这里输入1,否则会提示性能问题</span>
+(parted) p                         <span class="comment">#打印当前分区</span>
+(parted) q 退出
+Information: Don’t forget <span class="keyword">to</span> update /etc/fstab, <span class="keyword">if</span> necessary.
+</code></pre><p>退出后,用 mkfs.ext4 格式化就好了 </p>
+<p>然后再用 fdisk -lu 查看,已经没有那个提示了 </p>
+<p>这里说明下,对齐,就是说分区的时候,开始的扇区要以 8 的倍数来开始,而 fisk 默认是 63 ,对老硬盘没有什么问题,但是对西数的新硬盘, 4k 扇区的,就会有对齐的问题,会导致性能下降</p>
+<p>写于: 2012年05月02日<br>更新于:2015年03月22日</p>
+
+    
+  </div>
+  <footer>
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">评论</h1>
+  <div class="ds-thread" data-thread-key="2015/03/22/西数WD2T硬盘分区对齐的方法/"  data-title="西数WD2T硬盘分区对齐的方法">
+  </div>
+</section>
+</div>
+  </div>
+  <footer id="footer"><div class="copyright">
+  
+  &copy; 2015 <a href="/">zphj1987</a>
+  
+</div>
+<div class="theme-copyright">
+  Theme by <a href="https://github.com/orderedlist" target="_blank">orderedlist</a>
+   | 
+  Redesign by <a href="http://heroicyang.com/" target="_blank">Heroic Yang</a>
+</div>
+<div class="clearfix"></div></footer>
+  <script src="/js/jquery.min.js"></script>
+<script src="/js/scale.fix.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = { short_name: 'zphj1987' };
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';
+    ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox();
+  })(jQuery);
+</script>
+
+
+<div id="totop" style="position:fixed;bottom:150px;right:50px;cursor: pointer;">
+<a title="Top"><img src="/imgs/scrollup.png"/></a>
+</div>
+<script src="/js/totop.js"></script>
+
+</body>
+</html>

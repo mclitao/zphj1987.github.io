@@ -1,0 +1,154 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  
+  <title>利用现有的网络产品实现内网linux服务器文件的公网同步 | zphj1987&#39;Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  
+    <meta name="author" content="zphj1987">
+  
+  
+    <meta name="description" content="更新这篇文章的时候发现原来引用的互联网产品everbox已经不在了,作为国内第一批网盘产品,模仿dropbox做出来的,说实话,这个产品真的还不错,不过可能由于盛大运营方向的改变,对于这个短期内不会有收益的产品，最终被废掉了,其实对于技术发展很快的今天,拥有数据才是重点,进行数据重复删除以后,对于企业的存储压力其实不太大了,该淘汰的终归要淘汰，就像盛大的没落
+下面介绍的是通用的方法,网盘产品很多,">
+  
+  <meta name="description" content="更新这篇文章的时候发现原来引用的互联网产品everbox已经不在了,作为国内第一批网盘产品,模仿dropbox做出来的,说实话,这个产品真的还不错,不过可能由于盛大运营方向的改变,对于这个短期内不会有收益的产品，最终被废掉了,其实对于技术发展很快的今天,拥有数据才是重点,进行数据重复删除以后,对于企业的存储压力其实不太大了,该淘汰的终归要淘汰，就像盛大的没落
+下面介绍的是通用的方法,网盘产品很多,">
+<meta property="og:type" content="article">
+<meta property="og:title" content="利用现有的网络产品实现内网linux服务器文件的公网同步">
+<meta property="og:url" content="http://yoursite.com/2015/03/22/利用现有的网络产品实现内网linux服务器文件的公网同步/index.html">
+<meta property="og:site_name" content="zphj1987'Blog">
+<meta property="og:description" content="更新这篇文章的时候发现原来引用的互联网产品everbox已经不在了,作为国内第一批网盘产品,模仿dropbox做出来的,说实话,这个产品真的还不错,不过可能由于盛大运营方向的改变,对于这个短期内不会有收益的产品，最终被废掉了,其实对于技术发展很快的今天,拥有数据才是重点,进行数据重复删除以后,对于企业的存储压力其实不太大了,该淘汰的终归要淘汰，就像盛大的没落
+下面介绍的是通用的方法,网盘产品很多,">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="利用现有的网络产品实现内网linux服务器文件的公网同步">
+<meta name="twitter:description" content="更新这篇文章的时候发现原来引用的互联网产品everbox已经不在了,作为国内第一批网盘产品,模仿dropbox做出来的,说实话,这个产品真的还不错,不过可能由于盛大运营方向的改变,对于这个短期内不会有收益的产品，最终被废掉了,其实对于技术发展很快的今天,拥有数据才是重点,进行数据重复删除以后,对于企业的存储压力其实不太大了,该淘汰的终归要淘汰，就像盛大的没落
+下面介绍的是通用的方法,网盘产品很多,">
+  
+  
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+<body>
+  <div class="wrapper">
+    <header id="header">
+  <div class="title">
+    <h1><a href="/">zphj1987&#39;Blog</a></h1>
+    <p><a href="/">现在所学，终有所用</a></p>
+  </div>
+  <nav class="nav">
+    <ul>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/archives">Archives</a></li>
+      
+        <li><a href="/atom.xml">rss</a></li>
+      
+        <li><a href="/about">About</a></li>
+      
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+  <div class="clearfix"></div>
+</header>
+    <div class="content"><article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/22/利用现有的网络产品实现内网linux服务器文件的公网同步/">
+  <time datetime="2015-03-22T05:23:41.000Z">
+    2015-03-22
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title">利用现有的网络产品实现内网linux服务器文件的公网同步</h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>更新这篇文章的时候发现原来引用的互联网产品everbox已经不在了,作为国内第一批网盘产品,模仿dropbox做出来的,说实话,这个产品真的还不错,不过可能由于盛大运营方向的改变,对于这个短期内不会有收益的产品，最终被废掉了,其实对于技术发展很快的今天,拥有数据才是重点,进行数据重复删除以后,对于企业的存储压力其实不太大了,该淘汰的终归要淘汰，就像盛大的没落</p>
+<p>下面介绍的是通用的方法,网盘产品很多,都可以使用:</p>
+<p>现在可能会出现这样的情况,你在用你的linux服务器开发一个产品,在公司的时候,你可以通过内网连接到你的机器进行开发,但是回家以后,这些东西怎么带回家,怎么实现在线同步,这是一个问题,最近公司在开发产品的时候就面临这个问题,正好在寻找怎么远程连接内网服务器的时候想到了这个办法,内网服务器的连接办法另外一篇介绍:</p>
+<p>注册网盘账号,方法就不在这里介绍了</p>
+<p>在你的linux机器上安装samba,将你需要使用的目录设置为共享目录<br>这个在/etc/samba/smb.conf中配置就可以</p>
+<p>然后找一台windows机器,将需要备份的目录映射到本地盘,然后将同步的目录指定到这个盘,就可以进行同步了,有的同步软件不支持指定到根目录,那么可以在本地运行一个同步软件,将盘符与本地目录同步起来,然后将同步的盘指定到这个目录即可</p>
+<p>现在有支持可以同步linux和windows的软件了,btsync,这个很简单,需要两边都可以上网即可</p>
+<p>写于: 2012年02月03日<br>更新于: 2015年03月22日</p>
+
+    
+  </div>
+  <footer>
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">评论</h1>
+  <div class="ds-thread" data-thread-key="2015/03/22/利用现有的网络产品实现内网linux服务器文件的公网同步/"  data-title="利用现有的网络产品实现内网linux服务器文件的公网同步">
+  </div>
+</section>
+</div>
+  </div>
+  <footer id="footer"><div class="copyright">
+  
+  &copy; 2015 <a href="/">zphj1987</a>
+  
+</div>
+<div class="theme-copyright">
+  Theme by <a href="https://github.com/orderedlist" target="_blank">orderedlist</a>
+   | 
+  Redesign by <a href="http://heroicyang.com/" target="_blank">Heroic Yang</a>
+</div>
+<div class="clearfix"></div></footer>
+  <script src="/js/jquery.min.js"></script>
+<script src="/js/scale.fix.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = { short_name: 'zphj1987' };
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';
+    ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox();
+  })(jQuery);
+</script>
+
+
+<div id="totop" style="position:fixed;bottom:150px;right:50px;cursor: pointer;">
+<a title="Top"><img src="/imgs/scrollup.png"/></a>
+</div>
+<script src="/js/totop.js"></script>
+
+</body>
+</html>

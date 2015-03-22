@@ -1,0 +1,173 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  
+  <title>正确用DD测试磁盘读写速度 | zphj1987&#39;Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  
+    <meta name="author" content="zphj1987">
+  
+  
+    <meta name="description" content="问: 以下几种方式测试磁盘读写速度有什么区别?
+dd if=/dev/zero of=test bs=1M count=128 
+dd if=/dev/zero of=test bs=1M count=128 ; sync
+dd if=/dev/zero of=test bs=1M count=128 conv=fdatasync
+dd if=/dev/zero of=test bs=1M cou">
+  
+  <meta name="description" content="问: 以下几种方式测试磁盘读写速度有什么区别?
+dd if=/dev/zero of=test bs=1M count=128 
+dd if=/dev/zero of=test bs=1M count=128 ; sync
+dd if=/dev/zero of=test bs=1M count=128 conv=fdatasync
+dd if=/dev/zero of=test bs=1M cou">
+<meta property="og:type" content="article">
+<meta property="og:title" content="正确用DD测试磁盘读写速度">
+<meta property="og:url" content="http://yoursite.com/2015/03/22/正确用DD测试磁盘读写速度/index.html">
+<meta property="og:site_name" content="zphj1987'Blog">
+<meta property="og:description" content="问: 以下几种方式测试磁盘读写速度有什么区别?
+dd if=/dev/zero of=test bs=1M count=128 
+dd if=/dev/zero of=test bs=1M count=128 ; sync
+dd if=/dev/zero of=test bs=1M count=128 conv=fdatasync
+dd if=/dev/zero of=test bs=1M cou">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="正确用DD测试磁盘读写速度">
+<meta name="twitter:description" content="问: 以下几种方式测试磁盘读写速度有什么区别?
+dd if=/dev/zero of=test bs=1M count=128 
+dd if=/dev/zero of=test bs=1M count=128 ; sync
+dd if=/dev/zero of=test bs=1M count=128 conv=fdatasync
+dd if=/dev/zero of=test bs=1M cou">
+  
+  
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+<body>
+  <div class="wrapper">
+    <header id="header">
+  <div class="title">
+    <h1><a href="/">zphj1987&#39;Blog</a></h1>
+    <p><a href="/">现在所学，终有所用</a></p>
+  </div>
+  <nav class="nav">
+    <ul>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/archives">Archives</a></li>
+      
+        <li><a href="/atom.xml">rss</a></li>
+      
+        <li><a href="/about">About</a></li>
+      
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+  <div class="clearfix"></div>
+</header>
+    <div class="content"><article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/22/正确用DD测试磁盘读写速度/">
+  <time datetime="2015-03-22T08:36:15.000Z">
+    2015-03-22
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title">正确用DD测试磁盘读写速度</h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>问: 以下几种方式测试磁盘读写速度有什么区别?</p>
+<pre><code>dd <span class="variable">if=</span>/dev/zero <span class="variable">of=</span>test <span class="variable">bs=</span><span class="number">1</span>M <span class="variable">count=</span><span class="number">128</span> 
+dd <span class="variable">if=</span>/dev/zero <span class="variable">of=</span>test <span class="variable">bs=</span><span class="number">1</span>M <span class="variable">count=</span><span class="number">128</span> ; sync
+dd <span class="variable">if=</span>/dev/zero <span class="variable">of=</span>test <span class="variable">bs=</span><span class="number">1</span>M <span class="variable">count=</span><span class="number">128</span> <span class="variable">conv=</span>fdatasync
+dd <span class="variable">if=</span>/dev/zero <span class="variable">of=</span>test <span class="variable">bs=</span><span class="number">1</span>M <span class="variable">count=</span><span class="number">128</span> <span class="variable">oflag=</span>dsync
+</code></pre><p>答:区别在于内存中写缓存的处理方式。</p>
+<a id="more"></a>
+<p>1.dd if=/dev/zero of=test bs=1M count=128<br>没有加任何参数,dd默认的方式不包括“同步(sync)”命令。也就是说,dd命令完成前并没有让系统真正把文件写到磁盘上。所以以上命令只是单纯地把这128MB的数据读到内存缓冲当中,写缓存[write cache]。所以你得到的将是一个超级快的速度。因为其实dd给你的只是读取到缓存的速度,直到dd完成后系统才开始真正往磁盘上写数据,但这个速度你是看不到了。所以如果这个速度很快,先不要偷着乐。呵呵</p>
+<p>2.dd if=/dev/zero of=test bs=1M count=128 ; sync<br>和前面1中的完全一样。分号隔开的只是先后两个独立的命令。当sync命令准备开始往磁盘上真正写入数据的时候,前面dd命令已经把错误的“写入速度”值显示在屏幕上了。所以你还是得不到真正的写入速度。</p>
+<p>3.dd if=/dev/zero of=test bs=1M count=128 conv=fdatasync<br>加入这个参数后,dd命令执行到最后会真正执行一次“同步(sync)”操作,所以这时候你得到的是读取这128M数据到内存并写入到磁盘上所需的时间,这样算出来的时间才是比较符合实际的。</p>
+<p>4.dd if=/dev/zero of=test bs=1M count=128 oflag=dsync<br>加入这个参数后,dd在执行时每次都会进行同步写入操作。也就是说,这条命令每次读取1M后就要先把这1M写入磁盘,然后再读取下面这1M,一共重复128次。这可能是最慢的一种方式了,因为基本上没有用到写缓存(write cache)。</p>
+<p>问:那应该用哪一种呢?<br>答:建议使用</p>
+<pre><code>dd <span class="variable">bs=</span><span class="number">1</span>M <span class="variable">count=</span><span class="number">128</span> <span class="variable">if=</span>/dev/zero <span class="variable">of=</span>test <span class="variable">conv=</span>fdatasync
+</code></pre><p>因为这种方式最接近计算机实际操作,所以测出来的数据最有参考价值</p>
+<p>写于: 2012年05月02日<br>更新于: 2015年03月22日</p>
+
+    
+  </div>
+  <footer>
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">评论</h1>
+  <div class="ds-thread" data-thread-key="2015/03/22/正确用DD测试磁盘读写速度/"  data-title="正确用DD测试磁盘读写速度">
+  </div>
+</section>
+</div>
+  </div>
+  <footer id="footer"><div class="copyright">
+  
+  &copy; 2015 <a href="/">zphj1987</a>
+  
+</div>
+<div class="theme-copyright">
+  Theme by <a href="https://github.com/orderedlist" target="_blank">orderedlist</a>
+   | 
+  Redesign by <a href="http://heroicyang.com/" target="_blank">Heroic Yang</a>
+</div>
+<div class="clearfix"></div></footer>
+  <script src="/js/jquery.min.js"></script>
+<script src="/js/scale.fix.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = { short_name: 'zphj1987' };
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';
+    ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox();
+  })(jQuery);
+</script>
+
+
+<div id="totop" style="position:fixed;bottom:150px;right:50px;cursor: pointer;">
+<a title="Top"><img src="/imgs/scrollup.png"/></a>
+</div>
+<script src="/js/totop.js"></script>
+
+</body>
+</html>

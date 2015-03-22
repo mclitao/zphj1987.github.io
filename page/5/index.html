@@ -1,0 +1,335 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  
+  <title>zphj1987&#39;Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  
+    <meta name="author" content="zphj1987">
+  
+  
+  <meta name="description">
+<meta property="og:type" content="website">
+<meta property="og:title" content="zphj1987'Blog">
+<meta property="og:url" content="http://yoursite.com/page/5/index.html">
+<meta property="og:site_name" content="zphj1987'Blog">
+<meta property="og:description">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="zphj1987'Blog">
+<meta name="twitter:description">
+  
+  
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+<body>
+  <div class="wrapper">
+    <header id="header">
+  <div class="title">
+    <h1><a href="/">zphj1987&#39;Blog</a></h1>
+    <p><a href="/">现在所学，终有所用</a></p>
+  </div>
+  <nav class="nav">
+    <ul>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/archives">Archives</a></li>
+      
+        <li><a href="/atom.xml">rss</a></li>
+      
+        <li><a href="/about">About</a></li>
+      
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+  <div class="clearfix"></div>
+</header>
+    <div class="content">
+
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/22/把你的常用文件夹直接显示在“计算机”中/">
+  <time datetime="2015-03-22T08:05:43.000Z">
+    2015-03-22
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/03/22/把你的常用文件夹直接显示在“计算机”中/">把你的常用文件夹直接显示在“计算机”中</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>win7 中“我的电脑”改名为了“计算机”,而且计算机中不再有我的文档共享文档等链接,虽然计算机左侧的链接中有常用文件夹的链接，用户也可以把自己的快捷方式放入其中。<br>但某些东西还是想直接放在计算机中，很简单，只要把文件或文件夹或它们的快捷方式放到以下目录即可。</p>
+<pre><code>C:<span class="command">\Users</span><span class="command">\你</span>的用户名<span class="command">\AppData</span><span class="command">\Roaming</span><span class="command">\Microsoft</span><span class="command">\Windows</span><span class="command">\Network</span> Shortcuts
+</code></pre><p>即可在“计算机”中显示。</p>
+<p>写于: 2012年4月24日<br>更新于: 2015年03月22日</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/22/关于nginx-upstream的几种配置方式/">
+  <time datetime="2015-03-22T07:55:56.000Z">
+    2015-03-22
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/03/22/关于nginx-upstream的几种配置方式/">关于nginx upstream的几种配置方式</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>平时一直依赖硬件来作load blance,最近研究Nginx来做负载设备,记录下upstream的几种配置方式。</p>
+<p>第一种:轮询</p>
+<pre><code><span class="title">upstream</span> test{
+    <span class="title">server</span> <span class="number">192.168.0.1:3000</span>;
+    <span class="title">server</span> <span class="number">192.168.0.1:3001</span>;
+}
+</code></pre><p>第二种:权重</p>
+<pre><code><span class="title">upstream</span> test{
+    <span class="title">server</span> <span class="number">192.168.0.1</span> weight=<span class="number">2</span>;
+    <span class="title">server</span> <span class="number">192.168.0.2</span> weight=<span class="number">3</span>;
+}
+</code></pre><p>这种模式可解决服务器性能不等的情况下轮询比率的调配</p>
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2015/03/22/关于nginx-upstream的几种配置方式/#more" class="more-link">阅读全文</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/22/win7安装系统出现“安装程序无法创建新的系统分区，也无法定位现有的系统分区”解决方法/">
+  <time datetime="2015-03-22T07:52:01.000Z">
+    2015-03-22
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/03/22/win7安装系统出现“安装程序无法创建新的系统分区，也无法定位现有的系统分区”解决方法/">win7安装系统出现“安装程序无法创建新的系统分区，也无法定位现有的系统分区”解决方法</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>原来服务器上的系统是debian的系统，现在需要在原系统和机器不动的基础上在这台服务器上安装一个win7系统,在安装过程中出现了标题中所说的问题,上网搜索了一下,发现最有效的解决办法就是修改bios中的磁盘的启动项:</p>
+<p>由于原来的系统盘插在第一个sata口,应该是占据着磁盘0,那么在热插拔的机器上插入的一块新的硬盘应该是占据着磁盘1</p>
+<p>而实际情况是在开机进行磁盘选择启动时 原来的debian系统盘是占据这第一启动项,后插入的硬盘占据着第二启动项,在进入到win7的安装程序的时候,会发现,后插入的那个硬盘居然占据着磁盘0,由于这个地方的显示跟bios启动看到的启动顺序对不上,所以就出现了安装程序无法创建新的系统分区,也无法定位现有系统。</p>
+<p>所以需要进入bios进行小的修改<br>进入bios修改界面<br>选择boot选项<br>选择Hard Disk Drivers<br>可以看到1st drive  对应的是原系统盘,在这里修改为后插入的那块硬盘<br>然后保存设置 重启<br>然后安装系统就不会有问题了<br>新插入的硬盘现在应该占据着磁盘1的位子了,安装win7到磁盘1 即可</p>
+<p>写于:2012年4月20日<br>更新于:2015年03月22日</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/22/系统运行后修改linux系统时区/">
+  <time datetime="2015-03-22T07:43:22.000Z">
+    2015-03-22
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/03/22/系统运行后修改linux系统时区/">系统运行后修改linux系统时区</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>在网上看了很多改时间的帖子,都没能最终解决问题。最后还是下面的博客最终解决的时间的问题,感谢原作者<br>安装系统过程时没有选对当前的时区,即CST,Asia/Shanghai,而是按默认的，EDT时区,这样跟我们的系统就都对不上,因此得改回CST,仔细琢磨一下,方法如下:</p>
+<p>更改/etc/timezone里面的内容为:Asia/Shanghai</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ mv /etc/localtime /etc/localtime-bk</span><br><span class="line">$ cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime</span><br></pre></td></tr></table></figure>
+<p>再用命令date看一下,就是我们要的CST。</p>
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2015/03/22/系统运行后修改linux系统时区/#more" class="more-link">阅读全文</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/22/更新租约和检测数据完整性脚本/">
+  <time datetime="2015-03-22T07:37:55.000Z">
+    2015-03-22
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/03/22/更新租约和检测数据完整性脚本/">更新租约和检测数据完整性脚本</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>这个是针对tahoe这个文件系统做的一个更新租约和检查数据完整性的脚本,并且把结果保存下来,先要把所有的caps保存到一个文本当中</p>
+<pre><code><span class="comment">#! /bin/sh</span>
+   a=<span class="variable">$(</span>cat /home/cap-list.txt |wc -l)
+   c=<span class="string">`date`</span>
+   echo <span class="variable">$a</span>
+   <span class="keyword">for</span>((i=<span class="number">1</span>;i&lt;=a;i++))
+   <span class="keyword">do</span>
+       b=<span class="variable">$(</span> head -<span class="variable">$i</span> /home/cap-list.txt |tail -<span class="number">1</span>)
+       echo <span class="variable">$b</span> <span class="prompt">&gt;&gt; </span>/home/checktime.txt
+       echo <span class="string">"start time:"</span> <span class="prompt">&gt;&gt; </span>/home/checktime.txt
+       echo <span class="string">`date`</span> <span class="prompt">&gt;&gt; </span>/home/checktime.txt
+       tahoe deep-check --add-lease --repair --dir-cap=<span class="variable">$b</span> <span class="prompt">&gt;&gt; </span>/home/checktime.txt
+       echo <span class="string">"end time:"</span> <span class="prompt">&gt;&gt; </span>/home/checktime.txt
+       echo <span class="string">`date`</span> <span class="prompt">&gt;&gt; </span>/home/checktime.txt
+   done
+   d=<span class="string">`date`</span>
+   echo <span class="variable">$c</span> <span class="prompt">&gt;&gt; </span>/home/checktime.txt
+   echo <span class="variable">$d</span> <span class="prompt">&gt;&gt; </span>/home/checktime.txt
+</code></pre><p>写于: 2012年4月14日<br>更新于: 2015年03月22日</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+
+  <nav id="pagination">
+  
+    <a href="/page/4/" class="prev">上一页</a>
+  
+  
+    <a href="/page/6/" class="next">下一页</a>
+  
+  <div class="clearfix"></div>
+</nav>
+
+</div>
+  </div>
+  <footer id="footer"><div class="copyright">
+  
+  &copy; 2015 <a href="/">zphj1987</a>
+  
+</div>
+<div class="theme-copyright">
+  Theme by <a href="https://github.com/orderedlist" target="_blank">orderedlist</a>
+   | 
+  Redesign by <a href="http://heroicyang.com/" target="_blank">Heroic Yang</a>
+</div>
+<div class="clearfix"></div></footer>
+  <script src="/js/jquery.min.js"></script>
+<script src="/js/scale.fix.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = { short_name: 'zphj1987' };
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';
+    ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox();
+  })(jQuery);
+</script>
+
+
+<div id="totop" style="position:fixed;bottom:150px;right:50px;cursor: pointer;">
+<a title="Top"><img src="/imgs/scrollup.png"/></a>
+</div>
+<script src="/js/totop.js"></script>
+
+</body>
+</html>

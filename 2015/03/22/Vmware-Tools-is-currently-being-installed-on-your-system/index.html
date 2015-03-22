@@ -1,0 +1,169 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  
+  <title>Vmware Tools is currently being installed on your system | zphj1987&#39;Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  
+    <meta name="author" content="zphj1987">
+  
+  
+    <meta name="description" content="问题描述:使用虚拟机安装Ubuntu过程中一直停留在“PLEASE WAIT! Vmware Tools is currentlybeing installed on your system”如下图:
+]
+软件环境VMWare 8Ubuntu 12.10
+解决方案如下">
+  
+  <meta name="description" content="问题描述:使用虚拟机安装Ubuntu过程中一直停留在“PLEASE WAIT! Vmware Tools is currentlybeing installed on your system”如下图:
+]
+软件环境VMWare 8Ubuntu 12.10
+解决方案如下">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vmware Tools is currently being installed on your system">
+<meta property="og:url" content="http://yoursite.com/2015/03/22/Vmware-Tools-is-currently-being-installed-on-your-system/index.html">
+<meta property="og:site_name" content="zphj1987'Blog">
+<meta property="og:description" content="问题描述:使用虚拟机安装Ubuntu过程中一直停留在“PLEASE WAIT! Vmware Tools is currentlybeing installed on your system”如下图:
+]
+软件环境VMWare 8Ubuntu 12.10
+解决方案如下">
+<meta property="og:image" content="http://7xi6lo.com1.z0.glb.clouddn.com/vmware1.jpg">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Vmware Tools is currently being installed on your system">
+<meta name="twitter:description" content="问题描述:使用虚拟机安装Ubuntu过程中一直停留在“PLEASE WAIT! Vmware Tools is currentlybeing installed on your system”如下图:
+]
+软件环境VMWare 8Ubuntu 12.10
+解决方案如下">
+  
+  
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+<body>
+  <div class="wrapper">
+    <header id="header">
+  <div class="title">
+    <h1><a href="/">zphj1987&#39;Blog</a></h1>
+    <p><a href="/">现在所学，终有所用</a></p>
+  </div>
+  <nav class="nav">
+    <ul>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/archives">Archives</a></li>
+      
+        <li><a href="/atom.xml">rss</a></li>
+      
+        <li><a href="/about">About</a></li>
+      
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+  <div class="clearfix"></div>
+</header>
+    <div class="content"><article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/22/Vmware-Tools-is-currently-being-installed-on-your-system/">
+  <time datetime="2015-03-22T13:47:15.000Z">
+    2015-03-22
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title">Vmware Tools is currently being installed on your system</h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>问题描述:<br>使用虚拟机安装Ubuntu过程中一直停留在“PLEASE WAIT! Vmware Tools is currently<br>being installed on your system”如下图:</p>
+<p><img src="http://7xi6lo.com1.z0.glb.clouddn.com/vmware1.jpg" alt="">]</p>
+<p>软件环境<br>VMWare 8<br>Ubuntu 12.10</p>
+<p>解决方案如下</p>
+<a id="more"></a>
+<p>做下面三步操作后重启系统 :</p>
+<p>Restore the /etc/issue file:</p>
+<pre><code>sudo mv <span class="regexp">/etc/i</span>ssue.backup <span class="regexp">/etc/i</span>ssue
+</code></pre><p>Restore the /etc/rc.local file:</p>
+<pre><code>sudo mv /etc/rc<span class="class">.local</span><span class="class">.backup</span> /etc/rc.local
+</code></pre><p>Restore the /etc/init/lightdm.conf file:</p>
+<pre><code>sudo mv <span class="regexp">/opt/</span>vmware-tools-installer<span class="regexp">/lightdm.conf /</span>etc<span class="regexp">/init</span>
+</code></pre><p>Then reboot.</p>
+<p>写于: 2012年12月14日<br>更新于: 2015年03月22日</p>
+
+    
+  </div>
+  <footer>
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">评论</h1>
+  <div class="ds-thread" data-thread-key="2015/03/22/Vmware-Tools-is-currently-being-installed-on-your-system/"  data-title="Vmware Tools is currently being installed on your system">
+  </div>
+</section>
+</div>
+  </div>
+  <footer id="footer"><div class="copyright">
+  
+  &copy; 2015 <a href="/">zphj1987</a>
+  
+</div>
+<div class="theme-copyright">
+  Theme by <a href="https://github.com/orderedlist" target="_blank">orderedlist</a>
+   | 
+  Redesign by <a href="http://heroicyang.com/" target="_blank">Heroic Yang</a>
+</div>
+<div class="clearfix"></div></footer>
+  <script src="/js/jquery.min.js"></script>
+<script src="/js/scale.fix.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = { short_name: 'zphj1987' };
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';
+    ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox();
+  })(jQuery);
+</script>
+
+
+<div id="totop" style="position:fixed;bottom:150px;right:50px;cursor: pointer;">
+<a title="Top"><img src="/imgs/scrollup.png"/></a>
+</div>
+<script src="/js/totop.js"></script>
+
+</body>
+</html>
