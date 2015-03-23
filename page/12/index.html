@@ -1,0 +1,285 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  
+  <title>zphj1987&#39;Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  
+    <meta name="author" content="zphj1987">
+  
+  
+  <meta name="description">
+<meta property="og:type" content="website">
+<meta property="og:title" content="zphj1987'Blog">
+<meta property="og:url" content="http://yoursite.com/page/12/index.html">
+<meta property="og:site_name" content="zphj1987'Blog">
+<meta property="og:description">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="zphj1987'Blog">
+<meta name="twitter:description">
+  
+  
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+  
+<script type="text/javascript">
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?252ba55374ee0e63b03196973bb9b776";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+</head>
+
+<body>
+  <div class="wrapper">
+    <header id="header">
+  <div class="title">
+    <h1><a href="/">zphj1987&#39;Blog</a></h1>
+    <p><a href="/">现在所学，终有所用</a></p>
+  </div>
+  <nav class="nav">
+    <ul>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/archives">Archives</a></li>
+      
+        <li><a href="/atom.xml">rss</a></li>
+      
+        <li><a href="/about">About</a></li>
+      
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+  <div class="clearfix"></div>
+</header>
+    <div class="content">
+
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/20/Debian-64位内核升级步骤/">
+  <time datetime="2015-03-20T09:21:21.000Z">
+    2015-03-20
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/03/20/Debian-64位内核升级步骤/">Debian 64位内核升级步骤</a></h1>
+  
+
+  </header>
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      
+        <img src="http://7xi6lo.com1.z0.glb.clouddn.com/debianlogo.jpg">
+      
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="entry">
+    
+      <h3 id="安装相关依赖包">安装相关依赖包</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ apt-get install bzip2 libncurses5-dev kernel-package zlib1g-dev gcc make kernel-package wget module-init-tools procps libncurses5-dev</span><br></pre></td></tr></table></figure>
+<h3 id="下载源码">下载源码</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/src</span><br><span class="line">wget http://www.kernel.org/pub/linux/kernel/v2.<span class="number">6</span>/linux-<span class="number">2.6</span>.<span class="number">35.9</span>.tar.bz2</span><br><span class="line">tar -xvjf linux-<span class="number">2.6</span>.<span class="number">35.9</span>.tar.bz2</span><br><span class="line">cp /boot/config-`uname -r` /usr/src/linux-<span class="number">2.6</span>.<span class="number">35.9</span>/.config</span><br><span class="line">Then we must configure the new kernel:</span><br><span class="line"><span class="built_in">cd</span> linux-<span class="number">2.6</span>.<span class="number">35.9</span></span><br><span class="line">make menuconfig</span><br></pre></td></tr></table></figure>
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2015/03/20/Debian-64位内核升级步骤/#more" class="more-link">阅读全文</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="photo">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/19/test/">
+  <time datetime="2015-03-19T15:27:00.000Z">
+    2015-03-19
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/03/19/test/">test1</a></h1>
+  
+
+  </header>
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      
+        <img src="http://bruce.u.qiniudn.com/2013/11/27/reading/photos-0.jpg">
+      
+        <img src="http://bruce.u.qiniudn.com/2013/11/27/reading/photos-1.jpg">
+      
+        <img src="http://7xi6lo.com1.z0.glb.clouddn.com/testwailian.png">
+      
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="entry">
+    
+      <p>av<br>sd<br>sad<br>as<br>da<br>sd<br>as<br>da<br>sdasddddddddddddddddd</p>
+<p>a</p>
+<p>a<br>a</p>
+<p>asdasd<br>as<br>d<br>asd<br>as<br>da</p>
+<p>as<br>das<br>d<br>as</p>
+<p>asds</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/19/the-fist-day/">
+  <time datetime="2015-03-19T14:54:59.000Z">
+    2015-03-19
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/03/19/the-fist-day/">the fist day</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h2 id="为什么写这个博客">为什么写这个博客</h2><p>博客转移了很多地方,从最开始的人人小站,到后来的CSDN,再到简书,换来换去直到看到还有个hexo,这个是搭建在github上的一个博客,只不过排版什么的可能需要自己来处理了,这个博客最大的优点就是简洁,可以很方便的找到自己需要了,打算用这个还有个原因是,看到了几个写的很好的技术文章正好来自这个平台,自己也尝试着把好东西都放到这里汇总</p>
+<p>很多东西真的非常喜欢,比如goagent,比如google,比如github,以及一些其他的开源的东西,也许很多人无法理解share是个什么感觉</p>
+<p>这个博客是我技术文章开始的地方,也是我和嘎嘎开始减肥的日子,也该活的有生气一些,准备数据化我们的减肥数据,也许这样更能激励自己</p>
+<p>谷歌的十大信条:</p>
+<pre><code>1、以用户为中心,其他一切自然水到渠成
+2、专心将一件事做到极致
+3、越快越好
+4、网络上也讲民主
+5、信息随时随地可得
+6、赚钱不必作恶
+7、信息无极限
+8、信息需求无国界
+9、认真不在着装
+10、追求无止境
+</code></pre>
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+
+  <nav id="pagination">
+  
+    <a href="/page/11/" class="prev">上一页</a>
+  
+  
+  <div class="clearfix"></div>
+</nav>
+
+</div>
+  </div>
+  <footer id="footer"><div class="copyright">
+  
+  &copy; 2015 <a href="/">zphj1987</a>
+  
+</div>
+<div class="theme-copyright">
+  Theme by <a href="https://github.com/orderedlist" target="_blank">orderedlist</a>
+   | 
+  Redesign by <a href="http://heroicyang.com/" target="_blank">Heroic Yang</a>
+</div>
+<div class="clearfix"></div></footer>
+  <script src="/js/jquery.min.js"></script>
+<script src="/js/scale.fix.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = { short_name: 'zphj1987' };
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';
+    ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox();
+  })(jQuery);
+</script>
+
+
+<div id="totop" style="position:fixed;bottom:150px;right:50px;cursor: pointer;">
+<a title="Top"><img src="/imgs/scrollup.png"/></a>
+</div>
+<script src="/js/totop.js"></script>
+
+</body>
+</html>

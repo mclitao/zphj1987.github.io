@@ -73,6 +73,141 @@ var _hmt = _hmt || [];
   <header>
     
       <div class="icon"></div>
+      <a href="/2015/03/22/系统运行后修改linux系统时区/">
+  <time datetime="2015-03-22T07:43:22.000Z">
+    2015-03-22
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/03/22/系统运行后修改linux系统时区/">系统运行后修改linux系统时区</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>在网上看了很多改时间的帖子,都没能最终解决问题。最后还是下面的博客最终解决的时间的问题,感谢原作者<br>安装系统过程时没有选对当前的时区,即CST,Asia/Shanghai,而是按默认的，EDT时区,这样跟我们的系统就都对不上,因此得改回CST,仔细琢磨一下,方法如下:</p>
+<p>更改/etc/timezone里面的内容为:Asia/Shanghai</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ mv /etc/localtime /etc/localtime-bk</span><br><span class="line">$ cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime</span><br></pre></td></tr></table></figure>
+<p>再用命令date看一下,就是我们要的CST。</p>
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2015/03/22/系统运行后修改linux系统时区/#more" class="more-link">阅读全文</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/22/更新租约和检测数据完整性脚本/">
+  <time datetime="2015-03-22T07:37:55.000Z">
+    2015-03-22
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/03/22/更新租约和检测数据完整性脚本/">更新租约和检测数据完整性脚本</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>这个是针对tahoe这个文件系统做的一个更新租约和检查数据完整性的脚本,并且把结果保存下来,先要把所有的caps保存到一个文本当中</p>
+<pre><code><span class="comment">#! /bin/sh</span>
+   a=<span class="variable">$(</span>cat /home/cap-list.txt |wc -l)
+   c=<span class="string">`date`</span>
+   echo <span class="variable">$a</span>
+   <span class="keyword">for</span>((i=<span class="number">1</span>;i&lt;=a;i++))
+   <span class="keyword">do</span>
+       b=<span class="variable">$(</span> head -<span class="variable">$i</span> /home/cap-list.txt |tail -<span class="number">1</span>)
+       echo <span class="variable">$b</span> <span class="prompt">&gt;&gt; </span>/home/checktime.txt
+       echo <span class="string">"start time:"</span> <span class="prompt">&gt;&gt; </span>/home/checktime.txt
+       echo <span class="string">`date`</span> <span class="prompt">&gt;&gt; </span>/home/checktime.txt
+       tahoe deep-check --add-lease --repair --dir-cap=<span class="variable">$b</span> <span class="prompt">&gt;&gt; </span>/home/checktime.txt
+       echo <span class="string">"end time:"</span> <span class="prompt">&gt;&gt; </span>/home/checktime.txt
+       echo <span class="string">`date`</span> <span class="prompt">&gt;&gt; </span>/home/checktime.txt
+   done
+   d=<span class="string">`date`</span>
+   echo <span class="variable">$c</span> <span class="prompt">&gt;&gt; </span>/home/checktime.txt
+   echo <span class="variable">$d</span> <span class="prompt">&gt;&gt; </span>/home/checktime.txt
+</code></pre><p>写于: 2012年4月14日<br>更新于: 2015年03月22日</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/22/卸载python安装的软件/">
+  <time datetime="2015-03-22T07:26:12.000Z">
+    2015-03-22
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/03/22/卸载python安装的软件/">卸载python安装的软件</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>python源码安装的软件是无法通过命令卸载的,这个可以通过记录安装过程的形式来卸载安装的软件</p>
+<p>以 python2.7.2 为例,在这个目录中有一个 setup.py 的文件,很显然这是安装程序,还是python写的,用 python 写 python 到安装程序,大开眼界了。在这里,需要写一个 shell 脚本,把在重新安装中提到的安装位置全部删除,就实现了卸载到目的了</p>
+<h3 id="一、创建del-sh脚本内容(在源码目录):">一、创建del.sh脚本内容(在源码目录):</h3><pre><code><span class="shebang">#!/bin/bash  </span>
+<span class="keyword">for</span> i <span class="keyword">in</span> $(less files.txt)  
+<span class="keyword">do</span>  rm -rf <span class="variable">$i</span>  
+<span class="keyword">done</span>  
+</code></pre><p>脚本说明: files.txt 是需要事先在目录下创建的文件,目的是记录安装过程中提到到路径。脚本很简单,详细的就不说了,学过 shell 编程到肯定没问题,没学过到有其他语言编程基础的,仔细看看也可以看懂。</p>
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2015/03/22/卸载python安装的软件/#more" class="more-link">阅读全文</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
       <a href="/2015/03/22/常用linux源列表/">
   <time datetime="2015-03-22T07:16:16.000Z">
     2015-03-22
@@ -138,148 +273,6 @@ var _hmt = _hmt || [];
         <div class="alignleft">
           <a href="/2015/03/22/监控磁盘读写状况/#more" class="more-link">阅读全文</a>
         </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-  
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2015/03/22/du查看的目录大小与df查看的大小不同的时候用lsof查找/">
-  <time datetime="2015-03-22T06:21:07.000Z">
-    2015-03-22
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2015/03/22/du查看的目录大小与df查看的大小不同的时候用lsof查找/">du查看的目录大小与df查看的大小不同的时候用lsof查找</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <p>首先MAN一下两个命令,看一下解释的区别:</p>
-<pre><code>du - estimate <span class="built_in">file</span> <span class="constant">space</span> usage
-df - report <span class="built_in">file</span> <span class="keyword">system</span> disk <span class="constant">space</span> usage
-</code></pre><p>du估计文件空间占用情况,df报告文件系统磁盘空间使用情况。两个命令所要获取的对象时不同的。在linux下,几乎所有东西都可以称为文件,常规文件,二进制文件,socket流。所以,通常情况下,使用du得到到的根路径文件空间占用情况应当与df得到的文件系统磁盘占用的情况是一致的或者说相差无几。但是在某些情况下却会出现du得到的空间占用情况要远小于df得到的。</p>
-<p>后通过查询,发现问题出现在deleted文件上。</p>
-<p>root下 lsof | grep deleted会发现多多少少有些文件状态出于deleted状态。</p>
-<pre><code>[root<span class="comment">@eb152 ~]# lsof |grep deleted</span>
-进程名   PID       USER    FD   文件类型        大小(字节)  索引节点  文件名  [(状态)]
-java       3311    AuSP    8w      REG              253,0         778   10879268 <span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>.log (deleted)
-java       3311    AuSP    9w      REG              253,0        3275   10879269 <span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>.log (deleted)
-java       3311    AuSP   10w      REG              253,0           0   10879815 <span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>.log (deleted)
-java       3311    AuSP   11w      REG              253,0           0   10879816 <span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>.log (deleted)
-oracle     4195  oracle    7u      REG              253,0           0   14254321 <span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span> (deleted)
-</code></pre><p>状态为deleted为标记被删除,其实该文件并没有从磁盘中删除,类似windows下的回收站状态。</p>
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2015/03/22/du查看的目录大小与df查看的大小不同的时候用lsof查找/#more" class="more-link">阅读全文</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-  
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2015/03/22/遍历指定目录并且从子目录开始将目录输出到指定文件/">
-  <time datetime="2015-03-22T06:18:05.000Z">
-    2015-03-22
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2015/03/22/遍历指定目录并且从子目录开始将目录输出到指定文件/">遍历指定目录并且从子目录开始将目录输出到指定文件</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <p>shell脚本:</p>
-<pre><code><span class="shebang">#! /bin/sh</span>
-<span class="built_in">echo</span> <span class="string">"type a backup directory name:"</span>
-<span class="built_in">read</span> <span class="operator">-e</span> r
-<span class="built_in">echo</span> <span class="variable">$r</span>   
-python /zp/bianli.py <span class="variable">$r</span>                 <span class="comment">#传递参数到python脚本文件中</span>
-<span class="keyword">for</span> dir <span class="keyword">in</span> `cat /zp/mulu.txt`
-<span class="keyword">do</span>
-<span class="built_in">echo</span> <span class="variable">$dir</span>
-<span class="keyword">done</span>
-</code></pre><p>python脚本:</p>
-<pre><code>#! /usr/bin/env python
-import os,sys
-r=sys<span class="class">.argv</span>[<span class="number">1</span>]                #将第一个参数值传入到r当中
-<span class="keyword">for</span> root,dirs,files <span class="keyword">in</span> os.<span class="function"><span class="title">walk</span><span class="params">(r,topdown=False)</span></span>:
-        <span class="keyword">for</span> dir <span class="keyword">in</span> dirs:
-                print os<span class="class">.path</span><span class="class">.join</span>(root,dir)            #输出路径
-</code></pre><p>写于: 2012年3月13日<br>更新于: 2015年03月22日</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-  
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2015/03/22/利用现有的网络产品实现内网linux服务器文件的公网同步/">
-  <time datetime="2015-03-22T05:23:41.000Z">
-    2015-03-22
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2015/03/22/利用现有的网络产品实现内网linux服务器文件的公网同步/">利用现有的网络产品实现内网linux服务器文件的公网同步</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <p>更新这篇文章的时候发现原来引用的互联网产品everbox已经不在了,作为国内第一批网盘产品,模仿dropbox做出来的,说实话,这个产品真的还不错,不过可能由于盛大运营方向的改变,对于这个短期内不会有收益的产品，最终被废掉了,其实对于技术发展很快的今天,拥有数据才是重点,进行数据重复删除以后,对于企业的存储压力其实不太大了,该淘汰的终归要淘汰，就像盛大的没落</p>
-<p>下面介绍的是通用的方法,网盘产品很多,都可以使用:</p>
-<p>现在可能会出现这样的情况,你在用你的linux服务器开发一个产品,在公司的时候,你可以通过内网连接到你的机器进行开发,但是回家以后,这些东西怎么带回家,怎么实现在线同步,这是一个问题,最近公司在开发产品的时候就面临这个问题,正好在寻找怎么远程连接内网服务器的时候想到了这个办法,内网服务器的连接办法另外一篇介绍:</p>
-<p>注册网盘账号,方法就不在这里介绍了</p>
-<p>在你的linux机器上安装samba,将你需要使用的目录设置为共享目录<br>这个在/etc/samba/smb.conf中配置就可以</p>
-<p>然后找一台windows机器,将需要备份的目录映射到本地盘,然后将同步的目录指定到这个盘,就可以进行同步了,有的同步软件不支持指定到根目录,那么可以在本地运行一个同步软件,将盘符与本地目录同步起来,然后将同步的盘指定到这个目录即可</p>
-<p>现在有支持可以同步linux和windows的软件了,btsync,这个很简单,需要两边都可以上网即可</p>
-<p>写于: 2012年02月03日<br>更新于: 2015年03月22日</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
       
       
     

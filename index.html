@@ -73,6 +73,130 @@ var _hmt = _hmt || [];
   <header>
     
       <div class="icon"></div>
+      <a href="/2015/03/23/ubuntu无法关机/">
+  <time datetime="2015-03-23T14:12:55.000Z">
+    2015-03-23
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/03/23/ubuntu无法关机/">ubuntu无法关机</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>在/etc/default/halt 增加下面</p>
+<pre><code><span class="attribute">INIT_HALT </span>=<span class="string"> POWEROFF</span>
+</code></pre><p>写于: 2014年05月07日<br>更新于: 2015年03月23日</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/23/linux中KVM桥接网卡br0/">
+  <time datetime="2015-03-23T14:05:59.000Z">
+    2015-03-23
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/03/23/linux中KVM桥接网卡br0/">linux中KVM桥接网卡br0</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>在centos虚拟化当中需要增加一个桥接网卡,然后将虚拟化当中的机器的网卡桥接到桥接网卡,下面将描述设置方法:</p>
+<p>查看现有网卡</p>
+<pre><code>[root@zb ~]<span class="comment"># vim /etc/sysconfig/network-scripts/ifcfg-eth0</span>
+<span class="constant">DEVICE</span>=eth0
+<span class="constant">HWADDR</span>=70:71:BC:1F:E4:86
+<span class="constant">TYPE</span>=Ethernet
+<span class="constant">UUID</span>=0213211a-d451-4944-881c-e7475b8bee34
+<span class="constant">ONBOOT</span>=yes
+<span class="constant">NM_CONTROLLED</span>=yes
+<span class="constant">BOOTPROTO</span>=static
+<span class="constant">IPADDR</span>=192.168.7.107
+<span class="constant">NETMASK</span>=255.255.0.0
+<span class="constant">GATEWAY</span>=192.168.1.1
+</code></pre><p>将网卡信息copy一份到br0再进行修改</p>
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2015/03/23/linux中KVM桥接网卡br0/#more" class="more-link">阅读全文</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/23/ubuntu掉电出现检查文件系统的问题/">
+  <time datetime="2015-03-23T14:04:00.000Z">
+    2015-03-23
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/03/23/ubuntu掉电出现检查文件系统的问题/">ubuntu掉电出现检查文件系统的问题</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>修改:</p>
+<pre><code>/etc/<span class="reserved">default</span>/rcS 
+FSCKFIX=<span class="literal">no</span> 为 FSCKFIX=<span class="literal">yes</span>
+</code></pre><p>出现这个情况的原因是硬件时钟偏移了<br>显示上次挂载根目录在未来时间。</p>
+<p>写于: 2013年11月28日<br>更新于: 2015年03月23日</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
       <a href="/2015/03/23/ssh配好无密码登录（RSA公钥）后，还要密码登录的问题的解决办法/">
   <time datetime="2015-03-23T05:01:44.000Z">
     2015-03-23
@@ -139,130 +263,6 @@ nameserver 8.8.8.8
         <div class="alignleft">
           <a href="/2015/03/23/ubuntu服务器dns重启失效问题/#more" class="more-link">阅读全文</a>
         </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-  
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2015/03/23/编译一个Centos6-4下可用的内核rpm升级包-3-8-13内核rpm包/">
-  <time datetime="2015-03-22T23:59:15.000Z">
-    2015-03-23
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2015/03/23/编译一个Centos6-4下可用的内核rpm升级包-3-8-13内核rpm包/">编译一个Centos6.4下可用的内核rpm升级包-3.8.13内核rpm包</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <p>在Centos6.4下进行内核升级,采用内核源码的升级方式比较简单，但是需要升级的机器多的情况下进行内核升级就比较麻烦,并且编译内核的速度依赖于机器的性能,一般需要20分钟,而通过rpm内核包的方式进行安装,就比较快,一般在几分钟之内就可以完成内核的安装,本文档以3.8.13内核源码为例子进行的操作。<br>  根据网上的指导教程编译的rpm包，编译完成后只会生成如下两个rpm包:</p>
-<ul>
-<li>kernel-3.8.13-1.x86_64.rpm</li>
-<li>kernel-headers-3.8.13-1.x86_64.rpm</li>
-</ul>
-<p>而实际进行内核升级的时候还需要kernel-firmwsare-3.8.13-1.x86_64.rpm这个包,这个包是包含内核固件相关文件的,而在进行rpm打包的时候,这个包会内嵌到kernel-3.8.13-1.x86_64.rpm这个包当中去,而安装的时候系统没有找到这个包，进行升级的时候就会报错。<br>所以需要对内核源码编译文件进行一定的修改，这个地方需要修改的文件为linux-3.8.13/scripts/package/mkspec路径下的这个文件,具体修改如下(新版内核解决了这个问题,可以不需要修改,根据生成包的情况来看是否修改):</p>
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2015/03/23/编译一个Centos6-4下可用的内核rpm升级包-3-8-13内核rpm包/#more" class="more-link">阅读全文</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-  
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2015/03/23/expect循环的写法/">
-  <time datetime="2015-03-22T23:55:53.000Z">
-    2015-03-23
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2015/03/23/expect循环的写法/">expect循环的写法</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <p>脚本:</p>
-<pre><code><span class="shebang">#!/usr/bin/expect</span>
-spawn sensors-detect
-<span class="keyword">for</span> {set i <span class="number">0</span>} {$i&lt;=<span class="number">10</span>} {incr i} {
-expect <span class="string">":"</span>
-send <span class="string">"\n"</span>
-}
-interact
-</code></pre><p>解释:</p>
-<p>spawn是启动命令<br>for为循环的写法<br>interact为退出<br>这个脚本目的是在一次运行过程中不断模拟用户的enter操作</p>
-<p>写于:2013年08月12日<br>更新于: 2015年03月23日</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-  
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2015/03/22/linux系统启动的时候用脚本生成ssh密钥对（免输入enter）/">
-  <time datetime="2015-03-22T15:07:52.000Z">
-    2015-03-22
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2015/03/22/linux系统启动的时候用脚本生成ssh密钥对（免输入enter）/">linux系统启动的时候用脚本生成ssh密钥对（免输入enter）</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <p>默认执行ssh-keygen的时候会需要连续输入enter,脚本里面不能有交互,所以去掉enter的操作,脚本如下,脚本执行完成以后的效果是自己对自己免登陆,需要免登陆其他服务器就把自己本机的id_rsa.pub拷贝到其他机器的authorized_keys当中就可以了</p>
-<pre><code><span class="shebang">#! /bin/sh</span>
-ssh-keygen -t rsa <span class="operator">-f</span> /root/.ssh/id_rsa -q -N <span class="string">""</span>
-cat /root/.ssh/id_rsa.pub &gt;&gt; /root/.ssh/authorized_keys
-</code></pre><p>写于: 2013年08月07日<br>更新于: 2015年03月22日</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
       
       
     

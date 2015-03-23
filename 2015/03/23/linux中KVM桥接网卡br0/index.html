@@ -1,0 +1,226 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  
+  <title>linux中KVM桥接网卡br0 | zphj1987&#39;Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  
+    <meta name="author" content="zphj1987">
+  
+  
+    <meta name="description" content="在centos虚拟化当中需要增加一个桥接网卡,然后将虚拟化当中的机器的网卡桥接到桥接网卡,下面将描述设置方法:
+查看现有网卡
+[root@zb ~]# vim /etc/sysconfig/network-scripts/ifcfg-eth0
+DEVICE=eth0
+HWADDR=70:71:BC:1F:E4:86
+TYPE=Ethernet
+UUID=0213211a-d451-4944-881">
+  
+  <meta name="description" content="在centos虚拟化当中需要增加一个桥接网卡,然后将虚拟化当中的机器的网卡桥接到桥接网卡,下面将描述设置方法:
+查看现有网卡
+[root@zb ~]# vim /etc/sysconfig/network-scripts/ifcfg-eth0
+DEVICE=eth0
+HWADDR=70:71:BC:1F:E4:86
+TYPE=Ethernet
+UUID=0213211a-d451-4944-881">
+<meta property="og:type" content="article">
+<meta property="og:title" content="linux中KVM桥接网卡br0">
+<meta property="og:url" content="http://yoursite.com/2015/03/23/linux中KVM桥接网卡br0/index.html">
+<meta property="og:site_name" content="zphj1987'Blog">
+<meta property="og:description" content="在centos虚拟化当中需要增加一个桥接网卡,然后将虚拟化当中的机器的网卡桥接到桥接网卡,下面将描述设置方法:
+查看现有网卡
+[root@zb ~]# vim /etc/sysconfig/network-scripts/ifcfg-eth0
+DEVICE=eth0
+HWADDR=70:71:BC:1F:E4:86
+TYPE=Ethernet
+UUID=0213211a-d451-4944-881">
+<meta property="og:image" content="http://7xi6lo.com1.z0.glb.clouddn.com/桥接网卡br0.jpg">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="linux中KVM桥接网卡br0">
+<meta name="twitter:description" content="在centos虚拟化当中需要增加一个桥接网卡,然后将虚拟化当中的机器的网卡桥接到桥接网卡,下面将描述设置方法:
+查看现有网卡
+[root@zb ~]# vim /etc/sysconfig/network-scripts/ifcfg-eth0
+DEVICE=eth0
+HWADDR=70:71:BC:1F:E4:86
+TYPE=Ethernet
+UUID=0213211a-d451-4944-881">
+  
+  
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+  
+<script type="text/javascript">
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?252ba55374ee0e63b03196973bb9b776";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+</head>
+
+<body>
+  <div class="wrapper">
+    <header id="header">
+  <div class="title">
+    <h1><a href="/">zphj1987&#39;Blog</a></h1>
+    <p><a href="/">现在所学，终有所用</a></p>
+  </div>
+  <nav class="nav">
+    <ul>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/archives">Archives</a></li>
+      
+        <li><a href="/atom.xml">rss</a></li>
+      
+        <li><a href="/about">About</a></li>
+      
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+  <div class="clearfix"></div>
+</header>
+    <div class="content"><article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/23/linux中KVM桥接网卡br0/">
+  <time datetime="2015-03-23T14:05:59.000Z">
+    2015-03-23
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title">linux中KVM桥接网卡br0</h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>在centos虚拟化当中需要增加一个桥接网卡,然后将虚拟化当中的机器的网卡桥接到桥接网卡,下面将描述设置方法:</p>
+<p>查看现有网卡</p>
+<pre><code>[root@zb ~]<span class="comment"># vim /etc/sysconfig/network-scripts/ifcfg-eth0</span>
+<span class="constant">DEVICE</span>=eth0
+<span class="constant">HWADDR</span>=70:71:BC:1F:E4:86
+<span class="constant">TYPE</span>=Ethernet
+<span class="constant">UUID</span>=0213211a-d451-4944-881c-e7475b8bee34
+<span class="constant">ONBOOT</span>=yes
+<span class="constant">NM_CONTROLLED</span>=yes
+<span class="constant">BOOTPROTO</span>=static
+<span class="constant">IPADDR</span>=192.168.7.107
+<span class="constant">NETMASK</span>=255.255.0.0
+<span class="constant">GATEWAY</span>=192.168.1.1
+</code></pre><p>将网卡信息copy一份到br0再进行修改</p>
+<a id="more"></a>
+<p>修改eth0的信息为:</p>
+<pre><code><span class="variable">DEVICE=</span>eth0
+<span class="variable">HWADDR=</span><span class="number">70</span>:<span class="number">71</span>:BC:<span class="number">1</span>F:E4:<span class="number">86</span>
+<span class="variable">TYPE=</span>Ethernet
+<span class="variable">ONBOOT=</span>yes
+<span class="variable">NM_CONTROLLED=</span>yes
+<span class="variable">BOOTPROTO=</span>static
+<span class="variable">BRIDGE=</span>br0     <span class="comment">#新增加了这一句,重要</span>
+修改br0的信息为：
+<span class="variable">DEVICE=</span>br0     <span class="comment">#更改eth0为br0</span>
+<span class="variable">HWADDR=</span><span class="number">70</span>:<span class="number">71</span>:BC:<span class="number">1</span>F:E4:<span class="number">86</span>
+<span class="variable">TYPE=</span>Bridge       <span class="comment">#修改类型为bridge</span>
+<span class="variable">ONBOOT=</span>yes
+<span class="variable">BOOTPROTO=</span>static
+<span class="variable">IPADDR=</span><span class="number">192.168</span>.<span class="number">7.107</span>
+<span class="variable">NETMASK=</span><span class="number">255.255</span>.<span class="number">0.0</span>
+<span class="variable">GATEWAY=</span><span class="number">192.168</span>.<span class="number">1.1</span>
+</code></pre><p>修改完成后,eth0实际是没有ip的,br0为当前主机的ip了</p>
+<p>ubuntu下的配置方式</p>
+<pre><code><span class="title">auto</span> lo
+iface lo inet loopback
+auto br0
+iface br0 inet static
+bridge_ports eth0
+bridge_stp <span class="built_in">off</span>
+bridge_maxwait <span class="number">0</span>
+bridge_fd <span class="number">0</span>
+address <span class="number">192.168.5.108</span>
+netmask <span class="number">255.255.0.0</span>
+gateway <span class="number">192.168.1.1</span>
+dns-nameservers <span class="number">192.168.1.1</span>
+</code></pre><p>配置完成后:<br><img src="http://7xi6lo.com1.z0.glb.clouddn.com/桥接网卡br0.jpg" alt=""></p>
+<p>写于: 2013年12月24日<br>更新于: 2015年03月23日</p>
+
+    
+  </div>
+  <footer>
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">评论</h1>
+  <div class="ds-thread" data-thread-key="2015/03/23/linux中KVM桥接网卡br0/"  data-title="linux中KVM桥接网卡br0">
+  </div>
+</section>
+</div>
+  </div>
+  <footer id="footer"><div class="copyright">
+  
+  &copy; 2015 <a href="/">zphj1987</a>
+  
+</div>
+<div class="theme-copyright">
+  Theme by <a href="https://github.com/orderedlist" target="_blank">orderedlist</a>
+   | 
+  Redesign by <a href="http://heroicyang.com/" target="_blank">Heroic Yang</a>
+</div>
+<div class="clearfix"></div></footer>
+  <script src="/js/jquery.min.js"></script>
+<script src="/js/scale.fix.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = { short_name: 'zphj1987' };
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';
+    ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox();
+  })(jQuery);
+</script>
+
+
+<div id="totop" style="position:fixed;bottom:150px;right:50px;cursor: pointer;">
+<a title="Top"><img src="/imgs/scrollup.png"/></a>
+</div>
+<script src="/js/totop.js"></script>
+
+</body>
+</html>

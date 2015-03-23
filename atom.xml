@@ -4,7 +4,7 @@
   <subtitle><![CDATA[现在所学，终有所用]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://yoursite.com/"/>
-  <updated>2015-03-23T06:02:55.074Z</updated>
+  <updated>2015-03-23T14:13:44.312Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -13,6 +13,119 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[ubuntu无法关机]]></title>
+    <link href="http://yoursite.com/2015/03/23/ubuntu%E6%97%A0%E6%B3%95%E5%85%B3%E6%9C%BA/"/>
+    <id>http://yoursite.com/2015/03/23/ubuntu无法关机/</id>
+    <published>2015-03-23T14:12:55.000Z</published>
+    <updated>2015-03-23T14:13:44.312Z</updated>
+    <content type="html"><![CDATA[<p>在/etc/default/halt 增加下面</p>
+<pre><code><span class="attribute">INIT_HALT </span>=<span class="string"> POWEROFF</span>
+</code></pre><p>写于: 2014年05月07日<br>更新于: 2015年03月23日</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>在/etc/default/halt 增加下面</p>
+<pre><code><span class="attribute">INIT_HALT </span>=<span class="string"> POWEROFF</span>
+</code></pre><p>写于]]>
+    </summary>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[linux中KVM桥接网卡br0]]></title>
+    <link href="http://yoursite.com/2015/03/23/linux%E4%B8%ADKVM%E6%A1%A5%E6%8E%A5%E7%BD%91%E5%8D%A1br0/"/>
+    <id>http://yoursite.com/2015/03/23/linux中KVM桥接网卡br0/</id>
+    <published>2015-03-23T14:05:59.000Z</published>
+    <updated>2015-03-23T14:09:32.956Z</updated>
+    <content type="html"><![CDATA[<p>在centos虚拟化当中需要增加一个桥接网卡,然后将虚拟化当中的机器的网卡桥接到桥接网卡,下面将描述设置方法:</p>
+<p>查看现有网卡</p>
+<pre><code>[root@zb ~]<span class="comment"># vim /etc/sysconfig/network-scripts/ifcfg-eth0</span>
+<span class="constant">DEVICE</span>=eth0
+<span class="constant">HWADDR</span>=70:71:BC:1F:E4:86
+<span class="constant">TYPE</span>=Ethernet
+<span class="constant">UUID</span>=0213211a-d451-4944-881c-e7475b8bee34
+<span class="constant">ONBOOT</span>=yes
+<span class="constant">NM_CONTROLLED</span>=yes
+<span class="constant">BOOTPROTO</span>=static
+<span class="constant">IPADDR</span>=192.168.7.107
+<span class="constant">NETMASK</span>=255.255.0.0
+<span class="constant">GATEWAY</span>=192.168.1.1
+</code></pre><p>将网卡信息copy一份到br0再进行修改</p>
+<a id="more"></a>
+<p>修改eth0的信息为:</p>
+<pre><code><span class="variable">DEVICE=</span>eth0
+<span class="variable">HWADDR=</span><span class="number">70</span>:<span class="number">71</span>:BC:<span class="number">1</span>F:E4:<span class="number">86</span>
+<span class="variable">TYPE=</span>Ethernet
+<span class="variable">ONBOOT=</span>yes
+<span class="variable">NM_CONTROLLED=</span>yes
+<span class="variable">BOOTPROTO=</span>static
+<span class="variable">BRIDGE=</span>br0     <span class="comment">#新增加了这一句,重要</span>
+修改br0的信息为：
+<span class="variable">DEVICE=</span>br0     <span class="comment">#更改eth0为br0</span>
+<span class="variable">HWADDR=</span><span class="number">70</span>:<span class="number">71</span>:BC:<span class="number">1</span>F:E4:<span class="number">86</span>
+<span class="variable">TYPE=</span>Bridge       <span class="comment">#修改类型为bridge</span>
+<span class="variable">ONBOOT=</span>yes
+<span class="variable">BOOTPROTO=</span>static
+<span class="variable">IPADDR=</span><span class="number">192.168</span>.<span class="number">7.107</span>
+<span class="variable">NETMASK=</span><span class="number">255.255</span>.<span class="number">0.0</span>
+<span class="variable">GATEWAY=</span><span class="number">192.168</span>.<span class="number">1.1</span>
+</code></pre><p>修改完成后,eth0实际是没有ip的,br0为当前主机的ip了</p>
+<p>ubuntu下的配置方式</p>
+<pre><code><span class="title">auto</span> lo
+iface lo inet loopback
+auto br0
+iface br0 inet static
+bridge_ports eth0
+bridge_stp <span class="built_in">off</span>
+bridge_maxwait <span class="number">0</span>
+bridge_fd <span class="number">0</span>
+address <span class="number">192.168.5.108</span>
+netmask <span class="number">255.255.0.0</span>
+gateway <span class="number">192.168.1.1</span>
+dns-nameservers <span class="number">192.168.1.1</span>
+</code></pre><p>配置完成后:<br><img src="http://7xi6lo.com1.z0.glb.clouddn.com/桥接网卡br0.jpg" alt=""></p>
+<p>写于: 2013年12月24日<br>更新于: 2015年03月23日</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>在centos虚拟化当中需要增加一个桥接网卡,然后将虚拟化当中的机器的网卡桥接到桥接网卡,下面将描述设置方法:</p>
+<p>查看现有网卡</p>
+<pre><code>[root@zb ~]<span class="comment"># vim /etc/sysconfig/network-scripts/ifcfg-eth0</span>
+<span class="constant">DEVICE</span>=eth0
+<span class="constant">HWADDR</span>=70:71:BC:1F:E4:86
+<span class="constant">TYPE</span>=Ethernet
+<span class="constant">UUID</span>=0213211a-d451-4944-881c-e7475b8bee34
+<span class="constant">ONBOOT</span>=yes
+<span class="constant">NM_CONTROLLED</span>=yes
+<span class="constant">BOOTPROTO</span>=static
+<span class="constant">IPADDR</span>=192.168.7.107
+<span class="constant">NETMASK</span>=255.255.0.0
+<span class="constant">GATEWAY</span>=192.168.1.1
+</code></pre><p>将网卡信息copy一份到br0再进行修改</p>]]>
+    
+    </summary>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[ubuntu掉电出现检查文件系统的问题]]></title>
+    <link href="http://yoursite.com/2015/03/23/ubuntu%E6%8E%89%E7%94%B5%E5%87%BA%E7%8E%B0%E6%A3%80%E6%9F%A5%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%9A%84%E9%97%AE%E9%A2%98/"/>
+    <id>http://yoursite.com/2015/03/23/ubuntu掉电出现检查文件系统的问题/</id>
+    <published>2015-03-23T14:04:00.000Z</published>
+    <updated>2015-03-23T14:05:00.112Z</updated>
+    <content type="html"><![CDATA[<p>修改:</p>
+<pre><code>/etc/<span class="reserved">default</span>/rcS 
+FSCKFIX=<span class="literal">no</span> 为 FSCKFIX=<span class="literal">yes</span>
+</code></pre><p>出现这个情况的原因是硬件时钟偏移了<br>显示上次挂载根目录在未来时间。</p>
+<p>写于: 2013年11月28日<br>更新于: 2015年03月23日</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>修改:</p>
+<pre><code>/etc/<span class="reserved">default</span>/rcS 
+FSCKFIX=<span class="literal">no</span> 为 FSCKFIX=<span class="literal]]>
+    </summary>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[ssh配好无密码登录（RSA公钥）后，还要密码登录的问题的解决办法]]></title>
@@ -642,82 +755,6 @@ NetworkLocation<span class="class">.apk</span>           安装到  /data/app_s
 <p><img src="http://7xi6lo.com1.z0.glb.clouddn.com/vmware1.jpg" alt="">]</p>
 <p>软件环境<br>VMWare 8<br>Ubuntu 12.10</p>
 <p>解决方案如下</p>]]>
-    
-    </summary>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[win7问题步骤记录器 （远程协助）]]></title>
-    <link href="http://yoursite.com/2015/03/22/win7%E9%97%AE%E9%A2%98%E6%AD%A5%E9%AA%A4%E8%AE%B0%E5%BD%95%E5%99%A8-%EF%BC%88%E8%BF%9C%E7%A8%8B%E5%8D%8F%E5%8A%A9%EF%BC%89/"/>
-    <id>http://yoursite.com/2015/03/22/win7问题步骤记录器-（远程协助）/</id>
-    <published>2015-03-22T11:39:23.000Z</published>
-    <updated>2015-03-22T11:41:20.833Z</updated>
-    <content type="html"><![CDATA[<p>win7问题步骤记录器<br>有很多时候,身在远方的家人或者是朋友会要求您辅导他们计算机问题,但是又不知道该如何明确向您表达这个问题，这个处境是很令人沮丧的。<br>微软在Windows 7中添加的问题步骤记录器,将会帮助您与您的朋友摆脱沮丧。在这种情况下,您的朋友只要单击开始菜单、键入PSR,按住Enter键，再点击开始记录按钮即可。启用这项功能后,当您的朋友进行问题操作时,该记录器将会逐一记录您的朋友的操作步骤,并将它们压缩在一个MHTML文件中发送给您即可。无疑,这是个快捷、简单与高效的方法,这将有助于缩短您的故障排除时间。 </p>
-<p>写于: 2012年08月23日<br>更新于: 2015年03月23日 </p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>win7问题步骤记录器<br>有很多时候,身在远方的家人或者是朋友会要求您辅导他们计算机问题,但是又不知道该如何明确向您表达这个问题，这个处境是很令人沮丧的。<br>微软在Windows 7中添加的问题步骤记录器,将会帮助您与您的朋友摆脱沮丧。在这种情况下,您的朋友只要单击]]>
-    </summary>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[检查linux下服务器的带宽]]></title>
-    <link href="http://yoursite.com/2015/03/22/%E6%A3%80%E6%9F%A5linux%E4%B8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9A%84%E5%B8%A6%E5%AE%BD/"/>
-    <id>http://yoursite.com/2015/03/22/检查linux下服务器的带宽/</id>
-    <published>2015-03-22T11:25:43.000Z</published>
-    <updated>2015-03-22T11:33:25.168Z</updated>
-    <content type="html"><![CDATA[<p>设想:公司 A 有一个名为 bsdocfs 的存储服务器,并通过名为 beckham 的客户端节点装载 NFS。公司 A 确定他们需要从 bsdocfs得到更多的带宽,因为有大量的节点需要访问 bsdocfs 的共享文件系统。<br>实现此操作的最常用和最便宜的方式是将两个千兆网卡组合在一起。这是最便宜的,因为您通常会有一个额外的可用 NIC 和一个额外的端口。<br>所以采取此这个方法。不过现在的问题是?到底需要多少带宽?</p>
-<p>千兆网卡以太网理论上的限制是 128MBit/s。这个数字从何而来,看看这些计算:<br>1Gb = 1024Mb;1024Mb/8 = 128MB;”b” = “bits,”、”B” = “bytes”</p>
-<p>但实际看到的是什么呢,有什么好的测量方法呢,我推荐一个工具 iperf。可以按照以下方法获得 iperf</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ wget http://dast.nlanr.net/Projects/Iperf2.<span class="number">0</span>/iperf-<span class="number">2.0</span>.<span class="number">2</span>.tar.gz</span><br></pre></td></tr></table></figure>
-<a id="more"></a>
-<p>或者:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ apt-get install iperf</span><br></pre></td></tr></table></figure>
-<p>需要在 bsdocfs 和 beckham 均可见的共享文件系统上安装此工具,或者在两个节点上编译并安装。<br>在 bsdocfs 上,运行:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ iperf <span class="operator">-s</span> <span class="operator">-f</span> M</span><br></pre></td></tr></table></figure>
-<p>这台机器将用作服务器并以 MBit/s 为单位输出执行速度。<br>在 beckham 节点上,运行:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ iperf -c bsdocfs -P <span class="number">4</span> <span class="operator">-f</span> M -w <span class="number">256</span>k -t <span class="number">60</span></span><br></pre></td></tr></table></figure>
-<p>两个屏幕上的结果都指示了速度是多少。在使用千兆网卡的普通服务器上,可能会看到速度约为 112MBit/s。这是 TCP 堆栈和物理电缆中的常用带宽。通过以端到端的方式连接两台服务器,每台服务器使用两个联结的以太网卡,我获得了约 220MBit/s 的带宽。<br>事实上,在联结的网络上看到的 NFS 约为 150-160MBit/s。这仍然表示带宽可以达到预期效果。如果看到更小的值,则应该检查是否有问题。</p>
-<p>我最近碰到一种情况,即通过连接驱动程序连接两个使用了不同驱动程序的 NIC。这导致性能非常低,带宽约为 20MBit/s,比不连接以太网卡时的带宽还小,做bond聚合一定要使用同型号网卡。</p>
-<p>写于: 2013年08月07日<br>更新于: 2015年03月22日</p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>设想:公司 A 有一个名为 bsdocfs 的存储服务器,并通过名为 beckham 的客户端节点装载 NFS。公司 A 确定他们需要从 bsdocfs得到更多的带宽,因为有大量的节点需要访问 bsdocfs 的共享文件系统。<br>实现此操作的最常用和最便宜的方式是将两个千兆网卡组合在一起。这是最便宜的,因为您通常会有一个额外的可用 NIC 和一个额外的端口。<br>所以采取此这个方法。不过现在的问题是?到底需要多少带宽?</p>
-<p>千兆网卡以太网理论上的限制是 128MBit/s。这个数字从何而来,看看这些计算:<br>1Gb = 1024Mb;1024Mb/8 = 128MB;”b” = “bits,”、”B” = “bytes”</p>
-<p>但实际看到的是什么呢,有什么好的测量方法呢,我推荐一个工具 iperf。可以按照以下方法获得 iperf</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ wget http://dast.nlanr.net/Projects/Iperf2.<span class="number">0</span>/iperf-<span class="number">2.0</span>.<span class="number">2</span>.tar.gz</span><br></pre></td></tr></table></figure>]]>
-    
-    </summary>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[linux利用screen进行shell下的屏幕协作]]></title>
-    <link href="http://yoursite.com/2015/03/22/linux%E5%88%A9%E7%94%A8screen%E8%BF%9B%E8%A1%8Cshell%E4%B8%8B%E7%9A%84%E5%B1%8F%E5%B9%95%E5%8D%8F%E4%BD%9C/"/>
-    <id>http://yoursite.com/2015/03/22/linux利用screen进行shell下的屏幕协作/</id>
-    <published>2015-03-22T11:22:22.000Z</published>
-    <updated>2015-03-22T11:24:55.108Z</updated>
-    <content type="html"><![CDATA[<p>我们都知道linux是支持多终端并行处理的<br>但是某些时候我们可能有比较特殊的需求需要两个人同时处理一个终端,screen 正好能满足这个要求</p>
-<p>首先需要安装screen软件:</p>
-<p>debian和ubuntu下面都是通过:</p>
-<pre><code>apt-<span class="keyword">get</span> install screen
-</code></pre><p>进行安装的.</p>
-<a id="more"></a>
-<p>假如现在有a和b需要进行屏幕协作,那么操作步骤如下:<br>a在终端运行:</p>
-<pre><code><span class="title">screen</span> -S   zp        
-</code></pre><p>b然后在终端运行:   </p>
-<pre><code><span class="title">screen</span> -x  zp  
-</code></pre><p>这个时候两边的用户的操作是实时同步的。</p>
-<p>写于: 2012年08月07日<br>更新于: 2015年03月22日</p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>我们都知道linux是支持多终端并行处理的<br>但是某些时候我们可能有比较特殊的需求需要两个人同时处理一个终端,screen 正好能满足这个要求</p>
-<p>首先需要安装screen软件:</p>
-<p>debian和ubuntu下面都是通过:</p>
-<pre><code>apt-<span class="keyword">get</span> install screen
-</code></pre><p>进行安装的.</p>]]>
     
     </summary>
     
