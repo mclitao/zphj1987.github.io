@@ -4,35 +4,63 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="chrome=1">
   
-  <title>linux系统启动的时候用脚本生成ssh密钥对（免输入enter） | zphj1987&#39;Blog</title>
+  <title>expect循环的写法 | zphj1987&#39;Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   
     <meta name="author" content="zphj1987">
   
   
-    <meta name="description" content="默认执行ssh-keygen的时候会需要连续输入enter,脚本里面不能有交互,所以去掉enter的操作,脚本如下,脚本执行完成以后的效果是自己对自己免登陆,需要免登陆其他服务器就把自己本机的id_rsa.pub拷贝到其他机器的authorized_keys当中就可以了
-#! /bin/sh
-ssh-keygen -t rsa -f /root/.ssh/id_rsa -q -N &quot;&quot;
-cat /">
+    <meta name="description" content="脚本:
+#!/usr/bin/expect
+spawn sensors-detect
+for {set i 0} {$i&amp;lt;=10} {incr i} {
+expect &quot;:&quot;
+send &quot;\n&quot;
+}
+interact
+解释:
+spawn是启动命令for为循环的写法interact为退出这个脚本目的是在一次运行过程中不断模拟用户的enter操作
+写于:2013年08月12日更新于: 2015年">
   
-  <meta name="description" content="默认执行ssh-keygen的时候会需要连续输入enter,脚本里面不能有交互,所以去掉enter的操作,脚本如下,脚本执行完成以后的效果是自己对自己免登陆,需要免登陆其他服务器就把自己本机的id_rsa.pub拷贝到其他机器的authorized_keys当中就可以了
-#! /bin/sh
-ssh-keygen -t rsa -f /root/.ssh/id_rsa -q -N &quot;&quot;
-cat /">
+  <meta name="description" content="脚本:
+#!/usr/bin/expect
+spawn sensors-detect
+for {set i 0} {$i&amp;lt;=10} {incr i} {
+expect &quot;:&quot;
+send &quot;\n&quot;
+}
+interact
+解释:
+spawn是启动命令for为循环的写法interact为退出这个脚本目的是在一次运行过程中不断模拟用户的enter操作
+写于:2013年08月12日更新于: 2015年">
 <meta property="og:type" content="article">
-<meta property="og:title" content="linux系统启动的时候用脚本生成ssh密钥对（免输入enter）">
-<meta property="og:url" content="http://yoursite.com/2015/03/22/linux系统启动的时候用脚本生成ssh密钥对（免输入enter）/index.html">
+<meta property="og:title" content="expect循环的写法">
+<meta property="og:url" content="http://yoursite.com/2015/03/23/expect循环的写法/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
-<meta property="og:description" content="默认执行ssh-keygen的时候会需要连续输入enter,脚本里面不能有交互,所以去掉enter的操作,脚本如下,脚本执行完成以后的效果是自己对自己免登陆,需要免登陆其他服务器就把自己本机的id_rsa.pub拷贝到其他机器的authorized_keys当中就可以了
-#! /bin/sh
-ssh-keygen -t rsa -f /root/.ssh/id_rsa -q -N &quot;&quot;
-cat /">
+<meta property="og:description" content="脚本:
+#!/usr/bin/expect
+spawn sensors-detect
+for {set i 0} {$i&amp;lt;=10} {incr i} {
+expect &quot;:&quot;
+send &quot;\n&quot;
+}
+interact
+解释:
+spawn是启动命令for为循环的写法interact为退出这个脚本目的是在一次运行过程中不断模拟用户的enter操作
+写于:2013年08月12日更新于: 2015年">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="linux系统启动的时候用脚本生成ssh密钥对（免输入enter）">
-<meta name="twitter:description" content="默认执行ssh-keygen的时候会需要连续输入enter,脚本里面不能有交互,所以去掉enter的操作,脚本如下,脚本执行完成以后的效果是自己对自己免登陆,需要免登陆其他服务器就把自己本机的id_rsa.pub拷贝到其他机器的authorized_keys当中就可以了
-#! /bin/sh
-ssh-keygen -t rsa -f /root/.ssh/id_rsa -q -N &quot;&quot;
-cat /">
+<meta name="twitter:title" content="expect循环的写法">
+<meta name="twitter:description" content="脚本:
+#!/usr/bin/expect
+spawn sensors-detect
+for {set i 0} {$i&amp;lt;=10} {incr i} {
+expect &quot;:&quot;
+send &quot;\n&quot;
+}
+interact
+解释:
+spawn是启动命令for为循环的写法interact为退出这个脚本目的是在一次运行过程中不断模拟用户的enter操作
+写于:2013年08月12日更新于: 2015年">
   
   
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
@@ -82,26 +110,32 @@ var _hmt = _hmt || [];
   <header>
     
       <div class="icon"></div>
-      <a href="/2015/03/22/linux系统启动的时候用脚本生成ssh密钥对（免输入enter）/">
-  <time datetime="2015-03-22T15:07:52.000Z">
-    2015-03-22
+      <a href="/2015/03/23/expect循环的写法/">
+  <time datetime="2015-03-22T23:55:53.000Z">
+    2015-03-23
   </time>
 </a>
     
     
   
-    <h1 class="title">linux系统启动的时候用脚本生成ssh密钥对（免输入enter）</h1>
+    <h1 class="title">expect循环的写法</h1>
   
 
   </header>
   
   <div class="entry">
     
-      <p>默认执行ssh-keygen的时候会需要连续输入enter,脚本里面不能有交互,所以去掉enter的操作,脚本如下,脚本执行完成以后的效果是自己对自己免登陆,需要免登陆其他服务器就把自己本机的id_rsa.pub拷贝到其他机器的authorized_keys当中就可以了</p>
-<pre><code><span class="shebang">#! /bin/sh</span>
-ssh-keygen -t rsa <span class="operator">-f</span> /root/.ssh/id_rsa -q -N <span class="string">""</span>
-cat /root/.ssh/id_rsa.pub &gt;&gt; /root/.ssh/authorized_keys
-</code></pre><p>写于: 2013年08月07日<br>更新于: 2015年03月22日</p>
+      <p>脚本:</p>
+<pre><code><span class="shebang">#!/usr/bin/expect</span>
+spawn sensors-detect
+<span class="keyword">for</span> {set i <span class="number">0</span>} {$i&lt;=<span class="number">10</span>} {incr i} {
+expect <span class="string">":"</span>
+send <span class="string">"\n"</span>
+}
+interact
+</code></pre><p>解释:</p>
+<p>spawn是启动命令<br>for为循环的写法<br>interact为退出<br>这个脚本目的是在一次运行过程中不断模拟用户的enter操作</p>
+<p>写于:2013年08月12日<br>更新于: 2015年03月23日</p>
 
     
   </div>
@@ -117,7 +151,7 @@ cat /root/.ssh/id_rsa.pub &gt;&gt; /root/.ssh/authorized_keys
 
 <section id="comment">
   <h1 class="title">评论</h1>
-  <div class="ds-thread" data-thread-key="2015/03/22/linux系统启动的时候用脚本生成ssh密钥对（免输入enter）/"  data-title="linux系统启动的时候用脚本生成ssh密钥对（免输入enter）">
+  <div class="ds-thread" data-thread-key="2015/03/23/expect循环的写法/"  data-title="expect循环的写法">
   </div>
 </section>
 </div>

@@ -1,0 +1,265 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  
+  <title>编译一个Centos6.4下可用的内核rpm升级包-3.8.13内核rpm包 | zphj1987&#39;Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  
+    <meta name="author" content="zphj1987">
+  
+  
+    <meta name="description" content="在Centos6.4下进行内核升级,采用内核源码的升级方式比较简单，但是需要升级的机器多的情况下进行内核升级就比较麻烦,并且编译内核的速度依赖于机器的性能,一般需要20分钟,而通过rpm内核包的方式进行安装,就比较快,一般在几分钟之内就可以完成内核的安装,本文档以3.8.13内核源码为例子进行的操作。  根据网上的指导教程编译的rpm包，编译完成后只会生成如下两个rpm包:
+
+kernel-3.8">
+  
+  <meta name="description" content="在Centos6.4下进行内核升级,采用内核源码的升级方式比较简单，但是需要升级的机器多的情况下进行内核升级就比较麻烦,并且编译内核的速度依赖于机器的性能,一般需要20分钟,而通过rpm内核包的方式进行安装,就比较快,一般在几分钟之内就可以完成内核的安装,本文档以3.8.13内核源码为例子进行的操作。  根据网上的指导教程编译的rpm包，编译完成后只会生成如下两个rpm包:
+
+kernel-3.8">
+<meta property="og:type" content="article">
+<meta property="og:title" content="编译一个Centos6.4下可用的内核rpm升级包-3.8.13内核rpm包">
+<meta property="og:url" content="http://yoursite.com/2015/03/23/编译一个Centos6-4下可用的内核rpm升级包-3-8-13内核rpm包/index.html">
+<meta property="og:site_name" content="zphj1987'Blog">
+<meta property="og:description" content="在Centos6.4下进行内核升级,采用内核源码的升级方式比较简单，但是需要升级的机器多的情况下进行内核升级就比较麻烦,并且编译内核的速度依赖于机器的性能,一般需要20分钟,而通过rpm内核包的方式进行安装,就比较快,一般在几分钟之内就可以完成内核的安装,本文档以3.8.13内核源码为例子进行的操作。  根据网上的指导教程编译的rpm包，编译完成后只会生成如下两个rpm包:
+
+kernel-3.8">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="编译一个Centos6.4下可用的内核rpm升级包-3.8.13内核rpm包">
+<meta name="twitter:description" content="在Centos6.4下进行内核升级,采用内核源码的升级方式比较简单，但是需要升级的机器多的情况下进行内核升级就比较麻烦,并且编译内核的速度依赖于机器的性能,一般需要20分钟,而通过rpm内核包的方式进行安装,就比较快,一般在几分钟之内就可以完成内核的安装,本文档以3.8.13内核源码为例子进行的操作。  根据网上的指导教程编译的rpm包，编译完成后只会生成如下两个rpm包:
+
+kernel-3.8">
+  
+  
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+  
+<script type="text/javascript">
+#�����İٶ�ͳ�ƴ���
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?252ba55374ee0e63b03196973bb9b776";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+</head>
+
+<body>
+  <div class="wrapper">
+    <header id="header">
+  <div class="title">
+    <h1><a href="/">zphj1987&#39;Blog</a></h1>
+    <p><a href="/">现在所学，终有所用</a></p>
+  </div>
+  <nav class="nav">
+    <ul>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/archives">Archives</a></li>
+      
+        <li><a href="/atom.xml">rss</a></li>
+      
+        <li><a href="/about">About</a></li>
+      
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+  <div class="clearfix"></div>
+</header>
+    <div class="content"><article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/23/编译一个Centos6-4下可用的内核rpm升级包-3-8-13内核rpm包/">
+  <time datetime="2015-03-22T23:59:15.000Z">
+    2015-03-23
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title">编译一个Centos6.4下可用的内核rpm升级包-3.8.13内核rpm包</h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>在Centos6.4下进行内核升级,采用内核源码的升级方式比较简单，但是需要升级的机器多的情况下进行内核升级就比较麻烦,并且编译内核的速度依赖于机器的性能,一般需要20分钟,而通过rpm内核包的方式进行安装,就比较快,一般在几分钟之内就可以完成内核的安装,本文档以3.8.13内核源码为例子进行的操作。<br>  根据网上的指导教程编译的rpm包，编译完成后只会生成如下两个rpm包:</p>
+<ul>
+<li>kernel-3.8.13-1.x86_64.rpm</li>
+<li>kernel-headers-3.8.13-1.x86_64.rpm</li>
+</ul>
+<p>而实际进行内核升级的时候还需要kernel-firmwsare-3.8.13-1.x86_64.rpm这个包,这个包是包含内核固件相关文件的,而在进行rpm打包的时候,这个包会内嵌到kernel-3.8.13-1.x86_64.rpm这个包当中去,而安装的时候系统没有找到这个包，进行升级的时候就会报错。<br>所以需要对内核源码编译文件进行一定的修改，这个地方需要修改的文件为linux-3.8.13/scripts/package/mkspec路径下的这个文件,具体修改如下(新版内核解决了这个问题,可以不需要修改,根据生成包的情况来看是否修改):</p>
+<a id="more"></a>
+<h4 id="加入kernel-devel支持需要修改">加入kernel-devel支持需要修改</h4><pre><code>scripts/package/mkspec |   <span class="number">26</span> ++++++++++++++++++++++++++
+ <span class="number">1</span> <span class="keyword">file</span> changed, <span class="number">26</span> insertions(+)
+diff --git <span class="keyword">a</span>/scripts/package/mkspec <span class="keyword">b</span>/scripts/package/mkspec
+<span class="built_in">index</span> <span class="number">514</span>aeb2..<span class="number">65131</span>df <span class="number">100755</span>
+--- <span class="keyword">a</span>/scripts/package/mkspec
++++ <span class="keyword">b</span>/scripts/package/mkspec
+@@ -<span class="number">59</span>,<span class="number">6</span> +<span class="number">59</span>,<span class="number">14</span> @@ <span class="keyword">echo</span> <span class="string">"header files define structures and constants that are needed for"</span>
+ <span class="keyword">echo</span> <span class="string">"building most standard programs and are also needed for rebuilding the"</span>
+ <span class="keyword">echo</span> <span class="string">"glibc package."</span>
+ <span class="keyword">echo</span> <span class="string">""</span>
++<span class="keyword">echo</span> <span class="string">"%package devel"</span>
++<span class="keyword">echo</span> <span class="string">"Summary: Development package for building kernel modules to match the $__KERNELRELEASE kernel"</span>
++<span class="keyword">echo</span> <span class="string">"Group: System Environment/Kernel"</span>
++<span class="keyword">echo</span> <span class="string">"AutoReqProv: no"</span>
++<span class="keyword">echo</span> <span class="string">"%description -n kernel-devel"</span>
++<span class="keyword">echo</span> <span class="string">"This package provides kernel headers and makefiles sufficient to build modules"</span>
++<span class="keyword">echo</span> <span class="string">"against the $__KERNELRELEASE kernel package."</span>
++<span class="keyword">echo</span> <span class="string">""</span>
+
+ <span class="keyword">if</span> ! $PREBUILT; then
+ <span class="keyword">echo</span> <span class="string">"%prep"</span>
+@@ -<span class="number">109</span>,<span class="number">6</span> +<span class="number">117</span>,<span class="number">11</span> @@ <span class="keyword">echo</span> <span class="string">'mv vmlinux.bz2 $RPM_BUILD_ROOT'</span><span class="string">"/boot/vmlinux-$KERNELRELEASE.bz2"</span>
+ <span class="keyword">echo</span> <span class="string">'mv vmlinux.orig vmlinux'</span>
+ <span class="keyword">echo</span> <span class="string">"%endif"</span>
+
++<span class="keyword">echo</span> <span class="string">'rm -rf $RPM_BUILD_ROOT'</span><span class="string">"/lib/modules/$KERNELRELEASE/{build,source}"</span>
++<span class="keyword">echo</span> <span class="string">"mkdir -p "</span><span class="string">'$RPM_BUILD_ROOT'</span><span class="string">"/usr/src/kernels/$KERNELRELEASE"</span>
++<span class="keyword">echo</span> <span class="string">"EXCLUDES=\"--exclude-vcs --exclude .tmp_versions --exclude=*vmlinux* --exclude=*.o --exclude=*.ko --exclude=*.cmd --exclude=Documentation --exclude=firmware --exclude .config.old --exclude .missing-syscalls.d\""</span>
++<span class="keyword">echo</span> <span class="string">"tar "</span><span class="string">'$EXCLUDES'</span><span class="string">" -cf- . | (cd "</span><span class="string">'$RPM_BUILD_ROOT'</span><span class="string">"/usr/src/kernels/$KERNELRELEASE;tar xvf -)"</span>
++
+ <span class="keyword">echo</span> <span class="string">""</span>
+ <span class="keyword">echo</span> <span class="string">"%clean"</span>
+ <span class="keyword">echo</span> <span class="string">'rm -rf $RPM_BUILD_ROOT'</span>
+@@ -<span class="number">122</span>,<span class="number">6</span> +<span class="number">135</span>,<span class="number">15</span> @@ <span class="keyword">echo</span> <span class="string">"/sbin/installkernel $KERNELRELEASE /boot/vmlinuz-$KERNELRELEASE-rpm /boot/
+</span> <span class="keyword">echo</span> <span class="string">"rm -f /boot/vmlinuz-$KERNELRELEASE-rpm /boot/System.map-$KERNELRELEASE-rpm"</span>
+ <span class="keyword">echo</span> <span class="string">"fi"</span>
+ <span class="keyword">echo</span> <span class="string">""</span>
++<span class="keyword">echo</span> <span class="string">"%post devel"</span>
++<span class="keyword">echo</span> <span class="string">"cd /lib/modules/$KERNELRELEASE"</span>
++<span class="keyword">echo</span> <span class="string">"ln -sf /usr/src/kernels/$KERNELRELEASE build"</span>
++<span class="keyword">echo</span> <span class="string">"ln -sf /usr/src/kernels/$KERNELRELEASE source"</span>
++<span class="keyword">echo</span> <span class="string">""</span>
++<span class="keyword">echo</span> <span class="string">"%postun devel"</span>
++<span class="keyword">echo</span> <span class="string">"cd /lib/modules/$KERNELRELEASE"</span>
++<span class="keyword">echo</span> <span class="string">"rm -f build source"</span>
++<span class="keyword">echo</span> <span class="string">""</span>
+ <span class="keyword">echo</span> <span class="string">"%files"</span>
+ <span class="keyword">echo</span> <span class="string">'%defattr (-, root, root)'</span>
+ <span class="keyword">echo</span> <span class="string">"%dir /lib/modules"</span>
+@@ -<span class="number">133</span>,<span class="number">3</span> +<span class="number">155</span>,<span class="number">7</span> @@ <span class="keyword">echo</span> <span class="string">"%files headers"</span>
+ <span class="keyword">echo</span> <span class="string">'%defattr (-, root, root)'</span>
+ <span class="keyword">echo</span> <span class="string">"/usr/include"</span>
+ <span class="keyword">echo</span> <span class="string">""</span>
++<span class="keyword">echo</span> <span class="string">"%files devel"</span>
++<span class="keyword">echo</span> <span class="string">'%defattr (-, root, root)'</span>
++<span class="keyword">echo</span> <span class="string">"/usr/src/kernels/$KERNELRELEASE"</span>
++<span class="keyword">echo</span> <span class="string">""</span>
+</code></pre><h4 id="加入kernel-firmware支持需要修改：">加入kernel-firmware支持需要修改：</h4><pre><code><span class="number">1</span> files changed, <span class="number">11</span> insertions(+), <span class="number">1</span> deletions(-) 
+
+diff --git a/scripts/package/mkspec b/scripts/package/mkspec 
+index b20bdac..<span class="number">35</span>e68d1 <span class="number">100755</span> 
+--- a/scripts/package/mkspec 
++++ b/scripts/package/mkspec 
+@@ -<span class="number">68</span>,<span class="number">6</span> +<span class="number">68</span>,<span class="number">13</span> @@ <span class="built_in">echo</span> <span class="string">"between the Linux kernel and userspace libraries and programs. The"</span> 
+<span class="built_in">echo</span> <span class="string">"header files define structures and constants that are needed for"</span> 
+<span class="built_in">echo</span> <span class="string">"building most standard programs and are also needed for rebuilding the"</span> 
+<span class="built_in">echo</span> <span class="string">"glibc package."</span> 
++<span class="built_in">echo</span> <span class="string">""</span> 
++<span class="built_in">echo</span> <span class="string">"%package firmware"</span> 
++<span class="built_in">echo</span> <span class="string">"Summary: Set of firmware images in the kernel tree"</span> 
++<span class="built_in">echo</span> <span class="string">"Group: Development/System"</span> 
++<span class="built_in">echo</span> <span class="string">"%description firmware"</span> 
++<span class="built_in">echo</span> <span class="string">"Firmware images in the kernel tree provided for backward compability"</span> 
++<span class="built_in">echo</span> <span class="string">""</span>
+
+<span class="keyword">if</span> ! <span class="variable">$PREBUILT</span>; <span class="keyword">then</span> 
+<span class="built_in">echo</span> <span class="string">"%prep"</span> 
+@@ -<span class="number">137</span>,<span class="number">7</span> +<span class="number">144</span>,<span class="number">6</span> @@ <span class="built_in">echo</span> <span class="string">"%files"</span> 
+<span class="built_in">echo</span> <span class="string">'%defattr (-, root, root)'</span> 
+<span class="built_in">echo</span> <span class="string">"%dir /lib/modules"</span> 
+<span class="built_in">echo</span> <span class="string">"/lib/modules/<span class="variable">$KERNELRELEASE</span>"</span> 
+-echo <span class="string">"/lib/firmware"</span> 
+<span class="built_in">echo</span> <span class="string">"/boot/*"</span> 
+<span class="built_in">echo</span> <span class="string">""</span> 
+<span class="built_in">echo</span> <span class="string">"%files devel"</span> 
+@@ -<span class="number">148</span>,<span class="number">3</span> +<span class="number">154</span>,<span class="number">7</span> @@ <span class="built_in">echo</span> <span class="string">"%files headers"</span> 
+<span class="built_in">echo</span> <span class="string">'%defattr (-, root, root)'</span> 
+<span class="built_in">echo</span> <span class="string">"/usr/include"</span> 
+<span class="built_in">echo</span> <span class="string">""</span> 
++<span class="built_in">echo</span> <span class="string">"%files firmware"</span> 
++<span class="built_in">echo</span> <span class="string">'%defattr (-, root, root)'</span> 
++<span class="built_in">echo</span> <span class="string">"/lib/firmware"</span> 
++<span class="built_in">echo</span> <span class="string">""</span>
+</code></pre><p>修改完上面的然后在根目录进行 make rpm 即可生成相应的内核rpm包<br>这个是修改完的内核mkspec文件，可以直接使用<br><a href="https://www.dropbox.com/s/nsvyf607t91k2mq/mkspec" target="_blank" rel="external">https://www.dropbox.com/s/nsvyf607t91k2mq/mkspec</a><br>安装前需要安装依赖包</p>
+<p> yum install -y gcc make  bison ncurses-devel rpm-build</p>
+<p>写于: 2013年09月18日<br>更新于: 2015年03月23日</p>
+
+    
+  </div>
+  <footer>
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">评论</h1>
+  <div class="ds-thread" data-thread-key="2015/03/23/编译一个Centos6-4下可用的内核rpm升级包-3-8-13内核rpm包/"  data-title="编译一个Centos6.4下可用的内核rpm升级包-3.8.13内核rpm包">
+  </div>
+</section>
+</div>
+  </div>
+  <footer id="footer"><div class="copyright">
+  
+  &copy; 2015 <a href="/">zphj1987</a>
+  
+</div>
+<div class="theme-copyright">
+  Theme by <a href="https://github.com/orderedlist" target="_blank">orderedlist</a>
+   | 
+  Redesign by <a href="http://heroicyang.com/" target="_blank">Heroic Yang</a>
+</div>
+<div class="clearfix"></div></footer>
+  <script src="/js/jquery.min.js"></script>
+<script src="/js/scale.fix.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = { short_name: 'zphj1987' };
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';
+    ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox();
+  })(jQuery);
+</script>
+
+
+<div id="totop" style="position:fixed;bottom:150px;right:50px;cursor: pointer;">
+<a title="Top"><img src="/imgs/scrollup.png"/></a>
+</div>
+<script src="/js/totop.js"></script>
+
+</body>
+</html>

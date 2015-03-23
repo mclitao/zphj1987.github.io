@@ -4,7 +4,7 @@
   <subtitle><![CDATA[现在所学，终有所用]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://yoursite.com/"/>
-  <updated>2015-03-22T15:10:04.943Z</updated>
+  <updated>2015-03-23T00:09:10.719Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -13,6 +13,193 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[ubuntu服务器dns重启失效问题]]></title>
+    <link href="http://yoursite.com/2015/03/23/ubuntu%E6%9C%8D%E5%8A%A1%E5%99%A8dns%E9%87%8D%E5%90%AF%E5%A4%B1%E6%95%88%E9%97%AE%E9%A2%98/"/>
+    <id>http://yoursite.com/2015/03/23/ubuntu服务器dns重启失效问题/</id>
+    <published>2015-03-23T00:05:19.000Z</published>
+    <updated>2015-03-23T00:09:10.719Z</updated>
+    <content type="html"><![CDATA[<h3 id="方法一_通过/etc/network/interfaces,在它的最后增加一句:">方法一 通过/etc/network/interfaces,在它的最后增加一句:</h3><pre><code>dns-nameservers 8.8.8.8
+</code></pre><p>8.8.8.8是Google提供的DNS服务，这里只是举一个例子,你也可以改成电信运营商的DNS。重启后DNS就生效了，这时候再看/etc/resolv.conf,最下面就多了一行:</p>
+<pre><code># Dynamic resolv.<span class="keyword">conf</span>(5) <span class="keyword">file</span> <span class="keyword">for</span> glibc resolver(3) generated <span class="keyword">by</span> resolvconf(8)
+#     <span class="keyword">DO</span> NOT <span class="keyword">EDIT</span> THIS <span class="keyword">FILE</span> <span class="keyword">BY</span> HAND -- YOUR CHANGES WILL BE OVERWRITTEN
+nameserver 8.8.8.8
+</code></pre><a id="more"></a>
+<h3 id="方法二_通过修改:">方法二 通过修改:</h3><p>/etc/resolvconf/resolv.conf.d/base,这个文件默认是空的:<br>在里面插入:</p>
+<pre><code><span class="title">nameserver</span> <span class="number">8.8.8.8</span>
+nameserver <span class="number">8.8.4.4</span>
+</code></pre><p>如果有多个DNS就一行一个<br>修改好保存,然后执行:</p>
+<pre><code><span class="title">resolvconf</span> -u
+</code></pre><p>再看/etc/resolv.conf,最下面就多了2行:<br>cat /etc/resolv.conf</p>
+<pre><code># Dynamic resolv.<span class="keyword">conf</span>(5) <span class="keyword">file</span> <span class="keyword">for</span> glibc resolver(3) generated <span class="keyword">by</span> resolvconf(8)
+#     <span class="keyword">DO</span> NOT <span class="keyword">EDIT</span> THIS <span class="keyword">FILE</span> <span class="keyword">BY</span> HAND -- YOUR CHANGES WILL BE OVERWRITTEN
+nameserver 8.8.8.8
+nameserver 8.8.4.4
+</code></pre><p>可以看到我们的设置已经加上了,然后再ping一个域名,当时就可以解析了,无需重启。<br>附:CentOS下修改DNS则容易的多了,直接修改/etc/resolv.conf,内容是:<br>nameserver 8.8.8.8<br>nameserver 8.8.4.4<br>保存就生效了,重启也没问题。<br>或者在网卡配置文件当中添加:</p>
+<pre><code><span class="attribute">DNS1</span>=<span class="string">8.8.8.8</span>
+</code></pre><p>写于: 2013年11月26日<br>更新于: 2015年03月23日</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<h3 id="方法一_通过/etc/network/interfaces,在它的最后增加一句:">方法一 通过/etc/network/interfaces,在它的最后增加一句:</h3><pre><code>dns-nameservers 8.8.8.8
+</code></pre><p>8.8.8.8是Google提供的DNS服务，这里只是举一个例子,你也可以改成电信运营商的DNS。重启后DNS就生效了，这时候再看/etc/resolv.conf,最下面就多了一行:</p>
+<pre><code># Dynamic resolv.<span class="keyword">conf</span>(5) <span class="keyword">file</span> <span class="keyword">for</span> glibc resolver(3) generated <span class="keyword">by</span> resolvconf(8)
+#     <span class="keyword">DO</span> NOT <span class="keyword">EDIT</span> THIS <span class="keyword">FILE</span> <span class="keyword">BY</span> HAND -- YOUR CHANGES WILL BE OVERWRITTEN
+nameserver 8.8.8.8
+</code></pre>]]>
+    
+    </summary>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[编译一个Centos6.4下可用的内核rpm升级包-3.8.13内核rpm包]]></title>
+    <link href="http://yoursite.com/2015/03/23/%E7%BC%96%E8%AF%91%E4%B8%80%E4%B8%AACentos6-4%E4%B8%8B%E5%8F%AF%E7%94%A8%E7%9A%84%E5%86%85%E6%A0%B8rpm%E5%8D%87%E7%BA%A7%E5%8C%85-3-8-13%E5%86%85%E6%A0%B8rpm%E5%8C%85/"/>
+    <id>http://yoursite.com/2015/03/23/编译一个Centos6-4下可用的内核rpm升级包-3-8-13内核rpm包/</id>
+    <published>2015-03-22T23:59:15.000Z</published>
+    <updated>2015-03-23T00:04:41.901Z</updated>
+    <content type="html"><![CDATA[<p>在Centos6.4下进行内核升级,采用内核源码的升级方式比较简单，但是需要升级的机器多的情况下进行内核升级就比较麻烦,并且编译内核的速度依赖于机器的性能,一般需要20分钟,而通过rpm内核包的方式进行安装,就比较快,一般在几分钟之内就可以完成内核的安装,本文档以3.8.13内核源码为例子进行的操作。<br>  根据网上的指导教程编译的rpm包，编译完成后只会生成如下两个rpm包:</p>
+<ul>
+<li>kernel-3.8.13-1.x86_64.rpm</li>
+<li>kernel-headers-3.8.13-1.x86_64.rpm</li>
+</ul>
+<p>而实际进行内核升级的时候还需要kernel-firmwsare-3.8.13-1.x86_64.rpm这个包,这个包是包含内核固件相关文件的,而在进行rpm打包的时候,这个包会内嵌到kernel-3.8.13-1.x86_64.rpm这个包当中去,而安装的时候系统没有找到这个包，进行升级的时候就会报错。<br>所以需要对内核源码编译文件进行一定的修改，这个地方需要修改的文件为linux-3.8.13/scripts/package/mkspec路径下的这个文件,具体修改如下(新版内核解决了这个问题,可以不需要修改,根据生成包的情况来看是否修改):</p>
+<a id="more"></a>
+<h4 id="加入kernel-devel支持需要修改">加入kernel-devel支持需要修改</h4><pre><code>scripts/package/mkspec |   <span class="number">26</span> ++++++++++++++++++++++++++
+ <span class="number">1</span> <span class="keyword">file</span> changed, <span class="number">26</span> insertions(+)
+diff --git <span class="keyword">a</span>/scripts/package/mkspec <span class="keyword">b</span>/scripts/package/mkspec
+<span class="built_in">index</span> <span class="number">514</span>aeb2..<span class="number">65131</span>df <span class="number">100755</span>
+--- <span class="keyword">a</span>/scripts/package/mkspec
++++ <span class="keyword">b</span>/scripts/package/mkspec
+@@ -<span class="number">59</span>,<span class="number">6</span> +<span class="number">59</span>,<span class="number">14</span> @@ <span class="keyword">echo</span> <span class="string">"header files define structures and constants that are needed for"</span>
+ <span class="keyword">echo</span> <span class="string">"building most standard programs and are also needed for rebuilding the"</span>
+ <span class="keyword">echo</span> <span class="string">"glibc package."</span>
+ <span class="keyword">echo</span> <span class="string">""</span>
++<span class="keyword">echo</span> <span class="string">"%package devel"</span>
++<span class="keyword">echo</span> <span class="string">"Summary: Development package for building kernel modules to match the $__KERNELRELEASE kernel"</span>
++<span class="keyword">echo</span> <span class="string">"Group: System Environment/Kernel"</span>
++<span class="keyword">echo</span> <span class="string">"AutoReqProv: no"</span>
++<span class="keyword">echo</span> <span class="string">"%description -n kernel-devel"</span>
++<span class="keyword">echo</span> <span class="string">"This package provides kernel headers and makefiles sufficient to build modules"</span>
++<span class="keyword">echo</span> <span class="string">"against the $__KERNELRELEASE kernel package."</span>
++<span class="keyword">echo</span> <span class="string">""</span>
+
+ <span class="keyword">if</span> ! $PREBUILT; then
+ <span class="keyword">echo</span> <span class="string">"%prep"</span>
+@@ -<span class="number">109</span>,<span class="number">6</span> +<span class="number">117</span>,<span class="number">11</span> @@ <span class="keyword">echo</span> <span class="string">'mv vmlinux.bz2 $RPM_BUILD_ROOT'</span><span class="string">"/boot/vmlinux-$KERNELRELEASE.bz2"</span>
+ <span class="keyword">echo</span> <span class="string">'mv vmlinux.orig vmlinux'</span>
+ <span class="keyword">echo</span> <span class="string">"%endif"</span>
+
++<span class="keyword">echo</span> <span class="string">'rm -rf $RPM_BUILD_ROOT'</span><span class="string">"/lib/modules/$KERNELRELEASE/{build,source}"</span>
++<span class="keyword">echo</span> <span class="string">"mkdir -p "</span><span class="string">'$RPM_BUILD_ROOT'</span><span class="string">"/usr/src/kernels/$KERNELRELEASE"</span>
++<span class="keyword">echo</span> <span class="string">"EXCLUDES=\"--exclude-vcs --exclude .tmp_versions --exclude=*vmlinux* --exclude=*.o --exclude=*.ko --exclude=*.cmd --exclude=Documentation --exclude=firmware --exclude .config.old --exclude .missing-syscalls.d\""</span>
++<span class="keyword">echo</span> <span class="string">"tar "</span><span class="string">'$EXCLUDES'</span><span class="string">" -cf- . | (cd "</span><span class="string">'$RPM_BUILD_ROOT'</span><span class="string">"/usr/src/kernels/$KERNELRELEASE;tar xvf -)"</span>
++
+ <span class="keyword">echo</span> <span class="string">""</span>
+ <span class="keyword">echo</span> <span class="string">"%clean"</span>
+ <span class="keyword">echo</span> <span class="string">'rm -rf $RPM_BUILD_ROOT'</span>
+@@ -<span class="number">122</span>,<span class="number">6</span> +<span class="number">135</span>,<span class="number">15</span> @@ <span class="keyword">echo</span> <span class="string">"/sbin/installkernel $KERNELRELEASE /boot/vmlinuz-$KERNELRELEASE-rpm /boot/
+</span> <span class="keyword">echo</span> <span class="string">"rm -f /boot/vmlinuz-$KERNELRELEASE-rpm /boot/System.map-$KERNELRELEASE-rpm"</span>
+ <span class="keyword">echo</span> <span class="string">"fi"</span>
+ <span class="keyword">echo</span> <span class="string">""</span>
++<span class="keyword">echo</span> <span class="string">"%post devel"</span>
++<span class="keyword">echo</span> <span class="string">"cd /lib/modules/$KERNELRELEASE"</span>
++<span class="keyword">echo</span> <span class="string">"ln -sf /usr/src/kernels/$KERNELRELEASE build"</span>
++<span class="keyword">echo</span> <span class="string">"ln -sf /usr/src/kernels/$KERNELRELEASE source"</span>
++<span class="keyword">echo</span> <span class="string">""</span>
++<span class="keyword">echo</span> <span class="string">"%postun devel"</span>
++<span class="keyword">echo</span> <span class="string">"cd /lib/modules/$KERNELRELEASE"</span>
++<span class="keyword">echo</span> <span class="string">"rm -f build source"</span>
++<span class="keyword">echo</span> <span class="string">""</span>
+ <span class="keyword">echo</span> <span class="string">"%files"</span>
+ <span class="keyword">echo</span> <span class="string">'%defattr (-, root, root)'</span>
+ <span class="keyword">echo</span> <span class="string">"%dir /lib/modules"</span>
+@@ -<span class="number">133</span>,<span class="number">3</span> +<span class="number">155</span>,<span class="number">7</span> @@ <span class="keyword">echo</span> <span class="string">"%files headers"</span>
+ <span class="keyword">echo</span> <span class="string">'%defattr (-, root, root)'</span>
+ <span class="keyword">echo</span> <span class="string">"/usr/include"</span>
+ <span class="keyword">echo</span> <span class="string">""</span>
++<span class="keyword">echo</span> <span class="string">"%files devel"</span>
++<span class="keyword">echo</span> <span class="string">'%defattr (-, root, root)'</span>
++<span class="keyword">echo</span> <span class="string">"/usr/src/kernels/$KERNELRELEASE"</span>
++<span class="keyword">echo</span> <span class="string">""</span>
+</code></pre><h4 id="加入kernel-firmware支持需要修改：">加入kernel-firmware支持需要修改：</h4><pre><code><span class="number">1</span> files changed, <span class="number">11</span> insertions(+), <span class="number">1</span> deletions(-) 
+
+diff --git a/scripts/package/mkspec b/scripts/package/mkspec 
+index b20bdac..<span class="number">35</span>e68d1 <span class="number">100755</span> 
+--- a/scripts/package/mkspec 
++++ b/scripts/package/mkspec 
+@@ -<span class="number">68</span>,<span class="number">6</span> +<span class="number">68</span>,<span class="number">13</span> @@ <span class="built_in">echo</span> <span class="string">"between the Linux kernel and userspace libraries and programs. The"</span> 
+<span class="built_in">echo</span> <span class="string">"header files define structures and constants that are needed for"</span> 
+<span class="built_in">echo</span> <span class="string">"building most standard programs and are also needed for rebuilding the"</span> 
+<span class="built_in">echo</span> <span class="string">"glibc package."</span> 
++<span class="built_in">echo</span> <span class="string">""</span> 
++<span class="built_in">echo</span> <span class="string">"%package firmware"</span> 
++<span class="built_in">echo</span> <span class="string">"Summary: Set of firmware images in the kernel tree"</span> 
++<span class="built_in">echo</span> <span class="string">"Group: Development/System"</span> 
++<span class="built_in">echo</span> <span class="string">"%description firmware"</span> 
++<span class="built_in">echo</span> <span class="string">"Firmware images in the kernel tree provided for backward compability"</span> 
++<span class="built_in">echo</span> <span class="string">""</span>
+
+<span class="keyword">if</span> ! <span class="variable">$PREBUILT</span>; <span class="keyword">then</span> 
+<span class="built_in">echo</span> <span class="string">"%prep"</span> 
+@@ -<span class="number">137</span>,<span class="number">7</span> +<span class="number">144</span>,<span class="number">6</span> @@ <span class="built_in">echo</span> <span class="string">"%files"</span> 
+<span class="built_in">echo</span> <span class="string">'%defattr (-, root, root)'</span> 
+<span class="built_in">echo</span> <span class="string">"%dir /lib/modules"</span> 
+<span class="built_in">echo</span> <span class="string">"/lib/modules/<span class="variable">$KERNELRELEASE</span>"</span> 
+-echo <span class="string">"/lib/firmware"</span> 
+<span class="built_in">echo</span> <span class="string">"/boot/*"</span> 
+<span class="built_in">echo</span> <span class="string">""</span> 
+<span class="built_in">echo</span> <span class="string">"%files devel"</span> 
+@@ -<span class="number">148</span>,<span class="number">3</span> +<span class="number">154</span>,<span class="number">7</span> @@ <span class="built_in">echo</span> <span class="string">"%files headers"</span> 
+<span class="built_in">echo</span> <span class="string">'%defattr (-, root, root)'</span> 
+<span class="built_in">echo</span> <span class="string">"/usr/include"</span> 
+<span class="built_in">echo</span> <span class="string">""</span> 
++<span class="built_in">echo</span> <span class="string">"%files firmware"</span> 
++<span class="built_in">echo</span> <span class="string">'%defattr (-, root, root)'</span> 
++<span class="built_in">echo</span> <span class="string">"/lib/firmware"</span> 
++<span class="built_in">echo</span> <span class="string">""</span>
+</code></pre><p>修改完上面的然后在根目录进行 make rpm 即可生成相应的内核rpm包<br>这个是修改完的内核mkspec文件，可以直接使用<br><a href="https://www.dropbox.com/s/nsvyf607t91k2mq/mkspec" target="_blank" rel="external">https://www.dropbox.com/s/nsvyf607t91k2mq/mkspec</a><br>安装前需要安装依赖包</p>
+<p> yum install -y gcc make  bison ncurses-devel rpm-build</p>
+<p>写于: 2013年09月18日<br>更新于: 2015年03月23日</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>在Centos6.4下进行内核升级,采用内核源码的升级方式比较简单，但是需要升级的机器多的情况下进行内核升级就比较麻烦,并且编译内核的速度依赖于机器的性能,一般需要20分钟,而通过rpm内核包的方式进行安装,就比较快,一般在几分钟之内就可以完成内核的安装,本文档以3.8.13内核源码为例子进行的操作。<br>  根据网上的指导教程编译的rpm包，编译完成后只会生成如下两个rpm包:</p>
+<ul>
+<li>kernel-3.8.13-1.x86_64.rpm</li>
+<li>kernel-headers-3.8.13-1.x86_64.rpm</li>
+</ul>
+<p>而实际进行内核升级的时候还需要kernel-firmwsare-3.8.13-1.x86_64.rpm这个包,这个包是包含内核固件相关文件的,而在进行rpm打包的时候,这个包会内嵌到kernel-3.8.13-1.x86_64.rpm这个包当中去,而安装的时候系统没有找到这个包，进行升级的时候就会报错。<br>所以需要对内核源码编译文件进行一定的修改，这个地方需要修改的文件为linux-3.8.13/scripts/package/mkspec路径下的这个文件,具体修改如下(新版内核解决了这个问题,可以不需要修改,根据生成包的情况来看是否修改):</p>]]>
+    
+    </summary>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[expect循环的写法]]></title>
+    <link href="http://yoursite.com/2015/03/23/expect%E5%BE%AA%E7%8E%AF%E7%9A%84%E5%86%99%E6%B3%95/"/>
+    <id>http://yoursite.com/2015/03/23/expect循环的写法/</id>
+    <published>2015-03-22T23:55:53.000Z</published>
+    <updated>2015-03-22T23:57:14.628Z</updated>
+    <content type="html"><![CDATA[<p>脚本:</p>
+<pre><code><span class="shebang">#!/usr/bin/expect</span>
+spawn sensors-detect
+<span class="keyword">for</span> {set i <span class="number">0</span>} {$i&lt;=<span class="number">10</span>} {incr i} {
+expect <span class="string">":"</span>
+send <span class="string">"\n"</span>
+}
+interact
+</code></pre><p>解释:</p>
+<p>spawn是启动命令<br>for为循环的写法<br>interact为退出<br>这个脚本目的是在一次运行过程中不断模拟用户的enter操作</p>
+<p>写于:2013年08月12日<br>更新于: 2015年03月23日</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>脚本:</p>
+<pre><code><span class="shebang">#!/usr/bin/expect</span>
+spawn sensors-detect
+<span class="keyword">for</span> {set i <span clas]]>
+    </summary>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[linux系统启动的时候用脚本生成ssh密钥对（免输入enter）]]></title>
@@ -554,167 +741,6 @@ apt-<span class="keyword">get</span> install ganglia-webfront gmetad  <span clas
 <pre><code><span class="regexp">/etc/i</span>nit.d<span class="regexp">/ganglia-monitor restart     </span>
 </code></pre><p>(配置文件的路径在/etc/ganglia/gmond.conf)基本不用配置就可以启用</p>]]>
     
-    </summary>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[Linux下如何创建loop device]]></title>
-    <link href="http://yoursite.com/2015/03/22/Linux%E4%B8%8B%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BAloop-device/"/>
-    <id>http://yoursite.com/2015/03/22/Linux下如何创建loop-device/</id>
-    <published>2015-03-22T09:07:24.000Z</published>
-    <updated>2015-03-22T09:14:03.539Z</updated>
-    <content type="html"><![CDATA[<p>在Linux中,有一种特殊的块设备叫loop device,这种loop device设备是通过映射操作系统上的正常的文件而形成的虚拟块设备</p>
-<p>因为这种设备的存在,就为我们提供了一种创建一个存在于其他文件中的虚拟文件系统的机制.下面是一个示例:<br>第一步:用dd创建一个大文件:</p>
-<pre><code>dd <span class="variable">if=</span>/dev/zero <span class="variable">of=</span>node1 <span class="variable">bs=</span><span class="number">4</span>M <span class="variable">count=</span><span class="number">500</span>
-</code></pre><p>这样就在当前目录下创建了一个2G的文件”node1”</p>
-<p>第二步:使用losetup命令创建一个loop device</p>
-<pre><code>losetup /dev/loop<span class="number">0</span> <span class="label">node1</span>
-</code></pre><a id="more"></a>
-<p>第三步:创建一个文件系统</p>
-<pre><code>mkfs -t ext3 <span class="regexp">/dev/</span>loop0
-</code></pre><p>第四步:挂载这个文件系统</p>
-<pre><code>mount <span class="regexp">/dev/</span>loop0 <span class="regexp">/mnt/</span>
-</code></pre><p>最后:如果要删除刚才创建的这些对象:依次执行如下步骤:</p>
-<pre><code><span class="variable">$ </span>umount /dev/loop<span class="number">0</span>
-<span class="variable">$ </span>losetup -d /dev/loop<span class="number">0</span>
-<span class="variable">$ </span>rm node1
-</code></pre><p>说明:<br>详细的losetup命令如下:</p>
-<pre><code>[root@vm11g ~]<span class="comment"># losetup</span>
-usage:
-losetup loop_device <span class="comment"># give info</span>
-losetup -d loop_device <span class="comment"># delete</span>
-losetup [ -e encryption ] [ -o <span class="command">offset</span> ] loop_device <span class="type">file</span> <span class="comment"># setup</span>
-</code></pre><p>其中加密选项有如下几种方式:<br>NONE use no encryption (default).<br>XOR use a simple XOR encryption.<br>DES use DES encryption. </p>
-<p>DES encryption is only available if the optional DES package has been added to the kernel.<br>DES encryption uses an additional start value that is used to protect passwords against dictionary attacks.</p>
-<p>默认情况下系统支持的loop device是8个</p>
-<pre><code>[root<span class="annotation">@vm</span>11g dev]# ls -ltr <span class="regexp">/dev/</span>loop*
-brw-r----- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">0</span> Jul <span class="number">19</span> <span class="number">2009</span> <span class="regexp">/dev/</span>loop0
-brw-r----- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">1</span> Jul <span class="number">19</span> <span class="number">2009</span> <span class="regexp">/dev/</span>loop1
-brw-r----- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">2</span> Jul <span class="number">19</span> <span class="number">2009</span> <span class="regexp">/dev/</span>loop2
-brw-r----- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">3</span> Jul <span class="number">19</span> <span class="number">2009</span> <span class="regexp">/dev/</span>loop3
-brw-r----- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">4</span> Jul <span class="number">19</span> <span class="number">2009</span> <span class="regexp">/dev/</span>loop4
-brw-r----- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">5</span> Jul <span class="number">19</span> <span class="number">2009</span> <span class="regexp">/dev/</span>loop5
-brw-r----- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">6</span> Jul <span class="number">19</span> <span class="number">2009</span> <span class="regexp">/dev/</span>loop6
-brw-r----- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">7</span> Jul <span class="number">19</span> <span class="number">2009</span> <span class="regexp">/dev/</span>loop7
-</code></pre><p>　<br>如果需要超过8个loop device,那么使用losetup命令的时候可能会遇到类似的错误 ‘no such device’,这是因为超过了可用</p>
-<p>loop device设备的最大限制,依据你的Linux系统,可以通过修改/etc/modprobe.conf 配置文件,增加如下参数的方式进行扩展:</p>
-<pre><code>options <span class="keyword">loop</span> max_loop=<span class="number">20</span> <span class="comment">--比如我增加到20个</span>
-</code></pre><p>保存退出,如果要了马上生效的话,可以通过</p>
-<pre><code>modprobe -v <span class="keyword">loop</span>
-</code></pre><p>命令立即加载该模块。</p>
-<pre><code>[root<span class="annotation">@vm</span>11g dev]# cat <span class="regexp">/etc/</span>modprobe.conf|grep loop
-options loop max_loop=<span class="number">20</span>
-[root<span class="annotation">@vm</span>11g dev]# modprobe -v loop
-insmod <span class="regexp">/lib/</span>modules<span class="regexp">/2.6.9-42.0.0.0.1.ELsmp/</span>kernel<span class="regexp">/drivers/</span>block/loop.ko max_loop=<span class="number">20</span>
-[root<span class="annotation">@vm</span>11g dev]# ls -ltr <span class="regexp">/dev/</span>loop*
-brw-rw---- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">8</span> Jul <span class="number">19</span> <span class="number">07</span>:<span class="number">44</span> <span class="regexp">/dev/</span>loop8
-brw-rw---- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">9</span> Jul <span class="number">19</span> <span class="number">07</span>:<span class="number">44</span> <span class="regexp">/dev/</span>loop9
-brw-rw---- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">10</span> Jul <span class="number">19</span> <span class="number">07</span>:<span class="number">44</span> <span class="regexp">/dev/</span>loop10
-brw-rw---- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">11</span> Jul <span class="number">19</span> <span class="number">07</span>:<span class="number">44</span> <span class="regexp">/dev/</span>loop11
-brw-rw---- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">12</span> Jul <span class="number">19</span> <span class="number">07</span>:<span class="number">44</span> <span class="regexp">/dev/</span>loop12
-brw-rw---- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">13</span> Jul <span class="number">19</span> <span class="number">07</span>:<span class="number">44</span> <span class="regexp">/dev/</span>loop13
-brw-rw---- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">14</span> Jul <span class="number">19</span> <span class="number">07</span>:<span class="number">44</span> <span class="regexp">/dev/</span>loop14
-brw-rw---- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">15</span> Jul <span class="number">19</span> <span class="number">07</span>:<span class="number">44</span> <span class="regexp">/dev/</span>loop15
-brw-rw---- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">16</span> Jul <span class="number">19</span> <span class="number">07</span>:<span class="number">44</span> <span class="regexp">/dev/</span>loop16
-brw-rw---- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">17</span> Jul <span class="number">19</span> <span class="number">07</span>:<span class="number">44</span> <span class="regexp">/dev/</span>loop17
-brw-rw---- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">18</span> Jul <span class="number">19</span> <span class="number">07</span>:<span class="number">44</span> <span class="regexp">/dev/</span>loop18
-brw-rw---- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">19</span> Jul <span class="number">19</span> <span class="number">07</span>:<span class="number">44</span> <span class="regexp">/dev/</span>loop19
-brw-rw---- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">0</span> Jul <span class="number">19</span> <span class="number">2009</span> <span class="regexp">/dev/</span>loop0
-brw-rw---- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">1</span> Jul <span class="number">19</span> <span class="number">2009</span> <span class="regexp">/dev/</span>loop1
-brw-rw---- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">2</span> Jul <span class="number">19</span> <span class="number">2009</span> <span class="regexp">/dev/</span>loop2
-brw-rw---- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">3</span> Jul <span class="number">19</span> <span class="number">2009</span> <span class="regexp">/dev/</span>loop3
-brw-rw---- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">4</span> Jul <span class="number">19</span> <span class="number">2009</span> <span class="regexp">/dev/</span>loop4
-brw-rw---- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">5</span> Jul <span class="number">19</span> <span class="number">2009</span> <span class="regexp">/dev/</span>loop5
-brw-rw---- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">6</span> Jul <span class="number">19</span> <span class="number">2009</span> <span class="regexp">/dev/</span>loop6
-brw-rw---- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">7</span> Jul <span class="number">19</span> <span class="number">2009</span> <span class="regexp">/dev/</span>loop7
-</code></pre><p>有了这个东西,在Linux下就可以用文件来生成块设备进行测试了</p>
-<p>写于: 2012年08月02日<br>更新于: 2015年03月22日</p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>在Linux中,有一种特殊的块设备叫loop device,这种loop device设备是通过映射操作系统上的正常的文件而形成的虚拟块设备</p>
-<p>因为这种设备的存在,就为我们提供了一种创建一个存在于其他文件中的虚拟文件系统的机制.下面是一个示例:<br>第一步:用dd创建一个大文件:</p>
-<pre><code>dd <span class="variable">if=</span>/dev/zero <span class="variable">of=</span>node1 <span class="variable">bs=</span><span class="number">4</span>M <span class="variable">count=</span><span class="number">500</span>
-</code></pre><p>这样就在当前目录下创建了一个2G的文件”node1”</p>
-<p>第二步:使用losetup命令创建一个loop device</p>
-<pre><code>losetup /dev/loop<span class="number">0</span> <span class="label">node1</span>
-</code></pre>]]>
-    
-    </summary>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[用rsync备份一台linux服务器上的数据]]></title>
-    <link href="http://yoursite.com/2015/03/22/%E7%94%A8rsync%E5%A4%87%E4%BB%BD%E4%B8%80%E5%8F%B0linux%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E7%9A%84%E6%95%B0%E6%8D%AE/"/>
-    <id>http://yoursite.com/2015/03/22/用rsync备份一台linux服务器上的数据/</id>
-    <published>2015-03-22T08:53:33.000Z</published>
-    <updated>2015-03-22T09:06:44.704Z</updated>
-    <content type="html"><![CDATA[<p>rsync是安装完linux后都会自带的,在机器上运行rsync命令看是否有安装即可</p>
-<h2 id="备份到远程服务器">备份到远程服务器</h2><p>这里介绍的rsync的用途是备份一台linux服务器上的数据到另外一台机器</p>
-<h3 id="环境">环境</h3><p>将需要备份机器叫做服务器端  (192.168.0.195)<br>将备份后数据存放机器叫做客户端 (192.168.0.196)</p>
-<h3 id="配置">配置</h3><h4 id="1-服务器端的配置:">1.服务器端的配置:</h4><p>这里是准备备份/chinfotech/kernel/zp/这个目录,修改配置文件</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/rsyncd.conf (没有就创建)</span><br></pre></td></tr></table></figure>
-<a id="more"></a>
-<p>配置文件如下:</p>
-<pre><code>uid=root
-gid=root
-max connections=10     
-<span class="operator"><span class="keyword">use</span> chroot=<span class="keyword">no</span>
-<span class="keyword">log</span> file=/<span class="keyword">var</span>/<span class="keyword">log</span>/rsyncd.<span class="keyword">log</span>
-pid file=/<span class="keyword">var</span>/run/rsyncd.pid
-<span class="keyword">lock</span> file=/<span class="keyword">var</span>/run/rsyncd.<span class="keyword">lock</span>
-
-[zp]
-path=/chinfotech/kernel/zp/ 
-comment=beifen
-<span class="keyword">ignore</span> <span class="keyword">errors</span>
-<span class="keyword">read</span> <span class="keyword">only</span> = <span class="keyword">no</span>
-<span class="keyword">hosts</span> allow=*</span>
-</code></pre><p>启动进程:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rsync --daemon --config=/etc/rsyncd.conf</span><br></pre></td></tr></table></figure>
-<p>服务器端就配置好了.</p>
-<h4 id="2-客户端机器的配置">2.客户端机器的配置</h4><p>在客户端不需要太多配置只需要执行:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rsync -avz --bwlimit=<span class="number">30000</span> root@<span class="number">192.168</span>.<span class="number">0.195</span>::zp /back/zp/</span><br></pre></td></tr></table></figure>
-<p>参数解释:<br>-a, —archive 归档模式，表示以递归方式传输文件,并保持所有文件属性<br>-v, —verbose 详细模式输出<br>-z, —compress 对备份的文件在传输时进行压缩处理<br>—bwlimit=KBPS 限制I/O带宽，KBytes per second (最好限速,不然长时间数据传输硬盘受不了)<br>::zp这个是上面服务器配置当中的[zp]</p>
-<p>这样备份就开始了</p>
-<hr>
-<h2 id="配置rsync的本地同步">配置rsync的本地同步</h2><p>使用命令进行同步,这个是从lsyncd这个软件里面提取的命令，也可以用那个做实时同步,这个是定期同步</p>
-<p>每天的三点过5分执行同步,加超时:</p>
-<pre><code>5 3 <span class="keyword">*</span> <span class="keyword">*</span> <span class="keyword">*</span> root timeout 7200  rsync -qvzrtopg    /zbkc /sdl
-5 3 <span class="keyword">*</span> <span class="keyword">*</span> <span class="keyword">*</span> root timeout 7200  rsync -qvzrtopg --delete   /zbkc /sdl
-</code></pre><p>让配置文件生效</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">crontab /etc/crontab</span><br></pre></td></tr></table></figure>
-<p>重启服务</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/etc/init.d/cron restart</span><br></pre></td></tr></table></figure>
-<p>写于: 2012年07月20日,2014年06月24日<br>更新于: 2015年03月22日</p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>rsync是安装完linux后都会自带的,在机器上运行rsync命令看是否有安装即可</p>
-<h2 id="备份到远程服务器">备份到远程服务器</h2><p>这里介绍的rsync的用途是备份一台linux服务器上的数据到另外一台机器</p>
-<h3 id="环境">环境</h3><p>将需要备份机器叫做服务器端  (192.168.0.195)<br>将备份后数据存放机器叫做客户端 (192.168.0.196)</p>
-<h3 id="配置">配置</h3><h4 id="1-服务器端的配置:">1.服务器端的配置:</h4><p>这里是准备备份/chinfotech/kernel/zp/这个目录,修改配置文件</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/rsyncd.conf (没有就创建)</span><br></pre></td></tr></table></figure>]]>
-    
-    </summary>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[修改ssh的默认22端口，并使用scp的方法]]></title>
-    <link href="http://yoursite.com/2015/03/22/%E4%BF%AE%E6%94%B9ssh%E7%9A%84%E9%BB%98%E8%AE%A422%E7%AB%AF%E5%8F%A3%EF%BC%8C%E5%B9%B6%E4%BD%BF%E7%94%A8scp%E7%9A%84%E6%96%B9%E6%B3%95/"/>
-    <id>http://yoursite.com/2015/03/22/修改ssh的默认22端口，并使用scp的方法/</id>
-    <published>2015-03-22T08:49:01.000Z</published>
-    <updated>2015-03-22T08:52:57.246Z</updated>
-    <content type="html"><![CDATA[<p>修改默认的22的ssh端口只需要修改 /etc/ssh/sshd_config 中的 port 字段为你想要的端口就可以了<br>以后用其他机器ssh登录这台机器只需要:</p>
-<pre><code>ssh -p <span class="comment">(port)</span>  <span class="comment">(ip)</span>  
-</code></pre><p>使用scp 就是:</p>
-<pre><code>scp -<span class="constant">P</span> (port) /usr/myfile   <span class="constant">IP</span><span class="symbol">:/tmp</span>
-</code></pre><p>写于: 2012年05月05日<br>更新于: 2015年03月02日</p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>修改默认的22的ssh端口只需要修改 /etc/ssh/sshd_config 中的 port 字段为你想要的端口就可以了<br>以后用其他机器ssh登录这台机器只需要:</p>
-<pre><code>ssh -p <span class="comment">(port)<]]>
     </summary>
     
   </entry>
