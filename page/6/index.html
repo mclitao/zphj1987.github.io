@@ -74,6 +74,48 @@ var _hmt = _hmt || [];
   <header>
     
       <div class="icon"></div>
+      <a href="/2015/03/22/正确用DD测试磁盘读写速度/">
+  <time datetime="2015-03-22T08:36:15.000Z">
+    2015-03-22
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/03/22/正确用DD测试磁盘读写速度/">正确用DD测试磁盘读写速度</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>问: 以下几种方式测试磁盘读写速度有什么区别?</p>
+<pre><code>dd <span class="variable">if=</span>/dev/zero <span class="variable">of=</span>test <span class="variable">bs=</span><span class="number">1</span>M <span class="variable">count=</span><span class="number">128</span> 
+dd <span class="variable">if=</span>/dev/zero <span class="variable">of=</span>test <span class="variable">bs=</span><span class="number">1</span>M <span class="variable">count=</span><span class="number">128</span> ; sync
+dd <span class="variable">if=</span>/dev/zero <span class="variable">of=</span>test <span class="variable">bs=</span><span class="number">1</span>M <span class="variable">count=</span><span class="number">128</span> <span class="variable">conv=</span>fdatasync
+dd <span class="variable">if=</span>/dev/zero <span class="variable">of=</span>test <span class="variable">bs=</span><span class="number">1</span>M <span class="variable">count=</span><span class="number">128</span> <span class="variable">oflag=</span>dsync
+</code></pre><p>答:区别在于内存中写缓存的处理方式。</p>
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2015/03/22/正确用DD测试磁盘读写速度/#more" class="more-link">Read More</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
       <a href="/2015/03/22/西数WD2T硬盘分区对齐的方法/">
   <time datetime="2015-03-22T08:25:08.000Z">
     2015-03-22
@@ -99,7 +141,7 @@ var _hmt = _hmt || [];
     
       
         <div class="alignleft">
-          <a href="/2015/03/22/西数WD2T硬盘分区对齐的方法/#more" class="more-link">阅读全文</a>
+          <a href="/2015/03/22/西数WD2T硬盘分区对齐的方法/#more" class="more-link">Read More</a>
         </div>
       
       
@@ -139,7 +181,7 @@ var _hmt = _hmt || [];
     
       
         <div class="alignleft">
-          <a href="/2015/03/22/Check-Host-实时监控网站或者服务器是否可以访问/#more" class="more-link">阅读全文</a>
+          <a href="/2015/03/22/Check-Host-实时监控网站或者服务器是否可以访问/#more" class="more-link">Read More</a>
         </div>
       
       
@@ -224,61 +266,13 @@ var _hmt = _hmt || [];
 
 
   
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2015/03/22/关于nginx-upstream的几种配置方式/">
-  <time datetime="2015-03-22T07:55:56.000Z">
-    2015-03-22
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2015/03/22/关于nginx-upstream的几种配置方式/">关于nginx upstream的几种配置方式</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <p>平时一直依赖硬件来作load blance,最近研究Nginx来做负载设备,记录下upstream的几种配置方式。</p>
-<p>第一种:轮询</p>
-<pre><code><span class="title">upstream</span> test{
-    <span class="title">server</span> <span class="number">192.168.0.1:3000</span>;
-    <span class="title">server</span> <span class="number">192.168.0.1:3001</span>;
-}
-</code></pre><p>第二种:权重</p>
-<pre><code><span class="title">upstream</span> test{
-    <span class="title">server</span> <span class="number">192.168.0.1</span> weight=<span class="number">2</span>;
-    <span class="title">server</span> <span class="number">192.168.0.2</span> weight=<span class="number">3</span>;
-}
-</code></pre><p>这种模式可解决服务器性能不等的情况下轮询比率的调配</p>
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2015/03/22/关于nginx-upstream的几种配置方式/#more" class="more-link">阅读全文</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-  
 
   <nav id="pagination">
   
-    <a href="/page/5/" class="prev">上一页</a>
+    <a href="/page/5/" class="prev">Prev</a>
   
   
-    <a href="/page/7/" class="next">下一页</a>
+    <a href="/page/7/" class="next">Next</a>
   
   <div class="clearfix"></div>
 </nav>

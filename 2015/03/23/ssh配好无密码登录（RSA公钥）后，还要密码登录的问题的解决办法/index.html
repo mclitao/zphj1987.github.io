@@ -4,35 +4,35 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="chrome=1">
   
-  <title>debian修改crontab默认编辑器为vim | zphj1987&#39;Blog</title>
+  <title>ssh配好无密码登录（RSA公钥）后，还要密码登录的问题的解决办法 | zphj1987&#39;Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   
     <meta name="author" content="zphj1987">
   
   
-    <meta name="description" content="debian终端下默认编辑器为nano,比如crontab -e就会打开nano,这个编辑器用起来很不习惯,想修改为vim,当然,你的debian系统必须先安装vim.如果已经安装vim,请输入如下命令:输入命令:
-1update-alternatives --config editor
-然后选择/usr/vim/vim.basic就OK了
-vim.tiny与vim.basic的区别是vim.ba">
+    <meta name="description" content="首先删除 /root/.ssh目录然后ssh-keygen 生成新的认证目录然后检查能否免密码登陆如果还不能可能是/root/目录的权限不对了 可能被异常改到777了做操作 
+chmod 650 /root/
+然后再尝试看能不能免登陆访问
+写于: 2013年11月28日更新于: 2015年03日23日">
   
-  <meta name="description" content="debian终端下默认编辑器为nano,比如crontab -e就会打开nano,这个编辑器用起来很不习惯,想修改为vim,当然,你的debian系统必须先安装vim.如果已经安装vim,请输入如下命令:输入命令:
-1update-alternatives --config editor
-然后选择/usr/vim/vim.basic就OK了
-vim.tiny与vim.basic的区别是vim.ba">
+  <meta name="description" content="首先删除 /root/.ssh目录然后ssh-keygen 生成新的认证目录然后检查能否免密码登陆如果还不能可能是/root/目录的权限不对了 可能被异常改到777了做操作 
+chmod 650 /root/
+然后再尝试看能不能免登陆访问
+写于: 2013年11月28日更新于: 2015年03日23日">
 <meta property="og:type" content="article">
-<meta property="og:title" content="debian修改crontab默认编辑器为vim">
-<meta property="og:url" content="http://yoursite.com/2015/03/22/debian修改crontab默认编辑器为vim/index.html">
+<meta property="og:title" content="ssh配好无密码登录（RSA公钥）后，还要密码登录的问题的解决办法">
+<meta property="og:url" content="http://yoursite.com/2015/03/23/ssh配好无密码登录（RSA公钥）后，还要密码登录的问题的解决办法/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
-<meta property="og:description" content="debian终端下默认编辑器为nano,比如crontab -e就会打开nano,这个编辑器用起来很不习惯,想修改为vim,当然,你的debian系统必须先安装vim.如果已经安装vim,请输入如下命令:输入命令:
-1update-alternatives --config editor
-然后选择/usr/vim/vim.basic就OK了
-vim.tiny与vim.basic的区别是vim.ba">
+<meta property="og:description" content="首先删除 /root/.ssh目录然后ssh-keygen 生成新的认证目录然后检查能否免密码登陆如果还不能可能是/root/目录的权限不对了 可能被异常改到777了做操作 
+chmod 650 /root/
+然后再尝试看能不能免登陆访问
+写于: 2013年11月28日更新于: 2015年03日23日">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="debian修改crontab默认编辑器为vim">
-<meta name="twitter:description" content="debian终端下默认编辑器为nano,比如crontab -e就会打开nano,这个编辑器用起来很不习惯,想修改为vim,当然,你的debian系统必须先安装vim.如果已经安装vim,请输入如下命令:输入命令:
-1update-alternatives --config editor
-然后选择/usr/vim/vim.basic就OK了
-vim.tiny与vim.basic的区别是vim.ba">
+<meta name="twitter:title" content="ssh配好无密码登录（RSA公钥）后，还要密码登录的问题的解决办法">
+<meta name="twitter:description" content="首先删除 /root/.ssh目录然后ssh-keygen 生成新的认证目录然后检查能否免密码登陆如果还不能可能是/root/目录的权限不对了 可能被异常改到777了做操作 
+chmod 650 /root/
+然后再尝试看能不能免登陆访问
+写于: 2013年11月28日更新于: 2015年03日23日">
   
   
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
@@ -82,26 +82,25 @@ var _hmt = _hmt || [];
   <header>
     
       <div class="icon"></div>
-      <a href="/2015/03/22/debian修改crontab默认编辑器为vim/">
-  <time datetime="2015-03-22T08:46:03.000Z">
-    2015-03-22
+      <a href="/2015/03/23/ssh配好无密码登录（RSA公钥）后，还要密码登录的问题的解决办法/">
+  <time datetime="2015-03-23T05:01:44.000Z">
+    2015-03-23
   </time>
 </a>
     
     
   
-    <h1 class="title">debian修改crontab默认编辑器为vim</h1>
+    <h1 class="title">ssh配好无密码登录（RSA公钥）后，还要密码登录的问题的解决办法</h1>
   
 
   </header>
   
   <div class="entry">
     
-      <p>debian终端下默认编辑器为nano,比如crontab -e就会打开nano,这个编辑器用起来很不习惯,想修改为vim,当然,你的debian系统必须先安装vim.如果已经安装vim,请输入如下命令:<br>输入命令:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">update-alternatives --config editor</span><br></pre></td></tr></table></figure>
-<p>然后选择/usr/vim/vim.basic就OK了</p>
-<p>vim.tiny与vim.basic的区别是vim.basic为完全的vim,而vim.tiny为简化版,功能上有所区别,如不支持高亮等等.</p>
-<p>写于: 2012年5月04日<br>更新于: 2015年03月22日</p>
+      <p>首先删除 /root/.ssh目录<br>然后ssh-keygen 生成新的认证目录<br>然后检查能否免密码登陆<br>如果还不能可能是/root/目录的权限不对了 可能被异常改到777了<br>做操作 </p>
+<pre><code>chmod <span class="number">650</span> <span class="regexp">/root/</span>
+</code></pre><p>然后再尝试看能不能免登陆访问</p>
+<p>写于: 2013年11月28日<br>更新于: 2015年03日23日</p>
 
     
   </div>
@@ -117,7 +116,7 @@ var _hmt = _hmt || [];
 
 <section id="comment">
   <h1 class="title">Comments</h1>
-  <div class="ds-thread" data-thread-key="2015/03/22/debian修改crontab默认编辑器为vim/"  data-title="debian修改crontab默认编辑器为vim">
+  <div class="ds-thread" data-thread-key="2015/03/23/ssh配好无密码登录（RSA公钥）后，还要密码登录的问题的解决办法/"  data-title="ssh配好无密码登录（RSA公钥）后，还要密码登录的问题的解决办法">
   </div>
 </section>
 </div>

@@ -74,6 +74,54 @@ var _hmt = _hmt || [];
   <header>
     
       <div class="icon"></div>
+      <a href="/2015/03/22/关于nginx-upstream的几种配置方式/">
+  <time datetime="2015-03-22T07:55:56.000Z">
+    2015-03-22
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/03/22/关于nginx-upstream的几种配置方式/">关于nginx upstream的几种配置方式</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>平时一直依赖硬件来作load blance,最近研究Nginx来做负载设备,记录下upstream的几种配置方式。</p>
+<p>第一种:轮询</p>
+<pre><code><span class="title">upstream</span> test{
+    <span class="title">server</span> <span class="number">192.168.0.1:3000</span>;
+    <span class="title">server</span> <span class="number">192.168.0.1:3001</span>;
+}
+</code></pre><p>第二种:权重</p>
+<pre><code><span class="title">upstream</span> test{
+    <span class="title">server</span> <span class="number">192.168.0.1</span> weight=<span class="number">2</span>;
+    <span class="title">server</span> <span class="number">192.168.0.2</span> weight=<span class="number">3</span>;
+}
+</code></pre><p>这种模式可解决服务器性能不等的情况下轮询比率的调配</p>
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2015/03/22/关于nginx-upstream的几种配置方式/#more" class="more-link">Read More</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
       <a href="/2015/03/22/win7安装系统出现“安装程序无法创建新的系统分区，也无法定位现有的系统分区”解决方法/">
   <time datetime="2015-03-22T07:52:01.000Z">
     2015-03-22
@@ -137,7 +185,7 @@ var _hmt = _hmt || [];
     
       
         <div class="alignleft">
-          <a href="/2015/03/22/系统运行后修改linux系统时区/#more" class="more-link">阅读全文</a>
+          <a href="/2015/03/22/系统运行后修改linux系统时区/#more" class="more-link">Read More</a>
         </div>
       
       
@@ -232,47 +280,7 @@ var _hmt = _hmt || [];
     
       
         <div class="alignleft">
-          <a href="/2015/03/22/卸载python安装的软件/#more" class="more-link">阅读全文</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-  
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2015/03/22/常用linux源列表/">
-  <time datetime="2015-03-22T07:16:16.000Z">
-    2015-03-22
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2015/03/22/常用linux源列表/">常用linux源列表</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <p>centos6 源:</p>
-<p>epel源:</p>
-<pre><code>wget  <span class="symbol">http:</span>/<span class="regexp">/mirrors.aliyun.com/epel</span><span class="regexp">/6/x</span>86_64/epel-release-<span class="number">6</span>-<span class="number">8</span>.noarch.rpm
-</code></pre>
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2015/03/22/常用linux源列表/#more" class="more-link">阅读全文</a>
+          <a href="/2015/03/22/卸载python安装的软件/#more" class="more-link">Read More</a>
         </div>
       
       
@@ -286,10 +294,10 @@ var _hmt = _hmt || [];
 
   <nav id="pagination">
   
-    <a href="/page/6/" class="prev">上一页</a>
+    <a href="/page/6/" class="prev">Prev</a>
   
   
-    <a href="/page/8/" class="next">下一页</a>
+    <a href="/page/8/" class="next">Next</a>
   
   <div class="clearfix"></div>
 </nav>

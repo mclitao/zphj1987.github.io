@@ -74,6 +74,49 @@ var _hmt = _hmt || [];
   <header>
     
       <div class="icon"></div>
+      <a href="/2015/03/22/使用Ganglia监控系统监控集群-debian/">
+  <time datetime="2015-03-22T09:20:06.000Z">
+    2015-03-22
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/03/22/使用Ganglia监控系统监控集群-debian/">使用Ganglia监控系统监控集群(debian)</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>anglia是一个集群监控软件,底层使用RRDTool获得数据。<br>Ganglia分为ganglia-monitor和gmetad两部分,前者运行在集群每个节点上(被监控机器)收集RRDTool产生的数据,后者运行在监控服务器上,收集每个ganglia-monitor的数据,通过Web UI可以看到直观的各种图表。</p>
+<p>在debian上安装Ganglia非常简单,首先安装下面三个包。因为要使用Web服务器才能看到图表,所以如果没有安装apache的话,会自动安装apache服务器。</p>
+<pre><code>apt-<span class="keyword">get</span> installganglia-monitor  <span class="comment">#这个包安装在被监控机器即可</span>
+apt-<span class="keyword">get</span> install ganglia-webfront gmetad  <span class="comment">#这两个包安装在监控服务器，前者提供web页面，后者收集其他机器的监控数据</span>
+</code></pre><p>被监控安装完成之后，gmond服务会运行起来，使用下面的命令可以启动这个服务。</p>
+<pre><code><span class="regexp">/etc/i</span>nit.d<span class="regexp">/ganglia-monitor restart     </span>
+</code></pre><p>(配置文件的路径在/etc/ganglia/gmond.conf)基本不用配置就可以启用</p>
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2015/03/22/使用Ganglia监控系统监控集群-debian/#more" class="more-link">Read More</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
       <a href="/2015/03/22/Linux下如何创建loop-device/">
   <time datetime="2015-03-22T09:07:24.000Z">
     2015-03-22
@@ -102,7 +145,7 @@ var _hmt = _hmt || [];
     
       
         <div class="alignleft">
-          <a href="/2015/03/22/Linux下如何创建loop-device/#more" class="more-link">阅读全文</a>
+          <a href="/2015/03/22/Linux下如何创建loop-device/#more" class="more-link">Read More</a>
         </div>
       
       
@@ -143,7 +186,7 @@ var _hmt = _hmt || [];
     
       
         <div class="alignleft">
-          <a href="/2015/03/22/用rsync备份一台linux服务器上的数据/#more" class="more-link">阅读全文</a>
+          <a href="/2015/03/22/用rsync备份一台linux服务器上的数据/#more" class="more-link">Read More</a>
         </div>
       
       
@@ -230,55 +273,13 @@ var _hmt = _hmt || [];
 
 
   
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2015/03/22/正确用DD测试磁盘读写速度/">
-  <time datetime="2015-03-22T08:36:15.000Z">
-    2015-03-22
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2015/03/22/正确用DD测试磁盘读写速度/">正确用DD测试磁盘读写速度</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <p>问: 以下几种方式测试磁盘读写速度有什么区别?</p>
-<pre><code>dd <span class="variable">if=</span>/dev/zero <span class="variable">of=</span>test <span class="variable">bs=</span><span class="number">1</span>M <span class="variable">count=</span><span class="number">128</span> 
-dd <span class="variable">if=</span>/dev/zero <span class="variable">of=</span>test <span class="variable">bs=</span><span class="number">1</span>M <span class="variable">count=</span><span class="number">128</span> ; sync
-dd <span class="variable">if=</span>/dev/zero <span class="variable">of=</span>test <span class="variable">bs=</span><span class="number">1</span>M <span class="variable">count=</span><span class="number">128</span> <span class="variable">conv=</span>fdatasync
-dd <span class="variable">if=</span>/dev/zero <span class="variable">of=</span>test <span class="variable">bs=</span><span class="number">1</span>M <span class="variable">count=</span><span class="number">128</span> <span class="variable">oflag=</span>dsync
-</code></pre><p>答:区别在于内存中写缓存的处理方式。</p>
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2015/03/22/正确用DD测试磁盘读写速度/#more" class="more-link">阅读全文</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-  
 
   <nav id="pagination">
   
-    <a href="/page/4/" class="prev">上一页</a>
+    <a href="/page/4/" class="prev">Prev</a>
   
   
-    <a href="/page/6/" class="next">下一页</a>
+    <a href="/page/6/" class="next">Next</a>
   
   <div class="clearfix"></div>
 </nav>

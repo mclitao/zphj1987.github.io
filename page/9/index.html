@@ -74,6 +74,51 @@ var _hmt = _hmt || [];
   <header>
     
       <div class="icon"></div>
+      <a href="/2015/03/22/利用脚本自动下载ftp列表中的文件/">
+  <time datetime="2015-03-22T05:09:35.000Z">
+    2015-03-22
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/03/22/利用脚本自动下载ftp列表中的文件/">利用脚本自动下载ftp列表中的文件</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>我们可能会遇到这种场景，在某个机构订阅了一个邮件列表,然后这个机构会定期的发送带有ftp目录的url地址到你的邮件,现在你想在你的服务器上能够方便的下载这个列表上的文件,而不是手动的一个个去下,那么我们可以用脚本来完成这个功能,我将这个过程分为两部分,第一步获取到ftp页面的所有文件名称,第二步是通过获得的文件名来下载文件<br>下面以一个卫星数据的下载为例:</p>
+<p>ftp://oceans.gsfc.nasa.gov/subscriptions/1227</p>
+<p>这个是邮件中收到的url地址,在浏览器中可以查看到文件名,由于这个数据是0,这个是这样设计的.</p>
+<h3 id="第一步:我们只需要获取他的文件名,用下面这个脚本">第一步:我们只需要获取他的文件名,用下面这个脚本</h3><pre><code><span class="shebang">#! /bin/sh</span>
+<span class="built_in">echo</span> <span class="string">"请输入你的FTP目录编号"</span>
+<span class="built_in">read</span> <span class="operator">-e</span> id
+wget -r  ftp://oceans.gsfc.nasa.gov/subscriptions/<span class="variable">$id</span>
+ls  /usr/src/oceans.gsfc.nasa.gov/subscriptions/<span class="variable">$id</span>/ &gt; /usr/src/filename.txt
+</code></pre><p>这样文件名就被下载到了/usr/src/filename.txt中了</p>
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2015/03/22/利用脚本自动下载ftp列表中的文件/#more" class="more-link">Read More</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
       <a href="/2015/03/22/syntax-error-Bad-for-loop-variable解决办法-ubuntu/">
   <time datetime="2015-03-22T05:04:00.000Z">
     2015-03-22
@@ -239,52 +284,13 @@ sum=$((<span class="variable">$sum</span> + <span class="variable">$a</span>))
 
 
   
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2015/03/22/error-while-loading-shared-libraries的解決方法/">
-  <time datetime="2015-03-22T04:33:15.000Z">
-    2015-03-22
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2015/03/22/error-while-loading-shared-libraries的解決方法/">error while loading shared libraries的解決方法</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <p>在linux下运行程序时,发现了error while loading shared libraries这种错误,一时间不知道解决办法,在网上搜索,终于解决了.</p>
-<pre><code><span class="keyword">error</span> <span class="keyword">while</span> loading shared libraries: xxx.<span class="keyword">so</span>.0:cannot <span class="keyword">open</span> shared object <span class="keyword">file</span>: <span class="keyword">No</span> such <span class="keyword">file</span> or directory
-</code></pre><p>出现这类错误表示,系统不知道xxx.so放在哪个目录下,这时候就要在/etc/ld.so.conf中加入xxx.so所在的目录。<br>一般而言,有很多的so会存放在/usr/local/lib这个目录底下,去这个目录底下找，果然发现自己所需要的.so文件。<br>所以在/etc/ld.so.conf中加入/usr/local/lib这一行,保存之后,再运行,/sbin/ldconfig –v更新一下配置即可。<br>centos下安装qt时出现/usr/lib/libstdc++.so.6: version `GLIBCXX_3.4.9’ not found<br>在安装qt-creator的时候运行这个IDE就出现了这个问题,是由于libstdc++.so.6的版本过低,需要下载个新的重新建立软连接</p>
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2015/03/22/error-while-loading-shared-libraries的解決方法/#more" class="more-link">阅读全文</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-  
 
   <nav id="pagination">
   
-    <a href="/page/8/" class="prev">上一页</a>
+    <a href="/page/8/" class="prev">Prev</a>
   
   
-    <a href="/page/10/" class="next">下一页</a>
+    <a href="/page/10/" class="next">Next</a>
   
   <div class="clearfix"></div>
 </nav>
