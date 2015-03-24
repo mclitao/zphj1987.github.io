@@ -4,21 +4,39 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="chrome=1">
   
-  <title>zphj1987&#39;Blog</title>
+  <title>配置xenserver本地存储 | zphj1987&#39;Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   
     <meta name="author" content="zphj1987">
   
   
-  <meta name="description">
-<meta property="og:type" content="website">
-<meta property="og:title" content="zphj1987'Blog">
-<meta property="og:url" content="http://yoursite.com/page/3/index.html">
+    <meta name="description" content="查询磁盘对应关系:
+[root@xenserver-eqtwbths ~]# ll /dev/disk/by-id/
+total 0
+lrwxrwxrwx 1 root root  9 Jun  5 13:24 edd-int13_dev81 -&amp;gt; ../../sdb
+lrwxrwxrwx 1 root root 10 Jun  5 14:14 edd-int13_dev81-part1 -">
+  
+  <meta name="description" content="查询磁盘对应关系:
+[root@xenserver-eqtwbths ~]# ll /dev/disk/by-id/
+total 0
+lrwxrwxrwx 1 root root  9 Jun  5 13:24 edd-int13_dev81 -&amp;gt; ../../sdb
+lrwxrwxrwx 1 root root 10 Jun  5 14:14 edd-int13_dev81-part1 -">
+<meta property="og:type" content="article">
+<meta property="og:title" content="配置xenserver本地存储">
+<meta property="og:url" content="http://yoursite.com/2015/03/24/配置xenserver本地存储/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
-<meta property="og:description">
+<meta property="og:description" content="查询磁盘对应关系:
+[root@xenserver-eqtwbths ~]# ll /dev/disk/by-id/
+total 0
+lrwxrwxrwx 1 root root  9 Jun  5 13:24 edd-int13_dev81 -&amp;gt; ../../sdb
+lrwxrwxrwx 1 root root 10 Jun  5 14:14 edd-int13_dev81-part1 -">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="zphj1987'Blog">
-<meta name="twitter:description">
+<meta name="twitter:title" content="配置xenserver本地存储">
+<meta name="twitter:description" content="查询磁盘对应关系:
+[root@xenserver-eqtwbths ~]# ll /dev/disk/by-id/
+total 0
+lrwxrwxrwx 1 root root  9 Jun  5 13:24 edd-int13_dev81 -&amp;gt; ../../sdb
+lrwxrwxrwx 1 root root 10 Jun  5 14:14 edd-int13_dev81-part1 -">
   
   
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
@@ -63,54 +81,7 @@ var _hmt = _hmt || [];
   </nav>
   <div class="clearfix"></div>
 </header>
-    <div class="content">
-
-
-
-
-  
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2015/03/24/持续运行一个命令，并且将结果输出到文本/">
-  <time datetime="2015-03-23T23:43:09.000Z">
-    2015-03-24
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2015/03/24/持续运行一个命令，并且将结果输出到文本/">持续运行一个命令，并且将结果输出到文本</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <pre><code><span class="shebang">#! /bin/sh</span>
-<span class="keyword">while</span> [ <span class="number">2</span> &gt; <span class="number">1</span> ]
-<span class="keyword">do</span>
-    <span class="built_in">echo</span> `date` &gt;&gt; recode.txt
-    df -h &gt;&gt; recode.txt
-    sleep  <span class="number">5</span>
-<span class="keyword">done</span>  
-</code></pre><p>写于: 2014年06月12日<br>更新于: 2015年03月24日</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-  
-    <article class="post">
+    <div class="content"><article class="post">
   <header>
     
       <div class="icon"></div>
@@ -122,7 +93,7 @@ var _hmt = _hmt || [];
     
     
   
-    <h1 class="title"><a href="/2015/03/24/配置xenserver本地存储/">配置xenserver本地存储</a></h1>
+    <h1 class="title">配置xenserver本地存储</h1>
   
 
   </header>
@@ -146,141 +117,23 @@ lrwxrwxrwx <span class="number">1</span> <span class="literal">root</span> <span
 lrwxrwxrwx <span class="number">1</span> <span class="literal">root</span> <span class="literal">root</span> <span class="number">10</span> <span class="constant">Jun</span>  <span class="number">5</span> <span class="number">13</span>:<span class="number">24</span> scsi-<span class="constant">S</span>ATA_ST1000VX00<span class="number">0</span>-<span class="number">9</span>YW_S1D4AGX3-part1 -&gt; ../../sda1
 lrwxrwxrwx <span class="number">1</span> <span class="literal">root</span> <span class="literal">root</span> <span class="number">10</span> <span class="constant">Jun</span>  <span class="number">5</span> <span class="number">13</span>:<span class="number">24</span> scsi-<span class="constant">S</span>ATA_ST1000VX00<span class="number">0</span>-<span class="number">9</span>YW_S1D4AGX3-part2 -&gt; ../../sda2
 lrwxrwxrwx <span class="number">1</span> <span class="literal">root</span> <span class="literal">root</span> <span class="number">10</span> <span class="constant">Jun</span>  <span class="number">5</span> <span class="number">13</span>:<span class="number">24</span> scsi-<span class="constant">S</span>ATA_ST1000VX00<span class="number">0</span>-<span class="number">9</span>YW_S1D4AGX3-part3 -&gt; ../../sda3
-</code></pre>
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2015/03/24/配置xenserver本地存储/#more" class="more-link">阅读全文</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-  
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2015/03/23/ubuntu无法关机/">
-  <time datetime="2015-03-23T14:12:55.000Z">
-    2015-03-23
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2015/03/23/ubuntu无法关机/">ubuntu无法关机</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <p>在/etc/default/halt 增加下面</p>
-<pre><code><span class="attribute">INIT_HALT </span>=<span class="string"> POWEROFF</span>
-</code></pre>
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2015/03/23/ubuntu无法关机/#more" class="more-link">阅读全文</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-  
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2015/03/23/linux中KVM桥接网卡br0/">
-  <time datetime="2015-03-23T14:05:59.000Z">
-    2015-03-23
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2015/03/23/linux中KVM桥接网卡br0/">linux中KVM桥接网卡br0</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <p>在centos虚拟化当中需要增加一个桥接网卡,然后将虚拟化当中的机器的网卡桥接到桥接网卡,下面将描述设置方法:</p>
-<p>查看现有网卡</p>
-<pre><code>[root@zb ~]<span class="comment"># vim /etc/sysconfig/network-scripts/ifcfg-eth0</span>
-<span class="constant">DEVICE</span>=eth0
-<span class="constant">HWADDR</span>=70:71:BC:1F:E4:86
-<span class="constant">TYPE</span>=Ethernet
-<span class="constant">UUID</span>=0213211a-d451-4944-881c-e7475b8bee34
-<span class="constant">ONBOOT</span>=yes
-<span class="constant">NM_CONTROLLED</span>=yes
-<span class="constant">BOOTPROTO</span>=static
-<span class="constant">IPADDR</span>=192.168.7.107
-<span class="constant">NETMASK</span>=255.255.0.0
-<span class="constant">GATEWAY</span>=192.168.1.1
-</code></pre><p>将网卡信息copy一份到br0再进行修改</p>
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2015/03/23/linux中KVM桥接网卡br0/#more" class="more-link">阅读全文</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-  
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2015/03/23/ubuntu掉电出现检查文件系统的问题/">
-  <time datetime="2015-03-23T14:04:00.000Z">
-    2015-03-23
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2015/03/23/ubuntu掉电出现检查文件系统的问题/">ubuntu掉电出现检查文件系统的问题</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <p>修改:</p>
-<pre><code>/etc/<span class="reserved">default</span>/rcS 
-FSCKFIX=<span class="literal">no</span> 为 FSCKFIX=<span class="literal">yes</span>
-</code></pre><p>出现这个情况的原因是硬件时钟偏移了<br>显示上次挂载根目录在未来时间。</p>
-<p>写于: 2013年11月28日<br>更新于: 2015年03月23日</p>
+</code></pre><a id="more"></a>
+<p>准备添加sdb1作为存储</p>
+<pre><code>root@xenserver-eqtwbths ~]# xe sr-create <span class="class"><span class="keyword">type</span></span>=lvm content-<span class="class"><span class="keyword">type</span></span>=user device-config:device=/dev/disk/by-id/edd-int13_dev81-part1 name-label=<span class="string">"Local storage 2(sdb)"</span> 
+</code></pre><p>2.XS删除本地存储连接 </p>
+<p>列出pdb模块，找到对应存储的UUID </p>
+<pre><code>xe pbd-<span class="type">list</span>  
+</code></pre><p>卸载对应uuid的存储 </p>
+<pre><code>xe pbd-unplug <span class="built_in">uuid</span>=“<span class="built_in">uuid</span> of <span class="constant">P</span>BD”  
+</code></pre><p>列出存储的UUID，找到对应存储的UUID </p>
+<pre><code>xe sr-<span class="type">list</span>  
+</code></pre><p>删除本地存储连接 </p>
+<pre><code>xe sr-destroy <span class="built_in">uuid</span>=“<span class="built_in">uuid</span> of <span class="constant">S</span>R ” 
+</code></pre><p>写于: 2014年06月05日<br>更新于: 2015年03月24日</p>
 
     
   </div>
-  <footer class="end-sep">
+  <footer>
     
       
       
@@ -290,18 +143,11 @@ FSCKFIX=<span class="literal">no</span> 为 FSCKFIX=<span class="literal">yes</s
 </article>
 
 
-  
-
-  <nav id="pagination">
-  
-    <a href="/page/2/" class="prev">上一页</a>
-  
-  
-    <a href="/page/4/" class="next">下一页</a>
-  
-  <div class="clearfix"></div>
-</nav>
-
+<section id="comment">
+  <h1 class="title">评论</h1>
+  <div class="ds-thread" data-thread-key="2015/03/24/配置xenserver本地存储/"  data-title="配置xenserver本地存储">
+  </div>
+</section>
 </div>
   </div>
   <footer id="footer"><div class="copyright">

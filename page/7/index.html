@@ -73,32 +73,33 @@ var _hmt = _hmt || [];
   <header>
     
       <div class="icon"></div>
-      <a href="/2015/03/22/Check-Host-实时监控网站或者服务器是否可以访问/">
-  <time datetime="2015-03-22T08:15:10.000Z">
+      <a href="/2015/03/22/Ubuntu-12-10设置root用户登录图形界面/">
+  <time datetime="2015-03-22T13:53:06.000Z">
     2015-03-22
   </time>
 </a>
     
     
   
-    <h1 class="title"><a href="/2015/03/22/Check-Host-实时监控网站或者服务器是否可以访问/">Check Host:实时监控网站或者服务器是否可以访问</a></h1>
+    <h1 class="title"><a href="/2015/03/22/Ubuntu-12-10设置root用户登录图形界面/">Ubuntu 12.10设置root用户登录图形界面</a></h1>
   
 
   </header>
   
   <div class="entry">
     
-      <p>如果你拥有一个网站，那么最重要的事情就是要保证它24小时都能够访问。不过国内的虚拟主机服务非常糟糕，经常会出现各种状况,所以我们需要一个软件,可以让我们第一时间知道网站出现了无法访问的情况,从而通知售后人员解决。而Check Host就是这么一个windows下的免费网站时时监控工具。</p>
-<p>服务器无法访问,那么对网站是非常不利的,而搜索引擎也会知道这个状况,因为蜘蛛不能爬行你的网页了。所以对访客以及搜索引擎排名都是不利的。不过这个事情肯定会发生,我们能做的就是提高反应速度,让这样的情况在最短的时间内解决。</p>
-<p>如此一来,对于网站的实时监控就非常有必要的,但是我们又不能每隔一段时间就手动打开网站一次,这样太过于麻烦,甚至是愚蠢的,所以我们必须要使用一个软件,让其代劳，当发生状况的时候还会给你发出警告，而Check Host就可以满足你的愿望。</p>
-<p>Check Host是一个windows下的小软件，只有2.2M,十分的小巧,它的原理是每隔一段时间就自动ping一下你设定的网址。如果无法ping通的话,那么就会通过几种方法告诉你。</p>
+      <p>Ubuntu 12.04默认是不允许root登录的,在登录窗口只能看到普通用户和访客登录。以普通身份登陆Ubuntu后我们需要做一些修改,普通用户登录后,修改系统配置文件需要切换到超级用户模式,在终端窗口里面输入: </p>
+<pre><code>sudo  <span class="operator">-s</span>
+</code></pre><p>然后输入普通用户登陆的密码,回车即可进入 root用户权限模式。<br>启用root用户的前提是需要先给root设置一个密码:</p>
+<pre><code><span class="title">sudo</span> passwd root 
+</code></pre><p>输入root 密码即可</p>
     
   </div>
   <footer class="end-sep">
     
       
         <div class="alignleft">
-          <a href="/2015/03/22/Check-Host-实时监控网站或者服务器是否可以访问/#more" class="more-link">阅读全文</a>
+          <a href="/2015/03/22/Ubuntu-12-10设置root用户登录图形界面/#more" class="more-link">阅读全文</a>
         </div>
       
       
@@ -113,114 +114,32 @@ var _hmt = _hmt || [];
   <header>
     
       <div class="icon"></div>
-      <a href="/2015/03/22/清理win7注册表后，没有了右键新建选项处理办法/">
-  <time datetime="2015-03-22T08:09:11.000Z">
+      <a href="/2015/03/22/Vmware-Tools-is-currently-being-installed-on-your-system/">
+  <time datetime="2015-03-22T13:47:15.000Z">
     2015-03-22
   </time>
 </a>
     
     
   
-    <h1 class="title"><a href="/2015/03/22/清理win7注册表后，没有了右键新建选项处理办法/">清理win7注册表后，没有了右键新建选项处理办法</a></h1>
+    <h1 class="title"><a href="/2015/03/22/Vmware-Tools-is-currently-being-installed-on-your-system/">Vmware Tools is currently being installed on your system</a></h1>
   
 
   </header>
   
   <div class="entry">
     
-      <p>今天清理win7注册表的右键选项,发现清理完了后,居然没有了右键新建,什么文件都无法创建,搜索了下,发现有人给出了解决办法,如下:</p>
-<pre><code>REGEDIT4 <span class="special">[</span>HKEY_CLASSES_ROOT<span class="command">\Directory</span><span class="command">\Background</span><span class="command">\shellex</span><span class="command">\ContextMenuHandlers</span><span class="command">\New</span><span class="special">]</span> @="<span class="special">{</span>D969A300-E7FF-11d0-A93B-00A0C90F2719<span class="special">}</span>" <span class="special">[</span>HKEY_CLASSES_ROOT<span class="command">\Directory</span><span class="command">\Background</span><span class="command">\shellex</span><span class="command">\ContextMenuHandlers</span><span class="command">\New</span><span class="command">\command</span><span class="special">]</span> @=hex(2): 
-</code></pre><p>建一个文本文件,把上面的内容拷过去,然后把文件后缀改成.reg。双击执行就可以了</p>
-<p>写于: 2012年04月25日<br>更新于: 2015年03月22日</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-  
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2015/03/22/把你的常用文件夹直接显示在“计算机”中/">
-  <time datetime="2015-03-22T08:05:43.000Z">
-    2015-03-22
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2015/03/22/把你的常用文件夹直接显示在“计算机”中/">把你的常用文件夹直接显示在“计算机”中</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <p>win7 中“我的电脑”改名为了“计算机”,而且计算机中不再有我的文档共享文档等链接,虽然计算机左侧的链接中有常用文件夹的链接，用户也可以把自己的快捷方式放入其中。<br>但某些东西还是想直接放在计算机中，很简单，只要把文件或文件夹或它们的快捷方式放到以下目录即可。</p>
-<pre><code>C:<span class="command">\Users</span><span class="command">\你</span>的用户名<span class="command">\AppData</span><span class="command">\Roaming</span><span class="command">\Microsoft</span><span class="command">\Windows</span><span class="command">\Network</span> Shortcuts
-</code></pre><p>即可在“计算机”中显示。</p>
-<p>写于: 2012年4月24日<br>更新于: 2015年03月22日</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-  
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2015/03/22/关于nginx-upstream的几种配置方式/">
-  <time datetime="2015-03-22T07:55:56.000Z">
-    2015-03-22
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2015/03/22/关于nginx-upstream的几种配置方式/">关于nginx upstream的几种配置方式</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <p>平时一直依赖硬件来作load blance,最近研究Nginx来做负载设备,记录下upstream的几种配置方式。</p>
-<p>第一种:轮询</p>
-<pre><code><span class="title">upstream</span> test{
-    <span class="title">server</span> <span class="number">192.168.0.1:3000</span>;
-    <span class="title">server</span> <span class="number">192.168.0.1:3001</span>;
-}
-</code></pre><p>第二种:权重</p>
-<pre><code><span class="title">upstream</span> test{
-    <span class="title">server</span> <span class="number">192.168.0.1</span> weight=<span class="number">2</span>;
-    <span class="title">server</span> <span class="number">192.168.0.2</span> weight=<span class="number">3</span>;
-}
-</code></pre><p>这种模式可解决服务器性能不等的情况下轮询比率的调配</p>
+      <p>问题描述:<br>使用虚拟机安装Ubuntu过程中一直停留在“PLEASE WAIT! Vmware Tools is currently<br>being installed on your system”如下图:</p>
+<p><img src="http://7xi6lo.com1.z0.glb.clouddn.com/vmware1.jpg" alt="">]</p>
+<p>软件环境<br>VMWare 8<br>Ubuntu 12.10</p>
+<p>解决方案如下</p>
     
   </div>
   <footer class="end-sep">
     
       
         <div class="alignleft">
-          <a href="/2015/03/22/关于nginx-upstream的几种配置方式/#more" class="more-link">阅读全文</a>
+          <a href="/2015/03/22/Vmware-Tools-is-currently-being-installed-on-your-system/#more" class="more-link">阅读全文</a>
         </div>
       
       
@@ -235,31 +154,109 @@ var _hmt = _hmt || [];
   <header>
     
       <div class="icon"></div>
-      <a href="/2015/03/22/win7安装系统出现“安装程序无法创建新的系统分区，也无法定位现有的系统分区”解决方法/">
-  <time datetime="2015-03-22T07:52:01.000Z">
+      <a href="/2015/03/22/win7问题步骤记录器-（远程协助）/">
+  <time datetime="2015-03-22T11:39:23.000Z">
     2015-03-22
   </time>
 </a>
     
     
   
-    <h1 class="title"><a href="/2015/03/22/win7安装系统出现“安装程序无法创建新的系统分区，也无法定位现有的系统分区”解决方法/">win7安装系统出现“安装程序无法创建新的系统分区，也无法定位现有的系统分区”解决方法</a></h1>
+    <h1 class="title"><a href="/2015/03/22/win7问题步骤记录器-（远程协助）/">win7问题步骤记录器 （远程协助）</a></h1>
   
 
   </header>
   
   <div class="entry">
     
-      <p>原来服务器上的系统是debian的系统，现在需要在原系统和机器不动的基础上在这台服务器上安装一个win7系统,在安装过程中出现了标题中所说的问题,上网搜索了一下,发现最有效的解决办法就是修改bios中的磁盘的启动项:</p>
-<p>由于原来的系统盘插在第一个sata口,应该是占据着磁盘0,那么在热插拔的机器上插入的一块新的硬盘应该是占据着磁盘1</p>
-<p>而实际情况是在开机进行磁盘选择启动时 原来的debian系统盘是占据这第一启动项,后插入的硬盘占据着第二启动项,在进入到win7的安装程序的时候,会发现,后插入的那个硬盘居然占据着磁盘0,由于这个地方的显示跟bios启动看到的启动顺序对不上,所以就出现了安装程序无法创建新的系统分区,也无法定位现有系统。</p>
-<p>所以需要进入bios进行小的修改<br>进入bios修改界面<br>选择boot选项<br>选择Hard Disk Drivers<br>可以看到1st drive  对应的是原系统盘,在这里修改为后插入的那块硬盘<br>然后保存设置 重启<br>然后安装系统就不会有问题了<br>新插入的硬盘现在应该占据着磁盘1的位子了,安装win7到磁盘1 即可</p>
-<p>写于:2012年4月20日<br>更新于:2015年03月22日</p>
+      <p>win7问题步骤记录器<br>有很多时候,身在远方的家人或者是朋友会要求您辅导他们计算机问题,但是又不知道该如何明确向您表达这个问题，这个处境是很令人沮丧的。<br>微软在Windows 7中添加的问题步骤记录器,将会帮助您与您的朋友摆脱沮丧。在这种情况下,您的朋友只要单击开始菜单、键入PSR,按住Enter键，再点击开始记录按钮即可。启用这项功能后,当您的朋友进行问题操作时,该记录器将会逐一记录您的朋友的操作步骤,并将它们压缩在一个MHTML文件中发送给您即可。无疑,这是个快捷、简单与高效的方法,这将有助于缩短您的故障排除时间。 </p>
+<p>写于: 2012年08月23日<br>更新于: 2015年03月23日 </p>
 
     
   </div>
   <footer class="end-sep">
     
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/22/检查linux下服务器的带宽/">
+  <time datetime="2015-03-22T11:25:43.000Z">
+    2015-03-22
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/03/22/检查linux下服务器的带宽/">检查linux下服务器的带宽</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>设想:公司 A 有一个名为 bsdocfs 的存储服务器,并通过名为 beckham 的客户端节点装载 NFS。公司 A 确定他们需要从 bsdocfs得到更多的带宽,因为有大量的节点需要访问 bsdocfs 的共享文件系统。<br>实现此操作的最常用和最便宜的方式是将两个千兆网卡组合在一起。这是最便宜的,因为您通常会有一个额外的可用 NIC 和一个额外的端口。<br>所以采取此这个方法。不过现在的问题是?到底需要多少带宽?</p>
+<p>千兆网卡以太网理论上的限制是 128MBit/s。这个数字从何而来,看看这些计算:<br>1Gb = 1024Mb;1024Mb/8 = 128MB;”b” = “bits,”、”B” = “bytes”</p>
+<p>但实际看到的是什么呢,有什么好的测量方法呢,我推荐一个工具 iperf。可以按照以下方法获得 iperf</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ wget http://dast.nlanr.net/Projects/Iperf2.<span class="number">0</span>/iperf-<span class="number">2.0</span>.<span class="number">2</span>.tar.gz</span><br></pre></td></tr></table></figure>
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2015/03/22/检查linux下服务器的带宽/#more" class="more-link">阅读全文</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/22/linux利用screen进行shell下的屏幕协作/">
+  <time datetime="2015-03-22T11:22:22.000Z">
+    2015-03-22
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/03/22/linux利用screen进行shell下的屏幕协作/">linux利用screen进行shell下的屏幕协作</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>我们都知道linux是支持多终端并行处理的<br>但是某些时候我们可能有比较特殊的需求需要两个人同时处理一个终端,screen 正好能满足这个要求</p>
+<p>首先需要安装screen软件:</p>
+<p>debian和ubuntu下面都是通过:</p>
+<pre><code>apt-<span class="keyword">get</span> install screen
+</code></pre><p>进行安装的.</p>
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2015/03/22/linux利用screen进行shell下的屏幕协作/#more" class="more-link">阅读全文</a>
+        </div>
       
       
     

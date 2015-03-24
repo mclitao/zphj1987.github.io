@@ -4,7 +4,7 @@
   <subtitle><![CDATA[现在所学，终有所用]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://yoursite.com/"/>
-  <updated>2015-03-23T14:13:44.312Z</updated>
+  <updated>2015-03-24T00:20:02.592Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,19 +15,365 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title><![CDATA[定制ubuntu的时候修改proseed]]></title>
+    <link href="http://yoursite.com/2015/03/24/%E5%AE%9A%E5%88%B6ubuntu%E7%9A%84%E6%97%B6%E5%80%99%E4%BF%AE%E6%94%B9proseed/"/>
+    <id>http://yoursite.com/2015/03/24/定制ubuntu的时候修改proseed/</id>
+    <published>2015-03-24T00:20:02.000Z</published>
+    <updated>2015-03-24T00:20:02.592Z</updated>
+    <content type="html"></content>
+    <summary type="html">
+    
+    </summary>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[使用iptables做端口转发]]></title>
+    <link href="http://yoursite.com/2015/03/24/%E4%BD%BF%E7%94%A8iptables%E5%81%9A%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91/"/>
+    <id>http://yoursite.com/2015/03/24/使用iptables做端口转发/</id>
+    <published>2015-03-24T00:18:01.000Z</published>
+    <updated>2015-03-24T00:19:32.917Z</updated>
+    <content type="html"><![CDATA[<pre><code><span class="shebang">#!/bin/sh </span>
+IPT=<span class="string">"/sbin/iptables"</span>
+/bin/<span class="built_in">echo</span> <span class="string">"1"</span> &gt; /proc/sys/net/ipv4/ip_forward
+/sbin/modprobe ip_tables
+/sbin/modprobe iptable_filter
+/sbin/modprobe iptable_nat
+/sbin/modprobe ip_conntrack
+/sbin/modprobe ip_conntrack_ftp
+/sbin/modprobe ip_nat_ftp
+<span class="variable">$IPT</span> -F
+<span class="variable">$IPT</span> -t nat -F
+<span class="variable">$IPT</span> -X
+<span class="variable">$IPT</span> -t nat -X
+<span class="variable">$IPT</span> -Z
+<span class="variable">$IPT</span> -t nat -Z
+<span class="comment">#DNAT 做端口转发</span>
+<span class="variable">$IPT</span> -t nat -A PREROUTING <span class="operator">-d</span> <span class="number">192.168</span>.<span class="number">0.174</span> -p tcp --dport <span class="number">28</span> -j DNAT --to-destination <span class="number">192.168</span>.<span class="number">9.101</span>:<span class="number">22</span>
+<span class="variable">$IPT</span> -t nat -A POSTROUTING -p tcp <span class="operator">-d</span> <span class="number">192.168</span>.<span class="number">9.101</span> --dport <span class="number">22</span> -j SNAT --to-source <span class="number">192.168</span>.<span class="number">0.174</span>
+
+<span class="comment">#SNAT 做网关转发</span>
+<span class="comment">#$IPT -t nat -A POSTROUTING  -s 192.168.0.0/16  -j SNAT --to-source 210.72.24.15</span>
+</code></pre><p>备注:<br>首先需要启用NAT需要在Linux上打开内核对IP包的转发支持，linux上编辑:/etc/sysctl.conf 文件:</p>
+<pre><code>net<span class="class">.ipv4</span><span class="class">.ip_forward</span> = <span class="number">1</span>
+</code></pre><p>然后执行</p>
+<pre><code><span class="title">sysctl</span> -p
+</code></pre><p>写于: 2014年08月04日<br>更新于: 2015年03月24日</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<pre><code><span class="shebang">#!/bin/sh </span>
+IPT=<span class="string">"/sbin/iptables"</span>
+/bin/<span class="built_in">echo</span> ]]>
+    </summary>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[centos使用U盘做启动盘]]></title>
+    <link href="http://yoursite.com/2015/03/24/centos%E4%BD%BF%E7%94%A8U%E7%9B%98%E5%81%9A%E5%90%AF%E5%8A%A8%E7%9B%98/"/>
+    <id>http://yoursite.com/2015/03/24/centos使用U盘做启动盘/</id>
+    <published>2015-03-24T00:16:17.000Z</published>
+    <updated>2015-03-24T00:17:10.411Z</updated>
+    <content type="html"><![CDATA[<p>软件下载地址:<br><a href="http://sourceforge.net/projects/iso2usb/files/latest/download?source=dlp" target="_blank" rel="external">http://sourceforge.net/projects/iso2usb/files/latest/download?source=dlp</a></p>
+<p>写于: 2014年08月04日<br>更新于: 2015年03月24日</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>软件下载地址:<br><a href="http://sourceforge.net/projects/iso2usb/files/latest/download?source=dlp" target="_blank" rel="external">http://sourc]]>
+    </summary>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[ubuntu服务器启动过程中重启卡死的问题解决]]></title>
+    <link href="http://yoursite.com/2015/03/24/ubuntu%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%90%AF%E5%8A%A8%E8%BF%87%E7%A8%8B%E4%B8%AD%E9%87%8D%E5%90%AF%E5%8D%A1%E6%AD%BB%E7%9A%84%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/"/>
+    <id>http://yoursite.com/2015/03/24/ubuntu服务器启动过程中重启卡死的问题解决/</id>
+    <published>2015-03-24T00:14:36.000Z</published>
+    <updated>2015-03-24T00:15:36.040Z</updated>
+    <content type="html"><![CDATA[<p>在grub默认参数当中添加</p>
+<pre><code><span class="attribute">GRUB_RECORDFAIL_TIMEOUT</span>=<span class="string">0</span>
+</code></pre><p>写于: 2014年07月23日<br>更新于: 2015年03月24日</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>在grub默认参数当中添加</p>
+<pre><code><span class="attribute">GRUB_RECORDFAIL_TIMEOUT</span>=<span class="string">0</span>
+</code></pre><p>写于: 201]]>
+    </summary>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[nginx开启目录浏览]]></title>
+    <link href="http://yoursite.com/2015/03/24/nginx%E5%BC%80%E5%90%AF%E7%9B%AE%E5%BD%95%E6%B5%8F%E8%A7%88/"/>
+    <id>http://yoursite.com/2015/03/24/nginx开启目录浏览/</id>
+    <published>2015-03-24T00:04:52.000Z</published>
+    <updated>2015-03-24T00:06:13.360Z</updated>
+    <content type="html"><![CDATA[<p>使用nginx作为下载站点,开启目录浏览的功能<br>在/etc/nginx/sites-enabled/default中添加:</p>
+<pre><code><span class="title">autoindex</span> <span class="built_in">on</span> ;
+<span class="title">autoindex_exact_size</span> <span class="built_in">off</span>;
+<span class="title">autoindex_localtime</span> <span class="built_in">on</span>;
+</code></pre><p>说明:</p>
+<p>第一个为目录浏览功能开始<br>第二个为不精确计算文件大小<br>第三个为取时间为服务器本地的时间</p>
+<p>删除location相关的内容<br>修改完成重启nginx服务</p>
+<p>写于: 2014年07月16日<br>更新于: 2015年03月24日</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>使用nginx作为下载站点,开启目录浏览的功能<br>在/etc/nginx/sites-enabled/default中添加:</p>
+<pre><code><span class="title">autoindex</span> <span class="built_i]]>
+    </summary>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[ubuntu13.04修改默认启动内核]]></title>
+    <link href="http://yoursite.com/2015/03/24/ubuntu13-04%E4%BF%AE%E6%94%B9%E9%BB%98%E8%AE%A4%E5%90%AF%E5%8A%A8%E5%86%85%E6%A0%B8/"/>
+    <id>http://yoursite.com/2015/03/24/ubuntu13-04修改默认启动内核/</id>
+    <published>2015-03-24T00:01:44.000Z</published>
+    <updated>2015-03-24T00:04:02.594Z</updated>
+    <content type="html"><![CDATA[<p>ubuntu下面的启动内核选项跟其他操作系统不一样,有个子菜单,比如我在默认的ubuntu13.04上安装了一个新的内核3.14.5,那么默认的第一项是3.14.5内核,第二项是一个子菜单,第二项里面的第一项是3.14.5,第二项是3.14.5 recovery 模式,第三项是3.8.0,第四项是3.8.0(recover)</p>
+<p>那么应该修改</p>
+<pre><code><span class="regexp">/boot/g</span>rub<span class="regexp">/grub.cfg</span>
+</code></pre><p>中的</p>
+<pre><code><span class="variable">GRUB_DEFAULT=</span><span class="number">0</span>为<span class="variable">GRUB_DEFAULT=</span><span class="string">"1&gt;2"</span>
+</code></pre><p>然后:</p>
+<pre><code><span class="keyword">update</span>-grub
+</code></pre><p>重启即可</p>
+<p>写于: 2014年07月11日<br>更新于: 2015年03月24日</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>ubuntu下面的启动内核选项跟其他操作系统不一样,有个子菜单,比如我在默认的ubuntu13.04上安装了一个新的内核3.14.5,那么默认的第一项是3.14.5内核,第二项是一个子菜单,第二项里面的第一项是3.14.5,第二项是3.14.5 recovery 模式,第三]]>
+    </summary>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[linux域名解析引起登陆慢]]></title>
+    <link href="http://yoursite.com/2015/03/24/linux%E5%9F%9F%E5%90%8D%E8%A7%A3%E6%9E%90%E5%BC%95%E8%B5%B7%E7%99%BB%E9%99%86%E6%85%A2/"/>
+    <id>http://yoursite.com/2015/03/24/linux域名解析引起登陆慢/</id>
+    <published>2015-03-23T23:56:00.000Z</published>
+    <updated>2015-03-24T00:00:21.428Z</updated>
+    <content type="html"><![CDATA[<p>linux域名解析引起登陆慢的问题在于,ssh去登录这个台机器的时候,本机会去通过域名解析获取登录主机的主机名，所有一旦域名解析是无效的,需要等待较长时间</p>
+<p>解决办法一:<br>将域名解析指到127.0.0.1</p>
+<p>解决办法二:<br>修改配置文件 /etc/ssh/sshd_config </p>
+<pre><code><span class="title">UseDNS</span> <span class="built_in">no</span>
+</code></pre><p>然后重启ssh服务 </p>
+<p>写于: 2014年07月10日<br>更新于: 2015年03月24日</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>linux域名解析引起登陆慢的问题在于,ssh去登录这个台机器的时候,本机会去通过域名解析获取登录主机的主机名，所有一旦域名解析是无效的,需要等待较长时间</p>
+<p>解决办法一:<br>将域名解析指到127.0.0.1</p>
+<p>解决办法二:<br>修改配置文件 /]]>
+    </summary>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[重置ubuntu13.04 密码]]></title>
+    <link href="http://yoursite.com/2015/03/24/%E9%87%8D%E7%BD%AEubuntu13-04-%E5%AF%86%E7%A0%81/"/>
+    <id>http://yoursite.com/2015/03/24/重置ubuntu13-04-密码/</id>
+    <published>2015-03-23T23:53:43.000Z</published>
+    <updated>2015-03-23T23:55:23.981Z</updated>
+    <content type="html"><![CDATA[<p>方法如下:</p>
+<p>1) Restart Machine </p>
+<p>2) HOLD Shift Button ( You will get message “GRUB Loading“)</p>
+<p>3) Select the Kernel ( Don’t select Recovery Mode)</p>
+<p>4) Press the e key to edit the entry</p>
+<p>5) Select the line starting with the word “linux”</p>
+<a id="more"></a>
+<p>6) Append the init=/bin/bash to the end of the linux line.</p>
+<p>7) Now Press F10 to boot with provided option.</p>
+<p>Now You need to mount File System ( / ) into Read-Write Mode</p>
+<p>8) mount -o remount,rw /</p>
+<p>Now execute passwd command to Reset root password.</p>
+<p>9) For root User passwd</p>
+<p>Other User passwd <user-name></user-name></p>
+<p>写于: 2014年06月25日<br>更新于: 2015年03月24日</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>方法如下:</p>
+<p>1) Restart Machine </p>
+<p>2) HOLD Shift Button ( You will get message “GRUB Loading“)</p>
+<p>3) Select the Kernel ( Don’t select Recovery Mode)</p>
+<p>4) Press the e key to edit the entry</p>
+<p>5) Select the line starting with the word “linux”</p>]]>
+    
+    </summary>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[xenserver中linux虚拟机修改启动顺序]]></title>
+    <link href="http://yoursite.com/2015/03/24/xenserver%E4%B8%ADlinux%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%BF%AE%E6%94%B9%E5%90%AF%E5%8A%A8%E9%A1%BA%E5%BA%8F/"/>
+    <id>http://yoursite.com/2015/03/24/xenserver中linux虚拟机修改启动顺序/</id>
+    <published>2015-03-23T23:49:21.000Z</published>
+    <updated>2015-03-23T23:53:08.009Z</updated>
+    <content type="html"><![CDATA[<p>xenserver是思杰的一款类似于vmware ESXI的虚拟化平台,或者说虚拟化操作系统,上面可以安装许多虚拟机,但是当你装完linux虚拟机，你会发现一个问题,不能像windows vm那样直接通过xencenter的虚拟机属性去修改。</p>
+<p>windows的启动属性,很容易修改,</p>
+<p>而linux的启动属性,没有这些</p>
+<p>下面我们介绍一些啊，怎么可以把linux的启动属性,通过命令行解决掉。</p>
+<p>选择xenserver主机的console端,找到linux虚拟机的uuid。</p>
+<p>执行:</p>
+<pre><code>xe vm-list name-lable=<span class="function"><span class="title">xx</span><span class="params">(虚拟机名称)</span></span> 就会显示虚拟机的uuid
+</code></pre><p>然后执行: </p>
+<pre><code>xe vm-param-set uuid=<span class="function"><span class="title">xx</span><span class="params">(上面获取到的)</span></span> HVM-boot-policy=BIOS\ <span class="attribute">order</span>
+xe vm-param-set uuid=<span class="function"><span class="title">xx</span><span class="params">(上面获取到的)</span></span> HVM-boot-params:<span class="attribute">order</span>=<span class="string">"dc"</span>
+</code></pre><p>执行完,你就可以通过XenCenter打开Linux虚拟机的属性查看,和windows一样,可以修改启动顺序了</p>
+<p>写于: 2014年06月19日<br>更新于: 2015年03月24日</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>xenserver是思杰的一款类似于vmware ESXI的虚拟化平台,或者说虚拟化操作系统,上面可以安装许多虚拟机,但是当你装完linux虚拟机，你会发现一个问题,不能像windows vm那样直接通过xencenter的虚拟机属性去修改。</p>
+<p>windows的]]>
+    </summary>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[fio的配置使用]]></title>
+    <link href="http://yoursite.com/2015/03/24/fio%E7%9A%84%E9%85%8D%E7%BD%AE%E4%BD%BF%E7%94%A8/"/>
+    <id>http://yoursite.com/2015/03/24/fio的配置使用/</id>
+    <published>2015-03-23T23:45:26.000Z</published>
+    <updated>2015-03-23T23:48:03.349Z</updated>
+    <content type="html"><![CDATA[<p>将fio-2.1.10.tar.gz拷贝到linux服务器的/usr/src/下</p>
+<p>解压源码包:</p>
+<pre><code>root<span class="variable">@grandocean</span><span class="symbol">:/usr/src</span><span class="comment"># tar xvf fio-2.1.10.tar.gz </span>
+root<span class="variable">@grandocean</span><span class="symbol">:/usr/src</span><span class="comment"># cd fio-2.1.10/ </span>
+</code></pre><p>安装依赖包:</p>
+<pre><code>root<span class="variable">@grandocean</span><span class="symbol">:/usr/src/fio-</span><span class="number">2.1</span>.<span class="number">10</span><span class="comment"># apt-get install pkg-config gtk+-2.0 libaio-dev </span>
+</code></pre><p>开启gfio:</p>
+<pre><code>root<span class="variable">@grandocean</span><span class="symbol">:/usr/src/fio-</span><span class="number">2.1</span>.<span class="number">10</span><span class="comment"># ./configure --enable-gfio </span>
+</code></pre><a id="more"></a>
+<p>编译fio:</p>
+<pre><code>root<span class="variable">@grandocean</span><span class="symbol">:/usr/src/fio-</span><span class="number">2.1</span>.<span class="number">10</span><span class="comment"># make fio </span>
+</code></pre><p>编译gfio:</p>
+<pre><code>root<span class="variable">@grandocean</span><span class="symbol">:/usr/src/fio-</span><span class="number">2.1</span>.<span class="number">10</span><span class="comment"># make gfio </span>
+</code></pre><p>启动server模式:</p>
+<pre><code>root<span class="variable">@grandocean</span><span class="symbol">:/usr/src/fio-</span><span class="number">2.1</span>.<span class="number">10</span><span class="comment"># ./fio -S</span>
+</code></pre><p>写于: 2014年06月12日<br>更新于: 2015年03月24日</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>将fio-2.1.10.tar.gz拷贝到linux服务器的/usr/src/下</p>
+<p>解压源码包:</p>
+<pre><code>root<span class="variable">@grandocean</span><span class="symbol">:/usr/src</span><span class="comment"># tar xvf fio-2.1.10.tar.gz </span>
+root<span class="variable">@grandocean</span><span class="symbol">:/usr/src</span><span class="comment"># cd fio-2.1.10/ </span>
+</code></pre><p>安装依赖包:</p>
+<pre><code>root<span class="variable">@grandocean</span><span class="symbol">:/usr/src/fio-</span><span class="number">2.1</span>.<span class="number">10</span><span class="comment"># apt-get install pkg-config gtk+-2.0 libaio-dev </span>
+</code></pre><p>开启gfio:</p>
+<pre><code>root<span class="variable">@grandocean</span><span class="symbol">:/usr/src/fio-</span><span class="number">2.1</span>.<span class="number">10</span><span class="comment"># ./configure --enable-gfio </span>
+</code></pre>]]>
+    
+    </summary>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[持续运行一个命令，并且将结果输出到文本]]></title>
+    <link href="http://yoursite.com/2015/03/24/%E6%8C%81%E7%BB%AD%E8%BF%90%E8%A1%8C%E4%B8%80%E4%B8%AA%E5%91%BD%E4%BB%A4%EF%BC%8C%E5%B9%B6%E4%B8%94%E5%B0%86%E7%BB%93%E6%9E%9C%E8%BE%93%E5%87%BA%E5%88%B0%E6%96%87%E6%9C%AC/"/>
+    <id>http://yoursite.com/2015/03/24/持续运行一个命令，并且将结果输出到文本/</id>
+    <published>2015-03-23T23:43:09.000Z</published>
+    <updated>2015-03-23T23:45:05.398Z</updated>
+    <content type="html"><![CDATA[<pre><code><span class="shebang">#! /bin/sh</span>
+<span class="keyword">while</span> [ <span class="number">2</span> &gt; <span class="number">1</span> ]
+<span class="keyword">do</span>
+    <span class="built_in">echo</span> `date` &gt;&gt; recode.txt
+    df -h &gt;&gt; recode.txt
+    sleep  <span class="number">5</span>
+<span class="keyword">done</span>  
+</code></pre><p>写于: 2014年06月12日<br>更新于: 2015年03月24日</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<pre><code><span class="shebang">#! /bin/sh</span>
+<span class="keyword">while</span> [ <span class="number">2</span> &gt; <span class="numb]]>
+    </summary>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[配置xenserver本地存储]]></title>
+    <link href="http://yoursite.com/2015/03/24/%E9%85%8D%E7%BD%AExenserver%E6%9C%AC%E5%9C%B0%E5%AD%98%E5%82%A8/"/>
+    <id>http://yoursite.com/2015/03/24/配置xenserver本地存储/</id>
+    <published>2015-03-23T23:40:51.000Z</published>
+    <updated>2015-03-23T23:43:54.361Z</updated>
+    <content type="html"><![CDATA[<p>查询磁盘对应关系:</p>
+<pre><code>[<span class="literal">root</span>@xenserver-eqtwbths ~]<span class="comment"># ll /dev/disk/by-id/</span>
+total <span class="number">0</span>
+lrwxrwxrwx <span class="number">1</span> <span class="literal">root</span> <span class="literal">root</span>  <span class="number">9</span> <span class="constant">Jun</span>  <span class="number">5</span> <span class="number">13</span>:<span class="number">24</span> edd-int13_dev81 -&gt; ../../sdb
+lrwxrwxrwx <span class="number">1</span> <span class="literal">root</span> <span class="literal">root</span> <span class="number">10</span> <span class="constant">Jun</span>  <span class="number">5</span> <span class="number">14</span>:<span class="number">14</span> edd-int13_dev81-part1 -&gt; ../../sdb1
+lrwxrwxrwx <span class="number">1</span> <span class="literal">root</span> <span class="literal">root</span>  <span class="number">9</span> <span class="constant">Jun</span>  <span class="number">5</span> <span class="number">13</span>:<span class="number">24</span> edd-int13_dev82 -&gt; ../../sdc
+lrwxrwxrwx <span class="number">1</span> <span class="literal">root</span> <span class="literal">root</span>  <span class="number">9</span> <span class="constant">Jun</span>  <span class="number">5</span> <span class="number">13</span>:<span class="number">24</span> edd-int13_dev83 -&gt; ../../sdd
+lrwxrwxrwx <span class="number">1</span> <span class="literal">root</span> <span class="literal">root</span> <span class="number">10</span> <span class="constant">Jun</span>  <span class="number">5</span> <span class="number">13</span>:<span class="number">24</span> edd-int13_dev83-part1 -&gt; ../../sdd1
+lrwxrwxrwx <span class="number">1</span> <span class="literal">root</span> <span class="literal">root</span>  <span class="number">9</span> <span class="constant">Jun</span>  <span class="number">5</span> <span class="number">13</span>:<span class="number">24</span> scsi-<span class="constant">S</span>ATA_ST1000VX00<span class="number">0</span>-<span class="number">9</span>YW_S1D3PNHD -&gt; ../../sdc
+lrwxrwxrwx <span class="number">1</span> <span class="literal">root</span> <span class="literal">root</span>  <span class="number">9</span> <span class="constant">Jun</span>  <span class="number">5</span> <span class="number">13</span>:<span class="number">24</span> scsi-<span class="constant">S</span>ATA_ST1000VX00<span class="number">0</span>-<span class="number">9</span>YW_S1D3PPH8 -&gt; ../../sdd
+lrwxrwxrwx <span class="number">1</span> <span class="literal">root</span> <span class="literal">root</span> <span class="number">10</span> <span class="constant">Jun</span>  <span class="number">5</span> <span class="number">13</span>:<span class="number">24</span> scsi-<span class="constant">S</span>ATA_ST1000VX00<span class="number">0</span>-<span class="number">9</span>YW_S1D3PPH8-part1 -&gt; ../../sdd1
+lrwxrwxrwx <span class="number">1</span> <span class="literal">root</span> <span class="literal">root</span>  <span class="number">9</span> <span class="constant">Jun</span>  <span class="number">5</span> <span class="number">13</span>:<span class="number">24</span> scsi-<span class="constant">S</span>ATA_ST1000VX00<span class="number">0</span>-<span class="number">9</span>YW_S1D4AGVJ -&gt; ../../sdb
+lrwxrwxrwx <span class="number">1</span> <span class="literal">root</span> <span class="literal">root</span> <span class="number">10</span> <span class="constant">Jun</span>  <span class="number">5</span> <span class="number">14</span>:<span class="number">14</span> scsi-<span class="constant">S</span>ATA_ST1000VX00<span class="number">0</span>-<span class="number">9</span>YW_S1D4AGVJ-part1 -&gt; ../../sdb1
+lrwxrwxrwx <span class="number">1</span> <span class="literal">root</span> <span class="literal">root</span>  <span class="number">9</span> <span class="constant">Jun</span>  <span class="number">5</span> <span class="number">13</span>:<span class="number">24</span> scsi-<span class="constant">S</span>ATA_ST1000VX00<span class="number">0</span>-<span class="number">9</span>YW_S1D4AGX3 -&gt; ../../sda
+lrwxrwxrwx <span class="number">1</span> <span class="literal">root</span> <span class="literal">root</span> <span class="number">10</span> <span class="constant">Jun</span>  <span class="number">5</span> <span class="number">13</span>:<span class="number">24</span> scsi-<span class="constant">S</span>ATA_ST1000VX00<span class="number">0</span>-<span class="number">9</span>YW_S1D4AGX3-part1 -&gt; ../../sda1
+lrwxrwxrwx <span class="number">1</span> <span class="literal">root</span> <span class="literal">root</span> <span class="number">10</span> <span class="constant">Jun</span>  <span class="number">5</span> <span class="number">13</span>:<span class="number">24</span> scsi-<span class="constant">S</span>ATA_ST1000VX00<span class="number">0</span>-<span class="number">9</span>YW_S1D4AGX3-part2 -&gt; ../../sda2
+lrwxrwxrwx <span class="number">1</span> <span class="literal">root</span> <span class="literal">root</span> <span class="number">10</span> <span class="constant">Jun</span>  <span class="number">5</span> <span class="number">13</span>:<span class="number">24</span> scsi-<span class="constant">S</span>ATA_ST1000VX00<span class="number">0</span>-<span class="number">9</span>YW_S1D4AGX3-part3 -&gt; ../../sda3
+</code></pre><a id="more"></a>
+<p>准备添加sdb1作为存储</p>
+<pre><code>root@xenserver-eqtwbths ~]# xe sr-create <span class="class"><span class="keyword">type</span></span>=lvm content-<span class="class"><span class="keyword">type</span></span>=user device-config:device=/dev/disk/by-id/edd-int13_dev81-part1 name-label=<span class="string">"Local storage 2(sdb)"</span> 
+</code></pre><p>2.XS删除本地存储连接 </p>
+<p>列出pdb模块，找到对应存储的UUID </p>
+<pre><code>xe pbd-<span class="type">list</span>  
+</code></pre><p>卸载对应uuid的存储 </p>
+<pre><code>xe pbd-unplug <span class="built_in">uuid</span>=“<span class="built_in">uuid</span> of <span class="constant">P</span>BD”  
+</code></pre><p>列出存储的UUID，找到对应存储的UUID </p>
+<pre><code>xe sr-<span class="type">list</span>  
+</code></pre><p>删除本地存储连接 </p>
+<pre><code>xe sr-destroy <span class="built_in">uuid</span>=“<span class="built_in">uuid</span> of <span class="constant">S</span>R ” 
+</code></pre><p>写于: 2014年06月05日<br>更新于: 2015年03月24日</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>查询磁盘对应关系:</p>
+<pre><code>[<span class="literal">root</span>@xenserver-eqtwbths ~]<span class="comment"># ll /dev/disk/by-id/</span>
+total <span class="number">0</span>
+lrwxrwxrwx <span class="number">1</span> <span class="literal">root</span> <span class="literal">root</span>  <span class="number">9</span> <span class="constant">Jun</span>  <span class="number">5</span> <span class="number">13</span>:<span class="number">24</span> edd-int13_dev81 -&gt; ../../sdb
+lrwxrwxrwx <span class="number">1</span> <span class="literal">root</span> <span class="literal">root</span> <span class="number">10</span> <span class="constant">Jun</span>  <span class="number">5</span> <span class="number">14</span>:<span class="number">14</span> edd-int13_dev81-part1 -&gt; ../../sdb1
+lrwxrwxrwx <span class="number">1</span> <span class="literal">root</span> <span class="literal">root</span>  <span class="number">9</span> <span class="constant">Jun</span>  <span class="number">5</span> <span class="number">13</span>:<span class="number">24</span> edd-int13_dev82 -&gt; ../../sdc
+lrwxrwxrwx <span class="number">1</span> <span class="literal">root</span> <span class="literal">root</span>  <span class="number">9</span> <span class="constant">Jun</span>  <span class="number">5</span> <span class="number">13</span>:<span class="number">24</span> edd-int13_dev83 -&gt; ../../sdd
+lrwxrwxrwx <span class="number">1</span> <span class="literal">root</span> <span class="literal">root</span> <span class="number">10</span> <span class="constant">Jun</span>  <span class="number">5</span> <span class="number">13</span>:<span class="number">24</span> edd-int13_dev83-part1 -&gt; ../../sdd1
+lrwxrwxrwx <span class="number">1</span> <span class="literal">root</span> <span class="literal">root</span>  <span class="number">9</span> <span class="constant">Jun</span>  <span class="number">5</span> <span class="number">13</span>:<span class="number">24</span> scsi-<span class="constant">S</span>ATA_ST1000VX00<span class="number">0</span>-<span class="number">9</span>YW_S1D3PNHD -&gt; ../../sdc
+lrwxrwxrwx <span class="number">1</span> <span class="literal">root</span> <span class="literal">root</span>  <span class="number">9</span> <span class="constant">Jun</span>  <span class="number">5</span> <span class="number">13</span>:<span class="number">24</span> scsi-<span class="constant">S</span>ATA_ST1000VX00<span class="number">0</span>-<span class="number">9</span>YW_S1D3PPH8 -&gt; ../../sdd
+lrwxrwxrwx <span class="number">1</span> <span class="literal">root</span> <span class="literal">root</span> <span class="number">10</span> <span class="constant">Jun</span>  <span class="number">5</span> <span class="number">13</span>:<span class="number">24</span> scsi-<span class="constant">S</span>ATA_ST1000VX00<span class="number">0</span>-<span class="number">9</span>YW_S1D3PPH8-part1 -&gt; ../../sdd1
+lrwxrwxrwx <span class="number">1</span> <span class="literal">root</span> <span class="literal">root</span>  <span class="number">9</span> <span class="constant">Jun</span>  <span class="number">5</span> <span class="number">13</span>:<span class="number">24</span> scsi-<span class="constant">S</span>ATA_ST1000VX00<span class="number">0</span>-<span class="number">9</span>YW_S1D4AGVJ -&gt; ../../sdb
+lrwxrwxrwx <span class="number">1</span> <span class="literal">root</span> <span class="literal">root</span> <span class="number">10</span> <span class="constant">Jun</span>  <span class="number">5</span> <span class="number">14</span>:<span class="number">14</span> scsi-<span class="constant">S</span>ATA_ST1000VX00<span class="number">0</span>-<span class="number">9</span>YW_S1D4AGVJ-part1 -&gt; ../../sdb1
+lrwxrwxrwx <span class="number">1</span> <span class="literal">root</span> <span class="literal">root</span>  <span class="number">9</span> <span class="constant">Jun</span>  <span class="number">5</span> <span class="number">13</span>:<span class="number">24</span> scsi-<span class="constant">S</span>ATA_ST1000VX00<span class="number">0</span>-<span class="number">9</span>YW_S1D4AGX3 -&gt; ../../sda
+lrwxrwxrwx <span class="number">1</span> <span class="literal">root</span> <span class="literal">root</span> <span class="number">10</span> <span class="constant">Jun</span>  <span class="number">5</span> <span class="number">13</span>:<span class="number">24</span> scsi-<span class="constant">S</span>ATA_ST1000VX00<span class="number">0</span>-<span class="number">9</span>YW_S1D4AGX3-part1 -&gt; ../../sda1
+lrwxrwxrwx <span class="number">1</span> <span class="literal">root</span> <span class="literal">root</span> <span class="number">10</span> <span class="constant">Jun</span>  <span class="number">5</span> <span class="number">13</span>:<span class="number">24</span> scsi-<span class="constant">S</span>ATA_ST1000VX00<span class="number">0</span>-<span class="number">9</span>YW_S1D4AGX3-part2 -&gt; ../../sda2
+lrwxrwxrwx <span class="number">1</span> <span class="literal">root</span> <span class="literal">root</span> <span class="number">10</span> <span class="constant">Jun</span>  <span class="number">5</span> <span class="number">13</span>:<span class="number">24</span> scsi-<span class="constant">S</span>ATA_ST1000VX00<span class="number">0</span>-<span class="number">9</span>YW_S1D4AGX3-part3 -&gt; ../../sda3
+</code></pre>]]>
+    
+    </summary>
+    
+  </entry>
+  
+  <entry>
     <title><![CDATA[ubuntu无法关机]]></title>
     <link href="http://yoursite.com/2015/03/23/ubuntu%E6%97%A0%E6%B3%95%E5%85%B3%E6%9C%BA/"/>
     <id>http://yoursite.com/2015/03/23/ubuntu无法关机/</id>
     <published>2015-03-23T14:12:55.000Z</published>
-    <updated>2015-03-23T14:13:44.312Z</updated>
+    <updated>2015-03-23T23:44:15.109Z</updated>
     <content type="html"><![CDATA[<p>在/etc/default/halt 增加下面</p>
 <pre><code><span class="attribute">INIT_HALT </span>=<span class="string"> POWEROFF</span>
+</code></pre><a id="more"></a>
+<hr>
+<p>另一种方法:</p>
+<p>I have the same problem and found a solution which worked out for me.</p>
+<p>Type in terminal:</p>
+<pre><code>sudo -i (<span class="built_in">to</span> <span class="built_in">get</span> <span class="operator">a</span> root <span class="built_in">shell</span>, sudo gedit is <span class="operator">not</span> recommended)
+gedit /etc/default/grub
+Find <span class="operator">the</span> <span class="built_in">line</span>: GRUB_CMDLINE_LINUX_DEFAULT=<span class="string">"quiet splash"</span>
+Change this <span class="built_in">to</span>: GRUB_CMDLINE_LINUX_DEFAULT=<span class="string">"quiet splash acpi=force"</span>
+Save <span class="operator">the</span> <span class="built_in">file</span> <span class="operator">and</span> <span class="built_in">close</span> <span class="operator">the</span> <span class="built_in">file</span>.
+Finally, <span class="operator">in</span> terminal: update-grub
+exit (<span class="built_in">to</span> <span class="function"><span class="keyword">end</span> <span class="title">the</span> <span class="title">root</span> <span class="title">shell</span>)</span>
 </code></pre><p>写于: 2014年05月07日<br>更新于: 2015年03月23日</p>
 ]]></content>
     <summary type="html">
     <![CDATA[<p>在/etc/default/halt 增加下面</p>
 <pre><code><span class="attribute">INIT_HALT </span>=<span class="string"> POWEROFF</span>
-</code></pre><p>写于]]>
+</code></pre>]]>
+    
     </summary>
     
   </entry>
@@ -346,416 +692,6 @@ cat /root/.ssh/id_rsa.pub &gt;&gt; /root/.ssh/authorized_keys
 ]]></content>
     <summary type="html">
     <![CDATA[<p>默认执行ssh-keygen的时候会需要连续输入enter,脚本里面不能有交互,所以去掉enter的操作,脚本如下,脚本执行完成以后的效果是自己对自己免登陆,需要免登陆其他服务器就把自己本机的id_rsa.pub拷贝到其他机器的authorized_keys当中就可以了</]]>
-    </summary>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[centos做时间同步服务器]]></title>
-    <link href="http://yoursite.com/2015/03/22/centos%E5%81%9A%E6%97%B6%E9%97%B4%E5%90%8C%E6%AD%A5%E6%9C%8D%E5%8A%A1%E5%99%A8/"/>
-    <id>http://yoursite.com/2015/03/22/centos做时间同步服务器/</id>
-    <published>2015-03-22T15:02:10.000Z</published>
-    <updated>2015-03-22T15:05:16.600Z</updated>
-    <content type="html"><![CDATA[<p>修改同步服务器的配置文件/etc/ntp.conf ,删除所有的内容,添加</p>
-<pre><code><span class="title">restrict</span> default nomodify
-server  <span class="number">127.127.1.0</span>     <span class="comment"># local clock</span>
-fudge   <span class="number">127.127.1.0</span> stratum <span class="number">8</span>
-</code></pre><p>重启ntpd</p>
-<pre><code><span class="regexp">/etc/i</span>nit.d<span class="regexp">/ntpd restart</span>
-</code></pre><p>等待ntp服务器自身同步完成</p>
-<pre><code><span class="title">watch</span> ntpq -p
-</code></pre><a id="more"></a>
-<p><img src="http://7xi6lo.com1.z0.glb.clouddn.com/centosntp1.jpg" alt=""></p>
-<p>观察这个reach需要超过17<br>否则其他机器ntpdate同步的时候会报错</p>
-<p><img src="http://7xi6lo.com1.z0.glb.clouddn.com/centosntp2.jpg" alt=""></p>
-<p>写于: 2013年08月06日<br>更新于: 2015年03月22日</p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>修改同步服务器的配置文件/etc/ntp.conf ,删除所有的内容,添加</p>
-<pre><code><span class="title">restrict</span> default nomodify
-server  <span class="number">127.127.1.0</span>     <span class="comment"># local clock</span>
-fudge   <span class="number">127.127.1.0</span> stratum <span class="number">8</span>
-</code></pre><p>重启ntpd</p>
-<pre><code><span class="regexp">/etc/i</span>nit.d<span class="regexp">/ntpd restart</span>
-</code></pre><p>等待ntp服务器自身同步完成</p>
-<pre><code><span class="title">watch</span> ntpq -p
-</code></pre>]]>
-    
-    </summary>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[centos下多网卡做bond脚本]]></title>
-    <link href="http://yoursite.com/2015/03/22/centos%E4%B8%8B%E5%A4%9A%E7%BD%91%E5%8D%A1%E5%81%9Abond%E8%84%9A%E6%9C%AC/"/>
-    <id>http://yoursite.com/2015/03/22/centos下多网卡做bond脚本/</id>
-    <published>2015-03-22T14:54:52.000Z</published>
-    <updated>2015-03-22T14:58:50.487Z</updated>
-    <content type="html"><![CDATA[<p>多网卡或者单网卡形式下的网卡bonding</p>
-<pre><code><span class="shebang">#! /bin/sh</span>
-<span class="comment">#获取当前网卡数</span>
-ethnum=`lspci | grep Ethernet | wc <span class="operator">-l</span>`
-<span class="built_in">echo</span> <span class="variable">$ethnum</span>
-<span class="comment">#如果网卡数小于等于1则什么都不做</span>
-<span class="keyword">if</span> [ <span class="variable">$ethnum</span> -le <span class="number">1</span> ]
-        <span class="keyword">then</span>
-        <span class="built_in">echo</span> <span class="string">"do nothing!"</span>
-<span class="keyword">fi</span>
-<span class="comment">#如果网卡数大于等于2则</span>
-<span class="keyword">if</span> [ <span class="variable">$ethnum</span> -ge <span class="number">2</span> ]
-        <span class="keyword">then</span>
-</code></pre><a id="more"></a>
-<pre><code><span class="comment">#-------  添加一个bond0的网卡</span>
-    echo <span class="string">"DEVICE=bond0"</span> &gt; <span class="regexp">/etc/sysconfig</span><span class="regexp">/network-scripts/ifcfg</span>-bond<span class="number">0</span>
-    echo <span class="string">"ONBOOT=yes"</span> <span class="prompt">&gt;&gt; </span>/etc/sysconfig/network-scripts/ifcfg-bond<span class="number">0</span>
-    echo <span class="string">"IPADDR=192.168.3.104"</span> <span class="prompt">&gt;&gt; </span>/etc/sysconfig/network-scripts/ifcfg-bond<span class="number">0</span>
-    echo <span class="string">"NETMASK=255.255.0.0"</span> <span class="prompt">&gt;&gt; </span>/etc/sysconfig/network-scripts/ifcfg-bond<span class="number">0</span>
-    echo <span class="string">"GATEWAY=192.168.1.1"</span> <span class="prompt">&gt;&gt; </span>/etc/sysconfig/network-scripts/ifcfg-bond<span class="number">0</span>
-    echo <span class="string">"BOOTPROTO=static"</span> <span class="prompt">&gt;&gt; </span>/etc/sysconfig/network-scripts/ifcfg-bond<span class="number">0</span>
-    echo <span class="string">"USERCTL=no"</span> <span class="prompt">&gt;&gt; </span>/etc/sysconfig/network-scripts/ifcfg-bond<span class="number">0</span>
-<span class="comment">#--------</span>
-    echo <span class="string">"ifenslave bond0"</span> <span class="prompt">&gt;&gt; </span>/etc/rc.local
-<span class="comment">#--------写其他网卡的配置文件</span>
-    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="variable">$(</span>seq <span class="variable">$ethnum</span>);
-    <span class="keyword">do</span>
-num=<span class="string">`expr $i - 1`</span>
-     echo <span class="string">"BOOTPROTO=none"</span> &gt;  <span class="regexp">/etc/sysconfig</span><span class="regexp">/network-scripts/ifcfg</span>-eth<span class="variable">$num</span>
-     echo <span class="string">"DEVICE=eth$num"</span> <span class="prompt">&gt;&gt;  </span>/etc/sysconfig/network-scripts/ifcfg-eth<span class="variable">$num</span>
-     echo <span class="string">"ONBOOT=yes"</span> <span class="prompt">&gt;&gt;  </span>/etc/sysconfig/network-scripts/ifcfg-eth<span class="variable">$num</span>
-     echo <span class="string">"MASTER=bond0"</span> <span class="prompt">&gt;&gt;  </span>/etc/sysconfig/network-scripts/ifcfg-eth<span class="variable">$num</span>
-     echo <span class="string">"USERCTL=no"</span> <span class="prompt">&gt;&gt;  </span>/etc/sysconfig/network-scripts/ifcfg-eth<span class="variable">$num</span>
-     echo <span class="string">"SLAVE=yes"</span> <span class="prompt">&gt;&gt;  </span>/etc/sysconfig/network-scripts/ifcfg-eth<span class="variable">$num</span>
-     sed -i <span class="string">'s/ifenslave.*/&amp; eth'</span><span class="string">"$num"</span><span class="string">'/g'</span> /etc/rc.local
-    done;
-echo <span class="string">"alias bond0 bonding"</span> &gt; <span class="regexp">/etc/modprobe</span>.d/modprobe.conf
-echo <span class="string">"options bond0 miimon=100 mode=balance-rr"</span> <span class="prompt">&gt;&gt; </span>/etc/modprobe.d/modprobe.conf
-        modprobe bonding
-    /etc/init.d/network   restart
-fi
-</code></pre><p>写于: 2013年08月06日<br>更新于: 2015年03月22日</p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>多网卡或者单网卡形式下的网卡bonding</p>
-<pre><code><span class="shebang">#! /bin/sh</span>
-<span class="comment">#获取当前网卡数</span>
-ethnum=`lspci | grep Ethernet | wc <span class="operator">-l</span>`
-<span class="built_in">echo</span> <span class="variable">$ethnum</span>
-<span class="comment">#如果网卡数小于等于1则什么都不做</span>
-<span class="keyword">if</span> [ <span class="variable">$ethnum</span> -le <span class="number">1</span> ]
-        <span class="keyword">then</span>
-        <span class="built_in">echo</span> <span class="string">"do nothing!"</span>
-<span class="keyword">fi</span>
-<span class="comment">#如果网卡数大于等于2则</span>
-<span class="keyword">if</span> [ <span class="variable">$ethnum</span> -ge <span class="number">2</span> ]
-        <span class="keyword">then</span>
-</code></pre>]]>
-    
-    </summary>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[ubuntu12.10安装sun java jdk]]></title>
-    <link href="http://yoursite.com/2015/03/22/ubuntu12-10%E5%AE%89%E8%A3%85sun-java-jdk/"/>
-    <id>http://yoursite.com/2015/03/22/ubuntu12-10安装sun-java-jdk/</id>
-    <published>2015-03-22T14:52:27.000Z</published>
-    <updated>2015-03-22T14:54:24.808Z</updated>
-    <content type="html"><![CDATA[<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">add-apt-repository ppa:webupd8team/java  </span><br><span class="line">apt-get update  </span><br><span class="line">apt-get install oracle-java6-installer</span><br></pre></td></tr></table></figure>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">root@kangear:/etc/apt<span class="comment"># java -version</span></span><br><span class="line">java version <span class="string">"1.6.0_41"</span></span><br><span class="line">Java(TM) SE Runtime Environment (build <span class="number">1.6</span>.<span class="number">0</span>_41-b02)</span><br><span class="line">Java HotSpot(TM) Server VM (build <span class="number">20.14</span>-b01, mixed mode)</span><br></pre></td></tr></table></figure>
-<p>说明:sun-java6-jre,sun-java6-plugin,sun-java6-fonts都同样的由的软件包 oracle-java6-installer 提供的虚拟软件包所以安装 oracle-java6-installer就可以了</p>
-<p>写于: 2013年08月03日<br>更新于: 2015年03月22日</p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class=]]>
-    </summary>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[ Bad magic number ImportError in python]]></title>
-    <link href="http://yoursite.com/2015/03/22/Bad-magic-number-ImportError-in-python/"/>
-    <id>http://yoursite.com/2015/03/22/Bad-magic-number-ImportError-in-python/</id>
-    <published>2015-03-22T14:50:44.000Z</published>
-    <updated>2015-03-22T14:52:07.719Z</updated>
-    <content type="html"><![CDATA[<p>是源码编译里面版本不对，删除掉源码pyc然后重新编译就可以了</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">find .-name <span class="string">'*.pyc'</span>-delete</span><br><span class="line">python -m compileall .</span><br></pre></td></tr></table></figure>
-<p>写于: 2013年08月01日<br>更新于: 2015年03月22日</p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>是源码编译里面版本不对，删除掉源码pyc然后重新编译就可以了</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span]]>
-    </summary>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[修改centos6启动动画（plymouth方式）]]></title>
-    <link href="http://yoursite.com/2015/03/22/%E4%BF%AE%E6%94%B9centos6%E5%90%AF%E5%8A%A8%E5%8A%A8%E7%94%BB%EF%BC%88plymouth%E6%96%B9%E5%BC%8F%EF%BC%89/"/>
-    <id>http://yoursite.com/2015/03/22/修改centos6启动动画（plymouth方式）/</id>
-    <published>2015-03-22T14:38:36.000Z</published>
-    <updated>2015-03-22T14:45:26.306Z</updated>
-    <content type="html"><![CDATA[<p>centos6默认的启动动画是一个白蓝色的进度条,背景全黑色,现在需要对centos的启动动画进行定制<br>在查询了一些资料以后,发现有一个软件是可以对启动动画进行定制的，名字叫plymouth<br>这<br>个在centos6操作系统安装完成以后默认就带了的,主要涉及的是如下的几个操作<br>列出当前所有主题:</p>
-<pre><code>plymouth-<span class="built_in">set</span>-<span class="keyword">default</span>-theme --<span class="built_in">list</span>  
-</code></pre><p>主题存放目录:<br>/usr/share/plymouth/themes/</p>
-<p>不重启查看主题运行效果 Ctrl + Alt + F2(一定不要在F1操作)</p>
-<pre><code>plymouthd
-plymouth <span class="comment">--show-splash</span>
-plymouth <span class="comment">--quit</span>
-</code></pre><a id="more"></a>
-<p>如果想调试:</p>
-<pre><code><span class="comment">plymouthd</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">debug</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">debug</span><span class="literal">-</span><span class="comment">file=/tmp/plydebug</span>
-<span class="comment">plymouth</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">show</span><span class="literal">-</span><span class="comment">splash</span>
-<span class="comment">plymouth</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">quit</span>
-</code></pre><p>如果在虚拟机下进行测试<br>需要修改grub里面的vga参数为785</p>
-<p><img src="http://7xi6lo.com1.z0.glb.clouddn.com/centos动画.jpg" alt=""></p>
-<p>其他环境无需设置<br>测试通过以后,进行设置:</p>
-<pre><code><span class="title">plymouth</span>-set-<span class="default"><span class="keyword">default</span>-theme details        <span class="container">(后面的<span class="title">detail</span>为设置的主题)</span></span>
-<span class="title">plymouth</span>-set-<span class="default"><span class="keyword">default</span>-theme -<span class="type">R</span> details     <span class="container">(本操作会将启动画面加入到内核当中,时间比较久,可以<span class="title">ps</span> -<span class="title">ef</span> 查看后台操作)</span></span>
-</code></pre><p>重启电脑就可以看到效果了<br>下面是在github上找到的一个源码包,可以使用</p>
-<p>链接:<a href="http://pan.baidu.com/s/1kTMMo55" target="_blank" rel="external">http://pan.baidu.com/s/1kTMMo55</a> 密码:7doc</p>
-<p>centos下使用自编译主题script形式需要安装依赖包</p>
-<pre><code>plymouth-graphics-libs-<span class="number">0.8</span>.<span class="number">3</span>-<span class="number">27</span><span class="class">.el6</span><span class="class">.centos</span><span class="class">.x86_64</span><span class="class">.rpm</span>
-plymouth-plugin-script-<span class="number">0.8</span>.<span class="number">3</span>-<span class="number">27</span><span class="class">.el6</span><span class="class">.centos</span><span class="class">.x86_64</span><span class="class">.rpm</span>
-</code></pre><p>安装完成后,将wheat解压后目录放/usr/share/plymouth/themes/下到就可以设置这个主题了</p>
-<p>写于: 2013年07月30日<br>更新于: 2015年03月22日</p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>centos6默认的启动动画是一个白蓝色的进度条,背景全黑色,现在需要对centos的启动动画进行定制<br>在查询了一些资料以后,发现有一个软件是可以对启动动画进行定制的，名字叫plymouth<br>这<br>个在centos6操作系统安装完成以后默认就带了的,主要涉及的是如下的几个操作<br>列出当前所有主题:</p>
-<pre><code>plymouth-<span class="built_in">set</span>-<span class="keyword">default</span>-theme --<span class="built_in">list</span>  
-</code></pre><p>主题存放目录:<br>/usr/share/plymouth/themes/</p>
-<p>不重启查看主题运行效果 Ctrl + Alt + F2(一定不要在F1操作)</p>
-<pre><code>plymouthd
-plymouth <span class="comment">--show-splash</span>
-plymouth <span class="comment">--quit</span>
-</code></pre>]]>
-    
-    </summary>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[用grub4dos来实现移动硬盘安装linux系统(图重弄)]]></title>
-    <link href="http://yoursite.com/2015/03/22/%E7%94%A8grub4dos%E6%9D%A5%E5%AE%9E%E7%8E%B0%E7%A7%BB%E5%8A%A8%E7%A1%AC%E7%9B%98%E5%AE%89%E8%A3%85linux%E7%B3%BB%E7%BB%9F/"/>
-    <id>http://yoursite.com/2015/03/22/用grub4dos来实现移动硬盘安装linux系统/</id>
-    <published>2015-03-22T14:27:07.000Z</published>
-    <updated>2015-03-22T15:01:14.250Z</updated>
-    <content type="html"><![CDATA[<p>网上看了一些grub4dos相关教程,虽然相关资料很多,但是一步步做下来还是会出现一些问题,并且有些地方也没有说清楚,现在写下来供自己以后查看</p>
-<p>由于使用utraliso软件做centos6.4系统盘的时候,由于centos系统盘超过4G,而utraliso软件做系统盘的时候默认文件系统ext格式,而ext格式不支持超过4G的文件,所以就无法启动,所以研究了下用grub4dos这个软件来实现移动硬盘安装linux系统</p>
-<p>首先需要准备两个文件<br>grub4dos-0.4.4.zip<br>grubinst-1.1-bin-w32-2008-01-01.zip</p>
-<p>解压grub4dos-0.4.4.zip</p>
-<p><img src="http://fmn.rrimg.com/fmn061/20130605/2150/b_large_LQAI_39a3000004ac1262.jpg" alt=""></p>
-<p>&lt;这里需要注意下，如果用移动硬盘想实现的是只装一种系统话，那么就不需要对硬盘分区，如果想装多个系统的话就可以对移动硬盘分几个区，每个分区可以放一种操作系统&gt;</p>
-<p>在win7的开始菜单中搜索 计算机管理&gt;磁盘管理<br>然后选择你的移动硬盘,然后将第一个盘符标记为活动分区,这样移动硬盘这个区才能被识别,从而作为启动分区</p>
-<p><img src="http://fmn.rrimg.com/fmn063/20130605/2200/b_large_VXDK_39a3000004d91262.jpg" alt=""></p>
-<p>解压grubinst-1.1-bin-w32-2008-01-01.zip 运行<br>grubinst_gui.exe<br>磁盘选择你的移动硬盘<br>然后点分区列表右边的刷新<br>然后选择整个磁盘(MBR),然后点击安装</p>
-<p><img src="http://fmn.rrfmn.com/fmn058/20130605/2215/b_large_1Zyp_5715000001f51263.jpg" alt=""></p>
-<p>将刚刚解压得到的grub4dos-0.4.4这个目录下的chinese目录下的三个文件拷贝到你准备用来做安装系统移动硬盘,也就是刚刚设置为活动主分区那个盘还有grub4dos-0.4.4目录下menu.lst也拷贝到移动硬盘活动分区那个盘的根目录下，这个移动硬盘目录下最后看到的文件如下截图</p>
-<p><img src="http://fmn.rrimg.com/fmn065/20130605/2210/b_large_qb9c_30620000080c1263.jpg" alt=""></p>
-<p>如果这个时候你移动硬盘没分区的话，就将你的系统盘的iso全部解压到你的这个目录,系统iso解压可以用360压缩工具<br>然后修改menu.lst  ,如果比较熟悉,可以进行自定义,如果不熟悉,这里直接在下面加几行:</p>
-<pre><code>title centos6.<span class="number">4</span> install
-<span class="function"><span class="title">kernel</span> <span class="params">(hd0,<span class="number">0</span>)</span>/<span class="title">isolinux</span>/<span class="title">vmlinuz</span>
-<span class="title">initrd</span> <span class="params">(hd0,<span class="number">0</span>)</span>/<span class="title">isolinux</span>/<span class="title">initrd</span>.<span class="title">img</span></span>
-</code></pre><p>上面的title后面写的字段会在系统安装的时候显示，然后安装的时候选择这个centos6.4 install就行,其中(hd0,0)的前面的0是代表第一个盘,也就是你的移动盘,后面的0代表分区,代表第一个分区,如果你把系统iso解压到移动硬盘的第二个分区,那么就把这个改为1<br>isolinux/vmlinuz 就是你解压的iso里面的文件<br>到这里,系统盘已经做好了,在电脑的启动项里面选择centos6.4 install 就可以安装这个linux系统了</p>
-<p>此方法对于centos6.4还是有问题 所以需要多做些工作<br>思路是把第二个分区做成linux的ext2格式就能放4G以上的iso,但是win7又无法识别ext2的盘符,所以需要做两步,第一步将第二分区格式化为ext2<br>使用这个工具:<br>ParagonPartitionManager.rar<br>使用这个工具把盘格式化为ext2<br>使用这个工具是win7下能查看ext2格式的盘符<br>Ext2Fsd-0.51.zip</p>
-<p><img src="http://fmn.xnpic.com/fmn057/20130606/2145/b_large_jgCI_5038000002631263.jpg" alt=""></p>
-<p><img src="http://fmn.rrimg.com/fmn060/20130606/2145/b_large_uSUd_588c000003ba1262.jpg" alt=""></p>
-<p><img src="http://fmn.rrimg.com/fmn061/20130606/2155/b_large_LzJv_2a51000012851262.jpg" alt=""></p>
-<p>写于: 2013年06月05日<br>更新于: 2015年03月22日</p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>网上看了一些grub4dos相关教程,虽然相关资料很多,但是一步步做下来还是会出现一些问题,并且有些地方也没有说清楚,现在写下来供自己以后查看</p>
-<p>由于使用utraliso软件做centos6.4系统盘的时候,由于centos系统盘超过4G,而utraliso软件]]>
-    </summary>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[手机中没有该应用所需的共享库（解决手机无法安装Google plus）]]></title>
-    <link href="http://yoursite.com/2015/03/22/%E6%89%8B%E6%9C%BA%E4%B8%AD%E6%B2%A1%E6%9C%89%E8%AF%A5%E5%BA%94%E7%94%A8%E6%89%80%E9%9C%80%E7%9A%84%E5%85%B1%E4%BA%AB%E5%BA%93%EF%BC%88%E8%A7%A3%E5%86%B3%E6%89%8B%E6%9C%BA%E6%97%A0%E6%B3%95%E5%AE%89%E8%A3%85Google-plus%EF%BC%89/"/>
-    <id>http://yoursite.com/2015/03/22/手机中没有该应用所需的共享库（解决手机无法安装Google-plus）/</id>
-    <published>2015-03-22T14:24:09.000Z</published>
-    <updated>2015-03-22T14:26:13.955Z</updated>
-    <content type="html"><![CDATA[<p>国行安卓手机阉割了一些google服务，需要加这三个文件:</p>
-<p>com.google.android.maps.jar<br>com.google.android.maps.xml<br>NetworkLocation.apk</p>
-<p>你只需将上述文件放到手机中的相应位置,重启手机就好了。<br>方法:<br>首先机器要ROOT,然后用RE管理器，把要复制的文件复制到相应的位置,修改三个文件的权限,就是竖着3行,左边全选,中间最上面选上,右边全空。</p>
-<pre><code>com<span class="class">.google</span><span class="class">.android</span><span class="class">.maps</span><span class="class">.jar</span>   安装到  /system/framework
-google<span class="class">.android</span><span class="class">.maps</span><span class="class">.xml</span>       安装到  /system/etc/permissions
-NetworkLocation<span class="class">.apk</span>           安装到  /data/app_s        
-</code></pre><p>app_s目录需要自己建立</p>
-<p>上述三个文件在下面这个地址可以下载到:<br><a href="http://vdisk.weibo.com/s/BFtBO" target="_blank" rel="external">http://vdisk.weibo.com/s/BFtBO</a> </p>
-<p>写于: 2013年05月16日<br>更新于: 2015年03月22日</p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>国行安卓手机阉割了一些google服务，需要加这三个文件:</p>
-<p>com.google.android.maps.jar<br>com.google.android.maps.xml<br>NetworkLocation.apk</p>
-<p>你只需将上述文件放到手]]>
-    </summary>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[如何配置谷歌框架与市场（解决google play 闪退）]]></title>
-    <link href="http://yoursite.com/2015/03/22/%E5%A6%82%E4%BD%95%E9%85%8D%E7%BD%AE%E8%B0%B7%E6%AD%8C%E6%A1%86%E6%9E%B6%E4%B8%8E%E5%B8%82%E5%9C%BA%EF%BC%88%E8%A7%A3%E5%86%B3google-play-%E9%97%AA%E9%80%80%EF%BC%89/"/>
-    <id>http://yoursite.com/2015/03/22/如何配置谷歌框架与市场（解决google-play-闪退）/</id>
-    <published>2015-03-22T14:18:20.000Z</published>
-    <updated>2015-03-22T14:23:24.093Z</updated>
-    <content type="html"><![CDATA[<p>没有谷歌电子市场。好多游戏都不能玩。像狂野之血,超凡蜘蛛侠。。。等等大型游戏。</p>
-<p>大家都知道国产机的ROM包把谷歌的GMS和谐掉了,所以直接装谷歌电子市场肯定会出现闪退,这样就又牵扯到另一个基础服务——谷歌框架,估计想玩大型游戏的机友对这个词都不陌生,但是可能大家按照许多热心机友说的最终还是没能把这个电子市场搞定,接下来大家按这个步骤,可以成功,亲测。</p>
-<p>步骤如下:<br>第一步:需要有root权限和RE管理器</p>
-<p>第二步:下载GoogleServiesFramework.apk(谷歌<br>服务框架,必需),将GoogleServiesFramework.apk复制到文件夹/system/app 下,然后点击安装,但是貌似不点安装也行,但是权限一定得改,然后修改权限——第一行,第一个、第二个打勾,第二行,第一个打勾,第三行,第一个打勾。(这个权限一定要搞好,有可能大家都是少了这步) </p>
-<p>第三步:下载谷歌电子市场，无论下载过来的电子市场文件名叫什么,都把它重命名为Vending.apk,像GoogleServiesFramework.apk一样移动到文件夹 /system/app 下,安装(这个必须安装)。然后修改权限,与GoogleServiesFramework.apk一样.</p>
-<p>第四步:重启手机<br>ok,联网,打开谷歌电子市场,就可以登录了。</p>
-<p>写于: 2013年05月16日<br>更新于: 2015年03月22日</p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>没有谷歌电子市场。好多游戏都不能玩。像狂野之血,超凡蜘蛛侠。。。等等大型游戏。</p>
-<p>大家都知道国产机的ROM包把谷歌的GMS和谐掉了,所以直接装谷歌电子市场肯定会出现闪退,这样就又牵扯到另一个基础服务——谷歌框架,估计想玩大型游戏的机友对这个词都不陌生,但是可能大]]>
-    </summary>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[samba配置独立访问配置方法]]></title>
-    <link href="http://yoursite.com/2015/03/22/samba%E9%85%8D%E7%BD%AE%E7%8B%AC%E7%AB%8B%E8%AE%BF%E9%97%AE%E9%85%8D%E7%BD%AE%E6%96%B9%E6%B3%95/"/>
-    <id>http://yoursite.com/2015/03/22/samba配置独立访问配置方法/</id>
-    <published>2015-03-22T14:07:59.000Z</published>
-    <updated>2015-03-22T14:17:38.328Z</updated>
-    <content type="html"><![CDATA[<h3 id="配置目的:">配置目的:</h3><p>为了给指定用户一个独立访问目录</p>
-<p>首先在samba服务器安装samba软件</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ apt-get install samba</span><br></pre></td></tr></table></figure>
-<p>然后配置独立访问用户<br>配置samba用户前提需要是linux的用户,所以要创建linux用户</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ useradd    zp</span><br><span class="line">$ passwd     zp</span><br></pre></td></tr></table></figure>
-<p>用户创建完了以后<br>需要创建samba用户</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ smbpasswd <span class="operator">-a</span>  zp</span><br></pre></td></tr></table></figure>
-<p>然后输入密码,记住密码,这个是客户端访问samba的密码<br><a id="more"></a><br>在服务器的/etc/samba/smb.conf文件的</p>
-<p>[global]字段下面添加:<br>    client lanman auth = yes<br>    security = user</p>
-<p>在文件末尾添加:</p>
-<pre><code>[hj]
-    <span class="variable">path=</span>/hj
-    <span class="variable">comment=</span>zhangpengdemulu
-    <span class="variable">writeable=</span>yes
-    valid <span class="variable">users =</span> @zp
-</code></pre><p>修改配置文件以后,重启samba服务<br>注意 /hj 目录需要有读写执行权限,在samba服务器执行:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ chmod <span class="number">777</span> /hj</span><br></pre></td></tr></table></figure>
-<h4 id="客户端访问方法">客户端访问方法</h4><p>linux下两种方式<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ smbmount <span class="number">192.168</span>.<span class="number">0.194</span>:/hj /zp/<span class="built_in">test</span> -o username=zp</span><br><span class="line">$ mount -t cifs //<span class="number">192.168</span>.<span class="number">0.194</span>/hj /zp/<span class="built_in">test</span> -o username=zp</span><br></pre></td></tr></table></figure></p>
-<p>windows直接挂载</p>
-<h3 id="附加命令:">附加命令:</h3><p>查看samba的用户</p>
-<pre><code><span class="title">sudo</span> pdbedit -L
-</code></pre><p>增加一个用户到samba</p>
-<pre><code>sudo pdbedit -<span class="tag">a</span> username
-</code></pre><p>从samba账户中删除一个用户</p>
-<pre><code><span class="title">sudo</span> pdbedit -x username
-</code></pre><p>显示samba账户信息</p>
-<pre><code><span class="title">sudo</span> pdbedit -r username
-</code></pre><p>测试samba账户是否正常</p>
-<pre><code>smbclient -<span class="keyword">L</span> 192.168.1.1 -<span class="keyword">U</span> username -<span class="keyword">d</span> 3
-</code></pre><p>写于: 2013年04月17日<br>更新于: 2015年03月22日</p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<h3 id="配置目的:">配置目的:</h3><p>为了给指定用户一个独立访问目录</p>
-<p>首先在samba服务器安装samba软件</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ apt-get install samba</span><br></pre></td></tr></table></figure>
-<p>然后配置独立访问用户<br>配置samba用户前提需要是linux的用户,所以要创建linux用户</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ useradd    zp</span><br><span class="line">$ passwd     zp</span><br></pre></td></tr></table></figure>
-<p>用户创建完了以后<br>需要创建samba用户</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ smbpasswd <span class="operator">-a</span>  zp</span><br></pre></td></tr></table></figure>
-<p>然后输入密码,记住密码,这个是客户端访问samba的密码<br>]]>
-    
-    </summary>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[Ubuntu12.10 设置默认命令行启动]]></title>
-    <link href="http://yoursite.com/2015/03/22/Ubuntu12-10-%E8%AE%BE%E7%BD%AE%E9%BB%98%E8%AE%A4%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%90%AF%E5%8A%A8/"/>
-    <id>http://yoursite.com/2015/03/22/Ubuntu12-10-设置默认命令行启动/</id>
-    <published>2015-03-22T14:00:27.000Z</published>
-    <updated>2015-03-22T14:07:11.768Z</updated>
-    <content type="html"><![CDATA[<p>在虚拟机当中安装ubuntu12.10的时候默认把图形界面给装上了,由于不需要使用桌面,所以为了省去每次进入到图形界面然后再用ctrl+F1的方式切换到命令行的步骤,希望能够默认进入的是命令行模式,那么设置的方法如下:<br>终端执行:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/default/grub</span><br></pre></td></tr></table></figure></p>
-<p>将 GRUB_CMDLINE_LINUX_DEFAULT=”quiet splash” 改为:<br>GRUB_CMDLINE_LINUX_DEFAULT=”quiet splash text”</p>
-<p>然后执行:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">update-grub</span><br></pre></td></tr></table></figure></p>
-<a id="more"></a>
-<p>重启ubuntu,这时默认就从命令行模式启动了。</p>
-<p><img src="http://7xi6lo.com1.z0.glb.clouddn.com/ubuntu命令行.jpg" alt=""></p>
-<p>写于: 2013年03月09日<br>更新于:2015年03月22日</p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>在虚拟机当中安装ubuntu12.10的时候默认把图形界面给装上了,由于不需要使用桌面,所以为了省去每次进入到图形界面然后再用ctrl+F1的方式切换到命令行的步骤,希望能够默认进入的是命令行模式,那么设置的方法如下:<br>终端执行:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/default/grub</span><br></pre></td></tr></table></figure></p>
-<p>将 GRUB_CMDLINE_LINUX_DEFAULT=”quiet splash” 改为:<br>GRUB_CMDLINE_LINUX_DEFAULT=”quiet splash text”</p>
-<p>然后执行:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">update-grub</span><br></pre></td></tr></table></figure></p>]]>
-    
-    </summary>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[Ubuntu 12.10设置root用户登录图形界面]]></title>
-    <link href="http://yoursite.com/2015/03/22/Ubuntu-12-10%E8%AE%BE%E7%BD%AEroot%E7%94%A8%E6%88%B7%E7%99%BB%E5%BD%95%E5%9B%BE%E5%BD%A2%E7%95%8C%E9%9D%A2/"/>
-    <id>http://yoursite.com/2015/03/22/Ubuntu-12-10设置root用户登录图形界面/</id>
-    <published>2015-03-22T13:53:06.000Z</published>
-    <updated>2015-03-22T13:56:54.463Z</updated>
-    <content type="html"><![CDATA[<p>Ubuntu 12.04默认是不允许root登录的,在登录窗口只能看到普通用户和访客登录。以普通身份登陆Ubuntu后我们需要做一些修改,普通用户登录后,修改系统配置文件需要切换到超级用户模式,在终端窗口里面输入: </p>
-<pre><code>sudo  <span class="operator">-s</span>
-</code></pre><p>然后输入普通用户登陆的密码,回车即可进入 root用户权限模式。<br>启用root用户的前提是需要先给root设置一个密码:</p>
-<pre><code><span class="title">sudo</span> passwd root 
-</code></pre><p>输入root 密码即可</p>
-<a id="more"></a>
-<p>然后执行: </p>
-<pre><code>vi /etc/lightdm/lightdm<span class="class">.conf</span>.
-</code></pre><p>增加<br>    greeter-show-manual-login=true<br>    allow-guest=false  </p>
-<p>修改完的整个配置文件是</p>
-<pre><code>[SeatDefaults]
-<span class="variable">greeter-session=</span>unity-greeter
-<span class="variable">user-session=</span>ubuntu
-<span class="variable">greeter-show-manual-login=</span><span class="constant">true</span> <span class="comment">#手工输入登陆系统的用户名和密码</span>
-<span class="variable">allow-guest=</span><span class="constant">false</span>   <span class="comment">#不允许guest登录</span>
-</code></pre><p>然后我们启动root帐号:</p>
-<pre><code><span class="title">sudo</span> passwd root
-</code></pre><p>根据提示输入root帐号密码。</p>
-<p>重启ubuntu,登录窗口会有“登录”选项,这时候我们就可以通过root登录了。</p>
-<p>注意:如果root登陆后还没声音,又查了查,如下方法:<br>Ubuntu root登录没有声音这个问题的根本原因是使用root登录后pulseaudio没有启动。<br>将root加到pulse-access组:</p>
-<pre><code>sudo usermod -<span class="tag">a</span> -G
-</code></pre><p>后修改配置文件/etc/default/pulseaudio,将PULSEAUDIO_SYSTEM_START设为1</p>
-<p>写于: 2012年12月14日<br>更新于: 2015年03月22日</p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>Ubuntu 12.04默认是不允许root登录的,在登录窗口只能看到普通用户和访客登录。以普通身份登陆Ubuntu后我们需要做一些修改,普通用户登录后,修改系统配置文件需要切换到超级用户模式,在终端窗口里面输入: </p>
-<pre><code>sudo  <span class="operator">-s</span>
-</code></pre><p>然后输入普通用户登陆的密码,回车即可进入 root用户权限模式。<br>启用root用户的前提是需要先给root设置一个密码:</p>
-<pre><code><span class="title">sudo</span> passwd root 
-</code></pre><p>输入root 密码即可</p>]]>
-    
-    </summary>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[Vmware Tools is currently being installed on your system]]></title>
-    <link href="http://yoursite.com/2015/03/22/Vmware-Tools-is-currently-being-installed-on-your-system/"/>
-    <id>http://yoursite.com/2015/03/22/Vmware-Tools-is-currently-being-installed-on-your-system/</id>
-    <published>2015-03-22T13:47:15.000Z</published>
-    <updated>2015-03-22T13:52:14.548Z</updated>
-    <content type="html"><![CDATA[<p>问题描述:<br>使用虚拟机安装Ubuntu过程中一直停留在“PLEASE WAIT! Vmware Tools is currently<br>being installed on your system”如下图:</p>
-<p><img src="http://7xi6lo.com1.z0.glb.clouddn.com/vmware1.jpg" alt="">]</p>
-<p>软件环境<br>VMWare 8<br>Ubuntu 12.10</p>
-<p>解决方案如下</p>
-<a id="more"></a>
-<p>做下面三步操作后重启系统 :</p>
-<p>Restore the /etc/issue file:</p>
-<pre><code>sudo mv <span class="regexp">/etc/i</span>ssue.backup <span class="regexp">/etc/i</span>ssue
-</code></pre><p>Restore the /etc/rc.local file:</p>
-<pre><code>sudo mv /etc/rc<span class="class">.local</span><span class="class">.backup</span> /etc/rc.local
-</code></pre><p>Restore the /etc/init/lightdm.conf file:</p>
-<pre><code>sudo mv <span class="regexp">/opt/</span>vmware-tools-installer<span class="regexp">/lightdm.conf /</span>etc<span class="regexp">/init</span>
-</code></pre><p>Then reboot.</p>
-<p>写于: 2012年12月14日<br>更新于: 2015年03月22日</p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>问题描述:<br>使用虚拟机安装Ubuntu过程中一直停留在“PLEASE WAIT! Vmware Tools is currently<br>being installed on your system”如下图:</p>
-<p><img src="http://7xi6lo.com1.z0.glb.clouddn.com/vmware1.jpg" alt="">]</p>
-<p>软件环境<br>VMWare 8<br>Ubuntu 12.10</p>
-<p>解决方案如下</p>]]>
-    
     </summary>
     
   </entry>

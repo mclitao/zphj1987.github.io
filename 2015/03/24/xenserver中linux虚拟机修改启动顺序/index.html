@@ -1,0 +1,181 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  
+  <title>xenserver中linux虚拟机修改启动顺序 | zphj1987&#39;Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  
+    <meta name="author" content="zphj1987">
+  
+  
+    <meta name="description" content="xenserver是思杰的一款类似于vmware ESXI的虚拟化平台,或者说虚拟化操作系统,上面可以安装许多虚拟机,但是当你装完linux虚拟机，你会发现一个问题,不能像windows vm那样直接通过xencenter的虚拟机属性去修改。
+windows的启动属性,很容易修改,
+而linux的启动属性,没有这些
+下面我们介绍一些啊，怎么可以把linux的启动属性,通过命令行解决掉。
+选择xen">
+  
+  <meta name="description" content="xenserver是思杰的一款类似于vmware ESXI的虚拟化平台,或者说虚拟化操作系统,上面可以安装许多虚拟机,但是当你装完linux虚拟机，你会发现一个问题,不能像windows vm那样直接通过xencenter的虚拟机属性去修改。
+windows的启动属性,很容易修改,
+而linux的启动属性,没有这些
+下面我们介绍一些啊，怎么可以把linux的启动属性,通过命令行解决掉。
+选择xen">
+<meta property="og:type" content="article">
+<meta property="og:title" content="xenserver中linux虚拟机修改启动顺序">
+<meta property="og:url" content="http://yoursite.com/2015/03/24/xenserver中linux虚拟机修改启动顺序/index.html">
+<meta property="og:site_name" content="zphj1987'Blog">
+<meta property="og:description" content="xenserver是思杰的一款类似于vmware ESXI的虚拟化平台,或者说虚拟化操作系统,上面可以安装许多虚拟机,但是当你装完linux虚拟机，你会发现一个问题,不能像windows vm那样直接通过xencenter的虚拟机属性去修改。
+windows的启动属性,很容易修改,
+而linux的启动属性,没有这些
+下面我们介绍一些啊，怎么可以把linux的启动属性,通过命令行解决掉。
+选择xen">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="xenserver中linux虚拟机修改启动顺序">
+<meta name="twitter:description" content="xenserver是思杰的一款类似于vmware ESXI的虚拟化平台,或者说虚拟化操作系统,上面可以安装许多虚拟机,但是当你装完linux虚拟机，你会发现一个问题,不能像windows vm那样直接通过xencenter的虚拟机属性去修改。
+windows的启动属性,很容易修改,
+而linux的启动属性,没有这些
+下面我们介绍一些啊，怎么可以把linux的启动属性,通过命令行解决掉。
+选择xen">
+  
+  
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+  
+<script type="text/javascript">
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?252ba55374ee0e63b03196973bb9b776";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+</head>
+
+<body>
+  <div class="wrapper">
+    <header id="header">
+  <div class="title">
+    <h1><a href="/">zphj1987&#39;Blog</a></h1>
+    <p><a href="/">现在所学，终有所用</a></p>
+  </div>
+  <nav class="nav">
+    <ul>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/archives">Archives</a></li>
+      
+        <li><a href="/atom.xml">rss</a></li>
+      
+        <li><a href="/about">About</a></li>
+      
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+  <div class="clearfix"></div>
+</header>
+    <div class="content"><article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/24/xenserver中linux虚拟机修改启动顺序/">
+  <time datetime="2015-03-23T23:49:21.000Z">
+    2015-03-24
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title">xenserver中linux虚拟机修改启动顺序</h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>xenserver是思杰的一款类似于vmware ESXI的虚拟化平台,或者说虚拟化操作系统,上面可以安装许多虚拟机,但是当你装完linux虚拟机，你会发现一个问题,不能像windows vm那样直接通过xencenter的虚拟机属性去修改。</p>
+<p>windows的启动属性,很容易修改,</p>
+<p>而linux的启动属性,没有这些</p>
+<p>下面我们介绍一些啊，怎么可以把linux的启动属性,通过命令行解决掉。</p>
+<p>选择xenserver主机的console端,找到linux虚拟机的uuid。</p>
+<p>执行:</p>
+<pre><code>xe vm-list name-lable=<span class="function"><span class="title">xx</span><span class="params">(虚拟机名称)</span></span> 就会显示虚拟机的uuid
+</code></pre><p>然后执行: </p>
+<pre><code>xe vm-param-set uuid=<span class="function"><span class="title">xx</span><span class="params">(上面获取到的)</span></span> HVM-boot-policy=BIOS\ <span class="attribute">order</span>
+xe vm-param-set uuid=<span class="function"><span class="title">xx</span><span class="params">(上面获取到的)</span></span> HVM-boot-params:<span class="attribute">order</span>=<span class="string">"dc"</span>
+</code></pre><p>执行完,你就可以通过XenCenter打开Linux虚拟机的属性查看,和windows一样,可以修改启动顺序了</p>
+<p>写于: 2014年06月19日<br>更新于: 2015年03月24日</p>
+
+    
+  </div>
+  <footer>
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">评论</h1>
+  <div class="ds-thread" data-thread-key="2015/03/24/xenserver中linux虚拟机修改启动顺序/"  data-title="xenserver中linux虚拟机修改启动顺序">
+  </div>
+</section>
+</div>
+  </div>
+  <footer id="footer"><div class="copyright">
+  
+  &copy; 2015 <a href="/">zphj1987</a>
+  
+</div>
+<div class="theme-copyright">
+  Theme by <a href="https://github.com/orderedlist" target="_blank">orderedlist</a>
+   | 
+  Redesign by <a href="http://heroicyang.com/" target="_blank">Heroic Yang</a>
+</div>
+<div class="clearfix"></div></footer>
+  <script src="/js/jquery.min.js"></script>
+<script src="/js/scale.fix.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = { short_name: 'zphj1987' };
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';
+    ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox();
+  })(jQuery);
+</script>
+
+
+<div id="totop" style="position:fixed;bottom:150px;right:50px;cursor: pointer;">
+<a title="Top"><img src="/imgs/scrollup.png"/></a>
+</div>
+<script src="/js/totop.js"></script>
+
+</body>
+</html>

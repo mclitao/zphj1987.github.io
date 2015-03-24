@@ -73,32 +73,35 @@ var _hmt = _hmt || [];
   <header>
     
       <div class="icon"></div>
-      <a href="/2015/03/22/系统运行后修改linux系统时区/">
-  <time datetime="2015-03-22T07:43:22.000Z">
+      <a href="/2015/03/22/使用Ganglia监控系统监控集群-debian/">
+  <time datetime="2015-03-22T09:20:06.000Z">
     2015-03-22
   </time>
 </a>
     
     
   
-    <h1 class="title"><a href="/2015/03/22/系统运行后修改linux系统时区/">系统运行后修改linux系统时区</a></h1>
+    <h1 class="title"><a href="/2015/03/22/使用Ganglia监控系统监控集群-debian/">使用Ganglia监控系统监控集群(debian)</a></h1>
   
 
   </header>
   
   <div class="entry">
     
-      <p>在网上看了很多改时间的帖子,都没能最终解决问题。最后还是下面的博客最终解决的时间的问题,感谢原作者<br>安装系统过程时没有选对当前的时区,即CST,Asia/Shanghai,而是按默认的，EDT时区,这样跟我们的系统就都对不上,因此得改回CST,仔细琢磨一下,方法如下:</p>
-<p>更改/etc/timezone里面的内容为:Asia/Shanghai</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ mv /etc/localtime /etc/localtime-bk</span><br><span class="line">$ cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime</span><br></pre></td></tr></table></figure>
-<p>再用命令date看一下,就是我们要的CST。</p>
+      <p>anglia是一个集群监控软件,底层使用RRDTool获得数据。<br>Ganglia分为ganglia-monitor和gmetad两部分,前者运行在集群每个节点上(被监控机器)收集RRDTool产生的数据,后者运行在监控服务器上,收集每个ganglia-monitor的数据,通过Web UI可以看到直观的各种图表。</p>
+<p>在debian上安装Ganglia非常简单,首先安装下面三个包。因为要使用Web服务器才能看到图表,所以如果没有安装apache的话,会自动安装apache服务器。</p>
+<pre><code>apt-<span class="keyword">get</span> installganglia-monitor  <span class="comment">#这个包安装在被监控机器即可</span>
+apt-<span class="keyword">get</span> install ganglia-webfront gmetad  <span class="comment">#这两个包安装在监控服务器，前者提供web页面，后者收集其他机器的监控数据</span>
+</code></pre><p>被监控安装完成之后，gmond服务会运行起来，使用下面的命令可以启动这个服务。</p>
+<pre><code><span class="regexp">/etc/i</span>nit.d<span class="regexp">/ganglia-monitor restart     </span>
+</code></pre><p>(配置文件的路径在/etc/ganglia/gmond.conf)基本不用配置就可以启用</p>
     
   </div>
   <footer class="end-sep">
     
       
         <div class="alignleft">
-          <a href="/2015/03/22/系统运行后修改linux系统时区/#more" class="more-link">阅读全文</a>
+          <a href="/2015/03/22/使用Ganglia监控系统监控集群-debian/#more" class="more-link">阅读全文</a>
         </div>
       
       
@@ -113,119 +116,27 @@ var _hmt = _hmt || [];
   <header>
     
       <div class="icon"></div>
-      <a href="/2015/03/22/更新租约和检测数据完整性脚本/">
-  <time datetime="2015-03-22T07:37:55.000Z">
+      <a href="/2015/03/22/Linux下如何创建loop-device/">
+  <time datetime="2015-03-22T09:07:24.000Z">
     2015-03-22
   </time>
 </a>
     
     
   
-    <h1 class="title"><a href="/2015/03/22/更新租约和检测数据完整性脚本/">更新租约和检测数据完整性脚本</a></h1>
+    <h1 class="title"><a href="/2015/03/22/Linux下如何创建loop-device/">Linux下如何创建loop device</a></h1>
   
 
   </header>
   
   <div class="entry">
     
-      <p>这个是针对tahoe这个文件系统做的一个更新租约和检查数据完整性的脚本,并且把结果保存下来,先要把所有的caps保存到一个文本当中</p>
-<pre><code><span class="comment">#! /bin/sh</span>
-   a=<span class="variable">$(</span>cat /home/cap-list.txt |wc -l)
-   c=<span class="string">`date`</span>
-   echo <span class="variable">$a</span>
-   <span class="keyword">for</span>((i=<span class="number">1</span>;i&lt;=a;i++))
-   <span class="keyword">do</span>
-       b=<span class="variable">$(</span> head -<span class="variable">$i</span> /home/cap-list.txt |tail -<span class="number">1</span>)
-       echo <span class="variable">$b</span> <span class="prompt">&gt;&gt; </span>/home/checktime.txt
-       echo <span class="string">"start time:"</span> <span class="prompt">&gt;&gt; </span>/home/checktime.txt
-       echo <span class="string">`date`</span> <span class="prompt">&gt;&gt; </span>/home/checktime.txt
-       tahoe deep-check --add-lease --repair --dir-cap=<span class="variable">$b</span> <span class="prompt">&gt;&gt; </span>/home/checktime.txt
-       echo <span class="string">"end time:"</span> <span class="prompt">&gt;&gt; </span>/home/checktime.txt
-       echo <span class="string">`date`</span> <span class="prompt">&gt;&gt; </span>/home/checktime.txt
-   done
-   d=<span class="string">`date`</span>
-   echo <span class="variable">$c</span> <span class="prompt">&gt;&gt; </span>/home/checktime.txt
-   echo <span class="variable">$d</span> <span class="prompt">&gt;&gt; </span>/home/checktime.txt
-</code></pre><p>写于: 2012年4月14日<br>更新于: 2015年03月22日</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-  
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2015/03/22/卸载python安装的软件/">
-  <time datetime="2015-03-22T07:26:12.000Z">
-    2015-03-22
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2015/03/22/卸载python安装的软件/">卸载python安装的软件</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <p>python源码安装的软件是无法通过命令卸载的,这个可以通过记录安装过程的形式来卸载安装的软件</p>
-<p>以 python2.7.2 为例,在这个目录中有一个 setup.py 的文件,很显然这是安装程序,还是python写的,用 python 写 python 到安装程序,大开眼界了。在这里,需要写一个 shell 脚本,把在重新安装中提到的安装位置全部删除,就实现了卸载到目的了</p>
-<h3 id="一、创建del-sh脚本内容(在源码目录):">一、创建del.sh脚本内容(在源码目录):</h3><pre><code><span class="shebang">#!/bin/bash  </span>
-<span class="keyword">for</span> i <span class="keyword">in</span> $(less files.txt)  
-<span class="keyword">do</span>  rm -rf <span class="variable">$i</span>  
-<span class="keyword">done</span>  
-</code></pre><p>脚本说明: files.txt 是需要事先在目录下创建的文件,目的是记录安装过程中提到到路径。脚本很简单,详细的就不说了,学过 shell 编程到肯定没问题,没学过到有其他语言编程基础的,仔细看看也可以看懂。</p>
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2015/03/22/卸载python安装的软件/#more" class="more-link">阅读全文</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-  
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2015/03/22/常用linux源列表/">
-  <time datetime="2015-03-22T07:16:16.000Z">
-    2015-03-22
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2015/03/22/常用linux源列表/">常用linux源列表</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <p>centos6 源:</p>
-<p>epel源:</p>
-<pre><code>wget  <span class="symbol">http:</span>/<span class="regexp">/mirrors.aliyun.com/epel</span><span class="regexp">/6/x</span>86_64/epel-release-<span class="number">6</span>-<span class="number">8</span>.noarch.rpm
+      <p>在Linux中,有一种特殊的块设备叫loop device,这种loop device设备是通过映射操作系统上的正常的文件而形成的虚拟块设备</p>
+<p>因为这种设备的存在,就为我们提供了一种创建一个存在于其他文件中的虚拟文件系统的机制.下面是一个示例:<br>第一步:用dd创建一个大文件:</p>
+<pre><code>dd <span class="variable">if=</span>/dev/zero <span class="variable">of=</span>node1 <span class="variable">bs=</span><span class="number">4</span>M <span class="variable">count=</span><span class="number">500</span>
+</code></pre><p>这样就在当前目录下创建了一个2G的文件”node1”</p>
+<p>第二步:使用losetup命令创建一个loop device</p>
+<pre><code>losetup /dev/loop<span class="number">0</span> <span class="label">node1</span>
 </code></pre>
     
   </div>
@@ -233,7 +144,7 @@ var _hmt = _hmt || [];
     
       
         <div class="alignleft">
-          <a href="/2015/03/22/常用linux源列表/#more" class="more-link">阅读全文</a>
+          <a href="/2015/03/22/Linux下如何创建loop-device/#more" class="more-link">阅读全文</a>
         </div>
       
       
@@ -248,31 +159,110 @@ var _hmt = _hmt || [];
   <header>
     
       <div class="icon"></div>
-      <a href="/2015/03/22/监控磁盘读写状况/">
-  <time datetime="2015-03-22T06:41:09.000Z">
+      <a href="/2015/03/22/用rsync备份一台linux服务器上的数据/">
+  <time datetime="2015-03-22T08:53:33.000Z">
     2015-03-22
   </time>
 </a>
     
     
   
-    <h1 class="title"><a href="/2015/03/22/监控磁盘读写状况/">监控磁盘读写状况</a></h1>
+    <h1 class="title"><a href="/2015/03/22/用rsync备份一台linux服务器上的数据/">用rsync备份一台linux服务器上的数据</a></h1>
   
 
   </header>
   
   <div class="entry">
     
-      <p>您有没有碰到过:没有运行任何程序，磁盘却不断执行读写动作,io指示灯常亮,各种操作迟缓甚至卡顿。碰到这种状况往往会感到束手无策,因为并不是 cpu 居高不下,可以立即结束相关进程。而突然结束进程中断磁盘 io 操作甚至可能导致正在写入的数据丢失。</p>
-<h4 id="什么进程在读写磁盘?">什么进程在读写磁盘?</h4><p>可能是 firefox,可能是 updatedb,也可能是正在运行的 pacman -Syu,一切皆有可能 ……<br>怎么查看是什么进程在不断的读写磁盘呢?<br>请使用 iotop 命令查看:<br>通过输出结果我们可以清楚地知晓是什么程序在读写磁盘，速度以及命令行, pid 等信息。</p>
+      <p>rsync是安装完linux后都会自带的,在机器上运行rsync命令看是否有安装即可</p>
+<h2 id="备份到远程服务器">备份到远程服务器</h2><p>这里介绍的rsync的用途是备份一台linux服务器上的数据到另外一台机器</p>
+<h3 id="环境">环境</h3><p>将需要备份机器叫做服务器端  (192.168.0.195)<br>将备份后数据存放机器叫做客户端 (192.168.0.196)</p>
+<h3 id="配置">配置</h3><h4 id="1-服务器端的配置:">1.服务器端的配置:</h4><p>这里是准备备份/chinfotech/kernel/zp/这个目录,修改配置文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/rsyncd.conf (没有就创建)</span><br></pre></td></tr></table></figure>
     
   </div>
   <footer class="end-sep">
     
       
         <div class="alignleft">
-          <a href="/2015/03/22/监控磁盘读写状况/#more" class="more-link">阅读全文</a>
+          <a href="/2015/03/22/用rsync备份一台linux服务器上的数据/#more" class="more-link">阅读全文</a>
         </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/22/修改ssh的默认22端口，并使用scp的方法/">
+  <time datetime="2015-03-22T08:49:01.000Z">
+    2015-03-22
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/03/22/修改ssh的默认22端口，并使用scp的方法/">修改ssh的默认22端口，并使用scp的方法</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>修改默认的22的ssh端口只需要修改 /etc/ssh/sshd_config 中的 port 字段为你想要的端口就可以了<br>以后用其他机器ssh登录这台机器只需要:</p>
+<pre><code>ssh -p <span class="comment">(port)</span>  <span class="comment">(ip)</span>  
+</code></pre><p>使用scp 就是:</p>
+<pre><code>scp -<span class="constant">P</span> (port) /usr/myfile   <span class="constant">IP</span><span class="symbol">:/tmp</span>
+</code></pre><p>写于: 2012年05月05日<br>更新于: 2015年03月02日</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/22/debian修改crontab默认编辑器为vim/">
+  <time datetime="2015-03-22T08:46:03.000Z">
+    2015-03-22
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/03/22/debian修改crontab默认编辑器为vim/">debian修改crontab默认编辑器为vim</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>debian终端下默认编辑器为nano,比如crontab -e就会打开nano,这个编辑器用起来很不习惯,想修改为vim,当然,你的debian系统必须先安装vim.如果已经安装vim,请输入如下命令:<br>输入命令:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">update-alternatives --config editor</span><br></pre></td></tr></table></figure>
+<p>然后选择/usr/vim/vim.basic就OK了</p>
+<p>vim.tiny与vim.basic的区别是vim.basic为完全的vim,而vim.tiny为简化版,功能上有所区别,如不支持高亮等等.</p>
+<p>写于: 2012年5月04日<br>更新于: 2015年03月22日</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
       
       
     

@@ -1,0 +1,374 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  
+  <title>zphj1987&#39;Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  
+    <meta name="author" content="zphj1987">
+  
+  
+  <meta name="description">
+<meta property="og:type" content="website">
+<meta property="og:title" content="zphj1987'Blog">
+<meta property="og:url" content="http://yoursite.com/page/13/index.html">
+<meta property="og:site_name" content="zphj1987'Blog">
+<meta property="og:description">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="zphj1987'Blog">
+<meta name="twitter:description">
+  
+  
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+  
+<script type="text/javascript">
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?252ba55374ee0e63b03196973bb9b776";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+</head>
+
+<body>
+  <div class="wrapper">
+    <header id="header">
+  <div class="title">
+    <h1><a href="/">zphj1987&#39;Blog</a></h1>
+    <p><a href="/">现在所学，终有所用</a></p>
+  </div>
+  <nav class="nav">
+    <ul>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/archives">Archives</a></li>
+      
+        <li><a href="/atom.xml">rss</a></li>
+      
+        <li><a href="/about">About</a></li>
+      
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+  <div class="clearfix"></div>
+</header>
+    <div class="content">
+
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/22/error-while-loading-shared-libraries的解決方法/">
+  <time datetime="2015-03-22T04:33:15.000Z">
+    2015-03-22
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/03/22/error-while-loading-shared-libraries的解決方法/">error while loading shared libraries的解決方法</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>在linux下运行程序时,发现了error while loading shared libraries这种错误,一时间不知道解决办法,在网上搜索,终于解决了.</p>
+<pre><code><span class="keyword">error</span> <span class="keyword">while</span> loading shared libraries: xxx.<span class="keyword">so</span>.0:cannot <span class="keyword">open</span> shared object <span class="keyword">file</span>: <span class="keyword">No</span> such <span class="keyword">file</span> or directory
+</code></pre><p>出现这类错误表示,系统不知道xxx.so放在哪个目录下,这时候就要在/etc/ld.so.conf中加入xxx.so所在的目录。<br>一般而言,有很多的so会存放在/usr/local/lib这个目录底下,去这个目录底下找，果然发现自己所需要的.so文件。<br>所以在/etc/ld.so.conf中加入/usr/local/lib这一行,保存之后,再运行,/sbin/ldconfig –v更新一下配置即可。<br>centos下安装qt时出现/usr/lib/libstdc++.so.6: version `GLIBCXX_3.4.9’ not found<br>在安装qt-creator的时候运行这个IDE就出现了这个问题,是由于libstdc++.so.6的版本过低,需要下载个新的重新建立软连接</p>
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2015/03/22/error-while-loading-shared-libraries的解決方法/#more" class="more-link">阅读全文</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/22/linux下内存释放/">
+  <time datetime="2015-03-22T04:24:24.000Z">
+    2015-03-22
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/03/22/linux下内存释放/">linux下内存释放</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>细心的朋友会注意到,当你在linux下频繁存取文件后,物理内存会很快被用光,当程序结束后,内存不会被正常释放,而是一直作为caching.这个问题,貌似有不少人在问,不过都没有看到有什么很好解决的办法.那么我来谈谈这个问题.<br>先来说说free命令<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@server ~]<span class="comment"># free -m </span></span><br><span class="line">             total       used       free     shared    buffers     cached </span><br><span class="line">Mem:           <span class="number">249</span>        <span class="number">163</span>         <span class="number">86</span>          <span class="number">0</span>         <span class="number">10</span>         <span class="number">94</span> </span><br><span class="line">-/+ buffers/cache:         <span class="number">58</span>        <span class="number">191</span> </span><br><span class="line">Swap:          <span class="number">511</span>          <span class="number">0</span>        <span class="number">511</span></span><br></pre></td></tr></table></figure></p>
+<p>其中:<br>total 内存总数<br>used 已经使用的内存数<br>free 空闲的内存数<br>shared 多个进程共享的内存总额<br>buffers Buffer Cache和cached Page Cache 磁盘缓存的大小<br>-buffers/cache 的内存数:used - buffers - cached<br>+buffers/cache 的内存数:free + buffers + cached<br>可用的memory=free memory+buffers+cached<br>有了这个基础后,可以得知,我现在used为163MB,free为86,buffer和cached分别为10,94<br>那么我们来看看,如果我执行复制文件,内存会发生什么变化. </p>
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2015/03/22/linux下内存释放/#more" class="more-link">阅读全文</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/21/ubuntu配置bonding/">
+  <time datetime="2015-03-21T13:16:33.000Z">
+    2015-03-21
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/03/21/ubuntu配置bonding/">ubuntu配置bonding</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>如果节点上有多个网络接口时可以通过bonding将多个网络接口虚拟为一个网络接口，bonding可以提供高可用及负载均衡功能，从而提高节点的网络接口性能及可用性。</p>
+<p>一、使用如下命令安装</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">T01-MON11:~<span class="comment"># apt-get install ifenslave-2.6</span></span><br></pre></td></tr></table></figure>
+<p>二、配置bonding</p>
+<p>修改网络接口配置文件/etc/network/interfaces</p>
+<p>配置一个bond</p>
+<pre><code><span class="attribute">auto</span> lo
+iface lo inet loopback
+
+<span class="attribute">auto</span> eth8
+iface eth8 inet manual
+bond-master bond0
+
+<span class="attribute">auto</span> eth7
+iface eth7 inet manual
+bond-master bond0
+
+<span class="attribute">auto</span> eth6
+iface eth6 inet manual
+bond-master bond0
+
+<span class="attribute">auto</span> eth5
+iface eth5 inet manual
+bond-master bond0
+
+<span class="attribute">auto</span> eth0
+iface eth0 inet static
+<span class="tag">address</span> <span class="number">192.168</span>.<span class="number">8.102</span>
+netmask <span class="number">255.255</span>.<span class="number">0.0</span>
+gateway <span class="number">192.168</span>.<span class="number">1.1</span>
+dns-nameservers <span class="number">8.8</span>.<span class="number">8.8</span>
+
+<span class="attribute">auto</span> bond0
+iface bond0 inet static
+<span class="tag">address</span> <span class="number">10.0</span>.<span class="number">0.102</span>
+netmask <span class="number">255.255</span>.<span class="number">0.0</span>
+
+bond-slaves <span class="attribute">none</span>
+bond-miimon <span class="number">100</span>
+bond-mode balance-alb
+</code></pre>
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2015/03/21/ubuntu配置bonding/#more" class="more-link">阅读全文</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/21/利用移动硬盘安装windows7系统/">
+  <time datetime="2015-03-21T10:34:02.000Z">
+    2015-03-21
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/03/21/利用移动硬盘安装windows7系统/">利用移动硬盘安装windows7系统</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>首先把win7系统镜像的iso文件解压到移动硬盘中<br>将移动硬盘设置为活动分区<br>设置活动分区的方法<br>Diskpart程序实现U盘安装WIN7的方法: </p>
+<p>将Win7安装盘中的所有文件拷贝到硬盘文件夹中,我们这里选择D盘win7back。<br>在开始菜单程序栏中输入cmd进入命令行模式，敲入diskpart进入磁盘分区管理程序,逐行输入</p>
+<pre><code>select disk <span class="number">1</span> (选择磁盘。此为disk <span class="number">0</span>硬盘,disk <span class="number">1</span> <span class="variable">U</span>盘情况下,多硬盘时可输入list disk查询) 
+<span class="function"><span class="title">clean</span> <span class="params">(清除该磁盘)</span> 
+<span class="title">create</span> <span class="title">partition</span> <span class="title">primary</span> <span class="params">(创建主分区)</span> 
+<span class="title">select</span> <span class="title">partition</span> 1 <span class="params">(选择刚刚创建的<span class="number">1</span>号分区)</span> 
+<span class="title">active</span> <span class="params">(激活该分区)</span> 
+<span class="title">format</span> <span class="title">fs</span>=<span class="title">fat32</span> <span class="params">(格式化为<span class="variable">FAT32</span>，<span class="number">8</span><span class="variable">GB</span>闪盘的格式化需要较长时间)</span> 
+<span class="title">assign</span> <span class="params">(为该分区注册盘符)</span> 
+<span class="title">exit</span> <span class="params">(退出diskpart程序)</span> </span>
+</code></pre><p>注:以上操作必须在Vista/Win7下完成，XP虽然也带有diskpart程序,但无法格式化U盘。</p>
+<p>这里我们只使用上面的active选项 或者在win7的磁盘管理中将移动硬盘标记为活动分区<br>假设你的移动硬盘的活动分区的盘符为G盘<br>在win7运行cmd</p>
+<pre><code><span class="keyword">G</span>:
+<span class="keyword">cd</span> <span class="keyword">boot</span>
+bootsect /nt60 <span class="keyword">G</span> 
+</code></pre><p>命令将引导区写进你的移动硬盘G盘符<br>在开机启动项中选择移动设备启动就可以了</p>
+<p>写于:2011年12月16日<br>更新于:2015年03月21日</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/21/alias重启终端失效的问题/">
+  <time datetime="2015-03-21T10:26:09.000Z">
+    2015-03-21
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/03/21/alias重启终端失效的问题/">alias重启终端失效的问题</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>如果使用命令:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">alias</span> xx=<span class="string">'xxxx'</span></span><br></pre></td></tr></table></figure></p>
+<p>那么登出以后,别名就会失效。下次登入的时候就不能用了。<br>为了保持别名可以把它写入 /root/.bashrc<br>在.bashrc的最后写入想要的别名,比如:</p>
+<pre><code><span class="built_in">alias</span> zp=<span class="string">'ll -al'</span>
+</code></pre><p>然后退出,重新登入的时候就可以用了。<br>或者直接运行命令<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span> ~/.bashrc</span><br></pre></td></tr></table></figure></p>
+<p>这样不用重新登入就可以使用了。</p>
+<p>写于: 2011年12月22日<br>更新于: 2015年03月21日</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+
+  <nav id="pagination">
+  
+    <a href="/page/12/" class="prev">上一页</a>
+  
+  
+    <a href="/page/14/" class="next">下一页</a>
+  
+  <div class="clearfix"></div>
+</nav>
+
+</div>
+  </div>
+  <footer id="footer"><div class="copyright">
+  
+  &copy; 2015 <a href="/">zphj1987</a>
+  
+</div>
+<div class="theme-copyright">
+  Theme by <a href="https://github.com/orderedlist" target="_blank">orderedlist</a>
+   | 
+  Redesign by <a href="http://heroicyang.com/" target="_blank">Heroic Yang</a>
+</div>
+<div class="clearfix"></div></footer>
+  <script src="/js/jquery.min.js"></script>
+<script src="/js/scale.fix.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = { short_name: 'zphj1987' };
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';
+    ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox();
+  })(jQuery);
+</script>
+
+
+<div id="totop" style="position:fixed;bottom:150px;right:50px;cursor: pointer;">
+<a title="Top"><img src="/imgs/scrollup.png"/></a>
+</div>
+<script src="/js/totop.js"></script>
+
+</body>
+</html>
