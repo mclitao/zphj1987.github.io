@@ -10,29 +10,21 @@
     <meta name="author" content="zphj1987">
   
   
-    <meta name="description" content="首先MAN一下两个命令,看一下解释的区别:
-du - estimate file space usage
-df - report file system disk space usage
-du估计文件空间占用情况,df报告文件系统磁盘空间使用情况。两个命令所要获取的对象时不同的。在linux下,几乎所有东西都可以称为文件,常规文件,二进制文件,socket流。所以,通常情况下,使用du得到到的根路">
+    <meta name="description" content="首先MAN一下两个命令,看一下解释的区别:du - estimate file space usage&amp;#10;df - report file system disk space usage
+du估计文件空间占用情况,df报告文件系统磁盘空间使用情况。两个命令所要获取的对象时不同的。在linux下,几乎所有东西都可以称为文件,常规文件,二进制文件,socket流。所以,通常情况下,使用du得到到">
   
-  <meta name="description" content="首先MAN一下两个命令,看一下解释的区别:
-du - estimate file space usage
-df - report file system disk space usage
-du估计文件空间占用情况,df报告文件系统磁盘空间使用情况。两个命令所要获取的对象时不同的。在linux下,几乎所有东西都可以称为文件,常规文件,二进制文件,socket流。所以,通常情况下,使用du得到到的根路">
+  <meta name="description" content="首先MAN一下两个命令,看一下解释的区别:du - estimate file space usage&amp;#10;df - report file system disk space usage
+du估计文件空间占用情况,df报告文件系统磁盘空间使用情况。两个命令所要获取的对象时不同的。在linux下,几乎所有东西都可以称为文件,常规文件,二进制文件,socket流。所以,通常情况下,使用du得到到">
 <meta property="og:type" content="article">
 <meta property="og:title" content="du查看的目录大小与df查看的大小不同的时候用lsof查找">
 <meta property="og:url" content="http://yoursite.com/2015/03/22/du查看的目录大小与df查看的大小不同的时候用lsof查找/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
-<meta property="og:description" content="首先MAN一下两个命令,看一下解释的区别:
-du - estimate file space usage
-df - report file system disk space usage
-du估计文件空间占用情况,df报告文件系统磁盘空间使用情况。两个命令所要获取的对象时不同的。在linux下,几乎所有东西都可以称为文件,常规文件,二进制文件,socket流。所以,通常情况下,使用du得到到的根路">
+<meta property="og:description" content="首先MAN一下两个命令,看一下解释的区别:du - estimate file space usage&amp;#10;df - report file system disk space usage
+du估计文件空间占用情况,df报告文件系统磁盘空间使用情况。两个命令所要获取的对象时不同的。在linux下,几乎所有东西都可以称为文件,常规文件,二进制文件,socket流。所以,通常情况下,使用du得到到">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="du查看的目录大小与df查看的大小不同的时候用lsof查找">
-<meta name="twitter:description" content="首先MAN一下两个命令,看一下解释的区别:
-du - estimate file space usage
-df - report file system disk space usage
-du估计文件空间占用情况,df报告文件系统磁盘空间使用情况。两个命令所要获取的对象时不同的。在linux下,几乎所有东西都可以称为文件,常规文件,二进制文件,socket流。所以,通常情况下,使用du得到到的根路">
+<meta name="twitter:description" content="首先MAN一下两个命令,看一下解释的区别:du - estimate file space usage&amp;#10;df - report file system disk space usage
+du估计文件空间占用情况,df报告文件系统磁盘空间使用情况。两个命令所要获取的对象时不同的。在linux下,几乎所有东西都可以称为文件,常规文件,二进制文件,socket流。所以,通常情况下,使用du得到到">
   
   
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
@@ -96,28 +88,17 @@ var _hmt = _hmt || [];
   
   <div class="entry">
     
-      <p>首先MAN一下两个命令,看一下解释的区别:</p>
-<pre><code>du - estimate <span class="built_in">file</span> <span class="constant">space</span> usage
-df - report <span class="built_in">file</span> <span class="keyword">system</span> disk <span class="constant">space</span> usage
-</code></pre><p>du估计文件空间占用情况,df报告文件系统磁盘空间使用情况。两个命令所要获取的对象时不同的。在linux下,几乎所有东西都可以称为文件,常规文件,二进制文件,socket流。所以,通常情况下,使用du得到到的根路径文件空间占用情况应当与df得到的文件系统磁盘占用的情况是一致的或者说相差无几。但是在某些情况下却会出现du得到的空间占用情况要远小于df得到的。</p>
+      <p>首先MAN一下两个命令,看一下解释的区别:<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">du - estimate file space usage&#10;df - report file system disk space usage</span><br></pre></td></tr></table></figure></p>
+<p>du估计文件空间占用情况,df报告文件系统磁盘空间使用情况。两个命令所要获取的对象时不同的。在linux下,几乎所有东西都可以称为文件,常规文件,二进制文件,socket流。所以,通常情况下,使用du得到到的根路径文件空间占用情况应当与df得到的文件系统磁盘占用的情况是一致的或者说相差无几。但是在某些情况下却会出现du得到的空间占用情况要远小于df得到的。</p>
 <p>后通过查询,发现问题出现在deleted文件上。</p>
-<p>root下 lsof | grep deleted会发现多多少少有些文件状态出于deleted状态。</p>
-<pre><code>[root<span class="comment">@eb152 ~]# lsof |grep deleted</span>
-进程名   PID       USER    FD   文件类型        大小(字节)  索引节点  文件名  [(状态)]
-java       3311    AuSP    8w      REG              253,0         778   10879268 <span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>.log (deleted)
-java       3311    AuSP    9w      REG              253,0        3275   10879269 <span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>.log (deleted)
-java       3311    AuSP   10w      REG              253,0           0   10879815 <span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>.log (deleted)
-java       3311    AuSP   11w      REG              253,0           0   10879816 <span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>.log (deleted)
-oracle     4195  oracle    7u      REG              253,0           0   14254321 <span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span> (deleted)
-</code></pre><p>状态为deleted为标记被删除,其实该文件并没有从磁盘中删除,类似windows下的回收站状态。</p>
+<p>root下 lsof | grep deleted会发现多多少少有些文件状态出于deleted状态。<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">[root@eb152 ~]# lsof |grep deleted&#10;&#36827;&#31243;&#21517;   PID       USER    FD   &#25991;&#20214;&#31867;&#22411;        &#22823;&#23567;(&#23383;&#33410;)  &#32034;&#24341;&#33410;&#28857;  &#25991;&#20214;&#21517;  [(&#29366;&#24577;)]&#10;java       3311    AuSP    8w      REG              253,0         778   10879268 ***.log (deleted)&#10;java       3311    AuSP    9w      REG              253,0        3275   10879269 ***.log (deleted)&#10;java       3311    AuSP   10w      REG              253,0           0   10879815 ***.log (deleted)&#10;java       3311    AuSP   11w      REG              253,0           0   10879816 ***.log (deleted)&#10;oracle     4195  oracle    7u      REG              253,0           0   14254321 *** (deleted)</span><br></pre></td></tr></table></figure></p>
+<p>状态为deleted为标记被删除,其实该文件并没有从磁盘中删除,类似windows下的回收站状态。</p>
 <a id="more"></a>
 <p>据称当有其他进程打开某文件时文件被删除,就会将该文件标记为deleted,并删除其目录节点。使用du查看时,因为没有该删除状态文件的节点信息,所以就不做统计,从而导致与df的结果不一致。</p>
 <p>若要将deleted状态文件删除,则根据pid直接kill调相应进程即可。</p>
 <p>找回被删除文件;<br>根据以上分析,若删除的文件仍有进程进行操作是有找回数据的可能的。</p>
-<p>若删除的文件为系统日志中的secure文件,则可以根据以下方法找回</p>
-<pre><code># lsof |grep /<span class="keyword">var</span>/<span class="keyword">log</span>/secure 
-syslogd 2574 root 2w <span class="keyword">REG</span> 253,0 1099 525125 /<span class="keyword">var</span>/<span class="keyword">log</span>/secure (deleted)
-</code></pre><p>可以看到进程号为2574的syslogd进程仍然打开了 /var/log/secure这个文件,这个文件所显示状态是deleted,已经被删除。现在FD文件描述符是2w。它的意思是文件描述符是2,状态是w写。</p>
+<p>若删除的文件为系统日志中的secure文件,则可以根据以下方法找回<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># lsof |grep /var/log/secure </span></span><br><span class="line">syslogd <span class="number">2574</span> root <span class="number">2</span>w REG <span class="number">253</span>,<span class="number">0</span> <span class="number">1099</span> <span class="number">525125</span> /var/<span class="built_in">log</span>/secure (deleted)</span><br></pre></td></tr></table></figure></p>
+<p>可以看到进程号为2574的syslogd进程仍然打开了 /var/log/secure这个文件,这个文件所显示状态是deleted,已经被删除。现在FD文件描述符是2w。它的意思是文件描述符是2,状态是w写。</p>
 <p>我们可以根据这个在/proc/2574/fd/2找到被删除的/var/log/secure的内容。</p>
 <p>当文件被误删时,切忌reboot操作。</p>
 <p>写于: 2013年03月23日<br>更新于: 2015年03年22日</p>

@@ -12,43 +12,43 @@
   
     <meta name="description" content="配置目的:为了给指定用户一个独立访问目录
 首先在samba服务器安装samba软件
-1$ apt-get install samba
+$ apt-get install samba
 然后配置独立访问用户配置samba用户前提需要是linux的用户,所以要创建linux用户
-12$ useradd    zp$ passwd     zp
+$ useradd    zp$ passwd     zp
 用户创建完了以后需要创建samba用户
-1$ smbpasswd -a  zp
-然后输入密码,记住密码,这个">
+$ smbpasswd -a  zp
+然后输入密码,记住密码,这个是客户端">
   
   <meta name="description" content="配置目的:为了给指定用户一个独立访问目录
 首先在samba服务器安装samba软件
-1$ apt-get install samba
+$ apt-get install samba
 然后配置独立访问用户配置samba用户前提需要是linux的用户,所以要创建linux用户
-12$ useradd    zp$ passwd     zp
+$ useradd    zp$ passwd     zp
 用户创建完了以后需要创建samba用户
-1$ smbpasswd -a  zp
-然后输入密码,记住密码,这个">
+$ smbpasswd -a  zp
+然后输入密码,记住密码,这个是客户端">
 <meta property="og:type" content="article">
 <meta property="og:title" content="samba配置独立访问配置方法">
 <meta property="og:url" content="http://yoursite.com/2015/03/22/samba配置独立访问配置方法/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
 <meta property="og:description" content="配置目的:为了给指定用户一个独立访问目录
 首先在samba服务器安装samba软件
-1$ apt-get install samba
+$ apt-get install samba
 然后配置独立访问用户配置samba用户前提需要是linux的用户,所以要创建linux用户
-12$ useradd    zp$ passwd     zp
+$ useradd    zp$ passwd     zp
 用户创建完了以后需要创建samba用户
-1$ smbpasswd -a  zp
-然后输入密码,记住密码,这个">
+$ smbpasswd -a  zp
+然后输入密码,记住密码,这个是客户端">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="samba配置独立访问配置方法">
 <meta name="twitter:description" content="配置目的:为了给指定用户一个独立访问目录
 首先在samba服务器安装samba软件
-1$ apt-get install samba
+$ apt-get install samba
 然后配置独立访问用户配置samba用户前提需要是linux的用户,所以要创建linux用户
-12$ useradd    zp$ passwd     zp
+$ useradd    zp$ passwd     zp
 用户创建完了以后需要创建samba用户
-1$ smbpasswd -a  zp
-然后输入密码,记住密码,这个">
+$ smbpasswd -a  zp
+然后输入密码,记住密码,这个是客户端">
   
   
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
@@ -114,34 +114,22 @@ var _hmt = _hmt || [];
     
       <h3 id="配置目的:">配置目的:</h3><p>为了给指定用户一个独立访问目录</p>
 <p>首先在samba服务器安装samba软件</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ apt-get install samba</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ apt-get install samba</span><br></pre></td></tr></table></figure>
 <p>然后配置独立访问用户<br>配置samba用户前提需要是linux的用户,所以要创建linux用户</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ useradd    zp</span><br><span class="line">$ passwd     zp</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ useradd    zp</span><br><span class="line">$ passwd     zp</span><br></pre></td></tr></table></figure>
 <p>用户创建完了以后<br>需要创建samba用户</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ smbpasswd <span class="operator">-a</span>  zp</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ smbpasswd <span class="operator">-a</span>  zp</span><br></pre></td></tr></table></figure>
 <p>然后输入密码,记住密码,这个是客户端访问samba的密码<br><a id="more"></a><br>在服务器的/etc/samba/smb.conf文件的</p>
-<p>[global]字段下面添加:<br>    client lanman auth = yes<br>    security = user</p>
-<p>在文件末尾添加:</p>
-<pre><code>[hj]
-    <span class="variable">path=</span>/hj
-    <span class="variable">comment=</span>zhangpengdemulu
-    <span class="variable">writeable=</span>yes
-    valid <span class="variable">users =</span> @zp
-</code></pre><p>修改配置文件以后,重启samba服务<br>注意 /hj 目录需要有读写执行权限,在samba服务器执行:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ chmod <span class="number">777</span> /hj</span><br></pre></td></tr></table></figure>
-<h4 id="客户端访问方法">客户端访问方法</h4><p>linux下两种方式<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ smbmount <span class="number">192.168</span>.<span class="number">0.194</span>:/hj /zp/<span class="built_in">test</span> -o username=zp</span><br><span class="line">$ mount -t cifs //<span class="number">192.168</span>.<span class="number">0.194</span>/hj /zp/<span class="built_in">test</span> -o username=zp</span><br></pre></td></tr></table></figure></p>
+<p>[global]字段下面添加:<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">client lanman auth = yes&#10;security = user</span><br></pre></td></tr></table></figure></p>
+<p>在文件末尾添加:<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">&#9;[hj]&#10;&#9;    path=/hj&#10;&#9;    comment=zhangpengdemulu&#10;&#9;    writeable=yes&#10;&#9;    valid users = @zp&#10;``` &#10;&#20462;&#25913;&#37197;&#32622;&#25991;&#20214;&#20197;&#21518;,&#37325;&#21551;samba&#26381;&#21153;&#10;&#27880;&#24847; /hj &#30446;&#24405;&#38656;&#35201;&#26377;&#35835;&#20889;&#25191;&#34892;&#26435;&#38480;,&#22312;samba&#26381;&#21153;&#22120;&#25191;&#34892;:&#10;&#10;```bash&#10;$ chmod 777 /hj</span><br></pre></td></tr></table></figure></p>
+<h4 id="客户端访问方法">客户端访问方法</h4><p>linux下两种方式<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ smbmount <span class="number">192.168</span>.<span class="number">0.194</span>:/hj /zp/<span class="built_in">test</span> -o username=zp</span><br><span class="line">$ mount -t cifs //<span class="number">192.168</span>.<span class="number">0.194</span>/hj /zp/<span class="built_in">test</span> -o username=zp</span><br></pre></td></tr></table></figure></p>
 <p>windows直接挂载</p>
-<h3 id="附加命令:">附加命令:</h3><p>查看samba的用户</p>
-<pre><code><span class="title">sudo</span> pdbedit -L
-</code></pre><p>增加一个用户到samba</p>
-<pre><code>sudo pdbedit -<span class="tag">a</span> username
-</code></pre><p>从samba账户中删除一个用户</p>
-<pre><code><span class="title">sudo</span> pdbedit -x username
-</code></pre><p>显示samba账户信息</p>
-<pre><code><span class="title">sudo</span> pdbedit -r username
-</code></pre><p>测试samba账户是否正常</p>
-<pre><code>smbclient -<span class="keyword">L</span> 192.168.1.1 -<span class="keyword">U</span> username -<span class="keyword">d</span> 3
-</code></pre><p>写于: 2013年04月17日<br>更新于: 2015年03月22日</p>
+<h3 id="附加命令:">附加命令:</h3><p>查看samba的用户<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo pdbedit -L</span><br></pre></td></tr></table></figure></p>
+<p>增加一个用户到samba<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo pdbedit <span class="operator">-a</span> username</span><br></pre></td></tr></table></figure></p>
+<p>从samba账户中删除一个用户<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo pdbedit -x username</span><br></pre></td></tr></table></figure></p>
+<p>显示samba账户信息<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo pdbedit -r username</span><br></pre></td></tr></table></figure></p>
+<p>测试samba账户是否正常<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">smbclient -L <span class="number">192.168</span>.<span class="number">1.1</span> -U username <span class="operator">-d</span> <span class="number">3</span></span><br></pre></td></tr></table></figure></p>
+<p>写于: 2013年04月17日<br>更新于: 2015年03月22日</p>
 
     
   </div>

@@ -10,21 +10,17 @@
     <meta name="author" content="zphj1987">
   
   
-    <meta name="description" content="在/etc/default/halt 增加下面
-INIT_HALT = POWEROFF">
+    <meta name="description" content="在/etc/default/halt 增加下面INIT_HALT = POWEROFF">
   
-  <meta name="description" content="在/etc/default/halt 增加下面
-INIT_HALT = POWEROFF">
+  <meta name="description" content="在/etc/default/halt 增加下面INIT_HALT = POWEROFF">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ubuntu无法关机">
 <meta property="og:url" content="http://yoursite.com/2015/03/23/ubuntu无法关机/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
-<meta property="og:description" content="在/etc/default/halt 增加下面
-INIT_HALT = POWEROFF">
+<meta property="og:description" content="在/etc/default/halt 增加下面INIT_HALT = POWEROFF">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ubuntu无法关机">
-<meta name="twitter:description" content="在/etc/default/halt 增加下面
-INIT_HALT = POWEROFF">
+<meta name="twitter:description" content="在/etc/default/halt 增加下面INIT_HALT = POWEROFF">
   
   
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
@@ -88,21 +84,13 @@ var _hmt = _hmt || [];
   
   <div class="entry">
     
-      <p>在/etc/default/halt 增加下面</p>
-<pre><code><span class="attribute">INIT_HALT </span>=<span class="string"> POWEROFF</span>
-</code></pre><a id="more"></a>
+      <p>在/etc/default/halt 增加下面<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">INIT_HALT = POWEROFF</span><br></pre></td></tr></table></figure></p>
+<a id="more"></a>
 <hr>
 <p>另一种方法:</p>
 <p>I have the same problem and found a solution which worked out for me.</p>
-<p>Type in terminal:</p>
-<pre><code>sudo -i (<span class="built_in">to</span> <span class="built_in">get</span> <span class="operator">a</span> root <span class="built_in">shell</span>, sudo gedit is <span class="operator">not</span> recommended)
-gedit /etc/default/grub
-Find <span class="operator">the</span> <span class="built_in">line</span>: GRUB_CMDLINE_LINUX_DEFAULT=<span class="string">"quiet splash"</span>
-Change this <span class="built_in">to</span>: GRUB_CMDLINE_LINUX_DEFAULT=<span class="string">"quiet splash acpi=force"</span>
-Save <span class="operator">the</span> <span class="built_in">file</span> <span class="operator">and</span> <span class="built_in">close</span> <span class="operator">the</span> <span class="built_in">file</span>.
-Finally, <span class="operator">in</span> terminal: update-grub
-exit (<span class="built_in">to</span> <span class="function"><span class="keyword">end</span> <span class="title">the</span> <span class="title">root</span> <span class="title">shell</span>)</span>
-</code></pre><p>写于: 2014年05月07日<br>更新于: 2015年03月23日</p>
+<p>Type in terminal:<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">sudo -i (to get a root shell, sudo gedit is not recommended)&#10;gedit /etc/default/grub&#10;Find the line: GRUB_CMDLINE_LINUX_DEFAULT=&#34;quiet splash&#34;&#10;Change this to: GRUB_CMDLINE_LINUX_DEFAULT=&#34;quiet splash acpi=force&#34;&#10;Save the file and close the file.&#10;Finally, in terminal: update-grub&#10;exit (to end the root shell)</span><br></pre></td></tr></table></figure></p>
+<p>写于: 2014年05月07日<br>更新于: 2015年03月23日</p>
 
     
   </div>

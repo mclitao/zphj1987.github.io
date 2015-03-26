@@ -10,45 +10,17 @@
     <meta name="author" content="zphj1987">
   
   
-    <meta name="description" content="这个是针对tahoe这个文件系统做的一个更新租约和检查数据完整性的脚本,并且把结果保存下来,先要把所有的caps保存到一个文本当中
-#! /bin/sh
-   a=$(cat /home/cap-list.txt |wc -l)
-   c=`date`
-   echo $a
-   for((i=1;i&amp;lt;=a;i++))
-   do
-       b=$( head -$i /home/cap">
+    <meta name="description" content="这个是针对tahoe这个文件系统做的一个更新租约和检查数据完整性的脚本,并且把结果保存下来,先要把所有的caps保存到一个文本当中#! /bin/sh&amp;#10;   a=$(cat /home/cap-list.txt |wc -l)&amp;#10;   c=`date`&amp;#10;   echo $a&amp;#10;   for((i=1;i&amp;#60;=a;i++))&amp;#10;   do&amp;#10;">
   
-  <meta name="description" content="这个是针对tahoe这个文件系统做的一个更新租约和检查数据完整性的脚本,并且把结果保存下来,先要把所有的caps保存到一个文本当中
-#! /bin/sh
-   a=$(cat /home/cap-list.txt |wc -l)
-   c=`date`
-   echo $a
-   for((i=1;i&amp;lt;=a;i++))
-   do
-       b=$( head -$i /home/cap">
+  <meta name="description" content="这个是针对tahoe这个文件系统做的一个更新租约和检查数据完整性的脚本,并且把结果保存下来,先要把所有的caps保存到一个文本当中#! /bin/sh&amp;#10;   a=$(cat /home/cap-list.txt |wc -l)&amp;#10;   c=`date`&amp;#10;   echo $a&amp;#10;   for((i=1;i&amp;#60;=a;i++))&amp;#10;   do&amp;#10;">
 <meta property="og:type" content="article">
 <meta property="og:title" content="更新租约和检测数据完整性脚本">
 <meta property="og:url" content="http://yoursite.com/2015/03/22/更新租约和检测数据完整性脚本/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
-<meta property="og:description" content="这个是针对tahoe这个文件系统做的一个更新租约和检查数据完整性的脚本,并且把结果保存下来,先要把所有的caps保存到一个文本当中
-#! /bin/sh
-   a=$(cat /home/cap-list.txt |wc -l)
-   c=`date`
-   echo $a
-   for((i=1;i&amp;lt;=a;i++))
-   do
-       b=$( head -$i /home/cap">
+<meta property="og:description" content="这个是针对tahoe这个文件系统做的一个更新租约和检查数据完整性的脚本,并且把结果保存下来,先要把所有的caps保存到一个文本当中#! /bin/sh&amp;#10;   a=$(cat /home/cap-list.txt |wc -l)&amp;#10;   c=`date`&amp;#10;   echo $a&amp;#10;   for((i=1;i&amp;#60;=a;i++))&amp;#10;   do&amp;#10;">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="更新租约和检测数据完整性脚本">
-<meta name="twitter:description" content="这个是针对tahoe这个文件系统做的一个更新租约和检查数据完整性的脚本,并且把结果保存下来,先要把所有的caps保存到一个文本当中
-#! /bin/sh
-   a=$(cat /home/cap-list.txt |wc -l)
-   c=`date`
-   echo $a
-   for((i=1;i&amp;lt;=a;i++))
-   do
-       b=$( head -$i /home/cap">
+<meta name="twitter:description" content="这个是针对tahoe这个文件系统做的一个更新租约和检查数据完整性的脚本,并且把结果保存下来,先要把所有的caps保存到一个文本当中#! /bin/sh&amp;#10;   a=$(cat /home/cap-list.txt |wc -l)&amp;#10;   c=`date`&amp;#10;   echo $a&amp;#10;   for((i=1;i&amp;#60;=a;i++))&amp;#10;   do&amp;#10;">
   
   
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
@@ -112,25 +84,8 @@ var _hmt = _hmt || [];
   
   <div class="entry">
     
-      <p>这个是针对tahoe这个文件系统做的一个更新租约和检查数据完整性的脚本,并且把结果保存下来,先要把所有的caps保存到一个文本当中</p>
-<pre><code><span class="comment">#! /bin/sh</span>
-   a=<span class="variable">$(</span>cat /home/cap-list.txt |wc -l)
-   c=<span class="string">`date`</span>
-   echo <span class="variable">$a</span>
-   <span class="keyword">for</span>((i=<span class="number">1</span>;i&lt;=a;i++))
-   <span class="keyword">do</span>
-       b=<span class="variable">$(</span> head -<span class="variable">$i</span> /home/cap-list.txt |tail -<span class="number">1</span>)
-       echo <span class="variable">$b</span> <span class="prompt">&gt;&gt; </span>/home/checktime.txt
-       echo <span class="string">"start time:"</span> <span class="prompt">&gt;&gt; </span>/home/checktime.txt
-       echo <span class="string">`date`</span> <span class="prompt">&gt;&gt; </span>/home/checktime.txt
-       tahoe deep-check --add-lease --repair --dir-cap=<span class="variable">$b</span> <span class="prompt">&gt;&gt; </span>/home/checktime.txt
-       echo <span class="string">"end time:"</span> <span class="prompt">&gt;&gt; </span>/home/checktime.txt
-       echo <span class="string">`date`</span> <span class="prompt">&gt;&gt; </span>/home/checktime.txt
-   done
-   d=<span class="string">`date`</span>
-   echo <span class="variable">$c</span> <span class="prompt">&gt;&gt; </span>/home/checktime.txt
-   echo <span class="variable">$d</span> <span class="prompt">&gt;&gt; </span>/home/checktime.txt
-</code></pre><p>写于: 2012年4月14日<br>更新于: 2015年03月22日</p>
+      <p>这个是针对tahoe这个文件系统做的一个更新租约和检查数据完整性的脚本,并且把结果保存下来,先要把所有的caps保存到一个文本当中<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">#! /bin/sh&#10;   a=$(cat /home/cap-list.txt |wc -l)&#10;   c=`date`&#10;   echo $a&#10;   for((i=1;i&#60;=a;i++))&#10;   do&#10;       b=$( head -$i /home/cap-list.txt |tail -1)&#10;       echo $b &#62;&#62; /home/checktime.txt&#10;       echo &#34;start time:&#34; &#62;&#62; /home/checktime.txt&#10;       echo `date` &#62;&#62; /home/checktime.txt&#10;       tahoe deep-check --add-lease --repair --dir-cap=$b &#62;&#62; /home/checktime.txt&#10;       echo &#34;end time:&#34; &#62;&#62; /home/checktime.txt&#10;       echo `date` &#62;&#62; /home/checktime.txt&#10;   done&#10;   d=`date`&#10;   echo $c &#62;&#62; /home/checktime.txt&#10;   echo $d &#62;&#62; /home/checktime.txt</span><br></pre></td></tr></table></figure></p>
+<p>写于: 2012年4月14日<br>更新于: 2015年03月22日</p>
 
     
   </div>

@@ -11,28 +11,20 @@
   
   
     <meta name="description" content="linux在安装一些软件的时候可能会用到修改主机的mac地址的问题,在网卡配置文件/etc/network/interface中添加mac地址的方式我在修改重启机器后没有生效,所以采用其他方式
-在这里推荐使用脚本修改,将脚本写在开机启动配置文件中,这样开机后就能生成你需要的mac地址在/etc/rc.local 中添加
-ifconfig eth0 down
-ifconfig eth0 hw eth">
+在这里推荐使用脚本修改,将脚本写在开机启动配置文件中,这样开机后就能生成你需要的mac地址在/etc/rc.local 中添加ifconfig eth0 downifconfig eth0 hw ether">
   
   <meta name="description" content="linux在安装一些软件的时候可能会用到修改主机的mac地址的问题,在网卡配置文件/etc/network/interface中添加mac地址的方式我在修改重启机器后没有生效,所以采用其他方式
-在这里推荐使用脚本修改,将脚本写在开机启动配置文件中,这样开机后就能生成你需要的mac地址在/etc/rc.local 中添加
-ifconfig eth0 down
-ifconfig eth0 hw eth">
+在这里推荐使用脚本修改,将脚本写在开机启动配置文件中,这样开机后就能生成你需要的mac地址在/etc/rc.local 中添加ifconfig eth0 downifconfig eth0 hw ether">
 <meta property="og:type" content="article">
 <meta property="og:title" content="linux修改网卡的mac地址">
 <meta property="og:url" content="http://yoursite.com/2015/03/22/linux修改网卡的mac地址/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
 <meta property="og:description" content="linux在安装一些软件的时候可能会用到修改主机的mac地址的问题,在网卡配置文件/etc/network/interface中添加mac地址的方式我在修改重启机器后没有生效,所以采用其他方式
-在这里推荐使用脚本修改,将脚本写在开机启动配置文件中,这样开机后就能生成你需要的mac地址在/etc/rc.local 中添加
-ifconfig eth0 down
-ifconfig eth0 hw eth">
+在这里推荐使用脚本修改,将脚本写在开机启动配置文件中,这样开机后就能生成你需要的mac地址在/etc/rc.local 中添加ifconfig eth0 downifconfig eth0 hw ether">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="linux修改网卡的mac地址">
 <meta name="twitter:description" content="linux在安装一些软件的时候可能会用到修改主机的mac地址的问题,在网卡配置文件/etc/network/interface中添加mac地址的方式我在修改重启机器后没有生效,所以采用其他方式
-在这里推荐使用脚本修改,将脚本写在开机启动配置文件中,这样开机后就能生成你需要的mac地址在/etc/rc.local 中添加
-ifconfig eth0 down
-ifconfig eth0 hw eth">
+在这里推荐使用脚本修改,将脚本写在开机启动配置文件中,这样开机后就能生成你需要的mac地址在/etc/rc.local 中添加ifconfig eth0 downifconfig eth0 hw ether">
   
   
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
@@ -97,12 +89,9 @@ var _hmt = _hmt || [];
   <div class="entry">
     
       <p>linux在安装一些软件的时候可能会用到修改主机的mac地址的问题,在网卡配置文件<code>/etc/network/interface</code>中添加mac地址的方式我在修改重启机器后没有生效,所以采用其他方式</p>
-<p>在这里推荐使用脚本修改,将脚本写在开机启动配置文件中,这样开机后就能生成你需要的mac地址<br>在/etc/rc.local 中添加</p>
-<pre><code><span class="tag">ifconfig</span> <span class="tag">eth0</span> <span class="tag">down</span>
-<span class="tag">ifconfig</span> <span class="tag">eth0</span> <span class="tag">hw</span> <span class="tag">ether</span>  00<span class="pseudo">:e0</span><span class="pseudo">:34</span><span class="pseudo">:5b</span><span class="pseudo">:b4</span><span class="pseudo">:i8</span>
-<span class="tag">ifconfig</span> <span class="tag">eth0</span> <span class="tag">up</span>
-</code></pre><p>这样修改后重启机器的mac地址就是你设置的地址了<br>这个时候会出现连不上外网的问题,使用命令route查看你会发现default默认网关路由项不见了,所以这个时候需要添加默认路由</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">route add default gw <span class="number">192.168</span>.<span class="number">1.1</span></span><br></pre></td></tr></table></figure>
+<p>在这里推荐使用脚本修改,将脚本写在开机启动配置文件中,这样开机后就能生成你需要的mac地址<br>在/etc/rc.local 中添加<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ifconfig eth0 down</span><br><span class="line">ifconfig eth0 hw ether  <span class="number">00</span>:e0:<span class="number">34</span>:<span class="number">5</span>b:b4:i8</span><br><span class="line">ifconfig eth0 up</span><br></pre></td></tr></table></figure></p>
+<p>这样修改后重启机器的mac地址就是你设置的地址了<br>这个时候会出现连不上外网的问题,使用命令route查看你会发现default默认网关路由项不见了,所以这个时候需要添加默认路由</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">route add default gw <span class="number">192.168</span>.<span class="number">1.1</span></span><br></pre></td></tr></table></figure>
 <p>将这句加在/etc/rc.local 中的 ifconfig eth0 up 后面让他开机启动,这样就完成了机器网卡mac地址的修改了</p>
 <p>写于: 2012年1月14日<br>更新于: 2015年03月22日</p>
 

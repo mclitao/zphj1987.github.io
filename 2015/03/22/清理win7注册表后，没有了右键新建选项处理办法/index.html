@@ -10,21 +10,17 @@
     <meta name="author" content="zphj1987">
   
   
-    <meta name="description" content="今天清理win7注册表的右键选项,发现清理完了后,居然没有了右键新建,什么文件都无法创建,搜索了下,发现有人给出了解决办法,如下:
-REGEDIT4 [HKEY_CLASSES_ROOT\Directory\Background\shellex\ContextMenuHandlers\New] @=&quot;{D969A300-E7FF-11d0-A93B-00A0C90F2719}&quot; [HKEY_CLA">
+    <meta name="description" content="今天清理win7注册表的右键选项,发现清理完了后,居然没有了右键新建,什么文件都无法创建,搜索了下,发现有人给出了解决办法,如下:REGEDIT4 [HKEY_CLASSES_ROOT\Directory\Background\shellex\ContextMenuHandlers\New] @=&amp;#34;&amp;#123;D969A300-E7FF-11d0-A93B-00A0C90F2719&amp;#12">
   
-  <meta name="description" content="今天清理win7注册表的右键选项,发现清理完了后,居然没有了右键新建,什么文件都无法创建,搜索了下,发现有人给出了解决办法,如下:
-REGEDIT4 [HKEY_CLASSES_ROOT\Directory\Background\shellex\ContextMenuHandlers\New] @=&quot;{D969A300-E7FF-11d0-A93B-00A0C90F2719}&quot; [HKEY_CLA">
+  <meta name="description" content="今天清理win7注册表的右键选项,发现清理完了后,居然没有了右键新建,什么文件都无法创建,搜索了下,发现有人给出了解决办法,如下:REGEDIT4 [HKEY_CLASSES_ROOT\Directory\Background\shellex\ContextMenuHandlers\New] @=&amp;#34;&amp;#123;D969A300-E7FF-11d0-A93B-00A0C90F2719&amp;#12">
 <meta property="og:type" content="article">
 <meta property="og:title" content="清理win7注册表后，没有了右键新建选项处理办法">
 <meta property="og:url" content="http://yoursite.com/2015/03/22/清理win7注册表后，没有了右键新建选项处理办法/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
-<meta property="og:description" content="今天清理win7注册表的右键选项,发现清理完了后,居然没有了右键新建,什么文件都无法创建,搜索了下,发现有人给出了解决办法,如下:
-REGEDIT4 [HKEY_CLASSES_ROOT\Directory\Background\shellex\ContextMenuHandlers\New] @=&quot;{D969A300-E7FF-11d0-A93B-00A0C90F2719}&quot; [HKEY_CLA">
+<meta property="og:description" content="今天清理win7注册表的右键选项,发现清理完了后,居然没有了右键新建,什么文件都无法创建,搜索了下,发现有人给出了解决办法,如下:REGEDIT4 [HKEY_CLASSES_ROOT\Directory\Background\shellex\ContextMenuHandlers\New] @=&amp;#34;&amp;#123;D969A300-E7FF-11d0-A93B-00A0C90F2719&amp;#12">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="清理win7注册表后，没有了右键新建选项处理办法">
-<meta name="twitter:description" content="今天清理win7注册表的右键选项,发现清理完了后,居然没有了右键新建,什么文件都无法创建,搜索了下,发现有人给出了解决办法,如下:
-REGEDIT4 [HKEY_CLASSES_ROOT\Directory\Background\shellex\ContextMenuHandlers\New] @=&quot;{D969A300-E7FF-11d0-A93B-00A0C90F2719}&quot; [HKEY_CLA">
+<meta name="twitter:description" content="今天清理win7注册表的右键选项,发现清理完了后,居然没有了右键新建,什么文件都无法创建,搜索了下,发现有人给出了解决办法,如下:REGEDIT4 [HKEY_CLASSES_ROOT\Directory\Background\shellex\ContextMenuHandlers\New] @=&amp;#34;&amp;#123;D969A300-E7FF-11d0-A93B-00A0C90F2719&amp;#12">
   
   
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
@@ -88,9 +84,8 @@ var _hmt = _hmt || [];
   
   <div class="entry">
     
-      <p>今天清理win7注册表的右键选项,发现清理完了后,居然没有了右键新建,什么文件都无法创建,搜索了下,发现有人给出了解决办法,如下:</p>
-<pre><code>REGEDIT4 <span class="special">[</span>HKEY_CLASSES_ROOT<span class="command">\Directory</span><span class="command">\Background</span><span class="command">\shellex</span><span class="command">\ContextMenuHandlers</span><span class="command">\New</span><span class="special">]</span> @="<span class="special">{</span>D969A300-E7FF-11d0-A93B-00A0C90F2719<span class="special">}</span>" <span class="special">[</span>HKEY_CLASSES_ROOT<span class="command">\Directory</span><span class="command">\Background</span><span class="command">\shellex</span><span class="command">\ContextMenuHandlers</span><span class="command">\New</span><span class="command">\command</span><span class="special">]</span> @=hex(2): 
-</code></pre><p>建一个文本文件,把上面的内容拷过去,然后把文件后缀改成.reg。双击执行就可以了</p>
+      <p>今天清理win7注册表的右键选项,发现清理完了后,居然没有了右键新建,什么文件都无法创建,搜索了下,发现有人给出了解决办法,如下:<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">REGEDIT4 [HKEY_CLASSES_ROOT\Directory\Background\shellex\ContextMenuHandlers\New] @=&#34;&#123;D969A300-E7FF-11d0-A93B-00A0C90F2719&#125;&#34; [HKEY_CLASSES_ROOT\Directory\Background\shellex\ContextMenuHandlers\New\command] @=hex(2):</span><br></pre></td></tr></table></figure></p>
+<p>建一个文本文件,把上面的内容拷过去,然后把文件后缀改成.reg。双击执行就可以了</p>
 <p>写于: 2012年04月25日<br>更新于: 2015年03月22日</p>
 
     

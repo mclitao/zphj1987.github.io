@@ -10,33 +10,17 @@
     <meta name="author" content="zphj1987">
   
   
-    <meta name="description" content="查询磁盘对应关系:
-[root@xenserver-eqtwbths ~]# ll /dev/disk/by-id/
-total 0
-lrwxrwxrwx 1 root root  9 Jun  5 13:24 edd-int13_dev81 -&amp;gt; ../../sdb
-lrwxrwxrwx 1 root root 10 Jun  5 14:14 edd-int13_dev81-part1 -">
+    <meta name="description" content="查询磁盘对应关系:[root@xenserver-eqtwbths ~]# ll /dev/disk/by-id/total 0lrwxrwxrwx 1 root root  9 Jun  5 13:24 edd-int13_dev81 -&amp;gt; ../../sdblrwxrwxrwx 1 root root 10 Jun  5 14:14 edd-int13_dev81-part1 -&amp;gt;">
   
-  <meta name="description" content="查询磁盘对应关系:
-[root@xenserver-eqtwbths ~]# ll /dev/disk/by-id/
-total 0
-lrwxrwxrwx 1 root root  9 Jun  5 13:24 edd-int13_dev81 -&amp;gt; ../../sdb
-lrwxrwxrwx 1 root root 10 Jun  5 14:14 edd-int13_dev81-part1 -">
+  <meta name="description" content="查询磁盘对应关系:[root@xenserver-eqtwbths ~]# ll /dev/disk/by-id/total 0lrwxrwxrwx 1 root root  9 Jun  5 13:24 edd-int13_dev81 -&amp;gt; ../../sdblrwxrwxrwx 1 root root 10 Jun  5 14:14 edd-int13_dev81-part1 -&amp;gt;">
 <meta property="og:type" content="article">
 <meta property="og:title" content="配置xenserver本地存储">
 <meta property="og:url" content="http://yoursite.com/2015/03/24/配置xenserver本地存储/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
-<meta property="og:description" content="查询磁盘对应关系:
-[root@xenserver-eqtwbths ~]# ll /dev/disk/by-id/
-total 0
-lrwxrwxrwx 1 root root  9 Jun  5 13:24 edd-int13_dev81 -&amp;gt; ../../sdb
-lrwxrwxrwx 1 root root 10 Jun  5 14:14 edd-int13_dev81-part1 -">
+<meta property="og:description" content="查询磁盘对应关系:[root@xenserver-eqtwbths ~]# ll /dev/disk/by-id/total 0lrwxrwxrwx 1 root root  9 Jun  5 13:24 edd-int13_dev81 -&amp;gt; ../../sdblrwxrwxrwx 1 root root 10 Jun  5 14:14 edd-int13_dev81-part1 -&amp;gt;">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="配置xenserver本地存储">
-<meta name="twitter:description" content="查询磁盘对应关系:
-[root@xenserver-eqtwbths ~]# ll /dev/disk/by-id/
-total 0
-lrwxrwxrwx 1 root root  9 Jun  5 13:24 edd-int13_dev81 -&amp;gt; ../../sdb
-lrwxrwxrwx 1 root root 10 Jun  5 14:14 edd-int13_dev81-part1 -">
+<meta name="twitter:description" content="查询磁盘对应关系:[root@xenserver-eqtwbths ~]# ll /dev/disk/by-id/total 0lrwxrwxrwx 1 root root  9 Jun  5 13:24 edd-int13_dev81 -&amp;gt; ../../sdblrwxrwxrwx 1 root root 10 Jun  5 14:14 edd-int13_dev81-part1 -&amp;gt;">
   
   
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
@@ -100,36 +84,15 @@ var _hmt = _hmt || [];
   
   <div class="entry">
     
-      <p>查询磁盘对应关系:</p>
-<pre><code>[<span class="literal">root</span>@xenserver-eqtwbths ~]<span class="comment"># ll /dev/disk/by-id/</span>
-total <span class="number">0</span>
-lrwxrwxrwx <span class="number">1</span> <span class="literal">root</span> <span class="literal">root</span>  <span class="number">9</span> <span class="constant">Jun</span>  <span class="number">5</span> <span class="number">13</span>:<span class="number">24</span> edd-int13_dev81 -&gt; ../../sdb
-lrwxrwxrwx <span class="number">1</span> <span class="literal">root</span> <span class="literal">root</span> <span class="number">10</span> <span class="constant">Jun</span>  <span class="number">5</span> <span class="number">14</span>:<span class="number">14</span> edd-int13_dev81-part1 -&gt; ../../sdb1
-lrwxrwxrwx <span class="number">1</span> <span class="literal">root</span> <span class="literal">root</span>  <span class="number">9</span> <span class="constant">Jun</span>  <span class="number">5</span> <span class="number">13</span>:<span class="number">24</span> edd-int13_dev82 -&gt; ../../sdc
-lrwxrwxrwx <span class="number">1</span> <span class="literal">root</span> <span class="literal">root</span>  <span class="number">9</span> <span class="constant">Jun</span>  <span class="number">5</span> <span class="number">13</span>:<span class="number">24</span> edd-int13_dev83 -&gt; ../../sdd
-lrwxrwxrwx <span class="number">1</span> <span class="literal">root</span> <span class="literal">root</span> <span class="number">10</span> <span class="constant">Jun</span>  <span class="number">5</span> <span class="number">13</span>:<span class="number">24</span> edd-int13_dev83-part1 -&gt; ../../sdd1
-lrwxrwxrwx <span class="number">1</span> <span class="literal">root</span> <span class="literal">root</span>  <span class="number">9</span> <span class="constant">Jun</span>  <span class="number">5</span> <span class="number">13</span>:<span class="number">24</span> scsi-<span class="constant">S</span>ATA_ST1000VX00<span class="number">0</span>-<span class="number">9</span>YW_S1D3PNHD -&gt; ../../sdc
-lrwxrwxrwx <span class="number">1</span> <span class="literal">root</span> <span class="literal">root</span>  <span class="number">9</span> <span class="constant">Jun</span>  <span class="number">5</span> <span class="number">13</span>:<span class="number">24</span> scsi-<span class="constant">S</span>ATA_ST1000VX00<span class="number">0</span>-<span class="number">9</span>YW_S1D3PPH8 -&gt; ../../sdd
-lrwxrwxrwx <span class="number">1</span> <span class="literal">root</span> <span class="literal">root</span> <span class="number">10</span> <span class="constant">Jun</span>  <span class="number">5</span> <span class="number">13</span>:<span class="number">24</span> scsi-<span class="constant">S</span>ATA_ST1000VX00<span class="number">0</span>-<span class="number">9</span>YW_S1D3PPH8-part1 -&gt; ../../sdd1
-lrwxrwxrwx <span class="number">1</span> <span class="literal">root</span> <span class="literal">root</span>  <span class="number">9</span> <span class="constant">Jun</span>  <span class="number">5</span> <span class="number">13</span>:<span class="number">24</span> scsi-<span class="constant">S</span>ATA_ST1000VX00<span class="number">0</span>-<span class="number">9</span>YW_S1D4AGVJ -&gt; ../../sdb
-lrwxrwxrwx <span class="number">1</span> <span class="literal">root</span> <span class="literal">root</span> <span class="number">10</span> <span class="constant">Jun</span>  <span class="number">5</span> <span class="number">14</span>:<span class="number">14</span> scsi-<span class="constant">S</span>ATA_ST1000VX00<span class="number">0</span>-<span class="number">9</span>YW_S1D4AGVJ-part1 -&gt; ../../sdb1
-lrwxrwxrwx <span class="number">1</span> <span class="literal">root</span> <span class="literal">root</span>  <span class="number">9</span> <span class="constant">Jun</span>  <span class="number">5</span> <span class="number">13</span>:<span class="number">24</span> scsi-<span class="constant">S</span>ATA_ST1000VX00<span class="number">0</span>-<span class="number">9</span>YW_S1D4AGX3 -&gt; ../../sda
-lrwxrwxrwx <span class="number">1</span> <span class="literal">root</span> <span class="literal">root</span> <span class="number">10</span> <span class="constant">Jun</span>  <span class="number">5</span> <span class="number">13</span>:<span class="number">24</span> scsi-<span class="constant">S</span>ATA_ST1000VX00<span class="number">0</span>-<span class="number">9</span>YW_S1D4AGX3-part1 -&gt; ../../sda1
-lrwxrwxrwx <span class="number">1</span> <span class="literal">root</span> <span class="literal">root</span> <span class="number">10</span> <span class="constant">Jun</span>  <span class="number">5</span> <span class="number">13</span>:<span class="number">24</span> scsi-<span class="constant">S</span>ATA_ST1000VX00<span class="number">0</span>-<span class="number">9</span>YW_S1D4AGX3-part2 -&gt; ../../sda2
-lrwxrwxrwx <span class="number">1</span> <span class="literal">root</span> <span class="literal">root</span> <span class="number">10</span> <span class="constant">Jun</span>  <span class="number">5</span> <span class="number">13</span>:<span class="number">24</span> scsi-<span class="constant">S</span>ATA_ST1000VX00<span class="number">0</span>-<span class="number">9</span>YW_S1D4AGX3-part3 -&gt; ../../sda3
-</code></pre><a id="more"></a>
-<p>准备添加sdb1作为存储</p>
-<pre><code>root@xenserver-eqtwbths ~]# xe sr-create <span class="class"><span class="keyword">type</span></span>=lvm content-<span class="class"><span class="keyword">type</span></span>=user device-config:device=/dev/disk/by-id/edd-int13_dev81-part1 name-label=<span class="string">"Local storage 2(sdb)"</span> 
-</code></pre><p>2.XS删除本地存储连接 </p>
-<p>列出pdb模块，找到对应存储的UUID </p>
-<pre><code>xe pbd-<span class="type">list</span>  
-</code></pre><p>卸载对应uuid的存储 </p>
-<pre><code>xe pbd-unplug <span class="built_in">uuid</span>=“<span class="built_in">uuid</span> of <span class="constant">P</span>BD”  
-</code></pre><p>列出存储的UUID，找到对应存储的UUID </p>
-<pre><code>xe sr-<span class="type">list</span>  
-</code></pre><p>删除本地存储连接 </p>
-<pre><code>xe sr-destroy <span class="built_in">uuid</span>=“<span class="built_in">uuid</span> of <span class="constant">S</span>R ” 
-</code></pre><p>写于: 2014年06月05日<br>更新于: 2015年03月24日</p>
+      <p>查询磁盘对应关系:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@xenserver-eqtwbths ~]<span class="comment"># ll /dev/disk/by-id/</span></span><br><span class="line">total <span class="number">0</span></span><br><span class="line">lrwxrwxrwx <span class="number">1</span> root root  <span class="number">9</span> Jun  <span class="number">5</span> <span class="number">13</span>:<span class="number">24</span> edd-int13_dev81 -&gt; ../../sdb</span><br><span class="line">lrwxrwxrwx <span class="number">1</span> root root <span class="number">10</span> Jun  <span class="number">5</span> <span class="number">14</span>:<span class="number">14</span> edd-int13_dev81-part1 -&gt; ../../sdb1</span><br><span class="line">lrwxrwxrwx <span class="number">1</span> root root  <span class="number">9</span> Jun  <span class="number">5</span> <span class="number">13</span>:<span class="number">24</span> edd-int13_dev82 -&gt; ../../sdc</span><br><span class="line">lrwxrwxrwx <span class="number">1</span> root root  <span class="number">9</span> Jun  <span class="number">5</span> <span class="number">13</span>:<span class="number">24</span> edd-int13_dev83 -&gt; ../../sdd</span><br><span class="line">lrwxrwxrwx <span class="number">1</span> root root <span class="number">10</span> Jun  <span class="number">5</span> <span class="number">13</span>:<span class="number">24</span> edd-int13_dev83-part1 -&gt; ../../sdd1</span><br><span class="line">lrwxrwxrwx <span class="number">1</span> root root  <span class="number">9</span> Jun  <span class="number">5</span> <span class="number">13</span>:<span class="number">24</span> scsi-SATA_ST1000VX000-<span class="number">9</span>YW_S1D3PNHD -&gt; ../../sdc</span><br><span class="line">lrwxrwxrwx <span class="number">1</span> root root  <span class="number">9</span> Jun  <span class="number">5</span> <span class="number">13</span>:<span class="number">24</span> scsi-SATA_ST1000VX000-<span class="number">9</span>YW_S1D3PPH8 -&gt; ../../sdd</span><br><span class="line">lrwxrwxrwx <span class="number">1</span> root root <span class="number">10</span> Jun  <span class="number">5</span> <span class="number">13</span>:<span class="number">24</span> scsi-SATA_ST1000VX000-<span class="number">9</span>YW_S1D3PPH8-part1 -&gt; ../../sdd1</span><br><span class="line">lrwxrwxrwx <span class="number">1</span> root root  <span class="number">9</span> Jun  <span class="number">5</span> <span class="number">13</span>:<span class="number">24</span> scsi-SATA_ST1000VX000-<span class="number">9</span>YW_S1D4AGVJ -&gt; ../../sdb</span><br><span class="line">lrwxrwxrwx <span class="number">1</span> root root <span class="number">10</span> Jun  <span class="number">5</span> <span class="number">14</span>:<span class="number">14</span> scsi-SATA_ST1000VX000-<span class="number">9</span>YW_S1D4AGVJ-part1 -&gt; ../../sdb1</span><br><span class="line">lrwxrwxrwx <span class="number">1</span> root root  <span class="number">9</span> Jun  <span class="number">5</span> <span class="number">13</span>:<span class="number">24</span> scsi-SATA_ST1000VX000-<span class="number">9</span>YW_S1D4AGX3 -&gt; ../../sda</span><br><span class="line">lrwxrwxrwx <span class="number">1</span> root root <span class="number">10</span> Jun  <span class="number">5</span> <span class="number">13</span>:<span class="number">24</span> scsi-SATA_ST1000VX000-<span class="number">9</span>YW_S1D4AGX3-part1 -&gt; ../../sda1</span><br><span class="line">lrwxrwxrwx <span class="number">1</span> root root <span class="number">10</span> Jun  <span class="number">5</span> <span class="number">13</span>:<span class="number">24</span> scsi-SATA_ST1000VX000-<span class="number">9</span>YW_S1D4AGX3-part2 -&gt; ../../sda2</span><br><span class="line">lrwxrwxrwx <span class="number">1</span> root root <span class="number">10</span> Jun  <span class="number">5</span> <span class="number">13</span>:<span class="number">24</span> scsi-SATA_ST1000VX000-<span class="number">9</span>YW_S1D4AGX3-part3 -&gt; ../../sda3</span><br></pre></td></tr></table></figure></p>
+<a id="more"></a>
+<p>准备添加sdb1作为存储<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@xenserver-eqtwbths ~]<span class="comment"># xe sr-create type=lvm content-type=user device-config:device=/dev/disk/by-id/edd-int13_dev81-part1 name-label="Local storage 2(sdb)"</span></span><br></pre></td></tr></table></figure></p>
+<p>2.XS删除本地存储连接 </p>
+<p>列出pdb模块，找到对应存储的UUID<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">xe pbd-list</span><br></pre></td></tr></table></figure></p>
+<p>卸载对应uuid的存储<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">xe pbd-unplug uuid=“uuid of PBD”</span><br></pre></td></tr></table></figure></p>
+<p>列出存储的UUID，找到对应存储的UUID<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">xe sr-list</span><br></pre></td></tr></table></figure></p>
+<p>删除本地存储连接<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">xe sr-destroy uuid=“uuid of SR ”</span><br></pre></td></tr></table></figure></p>
+<p>写于: 2014年06月05日<br>更新于: 2015年03月24日</p>
 
     
   </div>

@@ -100,39 +100,23 @@ var _hmt = _hmt || [];
 <h2 id="备份到远程服务器">备份到远程服务器</h2><p>这里介绍的rsync的用途是备份一台linux服务器上的数据到另外一台机器</p>
 <h3 id="环境">环境</h3><p>将需要备份机器叫做服务器端  (192.168.0.195)<br>将备份后数据存放机器叫做客户端 (192.168.0.196)</p>
 <h3 id="配置">配置</h3><h4 id="1-服务器端的配置:">1.服务器端的配置:</h4><p>这里是准备备份/chinfotech/kernel/zp/这个目录,修改配置文件</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/rsyncd.conf (没有就创建)</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">vim /etc/rsyncd.conf (没有就创建)</span><br></pre></td></tr></table></figure>
 <a id="more"></a>
-<p>配置文件如下:</p>
-<pre><code>uid=root
-gid=root
-max connections=10     
-<span class="operator"><span class="keyword">use</span> chroot=<span class="keyword">no</span>
-<span class="keyword">log</span> file=/<span class="keyword">var</span>/<span class="keyword">log</span>/rsyncd.<span class="keyword">log</span>
-pid file=/<span class="keyword">var</span>/run/rsyncd.pid
-<span class="keyword">lock</span> file=/<span class="keyword">var</span>/run/rsyncd.<span class="keyword">lock</span>
-
-[zp]
-path=/chinfotech/kernel/zp/ 
-comment=beifen
-<span class="keyword">ignore</span> <span class="keyword">errors</span>
-<span class="keyword">read</span> <span class="keyword">only</span> = <span class="keyword">no</span>
-<span class="keyword">hosts</span> allow=*</span>
-</code></pre><p>启动进程:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rsync --daemon --config=/etc/rsyncd.conf</span><br></pre></td></tr></table></figure>
+<p>配置文件如下:<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">uid=root&#10;gid=root&#10;max connections=10     &#10;use chroot=no&#10;log file=/var/log/rsyncd.log&#10;pid file=/var/run/rsyncd.pid&#10;lock file=/var/run/rsyncd.lock&#10;&#10;[zp]&#10;path=/chinfotech/kernel/zp/ &#10;comment=beifen&#10;ignore errors&#10;read only = no&#10;hosts allow=*</span><br></pre></td></tr></table></figure></p>
+<p>启动进程:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rsync --daemon --config=/etc/rsyncd.conf</span><br></pre></td></tr></table></figure>
 <p>服务器端就配置好了.</p>
 <h4 id="2-客户端机器的配置">2.客户端机器的配置</h4><p>在客户端不需要太多配置只需要执行:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rsync -avz --bwlimit=<span class="number">30000</span> root@<span class="number">192.168</span>.<span class="number">0.195</span>::zp /back/zp/</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rsync -avz --bwlimit=<span class="number">30000</span> root@<span class="number">192.168</span>.<span class="number">0.195</span>::zp /back/zp/</span><br></pre></td></tr></table></figure>
 <p>参数解释:<br>-a, —archive 归档模式，表示以递归方式传输文件,并保持所有文件属性<br>-v, —verbose 详细模式输出<br>-z, —compress 对备份的文件在传输时进行压缩处理<br>—bwlimit=KBPS 限制I/O带宽，KBytes per second (最好限速,不然长时间数据传输硬盘受不了)<br>::zp这个是上面服务器配置当中的[zp]</p>
 <p>这样备份就开始了</p>
 <hr>
 <h2 id="配置rsync的本地同步">配置rsync的本地同步</h2><p>使用命令进行同步,这个是从lsyncd这个软件里面提取的命令，也可以用那个做实时同步,这个是定期同步</p>
-<p>每天的三点过5分执行同步,加超时:</p>
-<pre><code>5 3 <span class="keyword">*</span> <span class="keyword">*</span> <span class="keyword">*</span> root timeout 7200  rsync -qvzrtopg    /zbkc /sdl
-5 3 <span class="keyword">*</span> <span class="keyword">*</span> <span class="keyword">*</span> root timeout 7200  rsync -qvzrtopg --delete   /zbkc /sdl
-</code></pre><p>让配置文件生效</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">crontab /etc/crontab</span><br></pre></td></tr></table></figure>
+<p>每天的三点过5分执行同步,加超时:<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">5 3 * * * root timeout 7200  rsync -qvzrtopg    /zbkc /sdl&#10;5 3 * * * root timeout 7200  rsync -qvzrtopg --delete   /zbkc /sdl</span><br></pre></td></tr></table></figure></p>
+<p>让配置文件生效</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">crontab /etc/crontab</span><br></pre></td></tr></table></figure>
 <p>重启服务</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/etc/init.d/cron restart</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/etc/init.d/cron restart</span><br></pre></td></tr></table></figure>
 <p>写于: 2012年07月20日,2014年06月24日<br>更新于: 2015年03月22日</p>
 
     

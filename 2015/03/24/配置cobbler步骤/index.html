@@ -1,0 +1,183 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  
+  <title>配置cobbler步骤 | zphj1987&#39;Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  
+    <meta name="author" content="zphj1987">
+  
+  
+    <meta name="description" content="首先找到下载包的地址 (使用的是centos6)http://download.opensuse.org/repositories/home:/libertas-ict:/cobbler26/CentOS_CentOS-6/noarch/
+添加国内epel源:wget http://mirrors.aliyun.com/epel/6/x86_64/epel-release-6-8.noarch.r">
+  
+  <meta name="description" content="首先找到下载包的地址 (使用的是centos6)http://download.opensuse.org/repositories/home:/libertas-ict:/cobbler26/CentOS_CentOS-6/noarch/
+添加国内epel源:wget http://mirrors.aliyun.com/epel/6/x86_64/epel-release-6-8.noarch.r">
+<meta property="og:type" content="article">
+<meta property="og:title" content="配置cobbler步骤">
+<meta property="og:url" content="http://yoursite.com/2015/03/24/配置cobbler步骤/index.html">
+<meta property="og:site_name" content="zphj1987'Blog">
+<meta property="og:description" content="首先找到下载包的地址 (使用的是centos6)http://download.opensuse.org/repositories/home:/libertas-ict:/cobbler26/CentOS_CentOS-6/noarch/
+添加国内epel源:wget http://mirrors.aliyun.com/epel/6/x86_64/epel-release-6-8.noarch.r">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="配置cobbler步骤">
+<meta name="twitter:description" content="首先找到下载包的地址 (使用的是centos6)http://download.opensuse.org/repositories/home:/libertas-ict:/cobbler26/CentOS_CentOS-6/noarch/
+添加国内epel源:wget http://mirrors.aliyun.com/epel/6/x86_64/epel-release-6-8.noarch.r">
+  
+  
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+  
+<script type="text/javascript">
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?252ba55374ee0e63b03196973bb9b776";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+</head>
+
+<body>
+  <div class="wrapper">
+    <header id="header">
+  <div class="title">
+    <h1><a href="/">zphj1987&#39;Blog</a></h1>
+    <p><a href="/">现在所学，终有所用</a></p>
+  </div>
+  <nav class="nav">
+    <ul>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/archives">Archives</a></li>
+      
+        <li><a href="/atom.xml">rss</a></li>
+      
+        <li><a href="/about">About</a></li>
+      
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+  <div class="clearfix"></div>
+</header>
+    <div class="content"><article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/24/配置cobbler步骤/">
+  <time datetime="2015-03-24T04:55:06.000Z">
+    2015-03-24
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title">配置cobbler步骤</h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>首先找到下载包的地址 (使用的是centos6)<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">http://download.opensuse.org/repositories/home:/libertas-ict:/cobbler26/CentOS_CentOS-6/noarch/</span><br></pre></td></tr></table></figure></p>
+<p>添加国内epel源:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget http://mirrors.aliyun.com/epel/<span class="number">6</span>/x86_64/epel-release-<span class="number">6</span>-<span class="number">8</span>.noarch.rpm</span><br></pre></td></tr></table></figure></p>
+<p>本次测试下载这三个包:<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">cobbler-2.6.5-9.1.noarch.rpm &#10;cobbler-web-2.6.5-9.1.noarch.rpm &#10;koan-2.6.5-9.1.noarch.rpm</span><br></pre></td></tr></table></figure></p>
+<a id="more"></a>
+<p>下载rpm包:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">   wget http://download.opensuse.org/repositories/home:/libertas-ict:/cobbler26/CentOS_CentOS-<span class="number">6</span>/noarch/cobbler-<span class="number">2.6</span>.<span class="number">5</span>-<span class="number">9.1</span>.noarch.rpm </span><br><span class="line">wget http://download.opensuse.org/repositories/home:/libertas-ict:/cobbler26/CentOS_CentOS-<span class="number">6</span>/noarch/cob_CentOS-<span class="number">6</span>/noarch/cobbler-web-<span class="number">2.6</span>.<span class="number">5</span>-<span class="number">9.1</span>.noarch.rpm </span><br><span class="line">wget http://download.opensuse.org/repositories/home:/libertas-ict:/cobbler26/CentOS_CentOS-<span class="number">6</span>/noarch/cob_CentOS-<span class="number">6</span>/noarch/koan-<span class="number">2.6</span>.<span class="number">5</span>-<span class="number">9.1</span>.noarch.rpm</span><br></pre></td></tr></table></figure></p>
+<p>安装依赖包:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum install redhat-rpm-config createrepo python-netaddr python-simplejson rsync syslinux yum-utils genisoimage python-cheetah PyYAML httpd mod_wsgi dhcp fence-agents pykickstart <span class="built_in">bind</span> xinetd tftp-server</span><br></pre></td></tr></table></figure></p>
+<p>安装依赖包:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum install Django</span><br></pre></td></tr></table></figure></p>
+<p>安装依赖包:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum install virt-install</span><br></pre></td></tr></table></figure></p>
+<p>安装上面下载的三个cobbler相关包<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rpm -ivh *.rpm</span><br></pre></td></tr></table></figure></p>
+<p>根据提示进行配置</p>
+<p>修改默认密码<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">openssl passwd -<span class="number">1</span> -salt</span><br></pre></td></tr></table></figure></p>
+<p>修改/etc/cobbler/settings 中的127.0.0.1为当前准备使用部署机器的IP</p>
+<p>修改配置文件修改完成后会修改默认的dhcp的配置<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">vim /etc/cobbler/dhcp.template</span><br></pre></td></tr></table></figure></p>
+<p>dhcp配置OK 注意dhcp应该和网络一致</p>
+<p>配置用户密码<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">htdigest /etc/cobbler/users.digest <span class="string">"Cobbler"</span> cobbler</span><br></pre></td></tr></table></figure></p>
+<p>配置tftp要重启xint 可以写kicstart</p>
+<p>导入一个镜像</p>
+<p>命令行下操作:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cobbler import --name=grandocean --arch=x86_64 --path=/mnt</span><br></pre></td></tr></table></figure></p>
+<p>web对应操作: 从这个来看在后台导入镜像要简单一些 同时还会生成一个profile文件信息 后台对应的操作:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rsync <span class="operator">-a</span> /mnt/ /var/www/cobbler/ksmirror/grandocean-x8664 --progress</span><br></pre></td></tr></table></figure></p>
+<p>增加一个系统,类似于定制的意思:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cobbler system add --name=<span class="built_in">test</span> --profile=grandocean-x86_64</span><br></pre></td></tr></table></figure></p>
+<p>编辑kickstart文件相当于system<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cobbler system edit --name=<span class="built_in">test</span> --interface=eth0 --mac=<span class="number">00</span>:<span class="number">11</span>:<span class="number">22</span>:AA:BB:CC --ip-address=<span class="number">192.168</span>.<span class="number">1.100</span> --netmask=<span class="number">255.255</span>.<span class="number">255.0</span> --static=<span class="number">1</span> --dns-name=test.mydomain.com</span><br></pre></td></tr></table></figure></p>
+<p>加入的标签<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line"># LINUX /memdisk # APPEND iso # INITRD /winpe_x86.iso</span><br></pre></td></tr></table></figure></p>
+<p>另外一种<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">LABEL winxppe MENU &#10;LABEL winxppe kernel memdisk raw iso &#10;initrd=/winxppe.iso MENU end&#10;&#10;initrd winre.iso kernel memdisk iso raw boot</span><br></pre></td></tr></table></figure></p>
+<p>System是针对指定的硬件的情况做的操作，目前来说不需要</p>
+<p>SNIPPET里面的变量识别<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">$yumrepostanza&#10;&#10;repo --name=source-1 --baseurl=http://10.0.6.130/cobbler/ksmirror/centos6.4oriigin-x8664&#10;$SNIPPET(&#39;network_config&#39;)&#10;&#10;network --bootproto=dhcp --device=eth0 --onboot=on&#10;$SNIPPET(&#39;logkspre&#39;)&#10;&#10;   set -x -v exec 1&#62;/tmp/ks-pre.log 2&#62;&#38;1 # Once root&#39;s homedir is there, copy over the log. while : ; do sleep 10 if [ -d /mnt/sysimage/root ]; then cp /tmp/ks-pre.log /mnt/sysimage/root/ logger &#34;Copied %pre section log to system&#34; break fi done &#38; &#10;SNIPPET(&#39;kickstart_start&#39;)&#10;&#10;wget &#34;http://10.0.6.130/cblr/svc/op/trig/mode/pre/profile/centos6.4oriigin-x86_64&#34; -O /dev/null&#10;$yumconfigstanza&#10;&#10;wget &#34;http://10.0.6.130/cblr/svc/op/yum/profile/centos6.4oriigin-x86_64&#34; --output-document=/etc/yum.repos.d/cobbler-config.repo</span><br></pre></td></tr></table></figure></p>
+<p>写于: 2014年09月15日<br>更新于: 2015年03月24日</p>
+
+    
+  </div>
+  <footer>
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">评论</h1>
+  <div class="ds-thread" data-thread-key="2015/03/24/配置cobbler步骤/"  data-title="配置cobbler步骤">
+  </div>
+</section>
+</div>
+  </div>
+  <footer id="footer"><div class="copyright">
+  
+  &copy; 2015 <a href="/">zphj1987</a>
+  
+</div>
+<div class="theme-copyright">
+  Theme by <a href="https://github.com/orderedlist" target="_blank">orderedlist</a>
+   | 
+  Redesign by <a href="http://heroicyang.com/" target="_blank">Heroic Yang</a>
+</div>
+<div class="clearfix"></div></footer>
+  <script src="/js/jquery.min.js"></script>
+<script src="/js/scale.fix.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = { short_name: 'zphj1987' };
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';
+    ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox();
+  })(jQuery);
+</script>
+
+
+<div id="totop" style="position:fixed;bottom:150px;right:50px;cursor: pointer;">
+<a title="Top"><img src="/imgs/scrollup.png"/></a>
+</div>
+<script src="/js/totop.js"></script>
+
+</body>
+</html>

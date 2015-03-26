@@ -10,26 +10,22 @@
     <meta name="author" content="zphj1987">
   
   
-    <meta name="description" content="centos6默认的启动动画是一个白蓝色的进度条,背景全黑色,现在需要对centos的启动动画进行定制在查询了一些资料以后,发现有一个软件是可以对启动动画进行定制的，名字叫plymouth这个在centos6操作系统安装完成以后默认就带了的,主要涉及的是如下的几个操作列出当前所有主题:
-plymouth-set-default-theme --list  
-主题存放目录:/usr/share/pl">
+    <meta name="description" content="centos6默认的启动动画是一个白蓝色的进度条,背景全黑色,现在需要对centos的启动动画进行定制在查询了一些资料以后,发现有一个软件是可以对启动动画进行定制的，名字叫plymouth这个在centos6操作系统安装完成以后默认就带了的,主要涉及的是如下的几个操作列出当前所有主题:plymouth-set-default-theme --list
+主题存放目录:/usr/share/plymo">
   
-  <meta name="description" content="centos6默认的启动动画是一个白蓝色的进度条,背景全黑色,现在需要对centos的启动动画进行定制在查询了一些资料以后,发现有一个软件是可以对启动动画进行定制的，名字叫plymouth这个在centos6操作系统安装完成以后默认就带了的,主要涉及的是如下的几个操作列出当前所有主题:
-plymouth-set-default-theme --list  
-主题存放目录:/usr/share/pl">
+  <meta name="description" content="centos6默认的启动动画是一个白蓝色的进度条,背景全黑色,现在需要对centos的启动动画进行定制在查询了一些资料以后,发现有一个软件是可以对启动动画进行定制的，名字叫plymouth这个在centos6操作系统安装完成以后默认就带了的,主要涉及的是如下的几个操作列出当前所有主题:plymouth-set-default-theme --list
+主题存放目录:/usr/share/plymo">
 <meta property="og:type" content="article">
 <meta property="og:title" content="修改centos6启动动画（plymouth方式）">
 <meta property="og:url" content="http://yoursite.com/2015/03/22/修改centos6启动动画（plymouth方式）/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
-<meta property="og:description" content="centos6默认的启动动画是一个白蓝色的进度条,背景全黑色,现在需要对centos的启动动画进行定制在查询了一些资料以后,发现有一个软件是可以对启动动画进行定制的，名字叫plymouth这个在centos6操作系统安装完成以后默认就带了的,主要涉及的是如下的几个操作列出当前所有主题:
-plymouth-set-default-theme --list  
-主题存放目录:/usr/share/pl">
+<meta property="og:description" content="centos6默认的启动动画是一个白蓝色的进度条,背景全黑色,现在需要对centos的启动动画进行定制在查询了一些资料以后,发现有一个软件是可以对启动动画进行定制的，名字叫plymouth这个在centos6操作系统安装完成以后默认就带了的,主要涉及的是如下的几个操作列出当前所有主题:plymouth-set-default-theme --list
+主题存放目录:/usr/share/plymo">
 <meta property="og:image" content="http://7xi6lo.com1.z0.glb.clouddn.com/centos动画.jpg">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="修改centos6启动动画（plymouth方式）">
-<meta name="twitter:description" content="centos6默认的启动动画是一个白蓝色的进度条,背景全黑色,现在需要对centos的启动动画进行定制在查询了一些资料以后,发现有一个软件是可以对启动动画进行定制的，名字叫plymouth这个在centos6操作系统安装完成以后默认就带了的,主要涉及的是如下的几个操作列出当前所有主题:
-plymouth-set-default-theme --list  
-主题存放目录:/usr/share/pl">
+<meta name="twitter:description" content="centos6默认的启动动画是一个白蓝色的进度条,背景全黑色,现在需要对centos的启动动画进行定制在查询了一些资料以后,发现有一个软件是可以对启动动画进行定制的，名字叫plymouth这个在centos6操作系统安装完成以后默认就带了的,主要涉及的是如下的几个操作列出当前所有主题:plymouth-set-default-theme --list
+主题存放目录:/usr/share/plymo">
   
   
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
@@ -93,29 +89,18 @@ var _hmt = _hmt || [];
   
   <div class="entry">
     
-      <p>centos6默认的启动动画是一个白蓝色的进度条,背景全黑色,现在需要对centos的启动动画进行定制<br>在查询了一些资料以后,发现有一个软件是可以对启动动画进行定制的，名字叫plymouth<br>这<br>个在centos6操作系统安装完成以后默认就带了的,主要涉及的是如下的几个操作<br>列出当前所有主题:</p>
-<pre><code>plymouth-<span class="built_in">set</span>-<span class="keyword">default</span>-theme --<span class="built_in">list</span>  
-</code></pre><p>主题存放目录:<br>/usr/share/plymouth/themes/</p>
-<p>不重启查看主题运行效果 Ctrl + Alt + F2(一定不要在F1操作)</p>
-<pre><code>plymouthd
-plymouth <span class="comment">--show-splash</span>
-plymouth <span class="comment">--quit</span>
-</code></pre><a id="more"></a>
-<p>如果想调试:</p>
-<pre><code><span class="comment">plymouthd</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">debug</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">debug</span><span class="literal">-</span><span class="comment">file=/tmp/plydebug</span>
-<span class="comment">plymouth</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">show</span><span class="literal">-</span><span class="comment">splash</span>
-<span class="comment">plymouth</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">quit</span>
-</code></pre><p>如果在虚拟机下进行测试<br>需要修改grub里面的vga参数为785</p>
+      <p>centos6默认的启动动画是一个白蓝色的进度条,背景全黑色,现在需要对centos的启动动画进行定制<br>在查询了一些资料以后,发现有一个软件是可以对启动动画进行定制的，名字叫plymouth<br>这<br>个在centos6操作系统安装完成以后默认就带了的,主要涉及的是如下的几个操作<br>列出当前所有主题:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">plymouth-set-default-theme --list</span><br></pre></td></tr></table></figure></p>
+<p>主题存放目录:<br>/usr/share/plymouth/themes/</p>
+<p>不重启查看主题运行效果 Ctrl + Alt + F2(一定不要在F1操作)<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">plymouthd</span><br><span class="line">plymouth --show-splash</span><br><span class="line">plymouth --quit</span><br></pre></td></tr></table></figure></p>
+<a id="more"></a>
+<p>如果想调试:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">plymouthd --debug --debug-file=/tmp/plydebug</span><br><span class="line">plymouth --show-splash</span><br><span class="line">plymouth --quit</span><br></pre></td></tr></table></figure></p>
+<p>如果在虚拟机下进行测试<br>需要修改grub里面的vga参数为785</p>
 <p><img src="http://7xi6lo.com1.z0.glb.clouddn.com/centos动画.jpg" alt=""></p>
-<p>其他环境无需设置<br>测试通过以后,进行设置:</p>
-<pre><code><span class="title">plymouth</span>-set-<span class="default"><span class="keyword">default</span>-theme details        <span class="container">(后面的<span class="title">detail</span>为设置的主题)</span></span>
-<span class="title">plymouth</span>-set-<span class="default"><span class="keyword">default</span>-theme -<span class="type">R</span> details     <span class="container">(本操作会将启动画面加入到内核当中,时间比较久,可以<span class="title">ps</span> -<span class="title">ef</span> 查看后台操作)</span></span>
-</code></pre><p>重启电脑就可以看到效果了<br>下面是在github上找到的一个源码包,可以使用</p>
+<p>其他环境无需设置<br>测试通过以后,进行设置:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">plymouth-set-default-theme details        (后面的detail为设置的主题)</span><br><span class="line">plymouth-set-default-theme -R details     (本操作会将启动画面加入到内核当中,时间比较久,可以ps -ef 查看后台操作)</span><br></pre></td></tr></table></figure></p>
+<p>重启电脑就可以看到效果了<br>下面是在github上找到的一个源码包,可以使用</p>
 <p>链接:<a href="http://pan.baidu.com/s/1kTMMo55" target="_blank" rel="external">http://pan.baidu.com/s/1kTMMo55</a> 密码:7doc</p>
-<p>centos下使用自编译主题script形式需要安装依赖包</p>
-<pre><code>plymouth-graphics-libs-<span class="number">0.8</span>.<span class="number">3</span>-<span class="number">27</span><span class="class">.el6</span><span class="class">.centos</span><span class="class">.x86_64</span><span class="class">.rpm</span>
-plymouth-plugin-script-<span class="number">0.8</span>.<span class="number">3</span>-<span class="number">27</span><span class="class">.el6</span><span class="class">.centos</span><span class="class">.x86_64</span><span class="class">.rpm</span>
-</code></pre><p>安装完成后,将wheat解压后目录放/usr/share/plymouth/themes/下到就可以设置这个主题了</p>
+<p>centos下使用自编译主题script形式需要安装依赖包<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">plymouth-graphics-libs-<span class="number">0.8</span>.<span class="number">3</span>-<span class="number">27</span>.el6.centos.x86_64.rpm</span><br><span class="line">plymouth-plugin-script-<span class="number">0.8</span>.<span class="number">3</span>-<span class="number">27</span>.el6.centos.x86_64.rpm</span><br></pre></td></tr></table></figure></p>
+<p>安装完成后,将wheat解压后目录放/usr/share/plymouth/themes/下到就可以设置这个主题了</p>
 <p>写于: 2013年07月30日<br>更新于: 2015年03月22日</p>
 
     

@@ -12,23 +12,23 @@
   
     <meta name="description" content="在网上看了很多改时间的帖子,都没能最终解决问题。最后还是下面的博客最终解决的时间的问题,感谢原作者安装系统过程时没有选对当前的时区,即CST,Asia/Shanghai,而是按默认的，EDT时区,这样跟我们的系统就都对不上,因此得改回CST,仔细琢磨一下,方法如下:
 更改/etc/timezone里面的内容为:Asia/Shanghai
-12$ mv /etc/localtime /etc/loc">
+$ mv /etc/localtime /etc/local">
   
   <meta name="description" content="在网上看了很多改时间的帖子,都没能最终解决问题。最后还是下面的博客最终解决的时间的问题,感谢原作者安装系统过程时没有选对当前的时区,即CST,Asia/Shanghai,而是按默认的，EDT时区,这样跟我们的系统就都对不上,因此得改回CST,仔细琢磨一下,方法如下:
 更改/etc/timezone里面的内容为:Asia/Shanghai
-12$ mv /etc/localtime /etc/loc">
+$ mv /etc/localtime /etc/local">
 <meta property="og:type" content="article">
 <meta property="og:title" content="系统运行后修改linux系统时区">
 <meta property="og:url" content="http://yoursite.com/2015/03/22/系统运行后修改linux系统时区/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
 <meta property="og:description" content="在网上看了很多改时间的帖子,都没能最终解决问题。最后还是下面的博客最终解决的时间的问题,感谢原作者安装系统过程时没有选对当前的时区,即CST,Asia/Shanghai,而是按默认的，EDT时区,这样跟我们的系统就都对不上,因此得改回CST,仔细琢磨一下,方法如下:
 更改/etc/timezone里面的内容为:Asia/Shanghai
-12$ mv /etc/localtime /etc/loc">
+$ mv /etc/localtime /etc/local">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="系统运行后修改linux系统时区">
 <meta name="twitter:description" content="在网上看了很多改时间的帖子,都没能最终解决问题。最后还是下面的博客最终解决的时间的问题,感谢原作者安装系统过程时没有选对当前的时区,即CST,Asia/Shanghai,而是按默认的，EDT时区,这样跟我们的系统就都对不上,因此得改回CST,仔细琢磨一下,方法如下:
 更改/etc/timezone里面的内容为:Asia/Shanghai
-12$ mv /etc/localtime /etc/loc">
+$ mv /etc/localtime /etc/local">
   
   
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
@@ -94,13 +94,13 @@ var _hmt = _hmt || [];
     
       <p>在网上看了很多改时间的帖子,都没能最终解决问题。最后还是下面的博客最终解决的时间的问题,感谢原作者<br>安装系统过程时没有选对当前的时区,即CST,Asia/Shanghai,而是按默认的，EDT时区,这样跟我们的系统就都对不上,因此得改回CST,仔细琢磨一下,方法如下:</p>
 <p>更改/etc/timezone里面的内容为:Asia/Shanghai</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ mv /etc/localtime /etc/localtime-bk</span><br><span class="line">$ cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ mv /etc/localtime /etc/localtime-bk</span><br><span class="line">$ cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime</span><br></pre></td></tr></table></figure>
 <p>再用命令date看一下,就是我们要的CST。</p>
 <a id="more"></a>
 <p>然后:使用下面命令设置时间即可</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ date <span class="operator">-s</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ date <span class="operator">-s</span></span><br></pre></td></tr></table></figure>
 <p>还有一个方法,使用命令:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ tzselect</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ tzselect</span><br></pre></td></tr></table></figure>
 <p>写于: 2012年4月19日<br>更新于: 2015年03月22日</p>
 
     

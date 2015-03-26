@@ -1,0 +1,162 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  
+  <title>linux绑定盘符 | zphj1987&#39;Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  
+    <meta name="author" content="zphj1987">
+  
+  
+    <meta name="description" content="[root@centos6 ~]# udevadm info -q path -n /dev/sdb[root@centos6 ~]# udevadm info -q path -n /dev/sdc/devices/pci0000:00/0000:00:10.0/host2/target2:0:1/2:0:1:0/block/sdc
+拿到编号[root@centos6 ~]# vim /etc/">
+  
+  <meta name="description" content="[root@centos6 ~]# udevadm info -q path -n /dev/sdb[root@centos6 ~]# udevadm info -q path -n /dev/sdc/devices/pci0000:00/0000:00:10.0/host2/target2:0:1/2:0:1:0/block/sdc
+拿到编号[root@centos6 ~]# vim /etc/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="linux绑定盘符">
+<meta property="og:url" content="http://yoursite.com/2015/03/24/linux绑定盘符/index.html">
+<meta property="og:site_name" content="zphj1987'Blog">
+<meta property="og:description" content="[root@centos6 ~]# udevadm info -q path -n /dev/sdb[root@centos6 ~]# udevadm info -q path -n /dev/sdc/devices/pci0000:00/0000:00:10.0/host2/target2:0:1/2:0:1:0/block/sdc
+拿到编号[root@centos6 ~]# vim /etc/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="linux绑定盘符">
+<meta name="twitter:description" content="[root@centos6 ~]# udevadm info -q path -n /dev/sdb[root@centos6 ~]# udevadm info -q path -n /dev/sdc/devices/pci0000:00/0000:00:10.0/host2/target2:0:1/2:0:1:0/block/sdc
+拿到编号[root@centos6 ~]# vim /etc/">
+  
+  
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+  
+<script type="text/javascript">
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?252ba55374ee0e63b03196973bb9b776";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+</head>
+
+<body>
+  <div class="wrapper">
+    <header id="header">
+  <div class="title">
+    <h1><a href="/">zphj1987&#39;Blog</a></h1>
+    <p><a href="/">现在所学，终有所用</a></p>
+  </div>
+  <nav class="nav">
+    <ul>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/archives">Archives</a></li>
+      
+        <li><a href="/atom.xml">rss</a></li>
+      
+        <li><a href="/about">About</a></li>
+      
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+  <div class="clearfix"></div>
+</header>
+    <div class="content"><article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/24/linux绑定盘符/">
+  <time datetime="2015-03-24T05:25:22.000Z">
+    2015-03-24
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title">linux绑定盘符</h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@centos6 ~]<span class="comment"># udevadm info -q path -n /dev/sdb</span></span><br><span class="line">[root@centos6 ~]<span class="comment"># udevadm info -q path -n /dev/sdc</span></span><br><span class="line">/devices/pci0000:<span class="number">00</span>/<span class="number">0000</span>:<span class="number">00</span>:<span class="number">10.0</span>/host2/target2:<span class="number">0</span>:<span class="number">1</span>/<span class="number">2</span>:<span class="number">0</span>:<span class="number">1</span>:<span class="number">0</span>/block/sdc</span><br></pre></td></tr></table></figure>
+<p>拿到编号<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@centos6 ~]<span class="comment"># vim /etc/udev/rules.d/80-mydisk.rules</span></span><br></pre></td></tr></table></figure></p>
+<p>增加<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">DEVPATH==<span class="string">"/devices/pci0000:00/0000:00:10.0/host2/target2:0:2/2:0:2:0/block/sd*"</span>, NAME=<span class="string">"sdc"</span>, MODE=<span class="string">"0660"</span></span><br></pre></td></tr></table></figure></p>
+<p>这样对应的插槽的第二个就会一直对应盘符sdc 而不会出现跳盘符的问题了</p>
+<p>写于: 2014年11月07日<br>更新于: 2015年03月24日</p>
+
+    
+  </div>
+  <footer>
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">评论</h1>
+  <div class="ds-thread" data-thread-key="2015/03/24/linux绑定盘符/"  data-title="linux绑定盘符">
+  </div>
+</section>
+</div>
+  </div>
+  <footer id="footer"><div class="copyright">
+  
+  &copy; 2015 <a href="/">zphj1987</a>
+  
+</div>
+<div class="theme-copyright">
+  Theme by <a href="https://github.com/orderedlist" target="_blank">orderedlist</a>
+   | 
+  Redesign by <a href="http://heroicyang.com/" target="_blank">Heroic Yang</a>
+</div>
+<div class="clearfix"></div></footer>
+  <script src="/js/jquery.min.js"></script>
+<script src="/js/scale.fix.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = { short_name: 'zphj1987' };
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';
+    ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox();
+  })(jQuery);
+</script>
+
+
+<div id="totop" style="position:fixed;bottom:150px;right:50px;cursor: pointer;">
+<a title="Top"><img src="/imgs/scrollup.png"/></a>
+</div>
+<script src="/js/totop.js"></script>
+
+</body>
+</html>

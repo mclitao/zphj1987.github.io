@@ -10,61 +10,21 @@
     <meta name="author" content="zphj1987">
   
   
-    <meta name="description" content="shell脚本:
-#! /bin/sh
-echo &quot;type a backup directory name:&quot;
-read -e r
-echo $r   
-python /zp/bianli.py $r                 #传递参数到python脚本文件中
-for dir in `cat /zp/mulu.txt`
-do
-echo $dir
-done
-python脚本:
-#! /us">
+    <meta name="description" content="shell脚本:#! /bin/shecho &quot;type a backup directory name:&quot;read -e recho $r   python /zp/bianli.py $r                 #传递参数到python脚本文件中for dir in `cat /zp/mulu.txt`doecho $dirdone
+python脚本:#! /usr/bin/env">
   
-  <meta name="description" content="shell脚本:
-#! /bin/sh
-echo &quot;type a backup directory name:&quot;
-read -e r
-echo $r   
-python /zp/bianli.py $r                 #传递参数到python脚本文件中
-for dir in `cat /zp/mulu.txt`
-do
-echo $dir
-done
-python脚本:
-#! /us">
+  <meta name="description" content="shell脚本:#! /bin/shecho &quot;type a backup directory name:&quot;read -e recho $r   python /zp/bianli.py $r                 #传递参数到python脚本文件中for dir in `cat /zp/mulu.txt`doecho $dirdone
+python脚本:#! /usr/bin/env">
 <meta property="og:type" content="article">
 <meta property="og:title" content="遍历指定目录并且从子目录开始将目录输出到指定文件">
 <meta property="og:url" content="http://yoursite.com/2015/03/22/遍历指定目录并且从子目录开始将目录输出到指定文件/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
-<meta property="og:description" content="shell脚本:
-#! /bin/sh
-echo &quot;type a backup directory name:&quot;
-read -e r
-echo $r   
-python /zp/bianli.py $r                 #传递参数到python脚本文件中
-for dir in `cat /zp/mulu.txt`
-do
-echo $dir
-done
-python脚本:
-#! /us">
+<meta property="og:description" content="shell脚本:#! /bin/shecho &quot;type a backup directory name:&quot;read -e recho $r   python /zp/bianli.py $r                 #传递参数到python脚本文件中for dir in `cat /zp/mulu.txt`doecho $dirdone
+python脚本:#! /usr/bin/env">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="遍历指定目录并且从子目录开始将目录输出到指定文件">
-<meta name="twitter:description" content="shell脚本:
-#! /bin/sh
-echo &quot;type a backup directory name:&quot;
-read -e r
-echo $r   
-python /zp/bianli.py $r                 #传递参数到python脚本文件中
-for dir in `cat /zp/mulu.txt`
-do
-echo $dir
-done
-python脚本:
-#! /us">
+<meta name="twitter:description" content="shell脚本:#! /bin/shecho &quot;type a backup directory name:&quot;read -e recho $r   python /zp/bianli.py $r                 #传递参数到python脚本文件中for dir in `cat /zp/mulu.txt`doecho $dirdone
+python脚本:#! /usr/bin/env">
   
   
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
@@ -128,24 +88,9 @@ var _hmt = _hmt || [];
   
   <div class="entry">
     
-      <p>shell脚本:</p>
-<pre><code><span class="shebang">#! /bin/sh</span>
-<span class="built_in">echo</span> <span class="string">"type a backup directory name:"</span>
-<span class="built_in">read</span> <span class="operator">-e</span> r
-<span class="built_in">echo</span> <span class="variable">$r</span>   
-python /zp/bianli.py <span class="variable">$r</span>                 <span class="comment">#传递参数到python脚本文件中</span>
-<span class="keyword">for</span> dir <span class="keyword">in</span> `cat /zp/mulu.txt`
-<span class="keyword">do</span>
-<span class="built_in">echo</span> <span class="variable">$dir</span>
-<span class="keyword">done</span>
-</code></pre><p>python脚本:</p>
-<pre><code>#! /usr/bin/env python
-import os,sys
-r=sys<span class="class">.argv</span>[<span class="number">1</span>]                #将第一个参数值传入到r当中
-<span class="keyword">for</span> root,dirs,files <span class="keyword">in</span> os.<span class="function"><span class="title">walk</span><span class="params">(r,topdown=False)</span></span>:
-        <span class="keyword">for</span> dir <span class="keyword">in</span> dirs:
-                print os<span class="class">.path</span><span class="class">.join</span>(root,dir)            #输出路径
-</code></pre><p>写于: 2012年3月13日<br>更新于: 2015年03月22日</p>
+      <p>shell脚本:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="shebang">#! /bin/sh</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"type a backup directory name:"</span></span><br><span class="line"><span class="built_in">read</span> <span class="operator">-e</span> r</span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$r</span>   </span><br><span class="line">python /zp/bianli.py <span class="variable">$r</span>                 <span class="comment">#传递参数到python脚本文件中</span></span><br><span class="line"><span class="keyword">for</span> dir <span class="keyword">in</span> `cat /zp/mulu.txt`</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$dir</span></span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure></p>
+<p>python脚本:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#! /usr/bin/env python</span></span><br><span class="line">import os,sys</span><br><span class="line">r=sys.argv[<span class="number">1</span>]                <span class="comment">#将第一个参数值传入到r当中</span></span><br><span class="line"><span class="keyword">for</span> root,<span class="built_in">dirs</span>,files <span class="keyword">in</span> os.walk(r,topdown=False):</span><br><span class="line">        <span class="keyword">for</span> dir <span class="keyword">in</span> <span class="built_in">dirs</span>:</span><br><span class="line">                <span class="built_in">print</span> os.path.join(root,dir)            <span class="comment">#输出路径</span></span><br></pre></td></tr></table></figure></p>
+<p>写于: 2012年3月13日<br>更新于: 2015年03月22日</p>
 
     
   </div>

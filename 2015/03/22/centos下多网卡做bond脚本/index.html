@@ -10,61 +10,17 @@
     <meta name="author" content="zphj1987">
   
   
-    <meta name="description" content="多网卡或者单网卡形式下的网卡bonding
-#! /bin/sh
-#获取当前网卡数
-ethnum=`lspci | grep Ethernet | wc -l`
-echo $ethnum
-#如果网卡数小于等于1则什么都不做
-if [ $ethnum -le 1 ]
-        then
-        echo &quot;do nothing!&quot;
-fi
-#如果网卡数大于等于2则
-if [ $ethnu">
+    <meta name="description" content="多网卡或者单网卡形式下的网卡bonding&amp;#9;#! /bin/sh&amp;#10;&amp;#9;#&amp;#33719;&amp;#21462;&amp;#24403;&amp;#21069;&amp;#32593;&amp;#21345;&amp;#25968;&amp;#10;&amp;#9;ethnum=`lspci | grep Ethernet | wc -l`&amp;#10;&amp;#9;echo $ethnum&amp;#10;&amp;#9;#&amp;#22914;&amp;#26524;&amp;#325">
   
-  <meta name="description" content="多网卡或者单网卡形式下的网卡bonding
-#! /bin/sh
-#获取当前网卡数
-ethnum=`lspci | grep Ethernet | wc -l`
-echo $ethnum
-#如果网卡数小于等于1则什么都不做
-if [ $ethnum -le 1 ]
-        then
-        echo &quot;do nothing!&quot;
-fi
-#如果网卡数大于等于2则
-if [ $ethnu">
+  <meta name="description" content="多网卡或者单网卡形式下的网卡bonding&amp;#9;#! /bin/sh&amp;#10;&amp;#9;#&amp;#33719;&amp;#21462;&amp;#24403;&amp;#21069;&amp;#32593;&amp;#21345;&amp;#25968;&amp;#10;&amp;#9;ethnum=`lspci | grep Ethernet | wc -l`&amp;#10;&amp;#9;echo $ethnum&amp;#10;&amp;#9;#&amp;#22914;&amp;#26524;&amp;#325">
 <meta property="og:type" content="article">
 <meta property="og:title" content="centos下多网卡做bond脚本">
 <meta property="og:url" content="http://yoursite.com/2015/03/22/centos下多网卡做bond脚本/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
-<meta property="og:description" content="多网卡或者单网卡形式下的网卡bonding
-#! /bin/sh
-#获取当前网卡数
-ethnum=`lspci | grep Ethernet | wc -l`
-echo $ethnum
-#如果网卡数小于等于1则什么都不做
-if [ $ethnum -le 1 ]
-        then
-        echo &quot;do nothing!&quot;
-fi
-#如果网卡数大于等于2则
-if [ $ethnu">
+<meta property="og:description" content="多网卡或者单网卡形式下的网卡bonding&amp;#9;#! /bin/sh&amp;#10;&amp;#9;#&amp;#33719;&amp;#21462;&amp;#24403;&amp;#21069;&amp;#32593;&amp;#21345;&amp;#25968;&amp;#10;&amp;#9;ethnum=`lspci | grep Ethernet | wc -l`&amp;#10;&amp;#9;echo $ethnum&amp;#10;&amp;#9;#&amp;#22914;&amp;#26524;&amp;#325">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="centos下多网卡做bond脚本">
-<meta name="twitter:description" content="多网卡或者单网卡形式下的网卡bonding
-#! /bin/sh
-#获取当前网卡数
-ethnum=`lspci | grep Ethernet | wc -l`
-echo $ethnum
-#如果网卡数小于等于1则什么都不做
-if [ $ethnum -le 1 ]
-        then
-        echo &quot;do nothing!&quot;
-fi
-#如果网卡数大于等于2则
-if [ $ethnu">
+<meta name="twitter:description" content="多网卡或者单网卡形式下的网卡bonding&amp;#9;#! /bin/sh&amp;#10;&amp;#9;#&amp;#33719;&amp;#21462;&amp;#24403;&amp;#21069;&amp;#32593;&amp;#21345;&amp;#25968;&amp;#10;&amp;#9;ethnum=`lspci | grep Ethernet | wc -l`&amp;#10;&amp;#9;echo $ethnum&amp;#10;&amp;#9;#&amp;#22914;&amp;#26524;&amp;#325">
   
   
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
@@ -128,48 +84,8 @@ var _hmt = _hmt || [];
   
   <div class="entry">
     
-      <p>多网卡或者单网卡形式下的网卡bonding</p>
-<pre><code><span class="shebang">#! /bin/sh</span>
-<span class="comment">#获取当前网卡数</span>
-ethnum=`lspci | grep Ethernet | wc <span class="operator">-l</span>`
-<span class="built_in">echo</span> <span class="variable">$ethnum</span>
-<span class="comment">#如果网卡数小于等于1则什么都不做</span>
-<span class="keyword">if</span> [ <span class="variable">$ethnum</span> -le <span class="number">1</span> ]
-        <span class="keyword">then</span>
-        <span class="built_in">echo</span> <span class="string">"do nothing!"</span>
-<span class="keyword">fi</span>
-<span class="comment">#如果网卡数大于等于2则</span>
-<span class="keyword">if</span> [ <span class="variable">$ethnum</span> -ge <span class="number">2</span> ]
-        <span class="keyword">then</span>
-</code></pre><a id="more"></a>
-<pre><code><span class="comment">#-------  添加一个bond0的网卡</span>
-    echo <span class="string">"DEVICE=bond0"</span> &gt; <span class="regexp">/etc/sysconfig</span><span class="regexp">/network-scripts/ifcfg</span>-bond<span class="number">0</span>
-    echo <span class="string">"ONBOOT=yes"</span> <span class="prompt">&gt;&gt; </span>/etc/sysconfig/network-scripts/ifcfg-bond<span class="number">0</span>
-    echo <span class="string">"IPADDR=192.168.3.104"</span> <span class="prompt">&gt;&gt; </span>/etc/sysconfig/network-scripts/ifcfg-bond<span class="number">0</span>
-    echo <span class="string">"NETMASK=255.255.0.0"</span> <span class="prompt">&gt;&gt; </span>/etc/sysconfig/network-scripts/ifcfg-bond<span class="number">0</span>
-    echo <span class="string">"GATEWAY=192.168.1.1"</span> <span class="prompt">&gt;&gt; </span>/etc/sysconfig/network-scripts/ifcfg-bond<span class="number">0</span>
-    echo <span class="string">"BOOTPROTO=static"</span> <span class="prompt">&gt;&gt; </span>/etc/sysconfig/network-scripts/ifcfg-bond<span class="number">0</span>
-    echo <span class="string">"USERCTL=no"</span> <span class="prompt">&gt;&gt; </span>/etc/sysconfig/network-scripts/ifcfg-bond<span class="number">0</span>
-<span class="comment">#--------</span>
-    echo <span class="string">"ifenslave bond0"</span> <span class="prompt">&gt;&gt; </span>/etc/rc.local
-<span class="comment">#--------写其他网卡的配置文件</span>
-    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="variable">$(</span>seq <span class="variable">$ethnum</span>);
-    <span class="keyword">do</span>
-num=<span class="string">`expr $i - 1`</span>
-     echo <span class="string">"BOOTPROTO=none"</span> &gt;  <span class="regexp">/etc/sysconfig</span><span class="regexp">/network-scripts/ifcfg</span>-eth<span class="variable">$num</span>
-     echo <span class="string">"DEVICE=eth$num"</span> <span class="prompt">&gt;&gt;  </span>/etc/sysconfig/network-scripts/ifcfg-eth<span class="variable">$num</span>
-     echo <span class="string">"ONBOOT=yes"</span> <span class="prompt">&gt;&gt;  </span>/etc/sysconfig/network-scripts/ifcfg-eth<span class="variable">$num</span>
-     echo <span class="string">"MASTER=bond0"</span> <span class="prompt">&gt;&gt;  </span>/etc/sysconfig/network-scripts/ifcfg-eth<span class="variable">$num</span>
-     echo <span class="string">"USERCTL=no"</span> <span class="prompt">&gt;&gt;  </span>/etc/sysconfig/network-scripts/ifcfg-eth<span class="variable">$num</span>
-     echo <span class="string">"SLAVE=yes"</span> <span class="prompt">&gt;&gt;  </span>/etc/sysconfig/network-scripts/ifcfg-eth<span class="variable">$num</span>
-     sed -i <span class="string">'s/ifenslave.*/&amp; eth'</span><span class="string">"$num"</span><span class="string">'/g'</span> /etc/rc.local
-    done;
-echo <span class="string">"alias bond0 bonding"</span> &gt; <span class="regexp">/etc/modprobe</span>.d/modprobe.conf
-echo <span class="string">"options bond0 miimon=100 mode=balance-rr"</span> <span class="prompt">&gt;&gt; </span>/etc/modprobe.d/modprobe.conf
-        modprobe bonding
-    /etc/init.d/network   restart
-fi
-</code></pre><p>写于: 2013年08月06日<br>更新于: 2015年03月22日</p>
+      <p>多网卡或者单网卡形式下的网卡bonding<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">&#9;#! /bin/sh&#10;&#9;#&#33719;&#21462;&#24403;&#21069;&#32593;&#21345;&#25968;&#10;&#9;ethnum=`lspci | grep Ethernet | wc -l`&#10;&#9;echo $ethnum&#10;&#9;#&#22914;&#26524;&#32593;&#21345;&#25968;&#23567;&#20110;&#31561;&#20110;1&#21017;&#20160;&#20040;&#37117;&#19981;&#20570;&#10;&#9;if [ $ethnum -le 1 ]&#10;&#9;        then&#10;&#9;        echo &#34;do nothing!&#34;&#10;&#9;fi&#10;&#9;#&#22914;&#26524;&#32593;&#21345;&#25968;&#22823;&#20110;&#31561;&#20110;2&#21017;&#10;&#9;if [ $ethnum -ge 2 ]&#10;&#9;        then&#10;&#10;&#60;!--more--&#62;&#10;&#9; &#10;&#9;#-------  &#28155;&#21152;&#19968;&#20010;bond0&#30340;&#32593;&#21345;&#10;&#9;    echo &#34;DEVICE=bond0&#34; &#62; /etc/sysconfig/network-scripts/ifcfg-bond0&#10;&#9;    echo &#34;ONBOOT=yes&#34; &#62;&#62; /etc/sysconfig/network-scripts/ifcfg-bond0&#10;&#9;    echo &#34;IPADDR=192.168.3.104&#34; &#62;&#62; /etc/sysconfig/network-scripts/ifcfg-bond0&#10;&#9;    echo &#34;NETMASK=255.255.0.0&#34; &#62;&#62; /etc/sysconfig/network-scripts/ifcfg-bond0&#10;&#9;    echo &#34;GATEWAY=192.168.1.1&#34; &#62;&#62; /etc/sysconfig/network-scripts/ifcfg-bond0&#10;&#9;    echo &#34;BOOTPROTO=static&#34; &#62;&#62; /etc/sysconfig/network-scripts/ifcfg-bond0&#10;&#9;    echo &#34;USERCTL=no&#34; &#62;&#62; /etc/sysconfig/network-scripts/ifcfg-bond0&#10;&#9;#--------&#10;&#9;    echo &#34;ifenslave bond0&#34; &#62;&#62; /etc/rc.local&#10;&#9;#--------&#20889;&#20854;&#20182;&#32593;&#21345;&#30340;&#37197;&#32622;&#25991;&#20214;&#10;&#9;    for i in $(seq $ethnum);&#10;&#9;    do&#10;&#9;num=`expr $i - 1`&#10;&#9;     echo &#34;BOOTPROTO=none&#34; &#62;  /etc/sysconfig/network-scripts/ifcfg-eth$num&#10;&#9;     echo &#34;DEVICE=eth$num&#34; &#62;&#62;  /etc/sysconfig/network-scripts/ifcfg-eth$num&#10;&#9;     echo &#34;ONBOOT=yes&#34; &#62;&#62;  /etc/sysconfig/network-scripts/ifcfg-eth$num&#10;&#9;     echo &#34;MASTER=bond0&#34; &#62;&#62;  /etc/sysconfig/network-scripts/ifcfg-eth$num&#10;&#9;     echo &#34;USERCTL=no&#34; &#62;&#62;  /etc/sysconfig/network-scripts/ifcfg-eth$num&#10;&#9;     echo &#34;SLAVE=yes&#34; &#62;&#62;  /etc/sysconfig/network-scripts/ifcfg-eth$num&#10;&#9;     sed -i &#39;s/ifenslave.*/&#38; eth&#39;&#34;$num&#34;&#39;/g&#39; /etc/rc.local&#10;&#9;    done;&#10;&#9;echo &#34;alias bond0 bonding&#34; &#62; /etc/modprobe.d/modprobe.conf&#10;&#9;echo &#34;options bond0 miimon=100 mode=balance-rr&#34; &#62;&#62; /etc/modprobe.d/modprobe.conf&#10;&#9;        modprobe bonding&#10;&#9;    /etc/init.d/network   restart&#10;&#9;fi</span><br></pre></td></tr></table></figure></p>
+<p>写于: 2013年08月06日<br>更新于: 2015年03月22日</p>
 
     
   </div>

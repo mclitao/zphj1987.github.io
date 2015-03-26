@@ -12,39 +12,35 @@
   
     <meta name="description" content="如果节点上有多个网络接口时可以通过bonding将多个网络接口虚拟为一个网络接口，bonding可以提供高可用及负载均衡功能，从而提高节点的网络接口性能及可用性。
 一、使用如下命令安装
-1T01-MON11:~# apt-get install ifenslave-2.6
+T01-MON11:~# apt-get install ifenslave-2.6
 二、配置bonding
 修改网络接口配置文件/etc/network/interfaces
-配置一个bond
-auto lo">
+配置一个bondauto lo&amp;#1">
   
   <meta name="description" content="如果节点上有多个网络接口时可以通过bonding将多个网络接口虚拟为一个网络接口，bonding可以提供高可用及负载均衡功能，从而提高节点的网络接口性能及可用性。
 一、使用如下命令安装
-1T01-MON11:~# apt-get install ifenslave-2.6
+T01-MON11:~# apt-get install ifenslave-2.6
 二、配置bonding
 修改网络接口配置文件/etc/network/interfaces
-配置一个bond
-auto lo">
+配置一个bondauto lo&amp;#1">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ubuntu配置bonding">
 <meta property="og:url" content="http://yoursite.com/2015/03/21/ubuntu配置bonding/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
 <meta property="og:description" content="如果节点上有多个网络接口时可以通过bonding将多个网络接口虚拟为一个网络接口，bonding可以提供高可用及负载均衡功能，从而提高节点的网络接口性能及可用性。
 一、使用如下命令安装
-1T01-MON11:~# apt-get install ifenslave-2.6
+T01-MON11:~# apt-get install ifenslave-2.6
 二、配置bonding
 修改网络接口配置文件/etc/network/interfaces
-配置一个bond
-auto lo">
+配置一个bondauto lo&amp;#1">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ubuntu配置bonding">
 <meta name="twitter:description" content="如果节点上有多个网络接口时可以通过bonding将多个网络接口虚拟为一个网络接口，bonding可以提供高可用及负载均衡功能，从而提高节点的网络接口性能及可用性。
 一、使用如下命令安装
-1T01-MON11:~# apt-get install ifenslave-2.6
+T01-MON11:~# apt-get install ifenslave-2.6
 二、配置bonding
 修改网络接口配置文件/etc/network/interfaces
-配置一个bond
-auto lo">
+配置一个bondauto lo&amp;#1">
   
   
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
@@ -110,96 +106,13 @@ var _hmt = _hmt || [];
     
       <p>如果节点上有多个网络接口时可以通过bonding将多个网络接口虚拟为一个网络接口，bonding可以提供高可用及负载均衡功能，从而提高节点的网络接口性能及可用性。</p>
 <p>一、使用如下命令安装</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">T01-MON11:~<span class="comment"># apt-get install ifenslave-2.6</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">T01-MON11:~<span class="comment"># apt-get install ifenslave-2.6</span></span><br></pre></td></tr></table></figure>
 <p>二、配置bonding</p>
 <p>修改网络接口配置文件/etc/network/interfaces</p>
-<p>配置一个bond</p>
-<pre><code><span class="attribute">auto</span> lo
-iface lo inet loopback
-
-<span class="attribute">auto</span> eth8
-iface eth8 inet manual
-bond-master bond0
-
-<span class="attribute">auto</span> eth7
-iface eth7 inet manual
-bond-master bond0
-
-<span class="attribute">auto</span> eth6
-iface eth6 inet manual
-bond-master bond0
-
-<span class="attribute">auto</span> eth5
-iface eth5 inet manual
-bond-master bond0
-
-<span class="attribute">auto</span> eth0
-iface eth0 inet static
-<span class="tag">address</span> <span class="number">192.168</span>.<span class="number">8.102</span>
-netmask <span class="number">255.255</span>.<span class="number">0.0</span>
-gateway <span class="number">192.168</span>.<span class="number">1.1</span>
-dns-nameservers <span class="number">8.8</span>.<span class="number">8.8</span>
-
-<span class="attribute">auto</span> bond0
-iface bond0 inet static
-<span class="tag">address</span> <span class="number">10.0</span>.<span class="number">0.102</span>
-netmask <span class="number">255.255</span>.<span class="number">0.0</span>
-
-bond-slaves <span class="attribute">none</span>
-bond-miimon <span class="number">100</span>
-bond-mode balance-alb
-</code></pre><a id="more"></a> 
-<p>配置双bond</p>
-<pre><code><span class="attribute">auto</span> lo
-iface lo inet loopback
-
-<span class="attribute">auto</span> eth2
-iface eth2 inet manual
-bond-master bond0
-
-<span class="attribute">auto</span> eth3
-iface eth3 inet manual
-bond-master bond0
-
-<span class="attribute">auto</span> eth4
-iface eth4 inet manual
-bond-master bond0
-
-<span class="attribute">auto</span> eth0
-iface eth0 inet static
-<span class="tag">address</span> <span class="number">10.0</span>.<span class="number">0.103</span>
-netmask <span class="number">255.255</span>.<span class="number">0.0</span>
-
-<span class="attribute">auto</span> bond0
-iface bond0 inet static
-<span class="tag">address</span> <span class="number">192.168</span>.<span class="number">9.103</span>
-netmask <span class="number">255.255</span>.<span class="number">0.0</span>
-gateway <span class="number">192.168</span>.<span class="number">1.1</span>
-dns-nameservers <span class="number">8.8</span>.<span class="number">8.8</span>
-bond-slaves <span class="attribute">none</span>
-bond-miimon <span class="number">100</span>
-bond-mode balance-alb
-
-<span class="attribute">auto</span> eth5
-iface eth5 inet manual
-bond-master bond1
-
-<span class="attribute">auto</span> eth6
-iface eth6 inet manual
-bond-master bond1
-
-<span class="attribute">auto</span> eth7
-iface eth7 inet manual
-bond-master bond1
-
-<span class="attribute">auto</span> bond1
-iface bond1 inet static
-<span class="tag">address</span> <span class="number">10.1</span>.<span class="number">0.103</span>
-netmask <span class="number">255.255</span>.<span class="number">0.0</span>
-bond-slaves <span class="attribute">none</span>
-bond-miimon <span class="number">100</span>
-bond-mode balance-alb
-</code></pre><p>配置过程需要按照顺序配置,配置网卡,然后写bond的配置,两组错开就可以了</p>
+<p>配置一个bond<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">auto lo&#10;iface lo inet loopback&#10; &#10;auto eth8&#10;iface eth8 inet manual&#10;bond-master bond0&#10; &#10;auto eth7&#10;iface eth7 inet manual&#10;bond-master bond0&#10; &#10;auto eth6&#10;iface eth6 inet manual&#10;bond-master bond0&#10; &#10;auto eth5&#10;iface eth5 inet manual&#10;bond-master bond0&#10; &#10;auto eth0&#10;iface eth0 inet static&#10;address 192.168.8.102&#10;netmask 255.255.0.0&#10;gateway 192.168.1.1&#10;dns-nameservers 8.8.8.8&#10; &#10;auto bond0&#10;iface bond0 inet static&#10;address 10.0.0.102&#10;netmask 255.255.0.0&#10; &#10;bond-slaves none&#10;bond-miimon 100&#10;bond-mode balance-alb</span><br></pre></td></tr></table></figure></p>
+<a id="more"></a> 
+<p>配置双bond<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">auto lo&#10;iface lo inet loopback&#10; &#10;auto eth2&#10;iface eth2 inet manual&#10;bond-master bond0&#10; &#10;auto eth3&#10;iface eth3 inet manual&#10;bond-master bond0&#10; &#10;auto eth4&#10;iface eth4 inet manual&#10;bond-master bond0&#10; &#10;auto eth0&#10;iface eth0 inet static&#10;address 10.0.0.103&#10;netmask 255.255.0.0&#10; &#10;auto bond0&#10;iface bond0 inet static&#10;address 192.168.9.103&#10;netmask 255.255.0.0&#10;gateway 192.168.1.1&#10;dns-nameservers 8.8.8.8&#10;bond-slaves none&#10;bond-miimon 100&#10;bond-mode balance-alb&#10; &#10;auto eth5&#10;iface eth5 inet manual&#10;bond-master bond1&#10; &#10;auto eth6&#10;iface eth6 inet manual&#10;bond-master bond1&#10; &#10;auto eth7&#10;iface eth7 inet manual&#10;bond-master bond1&#10; &#10;auto bond1&#10;iface bond1 inet static&#10;address 10.1.0.103&#10;netmask 255.255.0.0&#10;bond-slaves none&#10;bond-miimon 100&#10;bond-mode balance-alb</span><br></pre></td></tr></table></figure></p>
+<p>配置过程需要按照顺序配置,配置网卡,然后写bond的配置,两组错开就可以了</p>
 <p>写于:2011年12月30日,2013年10月20日<br>更新于:2015年03年21日</p>
 
     

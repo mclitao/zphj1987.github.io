@@ -105,12 +105,9 @@ var _hmt = _hmt || [];
 <p>而linux的启动属性,没有这些</p>
 <p>下面我们介绍一些啊，怎么可以把linux的启动属性,通过命令行解决掉。</p>
 <p>选择xenserver主机的console端,找到linux虚拟机的uuid。</p>
-<p>执行:</p>
-<pre><code>xe vm-list name-lable=<span class="function"><span class="title">xx</span><span class="params">(虚拟机名称)</span></span> 就会显示虚拟机的uuid
-</code></pre><p>然后执行: </p>
-<pre><code>xe vm-param-set uuid=<span class="function"><span class="title">xx</span><span class="params">(上面获取到的)</span></span> HVM-boot-policy=BIOS\ <span class="attribute">order</span>
-xe vm-param-set uuid=<span class="function"><span class="title">xx</span><span class="params">(上面获取到的)</span></span> HVM-boot-params:<span class="attribute">order</span>=<span class="string">"dc"</span>
-</code></pre><p>执行完,你就可以通过XenCenter打开Linux虚拟机的属性查看,和windows一样,可以修改启动顺序了</p>
+<p>执行:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">xe vm-list name-lable=xx(虚拟机名称) 就会显示虚拟机的uuid</span><br></pre></td></tr></table></figure></p>
+<p>然后执行:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">xe vm-param-set uuid=xx(上面获取到的) HVM-boot-policy=BIOS\ order</span><br><span class="line">xe vm-param-set uuid=xx(上面获取到的) HVM-boot-params:order=<span class="string">"dc"</span></span><br></pre></td></tr></table></figure></p>
+<p>执行完,你就可以通过XenCenter打开Linux虚拟机的属性查看,和windows一样,可以修改启动顺序了</p>
 <p>写于: 2014年06月19日<br>更新于: 2015年03月24日</p>
 
     

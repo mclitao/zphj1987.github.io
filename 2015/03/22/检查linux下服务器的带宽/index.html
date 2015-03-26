@@ -87,14 +87,14 @@ var _hmt = _hmt || [];
       <p>设想:公司 A 有一个名为 bsdocfs 的存储服务器,并通过名为 beckham 的客户端节点装载 NFS。公司 A 确定他们需要从 bsdocfs得到更多的带宽,因为有大量的节点需要访问 bsdocfs 的共享文件系统。<br>实现此操作的最常用和最便宜的方式是将两个千兆网卡组合在一起。这是最便宜的,因为您通常会有一个额外的可用 NIC 和一个额外的端口。<br>所以采取此这个方法。不过现在的问题是?到底需要多少带宽?</p>
 <p>千兆网卡以太网理论上的限制是 128MBit/s。这个数字从何而来,看看这些计算:<br>1Gb = 1024Mb;1024Mb/8 = 128MB;”b” = “bits,”、”B” = “bytes”</p>
 <p>但实际看到的是什么呢,有什么好的测量方法呢,我推荐一个工具 iperf。可以按照以下方法获得 iperf</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ wget http://dast.nlanr.net/Projects/Iperf2.<span class="number">0</span>/iperf-<span class="number">2.0</span>.<span class="number">2</span>.tar.gz</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ wget http://dast.nlanr.net/Projects/Iperf2.<span class="number">0</span>/iperf-<span class="number">2.0</span>.<span class="number">2</span>.tar.gz</span><br></pre></td></tr></table></figure>
 <a id="more"></a>
 <p>或者:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ apt-get install iperf</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ apt-get install iperf</span><br></pre></td></tr></table></figure>
 <p>需要在 bsdocfs 和 beckham 均可见的共享文件系统上安装此工具,或者在两个节点上编译并安装。<br>在 bsdocfs 上,运行:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ iperf <span class="operator">-s</span> <span class="operator">-f</span> M</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ iperf <span class="operator">-s</span> <span class="operator">-f</span> M</span><br></pre></td></tr></table></figure>
 <p>这台机器将用作服务器并以 MBit/s 为单位输出执行速度。<br>在 beckham 节点上,运行:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ iperf -c bsdocfs -P <span class="number">4</span> <span class="operator">-f</span> M -w <span class="number">256</span>k -t <span class="number">60</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ iperf -c bsdocfs -P <span class="number">4</span> <span class="operator">-f</span> M -w <span class="number">256</span>k -t <span class="number">60</span></span><br></pre></td></tr></table></figure>
 <p>两个屏幕上的结果都指示了速度是多少。在使用千兆网卡的普通服务器上,可能会看到速度约为 112MBit/s。这是 TCP 堆栈和物理电缆中的常用带宽。通过以端到端的方式连接两台服务器,每台服务器使用两个联结的以太网卡,我获得了约 220MBit/s 的带宽。<br>事实上,在联结的网络上看到的 NFS 约为 150-160MBit/s。这仍然表示带宽可以达到预期效果。如果看到更小的值,则应该检查是否有问题。</p>
 <p>我最近碰到一种情况,即通过连接驱动程序连接两个使用了不同驱动程序的 NIC。这导致性能非常低,带宽约为 20MBit/s,比不连接以太网卡时的带宽还小,做bond聚合一定要使用同型号网卡。</p>
 <p>写于: 2013年08月07日<br>更新于: 2015年03月22日</p>

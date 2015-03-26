@@ -11,28 +11,24 @@
   
   
     <meta name="description" content="在Linux中,有一种特殊的块设备叫loop device,这种loop device设备是通过映射操作系统上的正常的文件而形成的虚拟块设备
-因为这种设备的存在,就为我们提供了一种创建一个存在于其他文件中的虚拟文件系统的机制.下面是一个示例:第一步:用dd创建一个大文件:
-dd if=/dev/zero of=node1 bs=4M count=500
-这样就在当前目录下创建了一个2G的文件”no">
+因为这种设备的存在,就为我们提供了一种创建一个存在于其他文件中的虚拟文件系统的机制.下面是一个示例:第一步:用dd创建一个大文件:dd if=/dev/zero of=node1 bs=4M count=500
+这样就在当前目录下创建了一个2G的文件”nod">
   
   <meta name="description" content="在Linux中,有一种特殊的块设备叫loop device,这种loop device设备是通过映射操作系统上的正常的文件而形成的虚拟块设备
-因为这种设备的存在,就为我们提供了一种创建一个存在于其他文件中的虚拟文件系统的机制.下面是一个示例:第一步:用dd创建一个大文件:
-dd if=/dev/zero of=node1 bs=4M count=500
-这样就在当前目录下创建了一个2G的文件”no">
+因为这种设备的存在,就为我们提供了一种创建一个存在于其他文件中的虚拟文件系统的机制.下面是一个示例:第一步:用dd创建一个大文件:dd if=/dev/zero of=node1 bs=4M count=500
+这样就在当前目录下创建了一个2G的文件”nod">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Linux下如何创建loop device">
 <meta property="og:url" content="http://yoursite.com/2015/03/22/Linux下如何创建loop-device/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
 <meta property="og:description" content="在Linux中,有一种特殊的块设备叫loop device,这种loop device设备是通过映射操作系统上的正常的文件而形成的虚拟块设备
-因为这种设备的存在,就为我们提供了一种创建一个存在于其他文件中的虚拟文件系统的机制.下面是一个示例:第一步:用dd创建一个大文件:
-dd if=/dev/zero of=node1 bs=4M count=500
-这样就在当前目录下创建了一个2G的文件”no">
+因为这种设备的存在,就为我们提供了一种创建一个存在于其他文件中的虚拟文件系统的机制.下面是一个示例:第一步:用dd创建一个大文件:dd if=/dev/zero of=node1 bs=4M count=500
+这样就在当前目录下创建了一个2G的文件”nod">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Linux下如何创建loop device">
 <meta name="twitter:description" content="在Linux中,有一种特殊的块设备叫loop device,这种loop device设备是通过映射操作系统上的正常的文件而形成的虚拟块设备
-因为这种设备的存在,就为我们提供了一种创建一个存在于其他文件中的虚拟文件系统的机制.下面是一个示例:第一步:用dd创建一个大文件:
-dd if=/dev/zero of=node1 bs=4M count=500
-这样就在当前目录下创建了一个2G的文件”no">
+因为这种设备的存在,就为我们提供了一种创建一个存在于其他文件中的虚拟文件系统的机制.下面是一个示例:第一步:用dd创建一个大文件:dd if=/dev/zero of=node1 bs=4M count=500
+这样就在当前目录下创建了一个2G的文件”nod">
   
   
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
@@ -97,70 +93,22 @@ var _hmt = _hmt || [];
   <div class="entry">
     
       <p>在Linux中,有一种特殊的块设备叫loop device,这种loop device设备是通过映射操作系统上的正常的文件而形成的虚拟块设备</p>
-<p>因为这种设备的存在,就为我们提供了一种创建一个存在于其他文件中的虚拟文件系统的机制.下面是一个示例:<br>第一步:用dd创建一个大文件:</p>
-<pre><code>dd <span class="variable">if=</span>/dev/zero <span class="variable">of=</span>node1 <span class="variable">bs=</span><span class="number">4</span>M <span class="variable">count=</span><span class="number">500</span>
-</code></pre><p>这样就在当前目录下创建了一个2G的文件”node1”</p>
-<p>第二步:使用losetup命令创建一个loop device</p>
-<pre><code>losetup /dev/loop<span class="number">0</span> <span class="label">node1</span>
-</code></pre><a id="more"></a>
-<p>第三步:创建一个文件系统</p>
-<pre><code>mkfs -t ext3 <span class="regexp">/dev/</span>loop0
-</code></pre><p>第四步:挂载这个文件系统</p>
-<pre><code>mount <span class="regexp">/dev/</span>loop0 <span class="regexp">/mnt/</span>
-</code></pre><p>最后:如果要删除刚才创建的这些对象:依次执行如下步骤:</p>
-<pre><code><span class="variable">$ </span>umount /dev/loop<span class="number">0</span>
-<span class="variable">$ </span>losetup -d /dev/loop<span class="number">0</span>
-<span class="variable">$ </span>rm node1
-</code></pre><p>说明:<br>详细的losetup命令如下:</p>
-<pre><code>[root@vm11g ~]<span class="comment"># losetup</span>
-usage:
-losetup loop_device <span class="comment"># give info</span>
-losetup -d loop_device <span class="comment"># delete</span>
-losetup [ -e encryption ] [ -o <span class="command">offset</span> ] loop_device <span class="type">file</span> <span class="comment"># setup</span>
-</code></pre><p>其中加密选项有如下几种方式:<br>NONE use no encryption (default).<br>XOR use a simple XOR encryption.<br>DES use DES encryption. </p>
+<p>因为这种设备的存在,就为我们提供了一种创建一个存在于其他文件中的虚拟文件系统的机制.下面是一个示例:<br>第一步:用dd创建一个大文件:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">dd <span class="keyword">if</span>=/dev/zero of=node1 bs=<span class="number">4</span>M count=<span class="number">500</span></span><br></pre></td></tr></table></figure></p>
+<p>这样就在当前目录下创建了一个2G的文件”node1”</p>
+<p>第二步:使用losetup命令创建一个loop device<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">losetup /dev/loop0 node1</span><br></pre></td></tr></table></figure></p>
+<a id="more"></a>
+<p>第三步:创建一个文件系统<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkfs -t ext3 /dev/loop0</span><br></pre></td></tr></table></figure></p>
+<p>第四步:挂载这个文件系统<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mount /dev/loop0 /mnt/</span><br></pre></td></tr></table></figure></p>
+<p>最后:如果要删除刚才创建的这些对象:依次执行如下步骤:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ umount /dev/loop0</span><br><span class="line">$ losetup <span class="operator">-d</span> /dev/loop0</span><br><span class="line">$ rm node1</span><br></pre></td></tr></table></figure></p>
+<p>说明:<br>详细的losetup命令如下:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@vm11g ~]<span class="comment"># losetup</span></span><br><span class="line">usage:</span><br><span class="line">losetup loop_device <span class="comment"># give info</span></span><br><span class="line">losetup <span class="operator">-d</span> loop_device <span class="comment"># delete</span></span><br><span class="line">losetup [ <span class="operator">-e</span> encryption ] [ -o offset ] loop_device file <span class="comment"># setup</span></span><br></pre></td></tr></table></figure></p>
+<p>其中加密选项有如下几种方式:<br>NONE use no encryption (default).<br>XOR use a simple XOR encryption.<br>DES use DES encryption. </p>
 <p>DES encryption is only available if the optional DES package has been added to the kernel.<br>DES encryption uses an additional start value that is used to protect passwords against dictionary attacks.</p>
-<p>默认情况下系统支持的loop device是8个</p>
-<pre><code>[root<span class="annotation">@vm</span>11g dev]# ls -ltr <span class="regexp">/dev/</span>loop*
-brw-r----- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">0</span> Jul <span class="number">19</span> <span class="number">2009</span> <span class="regexp">/dev/</span>loop0
-brw-r----- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">1</span> Jul <span class="number">19</span> <span class="number">2009</span> <span class="regexp">/dev/</span>loop1
-brw-r----- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">2</span> Jul <span class="number">19</span> <span class="number">2009</span> <span class="regexp">/dev/</span>loop2
-brw-r----- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">3</span> Jul <span class="number">19</span> <span class="number">2009</span> <span class="regexp">/dev/</span>loop3
-brw-r----- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">4</span> Jul <span class="number">19</span> <span class="number">2009</span> <span class="regexp">/dev/</span>loop4
-brw-r----- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">5</span> Jul <span class="number">19</span> <span class="number">2009</span> <span class="regexp">/dev/</span>loop5
-brw-r----- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">6</span> Jul <span class="number">19</span> <span class="number">2009</span> <span class="regexp">/dev/</span>loop6
-brw-r----- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">7</span> Jul <span class="number">19</span> <span class="number">2009</span> <span class="regexp">/dev/</span>loop7
-</code></pre><p>　<br>如果需要超过8个loop device,那么使用losetup命令的时候可能会遇到类似的错误 ‘no such device’,这是因为超过了可用</p>
-<p>loop device设备的最大限制,依据你的Linux系统,可以通过修改/etc/modprobe.conf 配置文件,增加如下参数的方式进行扩展:</p>
-<pre><code>options <span class="keyword">loop</span> max_loop=<span class="number">20</span> <span class="comment">--比如我增加到20个</span>
-</code></pre><p>保存退出,如果要了马上生效的话,可以通过</p>
-<pre><code>modprobe -v <span class="keyword">loop</span>
-</code></pre><p>命令立即加载该模块。</p>
-<pre><code>[root<span class="annotation">@vm</span>11g dev]# cat <span class="regexp">/etc/</span>modprobe.conf|grep loop
-options loop max_loop=<span class="number">20</span>
-[root<span class="annotation">@vm</span>11g dev]# modprobe -v loop
-insmod <span class="regexp">/lib/</span>modules<span class="regexp">/2.6.9-42.0.0.0.1.ELsmp/</span>kernel<span class="regexp">/drivers/</span>block/loop.ko max_loop=<span class="number">20</span>
-[root<span class="annotation">@vm</span>11g dev]# ls -ltr <span class="regexp">/dev/</span>loop*
-brw-rw---- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">8</span> Jul <span class="number">19</span> <span class="number">07</span>:<span class="number">44</span> <span class="regexp">/dev/</span>loop8
-brw-rw---- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">9</span> Jul <span class="number">19</span> <span class="number">07</span>:<span class="number">44</span> <span class="regexp">/dev/</span>loop9
-brw-rw---- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">10</span> Jul <span class="number">19</span> <span class="number">07</span>:<span class="number">44</span> <span class="regexp">/dev/</span>loop10
-brw-rw---- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">11</span> Jul <span class="number">19</span> <span class="number">07</span>:<span class="number">44</span> <span class="regexp">/dev/</span>loop11
-brw-rw---- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">12</span> Jul <span class="number">19</span> <span class="number">07</span>:<span class="number">44</span> <span class="regexp">/dev/</span>loop12
-brw-rw---- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">13</span> Jul <span class="number">19</span> <span class="number">07</span>:<span class="number">44</span> <span class="regexp">/dev/</span>loop13
-brw-rw---- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">14</span> Jul <span class="number">19</span> <span class="number">07</span>:<span class="number">44</span> <span class="regexp">/dev/</span>loop14
-brw-rw---- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">15</span> Jul <span class="number">19</span> <span class="number">07</span>:<span class="number">44</span> <span class="regexp">/dev/</span>loop15
-brw-rw---- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">16</span> Jul <span class="number">19</span> <span class="number">07</span>:<span class="number">44</span> <span class="regexp">/dev/</span>loop16
-brw-rw---- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">17</span> Jul <span class="number">19</span> <span class="number">07</span>:<span class="number">44</span> <span class="regexp">/dev/</span>loop17
-brw-rw---- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">18</span> Jul <span class="number">19</span> <span class="number">07</span>:<span class="number">44</span> <span class="regexp">/dev/</span>loop18
-brw-rw---- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">19</span> Jul <span class="number">19</span> <span class="number">07</span>:<span class="number">44</span> <span class="regexp">/dev/</span>loop19
-brw-rw---- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">0</span> Jul <span class="number">19</span> <span class="number">2009</span> <span class="regexp">/dev/</span>loop0
-brw-rw---- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">1</span> Jul <span class="number">19</span> <span class="number">2009</span> <span class="regexp">/dev/</span>loop1
-brw-rw---- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">2</span> Jul <span class="number">19</span> <span class="number">2009</span> <span class="regexp">/dev/</span>loop2
-brw-rw---- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">3</span> Jul <span class="number">19</span> <span class="number">2009</span> <span class="regexp">/dev/</span>loop3
-brw-rw---- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">4</span> Jul <span class="number">19</span> <span class="number">2009</span> <span class="regexp">/dev/</span>loop4
-brw-rw---- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">5</span> Jul <span class="number">19</span> <span class="number">2009</span> <span class="regexp">/dev/</span>loop5
-brw-rw---- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">6</span> Jul <span class="number">19</span> <span class="number">2009</span> <span class="regexp">/dev/</span>loop6
-brw-rw---- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">7</span> Jul <span class="number">19</span> <span class="number">2009</span> <span class="regexp">/dev/</span>loop7
-</code></pre><p>有了这个东西,在Linux下就可以用文件来生成块设备进行测试了</p>
+<p>默认情况下系统支持的loop device是8个<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@vm11g dev]<span class="comment"># ls -ltr /dev/loop*</span></span><br><span class="line">brw-r----- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">0</span> Jul <span class="number">19</span> <span class="number">2009</span> /dev/loop0</span><br><span class="line">brw-r----- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">1</span> Jul <span class="number">19</span> <span class="number">2009</span> /dev/loop1</span><br><span class="line">brw-r----- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">2</span> Jul <span class="number">19</span> <span class="number">2009</span> /dev/loop2</span><br><span class="line">brw-r----- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">3</span> Jul <span class="number">19</span> <span class="number">2009</span> /dev/loop3</span><br><span class="line">brw-r----- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">4</span> Jul <span class="number">19</span> <span class="number">2009</span> /dev/loop4</span><br><span class="line">brw-r----- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">5</span> Jul <span class="number">19</span> <span class="number">2009</span> /dev/loop5</span><br><span class="line">brw-r----- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">6</span> Jul <span class="number">19</span> <span class="number">2009</span> /dev/loop6</span><br><span class="line">brw-r----- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">7</span> Jul <span class="number">19</span> <span class="number">2009</span> /dev/loop7</span><br></pre></td></tr></table></figure></p>
+<p>　<br>如果需要超过8个loop device,那么使用losetup命令的时候可能会遇到类似的错误 ‘no such device’,这是因为超过了可用</p>
+<p>loop device设备的最大限制,依据你的Linux系统,可以通过修改/etc/modprobe.conf 配置文件,增加如下参数的方式进行扩展:<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">options loop max_loop=20 --&#27604;&#22914;&#25105;&#22686;&#21152;&#21040;20&#20010;</span><br></pre></td></tr></table></figure></p>
+<p>保存退出,如果要了马上生效的话,可以通过<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">modprobe -v loop</span><br></pre></td></tr></table></figure></p>
+<p>命令立即加载该模块。<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@vm11g dev]<span class="comment"># cat /etc/modprobe.conf|grep loop</span></span><br><span class="line">options loop max_loop=<span class="number">20</span></span><br><span class="line">[root@vm11g dev]<span class="comment"># modprobe -v loop</span></span><br><span class="line">insmod /lib/modules/<span class="number">2.6</span>.<span class="number">9</span>-<span class="number">42.0</span>.<span class="number">0.0</span>.<span class="number">1</span>.ELsmp/kernel/drivers/block/loop.ko max_loop=<span class="number">20</span></span><br><span class="line">[root@vm11g dev]<span class="comment"># ls -ltr /dev/loop*</span></span><br><span class="line">brw-rw---- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">8</span> Jul <span class="number">19</span> <span class="number">07</span>:<span class="number">44</span> /dev/loop8</span><br><span class="line">brw-rw---- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">9</span> Jul <span class="number">19</span> <span class="number">07</span>:<span class="number">44</span> /dev/loop9</span><br><span class="line">brw-rw---- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">10</span> Jul <span class="number">19</span> <span class="number">07</span>:<span class="number">44</span> /dev/loop10</span><br><span class="line">brw-rw---- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">11</span> Jul <span class="number">19</span> <span class="number">07</span>:<span class="number">44</span> /dev/loop11</span><br><span class="line">brw-rw---- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">12</span> Jul <span class="number">19</span> <span class="number">07</span>:<span class="number">44</span> /dev/loop12</span><br><span class="line">brw-rw---- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">13</span> Jul <span class="number">19</span> <span class="number">07</span>:<span class="number">44</span> /dev/loop13</span><br><span class="line">brw-rw---- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">14</span> Jul <span class="number">19</span> <span class="number">07</span>:<span class="number">44</span> /dev/loop14</span><br><span class="line">brw-rw---- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">15</span> Jul <span class="number">19</span> <span class="number">07</span>:<span class="number">44</span> /dev/loop15</span><br><span class="line">brw-rw---- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">16</span> Jul <span class="number">19</span> <span class="number">07</span>:<span class="number">44</span> /dev/loop16</span><br><span class="line">brw-rw---- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">17</span> Jul <span class="number">19</span> <span class="number">07</span>:<span class="number">44</span> /dev/loop17</span><br><span class="line">brw-rw---- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">18</span> Jul <span class="number">19</span> <span class="number">07</span>:<span class="number">44</span> /dev/loop18</span><br><span class="line">brw-rw---- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">19</span> Jul <span class="number">19</span> <span class="number">07</span>:<span class="number">44</span> /dev/loop19</span><br><span class="line">brw-rw---- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">0</span> Jul <span class="number">19</span> <span class="number">2009</span> /dev/loop0</span><br><span class="line">brw-rw---- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">1</span> Jul <span class="number">19</span> <span class="number">2009</span> /dev/loop1</span><br><span class="line">brw-rw---- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">2</span> Jul <span class="number">19</span> <span class="number">2009</span> /dev/loop2</span><br><span class="line">brw-rw---- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">3</span> Jul <span class="number">19</span> <span class="number">2009</span> /dev/loop3</span><br><span class="line">brw-rw---- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">4</span> Jul <span class="number">19</span> <span class="number">2009</span> /dev/loop4</span><br><span class="line">brw-rw---- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">5</span> Jul <span class="number">19</span> <span class="number">2009</span> /dev/loop5</span><br><span class="line">brw-rw---- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">6</span> Jul <span class="number">19</span> <span class="number">2009</span> /dev/loop6</span><br><span class="line">brw-rw---- <span class="number">1</span> root disk <span class="number">7</span>, <span class="number">7</span> Jul <span class="number">19</span> <span class="number">2009</span> /dev/loop7</span><br></pre></td></tr></table></figure></p>
+<p>有了这个东西,在Linux下就可以用文件来生成块设备进行测试了</p>
 <p>写于: 2012年08月02日<br>更新于: 2015年03月22日</p>
 
     

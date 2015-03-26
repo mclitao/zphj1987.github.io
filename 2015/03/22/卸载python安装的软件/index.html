@@ -94,14 +94,11 @@ var _hmt = _hmt || [];
     
       <p>python源码安装的软件是无法通过命令卸载的,这个可以通过记录安装过程的形式来卸载安装的软件</p>
 <p>以 python2.7.2 为例,在这个目录中有一个 setup.py 的文件,很显然这是安装程序,还是python写的,用 python 写 python 到安装程序,大开眼界了。在这里,需要写一个 shell 脚本,把在重新安装中提到的安装位置全部删除,就实现了卸载到目的了</p>
-<h3 id="一、创建del-sh脚本内容(在源码目录):">一、创建del.sh脚本内容(在源码目录):</h3><pre><code><span class="shebang">#!/bin/bash  </span>
-<span class="keyword">for</span> i <span class="keyword">in</span> $(less files.txt)  
-<span class="keyword">do</span>  rm -rf <span class="variable">$i</span>  
-<span class="keyword">done</span>  
-</code></pre><p>脚本说明: files.txt 是需要事先在目录下创建的文件,目的是记录安装过程中提到到路径。脚本很简单,详细的就不说了,学过 shell 编程到肯定没问题,没学过到有其他语言编程基础的,仔细看看也可以看懂。</p>
+<h3 id="一、创建del-sh脚本内容(在源码目录):">一、创建del.sh脚本内容(在源码目录):</h3><figure class="highlight"><table><tr><td class="code"><pre><span class="line">#!/bin/bash  &#10;for i in $(less files.txt)  &#10;do  rm -rf $i  &#10;done</span><br></pre></td></tr></table></figure>
+<p>脚本说明: files.txt 是需要事先在目录下创建的文件,目的是记录安装过程中提到到路径。脚本很简单,详细的就不说了,学过 shell 编程到肯定没问题,没学过到有其他语言编程基础的,仔细看看也可以看懂。</p>
 <a id="more"></a>
 <h3 id="二、重新安装软件">二、重新安装软件</h3><p>在此过程中用 files.txt 记录安装的路径,比如安装 python2.7.2 ,进入安装目录,执行命令:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python setup.py  install --record files.txt</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python setup.py  install --record files.txt</span><br></pre></td></tr></table></figure>
 <p>在此过程中会向 files.txt 中写入很多路径</p>
 <h3 id="三、执行脚本-/del-sh">三、执行脚本./del.sh</h3><p>写于: 2012年04月09日<br>更新于: 2015年03月22日</p>
 

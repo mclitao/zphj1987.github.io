@@ -1,0 +1,177 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  
+  <title>ubuntu配置简单的DNS服务器 | zphj1987&#39;Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  
+    <meta name="author" content="zphj1987">
+  
+  
+    <meta name="description" content="之所以说是简单的服务器，实现的功能很简单，通过这个dns server 查询制定域名的时候，能够根据设置的值来返回IP，当前的需求是需要轮询的返回IP
+DNS 轮询机制会受到多方面的影响，如：A记录的TTL时间长短的影响；别的 DNS 服务器 Cache 的影响；windows 客户端也有一个DNS Cache。这些都会影响 DNS 轮询的效果。
+下面的配置就是实现解析test.zp.com到不同">
+  
+  <meta name="description" content="之所以说是简单的服务器，实现的功能很简单，通过这个dns server 查询制定域名的时候，能够根据设置的值来返回IP，当前的需求是需要轮询的返回IP
+DNS 轮询机制会受到多方面的影响，如：A记录的TTL时间长短的影响；别的 DNS 服务器 Cache 的影响；windows 客户端也有一个DNS Cache。这些都会影响 DNS 轮询的效果。
+下面的配置就是实现解析test.zp.com到不同">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ubuntu配置简单的DNS服务器">
+<meta property="og:url" content="http://yoursite.com/2015/03/24/ubuntu配置简单的DNS服务器/index.html">
+<meta property="og:site_name" content="zphj1987'Blog">
+<meta property="og:description" content="之所以说是简单的服务器，实现的功能很简单，通过这个dns server 查询制定域名的时候，能够根据设置的值来返回IP，当前的需求是需要轮询的返回IP
+DNS 轮询机制会受到多方面的影响，如：A记录的TTL时间长短的影响；别的 DNS 服务器 Cache 的影响；windows 客户端也有一个DNS Cache。这些都会影响 DNS 轮询的效果。
+下面的配置就是实现解析test.zp.com到不同">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ubuntu配置简单的DNS服务器">
+<meta name="twitter:description" content="之所以说是简单的服务器，实现的功能很简单，通过这个dns server 查询制定域名的时候，能够根据设置的值来返回IP，当前的需求是需要轮询的返回IP
+DNS 轮询机制会受到多方面的影响，如：A记录的TTL时间长短的影响；别的 DNS 服务器 Cache 的影响；windows 客户端也有一个DNS Cache。这些都会影响 DNS 轮询的效果。
+下面的配置就是实现解析test.zp.com到不同">
+  
+  
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+  
+<script type="text/javascript">
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?252ba55374ee0e63b03196973bb9b776";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+</head>
+
+<body>
+  <div class="wrapper">
+    <header id="header">
+  <div class="title">
+    <h1><a href="/">zphj1987&#39;Blog</a></h1>
+    <p><a href="/">现在所学，终有所用</a></p>
+  </div>
+  <nav class="nav">
+    <ul>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/archives">Archives</a></li>
+      
+        <li><a href="/atom.xml">rss</a></li>
+      
+        <li><a href="/about">About</a></li>
+      
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+  <div class="clearfix"></div>
+</header>
+    <div class="content"><article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/24/ubuntu配置简单的DNS服务器/">
+  <time datetime="2015-03-24T05:39:44.000Z">
+    2015-03-24
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title">ubuntu配置简单的DNS服务器</h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>之所以说是简单的服务器，实现的功能很简单，通过这个dns server 查询制定域名的时候，能够根据设置的值来返回IP，当前的需求是需要轮询的返回IP</p>
+<p>DNS 轮询机制会受到多方面的影响，如：A记录的TTL时间长短的影响；别的 DNS 服务器 Cache 的影响；windows 客户端也有一个DNS Cache。这些都会影响 DNS 轮询的效果。</p>
+<p>下面的配置就是实现解析test.zp.com到不同的IP地址</p>
+<h3 id="安装dns_server软件包">安装dns server软件包</h3><p>ubuntu下是通过安装bind9软件包来配置dns-server的<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab5106 ~]<span class="comment"># apt-get install bind9</span></span><br></pre></td></tr></table></figure></p>
+<a id="more"></a>
+<h3 id="配置dns">配置dns</h3><p>配置文件的路径在/etc/bind路径下面</p>
+<h4 id="添加一个zone">添加一个zone</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">	root@ubuntu14:/etc/<span class="built_in">bind</span><span class="comment"># vim /etc/bind/named.conf.local </span></span><br><span class="line">	添加下面，语法可以参照/etc/<span class="built_in">bind</span>/zones.rfc1918中的语法添加，如下：</span><br><span class="line"> </span><br><span class="line">	zone <span class="string">"zp.com"</span>  &#123; <span class="built_in">type</span> master; file <span class="string">"/etc/bind/db.zp.com"</span>; &#125;;</span><br><span class="line">```	</span><br><span class="line">修改db的配置文件</span><br><span class="line">```bash</span><br><span class="line">	root@ubuntu14:/etc/<span class="built_in">bind</span><span class="comment"># cp db.local db.zp.com</span></span><br><span class="line">	root@ubuntu14:/etc/<span class="built_in">bind</span><span class="comment"># vim db.zp.com</span></span><br><span class="line">	;</span><br><span class="line">	; BIND data file <span class="keyword">for</span> <span class="built_in">local</span> loopback interface</span><br><span class="line">	;</span><br><span class="line">	<span class="variable">$TTL</span>    <span class="number">604800</span></span><br><span class="line">	@       IN      SOA     zp.com. root.localhost. (</span><br><span class="line">	                              <span class="number">2</span>         ; Serial</span><br><span class="line">	                         <span class="number">604800</span>         ; Refresh</span><br><span class="line">	                          <span class="number">86400</span>         ; Retry</span><br><span class="line">	                        <span class="number">2419200</span>         ; Expire</span><br><span class="line">	                         <span class="number">604800</span> )       ; Negative Cache TTL</span><br><span class="line">	;</span><br><span class="line">	@       IN      NS      localhost.</span><br><span class="line">	@       IN      A       <span class="number">127.0</span>.<span class="number">0.1</span></span><br><span class="line">	@       IN      AAAA    ::<span class="number">1</span></span><br><span class="line">	<span class="built_in">test</span>       IN      A       <span class="number">192.168</span>.<span class="number">0.11</span></span><br><span class="line">	<span class="built_in">test</span>       IN      A       <span class="number">192.168</span>.<span class="number">0.12</span></span><br><span class="line">	<span class="built_in">test</span>       IN      A       <span class="number">192.168</span>.<span class="number">0.13</span></span><br><span class="line">	<span class="built_in">test</span>       IN      A       <span class="number">192.168</span>.<span class="number">0.14</span></span><br><span class="line">	<span class="built_in">test</span>       IN      A       <span class="number">192.168</span>.<span class="number">0.15</span></span><br><span class="line">	<span class="built_in">test</span>       IN      A       <span class="number">192.168</span>.<span class="number">0.16</span></span><br></pre></td></tr></table></figure>
+<p>修改<code>/etc/bind/named.conf.option</code> 配置文件，在 <code>named.conf.option</code> 中可以设置 bind 的 round-robin 的给出结果的顺序：</p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">rrset-order &#123; order cyclic; &#125;;&#10;&#10;rrset-order &#25903;&#25345;&#19977;&#20010;&#21442;&#25968;&#65306;fixed, random, cyclic &#12290;&#10;fixed &#20250;&#23558;&#22810;&#20010;A&#35760;&#24405;&#25353;&#37197;&#32622;&#25991;&#20214;&#30340;&#39034;&#24207;&#22266;&#23450;&#32473;&#20986;&#10;random &#20250;&#38543;&#26426;&#32473;&#20986;&#10;cyclic &#20250;&#24490;&#29615;&#32473;&#20986;</span><br></pre></td></tr></table></figure>
+<h3 id="重启服务">重启服务</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@ubuntu14:/etc/<span class="built_in">bind</span><span class="comment"># /etc/init.d/bind9 restart</span></span><br></pre></td></tr></table></figure>
+<h3 id="检查配置效果">检查配置效果</h3><figure class="highlight"><table><tr><td class="code"><pre><span class="line">&#20462;&#25913;&#22495;&#21517;&#35299;&#26512;&#37197;&#32622;&#25991;&#20214;&#10;root@ubuntu14:/etc/bind# vim /etc/resolv.conf &#10;nameserver 192.168.0.122&#10;&#28155;&#21152;&#20320;&#30340;&#22495;&#21517;&#26381;&#21153;&#22120;&#30340;IP&#22320;&#22336;&#10;&#10;&#36890;&#36807;&#22810;&#27425;ping&#22495;&#21517;&#26816;&#26597;&#36820;&#22238;&#30340;&#32467;&#26524;&#10;root@ubuntu14:/etc/bind# ping test.zp.com&#10;PING test.zp.com (192.168.0.13) 56(84) bytes of data.&#10;root@ubuntu14:/etc/bind# ping test.zp.com&#10;PING test.zp.com (192.168.0.14) 56(84) bytes of data.</span><br></pre></td></tr></table></figure>
+<hr>
+<h3 id="后话">后话</h3><p>window的dns缓存的处理办法：<br>清空dns缓存<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ipconfig /flushdns</span><br></pre></td></tr></table></figure></p>
+<p>显示缓存的dns信息<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ipconfig/displaydns</span><br></pre></td></tr></table></figure></p>
+<p>临时禁用dns缓存<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">net stop dnscache</span><br></pre></td></tr></table></figure></p>
+<p>启动dns缓存<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">net start dnscache</span><br></pre></td></tr></table></figure></p>
+
+    
+  </div>
+  <footer>
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">评论</h1>
+  <div class="ds-thread" data-thread-key="2015/03/24/ubuntu配置简单的DNS服务器/"  data-title="ubuntu配置简单的DNS服务器">
+  </div>
+</section>
+</div>
+  </div>
+  <footer id="footer"><div class="copyright">
+  
+  &copy; 2015 <a href="/">zphj1987</a>
+  
+</div>
+<div class="theme-copyright">
+  Theme by <a href="https://github.com/orderedlist" target="_blank">orderedlist</a>
+   | 
+  Redesign by <a href="http://heroicyang.com/" target="_blank">Heroic Yang</a>
+</div>
+<div class="clearfix"></div></footer>
+  <script src="/js/jquery.min.js"></script>
+<script src="/js/scale.fix.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = { short_name: 'zphj1987' };
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';
+    ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox();
+  })(jQuery);
+</script>
+
+
+<div id="totop" style="position:fixed;bottom:150px;right:50px;cursor: pointer;">
+<a title="Top"><img src="/imgs/scrollup.png"/></a>
+</div>
+<script src="/js/totop.js"></script>
+
+</body>
+</html>

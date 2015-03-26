@@ -4,46 +4,35 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="chrome=1">
   
-  <title>test1 | zphj1987&#39;Blog</title>
+  <title>ubuntu使用iso作为本地源 | zphj1987&#39;Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   
     <meta name="author" content="zphj1987">
   
   
-    <meta name="description" content="avsdsadasdasdasdasdasddddddddddddddddd
-a
-aa
-asdasdasdasdasda
-asdasdas
-asds">
+    <meta name="description" content="方式一(路径不要改):挂载光驱到到本地的指定目录mount /dev/cdrom /media/cdrom
+然后执行:apt-cdrom -m -d /media/cdrom add
+会写配置文件然后执行:apt-get update
+就可以使用">
   
-  <meta name="description" content="avsdsadasdasdasdasdasddddddddddddddddd
-a
-aa
-asdasdasdasdasda
-asdasdas
-asds">
+  <meta name="description" content="方式一(路径不要改):挂载光驱到到本地的指定目录mount /dev/cdrom /media/cdrom
+然后执行:apt-cdrom -m -d /media/cdrom add
+会写配置文件然后执行:apt-get update
+就可以使用">
 <meta property="og:type" content="article">
-<meta property="og:title" content="test1">
-<meta property="og:url" content="http://yoursite.com/2015/03/19/test/index.html">
+<meta property="og:title" content="ubuntu使用iso作为本地源">
+<meta property="og:url" content="http://yoursite.com/2015/03/24/ubuntu使用iso作为本地源/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
-<meta property="og:description" content="avsdsadasdasdasdasdasddddddddddddddddd
-a
-aa
-asdasdasdasdasda
-asdasdas
-asds">
-<meta property="og:image" content="http://bruce.u.qiniudn.com/2013/11/27/reading/photos-0.jpg">
-<meta property="og:image" content="http://bruce.u.qiniudn.com/2013/11/27/reading/photos-1.jpg">
-<meta property="og:image" content="http://7xi6lo.com1.z0.glb.clouddn.com/testwailian.png">
+<meta property="og:description" content="方式一(路径不要改):挂载光驱到到本地的指定目录mount /dev/cdrom /media/cdrom
+然后执行:apt-cdrom -m -d /media/cdrom add
+会写配置文件然后执行:apt-get update
+就可以使用">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="test1">
-<meta name="twitter:description" content="avsdsadasdasdasdasdasddddddddddddddddd
-a
-aa
-asdasdasdasdasda
-asdasdas
-asds">
+<meta name="twitter:title" content="ubuntu使用iso作为本地源">
+<meta name="twitter:description" content="方式一(路径不要改):挂载光驱到到本地的指定目录mount /dev/cdrom /media/cdrom
+然后执行:apt-cdrom -m -d /media/cdrom add
+会写配置文件然后执行:apt-get update
+就可以使用">
   
   
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
@@ -88,49 +77,33 @@ var _hmt = _hmt || [];
   </nav>
   <div class="clearfix"></div>
 </header>
-    <div class="content"><article class="photo">
+    <div class="content"><article class="post">
   <header>
     
       <div class="icon"></div>
-      <a href="/2015/03/19/test/">
-  <time datetime="2015-03-19T15:27:00.000Z">
-    2015-03-19
+      <a href="/2015/03/24/ubuntu使用iso作为本地源/">
+  <time datetime="2015-03-24T04:52:24.000Z">
+    2015-03-24
   </time>
 </a>
     
     
   
-    <h1 class="title">test1</h1>
+    <h1 class="title">ubuntu使用iso作为本地源</h1>
   
 
   </header>
   
-    <div class="gallery">
-  <div class="photoset">
-    
-      
-        <img src="http://bruce.u.qiniudn.com/2013/11/27/reading/photos-0.jpg">
-      
-        <img src="http://bruce.u.qiniudn.com/2013/11/27/reading/photos-1.jpg">
-      
-        <img src="http://7xi6lo.com1.z0.glb.clouddn.com/testwailian.png">
-      
-    
-  </div>
-  <div class="control">
-    <div class="prev"></div>
-    <div class="next"></div>
-  </div>
-</div>
-  
   <div class="entry">
     
-      <p>av<br>sd<br>sad<br>as<br>da<br>sd<br>as<br>da<br>sdasddddddddddddddddd</p>
-<p>a</p>
-<p>a<br>a</p>
-<p>asdasd<br>as<br>d<br>asd<br>as<br>da</p>
-<p>as<br>das<br>d<br>as</p>
-<p>asds</p>
+      <p>方式一(路径不要改):<br>挂载光驱到到本地的指定目录<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mount /dev/cdrom /media/cdrom</span><br></pre></td></tr></table></figure></p>
+<p>然后执行:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">apt-cdrom -m <span class="operator">-d</span> /media/cdrom add</span><br></pre></td></tr></table></figure></p>
+<p>会写配置文件<br>然后执行:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">apt-get update</span><br></pre></td></tr></table></figure></p>
+<p>就可以使用</p>
+<a id="more"></a>
+<p>方式二:直接添加方式<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mount /dev/cdrom /mnt</span><br><span class="line">root@grandocean:/etc/apt<span class="comment"># vim /etc/apt/sources.list</span></span><br></pre></td></tr></table></figure></p>
+<p>添加<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">deb file:///mnt raring main&#10;deb file:///mnt raring restricted</span><br></pre></td></tr></table></figure></p>
+<p>写于: 2014年08月28日<br>更新于: 2015年03月24日</p>
 
     
   </div>
@@ -146,7 +119,7 @@ var _hmt = _hmt || [];
 
 <section id="comment">
   <h1 class="title">评论</h1>
-  <div class="ds-thread" data-thread-key="2015/03/19/test/"  data-title="test1">
+  <div class="ds-thread" data-thread-key="2015/03/24/ubuntu使用iso作为本地源/"  data-title="ubuntu使用iso作为本地源">
   </div>
 </section>
 </div>

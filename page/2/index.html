@@ -73,6 +73,226 @@ var _hmt = _hmt || [];
   <header>
     
       <div class="icon"></div>
+      <a href="/2015/03/24/custom-ubuntu-server-iso/">
+  <time datetime="2015-03-24T00:58:38.000Z">
+    2015-03-24
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/03/24/custom-ubuntu-server-iso/">custom-ubuntu-server-iso</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>Remastering the Ubuntu Desktop ISO is easy considering the existing graphical tools but did you ever wanted to build your custom Ubuntu Server Edition ISO ?</p>
+<p>Preparing the Environment<br>You’ll need a clean copy of the Ubuntu Server ISO that you want to customize. Since 10.04 is the latest Ubuntu version I will write down my examples using it but everything should work pretty much unchanged for older or newer versions.</p>
+<p>After you have you have the original iso image downloaded, make a copy it’s contents so we can later apply our patching there.</p>
+<p>cd /home/rgavril/Work</p>
+<p>mkdir original-iso custom-iso<br>mount -o loop ./ubuntu-10.04-server-i386.iso ./original-iso</p>
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2015/03/24/custom-ubuntu-server-iso/#more" class="more-link">阅读全文</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/24/定制ubuntu的时候修改proseed/">
+  <time datetime="2015-03-24T00:20:02.000Z">
+    2015-03-24
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/03/24/定制ubuntu的时候修改proseed/">定制ubuntu的时候修改proseed</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <figure class="highlight"><table><tr><td class="code"><pre><span class="line">d-i clock-setup/utc-auto boolean false (&#19981;&#29992;utc)&#10;d-i clock-setup/ntp boolean false   (&#19981;&#26102;&#38388;&#21516;&#27493;)&#10;d-i netcfg/disable_autoconfig boolean true   (&#20851;&#38381;&#33258;&#21160;&#32593;&#32476;&#37197;&#32622;)&#10;d-i netcfg/use_autoconfig boolean false   (&#19981;&#20351;&#29992;&#33258;&#21160;&#37197;&#32622;&#25991;&#20214;)&#10;d-i apt-setup/use_mirror boolean false (&#19981;&#20351;&#29992;apt &#38236;&#20687;)</span><br></pre></td></tr></table></figure>
+<p>写于: 2014年08月07日<br>更新于: 2015年03月24日</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/24/使用iptables做端口转发/">
+  <time datetime="2015-03-24T00:18:01.000Z">
+    2015-03-24
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/03/24/使用iptables做端口转发/">使用iptables做端口转发</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <figure class="highlight"><table><tr><td class="code"><pre><span class="line">&#9;#!/bin/sh &#10;&#9;IPT=&#34;/sbin/iptables&#34;&#10;&#9;/bin/echo &#34;1&#34; &#62; /proc/sys/net/ipv4/ip_forward&#10;&#9;/sbin/modprobe ip_tables&#10;&#9;/sbin/modprobe iptable_filter&#10;&#9;/sbin/modprobe iptable_nat&#10;&#9;/sbin/modprobe ip_conntrack&#10;&#9;/sbin/modprobe ip_conntrack_ftp&#10;&#9;/sbin/modprobe ip_nat_ftp&#10;&#9;$IPT -F&#10;&#9;$IPT -t nat -F&#10;&#9;$IPT -X&#10;&#9;$IPT -t nat -X&#10;&#9;$IPT -Z&#10;&#9;$IPT -t nat -Z&#10;&#9;#DNAT &#20570;&#31471;&#21475;&#36716;&#21457;&#10;&#9;$IPT -t nat -A PREROUTING -d 192.168.0.174 -p tcp --dport 28 -j DNAT --to-destination 192.168.9.101:22&#10;&#9;$IPT -t nat -A POSTROUTING -p tcp -d 192.168.9.101 --dport 22 -j SNAT --to-source 192.168.0.174&#10;&#9; &#10;&#9;#SNAT &#20570;&#32593;&#20851;&#36716;&#21457;&#10;&#9;#$IPT -t nat -A POSTROUTING  -s 192.168.0.0/16  -j SNAT --to-source 210.72.24.15&#10;```&#9; &#10;&#9; &#10;&#22791;&#27880;:&#10;&#39318;&#20808;&#38656;&#35201;&#21551;&#29992;NAT&#38656;&#35201;&#22312;Linux&#19978;&#25171;&#24320;&#20869;&#26680;&#23545;IP&#21253;&#30340;&#36716;&#21457;&#25903;&#25345;&#65292;linux&#19978;&#32534;&#36753;:/etc/sysctl.conf &#25991;&#20214;:&#10;```raw&#10;&#9;net.ipv4.ip_forward = 1</span><br></pre></td></tr></table></figure>
+<p>然后执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sysctl -p</span><br></pre></td></tr></table></figure></p>
+<p>写于: 2014年08月04日<br>更新于: 2015年03月24日</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/24/centos使用U盘做启动盘/">
+  <time datetime="2015-03-24T00:16:17.000Z">
+    2015-03-24
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/03/24/centos使用U盘做启动盘/">centos使用U盘做启动盘</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>软件下载地址:<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">http://sourceforge.net/projects/iso2usb/files/latest/download?source=dlp</span><br></pre></td></tr></table></figure></p>
+<p>写于: 2014年08月04日<br>更新于: 2015年03月24日</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/24/ubuntu服务器启动过程中重启卡死的问题解决/">
+  <time datetime="2015-03-24T00:14:36.000Z">
+    2015-03-24
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/03/24/ubuntu服务器启动过程中重启卡死的问题解决/">ubuntu服务器启动过程中重启卡死的问题解决</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>在grub默认参数当中添加<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">GRUB_RECORDFAIL_TIMEOUT=0</span><br></pre></td></tr></table></figure></p>
+<p>写于: 2014年07月23日<br>更新于: 2015年03月24日</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/24/nginx开启目录浏览/">
+  <time datetime="2015-03-24T00:04:52.000Z">
+    2015-03-24
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/03/24/nginx开启目录浏览/">nginx开启目录浏览</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>使用nginx作为下载站点,开启目录浏览的功能<br>在/etc/nginx/sites-enabled/default中添加:<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">autoindex on ;&#10;autoindex_exact_size off;&#10;autoindex_localtime on;</span><br></pre></td></tr></table></figure></p>
+<p>说明:</p>
+<p>第一个为目录浏览功能开始<br>第二个为不精确计算文件大小<br>第三个为取时间为服务器本地的时间</p>
+<p>删除location相关的内容<br>修改完成重启nginx服务</p>
+<p>写于: 2014年07月16日<br>更新于: 2015年03月24日</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
       <a href="/2015/03/24/ubuntu13-04修改默认启动内核/">
   <time datetime="2015-03-24T00:01:44.000Z">
     2015-03-24
@@ -89,13 +309,10 @@ var _hmt = _hmt || [];
   <div class="entry">
     
       <p>ubuntu下面的启动内核选项跟其他操作系统不一样,有个子菜单,比如我在默认的ubuntu13.04上安装了一个新的内核3.14.5,那么默认的第一项是3.14.5内核,第二项是一个子菜单,第二项里面的第一项是3.14.5,第二项是3.14.5 recovery 模式,第三项是3.8.0,第四项是3.8.0(recover)</p>
-<p>那么应该修改</p>
-<pre><code><span class="regexp">/boot/g</span>rub<span class="regexp">/grub.cfg</span>
-</code></pre><p>中的</p>
-<pre><code><span class="variable">GRUB_DEFAULT=</span><span class="number">0</span>为<span class="variable">GRUB_DEFAULT=</span><span class="string">"1&gt;2"</span>
-</code></pre><p>然后:</p>
-<pre><code><span class="keyword">update</span>-grub
-</code></pre><p>重启即可</p>
+<p>那么应该修改<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">/boot/grub/grub.cfg</span><br></pre></td></tr></table></figure></p>
+<p>中的<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">GRUB_DEFAULT=0&#20026;GRUB_DEFAULT=&#34;1&#62;2&#34;</span><br></pre></td></tr></table></figure></p>
+<p>然后:<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">update-grub</span><br></pre></td></tr></table></figure></p>
+<p>重启即可</p>
 <p>写于: 2014年07月11日<br>更新于: 2015年03月24日</p>
 
     
@@ -132,9 +349,8 @@ var _hmt = _hmt || [];
     
       <p>linux域名解析引起登陆慢的问题在于,ssh去登录这个台机器的时候,本机会去通过域名解析获取登录主机的主机名，所有一旦域名解析是无效的,需要等待较长时间</p>
 <p>解决办法一:<br>将域名解析指到127.0.0.1</p>
-<p>解决办法二:<br>修改配置文件 /etc/ssh/sshd_config </p>
-<pre><code><span class="title">UseDNS</span> <span class="built_in">no</span>
-</code></pre><p>然后重启ssh服务 </p>
+<p>解决办法二:<br>修改配置文件 /etc/ssh/sshd_config<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">UseDNS no</span><br></pre></td></tr></table></figure></p>
+<p>然后重启ssh服务 </p>
 <p>写于: 2014年07月10日<br>更新于: 2015年03月24日</p>
 
     
@@ -216,63 +432,15 @@ var _hmt = _hmt || [];
 <p>而linux的启动属性,没有这些</p>
 <p>下面我们介绍一些啊，怎么可以把linux的启动属性,通过命令行解决掉。</p>
 <p>选择xenserver主机的console端,找到linux虚拟机的uuid。</p>
-<p>执行:</p>
-<pre><code>xe vm-list name-lable=<span class="function"><span class="title">xx</span><span class="params">(虚拟机名称)</span></span> 就会显示虚拟机的uuid
-</code></pre><p>然后执行: </p>
-<pre><code>xe vm-param-set uuid=<span class="function"><span class="title">xx</span><span class="params">(上面获取到的)</span></span> HVM-boot-policy=BIOS\ <span class="attribute">order</span>
-xe vm-param-set uuid=<span class="function"><span class="title">xx</span><span class="params">(上面获取到的)</span></span> HVM-boot-params:<span class="attribute">order</span>=<span class="string">"dc"</span>
-</code></pre><p>执行完,你就可以通过XenCenter打开Linux虚拟机的属性查看,和windows一样,可以修改启动顺序了</p>
+<p>执行:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">xe vm-list name-lable=xx(虚拟机名称) 就会显示虚拟机的uuid</span><br></pre></td></tr></table></figure></p>
+<p>然后执行:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">xe vm-param-set uuid=xx(上面获取到的) HVM-boot-policy=BIOS\ order</span><br><span class="line">xe vm-param-set uuid=xx(上面获取到的) HVM-boot-params:order=<span class="string">"dc"</span></span><br></pre></td></tr></table></figure></p>
+<p>执行完,你就可以通过XenCenter打开Linux虚拟机的属性查看,和windows一样,可以修改启动顺序了</p>
 <p>写于: 2014年06月19日<br>更新于: 2015年03月24日</p>
 
     
   </div>
   <footer class="end-sep">
     
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-  
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2015/03/24/fio的配置使用/">
-  <time datetime="2015-03-23T23:45:26.000Z">
-    2015-03-24
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2015/03/24/fio的配置使用/">fio的配置使用</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <p>将fio-2.1.10.tar.gz拷贝到linux服务器的/usr/src/下</p>
-<p>解压源码包:</p>
-<pre><code>root<span class="variable">@grandocean</span><span class="symbol">:/usr/src</span><span class="comment"># tar xvf fio-2.1.10.tar.gz </span>
-root<span class="variable">@grandocean</span><span class="symbol">:/usr/src</span><span class="comment"># cd fio-2.1.10/ </span>
-</code></pre><p>安装依赖包:</p>
-<pre><code>root<span class="variable">@grandocean</span><span class="symbol">:/usr/src/fio-</span><span class="number">2.1</span>.<span class="number">10</span><span class="comment"># apt-get install pkg-config gtk+-2.0 libaio-dev </span>
-</code></pre><p>开启gfio:</p>
-<pre><code>root<span class="variable">@grandocean</span><span class="symbol">:/usr/src/fio-</span><span class="number">2.1</span>.<span class="number">10</span><span class="comment"># ./configure --enable-gfio </span>
-</code></pre>
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2015/03/24/fio的配置使用/#more" class="more-link">阅读全文</a>
-        </div>
       
       
     

@@ -73,33 +73,32 @@ var _hmt = _hmt || [];
   <header>
     
       <div class="icon"></div>
-      <a href="/2015/03/22/Ubuntu-12-10设置root用户登录图形界面/">
-  <time datetime="2015-03-22T13:53:06.000Z">
+      <a href="/2015/03/22/卸载python安装的软件/">
+  <time datetime="2015-03-22T07:26:12.000Z">
     2015-03-22
   </time>
 </a>
     
     
   
-    <h1 class="title"><a href="/2015/03/22/Ubuntu-12-10设置root用户登录图形界面/">Ubuntu 12.10设置root用户登录图形界面</a></h1>
+    <h1 class="title"><a href="/2015/03/22/卸载python安装的软件/">卸载python安装的软件</a></h1>
   
 
   </header>
   
   <div class="entry">
     
-      <p>Ubuntu 12.04默认是不允许root登录的,在登录窗口只能看到普通用户和访客登录。以普通身份登陆Ubuntu后我们需要做一些修改,普通用户登录后,修改系统配置文件需要切换到超级用户模式,在终端窗口里面输入: </p>
-<pre><code>sudo  <span class="operator">-s</span>
-</code></pre><p>然后输入普通用户登陆的密码,回车即可进入 root用户权限模式。<br>启用root用户的前提是需要先给root设置一个密码:</p>
-<pre><code><span class="title">sudo</span> passwd root 
-</code></pre><p>输入root 密码即可</p>
+      <p>python源码安装的软件是无法通过命令卸载的,这个可以通过记录安装过程的形式来卸载安装的软件</p>
+<p>以 python2.7.2 为例,在这个目录中有一个 setup.py 的文件,很显然这是安装程序,还是python写的,用 python 写 python 到安装程序,大开眼界了。在这里,需要写一个 shell 脚本,把在重新安装中提到的安装位置全部删除,就实现了卸载到目的了</p>
+<h3 id="一、创建del-sh脚本内容(在源码目录):">一、创建del.sh脚本内容(在源码目录):</h3><figure class="highlight"><table><tr><td class="code"><pre><span class="line">#!/bin/bash  &#10;for i in $(less files.txt)  &#10;do  rm -rf $i  &#10;done</span><br></pre></td></tr></table></figure>
+<p>脚本说明: files.txt 是需要事先在目录下创建的文件,目的是记录安装过程中提到到路径。脚本很简单,详细的就不说了,学过 shell 编程到肯定没问题,没学过到有其他语言编程基础的,仔细看看也可以看懂。</p>
     
   </div>
   <footer class="end-sep">
     
       
         <div class="alignleft">
-          <a href="/2015/03/22/Ubuntu-12-10设置root用户登录图形界面/#more" class="more-link">阅读全文</a>
+          <a href="/2015/03/22/卸载python安装的软件/#more" class="more-link">阅读全文</a>
         </div>
       
       
@@ -114,32 +113,30 @@ var _hmt = _hmt || [];
   <header>
     
       <div class="icon"></div>
-      <a href="/2015/03/22/Vmware-Tools-is-currently-being-installed-on-your-system/">
-  <time datetime="2015-03-22T13:47:15.000Z">
+      <a href="/2015/03/22/常用linux源列表/">
+  <time datetime="2015-03-22T07:16:16.000Z">
     2015-03-22
   </time>
 </a>
     
     
   
-    <h1 class="title"><a href="/2015/03/22/Vmware-Tools-is-currently-being-installed-on-your-system/">Vmware Tools is currently being installed on your system</a></h1>
+    <h1 class="title"><a href="/2015/03/22/常用linux源列表/">常用linux源列表</a></h1>
   
 
   </header>
   
   <div class="entry">
     
-      <p>问题描述:<br>使用虚拟机安装Ubuntu过程中一直停留在“PLEASE WAIT! Vmware Tools is currently<br>being installed on your system”如下图:</p>
-<p><img src="http://7xi6lo.com1.z0.glb.clouddn.com/vmware1.jpg" alt="">]</p>
-<p>软件环境<br>VMWare 8<br>Ubuntu 12.10</p>
-<p>解决方案如下</p>
+      <p>centos6 源:</p>
+<p>epel源:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget  http://mirrors.aliyun.com/epel/<span class="number">6</span>/x86_64/epel-release-<span class="number">6</span>-<span class="number">8</span>.noarch.rpm</span><br></pre></td></tr></table></figure></p>
     
   </div>
   <footer class="end-sep">
     
       
         <div class="alignleft">
-          <a href="/2015/03/22/Vmware-Tools-is-currently-being-installed-on-your-system/#more" class="more-link">阅读全文</a>
+          <a href="/2015/03/22/常用linux源列表/#more" class="more-link">阅读全文</a>
         </div>
       
       
@@ -154,23 +151,103 @@ var _hmt = _hmt || [];
   <header>
     
       <div class="icon"></div>
-      <a href="/2015/03/22/win7问题步骤记录器-（远程协助）/">
-  <time datetime="2015-03-22T11:39:23.000Z">
+      <a href="/2015/03/22/监控磁盘读写状况/">
+  <time datetime="2015-03-22T06:41:09.000Z">
     2015-03-22
   </time>
 </a>
     
     
   
-    <h1 class="title"><a href="/2015/03/22/win7问题步骤记录器-（远程协助）/">win7问题步骤记录器 （远程协助）</a></h1>
+    <h1 class="title"><a href="/2015/03/22/监控磁盘读写状况/">监控磁盘读写状况</a></h1>
   
 
   </header>
   
   <div class="entry">
     
-      <p>win7问题步骤记录器<br>有很多时候,身在远方的家人或者是朋友会要求您辅导他们计算机问题,但是又不知道该如何明确向您表达这个问题，这个处境是很令人沮丧的。<br>微软在Windows 7中添加的问题步骤记录器,将会帮助您与您的朋友摆脱沮丧。在这种情况下,您的朋友只要单击开始菜单、键入PSR,按住Enter键，再点击开始记录按钮即可。启用这项功能后,当您的朋友进行问题操作时,该记录器将会逐一记录您的朋友的操作步骤,并将它们压缩在一个MHTML文件中发送给您即可。无疑,这是个快捷、简单与高效的方法,这将有助于缩短您的故障排除时间。 </p>
-<p>写于: 2012年08月23日<br>更新于: 2015年03月23日 </p>
+      <p>您有没有碰到过:没有运行任何程序，磁盘却不断执行读写动作,io指示灯常亮,各种操作迟缓甚至卡顿。碰到这种状况往往会感到束手无策,因为并不是 cpu 居高不下,可以立即结束相关进程。而突然结束进程中断磁盘 io 操作甚至可能导致正在写入的数据丢失。</p>
+<h4 id="什么进程在读写磁盘?">什么进程在读写磁盘?</h4><p>可能是 firefox,可能是 updatedb,也可能是正在运行的 pacman -Syu,一切皆有可能 ……<br>怎么查看是什么进程在不断的读写磁盘呢?<br>请使用 iotop 命令查看:<br>通过输出结果我们可以清楚地知晓是什么程序在读写磁盘，速度以及命令行, pid 等信息。</p>
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2015/03/22/监控磁盘读写状况/#more" class="more-link">阅读全文</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/22/du查看的目录大小与df查看的大小不同的时候用lsof查找/">
+  <time datetime="2015-03-22T06:21:07.000Z">
+    2015-03-22
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/03/22/du查看的目录大小与df查看的大小不同的时候用lsof查找/">du查看的目录大小与df查看的大小不同的时候用lsof查找</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>首先MAN一下两个命令,看一下解释的区别:<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">du - estimate file space usage&#10;df - report file system disk space usage</span><br></pre></td></tr></table></figure></p>
+<p>du估计文件空间占用情况,df报告文件系统磁盘空间使用情况。两个命令所要获取的对象时不同的。在linux下,几乎所有东西都可以称为文件,常规文件,二进制文件,socket流。所以,通常情况下,使用du得到到的根路径文件空间占用情况应当与df得到的文件系统磁盘占用的情况是一致的或者说相差无几。但是在某些情况下却会出现du得到的空间占用情况要远小于df得到的。</p>
+<p>后通过查询,发现问题出现在deleted文件上。</p>
+<p>root下 lsof | grep deleted会发现多多少少有些文件状态出于deleted状态。<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">[root@eb152 ~]# lsof |grep deleted&#10;&#36827;&#31243;&#21517;   PID       USER    FD   &#25991;&#20214;&#31867;&#22411;        &#22823;&#23567;(&#23383;&#33410;)  &#32034;&#24341;&#33410;&#28857;  &#25991;&#20214;&#21517;  [(&#29366;&#24577;)]&#10;java       3311    AuSP    8w      REG              253,0         778   10879268 ***.log (deleted)&#10;java       3311    AuSP    9w      REG              253,0        3275   10879269 ***.log (deleted)&#10;java       3311    AuSP   10w      REG              253,0           0   10879815 ***.log (deleted)&#10;java       3311    AuSP   11w      REG              253,0           0   10879816 ***.log (deleted)&#10;oracle     4195  oracle    7u      REG              253,0           0   14254321 *** (deleted)</span><br></pre></td></tr></table></figure></p>
+<p>状态为deleted为标记被删除,其实该文件并没有从磁盘中删除,类似windows下的回收站状态。</p>
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2015/03/22/du查看的目录大小与df查看的大小不同的时候用lsof查找/#more" class="more-link">阅读全文</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/22/遍历指定目录并且从子目录开始将目录输出到指定文件/">
+  <time datetime="2015-03-22T06:18:05.000Z">
+    2015-03-22
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/03/22/遍历指定目录并且从子目录开始将目录输出到指定文件/">遍历指定目录并且从子目录开始将目录输出到指定文件</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>shell脚本:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="shebang">#! /bin/sh</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"type a backup directory name:"</span></span><br><span class="line"><span class="built_in">read</span> <span class="operator">-e</span> r</span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$r</span>   </span><br><span class="line">python /zp/bianli.py <span class="variable">$r</span>                 <span class="comment">#传递参数到python脚本文件中</span></span><br><span class="line"><span class="keyword">for</span> dir <span class="keyword">in</span> `cat /zp/mulu.txt`</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$dir</span></span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure></p>
+<p>python脚本:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#! /usr/bin/env python</span></span><br><span class="line">import os,sys</span><br><span class="line">r=sys.argv[<span class="number">1</span>]                <span class="comment">#将第一个参数值传入到r当中</span></span><br><span class="line"><span class="keyword">for</span> root,<span class="built_in">dirs</span>,files <span class="keyword">in</span> os.walk(r,topdown=False):</span><br><span class="line">        <span class="keyword">for</span> dir <span class="keyword">in</span> <span class="built_in">dirs</span>:</span><br><span class="line">                <span class="built_in">print</span> os.path.join(root,dir)            <span class="comment">#输出路径</span></span><br></pre></td></tr></table></figure></p>
+<p>写于: 2012年3月13日<br>更新于: 2015年03月22日</p>
 
     
   </div>
@@ -189,32 +266,74 @@ var _hmt = _hmt || [];
   <header>
     
       <div class="icon"></div>
-      <a href="/2015/03/22/检查linux下服务器的带宽/">
-  <time datetime="2015-03-22T11:25:43.000Z">
+      <a href="/2015/03/22/利用现有的网络产品实现内网linux服务器文件的公网同步/">
+  <time datetime="2015-03-22T05:23:41.000Z">
     2015-03-22
   </time>
 </a>
     
     
   
-    <h1 class="title"><a href="/2015/03/22/检查linux下服务器的带宽/">检查linux下服务器的带宽</a></h1>
+    <h1 class="title"><a href="/2015/03/22/利用现有的网络产品实现内网linux服务器文件的公网同步/">利用现有的网络产品实现内网linux服务器文件的公网同步</a></h1>
   
 
   </header>
   
   <div class="entry">
     
-      <p>设想:公司 A 有一个名为 bsdocfs 的存储服务器,并通过名为 beckham 的客户端节点装载 NFS。公司 A 确定他们需要从 bsdocfs得到更多的带宽,因为有大量的节点需要访问 bsdocfs 的共享文件系统。<br>实现此操作的最常用和最便宜的方式是将两个千兆网卡组合在一起。这是最便宜的,因为您通常会有一个额外的可用 NIC 和一个额外的端口。<br>所以采取此这个方法。不过现在的问题是?到底需要多少带宽?</p>
-<p>千兆网卡以太网理论上的限制是 128MBit/s。这个数字从何而来,看看这些计算:<br>1Gb = 1024Mb;1024Mb/8 = 128MB;”b” = “bits,”、”B” = “bytes”</p>
-<p>但实际看到的是什么呢,有什么好的测量方法呢,我推荐一个工具 iperf。可以按照以下方法获得 iperf</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ wget http://dast.nlanr.net/Projects/Iperf2.<span class="number">0</span>/iperf-<span class="number">2.0</span>.<span class="number">2</span>.tar.gz</span><br></pre></td></tr></table></figure>
+      <p>更新这篇文章的时候发现原来引用的互联网产品everbox已经不在了,作为国内第一批网盘产品,模仿dropbox做出来的,说实话,这个产品真的还不错,不过可能由于盛大运营方向的改变,对于这个短期内不会有收益的产品，最终被废掉了,其实对于技术发展很快的今天,拥有数据才是重点,进行数据重复删除以后,对于企业的存储压力其实不太大了,该淘汰的终归要淘汰，就像盛大的没落</p>
+<p>下面介绍的是通用的方法,网盘产品很多,都可以使用:</p>
+<p>现在可能会出现这样的情况,你在用你的linux服务器开发一个产品,在公司的时候,你可以通过内网连接到你的机器进行开发,但是回家以后,这些东西怎么带回家,怎么实现在线同步,这是一个问题,最近公司在开发产品的时候就面临这个问题,正好在寻找怎么远程连接内网服务器的时候想到了这个办法,内网服务器的连接办法另外一篇介绍:</p>
+<p>注册网盘账号,方法就不在这里介绍了</p>
+<p>在你的linux机器上安装samba,将你需要使用的目录设置为共享目录<br>这个在/etc/samba/smb.conf中配置就可以</p>
+<p>然后找一台windows机器,将需要备份的目录映射到本地盘,然后将同步的目录指定到这个盘,就可以进行同步了,有的同步软件不支持指定到根目录,那么可以在本地运行一个同步软件,将盘符与本地目录同步起来,然后将同步的盘指定到这个目录即可</p>
+<p>现在有支持可以同步linux和windows的软件了,btsync,这个很简单,需要两边都可以上网即可</p>
+<p>写于: 2012年02月03日<br>更新于: 2015年03月22日</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/22/利用脚本自动下载ftp列表中的文件/">
+  <time datetime="2015-03-22T05:09:35.000Z">
+    2015-03-22
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/03/22/利用脚本自动下载ftp列表中的文件/">利用脚本自动下载ftp列表中的文件</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>我们可能会遇到这种场景，在某个机构订阅了一个邮件列表,然后这个机构会定期的发送带有ftp目录的url地址到你的邮件,现在你想在你的服务器上能够方便的下载这个列表上的文件,而不是手动的一个个去下,那么我们可以用脚本来完成这个功能,我将这个过程分为两部分,第一步获取到ftp页面的所有文件名称,第二步是通过获得的文件名来下载文件<br>下面以一个卫星数据的下载为例:</p>
+<p>ftp://oceans.gsfc.nasa.gov/subscriptions/1227</p>
+<p>这个是邮件中收到的url地址,在浏览器中可以查看到文件名,由于这个数据是0,这个是这样设计的.</p>
+<h3 id="第一步:我们只需要获取他的文件名,用下面这个脚本">第一步:我们只需要获取他的文件名,用下面这个脚本</h3><figure class="highlight"><table><tr><td class="code"><pre><span class="line">#! /bin/sh&#10;echo &#34;&#35831;&#36755;&#20837;&#20320;&#30340;FTP&#30446;&#24405;&#32534;&#21495;&#34;&#10;read -e id&#10;wget -r  ftp://oceans.gsfc.nasa.gov/subscriptions/$id&#10;ls  /usr/src/oceans.gsfc.nasa.gov/subscriptions/$id/ &#62; /usr/src/filename.txt</span><br></pre></td></tr></table></figure>
+<p>这样文件名就被下载到了/usr/src/filename.txt中了</p>
     
   </div>
   <footer class="end-sep">
     
       
         <div class="alignleft">
-          <a href="/2015/03/22/检查linux下服务器的带宽/#more" class="more-link">阅读全文</a>
+          <a href="/2015/03/22/利用脚本自动下载ftp列表中的文件/#more" class="more-link">阅读全文</a>
         </div>
       
       
@@ -229,34 +348,109 @@ var _hmt = _hmt || [];
   <header>
     
       <div class="icon"></div>
-      <a href="/2015/03/22/linux利用screen进行shell下的屏幕协作/">
-  <time datetime="2015-03-22T11:22:22.000Z">
+      <a href="/2015/03/22/linux修改网卡的mac地址/">
+  <time datetime="2015-03-22T04:55:25.000Z">
     2015-03-22
   </time>
 </a>
     
     
   
-    <h1 class="title"><a href="/2015/03/22/linux利用screen进行shell下的屏幕协作/">linux利用screen进行shell下的屏幕协作</a></h1>
+    <h1 class="title"><a href="/2015/03/22/linux修改网卡的mac地址/">linux修改网卡的mac地址</a></h1>
   
 
   </header>
   
   <div class="entry">
     
-      <p>我们都知道linux是支持多终端并行处理的<br>但是某些时候我们可能有比较特殊的需求需要两个人同时处理一个终端,screen 正好能满足这个要求</p>
-<p>首先需要安装screen软件:</p>
-<p>debian和ubuntu下面都是通过:</p>
-<pre><code>apt-<span class="keyword">get</span> install screen
-</code></pre><p>进行安装的.</p>
+      <p>linux在安装一些软件的时候可能会用到修改主机的mac地址的问题,在网卡配置文件<code>/etc/network/interface</code>中添加mac地址的方式我在修改重启机器后没有生效,所以采用其他方式</p>
+<p>在这里推荐使用脚本修改,将脚本写在开机启动配置文件中,这样开机后就能生成你需要的mac地址<br>在/etc/rc.local 中添加<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ifconfig eth0 down</span><br><span class="line">ifconfig eth0 hw ether  <span class="number">00</span>:e0:<span class="number">34</span>:<span class="number">5</span>b:b4:i8</span><br><span class="line">ifconfig eth0 up</span><br></pre></td></tr></table></figure></p>
+<p>这样修改后重启机器的mac地址就是你设置的地址了<br>这个时候会出现连不上外网的问题,使用命令route查看你会发现default默认网关路由项不见了,所以这个时候需要添加默认路由</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">route add default gw <span class="number">192.168</span>.<span class="number">1.1</span></span><br></pre></td></tr></table></figure>
+<p>将这句加在/etc/rc.local 中的 ifconfig eth0 up 后面让他开机启动,这样就完成了机器网卡mac地址的修改了</p>
+<p>写于: 2012年1月14日<br>更新于: 2015年03月22日</p>
+
     
   </div>
   <footer class="end-sep">
     
       
-        <div class="alignleft">
-          <a href="/2015/03/22/linux利用screen进行shell下的屏幕协作/#more" class="more-link">阅读全文</a>
-        </div>
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/22/Microsoft-Visual-C-2005-SP1无法安装/">
+  <time datetime="2015-03-22T04:52:20.000Z">
+    2015-03-22
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/03/22/Microsoft-Visual-C-2005-SP1无法安装/">Microsoft Visual C++ 2005 SP1无法安装</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>安装时出现需要Microsoft Visual C++ 2005 Redistributble对话框,<br>里面说Command line option syntax error . Type Command/?for Help<br>先解压 先脱一层,得到 VCREDI~3.EXE 这么个exe文件,执行安装。<br>使用WINRAR打开这个exe文件,得到vcredis1.cab 和 vcredist.msi 这两个安装程序,现在安装起来没有问题了</p>
+<p>写于: 2012年01月13日<br>更新于: 2015年03月22日</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/22/symbol-lookup-error-usr-lib-x86-64-linux-gnu-libstdc-so-6错误的解决办法/">
+  <time datetime="2015-03-22T04:46:35.000Z">
+    2015-03-22
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/03/22/symbol-lookup-error-usr-lib-x86-64-linux-gnu-libstdc-so-6错误的解决办法/">symbol lookup error: /usr/lib/x86_64-linux-gnu/libstdc++.so.6错误的解决办法</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>当出现<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ apt-get: symbol lookup error: /usr/lib/x86_64-linux-gnu/libstdc++.so.<span class="number">6</span>: undefined symbol: _ZNSt8messagesIcE2idE, version GLIBCXX_3.<span class="number">4</span>的时候</span><br></pre></td></tr></table></figure></p>
+<p>需要重新配置下一个包</p>
+<p>Fixed by manually downloading testing version of libc6 from here<br><a href="http://packages.debian.org/wheezy/libc6" target="_blank" rel="external">http://packages.debian.org/wheezy/libc6</a> and installed it</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ dpkg -i --auto-deconfigure libc6_2.<span class="number">13</span>-<span class="number">16</span>_amd64.deb</span><br></pre></td></tr></table></figure>
+<p>重新配置下libc6_2.13-16_amd64.deb就可以了</p>
+<pre><code class="bash">strings /usr/lib/libstdc++.so.<span class="number">6</span>| grep GLIBC
+</code></pre>
+<p>查看版本,然后安装 libstdc++6 即可</p>
+<p>写于: 2011年12月31日<br>更新于: 2015年03月22日</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
       
       
     

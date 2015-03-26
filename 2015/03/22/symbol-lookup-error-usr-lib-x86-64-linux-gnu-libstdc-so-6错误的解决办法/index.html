@@ -10,29 +10,25 @@
     <meta name="author" content="zphj1987">
   
   
-    <meta name="description" content="当出现
-$ apt-get: symbol lookup error: /usr/lib/x86_64-linux-gnu/libstdc++.so.6: undefined symbol: _ZNSt8messagesIcE2idE, version GLIBCXX_3.4的时候
+    <meta name="description" content="当出现$ apt-get: symbol lookup error: /usr/lib/x86_64-linux-gnu/libstdc++.so.6: undefined symbol: _ZNSt8messagesIcE2idE, version GLIBCXX_3.4的时候
 需要重新配置下一个包
-Fixed by manually downloading testing version o">
+Fixed by manually downloading testing version of">
   
-  <meta name="description" content="当出现
-$ apt-get: symbol lookup error: /usr/lib/x86_64-linux-gnu/libstdc++.so.6: undefined symbol: _ZNSt8messagesIcE2idE, version GLIBCXX_3.4的时候
+  <meta name="description" content="当出现$ apt-get: symbol lookup error: /usr/lib/x86_64-linux-gnu/libstdc++.so.6: undefined symbol: _ZNSt8messagesIcE2idE, version GLIBCXX_3.4的时候
 需要重新配置下一个包
-Fixed by manually downloading testing version o">
+Fixed by manually downloading testing version of">
 <meta property="og:type" content="article">
 <meta property="og:title" content="symbol lookup error: /usr/lib/x86_64-linux-gnu/libstdc++.so.6错误的解决办法">
 <meta property="og:url" content="http://yoursite.com/2015/03/22/symbol-lookup-error-usr-lib-x86-64-linux-gnu-libstdc-so-6错误的解决办法/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
-<meta property="og:description" content="当出现
-$ apt-get: symbol lookup error: /usr/lib/x86_64-linux-gnu/libstdc++.so.6: undefined symbol: _ZNSt8messagesIcE2idE, version GLIBCXX_3.4的时候
+<meta property="og:description" content="当出现$ apt-get: symbol lookup error: /usr/lib/x86_64-linux-gnu/libstdc++.so.6: undefined symbol: _ZNSt8messagesIcE2idE, version GLIBCXX_3.4的时候
 需要重新配置下一个包
-Fixed by manually downloading testing version o">
+Fixed by manually downloading testing version of">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="symbol lookup error: /usr/lib/x86_64-linux-gnu/libstdc++.so.6错误的解决办法">
-<meta name="twitter:description" content="当出现
-$ apt-get: symbol lookup error: /usr/lib/x86_64-linux-gnu/libstdc++.so.6: undefined symbol: _ZNSt8messagesIcE2idE, version GLIBCXX_3.4的时候
+<meta name="twitter:description" content="当出现$ apt-get: symbol lookup error: /usr/lib/x86_64-linux-gnu/libstdc++.so.6: undefined symbol: _ZNSt8messagesIcE2idE, version GLIBCXX_3.4的时候
 需要重新配置下一个包
-Fixed by manually downloading testing version o">
+Fixed by manually downloading testing version of">
   
   
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
@@ -96,11 +92,10 @@ var _hmt = _hmt || [];
   
   <div class="entry">
     
-      <p>当出现</p>
-<pre><code>$ apt-<span class="string">get:</span> symbol lookup <span class="string">error:</span> <span class="regexp">/usr/</span>lib<span class="regexp">/x86_64-linux-gnu/</span>libstdc++.so<span class="number">.6</span>: undefined <span class="string">symbol:</span> _ZNSt8messagesIcE2idE, version GLIBCXX_3<span class="number">.4</span>的时候
-</code></pre><p>需要重新配置下一个包</p>
+      <p>当出现<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ apt-get: symbol lookup error: /usr/lib/x86_64-linux-gnu/libstdc++.so.<span class="number">6</span>: undefined symbol: _ZNSt8messagesIcE2idE, version GLIBCXX_3.<span class="number">4</span>的时候</span><br></pre></td></tr></table></figure></p>
+<p>需要重新配置下一个包</p>
 <p>Fixed by manually downloading testing version of libc6 from here<br><a href="http://packages.debian.org/wheezy/libc6" target="_blank" rel="external">http://packages.debian.org/wheezy/libc6</a> and installed it</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ dpkg -i --auto-deconfigure libc6_2.<span class="number">13</span>-<span class="number">16</span>_amd64.deb</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ dpkg -i --auto-deconfigure libc6_2.<span class="number">13</span>-<span class="number">16</span>_amd64.deb</span><br></pre></td></tr></table></figure>
 <p>重新配置下libc6_2.13-16_amd64.deb就可以了</p>
 <pre><code class="bash">strings /usr/lib/libstdc++.so.<span class="number">6</span>| grep GLIBC
 </code></pre>

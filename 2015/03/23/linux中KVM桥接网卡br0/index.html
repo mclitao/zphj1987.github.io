@@ -11,41 +11,21 @@
   
   
     <meta name="description" content="在centos虚拟化当中需要增加一个桥接网卡,然后将虚拟化当中的机器的网卡桥接到桥接网卡,下面将描述设置方法:
-查看现有网卡
-[root@zb ~]# vim /etc/sysconfig/network-scripts/ifcfg-eth0
-DEVICE=eth0
-HWADDR=70:71:BC:1F:E4:86
-TYPE=Ethernet
-UUID=0213211a-d451-4944-881">
+查看现有网卡[root@zb ~]# vim /etc/sysconfig/network-scripts/ifcfg-eth0&amp;#10;DEVICE=eth0&amp;#10;HWADDR=70:71:BC:1F:E4:86&amp;#10;TYPE=Ethernet&amp;#10;UUID=0213211">
   
   <meta name="description" content="在centos虚拟化当中需要增加一个桥接网卡,然后将虚拟化当中的机器的网卡桥接到桥接网卡,下面将描述设置方法:
-查看现有网卡
-[root@zb ~]# vim /etc/sysconfig/network-scripts/ifcfg-eth0
-DEVICE=eth0
-HWADDR=70:71:BC:1F:E4:86
-TYPE=Ethernet
-UUID=0213211a-d451-4944-881">
+查看现有网卡[root@zb ~]# vim /etc/sysconfig/network-scripts/ifcfg-eth0&amp;#10;DEVICE=eth0&amp;#10;HWADDR=70:71:BC:1F:E4:86&amp;#10;TYPE=Ethernet&amp;#10;UUID=0213211">
 <meta property="og:type" content="article">
 <meta property="og:title" content="linux中KVM桥接网卡br0">
 <meta property="og:url" content="http://yoursite.com/2015/03/23/linux中KVM桥接网卡br0/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
 <meta property="og:description" content="在centos虚拟化当中需要增加一个桥接网卡,然后将虚拟化当中的机器的网卡桥接到桥接网卡,下面将描述设置方法:
-查看现有网卡
-[root@zb ~]# vim /etc/sysconfig/network-scripts/ifcfg-eth0
-DEVICE=eth0
-HWADDR=70:71:BC:1F:E4:86
-TYPE=Ethernet
-UUID=0213211a-d451-4944-881">
+查看现有网卡[root@zb ~]# vim /etc/sysconfig/network-scripts/ifcfg-eth0&amp;#10;DEVICE=eth0&amp;#10;HWADDR=70:71:BC:1F:E4:86&amp;#10;TYPE=Ethernet&amp;#10;UUID=0213211">
 <meta property="og:image" content="http://7xi6lo.com1.z0.glb.clouddn.com/桥接网卡br0.jpg">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="linux中KVM桥接网卡br0">
 <meta name="twitter:description" content="在centos虚拟化当中需要增加一个桥接网卡,然后将虚拟化当中的机器的网卡桥接到桥接网卡,下面将描述设置方法:
-查看现有网卡
-[root@zb ~]# vim /etc/sysconfig/network-scripts/ifcfg-eth0
-DEVICE=eth0
-HWADDR=70:71:BC:1F:E4:86
-TYPE=Ethernet
-UUID=0213211a-d451-4944-881">
+查看现有网卡[root@zb ~]# vim /etc/sysconfig/network-scripts/ifcfg-eth0&amp;#10;DEVICE=eth0&amp;#10;HWADDR=70:71:BC:1F:E4:86&amp;#10;TYPE=Ethernet&amp;#10;UUID=0213211">
   
   
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
@@ -110,52 +90,13 @@ var _hmt = _hmt || [];
   <div class="entry">
     
       <p>在centos虚拟化当中需要增加一个桥接网卡,然后将虚拟化当中的机器的网卡桥接到桥接网卡,下面将描述设置方法:</p>
-<p>查看现有网卡</p>
-<pre><code>[root@zb ~]<span class="comment"># vim /etc/sysconfig/network-scripts/ifcfg-eth0</span>
-<span class="constant">DEVICE</span>=eth0
-<span class="constant">HWADDR</span>=70:71:BC:1F:E4:86
-<span class="constant">TYPE</span>=Ethernet
-<span class="constant">UUID</span>=0213211a-d451-4944-881c-e7475b8bee34
-<span class="constant">ONBOOT</span>=yes
-<span class="constant">NM_CONTROLLED</span>=yes
-<span class="constant">BOOTPROTO</span>=static
-<span class="constant">IPADDR</span>=192.168.7.107
-<span class="constant">NETMASK</span>=255.255.0.0
-<span class="constant">GATEWAY</span>=192.168.1.1
-</code></pre><p>将网卡信息copy一份到br0再进行修改</p>
+<p>查看现有网卡<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">[root@zb ~]# vim /etc/sysconfig/network-scripts/ifcfg-eth0&#10;DEVICE=eth0&#10;HWADDR=70:71:BC:1F:E4:86&#10;TYPE=Ethernet&#10;UUID=0213211a-d451-4944-881c-e7475b8bee34&#10;ONBOOT=yes&#10;NM_CONTROLLED=yes&#10;BOOTPROTO=static&#10;IPADDR=192.168.7.107&#10;NETMASK=255.255.0.0&#10;GATEWAY=192.168.1.1</span><br></pre></td></tr></table></figure></p>
+<p>将网卡信息copy一份到br0再进行修改</p>
 <a id="more"></a>
-<p>修改eth0的信息为:</p>
-<pre><code><span class="variable">DEVICE=</span>eth0
-<span class="variable">HWADDR=</span><span class="number">70</span>:<span class="number">71</span>:BC:<span class="number">1</span>F:E4:<span class="number">86</span>
-<span class="variable">TYPE=</span>Ethernet
-<span class="variable">ONBOOT=</span>yes
-<span class="variable">NM_CONTROLLED=</span>yes
-<span class="variable">BOOTPROTO=</span>static
-<span class="variable">BRIDGE=</span>br0     <span class="comment">#新增加了这一句,重要</span>
-修改br0的信息为：
-<span class="variable">DEVICE=</span>br0     <span class="comment">#更改eth0为br0</span>
-<span class="variable">HWADDR=</span><span class="number">70</span>:<span class="number">71</span>:BC:<span class="number">1</span>F:E4:<span class="number">86</span>
-<span class="variable">TYPE=</span>Bridge       <span class="comment">#修改类型为bridge</span>
-<span class="variable">ONBOOT=</span>yes
-<span class="variable">BOOTPROTO=</span>static
-<span class="variable">IPADDR=</span><span class="number">192.168</span>.<span class="number">7.107</span>
-<span class="variable">NETMASK=</span><span class="number">255.255</span>.<span class="number">0.0</span>
-<span class="variable">GATEWAY=</span><span class="number">192.168</span>.<span class="number">1.1</span>
-</code></pre><p>修改完成后,eth0实际是没有ip的,br0为当前主机的ip了</p>
-<p>ubuntu下的配置方式</p>
-<pre><code><span class="title">auto</span> lo
-iface lo inet loopback
-auto br0
-iface br0 inet static
-bridge_ports eth0
-bridge_stp <span class="built_in">off</span>
-bridge_maxwait <span class="number">0</span>
-bridge_fd <span class="number">0</span>
-address <span class="number">192.168.5.108</span>
-netmask <span class="number">255.255.0.0</span>
-gateway <span class="number">192.168.1.1</span>
-dns-nameservers <span class="number">192.168.1.1</span>
-</code></pre><p>配置完成后:<br><img src="http://7xi6lo.com1.z0.glb.clouddn.com/桥接网卡br0.jpg" alt=""></p>
+<p>修改eth0的信息为:<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">DEVICE=eth0&#10;HWADDR=70:71:BC:1F:E4:86&#10;TYPE=Ethernet&#10;ONBOOT=yes&#10;NM_CONTROLLED=yes&#10;BOOTPROTO=static&#10;BRIDGE=br0     #&#26032;&#22686;&#21152;&#20102;&#36825;&#19968;&#21477;,&#37325;&#35201;&#10;&#20462;&#25913;br0&#30340;&#20449;&#24687;&#20026;&#65306;&#10;DEVICE=br0     #&#26356;&#25913;eth0&#20026;br0&#10;HWADDR=70:71:BC:1F:E4:86&#10;TYPE=Bridge       #&#20462;&#25913;&#31867;&#22411;&#20026;bridge&#10;ONBOOT=yes&#10;BOOTPROTO=static&#10;IPADDR=192.168.7.107&#10;NETMASK=255.255.0.0&#10;GATEWAY=192.168.1.1</span><br></pre></td></tr></table></figure></p>
+<p>修改完成后,eth0实际是没有ip的,br0为当前主机的ip了</p>
+<p>ubuntu下的配置方式<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">auto lo&#10;iface lo inet loopback&#10;auto br0&#10;iface br0 inet static&#10;bridge_ports eth0&#10;bridge_stp off&#10;bridge_maxwait 0&#10;bridge_fd 0&#10;address 192.168.5.108&#10;netmask 255.255.0.0&#10;gateway 192.168.1.1&#10;dns-nameservers 192.168.1.1</span><br></pre></td></tr></table></figure></p>
+<p>配置完成后:<br><img src="http://7xi6lo.com1.z0.glb.clouddn.com/桥接网卡br0.jpg" alt=""></p>
 <p>写于: 2013年12月24日<br>更新于: 2015年03月23日</p>
 
     

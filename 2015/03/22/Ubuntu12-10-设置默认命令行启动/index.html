@@ -10,22 +10,22 @@
     <meta name="author" content="zphj1987">
   
   
-    <meta name="description" content="在虚拟机当中安装ubuntu12.10的时候默认把图形界面给装上了,由于不需要使用桌面,所以为了省去每次进入到图形界面然后再用ctrl+F1的方式切换到命令行的步骤,希望能够默认进入的是命令行模式,那么设置的方法如下:终端执行:1vim /etc/default/grub
-将 GRUB_CMDLINE_LINUX_DEFAULT=”quiet splash” 改为:GRUB_CMDLINE_LIN">
+    <meta name="description" content="在虚拟机当中安装ubuntu12.10的时候默认把图形界面给装上了,由于不需要使用桌面,所以为了省去每次进入到图形界面然后再用ctrl+F1的方式切换到命令行的步骤,希望能够默认进入的是命令行模式,那么设置的方法如下:终端执行:vim /etc/default/grub
+将 GRUB_CMDLINE_LINUX_DEFAULT=”quiet splash” 改为:GRUB_CMDLINE_LINU">
   
-  <meta name="description" content="在虚拟机当中安装ubuntu12.10的时候默认把图形界面给装上了,由于不需要使用桌面,所以为了省去每次进入到图形界面然后再用ctrl+F1的方式切换到命令行的步骤,希望能够默认进入的是命令行模式,那么设置的方法如下:终端执行:1vim /etc/default/grub
-将 GRUB_CMDLINE_LINUX_DEFAULT=”quiet splash” 改为:GRUB_CMDLINE_LIN">
+  <meta name="description" content="在虚拟机当中安装ubuntu12.10的时候默认把图形界面给装上了,由于不需要使用桌面,所以为了省去每次进入到图形界面然后再用ctrl+F1的方式切换到命令行的步骤,希望能够默认进入的是命令行模式,那么设置的方法如下:终端执行:vim /etc/default/grub
+将 GRUB_CMDLINE_LINUX_DEFAULT=”quiet splash” 改为:GRUB_CMDLINE_LINU">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Ubuntu12.10 设置默认命令行启动">
 <meta property="og:url" content="http://yoursite.com/2015/03/22/Ubuntu12-10-设置默认命令行启动/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
-<meta property="og:description" content="在虚拟机当中安装ubuntu12.10的时候默认把图形界面给装上了,由于不需要使用桌面,所以为了省去每次进入到图形界面然后再用ctrl+F1的方式切换到命令行的步骤,希望能够默认进入的是命令行模式,那么设置的方法如下:终端执行:1vim /etc/default/grub
-将 GRUB_CMDLINE_LINUX_DEFAULT=”quiet splash” 改为:GRUB_CMDLINE_LIN">
+<meta property="og:description" content="在虚拟机当中安装ubuntu12.10的时候默认把图形界面给装上了,由于不需要使用桌面,所以为了省去每次进入到图形界面然后再用ctrl+F1的方式切换到命令行的步骤,希望能够默认进入的是命令行模式,那么设置的方法如下:终端执行:vim /etc/default/grub
+将 GRUB_CMDLINE_LINUX_DEFAULT=”quiet splash” 改为:GRUB_CMDLINE_LINU">
 <meta property="og:image" content="http://7xi6lo.com1.z0.glb.clouddn.com/ubuntu命令行.jpg">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Ubuntu12.10 设置默认命令行启动">
-<meta name="twitter:description" content="在虚拟机当中安装ubuntu12.10的时候默认把图形界面给装上了,由于不需要使用桌面,所以为了省去每次进入到图形界面然后再用ctrl+F1的方式切换到命令行的步骤,希望能够默认进入的是命令行模式,那么设置的方法如下:终端执行:1vim /etc/default/grub
-将 GRUB_CMDLINE_LINUX_DEFAULT=”quiet splash” 改为:GRUB_CMDLINE_LIN">
+<meta name="twitter:description" content="在虚拟机当中安装ubuntu12.10的时候默认把图形界面给装上了,由于不需要使用桌面,所以为了省去每次进入到图形界面然后再用ctrl+F1的方式切换到命令行的步骤,希望能够默认进入的是命令行模式,那么设置的方法如下:终端执行:vim /etc/default/grub
+将 GRUB_CMDLINE_LINUX_DEFAULT=”quiet splash” 改为:GRUB_CMDLINE_LINU">
   
   
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
@@ -89,9 +89,9 @@ var _hmt = _hmt || [];
   
   <div class="entry">
     
-      <p>在虚拟机当中安装ubuntu12.10的时候默认把图形界面给装上了,由于不需要使用桌面,所以为了省去每次进入到图形界面然后再用ctrl+F1的方式切换到命令行的步骤,希望能够默认进入的是命令行模式,那么设置的方法如下:<br>终端执行:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/default/grub</span><br></pre></td></tr></table></figure></p>
+      <p>在虚拟机当中安装ubuntu12.10的时候默认把图形界面给装上了,由于不需要使用桌面,所以为了省去每次进入到图形界面然后再用ctrl+F1的方式切换到命令行的步骤,希望能够默认进入的是命令行模式,那么设置的方法如下:<br>终端执行:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">vim /etc/default/grub</span><br></pre></td></tr></table></figure></p>
 <p>将 GRUB_CMDLINE_LINUX_DEFAULT=”quiet splash” 改为:<br>GRUB_CMDLINE_LINUX_DEFAULT=”quiet splash text”</p>
-<p>然后执行:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">update-grub</span><br></pre></td></tr></table></figure></p>
+<p>然后执行:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">update-grub</span><br></pre></td></tr></table></figure></p>
 <a id="more"></a>
 <p>重启ubuntu,这时默认就从命令行模式启动了。</p>
 <p><img src="http://7xi6lo.com1.z0.glb.clouddn.com/ubuntu命令行.jpg" alt=""></p>

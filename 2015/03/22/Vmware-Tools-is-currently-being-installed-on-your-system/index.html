@@ -103,13 +103,10 @@ var _hmt = _hmt || [];
 <p>解决方案如下</p>
 <a id="more"></a>
 <p>做下面三步操作后重启系统 :</p>
-<p>Restore the /etc/issue file:</p>
-<pre><code>sudo mv <span class="regexp">/etc/i</span>ssue.backup <span class="regexp">/etc/i</span>ssue
-</code></pre><p>Restore the /etc/rc.local file:</p>
-<pre><code>sudo mv /etc/rc<span class="class">.local</span><span class="class">.backup</span> /etc/rc.local
-</code></pre><p>Restore the /etc/init/lightdm.conf file:</p>
-<pre><code>sudo mv <span class="regexp">/opt/</span>vmware-tools-installer<span class="regexp">/lightdm.conf /</span>etc<span class="regexp">/init</span>
-</code></pre><p>Then reboot.</p>
+<p>Restore the /etc/issue file:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo mv /etc/issue.backup /etc/issue</span><br></pre></td></tr></table></figure></p>
+<p>Restore the /etc/rc.local file:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo mv /etc/rc.local.backup /etc/rc.local</span><br></pre></td></tr></table></figure></p>
+<p>Restore the /etc/init/lightdm.conf file:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo mv /opt/vmware-tools-installer/lightdm.conf /etc/init</span><br></pre></td></tr></table></figure></p>
+<p>Then reboot.</p>
 <p>写于: 2012年12月14日<br>更新于: 2015年03月22日</p>
 
     

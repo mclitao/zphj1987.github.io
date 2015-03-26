@@ -101,28 +101,13 @@ var _hmt = _hmt || [];
 <p>引用<br>Partition 1 does not start on physical sector boundary.</p>
 <p>网上找了下,说是软件的问题,后来折腾了下,应该是分区没有对齐的原因,至于为什么要对齐,优点很多,好像这个是跟神马高级分区格式化有关,具体的原理神马的,我就不讨论了,反正有一点,对齐后,性能会有提升。 </p>
 <a id="more"></a>
-<p>对齐后,用fdisk -lu 查看的结果如下</p>
-<pre><code>Disk /dev/sdc: <span class="number">2000.4</span> GB, <span class="number">2000398934016</span> <span class="keyword">bytes</span>
-<span class="number">255</span> heads, <span class="number">63</span> sectors/track, <span class="number">243201</span> cylinders, total <span class="number">3907029168</span> sectors
-Units = sectors <span class="operator">of</span> <span class="number">1</span> * <span class="number">512</span> = <span class="number">512</span> <span class="keyword">bytes</span>
-Sector size (logical/physical): <span class="number">512</span> <span class="keyword">bytes</span> / <span class="number">512</span> <span class="keyword">bytes</span>
-I/O size (minimum/optimal): <span class="number">512</span> <span class="keyword">bytes</span> / <span class="number">512</span> <span class="keyword">bytes</span>
-Disk identifier: <span class="number">0x2fa8ebd1</span>
-
-   Device Boot      Start         End      Blocks   Id  System
-/dev/sdc1            <span class="number">2048</span>  <span class="number">3907028991</span>  <span class="number">1953513472</span>   <span class="number">83</span>  Linux
-</code></pre><p>怎么样个对齐的方法呢,就是分区的时候,要注意,不要用 fdisk 来分区,不是说fdisk不行,经过我的测试,用 fdisk 分区,我明明分的是2T,结果却是1T大小，用 parted 分区就没有这个问题 </p>
+<p>对齐后,用fdisk -lu 查看的结果如下<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">Disk /dev/sdc: 2000.4 GB, 2000398934016 bytes&#10;255 heads, 63 sectors/track, 243201 cylinders, total 3907029168 sectors&#10;Units = sectors of 1 * 512 = 512 bytes&#10;Sector size (logical/physical): 512 bytes / 512 bytes&#10;I/O size (minimum/optimal): 512 bytes / 512 bytes&#10;Disk identifier: 0x2fa8ebd1&#10;&#10;   Device Boot      Start         End      Blocks   Id  System&#10;/dev/sdc1            2048  3907028991  1953513472   83  Linux</span><br></pre></td></tr></table></figure></p>
+<p>怎么样个对齐的方法呢,就是分区的时候,要注意,不要用 fdisk 来分区,不是说fdisk不行,经过我的测试,用 fdisk 分区,我明明分的是2T,结果却是1T大小，用 parted 分区就没有这个问题 </p>
 <p>debian 下面,如果没有 parted 这个工具,apt-get 安装,安装完成以后,就可以使用了 </p>
 <p>引用</p>
-<pre><code>root@localhost ~]<span class="comment"># parted /dev/sdb # 使用parted来对GPT磁盘操作,进入交互式模式</span>
-GNU Parted <span class="number">1.8</span><span class="number">.1</span> Using /dev/sdb Welcome <span class="keyword">to</span> GNU Parted! Type ‘help’ <span class="keyword">to</span> view a <span class="type">list</span> <span class="keyword">of</span> commands.
-(parted) mklabel msdos           <span class="comment"># 将MBR磁盘格式化为msdos 2T的硬盘 msdos 没有问题</span>
-(parted) p                      <span class="comment">#打印当前分区</span>
-(parted) mkpart primary <span class="number">1</span> <span class="number">2</span>TB                <span class="comment"># 分一个2T的主分区,这里输入1,否则会提示性能问题</span>
-(parted) p                         <span class="comment">#打印当前分区</span>
-(parted) q 退出
-Information: Don’t forget <span class="keyword">to</span> update /etc/fstab, <span class="keyword">if</span> necessary.
-</code></pre><p>退出后,用 mkfs.ext4 格式化就好了 </p>
+<pre><code class="raw">root@localhost ~]# parted /dev/sdb # &#20351;&#29992;parted&#26469;&#23545;GPT&#30913;&#30424;&#25805;&#20316;,&#36827;&#20837;&#20132;&#20114;&#24335;&#27169;&#24335;&#10;GNU Parted 1.8.1 Using /dev/sdb Welcome to GNU Parted! Type &#8216;help&#8217; to view a list of commands.&#10;(parted) mklabel msdos           # &#23558;MBR&#30913;&#30424;&#26684;&#24335;&#21270;&#20026;msdos 2T&#30340;&#30828;&#30424; msdos &#27809;&#26377;&#38382;&#39064;&#10;(parted) p                      #&#25171;&#21360;&#24403;&#21069;&#20998;&#21306;&#10;(parted) mkpart primary 1 2TB                # &#20998;&#19968;&#20010;2T&#30340;&#20027;&#20998;&#21306;,&#36825;&#37324;&#36755;&#20837;1,&#21542;&#21017;&#20250;&#25552;&#31034;&#24615;&#33021;&#38382;&#39064;&#10;(parted) p                         #&#25171;&#21360;&#24403;&#21069;&#20998;&#21306;&#10;(parted) q &#36864;&#20986;&#10;Information: Don&#8217;t forget to update /etc/fstab, if necessary.
+</code></pre>
+<p>退出后,用 mkfs.ext4 格式化就好了 </p>
 <p>然后再用 fdisk -lu 查看,已经没有那个提示了 </p>
 <p>这里说明下,对齐,就是说分区的时候,开始的扇区要以 8 的倍数来开始,而 fisk 默认是 63 ,对老硬盘没有什么问题,但是对西数的新硬盘, 4k 扇区的,就会有对齐的问题,会导致性能下降</p>
 <p>写于: 2012年05月02日<br>更新于:2015年03月22日</p>

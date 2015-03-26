@@ -10,47 +10,27 @@
     <meta name="author" content="zphj1987">
   
   
-    <meta name="description" content="修改同步服务器的配置文件/etc/ntp.conf ,删除所有的内容,添加
-restrict default nomodify
-server  127.127.1.0     # local clock
-fudge   127.127.1.0 stratum 8
-重启ntpd
-/etc/init.d/ntpd restart
-等待ntp服务器自身同步完成
-watch ntpq -p">
+    <meta name="description" content="修改同步服务器的配置文件/etc/ntp.conf ,删除所有的内容,添加restrict default nomodify&amp;#10;server  127.127.1.0     # local clock&amp;#10;fudge   127.127.1.0 stratum 8
+重启ntpd/etc/init.d/ntpd restart
+等待ntp服务器自身同步完成watch ntpq -p">
   
-  <meta name="description" content="修改同步服务器的配置文件/etc/ntp.conf ,删除所有的内容,添加
-restrict default nomodify
-server  127.127.1.0     # local clock
-fudge   127.127.1.0 stratum 8
-重启ntpd
-/etc/init.d/ntpd restart
-等待ntp服务器自身同步完成
-watch ntpq -p">
+  <meta name="description" content="修改同步服务器的配置文件/etc/ntp.conf ,删除所有的内容,添加restrict default nomodify&amp;#10;server  127.127.1.0     # local clock&amp;#10;fudge   127.127.1.0 stratum 8
+重启ntpd/etc/init.d/ntpd restart
+等待ntp服务器自身同步完成watch ntpq -p">
 <meta property="og:type" content="article">
 <meta property="og:title" content="centos做时间同步服务器">
 <meta property="og:url" content="http://yoursite.com/2015/03/22/centos做时间同步服务器/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
-<meta property="og:description" content="修改同步服务器的配置文件/etc/ntp.conf ,删除所有的内容,添加
-restrict default nomodify
-server  127.127.1.0     # local clock
-fudge   127.127.1.0 stratum 8
-重启ntpd
-/etc/init.d/ntpd restart
-等待ntp服务器自身同步完成
-watch ntpq -p">
+<meta property="og:description" content="修改同步服务器的配置文件/etc/ntp.conf ,删除所有的内容,添加restrict default nomodify&amp;#10;server  127.127.1.0     # local clock&amp;#10;fudge   127.127.1.0 stratum 8
+重启ntpd/etc/init.d/ntpd restart
+等待ntp服务器自身同步完成watch ntpq -p">
 <meta property="og:image" content="http://7xi6lo.com1.z0.glb.clouddn.com/centosntp1.jpg">
 <meta property="og:image" content="http://7xi6lo.com1.z0.glb.clouddn.com/centosntp2.jpg">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="centos做时间同步服务器">
-<meta name="twitter:description" content="修改同步服务器的配置文件/etc/ntp.conf ,删除所有的内容,添加
-restrict default nomodify
-server  127.127.1.0     # local clock
-fudge   127.127.1.0 stratum 8
-重启ntpd
-/etc/init.d/ntpd restart
-等待ntp服务器自身同步完成
-watch ntpq -p">
+<meta name="twitter:description" content="修改同步服务器的配置文件/etc/ntp.conf ,删除所有的内容,添加restrict default nomodify&amp;#10;server  127.127.1.0     # local clock&amp;#10;fudge   127.127.1.0 stratum 8
+重启ntpd/etc/init.d/ntpd restart
+等待ntp服务器自身同步完成watch ntpq -p">
   
   
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
@@ -114,18 +94,21 @@ var _hmt = _hmt || [];
   
   <div class="entry">
     
-      <p>修改同步服务器的配置文件/etc/ntp.conf ,删除所有的内容,添加</p>
-<pre><code><span class="title">restrict</span> default nomodify
-server  <span class="number">127.127.1.0</span>     <span class="comment"># local clock</span>
-fudge   <span class="number">127.127.1.0</span> stratum <span class="number">8</span>
-</code></pre><p>重启ntpd</p>
-<pre><code><span class="regexp">/etc/i</span>nit.d<span class="regexp">/ntpd restart</span>
-</code></pre><p>等待ntp服务器自身同步完成</p>
-<pre><code><span class="title">watch</span> ntpq -p
-</code></pre><a id="more"></a>
+      <p>修改同步服务器的配置文件/etc/ntp.conf ,删除所有的内容,添加<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">restrict default nomodify&#10;server  127.127.1.0     # local clock&#10;fudge   127.127.1.0 stratum 8</span><br></pre></td></tr></table></figure></p>
+<p>重启ntpd<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/etc/init.d/ntpd restart</span><br></pre></td></tr></table></figure></p>
+<p>等待ntp服务器自身同步完成<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">watch ntpq -p</span><br></pre></td></tr></table></figure></p>
+<a id="more"></a>
 <p><img src="http://7xi6lo.com1.z0.glb.clouddn.com/centosntp1.jpg" alt=""></p>
 <p>观察这个reach需要超过17<br>否则其他机器ntpdate同步的时候会报错</p>
 <p><img src="http://7xi6lo.com1.z0.glb.clouddn.com/centosntp2.jpg" alt=""></p>
+<hr>
+<p>配置文件方式<br>服务器端配置<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">restrict default nomodify</span><br><span class="line">server  <span class="number">127.127</span>.<span class="number">1.0</span></span><br><span class="line">fudge   <span class="number">127.127</span>.<span class="number">1.0</span> stratum <span class="number">8</span></span><br></pre></td></tr></table></figure></p>
+<p>客户端配置<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">driftfile /var/lib/ntp/drift</span><br><span class="line">server <span class="number">192.168</span>.<span class="number">8.102</span></span><br><span class="line">includefile /etc/ntp/crypto/pw</span><br><span class="line">keys /etc/ntp/keys</span><br></pre></td></tr></table></figure></p>
+<p>/etc/sysconfig/ntpd</p>
+<p>添加<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">SYNC_HWCLOCK=yes</span><br></pre></td></tr></table></figure></p>
+<p>多台ntp的情况<br>客户端配置<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">driftfile /var/lib/ntp/drift&#10;server 192.168.8.102 prefer&#10;server 192.168.8.101&#10;includefile /etc/ntp/crypto/pw&#10;keys /etc/ntp/keys</span><br></pre></td></tr></table></figure></p>
+<p>主ntp配置（可以改成上级ntp）<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">restrict default nomodify&#10;server  127.127.1.0&#10;fudge   127.127.1.0&#10;stratum 5</span><br></pre></td></tr></table></figure></p>
+<p>备份ntp配置<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">driftfile /var/lib/ntp/drift&#10;server 192.168.8.102&#10;includefile /etc/ntp/crypto/pw&#10;keys /etc/ntp/keys&#10;stratum 6</span><br></pre></td></tr></table></figure></p>
 <p>写于: 2013年08月06日<br>更新于: 2015年03月22日</p>
 
     

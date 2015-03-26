@@ -73,43 +73,26 @@ var _hmt = _hmt || [];
   <header>
     
       <div class="icon"></div>
-      <a href="/2015/03/22/用grub4dos来实现移动硬盘安装linux系统/">
-  <time datetime="2015-03-22T14:27:07.000Z">
+      <a href="/2015/03/22/debian修改crontab默认编辑器为vim/">
+  <time datetime="2015-03-22T08:46:03.000Z">
     2015-03-22
   </time>
 </a>
     
     
   
-    <h1 class="title"><a href="/2015/03/22/用grub4dos来实现移动硬盘安装linux系统/">用grub4dos来实现移动硬盘安装linux系统(图重弄)</a></h1>
+    <h1 class="title"><a href="/2015/03/22/debian修改crontab默认编辑器为vim/">debian修改crontab默认编辑器为vim</a></h1>
   
 
   </header>
   
   <div class="entry">
     
-      <p>网上看了一些grub4dos相关教程,虽然相关资料很多,但是一步步做下来还是会出现一些问题,并且有些地方也没有说清楚,现在写下来供自己以后查看</p>
-<p>由于使用utraliso软件做centos6.4系统盘的时候,由于centos系统盘超过4G,而utraliso软件做系统盘的时候默认文件系统ext格式,而ext格式不支持超过4G的文件,所以就无法启动,所以研究了下用grub4dos这个软件来实现移动硬盘安装linux系统</p>
-<p>首先需要准备两个文件<br>grub4dos-0.4.4.zip<br>grubinst-1.1-bin-w32-2008-01-01.zip</p>
-<p>解压grub4dos-0.4.4.zip</p>
-<p><img src="http://fmn.rrimg.com/fmn061/20130605/2150/b_large_LQAI_39a3000004ac1262.jpg" alt=""></p>
-<p>&lt;这里需要注意下，如果用移动硬盘想实现的是只装一种系统话，那么就不需要对硬盘分区，如果想装多个系统的话就可以对移动硬盘分几个区，每个分区可以放一种操作系统&gt;</p>
-<p>在win7的开始菜单中搜索 计算机管理&gt;磁盘管理<br>然后选择你的移动硬盘,然后将第一个盘符标记为活动分区,这样移动硬盘这个区才能被识别,从而作为启动分区</p>
-<p><img src="http://fmn.rrimg.com/fmn063/20130605/2200/b_large_VXDK_39a3000004d91262.jpg" alt=""></p>
-<p>解压grubinst-1.1-bin-w32-2008-01-01.zip 运行<br>grubinst_gui.exe<br>磁盘选择你的移动硬盘<br>然后点分区列表右边的刷新<br>然后选择整个磁盘(MBR),然后点击安装</p>
-<p><img src="http://fmn.rrfmn.com/fmn058/20130605/2215/b_large_1Zyp_5715000001f51263.jpg" alt=""></p>
-<p>将刚刚解压得到的grub4dos-0.4.4这个目录下的chinese目录下的三个文件拷贝到你准备用来做安装系统移动硬盘,也就是刚刚设置为活动主分区那个盘还有grub4dos-0.4.4目录下menu.lst也拷贝到移动硬盘活动分区那个盘的根目录下，这个移动硬盘目录下最后看到的文件如下截图</p>
-<p><img src="http://fmn.rrimg.com/fmn065/20130605/2210/b_large_qb9c_30620000080c1263.jpg" alt=""></p>
-<p>如果这个时候你移动硬盘没分区的话，就将你的系统盘的iso全部解压到你的这个目录,系统iso解压可以用360压缩工具<br>然后修改menu.lst  ,如果比较熟悉,可以进行自定义,如果不熟悉,这里直接在下面加几行:</p>
-<pre><code>title centos6.<span class="number">4</span> install
-<span class="function"><span class="title">kernel</span> <span class="params">(hd0,<span class="number">0</span>)</span>/<span class="title">isolinux</span>/<span class="title">vmlinuz</span>
-<span class="title">initrd</span> <span class="params">(hd0,<span class="number">0</span>)</span>/<span class="title">isolinux</span>/<span class="title">initrd</span>.<span class="title">img</span></span>
-</code></pre><p>上面的title后面写的字段会在系统安装的时候显示，然后安装的时候选择这个centos6.4 install就行,其中(hd0,0)的前面的0是代表第一个盘,也就是你的移动盘,后面的0代表分区,代表第一个分区,如果你把系统iso解压到移动硬盘的第二个分区,那么就把这个改为1<br>isolinux/vmlinuz 就是你解压的iso里面的文件<br>到这里,系统盘已经做好了,在电脑的启动项里面选择centos6.4 install 就可以安装这个linux系统了</p>
-<p>此方法对于centos6.4还是有问题 所以需要多做些工作<br>思路是把第二个分区做成linux的ext2格式就能放4G以上的iso,但是win7又无法识别ext2的盘符,所以需要做两步,第一步将第二分区格式化为ext2<br>使用这个工具:<br>ParagonPartitionManager.rar<br>使用这个工具把盘格式化为ext2<br>使用这个工具是win7下能查看ext2格式的盘符<br>Ext2Fsd-0.51.zip</p>
-<p><img src="http://fmn.xnpic.com/fmn057/20130606/2145/b_large_jgCI_5038000002631263.jpg" alt=""></p>
-<p><img src="http://fmn.rrimg.com/fmn060/20130606/2145/b_large_uSUd_588c000003ba1262.jpg" alt=""></p>
-<p><img src="http://fmn.rrimg.com/fmn061/20130606/2155/b_large_LzJv_2a51000012851262.jpg" alt=""></p>
-<p>写于: 2013年06月05日<br>更新于: 2015年03月22日</p>
+      <p>debian终端下默认编辑器为nano,比如crontab -e就会打开nano,这个编辑器用起来很不习惯,想修改为vim,当然,你的debian系统必须先安装vim.如果已经安装vim,请输入如下命令:<br>输入命令:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">update-alternatives --config editor</span><br></pre></td></tr></table></figure>
+<p>然后选择/usr/vim/vim.basic就OK了</p>
+<p>vim.tiny与vim.basic的区别是vim.basic为完全的vim,而vim.tiny为简化版,功能上有所区别,如不支持高亮等等.</p>
+<p>写于: 2012年5月04日<br>更新于: 2015年03月22日</p>
 
     
   </div>
@@ -128,118 +111,30 @@ var _hmt = _hmt || [];
   <header>
     
       <div class="icon"></div>
-      <a href="/2015/03/22/手机中没有该应用所需的共享库（解决手机无法安装Google-plus）/">
-  <time datetime="2015-03-22T14:24:09.000Z">
+      <a href="/2015/03/22/正确用DD测试磁盘读写速度/">
+  <time datetime="2015-03-22T08:36:15.000Z">
     2015-03-22
   </time>
 </a>
     
     
   
-    <h1 class="title"><a href="/2015/03/22/手机中没有该应用所需的共享库（解决手机无法安装Google-plus）/">手机中没有该应用所需的共享库（解决手机无法安装Google plus）</a></h1>
+    <h1 class="title"><a href="/2015/03/22/正确用DD测试磁盘读写速度/">正确用DD测试磁盘读写速度</a></h1>
   
 
   </header>
   
   <div class="entry">
     
-      <p>国行安卓手机阉割了一些google服务，需要加这三个文件:</p>
-<p>com.google.android.maps.jar<br>com.google.android.maps.xml<br>NetworkLocation.apk</p>
-<p>你只需将上述文件放到手机中的相应位置,重启手机就好了。<br>方法:<br>首先机器要ROOT,然后用RE管理器，把要复制的文件复制到相应的位置,修改三个文件的权限,就是竖着3行,左边全选,中间最上面选上,右边全空。</p>
-<pre><code>com<span class="class">.google</span><span class="class">.android</span><span class="class">.maps</span><span class="class">.jar</span>   安装到  /system/framework
-google<span class="class">.android</span><span class="class">.maps</span><span class="class">.xml</span>       安装到  /system/etc/permissions
-NetworkLocation<span class="class">.apk</span>           安装到  /data/app_s        
-</code></pre><p>app_s目录需要自己建立</p>
-<p>上述三个文件在下面这个地址可以下载到:<br><a href="http://vdisk.weibo.com/s/BFtBO" target="_blank" rel="external">http://vdisk.weibo.com/s/BFtBO</a> </p>
-<p>写于: 2013年05月16日<br>更新于: 2015年03月22日</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-  
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2015/03/22/如何配置谷歌框架与市场（解决google-play-闪退）/">
-  <time datetime="2015-03-22T14:18:20.000Z">
-    2015-03-22
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2015/03/22/如何配置谷歌框架与市场（解决google-play-闪退）/">如何配置谷歌框架与市场（解决google play 闪退）</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <p>没有谷歌电子市场。好多游戏都不能玩。像狂野之血,超凡蜘蛛侠。。。等等大型游戏。</p>
-<p>大家都知道国产机的ROM包把谷歌的GMS和谐掉了,所以直接装谷歌电子市场肯定会出现闪退,这样就又牵扯到另一个基础服务——谷歌框架,估计想玩大型游戏的机友对这个词都不陌生,但是可能大家按照许多热心机友说的最终还是没能把这个电子市场搞定,接下来大家按这个步骤,可以成功,亲测。</p>
-<p>步骤如下:<br>第一步:需要有root权限和RE管理器</p>
-<p>第二步:下载GoogleServiesFramework.apk(谷歌<br>服务框架,必需),将GoogleServiesFramework.apk复制到文件夹/system/app 下,然后点击安装,但是貌似不点安装也行,但是权限一定得改,然后修改权限——第一行,第一个、第二个打勾,第二行,第一个打勾,第三行,第一个打勾。(这个权限一定要搞好,有可能大家都是少了这步) </p>
-<p>第三步:下载谷歌电子市场，无论下载过来的电子市场文件名叫什么,都把它重命名为Vending.apk,像GoogleServiesFramework.apk一样移动到文件夹 /system/app 下,安装(这个必须安装)。然后修改权限,与GoogleServiesFramework.apk一样.</p>
-<p>第四步:重启手机<br>ok,联网,打开谷歌电子市场,就可以登录了。</p>
-<p>写于: 2013年05月16日<br>更新于: 2015年03月22日</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-  
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2015/03/22/samba配置独立访问配置方法/">
-  <time datetime="2015-03-22T14:07:59.000Z">
-    2015-03-22
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2015/03/22/samba配置独立访问配置方法/">samba配置独立访问配置方法</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <h3 id="配置目的:">配置目的:</h3><p>为了给指定用户一个独立访问目录</p>
-<p>首先在samba服务器安装samba软件</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ apt-get install samba</span><br></pre></td></tr></table></figure>
-<p>然后配置独立访问用户<br>配置samba用户前提需要是linux的用户,所以要创建linux用户</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ useradd    zp</span><br><span class="line">$ passwd     zp</span><br></pre></td></tr></table></figure>
-<p>用户创建完了以后<br>需要创建samba用户</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ smbpasswd <span class="operator">-a</span>  zp</span><br></pre></td></tr></table></figure>
-<p>然后输入密码,记住密码,这个是客户端访问samba的密码<br>
+      <p>问: 以下几种方式测试磁盘读写速度有什么区别?<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">dd <span class="keyword">if</span>=/dev/zero of=<span class="built_in">test</span> bs=<span class="number">1</span>M count=<span class="number">128</span> </span><br><span class="line">dd <span class="keyword">if</span>=/dev/zero of=<span class="built_in">test</span> bs=<span class="number">1</span>M count=<span class="number">128</span> ; sync</span><br><span class="line">dd <span class="keyword">if</span>=/dev/zero of=<span class="built_in">test</span> bs=<span class="number">1</span>M count=<span class="number">128</span> conv=fdatasync</span><br><span class="line">dd <span class="keyword">if</span>=/dev/zero of=<span class="built_in">test</span> bs=<span class="number">1</span>M count=<span class="number">128</span> oflag=dsync</span><br></pre></td></tr></table></figure></p>
+<p>答:区别在于内存中写缓存的处理方式。</p>
     
   </div>
   <footer class="end-sep">
     
       
         <div class="alignleft">
-          <a href="/2015/03/22/samba配置独立访问配置方法/#more" class="more-link">阅读全文</a>
+          <a href="/2015/03/22/正确用DD测试磁盘读写速度/#more" class="more-link">阅读全文</a>
         </div>
       
       
@@ -254,32 +149,298 @@ NetworkLocation<span class="class">.apk</span>           安装到  /data/app_s
   <header>
     
       <div class="icon"></div>
-      <a href="/2015/03/22/Ubuntu12-10-设置默认命令行启动/">
-  <time datetime="2015-03-22T14:00:27.000Z">
+      <a href="/2015/03/22/西数WD2T硬盘分区对齐的方法/">
+  <time datetime="2015-03-22T08:25:08.000Z">
     2015-03-22
   </time>
 </a>
     
     
   
-    <h1 class="title"><a href="/2015/03/22/Ubuntu12-10-设置默认命令行启动/">Ubuntu12.10 设置默认命令行启动</a></h1>
+    <h1 class="title"><a href="/2015/03/22/西数WD2T硬盘分区对齐的方法/">西数WD2T硬盘分区对齐的方法</a></h1>
   
 
   </header>
   
   <div class="entry">
     
-      <p>在虚拟机当中安装ubuntu12.10的时候默认把图形界面给装上了,由于不需要使用桌面,所以为了省去每次进入到图形界面然后再用ctrl+F1的方式切换到命令行的步骤,希望能够默认进入的是命令行模式,那么设置的方法如下:<br>终端执行:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/default/grub</span><br></pre></td></tr></table></figure></p>
-<p>将 GRUB_CMDLINE_LINUX_DEFAULT=”quiet splash” 改为:<br>GRUB_CMDLINE_LINUX_DEFAULT=”quiet splash text”</p>
-<p>然后执行:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">update-grub</span><br></pre></td></tr></table></figure></p>
+      <p>新购一个西数2T硬盘,也就是绿盘的那种,淘宝500左右,支持高级格式化。 </p>
+<p>到手以后,分区格式化,前几天格式化完成以后,fdisk -l 发现如下文字 </p>
+<p>引用<br>Partition 1 does not start on physical sector boundary.</p>
+<p>网上找了下,说是软件的问题,后来折腾了下,应该是分区没有对齐的原因,至于为什么要对齐,优点很多,好像这个是跟神马高级分区格式化有关,具体的原理神马的,我就不讨论了,反正有一点,对齐后,性能会有提升。 </p>
     
   </div>
   <footer class="end-sep">
     
       
         <div class="alignleft">
-          <a href="/2015/03/22/Ubuntu12-10-设置默认命令行启动/#more" class="more-link">阅读全文</a>
+          <a href="/2015/03/22/西数WD2T硬盘分区对齐的方法/#more" class="more-link">阅读全文</a>
         </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/22/Check-Host-实时监控网站或者服务器是否可以访问/">
+  <time datetime="2015-03-22T08:15:10.000Z">
+    2015-03-22
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/03/22/Check-Host-实时监控网站或者服务器是否可以访问/">Check Host:实时监控网站或者服务器是否可以访问</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>如果你拥有一个网站，那么最重要的事情就是要保证它24小时都能够访问。不过国内的虚拟主机服务非常糟糕，经常会出现各种状况,所以我们需要一个软件,可以让我们第一时间知道网站出现了无法访问的情况,从而通知售后人员解决。而Check Host就是这么一个windows下的免费网站时时监控工具。</p>
+<p>服务器无法访问,那么对网站是非常不利的,而搜索引擎也会知道这个状况,因为蜘蛛不能爬行你的网页了。所以对访客以及搜索引擎排名都是不利的。不过这个事情肯定会发生,我们能做的就是提高反应速度,让这样的情况在最短的时间内解决。</p>
+<p>如此一来,对于网站的实时监控就非常有必要的,但是我们又不能每隔一段时间就手动打开网站一次,这样太过于麻烦,甚至是愚蠢的,所以我们必须要使用一个软件,让其代劳，当发生状况的时候还会给你发出警告，而Check Host就可以满足你的愿望。</p>
+<p>Check Host是一个windows下的小软件，只有2.2M,十分的小巧,它的原理是每隔一段时间就自动ping一下你设定的网址。如果无法ping通的话,那么就会通过几种方法告诉你。</p>
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2015/03/22/Check-Host-实时监控网站或者服务器是否可以访问/#more" class="more-link">阅读全文</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/22/清理win7注册表后，没有了右键新建选项处理办法/">
+  <time datetime="2015-03-22T08:09:11.000Z">
+    2015-03-22
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/03/22/清理win7注册表后，没有了右键新建选项处理办法/">清理win7注册表后，没有了右键新建选项处理办法</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>今天清理win7注册表的右键选项,发现清理完了后,居然没有了右键新建,什么文件都无法创建,搜索了下,发现有人给出了解决办法,如下:<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">REGEDIT4 [HKEY_CLASSES_ROOT\Directory\Background\shellex\ContextMenuHandlers\New] @=&#34;&#123;D969A300-E7FF-11d0-A93B-00A0C90F2719&#125;&#34; [HKEY_CLASSES_ROOT\Directory\Background\shellex\ContextMenuHandlers\New\command] @=hex(2):</span><br></pre></td></tr></table></figure></p>
+<p>建一个文本文件,把上面的内容拷过去,然后把文件后缀改成.reg。双击执行就可以了</p>
+<p>写于: 2012年04月25日<br>更新于: 2015年03月22日</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/22/把你的常用文件夹直接显示在“计算机”中/">
+  <time datetime="2015-03-22T08:05:43.000Z">
+    2015-03-22
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/03/22/把你的常用文件夹直接显示在“计算机”中/">把你的常用文件夹直接显示在“计算机”中</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>win7 中“我的电脑”改名为了“计算机”,而且计算机中不再有我的文档共享文档等链接,虽然计算机左侧的链接中有常用文件夹的链接，用户也可以把自己的快捷方式放入其中。<br>但某些东西还是想直接放在计算机中，很简单，只要把文件或文件夹或它们的快捷方式放到以下目录即可。<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">C:\Users\&#20320;&#30340;&#29992;&#25143;&#21517;\AppData\Roaming\Microsoft\Windows\Network Shortcuts</span><br></pre></td></tr></table></figure></p>
+<p>即可在“计算机”中显示。</p>
+<p>写于: 2012年4月24日<br>更新于: 2015年03月22日</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/22/关于nginx-upstream的几种配置方式/">
+  <time datetime="2015-03-22T07:55:56.000Z">
+    2015-03-22
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/03/22/关于nginx-upstream的几种配置方式/">关于nginx upstream的几种配置方式</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>平时一直依赖硬件来作load blance,最近研究Nginx来做负载设备,记录下upstream的几种配置方式。</p>
+<p>第一种:轮询<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">upstream test&#123;&#10;    server 192.168.0.1:3000;&#10;    server 192.168.0.1:3001;&#10;&#125;</span><br></pre></td></tr></table></figure></p>
+<p>第二种:权重<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">upstream test&#123;&#10;    server 192.168.0.1 weight=2;&#10;    server 192.168.0.2 weight=3;&#10;&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这种模式可解决服务器性能不等的情况下轮询比率的调配</p>
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2015/03/22/关于nginx-upstream的几种配置方式/#more" class="more-link">阅读全文</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/22/win7安装系统出现“安装程序无法创建新的系统分区，也无法定位现有的系统分区”解决方法/">
+  <time datetime="2015-03-22T07:52:01.000Z">
+    2015-03-22
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/03/22/win7安装系统出现“安装程序无法创建新的系统分区，也无法定位现有的系统分区”解决方法/">win7安装系统出现“安装程序无法创建新的系统分区，也无法定位现有的系统分区”解决方法</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>原来服务器上的系统是debian的系统，现在需要在原系统和机器不动的基础上在这台服务器上安装一个win7系统,在安装过程中出现了标题中所说的问题,上网搜索了一下,发现最有效的解决办法就是修改bios中的磁盘的启动项:</p>
+<p>由于原来的系统盘插在第一个sata口,应该是占据着磁盘0,那么在热插拔的机器上插入的一块新的硬盘应该是占据着磁盘1</p>
+<p>而实际情况是在开机进行磁盘选择启动时 原来的debian系统盘是占据这第一启动项,后插入的硬盘占据着第二启动项,在进入到win7的安装程序的时候,会发现,后插入的那个硬盘居然占据着磁盘0,由于这个地方的显示跟bios启动看到的启动顺序对不上,所以就出现了安装程序无法创建新的系统分区,也无法定位现有系统。</p>
+<p>所以需要进入bios进行小的修改<br>进入bios修改界面<br>选择boot选项<br>选择Hard Disk Drivers<br>可以看到1st drive  对应的是原系统盘,在这里修改为后插入的那块硬盘<br>然后保存设置 重启<br>然后安装系统就不会有问题了<br>新插入的硬盘现在应该占据着磁盘1的位子了,安装win7到磁盘1 即可</p>
+<p>写于:2012年4月20日<br>更新于:2015年03月22日</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/22/系统运行后修改linux系统时区/">
+  <time datetime="2015-03-22T07:43:22.000Z">
+    2015-03-22
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/03/22/系统运行后修改linux系统时区/">系统运行后修改linux系统时区</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>在网上看了很多改时间的帖子,都没能最终解决问题。最后还是下面的博客最终解决的时间的问题,感谢原作者<br>安装系统过程时没有选对当前的时区,即CST,Asia/Shanghai,而是按默认的，EDT时区,这样跟我们的系统就都对不上,因此得改回CST,仔细琢磨一下,方法如下:</p>
+<p>更改/etc/timezone里面的内容为:Asia/Shanghai</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ mv /etc/localtime /etc/localtime-bk</span><br><span class="line">$ cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime</span><br></pre></td></tr></table></figure>
+<p>再用命令date看一下,就是我们要的CST。</p>
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2015/03/22/系统运行后修改linux系统时区/#more" class="more-link">阅读全文</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/22/更新租约和检测数据完整性脚本/">
+  <time datetime="2015-03-22T07:37:55.000Z">
+    2015-03-22
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/03/22/更新租约和检测数据完整性脚本/">更新租约和检测数据完整性脚本</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>这个是针对tahoe这个文件系统做的一个更新租约和检查数据完整性的脚本,并且把结果保存下来,先要把所有的caps保存到一个文本当中<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">#! /bin/sh&#10;   a=$(cat /home/cap-list.txt |wc -l)&#10;   c=`date`&#10;   echo $a&#10;   for((i=1;i&#60;=a;i++))&#10;   do&#10;       b=$( head -$i /home/cap-list.txt |tail -1)&#10;       echo $b &#62;&#62; /home/checktime.txt&#10;       echo &#34;start time:&#34; &#62;&#62; /home/checktime.txt&#10;       echo `date` &#62;&#62; /home/checktime.txt&#10;       tahoe deep-check --add-lease --repair --dir-cap=$b &#62;&#62; /home/checktime.txt&#10;       echo &#34;end time:&#34; &#62;&#62; /home/checktime.txt&#10;       echo `date` &#62;&#62; /home/checktime.txt&#10;   done&#10;   d=`date`&#10;   echo $c &#62;&#62; /home/checktime.txt&#10;   echo $d &#62;&#62; /home/checktime.txt</span><br></pre></td></tr></table></figure></p>
+<p>写于: 2012年4月14日<br>更新于: 2015年03月22日</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
       
       
     

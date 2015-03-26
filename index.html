@@ -73,22 +73,23 @@ var _hmt = _hmt || [];
   <header>
     
       <div class="icon"></div>
-      <a href="/2015/03/24/定制ubuntu的时候修改proseed/">
-  <time datetime="2015-03-24T00:20:02.000Z">
-    2015-03-24
+      <a href="/2015/03/25/压缩css与js/">
+  <time datetime="2015-03-25T04:52:01.000Z">
+    2015-03-25
   </time>
 </a>
     
     
   
-    <h1 class="title"><a href="/2015/03/24/定制ubuntu的时候修改proseed/">定制ubuntu的时候修改proseed</a></h1>
+    <h1 class="title"><a href="/2015/03/25/压缩css与js/">压缩css与js</a></h1>
   
 
   </header>
   
   <div class="entry">
     
-      
+      <p>使用yuicompressor 进行css和js的压缩</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="shebang">#! /bin/sh	</span></span><br><span class="line">yasuocss=<span class="string">"java -jar /root/yuicompressor-2.4.8.jar --type css  --charset utf-8"</span></span><br><span class="line">yasuojs=<span class="string">"java -jar /root/yuicompressor-2.4.8.jar --type js  --charset utf-8"</span></span><br><span class="line"><span class="comment">######################css</span></span><br><span class="line"><span class="keyword">for</span> file <span class="keyword">in</span>  ./SGMag/sites/media/css/sgmag/*.css ./SGMag/sites/media/css/*.css</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"<span class="variable">$file</span>"</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"<span class="variable">$file</span>"</span>bk</span><br><span class="line">mv <span class="variable">$file</span>  <span class="string">"<span class="variable">$file</span>"</span>bk</span><br><span class="line"><span class="variable">$yasuocss</span>  <span class="variable">$file</span><span class="string">"bk"</span> &gt;  <span class="variable">$file</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"<span class="variable">$file</span>"</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"><span class="comment">#######################js</span></span><br><span class="line"><span class="keyword">for</span> file <span class="keyword">in</span>  ./SGMag/sites/media/component/*.js ./SGMag/sites/media/*.js  ./SGMag/sites/media/pagejs/*.js   ./SGMag/sites/media/pagejs/cluster/*.js ./SGMag/sites/media/pagejs/kylin/*.js ./SGMag/sites/media/pagejs/share/*.js</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"<span class="variable">$file</span>"</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"<span class="variable">$file</span>"</span>bk</span><br><span class="line">mv <span class="variable">$file</span>  <span class="string">"<span class="variable">$file</span>"</span>bk</span><br><span class="line"><span class="variable">$yasuojs</span>  <span class="variable">$file</span><span class="string">"bk"</span> &gt;  <span class="variable">$file</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"<span class="variable">$file</span>"</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"><span class="comment">########################报错处理</span></span><br><span class="line">cp -rf  ./SGMag/sites/media/pagejs/cluster/hosttools.jsbk  ./SGMag/sites/media/pagejs/cluster/hosttools.js</span><br></pre></td></tr></table></figure>
     
   </div>
   <footer class="end-sep">
@@ -106,47 +107,183 @@ var _hmt = _hmt || [];
   <header>
     
       <div class="icon"></div>
-      <a href="/2015/03/24/使用iptables做端口转发/">
-  <time datetime="2015-03-24T00:18:01.000Z">
+      <a href="/2015/03/24/ubuntu配置简单的DNS服务器/">
+  <time datetime="2015-03-24T05:39:44.000Z">
     2015-03-24
   </time>
 </a>
     
     
   
-    <h1 class="title"><a href="/2015/03/24/使用iptables做端口转发/">使用iptables做端口转发</a></h1>
+    <h1 class="title"><a href="/2015/03/24/ubuntu配置简单的DNS服务器/">ubuntu配置简单的DNS服务器</a></h1>
   
 
   </header>
   
   <div class="entry">
     
-      <pre><code><span class="shebang">#!/bin/sh </span>
-IPT=<span class="string">"/sbin/iptables"</span>
-/bin/<span class="built_in">echo</span> <span class="string">"1"</span> &gt; /proc/sys/net/ipv4/ip_forward
-/sbin/modprobe ip_tables
-/sbin/modprobe iptable_filter
-/sbin/modprobe iptable_nat
-/sbin/modprobe ip_conntrack
-/sbin/modprobe ip_conntrack_ftp
-/sbin/modprobe ip_nat_ftp
-<span class="variable">$IPT</span> -F
-<span class="variable">$IPT</span> -t nat -F
-<span class="variable">$IPT</span> -X
-<span class="variable">$IPT</span> -t nat -X
-<span class="variable">$IPT</span> -Z
-<span class="variable">$IPT</span> -t nat -Z
-<span class="comment">#DNAT 做端口转发</span>
-<span class="variable">$IPT</span> -t nat -A PREROUTING <span class="operator">-d</span> <span class="number">192.168</span>.<span class="number">0.174</span> -p tcp --dport <span class="number">28</span> -j DNAT --to-destination <span class="number">192.168</span>.<span class="number">9.101</span>:<span class="number">22</span>
-<span class="variable">$IPT</span> -t nat -A POSTROUTING -p tcp <span class="operator">-d</span> <span class="number">192.168</span>.<span class="number">9.101</span> --dport <span class="number">22</span> -j SNAT --to-source <span class="number">192.168</span>.<span class="number">0.174</span>
+      <p>之所以说是简单的服务器，实现的功能很简单，通过这个dns server 查询制定域名的时候，能够根据设置的值来返回IP，当前的需求是需要轮询的返回IP</p>
+<p>DNS 轮询机制会受到多方面的影响，如：A记录的TTL时间长短的影响；别的 DNS 服务器 Cache 的影响；windows 客户端也有一个DNS Cache。这些都会影响 DNS 轮询的效果。</p>
+<p>下面的配置就是实现解析test.zp.com到不同的IP地址</p>
+<h3 id="安装dns_server软件包">安装dns server软件包</h3><p>ubuntu下是通过安装bind9软件包来配置dns-server的<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab5106 ~]<span class="comment"># apt-get install bind9</span></span><br></pre></td></tr></table></figure></p>
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2015/03/24/ubuntu配置简单的DNS服务器/#more" class="more-link">阅读全文</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
 
-<span class="comment">#SNAT 做网关转发</span>
-<span class="comment">#$IPT -t nat -A POSTROUTING  -s 192.168.0.0/16  -j SNAT --to-source 210.72.24.15</span>
-</code></pre><p>备注:<br>首先需要启用NAT需要在Linux上打开内核对IP包的转发支持，linux上编辑:/etc/sysctl.conf 文件:</p>
-<pre><code>net<span class="class">.ipv4</span><span class="class">.ip_forward</span> = <span class="number">1</span>
-</code></pre><p>然后执行</p>
-<pre><code><span class="title">sysctl</span> -p
-</code></pre><p>写于: 2014年08月04日<br>更新于: 2015年03月24日</p>
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/24/mdtest测试工具/">
+  <time datetime="2015-03-24T05:33:52.000Z">
+    2015-03-24
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/03/24/mdtest测试工具/">mdtest测试工具</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>软件介绍</p>
+<p> mdstest是软件的元数据操作基准测试工具，用来模拟对文件或者目录的open、stat、close操作，然后报告性能</p>
+<p>下载软件压缩包：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum install openmpi openmpi-devel -y</span><br><span class="line">在/root/.bashrc中添加（注意也要添加mdtest的路径）</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:/usr/lib64/openmpi/bin/</span><br><span class="line"></span><br><span class="line"><span class="built_in">source</span> /root/.bashrc</span><br><span class="line">下载</span><br><span class="line">[root@lab8105 ~]<span class="comment"># wget http://sourceforge.net/projects/mdtest/files/latest/download</span></span><br><span class="line">解压</span><br><span class="line">[root@lab8105 ~]<span class="comment"># tar -xvf mdtest-1.9.3.tgz</span></span><br><span class="line">修改makefile：</span><br><span class="line">mdtest: mdtest.c</span><br><span class="line">       mpicc -Wall -D $(OS) $(LARGE_FILE) $(MDTEST_FLAGS) -g -o mdtest mdtest.c -lm</span><br></pre></td></tr></table></figure></p>
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2015/03/24/mdtest测试工具/#more" class="more-link">阅读全文</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/24/cgroup实践-资源控制/">
+  <time datetime="2015-03-24T05:32:19.000Z">
+    2015-03-24
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/03/24/cgroup实践-资源控制/">cgroup实践-资源控制</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>1、Cgroup安装</p>
+<p>安装Cgroups需要libcap-devel和libcgroup两个相关的包<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">	yum install gcc libcap-devel </span><br><span class="line">```	</span><br><span class="line"><span class="number">2</span>、Cgroup挂载配置</span><br><span class="line">```raw</span><br><span class="line">	Cgroup对应服务名称为cgconfig，cgconfig默认采用“多挂载点”挂载。经过实际测试，发现在CentOS环境中应采用“单挂载点”进行挂载，因此应当卸载原有cgroup文件系统，并禁用cgconfig。</span><br><span class="line">	cgclear或者sudo service cgconfig stop <span class="comment"># 停止cgconfig，卸载cgroup目录</span></span><br><span class="line">	sudo chkconfig cgconfig off          <span class="comment"># 禁用cgconfig服务，避免其开机启动</span></span><br><span class="line">	然后采用“单挂载点”方式重新挂载cgroup。</span><br><span class="line">	可以直接手动挂载，这样仅当次挂载成功。</span><br><span class="line">	mount -t cgroup none /cgroup</span><br><span class="line">	然后编辑/etc/fstab/，输入下列内容。这样每次开机后都会自动挂载。</span><br><span class="line">	none   /cgroup  cgroup  defaults   <span class="number">0</span> <span class="number">0</span></span><br></pre></td></tr></table></figure></p>
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2015/03/24/cgroup实践-资源控制/#more" class="more-link">阅读全文</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/24/fq教程/">
+  <time datetime="2015-03-24T05:30:23.000Z">
+    2015-03-24
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/03/24/fq教程/">fq教程</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h3 id="手机作为翻墙路由器的方式">手机作为翻墙路由器的方式</h3><p>首先介绍的是手机上的翻墙软件，这个只能走http协议，不能走https协议，在手机上使用很方便，能够方便的访问各种网站，但是作为其他设备的时候，就只能提供http的，那么像google需要用到https的时候，其他设备就出现无法访问情况</p>
+<p>软件下载地址（已经存放到百度盘）<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">&#38142;&#25509;&#65306;http://pan.baidu.com/s/1eQs35a6 &#23494;&#30721;&#65306;3u19</span><br></pre></td></tr></table></figure></p>
+<p><img src="http://i.imgur.com/HeUIJ6e.png" alt=""></p>
+<p>点击软件后出现下面的界面就可以访问了，这个是全局的代理，所以可以直接使用手机访问外网了，可以开启更多功能</p>
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2015/03/24/fq教程/#more" class="more-link">阅读全文</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/24/linux绑定盘符/">
+  <time datetime="2015-03-24T05:25:22.000Z">
+    2015-03-24
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/03/24/linux绑定盘符/">linux绑定盘符</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@centos6 ~]<span class="comment"># udevadm info -q path -n /dev/sdb</span></span><br><span class="line">[root@centos6 ~]<span class="comment"># udevadm info -q path -n /dev/sdc</span></span><br><span class="line">/devices/pci0000:<span class="number">00</span>/<span class="number">0000</span>:<span class="number">00</span>:<span class="number">10.0</span>/host2/target2:<span class="number">0</span>:<span class="number">1</span>/<span class="number">2</span>:<span class="number">0</span>:<span class="number">1</span>:<span class="number">0</span>/block/sdc</span><br></pre></td></tr></table></figure>
+<p>拿到编号<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@centos6 ~]<span class="comment"># vim /etc/udev/rules.d/80-mydisk.rules</span></span><br></pre></td></tr></table></figure></p>
+<p>增加<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">DEVPATH==<span class="string">"/devices/pci0000:00/0000:00:10.0/host2/target2:0:2/2:0:2:0/block/sd*"</span>, NAME=<span class="string">"sdc"</span>, MODE=<span class="string">"0660"</span></span><br></pre></td></tr></table></figure></p>
+<p>这样对应的插槽的第二个就会一直对应盘符sdc 而不会出现跳盘符的问题了</p>
+<p>写于: 2014年11月07日<br>更新于: 2015年03月24日</p>
 
     
   </div>
@@ -165,23 +302,23 @@ IPT=<span class="string">"/sbin/iptables"</span>
   <header>
     
       <div class="icon"></div>
-      <a href="/2015/03/24/centos使用U盘做启动盘/">
-  <time datetime="2015-03-24T00:16:17.000Z">
+      <a href="/2015/03/24/让磁盘硬盘灯常闪定位盘/">
+  <time datetime="2015-03-24T05:23:26.000Z">
     2015-03-24
   </time>
 </a>
     
     
   
-    <h1 class="title"><a href="/2015/03/24/centos使用U盘做启动盘/">centos使用U盘做启动盘</a></h1>
+    <h1 class="title"><a href="/2015/03/24/让磁盘硬盘灯常闪定位盘/">让磁盘硬盘灯常闪定位盘</a></h1>
   
 
   </header>
   
   <div class="entry">
     
-      <p>软件下载地址:<br><a href="http://sourceforge.net/projects/iso2usb/files/latest/download?source=dlp" target="_blank" rel="external">http://sourceforge.net/projects/iso2usb/files/latest/download?source=dlp</a></p>
-<p>写于: 2014年08月04日<br>更新于: 2015年03月24日</p>
+      <figure class="highlight"><table><tr><td class="code"><pre><span class="line">#!/bin/bash&#10;hd=$1&#10;for num in &#123;1..5&#125;;do&#10;        dd if=&#34;$hd&#34; of=&#34;/dev/null&#34; bs=4M count=1000 iflag=direct conv=noerror &#62;/dev/null 2&#62;&#38;1&#10;        sleep 1&#10;done</span><br></pre></td></tr></table></figure>
+<p>写于: 2014年11月07日<br>更新于: 2015年03月24日</p>
 
     
   </div>
@@ -200,29 +337,32 @@ IPT=<span class="string">"/sbin/iptables"</span>
   <header>
     
       <div class="icon"></div>
-      <a href="/2015/03/24/ubuntu服务器启动过程中重启卡死的问题解决/">
-  <time datetime="2015-03-24T00:14:36.000Z">
+      <a href="/2015/03/24/软件注册码/">
+  <time datetime="2015-03-24T05:19:03.000Z">
     2015-03-24
   </time>
 </a>
     
     
   
-    <h1 class="title"><a href="/2015/03/24/ubuntu服务器启动过程中重启卡死的问题解决/">ubuntu服务器启动过程中重启卡死的问题解决</a></h1>
+    <h1 class="title"><a href="/2015/03/24/软件注册码/">软件注册码</a></h1>
   
 
   </header>
   
   <div class="entry">
     
-      <p>在grub默认参数当中添加</p>
-<pre><code><span class="attribute">GRUB_RECORDFAIL_TIMEOUT</span>=<span class="string">0</span>
-</code></pre><p>写于: 2014年07月23日<br>更新于: 2015年03月24日</p>
-
+      <hr>
+<p>markdownpad2 pro注册信息</p>
+<p>注册信息<br>邮箱地址:<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">Soar360@live.com</span><br></pre></td></tr></table></figure></p>
     
   </div>
   <footer class="end-sep">
     
+      
+        <div class="alignleft">
+          <a href="/2015/03/24/软件注册码/#more" class="more-link">阅读全文</a>
+        </div>
       
       
     
@@ -236,34 +376,72 @@ IPT=<span class="string">"/sbin/iptables"</span>
   <header>
     
       <div class="icon"></div>
-      <a href="/2015/03/24/nginx开启目录浏览/">
-  <time datetime="2015-03-24T00:04:52.000Z">
+      <a href="/2015/03/24/配置cobbler步骤/">
+  <time datetime="2015-03-24T04:55:06.000Z">
     2015-03-24
   </time>
 </a>
     
     
   
-    <h1 class="title"><a href="/2015/03/24/nginx开启目录浏览/">nginx开启目录浏览</a></h1>
+    <h1 class="title"><a href="/2015/03/24/配置cobbler步骤/">配置cobbler步骤</a></h1>
   
 
   </header>
   
   <div class="entry">
     
-      <p>使用nginx作为下载站点,开启目录浏览的功能<br>在/etc/nginx/sites-enabled/default中添加:</p>
-<pre><code><span class="title">autoindex</span> <span class="built_in">on</span> ;
-<span class="title">autoindex_exact_size</span> <span class="built_in">off</span>;
-<span class="title">autoindex_localtime</span> <span class="built_in">on</span>;
-</code></pre><p>说明:</p>
-<p>第一个为目录浏览功能开始<br>第二个为不精确计算文件大小<br>第三个为取时间为服务器本地的时间</p>
-<p>删除location相关的内容<br>修改完成重启nginx服务</p>
-<p>写于: 2014年07月16日<br>更新于: 2015年03月24日</p>
-
+      <p>首先找到下载包的地址 (使用的是centos6)<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">http://download.opensuse.org/repositories/home:/libertas-ict:/cobbler26/CentOS_CentOS-6/noarch/</span><br></pre></td></tr></table></figure></p>
+<p>添加国内epel源:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget http://mirrors.aliyun.com/epel/<span class="number">6</span>/x86_64/epel-release-<span class="number">6</span>-<span class="number">8</span>.noarch.rpm</span><br></pre></td></tr></table></figure></p>
+<p>本次测试下载这三个包:<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">cobbler-2.6.5-9.1.noarch.rpm &#10;cobbler-web-2.6.5-9.1.noarch.rpm &#10;koan-2.6.5-9.1.noarch.rpm</span><br></pre></td></tr></table></figure></p>
     
   </div>
   <footer class="end-sep">
     
+      
+        <div class="alignleft">
+          <a href="/2015/03/24/配置cobbler步骤/#more" class="more-link">阅读全文</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/24/ubuntu使用iso作为本地源/">
+  <time datetime="2015-03-24T04:52:24.000Z">
+    2015-03-24
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/03/24/ubuntu使用iso作为本地源/">ubuntu使用iso作为本地源</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>方式一(路径不要改):<br>挂载光驱到到本地的指定目录<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mount /dev/cdrom /media/cdrom</span><br></pre></td></tr></table></figure></p>
+<p>然后执行:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">apt-cdrom -m <span class="operator">-d</span> /media/cdrom add</span><br></pre></td></tr></table></figure></p>
+<p>会写配置文件<br>然后执行:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">apt-get update</span><br></pre></td></tr></table></figure></p>
+<p>就可以使用</p>
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2015/03/24/ubuntu使用iso作为本地源/#more" class="more-link">阅读全文</a>
+        </div>
       
       
     

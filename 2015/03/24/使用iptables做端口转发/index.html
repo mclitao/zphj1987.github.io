@@ -10,45 +10,17 @@
     <meta name="author" content="zphj1987">
   
   
-    <meta name="description" content="#!/bin/sh 
-IPT=&quot;/sbin/iptables&quot;
-/bin/echo &quot;1&quot; &amp;gt; /proc/sys/net/ipv4/ip_forward
-/sbin/modprobe ip_tables
-/sbin/modprobe iptable_filter
-/sbin/modprobe iptable_nat
-/sbin/modprobe ip_conntrack
-/sbin/mod">
+    <meta name="description" content="&amp;#9;#!/bin/sh &amp;#10;&amp;#9;IPT=&amp;#34;/sbin/iptables&amp;#34;&amp;#10;&amp;#9;/bin/echo &amp;#34;1&amp;#34; &amp;#62; /proc/sys/net/ipv4/ip_forward&amp;#10;&amp;#9;/sbin/modprobe ip_tables&amp;#10;&amp;#9;/sbin/modprobe iptable_filter&amp;#10;&amp;#9;/sb">
   
-  <meta name="description" content="#!/bin/sh 
-IPT=&quot;/sbin/iptables&quot;
-/bin/echo &quot;1&quot; &amp;gt; /proc/sys/net/ipv4/ip_forward
-/sbin/modprobe ip_tables
-/sbin/modprobe iptable_filter
-/sbin/modprobe iptable_nat
-/sbin/modprobe ip_conntrack
-/sbin/mod">
+  <meta name="description" content="&amp;#9;#!/bin/sh &amp;#10;&amp;#9;IPT=&amp;#34;/sbin/iptables&amp;#34;&amp;#10;&amp;#9;/bin/echo &amp;#34;1&amp;#34; &amp;#62; /proc/sys/net/ipv4/ip_forward&amp;#10;&amp;#9;/sbin/modprobe ip_tables&amp;#10;&amp;#9;/sbin/modprobe iptable_filter&amp;#10;&amp;#9;/sb">
 <meta property="og:type" content="article">
 <meta property="og:title" content="使用iptables做端口转发">
 <meta property="og:url" content="http://yoursite.com/2015/03/24/使用iptables做端口转发/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
-<meta property="og:description" content="#!/bin/sh 
-IPT=&quot;/sbin/iptables&quot;
-/bin/echo &quot;1&quot; &amp;gt; /proc/sys/net/ipv4/ip_forward
-/sbin/modprobe ip_tables
-/sbin/modprobe iptable_filter
-/sbin/modprobe iptable_nat
-/sbin/modprobe ip_conntrack
-/sbin/mod">
+<meta property="og:description" content="&amp;#9;#!/bin/sh &amp;#10;&amp;#9;IPT=&amp;#34;/sbin/iptables&amp;#34;&amp;#10;&amp;#9;/bin/echo &amp;#34;1&amp;#34; &amp;#62; /proc/sys/net/ipv4/ip_forward&amp;#10;&amp;#9;/sbin/modprobe ip_tables&amp;#10;&amp;#9;/sbin/modprobe iptable_filter&amp;#10;&amp;#9;/sb">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="使用iptables做端口转发">
-<meta name="twitter:description" content="#!/bin/sh 
-IPT=&quot;/sbin/iptables&quot;
-/bin/echo &quot;1&quot; &amp;gt; /proc/sys/net/ipv4/ip_forward
-/sbin/modprobe ip_tables
-/sbin/modprobe iptable_filter
-/sbin/modprobe iptable_nat
-/sbin/modprobe ip_conntrack
-/sbin/mod">
+<meta name="twitter:description" content="&amp;#9;#!/bin/sh &amp;#10;&amp;#9;IPT=&amp;#34;/sbin/iptables&amp;#34;&amp;#10;&amp;#9;/bin/echo &amp;#34;1&amp;#34; &amp;#62; /proc/sys/net/ipv4/ip_forward&amp;#10;&amp;#9;/sbin/modprobe ip_tables&amp;#10;&amp;#9;/sbin/modprobe iptable_filter&amp;#10;&amp;#9;/sb">
   
   
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
@@ -112,32 +84,9 @@ var _hmt = _hmt || [];
   
   <div class="entry">
     
-      <pre><code><span class="shebang">#!/bin/sh </span>
-IPT=<span class="string">"/sbin/iptables"</span>
-/bin/<span class="built_in">echo</span> <span class="string">"1"</span> &gt; /proc/sys/net/ipv4/ip_forward
-/sbin/modprobe ip_tables
-/sbin/modprobe iptable_filter
-/sbin/modprobe iptable_nat
-/sbin/modprobe ip_conntrack
-/sbin/modprobe ip_conntrack_ftp
-/sbin/modprobe ip_nat_ftp
-<span class="variable">$IPT</span> -F
-<span class="variable">$IPT</span> -t nat -F
-<span class="variable">$IPT</span> -X
-<span class="variable">$IPT</span> -t nat -X
-<span class="variable">$IPT</span> -Z
-<span class="variable">$IPT</span> -t nat -Z
-<span class="comment">#DNAT 做端口转发</span>
-<span class="variable">$IPT</span> -t nat -A PREROUTING <span class="operator">-d</span> <span class="number">192.168</span>.<span class="number">0.174</span> -p tcp --dport <span class="number">28</span> -j DNAT --to-destination <span class="number">192.168</span>.<span class="number">9.101</span>:<span class="number">22</span>
-<span class="variable">$IPT</span> -t nat -A POSTROUTING -p tcp <span class="operator">-d</span> <span class="number">192.168</span>.<span class="number">9.101</span> --dport <span class="number">22</span> -j SNAT --to-source <span class="number">192.168</span>.<span class="number">0.174</span>
-
-<span class="comment">#SNAT 做网关转发</span>
-<span class="comment">#$IPT -t nat -A POSTROUTING  -s 192.168.0.0/16  -j SNAT --to-source 210.72.24.15</span>
-</code></pre><p>备注:<br>首先需要启用NAT需要在Linux上打开内核对IP包的转发支持，linux上编辑:/etc/sysctl.conf 文件:</p>
-<pre><code>net<span class="class">.ipv4</span><span class="class">.ip_forward</span> = <span class="number">1</span>
-</code></pre><p>然后执行</p>
-<pre><code><span class="title">sysctl</span> -p
-</code></pre><p>写于: 2014年08月04日<br>更新于: 2015年03月24日</p>
+      <figure class="highlight"><table><tr><td class="code"><pre><span class="line">&#9;#!/bin/sh &#10;&#9;IPT=&#34;/sbin/iptables&#34;&#10;&#9;/bin/echo &#34;1&#34; &#62; /proc/sys/net/ipv4/ip_forward&#10;&#9;/sbin/modprobe ip_tables&#10;&#9;/sbin/modprobe iptable_filter&#10;&#9;/sbin/modprobe iptable_nat&#10;&#9;/sbin/modprobe ip_conntrack&#10;&#9;/sbin/modprobe ip_conntrack_ftp&#10;&#9;/sbin/modprobe ip_nat_ftp&#10;&#9;$IPT -F&#10;&#9;$IPT -t nat -F&#10;&#9;$IPT -X&#10;&#9;$IPT -t nat -X&#10;&#9;$IPT -Z&#10;&#9;$IPT -t nat -Z&#10;&#9;#DNAT &#20570;&#31471;&#21475;&#36716;&#21457;&#10;&#9;$IPT -t nat -A PREROUTING -d 192.168.0.174 -p tcp --dport 28 -j DNAT --to-destination 192.168.9.101:22&#10;&#9;$IPT -t nat -A POSTROUTING -p tcp -d 192.168.9.101 --dport 22 -j SNAT --to-source 192.168.0.174&#10;&#9; &#10;&#9;#SNAT &#20570;&#32593;&#20851;&#36716;&#21457;&#10;&#9;#$IPT -t nat -A POSTROUTING  -s 192.168.0.0/16  -j SNAT --to-source 210.72.24.15&#10;```&#9; &#10;&#9; &#10;&#22791;&#27880;:&#10;&#39318;&#20808;&#38656;&#35201;&#21551;&#29992;NAT&#38656;&#35201;&#22312;Linux&#19978;&#25171;&#24320;&#20869;&#26680;&#23545;IP&#21253;&#30340;&#36716;&#21457;&#25903;&#25345;&#65292;linux&#19978;&#32534;&#36753;:/etc/sysctl.conf &#25991;&#20214;:&#10;```raw&#10;&#9;net.ipv4.ip_forward = 1</span><br></pre></td></tr></table></figure>
+<p>然后执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sysctl -p</span><br></pre></td></tr></table></figure></p>
+<p>写于: 2014年08月04日<br>更新于: 2015年03月24日</p>
 
     
   </div>

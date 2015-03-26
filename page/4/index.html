@@ -73,171 +73,6 @@ var _hmt = _hmt || [];
   <header>
     
       <div class="icon"></div>
-      <a href="/2015/03/23/ssh配好无密码登录（RSA公钥）后，还要密码登录的问题的解决办法/">
-  <time datetime="2015-03-23T05:01:44.000Z">
-    2015-03-23
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2015/03/23/ssh配好无密码登录（RSA公钥）后，还要密码登录的问题的解决办法/">ssh配好无密码登录（RSA公钥）后，还要密码登录的问题的解决办法</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <p>首先删除 /root/.ssh目录<br>然后ssh-keygen 生成新的认证目录<br>然后检查能否免密码登陆<br>如果还不能可能是/root/目录的权限不对了 可能被异常改到777了<br>做操作 </p>
-<pre><code>chmod <span class="number">650</span> <span class="regexp">/root/</span>
-</code></pre><p>然后再尝试看能不能免登陆访问</p>
-<p>写于: 2013年11月28日<br>更新于: 2015年03日23日</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-  
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2015/03/23/ubuntu服务器dns重启失效问题/">
-  <time datetime="2015-03-23T00:05:19.000Z">
-    2015-03-23
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2015/03/23/ubuntu服务器dns重启失效问题/">ubuntu服务器dns重启失效问题</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <h3 id="方法一_通过/etc/network/interfaces,在它的最后增加一句:">方法一 通过/etc/network/interfaces,在它的最后增加一句:</h3><pre><code>dns-nameservers 8.8.8.8
-</code></pre><p>8.8.8.8是Google提供的DNS服务，这里只是举一个例子,你也可以改成电信运营商的DNS。重启后DNS就生效了，这时候再看/etc/resolv.conf,最下面就多了一行:</p>
-<pre><code># Dynamic resolv.<span class="keyword">conf</span>(5) <span class="keyword">file</span> <span class="keyword">for</span> glibc resolver(3) generated <span class="keyword">by</span> resolvconf(8)
-#     <span class="keyword">DO</span> NOT <span class="keyword">EDIT</span> THIS <span class="keyword">FILE</span> <span class="keyword">BY</span> HAND -- YOUR CHANGES WILL BE OVERWRITTEN
-nameserver 8.8.8.8
-</code></pre>
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2015/03/23/ubuntu服务器dns重启失效问题/#more" class="more-link">阅读全文</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-  
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2015/03/23/编译一个Centos6-4下可用的内核rpm升级包-3-8-13内核rpm包/">
-  <time datetime="2015-03-22T23:59:15.000Z">
-    2015-03-23
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2015/03/23/编译一个Centos6-4下可用的内核rpm升级包-3-8-13内核rpm包/">编译一个Centos6.4下可用的内核rpm升级包-3.8.13内核rpm包</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <p>在Centos6.4下进行内核升级,采用内核源码的升级方式比较简单，但是需要升级的机器多的情况下进行内核升级就比较麻烦,并且编译内核的速度依赖于机器的性能,一般需要20分钟,而通过rpm内核包的方式进行安装,就比较快,一般在几分钟之内就可以完成内核的安装,本文档以3.8.13内核源码为例子进行的操作。<br>  根据网上的指导教程编译的rpm包，编译完成后只会生成如下两个rpm包:</p>
-<ul>
-<li>kernel-3.8.13-1.x86_64.rpm</li>
-<li>kernel-headers-3.8.13-1.x86_64.rpm</li>
-</ul>
-<p>而实际进行内核升级的时候还需要kernel-firmwsare-3.8.13-1.x86_64.rpm这个包,这个包是包含内核固件相关文件的,而在进行rpm打包的时候,这个包会内嵌到kernel-3.8.13-1.x86_64.rpm这个包当中去,而安装的时候系统没有找到这个包，进行升级的时候就会报错。<br>所以需要对内核源码编译文件进行一定的修改，这个地方需要修改的文件为linux-3.8.13/scripts/package/mkspec路径下的这个文件,具体修改如下(新版内核解决了这个问题,可以不需要修改,根据生成包的情况来看是否修改):</p>
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2015/03/23/编译一个Centos6-4下可用的内核rpm升级包-3-8-13内核rpm包/#more" class="more-link">阅读全文</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-  
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2015/03/23/expect循环的写法/">
-  <time datetime="2015-03-22T23:55:53.000Z">
-    2015-03-23
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2015/03/23/expect循环的写法/">expect循环的写法</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <p>脚本:</p>
-<pre><code><span class="shebang">#!/usr/bin/expect</span>
-spawn sensors-detect
-<span class="keyword">for</span> {set i <span class="number">0</span>} {$i&lt;=<span class="number">10</span>} {incr i} {
-expect <span class="string">":"</span>
-send <span class="string">"\n"</span>
-}
-interact
-</code></pre><p>解释:</p>
-<p>spawn是启动命令<br>for为循环的写法<br>interact为退出<br>这个脚本目的是在一次运行过程中不断模拟用户的enter操作</p>
-<p>写于:2013年08月12日<br>更新于: 2015年03月23日</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-  
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
       <a href="/2015/03/22/linux系统启动的时候用脚本生成ssh密钥对（免输入enter）/">
   <time datetime="2015-03-22T15:07:52.000Z">
     2015-03-22
@@ -253,16 +88,374 @@ interact
   
   <div class="entry">
     
-      <p>默认执行ssh-keygen的时候会需要连续输入enter,脚本里面不能有交互,所以去掉enter的操作,脚本如下,脚本执行完成以后的效果是自己对自己免登陆,需要免登陆其他服务器就把自己本机的id_rsa.pub拷贝到其他机器的authorized_keys当中就可以了</p>
-<pre><code><span class="shebang">#! /bin/sh</span>
-ssh-keygen -t rsa <span class="operator">-f</span> /root/.ssh/id_rsa -q -N <span class="string">""</span>
-cat /root/.ssh/id_rsa.pub &gt;&gt; /root/.ssh/authorized_keys
-</code></pre><p>写于: 2013年08月07日<br>更新于: 2015年03月22日</p>
+      <p>默认执行ssh-keygen的时候会需要连续输入enter,脚本里面不能有交互,所以去掉enter的操作,脚本如下,脚本执行完成以后的效果是自己对自己免登陆,需要免登陆其他服务器就把自己本机的id_rsa.pub拷贝到其他机器的authorized_keys当中就可以了<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="shebang">#! /bin/sh</span></span><br><span class="line">ssh-keygen -t rsa <span class="operator">-f</span> /root/.ssh/id_rsa -q -N <span class="string">""</span></span><br><span class="line">cat /root/.ssh/id_rsa.pub &gt;&gt; /root/.ssh/authorized_keys</span><br></pre></td></tr></table></figure></p>
+<p>写于: 2013年08月07日<br>更新于: 2015年03月22日</p>
 
     
   </div>
   <footer class="end-sep">
     
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/22/centos做时间同步服务器/">
+  <time datetime="2015-03-22T15:02:10.000Z">
+    2015-03-22
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/03/22/centos做时间同步服务器/">centos做时间同步服务器</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>修改同步服务器的配置文件/etc/ntp.conf ,删除所有的内容,添加<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">restrict default nomodify&#10;server  127.127.1.0     # local clock&#10;fudge   127.127.1.0 stratum 8</span><br></pre></td></tr></table></figure></p>
+<p>重启ntpd<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/etc/init.d/ntpd restart</span><br></pre></td></tr></table></figure></p>
+<p>等待ntp服务器自身同步完成<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">watch ntpq -p</span><br></pre></td></tr></table></figure></p>
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2015/03/22/centos做时间同步服务器/#more" class="more-link">阅读全文</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/22/centos下多网卡做bond脚本/">
+  <time datetime="2015-03-22T14:54:52.000Z">
+    2015-03-22
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/03/22/centos下多网卡做bond脚本/">centos下多网卡做bond脚本</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>多网卡或者单网卡形式下的网卡bonding<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">&#9;#! /bin/sh&#10;&#9;#&#33719;&#21462;&#24403;&#21069;&#32593;&#21345;&#25968;&#10;&#9;ethnum=`lspci | grep Ethernet | wc -l`&#10;&#9;echo $ethnum&#10;&#9;#&#22914;&#26524;&#32593;&#21345;&#25968;&#23567;&#20110;&#31561;&#20110;1&#21017;&#20160;&#20040;&#37117;&#19981;&#20570;&#10;&#9;if [ $ethnum -le 1 ]&#10;&#9;        then&#10;&#9;        echo &#34;do nothing!&#34;&#10;&#9;fi&#10;&#9;#&#22914;&#26524;&#32593;&#21345;&#25968;&#22823;&#20110;&#31561;&#20110;2&#21017;&#10;&#9;if [ $ethnum -ge 2 ]&#10;&#9;        then&#10;&#10;&#60;!--more--&#62;&#10;&#9; &#10;&#9;#-------  &#28155;&#21152;&#19968;&#20010;bond0&#30340;&#32593;&#21345;&#10;&#9;    echo &#34;DEVICE=bond0&#34; &#62; /etc/sysconfig/network-scripts/ifcfg-bond0&#10;&#9;    echo &#34;ONBOOT=yes&#34; &#62;&#62; /etc/sysconfig/network-scripts/ifcfg-bond0&#10;&#9;    echo &#34;IPADDR=192.168.3.104&#34; &#62;&#62; /etc/sysconfig/network-scripts/ifcfg-bond0&#10;&#9;    echo &#34;NETMASK=255.255.0.0&#34; &#62;&#62; /etc/sysconfig/network-scripts/ifcfg-bond0&#10;&#9;    echo &#34;GATEWAY=192.168.1.1&#34; &#62;&#62; /etc/sysconfig/network-scripts/ifcfg-bond0&#10;&#9;    echo &#34;BOOTPROTO=static&#34; &#62;&#62; /etc/sysconfig/network-scripts/ifcfg-bond0&#10;&#9;    echo &#34;USERCTL=no&#34; &#62;&#62; /etc/sysconfig/network-scripts/ifcfg-bond0&#10;&#9;#--------&#10;&#9;    echo &#34;ifenslave bond0&#34; &#62;&#62; /etc/rc.local&#10;&#9;#--------&#20889;&#20854;&#20182;&#32593;&#21345;&#30340;&#37197;&#32622;&#25991;&#20214;&#10;&#9;    for i in $(seq $ethnum);&#10;&#9;    do&#10;&#9;num=`expr $i - 1`&#10;&#9;     echo &#34;BOOTPROTO=none&#34; &#62;  /etc/sysconfig/network-scripts/ifcfg-eth$num&#10;&#9;     echo &#34;DEVICE=eth$num&#34; &#62;&#62;  /etc/sysconfig/network-scripts/ifcfg-eth$num&#10;&#9;     echo &#34;ONBOOT=yes&#34; &#62;&#62;  /etc/sysconfig/network-scripts/ifcfg-eth$num&#10;&#9;     echo &#34;MASTER=bond0&#34; &#62;&#62;  /etc/sysconfig/network-scripts/ifcfg-eth$num&#10;&#9;     echo &#34;USERCTL=no&#34; &#62;&#62;  /etc/sysconfig/network-scripts/ifcfg-eth$num&#10;&#9;     echo &#34;SLAVE=yes&#34; &#62;&#62;  /etc/sysconfig/network-scripts/ifcfg-eth$num&#10;&#9;     sed -i &#39;s/ifenslave.*/&#38; eth&#39;&#34;$num&#34;&#39;/g&#39; /etc/rc.local&#10;&#9;    done;&#10;&#9;echo &#34;alias bond0 bonding&#34; &#62; /etc/modprobe.d/modprobe.conf&#10;&#9;echo &#34;options bond0 miimon=100 mode=balance-rr&#34; &#62;&#62; /etc/modprobe.d/modprobe.conf&#10;&#9;        modprobe bonding&#10;&#9;    /etc/init.d/network   restart&#10;&#9;fi</span><br></pre></td></tr></table></figure></p>
+<p>写于: 2013年08月06日<br>更新于: 2015年03月22日</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/22/ubuntu12-10安装sun-java-jdk/">
+  <time datetime="2015-03-22T14:52:27.000Z">
+    2015-03-22
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/03/22/ubuntu12-10安装sun-java-jdk/">ubuntu12.10安装sun java jdk</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">add-apt-repository ppa:webupd8team/java  </span><br><span class="line">apt-get update  </span><br><span class="line">apt-get install oracle-java6-installer</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@kangear:/etc/apt<span class="comment"># java -version</span></span><br><span class="line">java version <span class="string">"1.6.0_41"</span></span><br><span class="line">Java(TM) SE Runtime Environment (build <span class="number">1.6</span>.<span class="number">0</span>_41-b02)</span><br><span class="line">Java HotSpot(TM) Server VM (build <span class="number">20.14</span>-b01, mixed mode)</span><br></pre></td></tr></table></figure>
+<p>说明:sun-java6-jre,sun-java6-plugin,sun-java6-fonts都同样的由的软件包 oracle-java6-installer 提供的虚拟软件包所以安装 oracle-java6-installer就可以了</p>
+<p>写于: 2013年08月03日<br>更新于: 2015年03月22日</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/22/Bad-magic-number-ImportError-in-python/">
+  <time datetime="2015-03-22T14:50:44.000Z">
+    2015-03-22
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/03/22/Bad-magic-number-ImportError-in-python/"> Bad magic number ImportError in python</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>是源码编译里面版本不对，删除掉源码pyc然后重新编译就可以了</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find .-name <span class="string">'*.pyc'</span>-delete</span><br><span class="line">python -m compileall .</span><br></pre></td></tr></table></figure>
+<p>写于: 2013年08月01日<br>更新于: 2015年03月22日</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/22/修改centos6启动动画（plymouth方式）/">
+  <time datetime="2015-03-22T14:38:36.000Z">
+    2015-03-22
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/03/22/修改centos6启动动画（plymouth方式）/">修改centos6启动动画（plymouth方式）</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>centos6默认的启动动画是一个白蓝色的进度条,背景全黑色,现在需要对centos的启动动画进行定制<br>在查询了一些资料以后,发现有一个软件是可以对启动动画进行定制的，名字叫plymouth<br>这<br>个在centos6操作系统安装完成以后默认就带了的,主要涉及的是如下的几个操作<br>列出当前所有主题:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">plymouth-set-default-theme --list</span><br></pre></td></tr></table></figure></p>
+<p>主题存放目录:<br>/usr/share/plymouth/themes/</p>
+<p>不重启查看主题运行效果 Ctrl + Alt + F2(一定不要在F1操作)<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">plymouthd</span><br><span class="line">plymouth --show-splash</span><br><span class="line">plymouth --quit</span><br></pre></td></tr></table></figure></p>
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2015/03/22/修改centos6启动动画（plymouth方式）/#more" class="more-link">阅读全文</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/22/用grub4dos来实现移动硬盘安装linux系统/">
+  <time datetime="2015-03-22T14:27:07.000Z">
+    2015-03-22
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/03/22/用grub4dos来实现移动硬盘安装linux系统/">用grub4dos来实现移动硬盘安装linux系统(图重弄)</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>网上看了一些grub4dos相关教程,虽然相关资料很多,但是一步步做下来还是会出现一些问题,并且有些地方也没有说清楚,现在写下来供自己以后查看</p>
+<p>由于使用utraliso软件做centos6.4系统盘的时候,由于centos系统盘超过4G,而utraliso软件做系统盘的时候默认文件系统ext格式,而ext格式不支持超过4G的文件,所以就无法启动,所以研究了下用grub4dos这个软件来实现移动硬盘安装linux系统</p>
+<p>首先需要准备两个文件<br>grub4dos-0.4.4.zip<br>grubinst-1.1-bin-w32-2008-01-01.zip</p>
+<p>解压grub4dos-0.4.4.zip</p>
+<p><img src="http://fmn.rrimg.com/fmn061/20130605/2150/b_large_LQAI_39a3000004ac1262.jpg" alt=""></p>
+<p>&lt;这里需要注意下，如果用移动硬盘想实现的是只装一种系统话，那么就不需要对硬盘分区，如果想装多个系统的话就可以对移动硬盘分几个区，每个分区可以放一种操作系统&gt;</p>
+<p>在win7的开始菜单中搜索 计算机管理&gt;磁盘管理<br>然后选择你的移动硬盘,然后将第一个盘符标记为活动分区,这样移动硬盘这个区才能被识别,从而作为启动分区</p>
+<p><img src="http://fmn.rrimg.com/fmn063/20130605/2200/b_large_VXDK_39a3000004d91262.jpg" alt=""></p>
+<p>解压grubinst-1.1-bin-w32-2008-01-01.zip 运行<br>grubinst_gui.exe<br>磁盘选择你的移动硬盘<br>然后点分区列表右边的刷新<br>然后选择整个磁盘(MBR),然后点击安装</p>
+<p><img src="http://fmn.rrfmn.com/fmn058/20130605/2215/b_large_1Zyp_5715000001f51263.jpg" alt=""></p>
+<p>将刚刚解压得到的grub4dos-0.4.4这个目录下的chinese目录下的三个文件拷贝到你准备用来做安装系统移动硬盘,也就是刚刚设置为活动主分区那个盘还有grub4dos-0.4.4目录下menu.lst也拷贝到移动硬盘活动分区那个盘的根目录下，这个移动硬盘目录下最后看到的文件如下截图</p>
+<p><img src="http://fmn.rrimg.com/fmn065/20130605/2210/b_large_qb9c_30620000080c1263.jpg" alt=""></p>
+<p>如果这个时候你移动硬盘没分区的话，就将你的系统盘的iso全部解压到你的这个目录,系统iso解压可以用360压缩工具<br>然后修改menu.lst  ,如果比较熟悉,可以进行自定义,如果不熟悉,这里直接在下面加几行:<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">title centos6.4 install&#10;kernel (hd0,0)/isolinux/vmlinuz&#10;initrd (hd0,0)/isolinux/initrd.img</span><br></pre></td></tr></table></figure></p>
+<p>上面的title后面写的字段会在系统安装的时候显示，然后安装的时候选择这个centos6.4 install就行,其中(hd0,0)的前面的0是代表第一个盘,也就是你的移动盘,后面的0代表分区,代表第一个分区,如果你把系统iso解压到移动硬盘的第二个分区,那么就把这个改为1<br>isolinux/vmlinuz 就是你解压的iso里面的文件<br>到这里,系统盘已经做好了,在电脑的启动项里面选择centos6.4 install 就可以安装这个linux系统了</p>
+<p>此方法对于centos6.4还是有问题 所以需要多做些工作<br>思路是把第二个分区做成linux的ext2格式就能放4G以上的iso,但是win7又无法识别ext2的盘符,所以需要做两步,第一步将第二分区格式化为ext2<br>使用这个工具:<br>ParagonPartitionManager.rar<br>使用这个工具把盘格式化为ext2<br>使用这个工具是win7下能查看ext2格式的盘符<br>Ext2Fsd-0.51.zip</p>
+<p><img src="http://fmn.xnpic.com/fmn057/20130606/2145/b_large_jgCI_5038000002631263.jpg" alt=""></p>
+<p><img src="http://fmn.rrimg.com/fmn060/20130606/2145/b_large_uSUd_588c000003ba1262.jpg" alt=""></p>
+<p><img src="http://fmn.rrimg.com/fmn061/20130606/2155/b_large_LzJv_2a51000012851262.jpg" alt=""></p>
+<p>写于: 2013年06月05日<br>更新于: 2015年03月22日</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/22/手机中没有该应用所需的共享库（解决手机无法安装Google-plus）/">
+  <time datetime="2015-03-22T14:24:09.000Z">
+    2015-03-22
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/03/22/手机中没有该应用所需的共享库（解决手机无法安装Google-plus）/">手机中没有该应用所需的共享库（解决手机无法安装Google plus）</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>国行安卓手机阉割了一些google服务，需要加这三个文件:</p>
+<p>com.google.android.maps.jar<br>com.google.android.maps.xml<br>NetworkLocation.apk</p>
+<p>你只需将上述文件放到手机中的相应位置,重启手机就好了。<br>方法:<br>首先机器要ROOT,然后用RE管理器，把要复制的文件复制到相应的位置,修改三个文件的权限,就是竖着3行,左边全选,中间最上面选上,右边全空。<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">com.google.android.maps.jar   &#23433;&#35013;&#21040;  /system/framework&#10;google.android.maps.xml       &#23433;&#35013;&#21040;  /system/etc/permissions&#10;NetworkLocation.apk           &#23433;&#35013;&#21040;  /data/app_s</span><br></pre></td></tr></table></figure></p>
+<p>app_s目录需要自己建立</p>
+<p>上述三个文件在下面这个地址可以下载到:<br><a href="http://vdisk.weibo.com/s/BFtBO" target="_blank" rel="external">http://vdisk.weibo.com/s/BFtBO</a> </p>
+<p>写于: 2013年05月16日<br>更新于: 2015年03月22日</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/22/如何配置谷歌框架与市场（解决google-play-闪退）/">
+  <time datetime="2015-03-22T14:18:20.000Z">
+    2015-03-22
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/03/22/如何配置谷歌框架与市场（解决google-play-闪退）/">如何配置谷歌框架与市场（解决google play 闪退）</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>没有谷歌电子市场。好多游戏都不能玩。像狂野之血,超凡蜘蛛侠。。。等等大型游戏。</p>
+<p>大家都知道国产机的ROM包把谷歌的GMS和谐掉了,所以直接装谷歌电子市场肯定会出现闪退,这样就又牵扯到另一个基础服务——谷歌框架,估计想玩大型游戏的机友对这个词都不陌生,但是可能大家按照许多热心机友说的最终还是没能把这个电子市场搞定,接下来大家按这个步骤,可以成功,亲测。</p>
+<p>步骤如下:<br>第一步:需要有root权限和RE管理器</p>
+<p>第二步:下载GoogleServiesFramework.apk(谷歌<br>服务框架,必需),将GoogleServiesFramework.apk复制到文件夹/system/app 下,然后点击安装,但是貌似不点安装也行,但是权限一定得改,然后修改权限——第一行,第一个、第二个打勾,第二行,第一个打勾,第三行,第一个打勾。(这个权限一定要搞好,有可能大家都是少了这步) </p>
+<p>第三步:下载谷歌电子市场，无论下载过来的电子市场文件名叫什么,都把它重命名为Vending.apk,像GoogleServiesFramework.apk一样移动到文件夹 /system/app 下,安装(这个必须安装)。然后修改权限,与GoogleServiesFramework.apk一样.</p>
+<p>第四步:重启手机<br>ok,联网,打开谷歌电子市场,就可以登录了。</p>
+<p>写于: 2013年05月16日<br>更新于: 2015年03月22日</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/22/samba配置独立访问配置方法/">
+  <time datetime="2015-03-22T14:07:59.000Z">
+    2015-03-22
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/03/22/samba配置独立访问配置方法/">samba配置独立访问配置方法</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h3 id="配置目的:">配置目的:</h3><p>为了给指定用户一个独立访问目录</p>
+<p>首先在samba服务器安装samba软件</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ apt-get install samba</span><br></pre></td></tr></table></figure>
+<p>然后配置独立访问用户<br>配置samba用户前提需要是linux的用户,所以要创建linux用户</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ useradd    zp</span><br><span class="line">$ passwd     zp</span><br></pre></td></tr></table></figure>
+<p>用户创建完了以后<br>需要创建samba用户</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ smbpasswd <span class="operator">-a</span>  zp</span><br></pre></td></tr></table></figure>
+<p>然后输入密码,记住密码,这个是客户端访问samba的密码<br>
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2015/03/22/samba配置独立访问配置方法/#more" class="more-link">阅读全文</a>
+        </div>
       
       
     

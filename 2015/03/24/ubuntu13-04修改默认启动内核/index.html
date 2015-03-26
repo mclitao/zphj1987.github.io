@@ -11,32 +11,24 @@
   
   
     <meta name="description" content="ubuntu下面的启动内核选项跟其他操作系统不一样,有个子菜单,比如我在默认的ubuntu13.04上安装了一个新的内核3.14.5,那么默认的第一项是3.14.5内核,第二项是一个子菜单,第二项里面的第一项是3.14.5,第二项是3.14.5 recovery 模式,第三项是3.8.0,第四项是3.8.0(recover)
-那么应该修改
-/boot/grub/grub.cfg
-中的
-GRUB_D">
+那么应该修改/boot/grub/grub.cfg
+中的GRUB_DEF">
   
   <meta name="description" content="ubuntu下面的启动内核选项跟其他操作系统不一样,有个子菜单,比如我在默认的ubuntu13.04上安装了一个新的内核3.14.5,那么默认的第一项是3.14.5内核,第二项是一个子菜单,第二项里面的第一项是3.14.5,第二项是3.14.5 recovery 模式,第三项是3.8.0,第四项是3.8.0(recover)
-那么应该修改
-/boot/grub/grub.cfg
-中的
-GRUB_D">
+那么应该修改/boot/grub/grub.cfg
+中的GRUB_DEF">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ubuntu13.04修改默认启动内核">
 <meta property="og:url" content="http://yoursite.com/2015/03/24/ubuntu13-04修改默认启动内核/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
 <meta property="og:description" content="ubuntu下面的启动内核选项跟其他操作系统不一样,有个子菜单,比如我在默认的ubuntu13.04上安装了一个新的内核3.14.5,那么默认的第一项是3.14.5内核,第二项是一个子菜单,第二项里面的第一项是3.14.5,第二项是3.14.5 recovery 模式,第三项是3.8.0,第四项是3.8.0(recover)
-那么应该修改
-/boot/grub/grub.cfg
-中的
-GRUB_D">
+那么应该修改/boot/grub/grub.cfg
+中的GRUB_DEF">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ubuntu13.04修改默认启动内核">
 <meta name="twitter:description" content="ubuntu下面的启动内核选项跟其他操作系统不一样,有个子菜单,比如我在默认的ubuntu13.04上安装了一个新的内核3.14.5,那么默认的第一项是3.14.5内核,第二项是一个子菜单,第二项里面的第一项是3.14.5,第二项是3.14.5 recovery 模式,第三项是3.8.0,第四项是3.8.0(recover)
-那么应该修改
-/boot/grub/grub.cfg
-中的
-GRUB_D">
+那么应该修改/boot/grub/grub.cfg
+中的GRUB_DEF">
   
   
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
@@ -101,13 +93,10 @@ var _hmt = _hmt || [];
   <div class="entry">
     
       <p>ubuntu下面的启动内核选项跟其他操作系统不一样,有个子菜单,比如我在默认的ubuntu13.04上安装了一个新的内核3.14.5,那么默认的第一项是3.14.5内核,第二项是一个子菜单,第二项里面的第一项是3.14.5,第二项是3.14.5 recovery 模式,第三项是3.8.0,第四项是3.8.0(recover)</p>
-<p>那么应该修改</p>
-<pre><code><span class="regexp">/boot/g</span>rub<span class="regexp">/grub.cfg</span>
-</code></pre><p>中的</p>
-<pre><code><span class="variable">GRUB_DEFAULT=</span><span class="number">0</span>为<span class="variable">GRUB_DEFAULT=</span><span class="string">"1&gt;2"</span>
-</code></pre><p>然后:</p>
-<pre><code><span class="keyword">update</span>-grub
-</code></pre><p>重启即可</p>
+<p>那么应该修改<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">/boot/grub/grub.cfg</span><br></pre></td></tr></table></figure></p>
+<p>中的<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">GRUB_DEFAULT=0&#20026;GRUB_DEFAULT=&#34;1&#62;2&#34;</span><br></pre></td></tr></table></figure></p>
+<p>然后:<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">update-grub</span><br></pre></td></tr></table></figure></p>
+<p>重启即可</p>
 <p>写于: 2014年07月11日<br>更新于: 2015年03月24日</p>
 
     
