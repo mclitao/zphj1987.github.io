@@ -4,21 +4,39 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="chrome=1">
   
-  <title>zphj1987&#39;Blog</title>
+  <title>ceph客户端服务端属性匹配关系 | zphj1987&#39;Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   
     <meta name="author" content="zphj1987">
   
   
-  <meta name="description">
-<meta property="og:type" content="website">
-<meta property="og:title" content="zphj1987'Blog">
-<meta property="og:url" content="http://yoursite.com/index.html">
+    <meta name="description" content="ceph的server是定期会发布版本，而它的客户端是放到linux 内核当中的，一些属性的支持是依赖于内核版本的，这样就存在一些问题，一些功能后端支持，而客户端旧了；还有可能是客户端用的很新的内核，而后端比较旧不支持，所以查看了下内核中的 features 文件，可以看到这个对应关系，总结了下就是下面的列表
+注意表中：
+
+S=SUPPORTED_DEFAULT    代表客户端支持这个属性
+R=">
+  
+  <meta name="description" content="ceph的server是定期会发布版本，而它的客户端是放到linux 内核当中的，一些属性的支持是依赖于内核版本的，这样就存在一些问题，一些功能后端支持，而客户端旧了；还有可能是客户端用的很新的内核，而后端比较旧不支持，所以查看了下内核中的 features 文件，可以看到这个对应关系，总结了下就是下面的列表
+注意表中：
+
+S=SUPPORTED_DEFAULT    代表客户端支持这个属性
+R=">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ceph客户端服务端属性匹配关系">
+<meta property="og:url" content="http://yoursite.com/2015/09/18/ceph客户端服务端属性匹配关系/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
-<meta property="og:description">
+<meta property="og:description" content="ceph的server是定期会发布版本，而它的客户端是放到linux 内核当中的，一些属性的支持是依赖于内核版本的，这样就存在一些问题，一些功能后端支持，而客户端旧了；还有可能是客户端用的很新的内核，而后端比较旧不支持，所以查看了下内核中的 features 文件，可以看到这个对应关系，总结了下就是下面的列表
+注意表中：
+
+S=SUPPORTED_DEFAULT    代表客户端支持这个属性
+R=">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="zphj1987'Blog">
-<meta name="twitter:description">
+<meta name="twitter:title" content="ceph客户端服务端属性匹配关系">
+<meta name="twitter:description" content="ceph的server是定期会发布版本，而它的客户端是放到linux 内核当中的，一些属性的支持是依赖于内核版本的，这样就存在一些问题，一些功能后端支持，而客户端旧了；还有可能是客户端用的很新的内核，而后端比较旧不支持，所以查看了下内核中的 features 文件，可以看到这个对应关系，总结了下就是下面的列表
+注意表中：
+
+S=SUPPORTED_DEFAULT    代表客户端支持这个属性
+R=">
   
   
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
@@ -63,13 +81,7 @@ var _hmt = _hmt || [];
   </nav>
   <div class="clearfix"></div>
 </header>
-    <div class="content">
-
-
-
-
-  
-    <article class="post">
+    <div class="content"><article class="post">
   <header>
     
       <div class="icon"></div>
@@ -81,7 +93,7 @@ var _hmt = _hmt || [];
     
     
   
-    <h1 class="title"><a href="/2015/09/18/ceph客户端服务端属性匹配关系/">ceph客户端服务端属性匹配关系</a></h1>
+    <h1 class="title">ceph客户端服务端属性匹配关系</h1>
   
 
   </header>
@@ -1074,7 +1086,7 @@ var _hmt = _hmt || [];
 
     
   </div>
-  <footer class="end-sep">
+  <footer>
     
       
       
@@ -1084,366 +1096,11 @@ var _hmt = _hmt || [];
 </article>
 
 
-  
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2015/07/14/nginx配置代理缓存/">
-  <time datetime="2015-07-14T01:57:21.000Z">
-    2015-07-14
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2015/07/14/nginx配置代理缓存/">nginx配置代理缓存</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <p>nginx可以实现反向代理的配置，并且可以使用缓存来加速，本文是简单的实现功能的配置，暂时没有做其他的优化的部分的配置，从网上的资料来看，很多配置都是没有讲哪些是必须配置的，我自己在配置过程中就发现没有生成缓存文件，下面来记录下配置的内容<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">upstream test&#123;&#10;            server 127.0.0.1:8080;&#10;        &#125;&#10;&#10;proxy_cache_path /var/cache/nginx/proxy_cache keys_zone=cache_zone:2000m max_size=1000m;&#10;&#10;server &#123;&#10;    listen       80;&#10;    server_name  localhost;&#10;    location / &#123;&#10;        proxy_pass http://127.0.0.1:8080;&#10;        proxy_cache cache_zone;&#10;        proxy_cache_valid  200 304 302 24h;&#10;    &#125;&#10;&#10;    error_page   500 502 503 504  /50x.html;&#10;&#10;    location = /50x.html &#123;&#10;        root   /usr/share/nginx/html;&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure></p>
-    
+<section id="comment">
+  <h1 class="title">评论</h1>
+  <div class="ds-thread" data-thread-key="2015/09/18/ceph客户端服务端属性匹配关系/"  data-title="ceph客户端服务端属性匹配关系">
   </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2015/07/14/nginx配置代理缓存/#more" class="more-link">阅读全文</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-  
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2015/05/27/linux服务器远程网络开机（wake-on-lan）/">
-  <time datetime="2015-05-27T06:35:40.000Z">
-    2015-05-27
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2015/05/27/linux服务器远程网络开机（wake-on-lan）/">linux服务器远程网络开机（wake on lan）</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <h3 id="检查服务器是否支持远程网络开机">检查服务器是否支持远程网络开机</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab5101 ~]<span class="comment"># ethtool eth0</span></span><br><span class="line">    Settings <span class="keyword">for</span> eth0:</span><br><span class="line">        Supported ports: [ TP ]</span><br><span class="line">        Supported link modes: <span class="number">10</span>baseT/Half <span class="number">10</span>baseT/Full </span><br><span class="line">                              <span class="number">100</span>baseT/Half <span class="number">100</span>baseT/Full </span><br><span class="line">                              <span class="number">1000</span>baseT/Full </span><br><span class="line">        Supported pause frame use: No</span><br><span class="line">        Supports auto-negotiation: Yes</span><br><span class="line">        Advertised link modes: </span><br><span class="line">                             <span class="number">10</span>baseT/Half <span class="number">10</span>baseT/Full </span><br><span class="line">                             <span class="number">100</span>baseT/Half <span class="number">100</span>baseT/Full </span><br><span class="line">                             <span class="number">1000</span>baseT/Full </span><br><span class="line">        Advertised pause frame use: No</span><br><span class="line">        Advertised auto-negotiation: Yes</span><br><span class="line">        Speed: <span class="number">1000</span>Mb/s</span><br><span class="line">        Duplex: Full</span><br><span class="line">        Port: Twisted Pair</span><br><span class="line">        PHYAD: <span class="number">2</span></span><br><span class="line">        Transceiver: internal</span><br><span class="line">        Auto-negotiation: onMDI-X: on</span><br><span class="line">        Supports Wake-on: pumbg</span><br><span class="line">        Wake-on: g</span><br><span class="line">        Current message level: <span class="number">0</span>x00000007 (<span class="number">7</span>) </span><br><span class="line">                               drv probe linkLink detected: yes</span><br></pre></td></tr></table></figure>
-<p>注意这两项：<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">Supports Wake-on: pumbg&#10;Wake-on: g</span><br></pre></td></tr></table></figure></p>
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2015/05/27/linux服务器远程网络开机（wake-on-lan）/#more" class="more-link">阅读全文</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-  
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2015/05/25/dm-crypt加密磁盘/">
-  <time datetime="2015-05-25T06:07:58.000Z">
-    2015-05-25
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2015/05/25/dm-crypt加密磁盘/">dm-crypt加密磁盘</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <h3 id="dm-cry加密方式密码与文件">dm-cry加密方式密码与文件</h3><p>与其它创建加密文件系统的方法相比，dm-crypt系统有着无可比拟的优越性：它的速度更快，易用性更强。除此之外，它的适用面也很广，能够运行在各种块设备上，即使这些设备使用了RAID和 LVM也毫无障碍。</p>
-<p>如果看到类似下面的输出，说明AES模块已经加载了。<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">cat /proc/crypto&#10;&#10;name         : aes&#10;driver       : aes-generic&#10;module       : kernel&#10;priority     : 100&#10;refcnt       : 3&#10;selftest     : passed&#10;type         : cipher&#10;blocksize    : 16&#10;min keysize  : 16&#10;max keysize  : 32</span><br></pre></td></tr></table></figure></p>
-<p>否则可以用modprobe命令来手工加载AES模块。<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">modprobe aes</span><br></pre></td></tr></table></figure></p>
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2015/05/25/dm-crypt加密磁盘/#more" class="more-link">阅读全文</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-  
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2015/05/12/linux系统克隆系统盘/">
-  <time datetime="2015-05-12T06:24:31.000Z">
-    2015-05-12
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2015/05/12/linux系统克隆系统盘/">linux系统克隆系统盘</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <p>本文将介绍两种方式的系统盘的完整的备份，两种方式各有优缺点，需要根据实际情况来进行选择</p>
-<ul>
-<li>使用dd的完整镜像克隆的方式</li>
-<li>使用tar去备份数据，安装grub的方式</li>
-</ul>
-<h4 id="dd方式">dd方式</h4><p>优点：<br>简单，一条命令 dd if=/dev/sda of=/dev/sdb 就可以进行完整的系统备份了</p>
-<p>缺点：<br>时间非常长，备份一个系统盘，无论数据多少，系统盘全部会读取一遍，时间比较久<br>备份目的盘需要大于原盘<br>分区无法调整，根原分区一模一样</p>
-<h4 id="tar方式">tar方式</h4><p>优点：<br>时间短，只需要备份实际磁盘上的数据即可<br>自定义，可以修改分区的大小，可以控制备份的类容，可以定期备份<br>对目的盘大小无限制，比较灵活</p>
-<p>缺点：<br>人为修改东西比较多，需要手动去修改一些信息<br>当然在掌握了一定的linux基础的情况下建议是使用tar方式的，，下面将介绍tar方式的处理方式：</p>
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2015/05/12/linux系统克隆系统盘/#more" class="more-link">阅读全文</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-  
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2015/04/28/linux下制作软件包安装服务器/">
-  <time datetime="2015-04-28T08:43:29.000Z">
-    2015-04-28
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2015/04/28/linux下制作软件包安装服务器/">linux下制作软件包安装服务器</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <p>linux下的软件包在有网络的情况下比较好安装，在ubuntu下，更新sourcelist，然后使用apt-get就可以很方便的安装包，在centos下面，更新yum列表，然后使用yum也可以进行方便的软件安装，但是在没有网络的情况下就比较难安装，可以用一个个包的安装的方式去安装，这个在少量的包的情况下比较好处理，在多的情况下就比较麻烦了，本篇文档，就是介绍了在无网的情况下，根据自己的需要制作内网的包的安装服务器</p>
-<h2 id="centos系列">centos系列</h2><h3 id="使用光驱作为安装源">使用光驱作为安装源</h3><p>1、将光驱挂载到服务器的本地目录</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@node1 ~]<span class="comment"># mount /dev/cdrom /mnt</span></span><br><span class="line">mount: block device /dev/sr0 is write-protected, mounting <span class="built_in">read</span>-only</span><br></pre></td></tr></table></figure>
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2015/04/28/linux下制作软件包安装服务器/#more" class="more-link">阅读全文</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-  
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2015/04/03/windows下命令行设置静态IP/">
-  <time datetime="2015-04-03T04:25:48.000Z">
-    2015-04-03
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2015/04/03/windows下命令行设置静态IP/">windows下命令行设置静态IP</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <p>windows 10 预览版出现无法设置静态IP的bug，只能通过命令行进行设置，开启powershell，然后执行下列的命令即可<br>下面的“以太网 3” 为你设置的网卡的网卡名称,注意不要忘了空格</p>
-<p>设置静态IP:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">netsh interface ipv4 <span class="built_in">set</span> address <span class="string">"以太网 3"</span>  static <span class="number">192.168</span>.<span class="number">0.71</span> <span class="number">255.255</span>.<span class="number">0.0</span> <span class="number">192.168</span>.<span class="number">26.1</span></span><br></pre></td></tr></table></figure></p>
-<p>增加静态IP:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">netsh interface ipv4 <span class="built_in">set</span> dns <span class="string">"以太网 3"</span>  static <span class="number">223.5</span>.<span class="number">5.5</span></span><br></pre></td></tr></table></figure></p>
-<p>增加静态IP:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">netsh interface ipv4 add address <span class="string">"以太网 3"</span> <span class="number">11.12</span>.<span class="number">0.0</span> <span class="number">255.255</span>.<span class="number">0.0</span></span><br></pre></td></tr></table></figure></p>
-<p>重置为dhcp:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">netsh interface ipv4 <span class="built_in">set</span> address <span class="string">"以太网 3"</span>  dhcp</span><br></pre></td></tr></table></figure></p>
-<p>基本设置应该够用了</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-  
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2015/04/02/shell脚本的自动交互/">
-  <time datetime="2015-04-02T09:22:40.000Z">
-    2015-04-02
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2015/04/02/shell脚本的自动交互/">shell脚本的自动交互</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <p>使用expect来自动应答shell的交互</p>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">#!/usr/bin/expect&#10;spawn openssl req -new -key server.key -out server1.csr&#10;expect &#34;Country Name&#34;&#10;send &#34;\n&#34;&#10;expect &#34;State or Province Name&#34;&#10;send &#34;\n&#34;&#10;interact</span><br></pre></td></tr></table></figure>
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-  
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2015/03/31/history命令的优化/">
-  <time datetime="2015-03-31T08:53:28.000Z">
-    2015-03-31
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2015/03/31/history命令的优化/">history命令的优化</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <p>现在在项目中遇到这个情况比较多，在执行了一系列的命令后，想去翻历史记录的时候，翻不到历史记录，不同终端的命令，没有汇总，也不清楚那条命令是什么时候执行的，所以需要对默认的命令进行下面两个优化：</p>
-<ul>
-<li>让历史记录里面带有时间</li>
-<li>让所有终端命令都记录到history当中去</li>
-</ul>
-<h3 id="添加日期">添加日期</h3><p>在 /etc/bashrc 末尾添加：<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">HISTTIMEFORMAT=&#34;%F %T &#34;&#10;export HISTTIMEFORMAT</span><br></pre></td></tr></table></figure></p>
-<p>然后执行:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">source</span> /etc/bashrc</span><br></pre></td></tr></table></figure></p>
-<p>新开终端，history就已经带有日期</p>
-<h3 id="汇总命令，并且不同的终端可以通过上翻查询到命令">汇总命令，并且不同的终端可以通过上翻查询到命令</h3><p>在 /etc/bashrc 末尾添加：<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line"># Avoid duplicates&#10;export HISTCONTROL=ignoredups:erasedups&#10;# When the shell exits, append to the history file instead of overwriting it&#10;shopt -s histappend&#10;&#10;# After each command, append to the history file and reread it&#10;export PROMPT_COMMAND=&#34;$&#123;PROMPT_COMMAND:+$PROMPT_COMMAND$&#39;\n&#39;&#125;history -a; history -c; history -r&#34;</span><br></pre></td></tr></table></figure></p>
-<p>然后执行:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">source</span> /etc/bashrc</span><br></pre></td></tr></table></figure></p>
-<h3 id="调整大小，增加到10000条">调整大小，增加到10000条</h3><p>在 /etc/bashrc 末尾添加：<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">export HISTSIZE=10000</span><br></pre></td></tr></table></figure></p>
-<p>然后执行:<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">source /etc/bashrc</span><br></pre></td></tr></table></figure></p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-  
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2015/03/25/压缩css与js/">
-  <time datetime="2015-03-25T04:52:01.000Z">
-    2015-03-25
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2015/03/25/压缩css与js/">压缩css与js</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <p>使用yuicompressor 进行css和js的压缩</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="shebang">#! /bin/sh	</span></span><br><span class="line">yasuocss=<span class="string">"java -jar /root/yuicompressor-2.4.8.jar --type css  --charset utf-8"</span></span><br><span class="line">yasuojs=<span class="string">"java -jar /root/yuicompressor-2.4.8.jar --type js  --charset utf-8"</span></span><br><span class="line"><span class="comment">######################css</span></span><br><span class="line"><span class="keyword">for</span> file <span class="keyword">in</span>  ./SGMag/sites/media/css/sgmag/*.css ./SGMag/sites/media/css/*.css</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"<span class="variable">$file</span>"</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"<span class="variable">$file</span>"</span>bk</span><br><span class="line">mv <span class="variable">$file</span>  <span class="string">"<span class="variable">$file</span>"</span>bk</span><br><span class="line"><span class="variable">$yasuocss</span>  <span class="variable">$file</span><span class="string">"bk"</span> &gt;  <span class="variable">$file</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"<span class="variable">$file</span>"</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"><span class="comment">#######################js</span></span><br><span class="line"><span class="keyword">for</span> file <span class="keyword">in</span>  ./SGMag/sites/media/component/*.js ./SGMag/sites/media/*.js  ./SGMag/sites/media/pagejs/*.js   ./SGMag/sites/media/pagejs/cluster/*.js ./SGMag/sites/media/pagejs/kylin/*.js ./SGMag/sites/media/pagejs/share/*.js</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"<span class="variable">$file</span>"</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"<span class="variable">$file</span>"</span>bk</span><br><span class="line">mv <span class="variable">$file</span>  <span class="string">"<span class="variable">$file</span>"</span>bk</span><br><span class="line"><span class="variable">$yasuojs</span>  <span class="variable">$file</span><span class="string">"bk"</span> &gt;  <span class="variable">$file</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"<span class="variable">$file</span>"</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"><span class="comment">########################报错处理</span></span><br><span class="line">cp -rf  ./SGMag/sites/media/pagejs/cluster/hosttools.jsbk  ./SGMag/sites/media/pagejs/cluster/hosttools.js</span><br></pre></td></tr></table></figure>
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-  
-
-  <nav id="pagination">
-  
-  
-    <a href="/page/2/" class="next">下一页</a>
-  
-  <div class="clearfix"></div>
-</nav>
-
+</section>
 </div>
   </div>
   <footer id="footer"><div class="copyright">
