@@ -73,6 +73,521 @@ var _hmt = _hmt || [];
   <header>
     
       <div class="icon"></div>
+      <a href="/2015/09/18/test/">
+  <time datetime="2015-09-18T03:24:08.000Z">
+    2015-09-18
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/09/18/test/">test</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>SUPPORTED_DEFAULT    S    客户端支持这个属性<br>REQUIRED_DEFAULT     R    客户端需要服务端支持这个属性</p>
+<table>
+<thead>
+<tr>
+<th>属性名称</th>
+<th style="text-align:center">编号(bit)</th>
+<th style="text-align:center">标志(oct)</th>
+<th style="text-align:center">3.8</th>
+<th style="text-align:center">3.9</th>
+<th style="text-align:center">3.10</th>
+<th style="text-align:center">3.11</th>
+<th style="text-align:center">3.12</th>
+<th>3.13</th>
+<th>3.14</th>
+<th>3.15</th>
+<th>3.16</th>
+<th>3.17</th>
+<th>3.18</th>
+<th>3.19</th>
+<th>4.0</th>
+<th>4.1</th>
+<th>4.2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CEPH_FEATURE_UID</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td>CEPH_FEATURE_NOSRCADDR</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">S+R</td>
+<td style="text-align:center">S+R</td>
+<td style="text-align:center">S+R</td>
+</tr>
+<tr>
+<td>CEPH_FEATURE_MONCLOCKCHECK</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">4</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td>CEPH_FEATURE_FLOCK</td>
+<td style="text-align:center">3</td>
+<td style="text-align:center">8</td>
+</tr>
+<tr>
+<td>CEPH_FEATURE_SUBSCRIBE2</td>
+<td style="text-align:center">4</td>
+<td style="text-align:center">10</td>
+</tr>
+<tr>
+<td>CEPH_FEATURE_MONNAMES</td>
+<td style="text-align:center">5</td>
+<td style="text-align:center">20</td>
+</tr>
+<tr>
+<td>CEPH_FEATURE_RECONNECT_SEQ</td>
+<td style="text-align:center">6</td>
+<td style="text-align:center">40</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">S+R</td>
+</tr>
+<tr>
+<td>CEPH_FEATURE_DIRLAYOUTHASH</td>
+<td style="text-align:center">7</td>
+<td style="text-align:center">80</td>
+</tr>
+<tr>
+<td>CEPH_FEATURE_OBJECTLOCATOR</td>
+<td style="text-align:center">8</td>
+<td style="text-align:center">100</td>
+</tr>
+<tr>
+<td>CEPH_FEATURE_PGID64</td>
+<td style="text-align:center">9</td>
+<td style="text-align:center">200</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">S+R</td>
+<td style="text-align:center">S+R</td>
+</tr>
+<tr>
+<td>CEPH_FEATURE_INCSUBOSDMAP</td>
+<td style="text-align:center">10</td>
+<td style="text-align:center">400</td>
+</tr>
+<tr>
+<td>CEPH_FEATURE_PGPOOL3</td>
+<td style="text-align:center">11</td>
+<td style="text-align:center">800</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">S+R</td>
+<td style="text-align:center">S+R</td>
+</tr>
+<tr>
+<td>CEPH_FEATURE_OSDREPLYMUX</td>
+<td style="text-align:center">12</td>
+<td style="text-align:center">1000</td>
+</tr>
+<tr>
+<td>CEPH_FEATURE_OSDENC</td>
+<td style="text-align:center">13</td>
+<td style="text-align:center">2000</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">S+R</td>
+<td style="text-align:center">S+R</td>
+</tr>
+<tr>
+<td>CEPH_FEATURE_OMAP</td>
+<td style="text-align:center">14</td>
+<td style="text-align:center">4000</td>
+</tr>
+<tr>
+<td>CEPH_FEATURE_MONENC</td>
+<td style="text-align:center">15</td>
+<td style="text-align:center">8000</td>
+</tr>
+<tr>
+<td>CEPH_FEATURE_QUERY_T</td>
+<td style="text-align:center">16</td>
+<td style="text-align:center">10000</td>
+</tr>
+<tr>
+<td>CEPH_FEATURE_INDEP_PG_MAP</td>
+<td style="text-align:center">17</td>
+<td style="text-align:center">20000</td>
+</tr>
+<tr>
+<td>CEPH_FEATURE_CRUSH_TUNABLES</td>
+<td style="text-align:center">18</td>
+<td style="text-align:center">40000</td>
+<td style="text-align:center">S</td>
+<td style="text-align:center">S</td>
+<td style="text-align:center">S</td>
+</tr>
+<tr>
+<td>CEPH_FEATURE_CHUNKY_SCRUB</td>
+<td style="text-align:center">19</td>
+<td style="text-align:center">80000</td>
+</tr>
+<tr>
+<td>CEPH_FEATURE_MON_NULLROUTE</td>
+<td style="text-align:center">20</td>
+<td style="text-align:center">100000</td>
+</tr>
+<tr>
+<td>CEPH_FEATURE_MON_GV</td>
+<td style="text-align:center">21</td>
+<td style="text-align:center">200000</td>
+</tr>
+<tr>
+<td>CEPH_FEATURE_BACKFILL_RESERVATION</td>
+<td style="text-align:center">22</td>
+<td style="text-align:center">400000</td>
+</tr>
+<tr>
+<td>CEPH_FEATURE_MSG_AUTH</td>
+<td style="text-align:center">23</td>
+<td style="text-align:center">800000</td>
+</tr>
+<tr>
+<td>CEPH_FEATURE_RECOVERY_RESERVATION</td>
+<td style="text-align:center">24</td>
+<td style="text-align:center">1000000</td>
+</tr>
+<tr>
+<td>CEPH_FEATURE_CRUSH_TUNABLES2</td>
+<td style="text-align:center">25</td>
+<td style="text-align:center">2000000</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">S</td>
+<td style="text-align:center">S</td>
+</tr>
+<tr>
+<td>CEPH_FEATURE_CREATEPOOLID</td>
+<td style="text-align:center">26</td>
+<td style="text-align:center">4000000</td>
+</tr>
+<tr>
+<td>CEPH_FEATURE_REPLY_CREATE_INODE</td>
+<td style="text-align:center">27</td>
+<td style="text-align:center">8000000</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">S</td>
+<td style="text-align:center">S</td>
+</tr>
+<tr>
+<td>CEPH_FEATURE_OSD_HBMSGS</td>
+<td style="text-align:center">28</td>
+<td style="text-align:center">10000000</td>
+</tr>
+<tr>
+<td>CEPH_FEATURE_MDSENC</td>
+<td style="text-align:center">29</td>
+<td style="text-align:center">20000000</td>
+</tr>
+<tr>
+<td>CEPH_FEATURE_OSDHASHPSPOOL</td>
+<td style="text-align:center">30</td>
+<td style="text-align:center">40000000</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">S</td>
+<td style="text-align:center">S</td>
+</tr>
+</tbody>
+</table>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/07/14/nginx配置代理缓存/">
+  <time datetime="2015-07-14T01:57:21.000Z">
+    2015-07-14
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/07/14/nginx配置代理缓存/">nginx配置代理缓存</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>nginx可以实现反向代理的配置，并且可以使用缓存来加速，本文是简单的实现功能的配置，暂时没有做其他的优化的部分的配置，从网上的资料来看，很多配置都是没有讲哪些是必须配置的，我自己在配置过程中就发现没有生成缓存文件，下面来记录下配置的内容<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">upstream test&#123;&#10;            server 127.0.0.1:8080;&#10;        &#125;&#10;&#10;proxy_cache_path /var/cache/nginx/proxy_cache keys_zone=cache_zone:2000m max_size=1000m;&#10;&#10;server &#123;&#10;    listen       80;&#10;    server_name  localhost;&#10;    location / &#123;&#10;        proxy_pass http://127.0.0.1:8080;&#10;        proxy_cache cache_zone;&#10;        proxy_cache_valid  200 304 302 24h;&#10;    &#125;&#10;&#10;    error_page   500 502 503 504  /50x.html;&#10;&#10;    location = /50x.html &#123;&#10;        root   /usr/share/nginx/html;&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure></p>
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2015/07/14/nginx配置代理缓存/#more" class="more-link">阅读全文</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/05/27/linux服务器远程网络开机（wake-on-lan）/">
+  <time datetime="2015-05-27T06:35:40.000Z">
+    2015-05-27
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/05/27/linux服务器远程网络开机（wake-on-lan）/">linux服务器远程网络开机（wake on lan）</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h3 id="检查服务器是否支持远程网络开机">检查服务器是否支持远程网络开机</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab5101 ~]<span class="comment"># ethtool eth0</span></span><br><span class="line">    Settings <span class="keyword">for</span> eth0:</span><br><span class="line">        Supported ports: [ TP ]</span><br><span class="line">        Supported link modes: <span class="number">10</span>baseT/Half <span class="number">10</span>baseT/Full </span><br><span class="line">                              <span class="number">100</span>baseT/Half <span class="number">100</span>baseT/Full </span><br><span class="line">                              <span class="number">1000</span>baseT/Full </span><br><span class="line">        Supported pause frame use: No</span><br><span class="line">        Supports auto-negotiation: Yes</span><br><span class="line">        Advertised link modes: </span><br><span class="line">                             <span class="number">10</span>baseT/Half <span class="number">10</span>baseT/Full </span><br><span class="line">                             <span class="number">100</span>baseT/Half <span class="number">100</span>baseT/Full </span><br><span class="line">                             <span class="number">1000</span>baseT/Full </span><br><span class="line">        Advertised pause frame use: No</span><br><span class="line">        Advertised auto-negotiation: Yes</span><br><span class="line">        Speed: <span class="number">1000</span>Mb/s</span><br><span class="line">        Duplex: Full</span><br><span class="line">        Port: Twisted Pair</span><br><span class="line">        PHYAD: <span class="number">2</span></span><br><span class="line">        Transceiver: internal</span><br><span class="line">        Auto-negotiation: onMDI-X: on</span><br><span class="line">        Supports Wake-on: pumbg</span><br><span class="line">        Wake-on: g</span><br><span class="line">        Current message level: <span class="number">0</span>x00000007 (<span class="number">7</span>) </span><br><span class="line">                               drv probe linkLink detected: yes</span><br></pre></td></tr></table></figure>
+<p>注意这两项：<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">Supports Wake-on: pumbg&#10;Wake-on: g</span><br></pre></td></tr></table></figure></p>
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2015/05/27/linux服务器远程网络开机（wake-on-lan）/#more" class="more-link">阅读全文</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/05/25/dm-crypt加密磁盘/">
+  <time datetime="2015-05-25T06:07:58.000Z">
+    2015-05-25
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/05/25/dm-crypt加密磁盘/">dm-crypt加密磁盘</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h3 id="dm-cry加密方式密码与文件">dm-cry加密方式密码与文件</h3><p>与其它创建加密文件系统的方法相比，dm-crypt系统有着无可比拟的优越性：它的速度更快，易用性更强。除此之外，它的适用面也很广，能够运行在各种块设备上，即使这些设备使用了RAID和 LVM也毫无障碍。</p>
+<p>如果看到类似下面的输出，说明AES模块已经加载了。<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">cat /proc/crypto&#10;&#10;name         : aes&#10;driver       : aes-generic&#10;module       : kernel&#10;priority     : 100&#10;refcnt       : 3&#10;selftest     : passed&#10;type         : cipher&#10;blocksize    : 16&#10;min keysize  : 16&#10;max keysize  : 32</span><br></pre></td></tr></table></figure></p>
+<p>否则可以用modprobe命令来手工加载AES模块。<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">modprobe aes</span><br></pre></td></tr></table></figure></p>
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2015/05/25/dm-crypt加密磁盘/#more" class="more-link">阅读全文</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/05/12/linux系统克隆系统盘/">
+  <time datetime="2015-05-12T06:24:31.000Z">
+    2015-05-12
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/05/12/linux系统克隆系统盘/">linux系统克隆系统盘</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>本文将介绍两种方式的系统盘的完整的备份，两种方式各有优缺点，需要根据实际情况来进行选择</p>
+<ul>
+<li>使用dd的完整镜像克隆的方式</li>
+<li>使用tar去备份数据，安装grub的方式</li>
+</ul>
+<h4 id="dd方式">dd方式</h4><p>优点：<br>简单，一条命令 dd if=/dev/sda of=/dev/sdb 就可以进行完整的系统备份了</p>
+<p>缺点：<br>时间非常长，备份一个系统盘，无论数据多少，系统盘全部会读取一遍，时间比较久<br>备份目的盘需要大于原盘<br>分区无法调整，根原分区一模一样</p>
+<h4 id="tar方式">tar方式</h4><p>优点：<br>时间短，只需要备份实际磁盘上的数据即可<br>自定义，可以修改分区的大小，可以控制备份的类容，可以定期备份<br>对目的盘大小无限制，比较灵活</p>
+<p>缺点：<br>人为修改东西比较多，需要手动去修改一些信息<br>当然在掌握了一定的linux基础的情况下建议是使用tar方式的，，下面将介绍tar方式的处理方式：</p>
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2015/05/12/linux系统克隆系统盘/#more" class="more-link">阅读全文</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/04/28/linux下制作软件包安装服务器/">
+  <time datetime="2015-04-28T08:43:29.000Z">
+    2015-04-28
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/04/28/linux下制作软件包安装服务器/">linux下制作软件包安装服务器</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>linux下的软件包在有网络的情况下比较好安装，在ubuntu下，更新sourcelist，然后使用apt-get就可以很方便的安装包，在centos下面，更新yum列表，然后使用yum也可以进行方便的软件安装，但是在没有网络的情况下就比较难安装，可以用一个个包的安装的方式去安装，这个在少量的包的情况下比较好处理，在多的情况下就比较麻烦了，本篇文档，就是介绍了在无网的情况下，根据自己的需要制作内网的包的安装服务器</p>
+<h2 id="centos系列">centos系列</h2><h3 id="使用光驱作为安装源">使用光驱作为安装源</h3><p>1、将光驱挂载到服务器的本地目录</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@node1 ~]<span class="comment"># mount /dev/cdrom /mnt</span></span><br><span class="line">mount: block device /dev/sr0 is write-protected, mounting <span class="built_in">read</span>-only</span><br></pre></td></tr></table></figure>
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2015/04/28/linux下制作软件包安装服务器/#more" class="more-link">阅读全文</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/04/03/windows下命令行设置静态IP/">
+  <time datetime="2015-04-03T04:25:48.000Z">
+    2015-04-03
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/04/03/windows下命令行设置静态IP/">windows下命令行设置静态IP</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>windows 10 预览版出现无法设置静态IP的bug，只能通过命令行进行设置，开启powershell，然后执行下列的命令即可<br>下面的“以太网 3” 为你设置的网卡的网卡名称,注意不要忘了空格</p>
+<p>设置静态IP:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">netsh interface ipv4 <span class="built_in">set</span> address <span class="string">"以太网 3"</span>  static <span class="number">192.168</span>.<span class="number">0.71</span> <span class="number">255.255</span>.<span class="number">0.0</span> <span class="number">192.168</span>.<span class="number">26.1</span></span><br></pre></td></tr></table></figure></p>
+<p>增加静态IP:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">netsh interface ipv4 <span class="built_in">set</span> dns <span class="string">"以太网 3"</span>  static <span class="number">223.5</span>.<span class="number">5.5</span></span><br></pre></td></tr></table></figure></p>
+<p>增加静态IP:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">netsh interface ipv4 add address <span class="string">"以太网 3"</span> <span class="number">11.12</span>.<span class="number">0.0</span> <span class="number">255.255</span>.<span class="number">0.0</span></span><br></pre></td></tr></table></figure></p>
+<p>重置为dhcp:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">netsh interface ipv4 <span class="built_in">set</span> address <span class="string">"以太网 3"</span>  dhcp</span><br></pre></td></tr></table></figure></p>
+<p>基本设置应该够用了</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/04/02/shell脚本的自动交互/">
+  <time datetime="2015-04-02T09:22:40.000Z">
+    2015-04-02
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/04/02/shell脚本的自动交互/">shell脚本的自动交互</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>使用expect来自动应答shell的交互</p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">#!/usr/bin/expect&#10;spawn openssl req -new -key server.key -out server1.csr&#10;expect &#34;Country Name&#34;&#10;send &#34;\n&#34;&#10;expect &#34;State or Province Name&#34;&#10;send &#34;\n&#34;&#10;interact</span><br></pre></td></tr></table></figure>
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
       <a href="/2015/03/31/history命令的优化/">
   <time datetime="2015-03-31T08:53:28.000Z">
     2015-03-31
@@ -139,314 +654,6 @@ var _hmt = _hmt || [];
   </div>
   <footer class="end-sep">
     
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-  
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2015/03/24/ubuntu配置简单的DNS服务器/">
-  <time datetime="2015-03-24T05:39:44.000Z">
-    2015-03-24
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2015/03/24/ubuntu配置简单的DNS服务器/">ubuntu配置简单的DNS服务器</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <p>之所以说是简单的服务器，实现的功能很简单，通过这个dns server 查询制定域名的时候，能够根据设置的值来返回IP，当前的需求是需要轮询的返回IP</p>
-<p>DNS 轮询机制会受到多方面的影响，如：A记录的TTL时间长短的影响；别的 DNS 服务器 Cache 的影响；windows 客户端也有一个DNS Cache。这些都会影响 DNS 轮询的效果。</p>
-<p>下面的配置就是实现解析test.zp.com到不同的IP地址</p>
-<h3 id="安装dns_server软件包">安装dns server软件包</h3><p>ubuntu下是通过安装bind9软件包来配置dns-server的<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab5106 ~]<span class="comment"># apt-get install bind9</span></span><br></pre></td></tr></table></figure></p>
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2015/03/24/ubuntu配置简单的DNS服务器/#more" class="more-link">阅读全文</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-  
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2015/03/24/mdtest测试工具/">
-  <time datetime="2015-03-24T05:33:52.000Z">
-    2015-03-24
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2015/03/24/mdtest测试工具/">mdtest测试工具</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <p>软件介绍</p>
-<p> mdstest是软件的元数据操作基准测试工具，用来模拟对文件或者目录的open、stat、close操作，然后报告性能</p>
-<p>下载软件压缩包：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum install openmpi openmpi-devel -y</span><br><span class="line">在/root/.bashrc中添加（注意也要添加mdtest的路径）</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:/usr/lib64/openmpi/bin/</span><br><span class="line"></span><br><span class="line"><span class="built_in">source</span> /root/.bashrc</span><br><span class="line">下载</span><br><span class="line">[root@lab8105 ~]<span class="comment"># wget http://sourceforge.net/projects/mdtest/files/latest/download</span></span><br><span class="line">解压</span><br><span class="line">[root@lab8105 ~]<span class="comment"># tar -xvf mdtest-1.9.3.tgz</span></span><br><span class="line">修改makefile：</span><br><span class="line">mdtest: mdtest.c</span><br><span class="line">       mpicc -Wall -D $(OS) $(LARGE_FILE) $(MDTEST_FLAGS) -g -o mdtest mdtest.c -lm</span><br></pre></td></tr></table></figure></p>
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2015/03/24/mdtest测试工具/#more" class="more-link">阅读全文</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-  
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2015/03/24/cgroup实践-资源控制/">
-  <time datetime="2015-03-24T05:32:19.000Z">
-    2015-03-24
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2015/03/24/cgroup实践-资源控制/">cgroup实践-资源控制</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <p>1、Cgroup安装</p>
-<p>安装Cgroups需要libcap-devel和libcgroup两个相关的包<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">	yum install gcc libcap-devel </span><br><span class="line">```	</span><br><span class="line"><span class="number">2</span>、Cgroup挂载配置</span><br><span class="line">```raw</span><br><span class="line">	Cgroup对应服务名称为cgconfig，cgconfig默认采用“多挂载点”挂载。经过实际测试，发现在CentOS环境中应采用“单挂载点”进行挂载，因此应当卸载原有cgroup文件系统，并禁用cgconfig。</span><br><span class="line">	cgclear或者sudo service cgconfig stop <span class="comment"># 停止cgconfig，卸载cgroup目录</span></span><br><span class="line">	sudo chkconfig cgconfig off          <span class="comment"># 禁用cgconfig服务，避免其开机启动</span></span><br><span class="line">	然后采用“单挂载点”方式重新挂载cgroup。</span><br><span class="line">	可以直接手动挂载，这样仅当次挂载成功。</span><br><span class="line">	mount -t cgroup none /cgroup</span><br><span class="line">	然后编辑/etc/fstab/，输入下列内容。这样每次开机后都会自动挂载。</span><br><span class="line">	none   /cgroup  cgroup  defaults   <span class="number">0</span> <span class="number">0</span></span><br></pre></td></tr></table></figure></p>
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2015/03/24/cgroup实践-资源控制/#more" class="more-link">阅读全文</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-  
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2015/03/24/fq教程/">
-  <time datetime="2015-03-24T05:30:23.000Z">
-    2015-03-24
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2015/03/24/fq教程/">fq教程</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <h3 id="手机作为翻墙路由器的方式">手机作为翻墙路由器的方式</h3><p>首先介绍的是手机上的翻墙软件，这个只能走http协议，不能走https协议，在手机上使用很方便，能够方便的访问各种网站，但是作为其他设备的时候，就只能提供http的，那么像google需要用到https的时候，其他设备就出现无法访问情况</p>
-<p>软件下载地址（已经存放到百度盘）<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">&#38142;&#25509;&#65306;http://pan.baidu.com/s/1eQs35a6 &#23494;&#30721;&#65306;3u19</span><br></pre></td></tr></table></figure></p>
-<p><img src="http://i.imgur.com/HeUIJ6e.png" alt=""></p>
-<p>点击软件后出现下面的界面就可以访问了，这个是全局的代理，所以可以直接使用手机访问外网了，可以开启更多功能</p>
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2015/03/24/fq教程/#more" class="more-link">阅读全文</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-  
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2015/03/24/linux绑定盘符/">
-  <time datetime="2015-03-24T05:25:22.000Z">
-    2015-03-24
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2015/03/24/linux绑定盘符/">linux绑定盘符</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@centos6 ~]<span class="comment"># udevadm info -q path -n /dev/sdb</span></span><br><span class="line">[root@centos6 ~]<span class="comment"># udevadm info -q path -n /dev/sdc</span></span><br><span class="line">/devices/pci0000:<span class="number">00</span>/<span class="number">0000</span>:<span class="number">00</span>:<span class="number">10.0</span>/host2/target2:<span class="number">0</span>:<span class="number">1</span>/<span class="number">2</span>:<span class="number">0</span>:<span class="number">1</span>:<span class="number">0</span>/block/sdc</span><br></pre></td></tr></table></figure>
-<p>拿到编号<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@centos6 ~]<span class="comment"># vim /etc/udev/rules.d/80-mydisk.rules</span></span><br></pre></td></tr></table></figure></p>
-<p>增加<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">DEVPATH==<span class="string">"/devices/pci0000:00/0000:00:10.0/host2/target2:0:2/2:0:2:0/block/sd*"</span>, NAME=<span class="string">"sdc"</span>, MODE=<span class="string">"0660"</span></span><br></pre></td></tr></table></figure></p>
-<p>这样对应的插槽的第二个就会一直对应盘符sdc 而不会出现跳盘符的问题了</p>
-<p>写于: 2014年11月07日<br>更新于: 2015年03月24日</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-  
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2015/03/24/让磁盘硬盘灯常闪定位盘/">
-  <time datetime="2015-03-24T05:23:26.000Z">
-    2015-03-24
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2015/03/24/让磁盘硬盘灯常闪定位盘/">让磁盘硬盘灯常闪定位盘</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <figure class="highlight"><table><tr><td class="code"><pre><span class="line">#!/bin/bash&#10;hd=$1&#10;for num in &#123;1..5&#125;;do&#10;        dd if=&#34;$hd&#34; of=&#34;/dev/null&#34; bs=4M count=1000 iflag=direct conv=noerror &#62;/dev/null 2&#62;&#38;1&#10;        sleep 1&#10;done</span><br></pre></td></tr></table></figure>
-<p>写于: 2014年11月07日<br>更新于: 2015年03月24日</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-  
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2015/03/24/软件注册码/">
-  <time datetime="2015-03-24T05:19:03.000Z">
-    2015-03-24
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2015/03/24/软件注册码/">软件注册码</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <hr>
-<p>markdownpad2 pro注册信息</p>
-<p>注册信息<br>邮箱地址:<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">Soar360@live.com</span><br></pre></td></tr></table></figure></p>
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2015/03/24/软件注册码/#more" class="more-link">阅读全文</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-  
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2015/03/24/配置cobbler步骤/">
-  <time datetime="2015-03-24T04:55:06.000Z">
-    2015-03-24
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2015/03/24/配置cobbler步骤/">配置cobbler步骤</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <p>首先找到下载包的地址 (使用的是centos6)<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">http://download.opensuse.org/repositories/home:/libertas-ict:/cobbler26/CentOS_CentOS-6/noarch/</span><br></pre></td></tr></table></figure></p>
-<p>添加国内epel源:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget http://mirrors.aliyun.com/epel/<span class="number">6</span>/x86_64/epel-release-<span class="number">6</span>-<span class="number">8</span>.noarch.rpm</span><br></pre></td></tr></table></figure></p>
-<p>本次测试下载这三个包:<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">cobbler-2.6.5-9.1.noarch.rpm &#10;cobbler-web-2.6.5-9.1.noarch.rpm &#10;koan-2.6.5-9.1.noarch.rpm</span><br></pre></td></tr></table></figure></p>
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2015/03/24/配置cobbler步骤/#more" class="more-link">阅读全文</a>
-        </div>
       
       
     

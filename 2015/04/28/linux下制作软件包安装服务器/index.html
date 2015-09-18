@@ -1,0 +1,186 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  
+  <title>linux下制作软件包安装服务器 | zphj1987&#39;Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  
+    <meta name="author" content="zphj1987">
+  
+  
+    <meta name="description" content="linux下的软件包在有网络的情况下比较好安装，在ubuntu下，更新sourcelist，然后使用apt-get就可以很方便的安装包，在centos下面，更新yum列表，然后使用yum也可以进行方便的软件安装，但是在没有网络的情况下就比较难安装，可以用一个个包的安装的方式去安装，这个在少量的包的情况下比较好处理，在多的情况下就比较麻烦了，本篇文档，就是介绍了在无网的情况下，根据自己的需要制作内网">
+  
+  <meta name="description" content="linux下的软件包在有网络的情况下比较好安装，在ubuntu下，更新sourcelist，然后使用apt-get就可以很方便的安装包，在centos下面，更新yum列表，然后使用yum也可以进行方便的软件安装，但是在没有网络的情况下就比较难安装，可以用一个个包的安装的方式去安装，这个在少量的包的情况下比较好处理，在多的情况下就比较麻烦了，本篇文档，就是介绍了在无网的情况下，根据自己的需要制作内网">
+<meta property="og:type" content="article">
+<meta property="og:title" content="linux下制作软件包安装服务器">
+<meta property="og:url" content="http://yoursite.com/2015/04/28/linux下制作软件包安装服务器/index.html">
+<meta property="og:site_name" content="zphj1987'Blog">
+<meta property="og:description" content="linux下的软件包在有网络的情况下比较好安装，在ubuntu下，更新sourcelist，然后使用apt-get就可以很方便的安装包，在centos下面，更新yum列表，然后使用yum也可以进行方便的软件安装，但是在没有网络的情况下就比较难安装，可以用一个个包的安装的方式去安装，这个在少量的包的情况下比较好处理，在多的情况下就比较麻烦了，本篇文档，就是介绍了在无网的情况下，根据自己的需要制作内网">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="linux下制作软件包安装服务器">
+<meta name="twitter:description" content="linux下的软件包在有网络的情况下比较好安装，在ubuntu下，更新sourcelist，然后使用apt-get就可以很方便的安装包，在centos下面，更新yum列表，然后使用yum也可以进行方便的软件安装，但是在没有网络的情况下就比较难安装，可以用一个个包的安装的方式去安装，这个在少量的包的情况下比较好处理，在多的情况下就比较麻烦了，本篇文档，就是介绍了在无网的情况下，根据自己的需要制作内网">
+  
+  
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+  
+<script type="text/javascript">
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?252ba55374ee0e63b03196973bb9b776";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+</head>
+
+<body>
+  <div class="wrapper">
+    <header id="header">
+  <div class="title">
+    <h1><a href="/">zphj1987&#39;Blog</a></h1>
+    <p><a href="/">现在所学，终有所用</a></p>
+  </div>
+  <nav class="nav">
+    <ul>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/archives">Archives</a></li>
+      
+        <li><a href="/atom.xml">rss</a></li>
+      
+        <li><a href="/about">About</a></li>
+      
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+  <div class="clearfix"></div>
+</header>
+    <div class="content"><article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/04/28/linux下制作软件包安装服务器/">
+  <time datetime="2015-04-28T08:43:29.000Z">
+    2015-04-28
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title">linux下制作软件包安装服务器</h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>linux下的软件包在有网络的情况下比较好安装，在ubuntu下，更新sourcelist，然后使用apt-get就可以很方便的安装包，在centos下面，更新yum列表，然后使用yum也可以进行方便的软件安装，但是在没有网络的情况下就比较难安装，可以用一个个包的安装的方式去安装，这个在少量的包的情况下比较好处理，在多的情况下就比较麻烦了，本篇文档，就是介绍了在无网的情况下，根据自己的需要制作内网的包的安装服务器</p>
+<h2 id="centos系列">centos系列</h2><h3 id="使用光驱作为安装源">使用光驱作为安装源</h3><p>1、将光驱挂载到服务器的本地目录</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@node1 ~]<span class="comment"># mount /dev/cdrom /mnt</span></span><br><span class="line">mount: block device /dev/sr0 is write-protected, mounting <span class="built_in">read</span>-only</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<p>2、修改本地的yum源文件，将源指向光驱挂载的目录<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">vim /etc/yum.repos.d/myiso.repo</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">&#10;&#28155;&#21152;&#10;[myiso]&#10;name=myiso&#10;baseurl=file:///mnt&#10;gpgcheck=0&#10;enabled=1&#10;gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-6</span><br></pre></td></tr></table></figure>
+<p>3、更新本地的源缓存</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@node1 yum.repos.d]<span class="comment"># yum makecache</span></span><br><span class="line">Loaded plugins: security</span><br><span class="line">myiso                                 | <span class="number">3.6</span> kB     <span class="number">00</span>:<span class="number">00</span> ... </span><br><span class="line">myiso/group_gz                        |  <span class="number">17</span> kB     <span class="number">00</span>:<span class="number">00</span> ... </span><br><span class="line">myiso/filelists_db                    | <span class="number">3.4</span> MB     <span class="number">00</span>:<span class="number">00</span> ... </span><br><span class="line">myiso/primary_db                      | <span class="number">6.8</span> MB     <span class="number">00</span>:<span class="number">00</span> ... </span><br><span class="line">myiso/other_db                        | <span class="number">2.3</span> MB     <span class="number">00</span>:<span class="number">00</span> ... </span><br><span class="line">Metadata Cache Created</span><br></pre></td></tr></table></figure>
+<p>做完上面的就可以使用本地的光驱的中的包使用yum安装了</p>
+<h3 id="使用iso文件作为安装源">使用iso文件作为安装源</h3><p>1、将iso文件拷贝到服务器，然后挂载到服务器本地</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@node1 ~]<span class="comment"># mount -t iso9660 OracleLinux-R6-U5-Server-x86_64-dvd.\[V41362-01\].iso /mnt -o loop</span></span><br><span class="line">mount: /root/OracleLinux-R6-U5-Server-x86_64-dvd.[V41362-<span class="number">01</span>].iso is write-protected, mounting <span class="built_in">read</span>-only</span><br></pre></td></tr></table></figure>
+<p>2、修改本地的yum源文件，将源指向光驱挂载的目录</p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">vim /etc/yum.repos.d/myiso.repo&#10;&#28155;&#21152;&#10;[myiso]&#10;name=myiso&#10;baseurl=file:///mnt&#10;gpgcheck=0&#10;enabled=1&#10;gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-6</span><br></pre></td></tr></table></figure>
+<p>3、更新本地的源缓存<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">[root@node1 yum.repos.d]# yum makecache&#10;Loaded plugins: security&#10;myiso                                 | 3.6 kB     00:00 ... &#10;myiso/group_gz                        |  17 kB     00:00 ... &#10;myiso/filelists_db                    | 3.4 MB     00:00 ... &#10;myiso/primary_db                      | 6.8 MB     00:00 ... &#10;myiso/other_db                        | 2.3 MB     00:00 ... &#10;Metadata Cache Created</span><br></pre></td></tr></table></figure></p>
+<p>做完上面的就可以使用本地的iso中的包使用yum安装了</p>
+<h3 id="使用安装包做一个ftp的yum安装服务器">使用安装包做一个ftp的yum安装服务器</h3><p>1、安装vsftpd服务器<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rpm -ivh vsftpd-<span class="number">2.2</span>.<span class="number">2</span>-<span class="number">11</span>.el6_4.<span class="number">1</span>.x86_64.rpm</span><br></pre></td></tr></table></figure></p>
+<p>这个包在操作iso中的包路径下面有</p>
+<p>2、配置ftp服务器<br>默认的ftp目录为/var/ftp/pub/<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">&#21019;&#24314;&#28304;&#30446;&#24405;&#10;mkdir /var/ftp/pub/centos&#10;&#23558;iso&#25346;&#36733;&#21040;&#28304;&#30446;&#24405;&#65292;&#20063;&#21487;&#20197;&#30452;&#25509;&#23558;&#25991;&#20214;&#25335;&#36125;&#21040;&#36825;&#20010;&#30446;&#24405;&#24403;&#20013;&#21435;&#10;mount -t iso9660 OracleLinux-R6-U5-Server-x86_64-dvd.\[V41362-01\].iso /var/ftp/pub/centos/  -o loop</span><br></pre></td></tr></table></figure></p>
+<p>配置完成后，镜像的下载地址就为:<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">ftp://youripaddress/pub/centos/</span><br></pre></td></tr></table></figure></p>
+<p>我的为:<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">ftp://172.16.81.129/pub/centos/</span><br></pre></td></tr></table></figure></p>
+<p>3、使用的机器的配置<br>修改yum源<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">vim /etc/yum.repos.d/ftpcentos.repo&#10;&#28155;&#21152;&#10;[ftpcentos]&#10;name=ftpcentos&#10;baseurl=ftp://172.16.81.129/pub/centos/&#10;enabled=1</span><br></pre></td></tr></table></figure></p>
+<p>4、更新yum的缓存<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">[root@node2 yum.repos.d]# yum makecache&#10;Loaded plugins: security&#10;ftpcentos                          | 3.7 kB     00:00     &#10;ftpcentos/filelists_db             | 3.3 MB     00:00     &#10;ftpcentos/primary_db               | 3.0 MB     00:00     &#10;ftpcentos/other_db                 | 1.3 MB     00:00     &#10;ftpcentos/group_gz                 | 203 kB     00:00     &#10;Metadata Cache Created</span><br></pre></td></tr></table></figure></p>
+<h3 id="制作自己的定制源">制作自己的定制源</h3><p>1、安装制作源的工具<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">rpm -ivh deltarpm-3.5-0.5.20090913git.el6.x86_64.rpm&#10;rpm -ivh python-deltarpm-3.5-0.5.20090913git.el6.x86_64.rpm &#10;rpm -ivh createrepo-0.9.9-18.0.1.el6.noarch.rpm</span><br></pre></td></tr></table></figure></p>
+<p>这三个包在默认的iso当中有</p>
+<p>2、将安装包拷贝到指定的目录</p>
+<p>本例子使用leveldb，snappy举例，snappy是leveldb的依赖包。<br>将<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">leveldb-1.7.0-2.el6.x86_64.rpm&#10;snappy-1.0.5-1.el6.x86_64.rpm</span><br></pre></td></tr></table></figure></p>
+<p>拷贝到<br>/usr/src/myepel/目录当中去</p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">[root@node1 src]# createrepo myepel/&#10;Spawning worker 0 with 2 pkgs&#10;Workers Finished&#10;Gathering worker results&#10;&#10;Saving Primary metadata&#10;Saving file lists metadata&#10;Saving other metadata&#10;Generating sqlite DBs&#10;Sqlite DBs complete</span><br></pre></td></tr></table></figure>
+<p>检查目录下面会生成repodata，存储一些元数据信息<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">[root@node1 src]# ll myepel/&#10;total 200&#10;-rw-r--r-- 1 root root 162052 Apr 16 08:45 leveldb-1.7.0-2.el6.x86_64.rpm&#10;drwxr-xr-x 2 root root   4096 Apr 16 08:48 repodata&#10;-rw-r--r-- 1 root root  34372 Apr 16 08:45 snappy-1.0.5-1.el6.x86_64.rpm</span><br></pre></td></tr></table></figure></p>
+<p>3、修改源列表</p>
+<p>同样的将yum源的目录指向这个myepel/<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">[myiso]&#10;name=myiso&#10;baseurl=file:///usr/src/myepel/&#10;gpgcheck=0&#10;enabled=1</span><br></pre></td></tr></table></figure></p>
+<p>4、更新yum缓存<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">[root@node1 yum.repos.d]# yum makecache&#10;[root@node1 yum.repos.d]# yum install leveldb</span><br></pre></td></tr></table></figure></p>
+<p>即可安装了</p>
+
+    
+  </div>
+  <footer>
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">评论</h1>
+  <div class="ds-thread" data-thread-key="2015/04/28/linux下制作软件包安装服务器/"  data-title="linux下制作软件包安装服务器">
+  </div>
+</section>
+</div>
+  </div>
+  <footer id="footer"><div class="copyright">
+  
+  &copy; 2015 <a href="/">zphj1987</a>
+  
+</div>
+<div class="theme-copyright">
+  Theme by <a href="https://github.com/orderedlist" target="_blank">orderedlist</a>
+   | 
+  Redesign by <a href="http://heroicyang.com/" target="_blank">Heroic Yang</a>
+</div>
+<div class="clearfix"></div></footer>
+  <script src="/js/jquery.min.js"></script>
+<script src="/js/scale.fix.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = { short_name: 'zphj1987' };
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';
+    ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox();
+  })(jQuery);
+</script>
+
+
+<div id="totop" style="position:fixed;bottom:150px;right:50px;cursor: pointer;">
+<a title="Top"><img src="/imgs/scrollup.png"/></a>
+</div>
+<script src="/js/totop.js"></script>
+
+</body>
+</html>

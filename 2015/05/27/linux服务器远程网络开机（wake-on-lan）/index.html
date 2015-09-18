@@ -1,0 +1,160 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  
+  <title>linux服务器远程网络开机（wake on lan） | zphj1987&#39;Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  
+    <meta name="author" content="zphj1987">
+  
+  
+    <meta name="description" content="检查服务器是否支持远程网络开机[root@lab5101 ~]# ethtool eth0    Settings for eth0:        Supported ports: [ TP ]        Supported link modes: 10baseT/Half 10baseT/Full                               100baseT/Half 10">
+  
+  <meta name="description" content="检查服务器是否支持远程网络开机[root@lab5101 ~]# ethtool eth0    Settings for eth0:        Supported ports: [ TP ]        Supported link modes: 10baseT/Half 10baseT/Full                               100baseT/Half 10">
+<meta property="og:type" content="article">
+<meta property="og:title" content="linux服务器远程网络开机（wake on lan）">
+<meta property="og:url" content="http://yoursite.com/2015/05/27/linux服务器远程网络开机（wake-on-lan）/index.html">
+<meta property="og:site_name" content="zphj1987'Blog">
+<meta property="og:description" content="检查服务器是否支持远程网络开机[root@lab5101 ~]# ethtool eth0    Settings for eth0:        Supported ports: [ TP ]        Supported link modes: 10baseT/Half 10baseT/Full                               100baseT/Half 10">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="linux服务器远程网络开机（wake on lan）">
+<meta name="twitter:description" content="检查服务器是否支持远程网络开机[root@lab5101 ~]# ethtool eth0    Settings for eth0:        Supported ports: [ TP ]        Supported link modes: 10baseT/Half 10baseT/Full                               100baseT/Half 10">
+  
+  
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+  
+<script type="text/javascript">
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?252ba55374ee0e63b03196973bb9b776";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+</head>
+
+<body>
+  <div class="wrapper">
+    <header id="header">
+  <div class="title">
+    <h1><a href="/">zphj1987&#39;Blog</a></h1>
+    <p><a href="/">现在所学，终有所用</a></p>
+  </div>
+  <nav class="nav">
+    <ul>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/archives">Archives</a></li>
+      
+        <li><a href="/atom.xml">rss</a></li>
+      
+        <li><a href="/about">About</a></li>
+      
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+  <div class="clearfix"></div>
+</header>
+    <div class="content"><article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/05/27/linux服务器远程网络开机（wake-on-lan）/">
+  <time datetime="2015-05-27T06:35:40.000Z">
+    2015-05-27
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title">linux服务器远程网络开机（wake on lan）</h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h3 id="检查服务器是否支持远程网络开机">检查服务器是否支持远程网络开机</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab5101 ~]<span class="comment"># ethtool eth0</span></span><br><span class="line">    Settings <span class="keyword">for</span> eth0:</span><br><span class="line">        Supported ports: [ TP ]</span><br><span class="line">        Supported link modes: <span class="number">10</span>baseT/Half <span class="number">10</span>baseT/Full </span><br><span class="line">                              <span class="number">100</span>baseT/Half <span class="number">100</span>baseT/Full </span><br><span class="line">                              <span class="number">1000</span>baseT/Full </span><br><span class="line">        Supported pause frame use: No</span><br><span class="line">        Supports auto-negotiation: Yes</span><br><span class="line">        Advertised link modes: </span><br><span class="line">                             <span class="number">10</span>baseT/Half <span class="number">10</span>baseT/Full </span><br><span class="line">                             <span class="number">100</span>baseT/Half <span class="number">100</span>baseT/Full </span><br><span class="line">                             <span class="number">1000</span>baseT/Full </span><br><span class="line">        Advertised pause frame use: No</span><br><span class="line">        Advertised auto-negotiation: Yes</span><br><span class="line">        Speed: <span class="number">1000</span>Mb/s</span><br><span class="line">        Duplex: Full</span><br><span class="line">        Port: Twisted Pair</span><br><span class="line">        PHYAD: <span class="number">2</span></span><br><span class="line">        Transceiver: internal</span><br><span class="line">        Auto-negotiation: onMDI-X: on</span><br><span class="line">        Supports Wake-on: pumbg</span><br><span class="line">        Wake-on: g</span><br><span class="line">        Current message level: <span class="number">0</span>x00000007 (<span class="number">7</span>) </span><br><span class="line">                               drv probe linkLink detected: yes</span><br></pre></td></tr></table></figure>
+<p>注意这两项：<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">Supports Wake-on: pumbg&#10;Wake-on: g</span><br></pre></td></tr></table></figure></p>
+<a id="more"></a>
+<p>可以通过命令设置，也可以去bios中设置<br>d表示禁用，g表示开启<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab5101 ~]<span class="comment"># ethtool -s eth0 wol g</span></span><br></pre></td></tr></table></figure></p>
+<p>拿到网卡的mac地址<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab5101 ~]<span class="comment"># ifconfig </span></span><br><span class="line">eth0  Link encap:Ethernet HWaddr <span class="number">00</span>:<span class="number">30</span>:<span class="number">67</span>:<span class="number">6</span>D:<span class="number">3</span>D:<span class="number">7</span>C </span><br><span class="line">     inet addr:<span class="number">192.168</span>.<span class="number">5.101</span> Bcast:<span class="number">192.168</span>.<span class="number">255.255</span> Mask:<span class="number">255.255</span>.<span class="number">0.0</span> </span><br><span class="line">     inet6 addr: fe80::<span class="number">215</span>:<span class="number">17</span>ff:fed0:be85/<span class="number">64</span> Scope:Link</span><br><span class="line">     UP BROADCAST RUNNING MULTICAST MTU:<span class="number">1500</span> Metric:<span class="number">1</span> </span><br><span class="line">     RX packets:<span class="number">17752</span> errors:<span class="number">0</span> dropped:<span class="number">4</span> overruns:<span class="number">0</span> frame:<span class="number">0</span> </span><br><span class="line">     TX packets:<span class="number">1101</span> errors:<span class="number">0</span> dropped:<span class="number">0</span> overruns:<span class="number">0</span> carrier:<span class="number">0</span> </span><br><span class="line">     collisions:<span class="number">0</span> txqueuelen:<span class="number">1000</span> </span><br><span class="line">     RX bytes:<span class="number">1288183</span> (<span class="number">1.2</span> MiB) TX bytes:<span class="number">262525</span> (<span class="number">256.3</span> KiB) </span><br><span class="line">     Interrupt:<span class="number">16</span> Memory:b1100000-b1120000 </span><br><span class="line">lo   Link encap:Local Loopback inet addr:<span class="number">127.0</span>.<span class="number">0.1</span> Mask:<span class="number">255.0</span>.<span class="number">0.0</span> </span><br><span class="line">     inet6 addr: ::<span class="number">1</span>/<span class="number">128</span> Scope:Host </span><br><span class="line">     UP LOOPBACK RUNNING MTU:<span class="number">65536</span> Metric:<span class="number">1</span> </span><br><span class="line">     RX packets:<span class="number">62566</span> errors:<span class="number">0</span> dropped:<span class="number">0</span> overruns:<span class="number">0</span> frame:<span class="number">0</span> </span><br><span class="line">     TX packets:<span class="number">62566</span> errors:<span class="number">0</span> dropped:<span class="number">0</span> overruns:<span class="number">0</span> carrier:<span class="number">0</span> </span><br><span class="line">     collisions:<span class="number">0</span> txqueuelen:<span class="number">0</span> </span><br><span class="line">     RX bytes:<span class="number">91540393</span> (<span class="number">87.2</span> MiB) TX bytes:<span class="number">91540393</span> (<span class="number">87.2</span> MiB)</span><br></pre></td></tr></table></figure></p>
+<p>得到：<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">HWaddr 00:15:17:D0:BE:85</span><br></pre></td></tr></table></figure></p>
+<p>在另外一台服务器上执行：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab901 ~]<span class="comment"># ether-wake -i eth0 00:30:67:6d:3d:7c</span></span><br></pre></td></tr></table></figure></p>
+
+    
+  </div>
+  <footer>
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">评论</h1>
+  <div class="ds-thread" data-thread-key="2015/05/27/linux服务器远程网络开机（wake-on-lan）/"  data-title="linux服务器远程网络开机（wake on lan）">
+  </div>
+</section>
+</div>
+  </div>
+  <footer id="footer"><div class="copyright">
+  
+  &copy; 2015 <a href="/">zphj1987</a>
+  
+</div>
+<div class="theme-copyright">
+  Theme by <a href="https://github.com/orderedlist" target="_blank">orderedlist</a>
+   | 
+  Redesign by <a href="http://heroicyang.com/" target="_blank">Heroic Yang</a>
+</div>
+<div class="clearfix"></div></footer>
+  <script src="/js/jquery.min.js"></script>
+<script src="/js/scale.fix.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = { short_name: 'zphj1987' };
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';
+    ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox();
+  })(jQuery);
+</script>
+
+
+<div id="totop" style="position:fixed;bottom:150px;right:50px;cursor: pointer;">
+<a title="Top"><img src="/imgs/scrollup.png"/></a>
+</div>
+<script src="/js/totop.js"></script>
+
+</body>
+</html>

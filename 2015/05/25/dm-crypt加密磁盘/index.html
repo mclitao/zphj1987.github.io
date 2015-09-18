@@ -1,0 +1,190 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  
+  <title>dm-crypt加密磁盘 | zphj1987&#39;Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  
+    <meta name="author" content="zphj1987">
+  
+  
+    <meta name="description" content="dm-cry加密方式密码与文件与其它创建加密文件系统的方法相比，dm-crypt系统有着无可比拟的优越性：它的速度更快，易用性更强。除此之外，它的适用面也很广，能够运行在各种块设备上，即使这些设备使用了RAID和 LVM也毫无障碍。
+如果看到类似下面的输出，说明AES模块已经加载了。cat /proc/crypto&amp;#10;&amp;#10;name         : aes&amp;#10;driver">
+  
+  <meta name="description" content="dm-cry加密方式密码与文件与其它创建加密文件系统的方法相比，dm-crypt系统有着无可比拟的优越性：它的速度更快，易用性更强。除此之外，它的适用面也很广，能够运行在各种块设备上，即使这些设备使用了RAID和 LVM也毫无障碍。
+如果看到类似下面的输出，说明AES模块已经加载了。cat /proc/crypto&amp;#10;&amp;#10;name         : aes&amp;#10;driver">
+<meta property="og:type" content="article">
+<meta property="og:title" content="dm-crypt加密磁盘">
+<meta property="og:url" content="http://yoursite.com/2015/05/25/dm-crypt加密磁盘/index.html">
+<meta property="og:site_name" content="zphj1987'Blog">
+<meta property="og:description" content="dm-cry加密方式密码与文件与其它创建加密文件系统的方法相比，dm-crypt系统有着无可比拟的优越性：它的速度更快，易用性更强。除此之外，它的适用面也很广，能够运行在各种块设备上，即使这些设备使用了RAID和 LVM也毫无障碍。
+如果看到类似下面的输出，说明AES模块已经加载了。cat /proc/crypto&amp;#10;&amp;#10;name         : aes&amp;#10;driver">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="dm-crypt加密磁盘">
+<meta name="twitter:description" content="dm-cry加密方式密码与文件与其它创建加密文件系统的方法相比，dm-crypt系统有着无可比拟的优越性：它的速度更快，易用性更强。除此之外，它的适用面也很广，能够运行在各种块设备上，即使这些设备使用了RAID和 LVM也毫无障碍。
+如果看到类似下面的输出，说明AES模块已经加载了。cat /proc/crypto&amp;#10;&amp;#10;name         : aes&amp;#10;driver">
+  
+  
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+  
+<script type="text/javascript">
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?252ba55374ee0e63b03196973bb9b776";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+</head>
+
+<body>
+  <div class="wrapper">
+    <header id="header">
+  <div class="title">
+    <h1><a href="/">zphj1987&#39;Blog</a></h1>
+    <p><a href="/">现在所学，终有所用</a></p>
+  </div>
+  <nav class="nav">
+    <ul>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/archives">Archives</a></li>
+      
+        <li><a href="/atom.xml">rss</a></li>
+      
+        <li><a href="/about">About</a></li>
+      
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+  <div class="clearfix"></div>
+</header>
+    <div class="content"><article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/05/25/dm-crypt加密磁盘/">
+  <time datetime="2015-05-25T06:07:58.000Z">
+    2015-05-25
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title">dm-crypt加密磁盘</h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h3 id="dm-cry加密方式密码与文件">dm-cry加密方式密码与文件</h3><p>与其它创建加密文件系统的方法相比，dm-crypt系统有着无可比拟的优越性：它的速度更快，易用性更强。除此之外，它的适用面也很广，能够运行在各种块设备上，即使这些设备使用了RAID和 LVM也毫无障碍。</p>
+<p>如果看到类似下面的输出，说明AES模块已经加载了。<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">cat /proc/crypto&#10;&#10;name         : aes&#10;driver       : aes-generic&#10;module       : kernel&#10;priority     : 100&#10;refcnt       : 3&#10;selftest     : passed&#10;type         : cipher&#10;blocksize    : 16&#10;min keysize  : 16&#10;max keysize  : 32</span><br></pre></td></tr></table></figure></p>
+<p>否则可以用modprobe命令来手工加载AES模块。<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">modprobe aes</span><br></pre></td></tr></table></figure></p>
+<a id="more"></a>
+<p>检查dmsetup软件包是否已经建立了设备映像程序，用如下命令：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ls <span class="operator">-l</span> /dev/mapper/control</span><br></pre></td></tr></table></figure></p>
+<p>检查dm-crypt内核模块是否加载<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@node1 mnt]<span class="comment"># dmsetup targets</span></span><br><span class="line">crypt            v1.<span class="number">13.0</span></span><br><span class="line">mirror           v1.<span class="number">13.2</span></span><br><span class="line">striped          v1.<span class="number">5.1</span></span><br><span class="line">linear           v1.<span class="number">2.1</span></span><br><span class="line">error            v1.<span class="number">2.0</span></span><br></pre></td></tr></table></figure></p>
+<p>这说明系统已经为加密设备做好了准备。如果没有输出，可以用如下命令来加载dm-crypt模块。<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">modprobe dm-crypt</span><br></pre></td></tr></table></figure></p>
+<p>建立加密设备</p>
+<p>这里用 fdisk命令来创建需要加密的磁盘，怎么创建磁盘这里不再冗述。假设这里创建好的磁盘分区是/dev/sdb1<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cryptsetup -y create sdb_cry /dev/sdb1</span><br></pre></td></tr></table></figure></p>
+<p>sdb_cry是逻辑卷的名称。输入上面命令后，还要输入2次密码，这个密码就是磁盘加密的密码。请牢记！<br>创建好后，用下面命令检查所建立的逻辑卷：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@node1 ~]<span class="comment"># dmsetup ls</span></span><br><span class="line">sdb_cry	(<span class="number">252</span>:<span class="number">0</span>)</span><br></pre></td></tr></table></figure></p>
+<p>device-mapper会把它的虚拟设备装载到/dev/mapper下面，所以，你的虚拟块设备应该是/dev/mapper/sdb_cry，尽管用起来和其他块设备没什么不同，实际上它却是经过透明加密的。</p>
+<p>创建文件系统：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@node1 ~]<span class="comment"># mkfs.xfs /dev/mapper/sdb_cry -f</span></span><br></pre></td></tr></table></figure></p>
+<p>装载加密磁盘：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@node1 ~]<span class="comment"># mount /dev/mapper/sdb_cry /mnt</span></span><br><span class="line"></span><br><span class="line">[root@node1 ~]<span class="comment"># cp /etc/networks /mnt/</span></span><br><span class="line">[root@node1 ~]<span class="comment"># cat /mnt/networks </span></span><br><span class="line">default <span class="number">0.0</span>.<span class="number">0.0</span></span><br><span class="line">loopback <span class="number">127.0</span>.<span class="number">0.0</span></span><br><span class="line">link-local <span class="number">169.254</span>.<span class="number">0.0</span></span><br></pre></td></tr></table></figure></p>
+<p>卸载加密设备<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#cryptsetup remove sdb_cry</span></span><br></pre></td></tr></table></figure></p>
+<p>重新加载加密设备<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@node1 ~]<span class="comment"># cryptsetup create sdb_cry /dev/sdb1</span></span><br></pre></td></tr></table></figure></p>
+<p>这里重新挂载会要求输入密码，密码输入不正确，设备会映射过去，但是找不到文件系统，是无法看到数据的</p>
+<p>重新挂载<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mount /dev/mapper/sdb_cry /mnt</span><br></pre></td></tr></table></figure></p>
+<p>注意 cryptsetup -y create sdb_cry /dev/sdb1 会重新为磁盘设置新的密码，只要不对磁盘进行格式化，即使设置了新的密码，同样是看不到数据的，设置了新的密码后，只要不格式化，还是能够使用旧的密码来对磁盘进行挂载的</p>
+<p>以上为采用密码加密磁盘的方式</p>
+<hr>
+<p>使用luks方式的加密<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cryptsetup -y -v luksFormat /dev/sdb1</span><br></pre></td></tr></table></figure></p>
+<p>输入大写的YES，小写不行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cryptsetup isLuks /dev/sdb1</span><br></pre></td></tr></table></figure></p>
+<p>判断设备<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cryptsetup luksOpen /dev/sdb1 sdb1_luks</span><br></pre></td></tr></table></figure></p>
+<p>映射设备到/dev/mapper/下面</p>
+<p>卸载<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cryptsetup remove sdb1_luks</span><br></pre></td></tr></table></figure></p>
+<p>再次加载<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cryptsetup isLuks /dev/sdb1</span><br></pre></td></tr></table></figure></p>
+<hr>
+<p>采用文件方式的加密</p>
+<p>创建加密设备，并指定的文件<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cryptsetup --key-file /etc/zbkc/key/UUID --key-size <span class="number">256</span> create sdb1_cry /dev/sdb1</span><br></pre></td></tr></table></figure></p>
+<p>使用上面的命令后会在/dev/mapper/下生成对应设备</p>
+<p>然后格式化使用设备即可</p>
+<p>卸载设备<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cryptsetup remove sdb1_cry</span><br></pre></td></tr></table></figure></p>
+<p>需要再次使用就<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cryptsetup --key-file /etc/zbkc/key/UUID --key-size <span class="number">256</span> create sdb1_cry /dev/sdb1</span><br></pre></td></tr></table></figure></p>
+
+    
+  </div>
+  <footer>
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">评论</h1>
+  <div class="ds-thread" data-thread-key="2015/05/25/dm-crypt加密磁盘/"  data-title="dm-crypt加密磁盘">
+  </div>
+</section>
+</div>
+  </div>
+  <footer id="footer"><div class="copyright">
+  
+  &copy; 2015 <a href="/">zphj1987</a>
+  
+</div>
+<div class="theme-copyright">
+  Theme by <a href="https://github.com/orderedlist" target="_blank">orderedlist</a>
+   | 
+  Redesign by <a href="http://heroicyang.com/" target="_blank">Heroic Yang</a>
+</div>
+<div class="clearfix"></div></footer>
+  <script src="/js/jquery.min.js"></script>
+<script src="/js/scale.fix.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = { short_name: 'zphj1987' };
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';
+    ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox();
+  })(jQuery);
+</script>
+
+
+<div id="totop" style="position:fixed;bottom:150px;right:50px;cursor: pointer;">
+<a title="Top"><img src="/imgs/scrollup.png"/></a>
+</div>
+<script src="/js/totop.js"></script>
+
+</body>
+</html>

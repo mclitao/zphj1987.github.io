@@ -22,7 +22,7 @@ body {
   font-weight: 300;
 }
 .wrapper {
-  width: 680px;
+  width: 1180px;
   margin: 0 auto;
   background: #dedede;
   -webkit-border-radius: 8px;
@@ -118,6 +118,7 @@ strong {
 article {
   padding: 15px 30px;
   position: relative;
+  table-layout: fixed;
 }
 article.page .icon {
   display: none;
@@ -383,10 +384,11 @@ article .entry code {
   font-size: 0.8em;
 }
 article .entry pre {
-  padding: 10px 30px;
+  padding: 12px 30px;
   background: #3a3c42;
   color: #f8f8f2;
   margin: 0 -30px 16px;
+  width: 1119px;
 }
 @media screen and (max-width: 580px) {
   article .entry pre {
@@ -420,33 +422,39 @@ article .entry .gist pre {
   color: #333;
 }
 article .entry table {
-  width: 100%;
   border-collapse: collapse;
-  table-layout: fixed;
+  width: 100%;
 }
-article .entry th,
-article .entry td {
-  text-align: left;
-  padding: 5px 10px;
-  border-bottom: 1px solid #aaa;
+article th,
+article td {
+  border: 1px solid #ccc;
+  padding: 6px;
+  line-height: 20px;
+  cellspacing: 1px;
 }
-article .entry dt {
-  color: #222;
-  font-weight: 700;
+article th {
+  font-weight: bold;
+  display: table-cell;
 }
-article .entry th {
-  color: #222;
+article tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+  border-spacing: 2px;
+  border-color: #808080;
 }
-article .entry small {
+article tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+article tr:nth-child(2n) small {
   font-size: 0.7em;
 }
-article .entry hr {
+article tr:nth-child(2n) hr {
   border: 0;
   background: #aaa;
   height: 1px;
   margin: 0 0 20px;
 }
-article .entry .text-lt {
+article tr:nth-child(2n) .text-lt {
   text-decoration: line-through;
 }
 article footer {
@@ -553,7 +561,7 @@ article footer .tags:before {
   font-size: 1.1em;
 }
 #footer {
-  width: 680px;
+  width: 1180px;
   margin: 20px auto 0;
   padding: 20px 0 0;
   font-size: 0.875em;
