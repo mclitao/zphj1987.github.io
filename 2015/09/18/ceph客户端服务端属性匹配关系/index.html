@@ -13,14 +13,14 @@
     <meta name="description" content="ceph的server是定期会发布版本，而它的客户端是放到linux 内核当中的，一些属性的支持是依赖于内核版本的，这样就存在一些问题，一些功能后端支持，而客户端旧了；还有可能是客户端用的很新的内核，而后端比较旧不支持，所以查看了下内核中的 features 文件，可以看到这个对应关系，总结了下就是下面的列表
 注意表中：
 
-S=SUPPORTED_DEFAULT    代表客户端支持这个属性
-R=">
+S=SUPPORTED_DEFAULT     代表客户端支持这个属性
+R">
   
   <meta name="description" content="ceph的server是定期会发布版本，而它的客户端是放到linux 内核当中的，一些属性的支持是依赖于内核版本的，这样就存在一些问题，一些功能后端支持，而客户端旧了；还有可能是客户端用的很新的内核，而后端比较旧不支持，所以查看了下内核中的 features 文件，可以看到这个对应关系，总结了下就是下面的列表
 注意表中：
 
-S=SUPPORTED_DEFAULT    代表客户端支持这个属性
-R=">
+S=SUPPORTED_DEFAULT     代表客户端支持这个属性
+R">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ceph客户端服务端属性匹配关系">
 <meta property="og:url" content="http://yoursite.com/2015/09/18/ceph客户端服务端属性匹配关系/index.html">
@@ -28,15 +28,15 @@ R=">
 <meta property="og:description" content="ceph的server是定期会发布版本，而它的客户端是放到linux 内核当中的，一些属性的支持是依赖于内核版本的，这样就存在一些问题，一些功能后端支持，而客户端旧了；还有可能是客户端用的很新的内核，而后端比较旧不支持，所以查看了下内核中的 features 文件，可以看到这个对应关系，总结了下就是下面的列表
 注意表中：
 
-S=SUPPORTED_DEFAULT    代表客户端支持这个属性
-R=">
+S=SUPPORTED_DEFAULT     代表客户端支持这个属性
+R">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ceph客户端服务端属性匹配关系">
 <meta name="twitter:description" content="ceph的server是定期会发布版本，而它的客户端是放到linux 内核当中的，一些属性的支持是依赖于内核版本的，这样就存在一些问题，一些功能后端支持，而客户端旧了；还有可能是客户端用的很新的内核，而后端比较旧不支持，所以查看了下内核中的 features 文件，可以看到这个对应关系，总结了下就是下面的列表
 注意表中：
 
-S=SUPPORTED_DEFAULT    代表客户端支持这个属性
-R=">
+S=SUPPORTED_DEFAULT     代表客户端支持这个属性
+R">
   
   
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
@@ -103,7 +103,7 @@ var _hmt = _hmt || [];
       <p>ceph的server是定期会发布版本，而它的客户端是放到linux 内核当中的，一些属性的支持是依赖于内核版本的，这样就存在一些问题，一些功能后端支持，而客户端旧了；还有可能是客户端用的很新的内核，而后端比较旧不支持，所以查看了下内核中的 <code>features</code> 文件，可以看到这个对应关系，总结了下就是下面的列表</p>
 <p>注意表中：</p>
 <ul>
-<li><strong>S</strong>=SUPPORTED_DEFAULT    代表客户端支持这个属性</li>
+<li><strong>S</strong>=SUPPORTED_DEFAULT     代表客户端支持这个属性</li>
 <li><strong>R</strong>=REQUIRED_DEFAULT      代表需要服务端支持这个属性</li>
 </ul>
 <table>
@@ -1081,11 +1081,11 @@ var _hmt = _hmt || [];
 </tr>
 </tbody>
 </table>
-<p>missing 2040000 意思是 CEPH_FEATURE_CRUSH_TUNABLES (40000) 和 CEPH_FEATURE_CRUSH_TUNABLES2 (2000000) 不被当前客户端支持，一般要么关闭新的server端的这个属性，或者升级到支持的版本的内核</p>
+<p><code>missing 2040000</code> 意思是 <code>CEPH_FEATURE_CRUSH_TUNABLES (40000)</code> 和 <code>CEPH_FEATURE_CRUSH_TUNABLES2 (2000000)</code> 不被当前客户端支持，一般要么关闭新的server端的这个属性，或者升级到支持的版本的内核.</p>
 <p>内核代码查看地址：<a href="http://lxr.free-electrons.com/source/include/linux/ceph/ceph_features.h" target="_blank" rel="external">http://lxr.free-electrons.com/source/include/linux/ceph/ceph_features.h</a></p>
 <p>写于：2015年09月18日夜</p>
-<p>Power by zphj1987</p>
-<p>QQ:199383004</p>
+<p><strong>Power by zphj1987</strong></p>
+<p><strong>QQ:199383004</strong></p>
 
     
   </div>
