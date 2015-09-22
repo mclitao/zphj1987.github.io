@@ -1,21 +1,10 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="chrome=1">
   
   <title>ceph客户端服务端属性匹配关系 | zphj1987&#39;Blog</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-  
-    <meta name="author" content="zphj1987">
-  
-  
-    <meta name="description" content="ceph的server是定期会发布版本，而它的客户端是放到linux 内核当中的，一些属性的支持是依赖于内核版本的，这样就存在一些问题，一些功能后端支持，而客户端旧了；还有可能是客户端用的很新的内核，而后端比较旧不支持，所以查看了下内核中的 features 文件，可以看到这个对应关系，总结了下就是下面的列表
-注意表中：
-
-S=SUPPORTED_DEFAULT     代表客户端支持这个属性
-R">
-  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="ceph的server是定期会发布版本，而它的客户端是放到linux 内核当中的，一些属性的支持是依赖于内核版本的，这样就存在一些问题，一些功能后端支持，而客户端旧了；还有可能是客户端用的很新的内核，而后端比较旧不支持，所以查看了下内核中的 features 文件，可以看到这个对应关系，总结了下就是下面的列表
 注意表中：
 
@@ -30,6 +19,7 @@ R">
 
 S=SUPPORTED_DEFAULT     代表客户端支持这个属性
 R">
+<meta property="og:image" content="http://7xi6lo.com1.z0.glb.clouddn.com/属性匹配的问题.png">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ceph客户端服务端属性匹配关系">
 <meta name="twitter:description" content="ceph的server是定期会发布版本，而它的客户端是放到linux 内核当中的，一些属性的支持是依赖于内核版本的，这样就存在一些问题，一些功能后端支持，而客户端旧了；还有可能是客户端用的很新的内核，而后端比较旧不支持，所以查看了下内核中的 features 文件，可以看到这个对应关系，总结了下就是下面的列表
@@ -38,1118 +28,321 @@ R">
 S=SUPPORTED_DEFAULT     代表客户端支持这个属性
 R">
   
+    <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
   
-    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  
+    <link rel="icon" href="/favicon.png">
   
   <link rel="stylesheet" href="/css/style.css" type="text/css">
-  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
-  
-  
-<script type="text/javascript">
-var _hmt = _hmt || [];
-(function() {
-  var hm = document.createElement("script");
-  hm.src = "//hm.baidu.com/hm.js?252ba55374ee0e63b03196973bb9b776";
-  var s = document.getElementsByTagName("script")[0]; 
-  s.parentNode.insertBefore(hm, s);
-})();
-</script>
-
 </head>
-
 <body>
-  <div class="wrapper">
-    <header id="header">
-  <div class="title">
-    <h1><a href="/">zphj1987&#39;Blog</a></h1>
-    <p><a href="/">现在所学，终有所用</a></p>
-  </div>
-  <nav class="nav">
-    <ul>
-      
-        <li><a href="/">Home</a></li>
-      
-        <li><a href="/archives">Archives</a></li>
-      
-        <li><a href="/atom.xml">rss</a></li>
-      
-        <li><a href="/about">About</a></li>
-      
-      
-    </ul>
-    <div class="clearfix"></div>
-  </nav>
-  <div class="clearfix"></div>
-</header>
-    <div class="content"><article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2015/09/18/ceph客户端服务端属性匹配关系/">
-  <time datetime="2015-09-18T03:24:08.000Z">
-    2015-09-18
-  </time>
-</a>
-    
-    
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="/assets/blogImg/mylogo.jpg" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">zphj1987</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">现在所学，终有所用</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						
+						<li>关于我</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="https://github.com/zphj1987" title="github">github</a>
+					        
+								<a class="weibo" target="_blank" href=" http://weibo.com/zphj1987" title="weibo">weibo</a>
+					        
+								<a class="rss" target="_blank" href="http://www.zphj1987.com/atom.xml" title="rss">rss</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						
+					</div>
+				</section>
+				
+				
+				
+
+				
+				
+				<section class="switch-part switch-part3">
+				
+					<div id="js-aboutme">我是谁，我从哪里来，我到哪里去？我就是我，是颜色不一样的吃货…</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">zphj1987</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="/assets/blogImg/mylogo.jpg" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">zphj1987</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">现在所学，终有所用</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/zphj1987" title="github">github</a>
+			        
+						<a class="weibo" target="_blank" href=" http://weibo.com/zphj1987" title="weibo">weibo</a>
+			        
+						<a class="rss" target="_blank" href="http://www.zphj1987.com/atom.xml" title="rss">rss</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-ceph客户端服务端属性匹配关系" class="article article-type-post" itemscope itemprop="blogPost">
   
-    <h1 class="title">ceph客户端服务端属性匹配关系</h1>
+    <div class="article-meta">
+      <a href="/2015/09/18/ceph客户端服务端属性匹配关系/" class="article-date">
+  	<time datetime="2015-09-18T03:24:08.000Z" itemprop="datePublished">2015-09-18</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      ceph客户端服务端属性匹配关系
+    </h1>
   
 
-  </header>
-  
-  <div class="entry">
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+        
+
+        <div class="clearfix"></div>
+      </div>
+      
     
-      <p>ceph的server是定期会发布版本，而它的客户端是放到linux 内核当中的，一些属性的支持是依赖于内核版本的，这样就存在一些问题，一些功能后端支持，而客户端旧了；还有可能是客户端用的很新的内核，而后端比较旧不支持，所以查看了下内核中的 <code>features</code> 文件，可以看到这个对应关系，总结了下就是下面的列表</p>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>ceph的server是定期会发布版本，而它的客户端是放到linux 内核当中的，一些属性的支持是依赖于内核版本的，这样就存在一些问题，一些功能后端支持，而客户端旧了；还有可能是客户端用的很新的内核，而后端比较旧不支持，所以查看了下内核中的 <code>features</code> 文件，可以看到这个对应关系，总结了下就是下面的列表</p>
 <p>注意表中：</p>
 <ul>
 <li><strong>S</strong>=SUPPORTED_DEFAULT     代表客户端支持这个属性</li>
 <li><strong>R</strong>=REQUIRED_DEFAULT      代表需要服务端支持这个属性</li>
 </ul>
-<table>
-<thead>
-<tr>
-<th>属性名称</th>
-<th style="text-align:center">编号(bit)</th>
-<th style="text-align:right">标志(oct)</th>
-<th style="text-align:center">3.8</th>
-<th style="text-align:center">3.9</th>
-<th style="text-align:center">3.10</th>
-<th style="text-align:center">3.11</th>
-<th style="text-align:center">3.12</th>
-<th style="text-align:center">3.13</th>
-<th style="text-align:center">3.14</th>
-<th style="text-align:center">3.15</th>
-<th style="text-align:center">3.18</th>
-<th style="text-align:center">3.19</th>
-<th style="text-align:center">4.1</th>
-<th style="text-align:center">4.2</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>CEPH_FEATURE_UID</td>
-<td style="text-align:center">0</td>
-<td style="text-align:right">1</td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-</tr>
-<tr>
-<td>CEPH_FEATURE_NOSRCADDR</td>
-<td style="text-align:center">1</td>
-<td style="text-align:right">2</td>
-<td style="text-align:center">S+R</td>
-<td style="text-align:center">S+R</td>
-<td style="text-align:center">S+R</td>
-<td style="text-align:center">S+R</td>
-<td style="text-align:center">S+R</td>
-<td style="text-align:center">S+R</td>
-<td style="text-align:center">S+R</td>
-<td style="text-align:center">S+R</td>
-<td style="text-align:center">S+R</td>
-<td style="text-align:center">S+R</td>
-<td style="text-align:center">S+R</td>
-<td style="text-align:center">S+R</td>
-</tr>
-<tr>
-<td>CEPH_FEATURE_MONCLOCKCHECK</td>
-<td style="text-align:center">2</td>
-<td style="text-align:right">4</td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-</tr>
-<tr>
-<td>CEPH_FEATURE_FLOCK</td>
-<td style="text-align:center">3</td>
-<td style="text-align:right">8</td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-</tr>
-<tr>
-<td>CEPH_FEATURE_SUBSCRIBE2</td>
-<td style="text-align:center">4</td>
-<td style="text-align:right">10</td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-</tr>
-<tr>
-<td>CEPH_FEATURE_MONNAMES</td>
-<td style="text-align:center">5</td>
-<td style="text-align:right">20</td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-</tr>
-<tr>
-<td>CEPH_FEATURE_RECONNECT_SEQ</td>
-<td style="text-align:center">6</td>
-<td style="text-align:right">40</td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center">S+R</td>
-<td style="text-align:center">S+R</td>
-<td style="text-align:center">S+R</td>
-<td style="text-align:center">S+R</td>
-<td style="text-align:center">S+R</td>
-<td style="text-align:center">S+R</td>
-<td style="text-align:center">S+R</td>
-<td style="text-align:center">S+R</td>
-<td style="text-align:center">S+R</td>
-<td style="text-align:center">S+R</td>
-</tr>
-<tr>
-<td>CEPH_FEATURE_DIRLAYOUTHASH</td>
-<td style="text-align:center">7</td>
-<td style="text-align:right">80</td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-</tr>
-<tr>
-<td>CEPH_FEATURE_OBJECTLOCATOR</td>
-<td style="text-align:center">8</td>
-<td style="text-align:right">100</td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-</tr>
-<tr>
-<td>CEPH_FEATURE_PGID64</td>
-<td style="text-align:center">9</td>
-<td style="text-align:right">200</td>
-<td style="text-align:center"></td>
-<td style="text-align:center">S+R</td>
-<td style="text-align:center">S+R</td>
-<td style="text-align:center">S+R</td>
-<td style="text-align:center">S+R</td>
-<td style="text-align:center">S+R</td>
-<td style="text-align:center">S+R</td>
-<td style="text-align:center">S+R</td>
-<td style="text-align:center">S+R</td>
-<td style="text-align:center">S+R</td>
-<td style="text-align:center">S+R</td>
-<td style="text-align:center">S+R</td>
-</tr>
-<tr>
-<td>CEPH_FEATURE_INCSUBOSDMAP</td>
-<td style="text-align:center">10</td>
-<td style="text-align:right">400</td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-</tr>
-<tr>
-<td>CEPH_FEATURE_PGPOOL3</td>
-<td style="text-align:center">11</td>
-<td style="text-align:right">800</td>
-<td style="text-align:center"></td>
-<td style="text-align:center">S+R</td>
-<td style="text-align:center">S+R</td>
-<td style="text-align:center">S+R</td>
-<td style="text-align:center">S+R</td>
-<td style="text-align:center">S+R</td>
-<td style="text-align:center">S+R</td>
-<td style="text-align:center">S+R</td>
-<td style="text-align:center">S+R</td>
-<td style="text-align:center">S+R</td>
-<td style="text-align:center">S+R</td>
-<td style="text-align:center">S+R</td>
-</tr>
-<tr>
-<td>CEPH_FEATURE_OSDREPLYMUX</td>
-<td style="text-align:center">12</td>
-<td style="text-align:right">1000</td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-</tr>
-<tr>
-<td>CEPH_FEATURE_OSDENC</td>
-<td style="text-align:center">13</td>
-<td style="text-align:right">2000</td>
-<td style="text-align:center"></td>
-<td style="text-align:center">S+R</td>
-<td style="text-align:center">S+R</td>
-<td style="text-align:center">S+R</td>
-<td style="text-align:center">S+R</td>
-<td style="text-align:center">S+R</td>
-<td style="text-align:center">S+R</td>
-<td style="text-align:center">S+R</td>
-<td style="text-align:center">S+R</td>
-<td style="text-align:center">S+R</td>
-<td style="text-align:center">S+R</td>
-<td style="text-align:center">S+R</td>
-</tr>
-<tr>
-<td>CEPH_FEATURE_OMAP</td>
-<td style="text-align:center">14</td>
-<td style="text-align:right">4000</td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-</tr>
-<tr>
-<td>CEPH_FEATURE_MONENC</td>
-<td style="text-align:center">15</td>
-<td style="text-align:right">8000</td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-</tr>
-<tr>
-<td>CEPH_FEATURE_QUERY_T</td>
-<td style="text-align:center">16</td>
-<td style="text-align:right">10000</td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-</tr>
-<tr>
-<td>CEPH_FEATURE_INDEP_PG_MAP</td>
-<td style="text-align:center">17</td>
-<td style="text-align:right">20000</td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-</tr>
-<tr>
-<td>CEPH_FEATURE_CRUSH_TUNABLES</td>
-<td style="text-align:center">18</td>
-<td style="text-align:right">40000</td>
-<td style="text-align:center">S</td>
-<td style="text-align:center">S</td>
-<td style="text-align:center">S</td>
-<td style="text-align:center">S</td>
-<td style="text-align:center">S</td>
-<td style="text-align:center">S</td>
-<td style="text-align:center">S</td>
-<td style="text-align:center">S</td>
-<td style="text-align:center">S</td>
-<td style="text-align:center">S</td>
-<td style="text-align:center">S</td>
-<td style="text-align:center">S</td>
-</tr>
-<tr>
-<td>CEPH_FEATURE_CHUNKY_SCRUB</td>
-<td style="text-align:center">19</td>
-<td style="text-align:right">80000</td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-</tr>
-<tr>
-<td>CEPH_FEATURE_MON_NULLROUTE</td>
-<td style="text-align:center">20</td>
-<td style="text-align:right">100000</td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-</tr>
-<tr>
-<td>CEPH_FEATURE_MON_GV</td>
-<td style="text-align:center">21</td>
-<td style="text-align:right">200000</td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-</tr>
-<tr>
-<td>CEPH_FEATURE_BACKFILL_RESERVATION</td>
-<td style="text-align:center">22</td>
-<td style="text-align:right">400000</td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-</tr>
-<tr>
-<td>CEPH_FEATURE_MSG_AUTH</td>
-<td style="text-align:center">23</td>
-<td style="text-align:right">800000</td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center">S</td>
-<td style="text-align:center">S</td>
-<td style="text-align:center">S</td>
-</tr>
-<tr>
-<td>CEPH_FEATURE_RECOVERY_RESERVATION</td>
-<td style="text-align:center">24</td>
-<td style="text-align:right">1000000</td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-</tr>
-<tr>
-<td>CEPH_FEATURE_CRUSH_TUNABLES2</td>
-<td style="text-align:center">25</td>
-<td style="text-align:right">2000000</td>
-<td style="text-align:center"></td>
-<td style="text-align:center">S</td>
-<td style="text-align:center">S</td>
-<td style="text-align:center">S</td>
-<td style="text-align:center">S</td>
-<td style="text-align:center">S</td>
-<td style="text-align:center">S</td>
-<td style="text-align:center">S</td>
-<td style="text-align:center">S</td>
-<td style="text-align:center">S</td>
-<td style="text-align:center">S</td>
-<td style="text-align:center">S</td>
-</tr>
-<tr>
-<td>CEPH_FEATURE_CREATEPOOLID</td>
-<td style="text-align:center">26</td>
-<td style="text-align:right">4000000</td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-</tr>
-<tr>
-<td>CEPH_FEATURE_REPLY_CREATE_INODE</td>
-<td style="text-align:center">27</td>
-<td style="text-align:right">8000000</td>
-<td style="text-align:center"></td>
-<td style="text-align:center">S</td>
-<td style="text-align:center">S</td>
-<td style="text-align:center">S</td>
-<td style="text-align:center">S</td>
-<td style="text-align:center">S</td>
-<td style="text-align:center">S</td>
-<td style="text-align:center">S</td>
-<td style="text-align:center">S</td>
-<td style="text-align:center">S</td>
-<td style="text-align:center">S</td>
-<td style="text-align:center">S</td>
-</tr>
-<tr>
-<td>CEPH_FEATURE_OSD_HBMSGS</td>
-<td style="text-align:center">28</td>
-<td style="text-align:right">10000000</td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-</tr>
-<tr>
-<td>CEPH_FEATURE_MDSENC</td>
-<td style="text-align:center">29</td>
-<td style="text-align:right">20000000</td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-</tr>
-<tr>
-<td>CEPH_FEATURE_OSDHASHPSPOOL</td>
-<td style="text-align:center">30</td>
-<td style="text-align:right">40000000</td>
-<td style="text-align:center"></td>
-<td style="text-align:center">S</td>
-<td style="text-align:center">S</td>
-<td style="text-align:center">S</td>
-<td style="text-align:center">S</td>
-<td style="text-align:center">S</td>
-<td style="text-align:center">S</td>
-<td style="text-align:center">S</td>
-<td style="text-align:center">S</td>
-<td style="text-align:center">S</td>
-<td style="text-align:center">S</td>
-<td style="text-align:center">S</td>
-</tr>
-<tr>
-<td>CEPH_FEATURE_MON_SINGLE_PAXOS</td>
-<td style="text-align:center">31</td>
-<td style="text-align:right">80000000</td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-</tr>
-<tr>
-<td>CEPH_FEATURE_OSD_SNAPMAPPER</td>
-<td style="text-align:center">32</td>
-<td style="text-align:right">100000000</td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-</tr>
-<tr>
-<td>CEPH_FEATURE_MON_SCRUB</td>
-<td style="text-align:center">33</td>
-<td style="text-align:right">200000000</td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-</tr>
-<tr>
-<td>CEPH_FEATURE_OSD_PACKED_RECOVERY</td>
-<td style="text-align:center">34</td>
-<td style="text-align:right">400000000</td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-</tr>
-<tr>
-<td>CEPH_FEATURE_OSD_CACHEPOOL</td>
-<td style="text-align:center">35</td>
-<td style="text-align:right">800000000</td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center">S</td>
-<td style="text-align:center">S</td>
-<td style="text-align:center">S</td>
-<td style="text-align:center">S</td>
-<td style="text-align:center">S</td>
-<td style="text-align:center">S</td>
-</tr>
-<tr>
-<td>CEPH_FEATURE_CRUSH_V2</td>
-<td style="text-align:center">36</td>
-<td style="text-align:right">1000000000</td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center">S</td>
-<td style="text-align:center">S</td>
-<td style="text-align:center">S</td>
-<td style="text-align:center">S</td>
-<td style="text-align:center">S</td>
-<td style="text-align:center">S</td>
-</tr>
-<tr>
-<td>CEPH_FEATURE_EXPORT_PEER</td>
-<td style="text-align:center">37</td>
-<td style="text-align:right">2000000000</td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center">S</td>
-<td style="text-align:center">S</td>
-<td style="text-align:center">S</td>
-<td style="text-align:center">S</td>
-<td style="text-align:center">S</td>
-<td style="text-align:center">S</td>
-</tr>
-<tr>
-<td>CEPH_FEATURE_OSD_ERASURE_CODES</td>
-<td style="text-align:center">38</td>
-<td style="text-align:right">4000000000</td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-</tr>
-<tr>
-<td>CEPH_FEATURE_OSD_TMAP2OMAP</td>
-<td style="text-align:center">38*</td>
-<td style="text-align:right">4000000000</td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-</tr>
-<tr>
-<td>CEPH_FEATURE_OSDMAP_ENC</td>
-<td style="text-align:center">39</td>
-<td style="text-align:right">8000000000</td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center">S</td>
-<td style="text-align:center">S</td>
-<td style="text-align:center">S</td>
-<td style="text-align:center">S</td>
-<td style="text-align:center">S</td>
-</tr>
-<tr>
-<td>CEPH_FEATURE_MDS_INLINE_DATA</td>
-<td style="text-align:center">40</td>
-<td style="text-align:right">10000000000</td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-</tr>
-<tr>
-<td>CEPH_FEATURE_CRUSH_TUNABLES3</td>
-<td style="text-align:center">41</td>
-<td style="text-align:right">20000000000</td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center">S</td>
-<td style="text-align:center">S</td>
-<td style="text-align:center">S</td>
-<td style="text-align:center">S</td>
-<td style="text-align:center">S</td>
-</tr>
-<tr>
-<td>CEPH_FEATURE_OSD_PRIMARY_AFFINITY</td>
-<td style="text-align:center">41*</td>
-<td style="text-align:right">20000000000</td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center">S</td>
-<td style="text-align:center">S</td>
-<td style="text-align:center">S</td>
-<td style="text-align:center">S</td>
-<td style="text-align:center">S</td>
-</tr>
-<tr>
-<td>CEPH_FEATURE_MSGR_KEEPALIVE2</td>
-<td style="text-align:center">42</td>
-<td style="text-align:right">40000000000</td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-</tr>
-<tr>
-<td>CEPH_FEATURE_OSD_POOLRESEND</td>
-<td style="text-align:center">43</td>
-<td style="text-align:right">80000000000</td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-</tr>
-<tr>
-<td>CEPH_FEATURE_ERASURE_CODE_PLUGINS_V2</td>
-<td style="text-align:center">44</td>
-<td style="text-align:right">100000000000</td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-</tr>
-<tr>
-<td>CEPH_FEATURE_OSD_SET_ALLOC_HINT</td>
-<td style="text-align:center">45</td>
-<td style="text-align:right">200000000000</td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-</tr>
-<tr>
-<td>CEPH_FEATURE_OSD_FADVISE_FLAGS</td>
-<td style="text-align:center">46</td>
-<td style="text-align:right">400000000000</td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-</tr>
-<tr>
-<td>CEPH_FEATURE_OSD_REPOP</td>
-<td style="text-align:center">46*</td>
-<td style="text-align:right">400000000000</td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-</tr>
-<tr>
-<td>CEPH_FEATURE_OSD_OBJECT_DIGEST</td>
-<td style="text-align:center">46*</td>
-<td style="text-align:right">400000000000</td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-</tr>
-<tr>
-<td>CEPH_FEATURE_OSD_TRANSACTION_MAY_LAYOUT</td>
-<td style="text-align:center">46*</td>
-<td style="text-align:right">400000000000</td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-</tr>
-<tr>
-<td>CEPH_FEATURE_MDS_QUOTA</td>
-<td style="text-align:center">47</td>
-<td style="text-align:right">800000000000</td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-</tr>
-<tr>
-<td>CEPH_FEATURE_CRUSH_V4</td>
-<td style="text-align:center">48</td>
-<td style="text-align:right">1000000000000</td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center">S</td>
-<td style="text-align:center">S</td>
-</tr>
-<tr>
-<td>CEPH_FEATURE_OSD_MIN_SIZE_RECOVERY</td>
-<td style="text-align:center">49</td>
-<td style="text-align:right">2000000000000</td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-</tr>
-<tr>
-<td>CEPH_FEATURE_OSD_PROXY_FEATURES</td>
-<td style="text-align:center">49*</td>
-<td style="text-align:right">2000000000000</td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-</tr>
-</tbody>
-</table>
+<p><img src="http://7xi6lo.com1.z0.glb.clouddn.com/属性匹配的问题.png" alt=""></p>
 <p><code>missing 2040000</code> 意思是 <code>CEPH_FEATURE_CRUSH_TUNABLES (40000)</code> 和 <code>CEPH_FEATURE_CRUSH_TUNABLES2 (2000000)</code> 不被当前客户端支持，一般要么关闭新的server端的这个属性，或者升级到支持的版本的内核.</p>
 <p>内核代码查看地址：<a href="http://lxr.free-electrons.com/source/include/linux/ceph/ceph_features.h" target="_blank" rel="external">http://lxr.free-electrons.com/source/include/linux/ceph/ceph_features.h</a></p>
 <p>写于：2015年09月18日夜</p>
 <p><strong>Power by zphj1987</strong></p>
 <p><strong>QQ:199383004</strong></p>
 
+      
+    </div>
     
   </div>
-  <footer>
+  
     
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
+<nav id="article-nav">
+  
+  
+    <a href="/2015/07/14/nginx配置代理缓存/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">nginx配置代理缓存</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
 </article>
 
 
-<section id="comment">
-  <h1 class="title">评论</h1>
-  <div class="ds-thread" data-thread-key="2015/09/18/ceph客户端服务端属性匹配关系/"  data-title="ceph客户端服务端属性匹配关系">
-  </div>
-</section>
+<div class="share">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到：</span>
+		<a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+		<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
 </div>
-  </div>
-  <footer id="footer"><div class="copyright">
-  
-  &copy; 2015 <a href="/">zphj1987</a>
-  
-</div>
-<div class="theme-copyright">
-  Theme by <a href="https://github.com/orderedlist" target="_blank">orderedlist</a>
-   | 
-  Redesign by <a href="http://heroicyang.com/" target="_blank">Heroic Yang</a>
-</div>
-<div class="clearfix"></div></footer>
-  <script src="/js/jquery.min.js"></script>
-<script src="/js/scale.fix.js"></script>
-<script src="/js/jquery.imagesloaded.min.js"></script>
-<script src="/js/gallery.js"></script>
 
 
-<script type="text/javascript">
-  var duoshuoQuery = { short_name: 'zphj1987' };
-  (function() {
-    var ds = document.createElement('script');
-    ds.type = 'text/javascript';
-    ds.async = true;
-    ds.src = 'http://static.duoshuo.com/embed.js';
-    ds.charset = 'UTF-8';
-    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
-  })();
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="ceph客户端服务端属性匹配关系" data-title="ceph客户端服务端属性匹配关系" data-url="http://yoursite.com/2015/09/18/ceph客户端服务端属性匹配关系/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"true"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2015 zphj1987
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="/js/main.js" type="text/javascript"></script>
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
 </script>
 
 
-
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
-<script src="/fancybox/jquery.fancybox.pack.js"></script>
-<script type="text/javascript">
-  (function($){
-    $('.fancybox').fancybox();
-  })(jQuery);
-</script>
-
-
-<div id="totop" style="position:fixed;bottom:150px;right:50px;cursor: pointer;">
-<a title="Top"><img src="/imgs/scrollup.png"/></a>
-</div>
-<script src="/js/totop.js"></script>
-
+  </div>
 </body>
 </html>
