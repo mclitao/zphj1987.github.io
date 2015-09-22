@@ -4,7 +4,7 @@
   <subtitle><![CDATA[现在所学，终有所用]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://yoursite.com/"/>
-  <updated>2015-09-22T14:50:08.977Z</updated>
+  <updated>2015-09-22T16:15:49.600Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="http://yoursite.com/2015/09/18/ceph%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%B1%9E%E6%80%A7%E5%8C%B9%E9%85%8D%E5%85%B3%E7%B3%BB/"/>
     <id>http://yoursite.com/2015/09/18/ceph客户端服务端属性匹配关系/</id>
     <published>2015-09-18T03:24:08.000Z</published>
-    <updated>2015-09-22T14:50:08.977Z</updated>
+    <updated>2015-09-22T16:15:49.600Z</updated>
     <content type="html"><![CDATA[<p>ceph的server是定期会发布版本，而它的客户端是放到linux 内核当中的，一些属性的支持是依赖于内核版本的，这样就存在一些问题，一些功能后端支持，而客户端旧了；还有可能是客户端用的很新的内核，而后端比较旧不支持，所以查看了下内核中的 <code>features</code> 文件，可以看到这个对应关系，总结了下就是下面的列表</p>
 <p>注意表中：</p>
 <ul>
@@ -36,6 +36,8 @@
     <summary type="html">
     <![CDATA[<p>ceph的server是定期会发布版本，而它的客户端是放到linux 内核当中的，一些属性的支持是依赖于内核版本的，这样就存在一些问题，一些功能后端支持，而客户端旧了；还有可能是客户端用的很新的内核，而后端比较旧不支持，所以查看了下内核中的 <code>features</]]>
     </summary>
+    
+      <category term="ceph" scheme="http://yoursite.com/tags/ceph/"/>
     
   </entry>
   
