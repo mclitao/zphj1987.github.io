@@ -237,115 +237,6 @@
 
 
   
-    <article id="post-nginx配置代理缓存" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/07/14/nginx配置代理缓存/" class="article-date">
-  	<time datetime="2015-07-14T01:57:21.000Z" itemprop="datePublished">2015-07-14</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/07/14/nginx配置代理缓存/">nginx配置代理缓存</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>nginx可以实现反向代理的配置，并且可以使用缓存来加速，本文是简单的实现功能的配置，暂时没有做其他的优化的部分的配置，从网上的资料来看，很多配置都是没有讲哪些是必须配置的，我自己在配置过程中就发现没有生成缓存文件，下面来记录下配置的内容<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">upstream test&#123;&#10;            server 127.0.0.1:8080;&#10;        &#125;&#10;&#10;proxy_cache_path /var/cache/nginx/proxy_cache keys_zone=cache_zone:2000m max_size=1000m;&#10;&#10;server &#123;&#10;    listen       80;&#10;    server_name  localhost;&#10;    location / &#123;&#10;        proxy_pass http://127.0.0.1:8080;&#10;        proxy_cache cache_zone;&#10;        proxy_cache_valid  200 304 302 24h;&#10;    &#125;&#10;&#10;    error_page   500 502 503 504  /50x.html;&#10;&#10;    location = /50x.html &#123;&#10;        root   /usr/share/nginx/html;&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure></p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/07/14/nginx配置代理缓存/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-linux服务器远程网络开机（wake-on-lan）" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/05/27/linux服务器远程网络开机（wake-on-lan）/" class="article-date">
-  	<time datetime="2015-05-27T06:35:40.000Z" itemprop="datePublished">2015-05-27</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/05/27/linux服务器远程网络开机（wake-on-lan）/">linux服务器远程网络开机（wake on lan）</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="检查服务器是否支持远程网络开机">检查服务器是否支持远程网络开机</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab5101 ~]<span class="comment"># ethtool eth0</span></span><br><span class="line">    Settings <span class="keyword">for</span> eth0:</span><br><span class="line">        Supported ports: [ TP ]</span><br><span class="line">        Supported link modes: <span class="number">10</span>baseT/Half <span class="number">10</span>baseT/Full </span><br><span class="line">                              <span class="number">100</span>baseT/Half <span class="number">100</span>baseT/Full </span><br><span class="line">                              <span class="number">1000</span>baseT/Full </span><br><span class="line">        Supported pause frame use: No</span><br><span class="line">        Supports auto-negotiation: Yes</span><br><span class="line">        Advertised link modes: </span><br><span class="line">                             <span class="number">10</span>baseT/Half <span class="number">10</span>baseT/Full </span><br><span class="line">                             <span class="number">100</span>baseT/Half <span class="number">100</span>baseT/Full </span><br><span class="line">                             <span class="number">1000</span>baseT/Full </span><br><span class="line">        Advertised pause frame use: No</span><br><span class="line">        Advertised auto-negotiation: Yes</span><br><span class="line">        Speed: <span class="number">1000</span>Mb/s</span><br><span class="line">        Duplex: Full</span><br><span class="line">        Port: Twisted Pair</span><br><span class="line">        PHYAD: <span class="number">2</span></span><br><span class="line">        Transceiver: internal</span><br><span class="line">        Auto-negotiation: onMDI-X: on</span><br><span class="line">        Supports Wake-on: pumbg</span><br><span class="line">        Wake-on: g</span><br><span class="line">        Current message level: <span class="number">0</span>x00000007 (<span class="number">7</span>) </span><br><span class="line">                               drv probe linkLink detected: yes</span><br></pre></td></tr></table></figure>
-<p>注意这两项：<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">Supports Wake-on: pumbg&#10;Wake-on: g</span><br></pre></td></tr></table></figure></p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/05/27/linux服务器远程网络开机（wake-on-lan）/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
     <article id="post-dm-crypt加密磁盘" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -387,231 +278,6 @@
         <p class="article-more-link">
           <a  href="/2015/05/25/dm-crypt加密磁盘/#more">more >></a>
         </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-linux系统克隆系统盘" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/05/12/linux系统克隆系统盘/" class="article-date">
-  	<time datetime="2015-05-12T06:24:31.000Z" itemprop="datePublished">2015-05-12</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/05/12/linux系统克隆系统盘/">linux系统克隆系统盘</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>本文将介绍两种方式的系统盘的完整的备份，两种方式各有优缺点，需要根据实际情况来进行选择</p>
-<ul>
-<li>使用dd的完整镜像克隆的方式</li>
-<li>使用tar去备份数据，安装grub的方式</li>
-</ul>
-<h4 id="dd方式">dd方式</h4><p>优点：<br>简单，一条命令 dd if=/dev/sda of=/dev/sdb 就可以进行完整的系统备份了</p>
-<p>缺点：<br>时间非常长，备份一个系统盘，无论数据多少，系统盘全部会读取一遍，时间比较久<br>备份目的盘需要大于原盘<br>分区无法调整，根原分区一模一样</p>
-<h4 id="tar方式">tar方式</h4><p>优点：<br>时间短，只需要备份实际磁盘上的数据即可<br>自定义，可以修改分区的大小，可以控制备份的类容，可以定期备份<br>对目的盘大小无限制，比较灵活</p>
-<p>缺点：<br>人为修改东西比较多，需要手动去修改一些信息<br>当然在掌握了一定的linux基础的情况下建议是使用tar方式的，，下面将介绍tar方式的处理方式：</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/05/12/linux系统克隆系统盘/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-linux下制作软件包安装服务器" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/04/28/linux下制作软件包安装服务器/" class="article-date">
-  	<time datetime="2015-04-28T08:43:29.000Z" itemprop="datePublished">2015-04-28</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/04/28/linux下制作软件包安装服务器/">linux下制作软件包安装服务器</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>linux下的软件包在有网络的情况下比较好安装，在ubuntu下，更新sourcelist，然后使用apt-get就可以很方便的安装包，在centos下面，更新yum列表，然后使用yum也可以进行方便的软件安装，但是在没有网络的情况下就比较难安装，可以用一个个包的安装的方式去安装，这个在少量的包的情况下比较好处理，在多的情况下就比较麻烦了，本篇文档，就是介绍了在无网的情况下，根据自己的需要制作内网的包的安装服务器</p>
-<h2 id="centos系列">centos系列</h2><h3 id="使用光驱作为安装源">使用光驱作为安装源</h3><p>1、将光驱挂载到服务器的本地目录</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@node1 ~]<span class="comment"># mount /dev/cdrom /mnt</span></span><br><span class="line">mount: block device /dev/sr0 is write-protected, mounting <span class="built_in">read</span>-only</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/04/28/linux下制作软件包安装服务器/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-windows下命令行设置静态IP" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/04/03/windows下命令行设置静态IP/" class="article-date">
-  	<time datetime="2015-04-03T04:25:48.000Z" itemprop="datePublished">2015-04-03</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/04/03/windows下命令行设置静态IP/">windows下命令行设置静态IP</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>windows 10 预览版出现无法设置静态IP的bug，只能通过命令行进行设置，开启powershell，然后执行下列的命令即可<br>下面的“以太网 3” 为你设置的网卡的网卡名称,注意不要忘了空格</p>
-<p>设置静态IP:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">netsh interface ipv4 <span class="built_in">set</span> address <span class="string">"以太网 3"</span>  static <span class="number">192.168</span>.<span class="number">0.71</span> <span class="number">255.255</span>.<span class="number">0.0</span> <span class="number">192.168</span>.<span class="number">26.1</span></span><br></pre></td></tr></table></figure></p>
-<p>增加静态IP:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">netsh interface ipv4 <span class="built_in">set</span> dns <span class="string">"以太网 3"</span>  static <span class="number">223.5</span>.<span class="number">5.5</span></span><br></pre></td></tr></table></figure></p>
-<p>增加静态IP:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">netsh interface ipv4 add address <span class="string">"以太网 3"</span> <span class="number">11.12</span>.<span class="number">0.0</span> <span class="number">255.255</span>.<span class="number">0.0</span></span><br></pre></td></tr></table></figure></p>
-<p>重置为dhcp:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">netsh interface ipv4 <span class="built_in">set</span> address <span class="string">"以太网 3"</span>  dhcp</span><br></pre></td></tr></table></figure></p>
-<p>基本设置应该够用了</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-shell脚本的自动交互" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/04/02/shell脚本的自动交互/" class="article-date">
-  	<time datetime="2015-04-02T09:22:40.000Z" itemprop="datePublished">2015-04-02</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/04/02/shell脚本的自动交互/">shell脚本的自动交互</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>使用expect来自动应答shell的交互</p>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">#!/usr/bin/expect&#10;spawn openssl req -new -key server.key -out server1.csr&#10;expect &#34;Country Name&#34;&#10;send &#34;\n&#34;&#10;expect &#34;State or Province Name&#34;&#10;send &#34;\n&#34;&#10;interact</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
       
       <div class="clearfix"></div>
     </div>
@@ -689,11 +355,11 @@
 
 
   
-    <article id="post-压缩css与js" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-fq教程" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2015/03/25/压缩css与js/" class="article-date">
-  	<time datetime="2015-03-25T04:52:01.000Z" itemprop="datePublished">2015-03-25</time>
+      <a href="/2015/03/24/fq教程/" class="article-date">
+  	<time datetime="2015-03-24T05:30:23.000Z" itemprop="datePublished">2015-03-24</time>
 </a>
     </div>
   
@@ -706,7 +372,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2015/03/25/压缩css与js/">压缩css与js</a>
+      <a class="article-title" href="/2015/03/24/fq教程/">fq教程</a>
     </h1>
   
 
@@ -715,8 +381,359 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>使用yuicompressor 进行css和js的压缩</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="shebang">#! /bin/sh	</span></span><br><span class="line">yasuocss=<span class="string">"java -jar /root/yuicompressor-2.4.8.jar --type css  --charset utf-8"</span></span><br><span class="line">yasuojs=<span class="string">"java -jar /root/yuicompressor-2.4.8.jar --type js  --charset utf-8"</span></span><br><span class="line"><span class="comment">######################css</span></span><br><span class="line"><span class="keyword">for</span> file <span class="keyword">in</span>  ./SGMag/sites/media/css/sgmag/*.css ./SGMag/sites/media/css/*.css</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"<span class="variable">$file</span>"</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"<span class="variable">$file</span>"</span>bk</span><br><span class="line">mv <span class="variable">$file</span>  <span class="string">"<span class="variable">$file</span>"</span>bk</span><br><span class="line"><span class="variable">$yasuocss</span>  <span class="variable">$file</span><span class="string">"bk"</span> &gt;  <span class="variable">$file</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"<span class="variable">$file</span>"</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"><span class="comment">#######################js</span></span><br><span class="line"><span class="keyword">for</span> file <span class="keyword">in</span>  ./SGMag/sites/media/component/*.js ./SGMag/sites/media/*.js  ./SGMag/sites/media/pagejs/*.js  </span><br><span class="line"><span class="keyword">do</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"<span class="variable">$file</span>"</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"<span class="variable">$file</span>"</span>bk</span><br><span class="line">mv <span class="variable">$file</span>  <span class="string">"<span class="variable">$file</span>"</span>bk</span><br><span class="line"><span class="variable">$yasuojs</span>  <span class="variable">$file</span><span class="string">"bk"</span> &gt;  <span class="variable">$file</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"<span class="variable">$file</span>"</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"><span class="comment">########################报错处理</span></span><br><span class="line">cp -rf  ./SGMag/sites/media/pagejs/cluster/hosttools.jsbk  ./SGMag/sites/media/pagejs/cluster/hosttools.js</span><br></pre></td></tr></table></figure>
+        <h3 id="手机作为翻墙路由器的方式">手机作为翻墙路由器的方式</h3><p>首先介绍的是手机上的翻墙软件，这个只能走http协议，不能走https协议，在手机上使用很方便，能够方便的访问各种网站，但是作为其他设备的时候，就只能提供http的，那么像google需要用到https的时候，其他设备就出现无法访问情况</p>
+<p>软件下载地址（已经存放到百度盘）<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">&#38142;&#25509;&#65306;http://pan.baidu.com/s/1eQs35a6 &#23494;&#30721;&#65306;3u19</span><br></pre></td></tr></table></figure></p>
+<p><img src="http://i.imgur.com/HeUIJ6e.png" alt=""></p>
+<p>点击软件后出现下面的界面就可以访问了，这个是全局的代理，所以可以直接使用手机访问外网了，可以开启更多功能</p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2015/03/24/fq教程/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-expect循环的写法" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/03/23/expect循环的写法/" class="article-date">
+  	<time datetime="2015-03-22T23:55:53.000Z" itemprop="datePublished">2015-03-23</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/03/23/expect循环的写法/">expect循环的写法</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>脚本:<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">#!/usr/bin/expect&#10;spawn sensors-detect&#10;for &#123;set i 0&#125; &#123;$i&#60;=10&#125; &#123;incr i&#125; &#123;&#10;expect &#34;:&#34;&#10;send &#34;\n&#34;&#10;&#125;&#10;interact</span><br></pre></td></tr></table></figure></p>
+<p>解释:</p>
+<p>spawn是启动命令<br>for为循环的写法<br>interact为退出<br>这个脚本目的是在一次运行过程中不断模拟用户的enter操作</p>
+<p>写于:2013年08月12日<br>更新于: 2015年03月23日</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-用grub4dos来实现移动硬盘安装linux系统" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/03/22/用grub4dos来实现移动硬盘安装linux系统/" class="article-date">
+  	<time datetime="2015-03-22T14:27:07.000Z" itemprop="datePublished">2015-03-22</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/03/22/用grub4dos来实现移动硬盘安装linux系统/">用grub4dos来实现移动硬盘安装linux系统(图重弄)</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>网上看了一些grub4dos相关教程,虽然相关资料很多,但是一步步做下来还是会出现一些问题,并且有些地方也没有说清楚,现在写下来供自己以后查看</p>
+<p>由于使用utraliso软件做centos6.4系统盘的时候,由于centos系统盘超过4G,而utraliso软件做系统盘的时候默认文件系统ext格式,而ext格式不支持超过4G的文件,所以就无法启动,所以研究了下用grub4dos这个软件来实现移动硬盘安装linux系统</p>
+<p>首先需要准备两个文件<br>grub4dos-0.4.4.zip<br>grubinst-1.1-bin-w32-2008-01-01.zip</p>
+<p>解压grub4dos-0.4.4.zip</p>
+<p><img src="http://fmn.rrimg.com/fmn061/20130605/2150/b_large_LQAI_39a3000004ac1262.jpg" alt=""></p>
+<p>&lt;这里需要注意下，如果用移动硬盘想实现的是只装一种系统话，那么就不需要对硬盘分区，如果想装多个系统的话就可以对移动硬盘分几个区，每个分区可以放一种操作系统&gt;</p>
+<p>在win7的开始菜单中搜索 计算机管理&gt;磁盘管理<br>然后选择你的移动硬盘,然后将第一个盘符标记为活动分区,这样移动硬盘这个区才能被识别,从而作为启动分区</p>
+<p><img src="http://fmn.rrimg.com/fmn063/20130605/2200/b_large_VXDK_39a3000004d91262.jpg" alt=""></p>
+<p>解压grubinst-1.1-bin-w32-2008-01-01.zip 运行<br>grubinst_gui.exe<br>磁盘选择你的移动硬盘<br>然后点分区列表右边的刷新<br>然后选择整个磁盘(MBR),然后点击安装</p>
+<p><img src="http://fmn.rrfmn.com/fmn058/20130605/2215/b_large_1Zyp_5715000001f51263.jpg" alt=""></p>
+<p>将刚刚解压得到的grub4dos-0.4.4这个目录下的chinese目录下的三个文件拷贝到你准备用来做安装系统移动硬盘,也就是刚刚设置为活动主分区那个盘还有grub4dos-0.4.4目录下menu.lst也拷贝到移动硬盘活动分区那个盘的根目录下，这个移动硬盘目录下最后看到的文件如下截图</p>
+<p><img src="http://fmn.rrimg.com/fmn065/20130605/2210/b_large_qb9c_30620000080c1263.jpg" alt=""></p>
+<p>如果这个时候你移动硬盘没分区的话，就将你的系统盘的iso全部解压到你的这个目录,系统iso解压可以用360压缩工具<br>然后修改menu.lst  ,如果比较熟悉,可以进行自定义,如果不熟悉,这里直接在下面加几行:<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">title centos6.4 install&#10;kernel (hd0,0)/isolinux/vmlinuz&#10;initrd (hd0,0)/isolinux/initrd.img</span><br></pre></td></tr></table></figure></p>
+<p>上面的title后面写的字段会在系统安装的时候显示，然后安装的时候选择这个centos6.4 install就行,其中(hd0,0)的前面的0是代表第一个盘,也就是你的移动盘,后面的0代表分区,代表第一个分区,如果你把系统iso解压到移动硬盘的第二个分区,那么就把这个改为1<br>isolinux/vmlinuz 就是你解压的iso里面的文件<br>到这里,系统盘已经做好了,在电脑的启动项里面选择centos6.4 install 就可以安装这个linux系统了</p>
+<p>此方法对于centos6.4还是有问题 所以需要多做些工作<br>思路是把第二个分区做成linux的ext2格式就能放4G以上的iso,但是win7又无法识别ext2的盘符,所以需要做两步,第一步将第二分区格式化为ext2<br>使用这个工具:<br>ParagonPartitionManager.rar<br>使用这个工具把盘格式化为ext2<br>使用这个工具是win7下能查看ext2格式的盘符<br>Ext2Fsd-0.51.zip</p>
+<p><img src="http://fmn.xnpic.com/fmn057/20130606/2145/b_large_jgCI_5038000002631263.jpg" alt=""></p>
+<p><img src="http://fmn.rrimg.com/fmn060/20130606/2145/b_large_uSUd_588c000003ba1262.jpg" alt=""></p>
+<p><img src="http://fmn.rrimg.com/fmn061/20130606/2155/b_large_LzJv_2a51000012851262.jpg" alt=""></p>
+<p>写于: 2013年06月05日<br>更新于: 2015年03月22日</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-手机中没有该应用所需的共享库（解决手机无法安装Google-plus）" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/03/22/手机中没有该应用所需的共享库（解决手机无法安装Google-plus）/" class="article-date">
+  	<time datetime="2015-03-22T14:24:09.000Z" itemprop="datePublished">2015-03-22</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/03/22/手机中没有该应用所需的共享库（解决手机无法安装Google-plus）/">手机中没有该应用所需的共享库（解决手机无法安装Google plus）</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>国行安卓手机阉割了一些google服务，需要加这三个文件:</p>
+<p>com.google.android.maps.jar<br>com.google.android.maps.xml<br>NetworkLocation.apk</p>
+<p>你只需将上述文件放到手机中的相应位置,重启手机就好了。<br>方法:<br>首先机器要ROOT,然后用RE管理器，把要复制的文件复制到相应的位置,修改三个文件的权限,就是竖着3行,左边全选,中间最上面选上,右边全空。<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">com.google.android.maps.jar   &#23433;&#35013;&#21040;  /system/framework&#10;google.android.maps.xml       &#23433;&#35013;&#21040;  /system/etc/permissions&#10;NetworkLocation.apk           &#23433;&#35013;&#21040;  /data/app_s</span><br></pre></td></tr></table></figure></p>
+<p>app_s目录需要自己建立</p>
+<p>上述三个文件在下面这个地址可以下载到:<br><a href="http://vdisk.weibo.com/s/BFtBO" target="_blank" rel="external">http://vdisk.weibo.com/s/BFtBO</a> </p>
+<p>写于: 2013年05月16日<br>更新于: 2015年03月22日</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-如何配置谷歌框架与市场（解决google-play-闪退）" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/03/22/如何配置谷歌框架与市场（解决google-play-闪退）/" class="article-date">
+  	<time datetime="2015-03-22T14:18:20.000Z" itemprop="datePublished">2015-03-22</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/03/22/如何配置谷歌框架与市场（解决google-play-闪退）/">如何配置谷歌框架与市场（解决google play 闪退）</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>没有谷歌电子市场。好多游戏都不能玩。像狂野之血,超凡蜘蛛侠。。。等等大型游戏。</p>
+<p>大家都知道国产机的ROM包把谷歌的GMS和谐掉了,所以直接装谷歌电子市场肯定会出现闪退,这样就又牵扯到另一个基础服务——谷歌框架,估计想玩大型游戏的机友对这个词都不陌生,但是可能大家按照许多热心机友说的最终还是没能把这个电子市场搞定,接下来大家按这个步骤,可以成功,亲测。</p>
+<p>步骤如下:<br>第一步:需要有root权限和RE管理器</p>
+<p>第二步:下载GoogleServiesFramework.apk(谷歌<br>服务框架,必需),将GoogleServiesFramework.apk复制到文件夹/system/app 下,然后点击安装,但是貌似不点安装也行,但是权限一定得改,然后修改权限——第一行,第一个、第二个打勾,第二行,第一个打勾,第三行,第一个打勾。(这个权限一定要搞好,有可能大家都是少了这步) </p>
+<p>第三步:下载谷歌电子市场，无论下载过来的电子市场文件名叫什么,都把它重命名为Vending.apk,像GoogleServiesFramework.apk一样移动到文件夹 /system/app 下,安装(这个必须安装)。然后修改权限,与GoogleServiesFramework.apk一样.</p>
+<p>第四步:重启手机<br>ok,联网,打开谷歌电子市场,就可以登录了。</p>
+<p>写于: 2013年05月16日<br>更新于: 2015年03月22日</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-Vmware-Tools-is-currently-being-installed-on-your-system" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/03/22/Vmware-Tools-is-currently-being-installed-on-your-system/" class="article-date">
+  	<time datetime="2015-03-22T13:47:15.000Z" itemprop="datePublished">2015-03-22</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/03/22/Vmware-Tools-is-currently-being-installed-on-your-system/">Vmware Tools is currently being installed on your system</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>问题描述:<br>使用虚拟机安装Ubuntu过程中一直停留在“PLEASE WAIT! Vmware Tools is currently<br>being installed on your system”如下图:</p>
+<p><img src="http://7xi6lo.com1.z0.glb.clouddn.com/vmware1.jpg" alt="">]</p>
+<p>软件环境<br>VMWare 8<br>Ubuntu 12.10</p>
+<p>解决方案如下</p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2015/03/22/Vmware-Tools-is-currently-being-installed-on-your-system/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-win7问题步骤记录器-（远程协助）" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/03/22/win7问题步骤记录器-（远程协助）/" class="article-date">
+  	<time datetime="2015-03-22T11:39:23.000Z" itemprop="datePublished">2015-03-22</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/03/22/win7问题步骤记录器-（远程协助）/">win7问题步骤记录器 （远程协助）</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>win7问题步骤记录器<br>有很多时候,身在远方的家人或者是朋友会要求您辅导他们计算机问题,但是又不知道该如何明确向您表达这个问题，这个处境是很令人沮丧的。<br>微软在Windows 7中添加的问题步骤记录器,将会帮助您与您的朋友摆脱沮丧。在这种情况下,您的朋友只要单击开始菜单、键入PSR,按住Enter键，再点击开始记录按钮即可。启用这项功能后,当您的朋友进行问题操作时,该记录器将会逐一记录您的朋友的操作步骤,并将它们压缩在一个MHTML文件中发送给您即可。无疑,这是个快捷、简单与高效的方法,这将有助于缩短您的故障排除时间。 </p>
+<p>写于: 2012年08月23日<br>更新于: 2015年03月23日 </p>
+
       
     </div>
     
@@ -742,7 +759,7 @@
   
   
     <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
     </nav>
   
 </div>

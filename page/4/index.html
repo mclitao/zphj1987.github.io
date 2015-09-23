@@ -171,11 +171,11 @@
 </nav>
       <div class="body-wrap">
   
-    <article id="post-持续运行一个命令，并且将结果输出到文本" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-alias重启终端失效的问题" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2015/03/24/持续运行一个命令，并且将结果输出到文本/" class="article-date">
-  	<time datetime="2015-03-23T23:43:09.000Z" itemprop="datePublished">2015-03-24</time>
+      <a href="/2015/03/21/alias重启终端失效的问题/" class="article-date">
+  	<time datetime="2015-03-21T10:26:09.000Z" itemprop="datePublished">2015-03-21</time>
 </a>
     </div>
   
@@ -188,7 +188,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2015/03/24/持续运行一个命令，并且将结果输出到文本/">持续运行一个命令，并且将结果输出到文本</a>
+      <a class="article-title" href="/2015/03/21/alias重启终端失效的问题/">alias重启终端失效的问题</a>
     </h1>
   
 
@@ -197,8 +197,13 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <figure class="highlight"><table><tr><td class="code"><pre><span class="line">#! /bin/sh&#10;while [ 2 &#62; 1 ]&#10;do&#10;    echo `date` &#62;&#62; recode.txt&#10;    df -h &#62;&#62; recode.txt&#10;    sleep  5&#10;done</span><br></pre></td></tr></table></figure>
-<p>写于: 2014年06月12日<br>更新于: 2015年03月24日</p>
+        <p>如果使用命令:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">alias</span> xx=<span class="string">'xxxx'</span></span><br></pre></td></tr></table></figure></p>
+<p>那么登出以后,别名就会失效。下次登入的时候就不能用了。<br>为了保持别名可以把它写入 /root/.bashrc<br>在.bashrc的最后写入想要的别名,比如:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">alias</span> zp=<span class="string">'ll -al'</span></span><br></pre></td></tr></table></figure>
+<p>然后退出,重新登入的时候就可以用了。<br>或者直接运行命令</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">source</span> ~/.bashrc</span><br></pre></td></tr></table></figure>
+<p>这样不用重新登入就可以使用了。</p>
+<p>写于: 2011年12月22日<br>更新于: 2015年03月21日</p>
 
       
     </div>
@@ -223,11 +228,11 @@
 
 
   
-    <article id="post-配置xenserver本地存储" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-the-fist-day" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2015/03/24/配置xenserver本地存储/" class="article-date">
-  	<time datetime="2015-03-23T23:40:51.000Z" itemprop="datePublished">2015-03-24</time>
+      <a href="/2015/03/19/the-fist-day/" class="article-date">
+  	<time datetime="2015-03-19T14:54:59.000Z" itemprop="datePublished">2015-03-19</time>
 </a>
     </div>
   
@@ -240,7 +245,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2015/03/24/配置xenserver本地存储/">配置xenserver本地存储</a>
+      <a class="article-title" href="/2015/03/19/the-fist-day/">the fist day</a>
     </h1>
   
 
@@ -249,446 +254,11 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>查询磁盘对应关系:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@xenserver-eqtwbths ~]<span class="comment"># ll /dev/disk/by-id/</span></span><br><span class="line">total <span class="number">0</span></span><br><span class="line">lrwxrwxrwx <span class="number">1</span> root root  <span class="number">9</span> Jun  <span class="number">5</span> <span class="number">13</span>:<span class="number">24</span> edd-int13_dev81 -&gt; ../../sdb</span><br><span class="line">lrwxrwxrwx <span class="number">1</span> root root <span class="number">10</span> Jun  <span class="number">5</span> <span class="number">14</span>:<span class="number">14</span> edd-int13_dev81-part1 -&gt; ../../sdb1</span><br><span class="line">lrwxrwxrwx <span class="number">1</span> root root  <span class="number">9</span> Jun  <span class="number">5</span> <span class="number">13</span>:<span class="number">24</span> edd-int13_dev82 -&gt; ../../sdc</span><br><span class="line">lrwxrwxrwx <span class="number">1</span> root root  <span class="number">9</span> Jun  <span class="number">5</span> <span class="number">13</span>:<span class="number">24</span> edd-int13_dev83 -&gt; ../../sdd</span><br><span class="line">lrwxrwxrwx <span class="number">1</span> root root <span class="number">10</span> Jun  <span class="number">5</span> <span class="number">13</span>:<span class="number">24</span> edd-int13_dev83-part1 -&gt; ../../sdd1</span><br><span class="line">lrwxrwxrwx <span class="number">1</span> root root  <span class="number">9</span> Jun  <span class="number">5</span> <span class="number">13</span>:<span class="number">24</span> scsi-SATA_ST1000VX000-<span class="number">9</span>YW_S1D3PNHD -&gt; ../../sdc</span><br><span class="line">lrwxrwxrwx <span class="number">1</span> root root  <span class="number">9</span> Jun  <span class="number">5</span> <span class="number">13</span>:<span class="number">24</span> scsi-SATA_ST1000VX000-<span class="number">9</span>YW_S1D3PPH8 -&gt; ../../sdd</span><br><span class="line">lrwxrwxrwx <span class="number">1</span> root root <span class="number">10</span> Jun  <span class="number">5</span> <span class="number">13</span>:<span class="number">24</span> scsi-SATA_ST1000VX000-<span class="number">9</span>YW_S1D3PPH8-part1 -&gt; ../../sdd1</span><br><span class="line">lrwxrwxrwx <span class="number">1</span> root root  <span class="number">9</span> Jun  <span class="number">5</span> <span class="number">13</span>:<span class="number">24</span> scsi-SATA_ST1000VX000-<span class="number">9</span>YW_S1D4AGVJ -&gt; ../../sdb</span><br><span class="line">lrwxrwxrwx <span class="number">1</span> root root <span class="number">10</span> Jun  <span class="number">5</span> <span class="number">14</span>:<span class="number">14</span> scsi-SATA_ST1000VX000-<span class="number">9</span>YW_S1D4AGVJ-part1 -&gt; ../../sdb1</span><br><span class="line">lrwxrwxrwx <span class="number">1</span> root root  <span class="number">9</span> Jun  <span class="number">5</span> <span class="number">13</span>:<span class="number">24</span> scsi-SATA_ST1000VX000-<span class="number">9</span>YW_S1D4AGX3 -&gt; ../../sda</span><br><span class="line">lrwxrwxrwx <span class="number">1</span> root root <span class="number">10</span> Jun  <span class="number">5</span> <span class="number">13</span>:<span class="number">24</span> scsi-SATA_ST1000VX000-<span class="number">9</span>YW_S1D4AGX3-part1 -&gt; ../../sda1</span><br><span class="line">lrwxrwxrwx <span class="number">1</span> root root <span class="number">10</span> Jun  <span class="number">5</span> <span class="number">13</span>:<span class="number">24</span> scsi-SATA_ST1000VX000-<span class="number">9</span>YW_S1D4AGX3-part2 -&gt; ../../sda2</span><br><span class="line">lrwxrwxrwx <span class="number">1</span> root root <span class="number">10</span> Jun  <span class="number">5</span> <span class="number">13</span>:<span class="number">24</span> scsi-SATA_ST1000VX000-<span class="number">9</span>YW_S1D4AGX3-part3 -&gt; ../../sda3</span><br></pre></td></tr></table></figure></p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/03/24/配置xenserver本地存储/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-ubuntu无法关机" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/03/23/ubuntu无法关机/" class="article-date">
-  	<time datetime="2015-03-23T14:12:55.000Z" itemprop="datePublished">2015-03-23</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/03/23/ubuntu无法关机/">ubuntu无法关机</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>在/etc/default/halt 增加下面<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">INIT_HALT = POWEROFF</span><br></pre></td></tr></table></figure></p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/03/23/ubuntu无法关机/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-linux中KVM桥接网卡br0" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/03/23/linux中KVM桥接网卡br0/" class="article-date">
-  	<time datetime="2015-03-23T14:05:59.000Z" itemprop="datePublished">2015-03-23</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/03/23/linux中KVM桥接网卡br0/">linux中KVM桥接网卡br0</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>在centos虚拟化当中需要增加一个桥接网卡,然后将虚拟化当中的机器的网卡桥接到桥接网卡,下面将描述设置方法:</p>
-<p>查看现有网卡<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">[root@zb ~]# vim /etc/sysconfig/network-scripts/ifcfg-eth0&#10;DEVICE=eth0&#10;HWADDR=70:71:BC:1F:E4:86&#10;TYPE=Ethernet&#10;UUID=0213211a-d451-4944-881c-e7475b8bee34&#10;ONBOOT=yes&#10;NM_CONTROLLED=yes&#10;BOOTPROTO=static&#10;IPADDR=192.168.7.107&#10;NETMASK=255.255.0.0&#10;GATEWAY=192.168.1.1</span><br></pre></td></tr></table></figure></p>
-<p>将网卡信息copy一份到br0再进行修改</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/03/23/linux中KVM桥接网卡br0/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-ubuntu掉电出现检查文件系统的问题" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/03/23/ubuntu掉电出现检查文件系统的问题/" class="article-date">
-  	<time datetime="2015-03-23T14:04:00.000Z" itemprop="datePublished">2015-03-23</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/03/23/ubuntu掉电出现检查文件系统的问题/">ubuntu掉电出现检查文件系统的问题</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>修改:<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">/etc/default/rcS &#10;FSCKFIX=no &#20026; FSCKFIX=yes</span><br></pre></td></tr></table></figure></p>
-<p>出现这个情况的原因是硬件时钟偏移了<br>显示上次挂载根目录在未来时间。</p>
-<p>写于: 2013年11月28日<br>更新于: 2015年03月23日</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-ssh配好无密码登录（RSA公钥）后，还要密码登录的问题的解决办法" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/03/23/ssh配好无密码登录（RSA公钥）后，还要密码登录的问题的解决办法/" class="article-date">
-  	<time datetime="2015-03-23T05:01:44.000Z" itemprop="datePublished">2015-03-23</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/03/23/ssh配好无密码登录（RSA公钥）后，还要密码登录的问题的解决办法/">ssh配好无密码登录（RSA公钥）后，还要密码登录的问题的解决办法</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>首先删除 /root/.ssh目录<br>然后ssh-keygen 生成新的认证目录<br>然后检查能否免密码登陆<br>如果还不能可能是/root/目录的权限不对了 可能被异常改到777了<br>做操作<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">chmod <span class="number">650</span> /root/</span><br></pre></td></tr></table></figure></p>
-<p>然后再尝试看能不能免登陆访问</p>
-<p>写于: 2013年11月28日<br>更新于: 2015年03日23日</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-ubuntu服务器dns重启失效问题" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/03/23/ubuntu服务器dns重启失效问题/" class="article-date">
-  	<time datetime="2015-03-23T00:05:19.000Z" itemprop="datePublished">2015-03-23</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/03/23/ubuntu服务器dns重启失效问题/">ubuntu服务器dns重启失效问题</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="方法一_通过/etc/network/interfaces,在它的最后增加一句:">方法一 通过/etc/network/interfaces,在它的最后增加一句:</h3><figure class="highlight"><table><tr><td class="code"><pre><span class="line">dns-nameservers 8.8.8.8</span><br></pre></td></tr></table></figure>
-<p>8.8.8.8是Google提供的DNS服务，这里只是举一个例子,你也可以改成电信运营商的DNS。重启后DNS就生效了，这时候再看/etc/resolv.conf,最下面就多了一行:<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line"># Dynamic resolv.conf(5) file for glibc resolver(3) generated by resolvconf(8)&#10;#     DO NOT EDIT THIS FILE BY HAND -- YOUR CHANGES WILL BE OVERWRITTEN&#10;nameserver 8.8.8.8</span><br></pre></td></tr></table></figure></p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/03/23/ubuntu服务器dns重启失效问题/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-编译一个Centos6-4下可用的内核rpm升级包-3-8-13内核rpm包" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/03/23/编译一个Centos6-4下可用的内核rpm升级包-3-8-13内核rpm包/" class="article-date">
-  	<time datetime="2015-03-22T23:59:15.000Z" itemprop="datePublished">2015-03-23</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/03/23/编译一个Centos6-4下可用的内核rpm升级包-3-8-13内核rpm包/">编译一个Centos6.4下可用的内核rpm升级包-3.8.13内核rpm包</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>在Centos6.4下进行内核升级,采用内核源码的升级方式比较简单，但是需要升级的机器多的情况下进行内核升级就比较麻烦,并且编译内核的速度依赖于机器的性能,一般需要20分钟,而通过rpm内核包的方式进行安装,就比较快,一般在几分钟之内就可以完成内核的安装,本文档以3.8.13内核源码为例子进行的操作。<br>  根据网上的指导教程编译的rpm包，编译完成后只会生成如下两个rpm包:</p>
-<ul>
-<li>kernel-3.8.13-1.x86_64.rpm</li>
-<li>kernel-headers-3.8.13-1.x86_64.rpm</li>
-</ul>
-<p>而实际进行内核升级的时候还需要kernel-firmwsare-3.8.13-1.x86_64.rpm这个包,这个包是包含内核固件相关文件的,而在进行rpm打包的时候,这个包会内嵌到kernel-3.8.13-1.x86_64.rpm这个包当中去,而安装的时候系统没有找到这个包，进行升级的时候就会报错。<br>所以需要对内核源码编译文件进行一定的修改，这个地方需要修改的文件为linux-3.8.13/scripts/package/mkspec路径下的这个文件,具体修改如下(新版内核解决了这个问题,可以不需要修改,根据生成包的情况来看是否修改):</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/03/23/编译一个Centos6-4下可用的内核rpm升级包-3-8-13内核rpm包/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-expect循环的写法" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/03/23/expect循环的写法/" class="article-date">
-  	<time datetime="2015-03-22T23:55:53.000Z" itemprop="datePublished">2015-03-23</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/03/23/expect循环的写法/">expect循环的写法</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>脚本:<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">#!/usr/bin/expect&#10;spawn sensors-detect&#10;for &#123;set i 0&#125; &#123;$i&#60;=10&#125; &#123;incr i&#125; &#123;&#10;expect &#34;:&#34;&#10;send &#34;\n&#34;&#10;&#125;&#10;interact</span><br></pre></td></tr></table></figure></p>
-<p>解释:</p>
-<p>spawn是启动命令<br>for为循环的写法<br>interact为退出<br>这个脚本目的是在一次运行过程中不断模拟用户的enter操作</p>
-<p>写于:2013年08月12日<br>更新于: 2015年03月23日</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-linux系统启动的时候用脚本生成ssh密钥对（免输入enter）" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/03/22/linux系统启动的时候用脚本生成ssh密钥对（免输入enter）/" class="article-date">
-  	<time datetime="2015-03-22T15:07:52.000Z" itemprop="datePublished">2015-03-22</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/03/22/linux系统启动的时候用脚本生成ssh密钥对（免输入enter）/">linux系统启动的时候用脚本生成ssh密钥对（免输入enter）</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>默认执行ssh-keygen的时候会需要连续输入enter,脚本里面不能有交互,所以去掉enter的操作,脚本如下,脚本执行完成以后的效果是自己对自己免登陆,需要免登陆其他服务器就把自己本机的id_rsa.pub拷贝到其他机器的authorized_keys当中就可以了<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="shebang">#! /bin/sh</span></span><br><span class="line">ssh-keygen -t rsa <span class="operator">-f</span> /root/.ssh/id_rsa -q -N <span class="string">""</span></span><br><span class="line">cat /root/.ssh/id_rsa.pub &gt;&gt; /root/.ssh/authorized_keys</span><br></pre></td></tr></table></figure></p>
-<p>写于: 2013年08月07日<br>更新于: 2015年03月22日</p>
+        <h2 id="为什么写这个博客">为什么写这个博客</h2><p>博客转移了很多地方,从最开始的人人小站,到后来的CSDN,再到简书,换来换去直到看到还有个hexo,这个是搭建在github上的一个博客,只不过排版什么的可能需要自己来处理了,这个博客最大的优点就是简洁,可以很方便的找到自己需要了,打算用这个还有个原因是,看到了几个写的很好的技术文章正好来自这个平台,自己也尝试着把好东西都放到这里汇总</p>
+<p>很多东西真的非常喜欢,比如goagent,比如google,比如github,以及一些其他的开源的东西,也许很多人无法理解share是个什么感觉</p>
+<p>这个博客是我技术文章开始的地方,也是我和嘎嘎开始减肥的日子,也该活的有生气一些,准备数据化我们的减肥数据,也许这样更能激励自己</p>
+<p>谷歌的十大信条:</p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">1&#12289;&#20197;&#29992;&#25143;&#20026;&#20013;&#24515;,&#20854;&#20182;&#19968;&#20999;&#33258;&#28982;&#27700;&#21040;&#28192;&#25104;&#10;2&#12289;&#19987;&#24515;&#23558;&#19968;&#20214;&#20107;&#20570;&#21040;&#26497;&#33268;&#10;3&#12289;&#36234;&#24555;&#36234;&#22909;&#10;4&#12289;&#32593;&#32476;&#19978;&#20063;&#35762;&#27665;&#20027;&#10;5&#12289;&#20449;&#24687;&#38543;&#26102;&#38543;&#22320;&#21487;&#24471;&#10;6&#12289;&#36186;&#38065;&#19981;&#24517;&#20316;&#24694;&#10;7&#12289;&#20449;&#24687;&#26080;&#26497;&#38480;&#10;8&#12289;&#20449;&#24687;&#38656;&#27714;&#26080;&#22269;&#30028;&#10;9&#12289;&#35748;&#30495;&#19981;&#22312;&#30528;&#35013;&#10;10&#12289;&#36861;&#27714;&#26080;&#27490;&#22659;</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -715,7 +285,7 @@
   
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/page/3/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/5/">Next &raquo;</a>
+      <a class="extend prev" rel="prev" href="/page/3/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span>
     </nav>
   
 </div>

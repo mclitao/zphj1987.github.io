@@ -42,49 +42,6 @@
   </entry>
   
   <entry>
-    <title><![CDATA[nginx配置代理缓存]]></title>
-    <link href="http://yoursite.com/2015/07/14/nginx%E9%85%8D%E7%BD%AE%E4%BB%A3%E7%90%86%E7%BC%93%E5%AD%98/"/>
-    <id>http://yoursite.com/2015/07/14/nginx配置代理缓存/</id>
-    <published>2015-07-14T01:57:21.000Z</published>
-    <updated>2015-07-14T02:06:14.264Z</updated>
-    <content type="html"><![CDATA[<p>nginx可以实现反向代理的配置，并且可以使用缓存来加速，本文是简单的实现功能的配置，暂时没有做其他的优化的部分的配置，从网上的资料来看，很多配置都是没有讲哪些是必须配置的，我自己在配置过程中就发现没有生成缓存文件，下面来记录下配置的内容<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">upstream test&#123;&#10;            server 127.0.0.1:8080;&#10;        &#125;&#10;&#10;proxy_cache_path /var/cache/nginx/proxy_cache keys_zone=cache_zone:2000m max_size=1000m;&#10;&#10;server &#123;&#10;    listen       80;&#10;    server_name  localhost;&#10;    location / &#123;&#10;        proxy_pass http://127.0.0.1:8080;&#10;        proxy_cache cache_zone;&#10;        proxy_cache_valid  200 304 302 24h;&#10;    &#125;&#10;&#10;    error_page   500 502 503 504  /50x.html;&#10;&#10;    location = /50x.html &#123;&#10;        root   /usr/share/nginx/html;&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure></p>
-<a id="more"></a>
-<p>以上为我的配置文件，说明：<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">upstream test&#123;&#10;            server 127.0.0.1:8080;&#10;        &#125;</span><br></pre></td></tr></table></figure></p>
-<p>这个字段是配置代理的部分，这个配置没有做多机的配置，只是将本机的nginx的80端口配置到了apache的8080端口，<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">proxy_cache_path /var/cache/nginx/proxy_cache keys_zone=cache_zone:2000m max_size=1000m;</span><br></pre></td></tr></table></figure></p>
-<p>这个是配置缓存的放置的路径的，这个路径最好是跟proxy_temp在一个分区上，后面是写得名称，共享内存大小，缓存的最大值<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">location / &#123;&#10;    proxy_pass http://127.0.0.1:8080;&#10;    proxy_cache cache_zone;&#10;    proxy_cache_valid  200 304 302 24h;&#10;&#125;</span><br></pre></td></tr></table></figure></p>
-<p>这个是缓存的关键配置，proxy_pass是将请求转发到你要代理的机器上，proxy_cache是指明使用的规则，上面的keys_zone，下面的proxy_cache_valid是配置允许缓存的请求，这个地方不配置就无法生成缓存的文件，</p>
-<p>到这里基本的代理缓存就配置成功了，可以通过访问来检查是否生成了缓存文件，下载检查下是否web直接将请求返回了前端</p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>nginx可以实现反向代理的配置，并且可以使用缓存来加速，本文是简单的实现功能的配置，暂时没有做其他的优化的部分的配置，从网上的资料来看，很多配置都是没有讲哪些是必须配置的，我自己在配置过程中就发现没有生成缓存文件，下面来记录下配置的内容<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">upstream test&#123;&#10;            server 127.0.0.1:8080;&#10;        &#125;&#10;&#10;proxy_cache_path /var/cache/nginx/proxy_cache keys_zone=cache_zone:2000m max_size=1000m;&#10;&#10;server &#123;&#10;    listen       80;&#10;    server_name  localhost;&#10;    location / &#123;&#10;        proxy_pass http://127.0.0.1:8080;&#10;        proxy_cache cache_zone;&#10;        proxy_cache_valid  200 304 302 24h;&#10;    &#125;&#10;&#10;    error_page   500 502 503 504  /50x.html;&#10;&#10;    location = /50x.html &#123;&#10;        root   /usr/share/nginx/html;&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure></p>]]>
-    
-    </summary>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[linux服务器远程网络开机（wake on lan）]]></title>
-    <link href="http://yoursite.com/2015/05/27/linux%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%BF%9C%E7%A8%8B%E7%BD%91%E7%BB%9C%E5%BC%80%E6%9C%BA%EF%BC%88wake-on-lan%EF%BC%89/"/>
-    <id>http://yoursite.com/2015/05/27/linux服务器远程网络开机（wake-on-lan）/</id>
-    <published>2015-05-27T06:35:40.000Z</published>
-    <updated>2015-05-27T06:37:19.701Z</updated>
-    <content type="html"><![CDATA[<h3 id="检查服务器是否支持远程网络开机">检查服务器是否支持远程网络开机</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab5101 ~]<span class="comment"># ethtool eth0</span></span><br><span class="line">    Settings <span class="keyword">for</span> eth0:</span><br><span class="line">        Supported ports: [ TP ]</span><br><span class="line">        Supported link modes: <span class="number">10</span>baseT/Half <span class="number">10</span>baseT/Full </span><br><span class="line">                              <span class="number">100</span>baseT/Half <span class="number">100</span>baseT/Full </span><br><span class="line">                              <span class="number">1000</span>baseT/Full </span><br><span class="line">        Supported pause frame use: No</span><br><span class="line">        Supports auto-negotiation: Yes</span><br><span class="line">        Advertised link modes: </span><br><span class="line">                             <span class="number">10</span>baseT/Half <span class="number">10</span>baseT/Full </span><br><span class="line">                             <span class="number">100</span>baseT/Half <span class="number">100</span>baseT/Full </span><br><span class="line">                             <span class="number">1000</span>baseT/Full </span><br><span class="line">        Advertised pause frame use: No</span><br><span class="line">        Advertised auto-negotiation: Yes</span><br><span class="line">        Speed: <span class="number">1000</span>Mb/s</span><br><span class="line">        Duplex: Full</span><br><span class="line">        Port: Twisted Pair</span><br><span class="line">        PHYAD: <span class="number">2</span></span><br><span class="line">        Transceiver: internal</span><br><span class="line">        Auto-negotiation: onMDI-X: on</span><br><span class="line">        Supports Wake-on: pumbg</span><br><span class="line">        Wake-on: g</span><br><span class="line">        Current message level: <span class="number">0</span>x00000007 (<span class="number">7</span>) </span><br><span class="line">                               drv probe linkLink detected: yes</span><br></pre></td></tr></table></figure>
-<p>注意这两项：<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">Supports Wake-on: pumbg&#10;Wake-on: g</span><br></pre></td></tr></table></figure></p>
-<a id="more"></a>
-<p>可以通过命令设置，也可以去bios中设置<br>d表示禁用，g表示开启<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab5101 ~]<span class="comment"># ethtool -s eth0 wol g</span></span><br></pre></td></tr></table></figure></p>
-<p>拿到网卡的mac地址<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab5101 ~]<span class="comment"># ifconfig </span></span><br><span class="line">eth0  Link encap:Ethernet HWaddr <span class="number">00</span>:<span class="number">30</span>:<span class="number">67</span>:<span class="number">6</span>D:<span class="number">3</span>D:<span class="number">7</span>C </span><br><span class="line">     inet addr:<span class="number">192.168</span>.<span class="number">5.101</span> Bcast:<span class="number">192.168</span>.<span class="number">255.255</span> Mask:<span class="number">255.255</span>.<span class="number">0.0</span> </span><br><span class="line">     inet6 addr: fe80::<span class="number">215</span>:<span class="number">17</span>ff:fed0:be85/<span class="number">64</span> Scope:Link</span><br><span class="line">     UP BROADCAST RUNNING MULTICAST MTU:<span class="number">1500</span> Metric:<span class="number">1</span> </span><br><span class="line">     RX packets:<span class="number">17752</span> errors:<span class="number">0</span> dropped:<span class="number">4</span> overruns:<span class="number">0</span> frame:<span class="number">0</span> </span><br><span class="line">     TX packets:<span class="number">1101</span> errors:<span class="number">0</span> dropped:<span class="number">0</span> overruns:<span class="number">0</span> carrier:<span class="number">0</span> </span><br><span class="line">     collisions:<span class="number">0</span> txqueuelen:<span class="number">1000</span> </span><br><span class="line">     RX bytes:<span class="number">1288183</span> (<span class="number">1.2</span> MiB) TX bytes:<span class="number">262525</span> (<span class="number">256.3</span> KiB) </span><br><span class="line">     Interrupt:<span class="number">16</span> Memory:b1100000-b1120000 </span><br><span class="line">lo   Link encap:Local Loopback inet addr:<span class="number">127.0</span>.<span class="number">0.1</span> Mask:<span class="number">255.0</span>.<span class="number">0.0</span> </span><br><span class="line">     inet6 addr: ::<span class="number">1</span>/<span class="number">128</span> Scope:Host </span><br><span class="line">     UP LOOPBACK RUNNING MTU:<span class="number">65536</span> Metric:<span class="number">1</span> </span><br><span class="line">     RX packets:<span class="number">62566</span> errors:<span class="number">0</span> dropped:<span class="number">0</span> overruns:<span class="number">0</span> frame:<span class="number">0</span> </span><br><span class="line">     TX packets:<span class="number">62566</span> errors:<span class="number">0</span> dropped:<span class="number">0</span> overruns:<span class="number">0</span> carrier:<span class="number">0</span> </span><br><span class="line">     collisions:<span class="number">0</span> txqueuelen:<span class="number">0</span> </span><br><span class="line">     RX bytes:<span class="number">91540393</span> (<span class="number">87.2</span> MiB) TX bytes:<span class="number">91540393</span> (<span class="number">87.2</span> MiB)</span><br></pre></td></tr></table></figure></p>
-<p>得到：<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">HWaddr 00:15:17:D0:BE:85</span><br></pre></td></tr></table></figure></p>
-<p>在另外一台服务器上执行：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab901 ~]<span class="comment"># ether-wake -i eth0 00:30:67:6d:3d:7c</span></span><br></pre></td></tr></table></figure></p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<h3 id="检查服务器是否支持远程网络开机">检查服务器是否支持远程网络开机</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab5101 ~]<span class="comment"># ethtool eth0</span></span><br><span class="line">    Settings <span class="keyword">for</span> eth0:</span><br><span class="line">        Supported ports: [ TP ]</span><br><span class="line">        Supported link modes: <span class="number">10</span>baseT/Half <span class="number">10</span>baseT/Full </span><br><span class="line">                              <span class="number">100</span>baseT/Half <span class="number">100</span>baseT/Full </span><br><span class="line">                              <span class="number">1000</span>baseT/Full </span><br><span class="line">        Supported pause frame use: No</span><br><span class="line">        Supports auto-negotiation: Yes</span><br><span class="line">        Advertised link modes: </span><br><span class="line">                             <span class="number">10</span>baseT/Half <span class="number">10</span>baseT/Full </span><br><span class="line">                             <span class="number">100</span>baseT/Half <span class="number">100</span>baseT/Full </span><br><span class="line">                             <span class="number">1000</span>baseT/Full </span><br><span class="line">        Advertised pause frame use: No</span><br><span class="line">        Advertised auto-negotiation: Yes</span><br><span class="line">        Speed: <span class="number">1000</span>Mb/s</span><br><span class="line">        Duplex: Full</span><br><span class="line">        Port: Twisted Pair</span><br><span class="line">        PHYAD: <span class="number">2</span></span><br><span class="line">        Transceiver: internal</span><br><span class="line">        Auto-negotiation: onMDI-X: on</span><br><span class="line">        Supports Wake-on: pumbg</span><br><span class="line">        Wake-on: g</span><br><span class="line">        Current message level: <span class="number">0</span>x00000007 (<span class="number">7</span>) </span><br><span class="line">                               drv probe linkLink detected: yes</span><br></pre></td></tr></table></figure>
-<p>注意这两项：<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">Supports Wake-on: pumbg&#10;Wake-on: g</span><br></pre></td></tr></table></figure></p>]]>
-    
-    </summary>
-    
-  </entry>
-  
-  <entry>
     <title><![CDATA[dm-crypt加密磁盘]]></title>
     <link href="http://yoursite.com/2015/05/25/dm-crypt%E5%8A%A0%E5%AF%86%E7%A3%81%E7%9B%98/"/>
     <id>http://yoursite.com/2015/05/25/dm-crypt加密磁盘/</id>
@@ -134,144 +91,6 @@
   </entry>
   
   <entry>
-    <title><![CDATA[linux系统克隆系统盘]]></title>
-    <link href="http://yoursite.com/2015/05/12/linux%E7%B3%BB%E7%BB%9F%E5%85%8B%E9%9A%86%E7%B3%BB%E7%BB%9F%E7%9B%98/"/>
-    <id>http://yoursite.com/2015/05/12/linux系统克隆系统盘/</id>
-    <published>2015-05-12T06:24:31.000Z</published>
-    <updated>2015-05-12T06:45:36.786Z</updated>
-    <content type="html"><![CDATA[<p>本文将介绍两种方式的系统盘的完整的备份，两种方式各有优缺点，需要根据实际情况来进行选择</p>
-<ul>
-<li>使用dd的完整镜像克隆的方式</li>
-<li>使用tar去备份数据，安装grub的方式</li>
-</ul>
-<h4 id="dd方式">dd方式</h4><p>优点：<br>简单，一条命令 dd if=/dev/sda of=/dev/sdb 就可以进行完整的系统备份了</p>
-<p>缺点：<br>时间非常长，备份一个系统盘，无论数据多少，系统盘全部会读取一遍，时间比较久<br>备份目的盘需要大于原盘<br>分区无法调整，根原分区一模一样</p>
-<h4 id="tar方式">tar方式</h4><p>优点：<br>时间短，只需要备份实际磁盘上的数据即可<br>自定义，可以修改分区的大小，可以控制备份的类容，可以定期备份<br>对目的盘大小无限制，比较灵活</p>
-<p>缺点：<br>人为修改东西比较多，需要手动去修改一些信息<br>当然在掌握了一定的linux基础的情况下建议是使用tar方式的，，下面将介绍tar方式的处理方式：</p>
-<a id="more"></a>
-<h3 id="给准备用来备份的磁盘进行分区和格式化">给准备用来备份的磁盘进行分区和格式化</h3><p>首先使用 df -h 来检查当前的挂载的系统分区：<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">Filesystem      Size  Used Avail Use% Mounted on&#10;/dev/sdb5       285G  4.1G  266G   2% /&#10;tmpfs           2.0G  4.0K  2.0G   1% /dev/shm&#10;/dev/sdb1       239M   81M  141M  37% /boot&#10;/dev/sdb2       6.7G   17M  6.3G   1% /var/log</span><br></pre></td></tr></table></figure></p>
-<p>查看磁盘的大小：<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">[root@zhongbo ~]# fdisk -l&#9;&#10;Disk /dev/sdb: 320.1 GB, 320072933376 bytes</span><br></pre></td></tr></table></figure></p>
-<p>本例子中备用磁盘为sda,大小为240G：<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">[root@zhongbo ~]# fdisk -l /dev/sda &#10;Disk /dev/sda: 240.1 GB, 240057409536 bytes</span><br></pre></td></tr></table></figure></p>
-<p>查看系统盘详细的分区信息<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">[root@zhongbo ~]# parted -l&#10;Model: ATA WDC WD3200AAJS-2 (scsi)&#10;Disk /dev/sdb: 320GB&#10;Sector size (logical/physical): 512B/512B&#10;Partition Table: msdos&#10;&#10;Number  Start   End     Size    Type      File system     Flags&#10; 1      1049kB  263MB   262MB   primary   ext4            boot&#10; 2      263MB   7603MB  7340MB  primary   ext4&#10; 3      7603MB  9751MB  2147MB  primary   linux-swap(v1)&#10; 4      9751MB  320GB   310GB   extended&#10; 5      9752MB  320GB   310GB   logical   ext4</span><br></pre></td></tr></table></figure></p>
-<p>可以看到分区表模式为msdos，分区信息为含有扩展分区，逻辑分区了，下面为新准备的盘进行分区，分区信息跟原来尽量一样，这个地方也可以根据自己的需要进行调整<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">[root@zhongbo ~]# parted /dev/sda&#10;(parted) mklabel msdos &#10;(parted) mkpart primary 1049kB 263&#10;(parted) mkpart primary 263 7603&#10;(parted) mkpart primary 7603 9751 &#10;(parted) mkpart extended 9751 100%&#10;(parted) mkpart logical 9752 100%&#10;(parted) p                                                                &#10;Model: ATA INTEL SSDSC2BF24 (scsi)&#10;Disk /dev/sda: 240GB&#10;Sector size (logical/physical): 512B/512B&#10;Partition Table: msdos&#10;&#10;Number  Start   End     Size    Type      File system     Flags&#10; 1      1049kB  263MB   262MB   primary   ext4&#10; 2      263MB   7603MB  7340MB  primary   ext4&#10; 3      7603MB  9751MB  2147MB  primary   linux-swap(v1)&#10; 4      9751MB  240GB   230GB   extended                  lba&#10; 5      9752MB  240GB   230GB   logical   ext4</span><br></pre></td></tr></table></figure></p>
-<p>格式化硬盘</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@zhongbo ~]<span class="comment"># mkfs.ext4 /dev/sda1  </span></span><br><span class="line">[root@zhongbo ~]<span class="comment"># mkfs.ext4 /dev/sda2</span></span><br><span class="line">[root@zhongbo ~]<span class="comment"># mkswap /dev/sda3 </span></span><br><span class="line">[root@zhongbo ~]<span class="comment"># mkfs.ext4 /dev/sda5</span></span><br></pre></td></tr></table></figure>
-<h3 id="备份原始磁盘上的数据到备份目的盘">备份原始磁盘上的数据到备份目的盘</h3><p>在本地系统盘上创建一个备份的目录，将数据打包放到这个目录下面</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@zhongbo ~]<span class="comment"># mkdir /backup</span></span><br></pre></td></tr></table></figure>
-<p>按这个系统来说需要备份三个分区/ , /var/log/, /boot </p>
-<p>开始备份/<br>所有的操作都进入到/目录下操作<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@zhongbo ~]<span class="comment"># cd /</span></span><br><span class="line">[root@zhongbo /]<span class="comment"># tar zcvpf /backup/gen.tar.gz -C /  --exclude=boot/* --exclude=var/log/* --exclude=backup/*  --exclude=lost+found/* --exclude=mnt/*  --exclude=dev/* --exclude=proc/* --exclude=tmp/* --exclude=sys/* .</span></span><br></pre></td></tr></table></figure></p>
-<p>注意这里排除了很多不需要备份的目录</p>
-<p>备份boot分区<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@zhongbo /]<span class="comment"># tar zcvpf /backup/boot.tar.gz -C /boot/ .</span></span><br></pre></td></tr></table></figure></p>
-<p>备份/var/log<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@zhongbo /]<span class="comment"># tar zcvpf /backup/log.tar.gz -C /var/log/ .</span></span><br></pre></td></tr></table></figure></p>
-<p>恢复/的数据<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@zhongbo /]<span class="comment"># mkdir /mnt/gen</span></span><br><span class="line">[root@zhongbo /]<span class="comment"># mount /dev/sda5 /mnt/gen/</span></span><br><span class="line">[root@zhongbo /]<span class="comment"># tar zxvpf /backup/gen.tar.gz -C /mnt/gen/</span></span><br></pre></td></tr></table></figure></p>
-<p>恢复/boot的数据<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@zhongbo /]<span class="comment"># mkdir /mnt/boot</span></span><br><span class="line">[root@zhongbo /]<span class="comment"># mount /dev/sda1 /mnt/boot/</span></span><br><span class="line">[root@zhongbo /]<span class="comment"># tar zxvpf /backup/boot.tar.gz -C /mnt/boot/</span></span><br></pre></td></tr></table></figure></p>
-<p>恢复/var/log<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@zhongbo /]<span class="comment"># mkdir /mnt/log</span></span><br><span class="line">[root@zhongbo /]<span class="comment"># mount /dev/sda2 /mnt/log/</span></span><br><span class="line">[root@zhongbo /]<span class="comment"># tar zxvpf /backup/log.tar.gz -C /mnt/log/</span></span><br></pre></td></tr></table></figure></p>
-<h3 id="修改启动文件">修改启动文件</h3><p>拿到新的分区的blkid<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">[root@zhongbo /]# blkid /dev/sda1&#10;/dev/sda1: UUID=&#34;a6ca4369-109c-47ed-a522-7e1752a6681b&#34; TYPE=&#34;ext4&#34; &#10;&#23545;&#24212;boot&#10;[root@zhongbo /]# blkid /dev/sda2&#10;/dev/sda2: UUID=&#34;f775f248-57d8-49a7-9334-60bc75a53685&#34; TYPE=&#34;ext4&#34; &#10;&#23545;&#24212;log&#10;&#10;[root@zhongbo /]# blkid /dev/sda5&#10;/dev/sda5: UUID=&#34;6942c7d6-486c-4d51-bb4d-a126ee0c05b1&#34; TYPE=&#34;ext4&#34;&#10;&#23545;&#24212;/&#10;&#10;[root@zhongbo /]# blkid /dev/sda3&#10;/dev/sda3: UUID=&#34;154784d8-dbe3-45c8-8fcb-cb4f5a14ae44&#34; TYPE=&#34;swap&#34; &#10;&#23545;&#24212;swap</span><br></pre></td></tr></table></figure></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@zhongbo /]<span class="comment"># vim /mnt/gen/etc/fstab </span></span><br><span class="line">修改对应分区的uuid信息</span><br><span class="line"></span><br><span class="line">修改menu.list </span><br><span class="line">[root@zhongbo ~]<span class="comment"># vim /mnt/boot/grub/menu.lst</span></span><br><span class="line">修改root= 根分区的uuid，第一次做的时候，就是在这个地方忘了修改，进入系统后能够看到启动画面，但是没法启动内核，修改好了后，就可以正常的启动了</span><br></pre></td></tr></table></figure>
-<h3 id="安装grub">安装grub</h3><p>查找grub分区<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">grub&#62; find /grub/grub.conf&#10;find /grub/grub.conf&#10; (hd0,0)&#10; (hd1,0)&#10;grub&#62;</span><br></pre></td></tr></table></figure></p>
-<p>修改其中的新盘上的grub然后分辨新的grub在哪台机器上，我的新盘是(hd0,0)<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">grub&gt; root (hd0,<span class="number">0</span>) </span><br><span class="line">grub&gt; setup (hd0)    </span><br><span class="line">setup (hd0)</span><br><span class="line"> Checking <span class="keyword">if</span> <span class="string">"/boot/grub/stage1"</span> exists... no</span><br><span class="line"> Checking <span class="keyword">if</span> <span class="string">"/grub/stage1"</span> exists... yes</span><br><span class="line"> Checking <span class="keyword">if</span> <span class="string">"/grub/stage2"</span> exists... yes</span><br><span class="line"> Checking <span class="keyword">if</span> <span class="string">"/grub/e2fs_stage1_5"</span> exists... yes</span><br><span class="line"> Running <span class="string">"embed /grub/e2fs_stage1_5 (hd0)"</span>...  <span class="number">27</span> sectors are embedded.</span><br><span class="line">succeeded</span><br><span class="line"> Running <span class="string">"install /grub/stage1 (hd0) (hd0)1+27 p (hd0,0)/grub/stage2 /grub/grub.conf"</span>... succeeded</span><br><span class="line">Done.</span><br><span class="line">grub&gt; quit</span><br></pre></td></tr></table></figure></p>
-<p>完成后，系统盘就完全备份了一份了，重启就可以启动一个一模一样的系统了</p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>本文将介绍两种方式的系统盘的完整的备份，两种方式各有优缺点，需要根据实际情况来进行选择</p>
-<ul>
-<li>使用dd的完整镜像克隆的方式</li>
-<li>使用tar去备份数据，安装grub的方式</li>
-</ul>
-<h4 id="dd方式">dd方式</h4><p>优点：<br>简单，一条命令 dd if=/dev/sda of=/dev/sdb 就可以进行完整的系统备份了</p>
-<p>缺点：<br>时间非常长，备份一个系统盘，无论数据多少，系统盘全部会读取一遍，时间比较久<br>备份目的盘需要大于原盘<br>分区无法调整，根原分区一模一样</p>
-<h4 id="tar方式">tar方式</h4><p>优点：<br>时间短，只需要备份实际磁盘上的数据即可<br>自定义，可以修改分区的大小，可以控制备份的类容，可以定期备份<br>对目的盘大小无限制，比较灵活</p>
-<p>缺点：<br>人为修改东西比较多，需要手动去修改一些信息<br>当然在掌握了一定的linux基础的情况下建议是使用tar方式的，，下面将介绍tar方式的处理方式：</p>]]>
-    
-    </summary>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[linux下制作软件包安装服务器]]></title>
-    <link href="http://yoursite.com/2015/04/28/linux%E4%B8%8B%E5%88%B6%E4%BD%9C%E8%BD%AF%E4%BB%B6%E5%8C%85%E5%AE%89%E8%A3%85%E6%9C%8D%E5%8A%A1%E5%99%A8/"/>
-    <id>http://yoursite.com/2015/04/28/linux下制作软件包安装服务器/</id>
-    <published>2015-04-28T08:43:29.000Z</published>
-    <updated>2015-04-28T09:24:20.702Z</updated>
-    <content type="html"><![CDATA[<p>linux下的软件包在有网络的情况下比较好安装，在ubuntu下，更新sourcelist，然后使用apt-get就可以很方便的安装包，在centos下面，更新yum列表，然后使用yum也可以进行方便的软件安装，但是在没有网络的情况下就比较难安装，可以用一个个包的安装的方式去安装，这个在少量的包的情况下比较好处理，在多的情况下就比较麻烦了，本篇文档，就是介绍了在无网的情况下，根据自己的需要制作内网的包的安装服务器</p>
-<h2 id="centos系列">centos系列</h2><h3 id="使用光驱作为安装源">使用光驱作为安装源</h3><p>1、将光驱挂载到服务器的本地目录</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@node1 ~]<span class="comment"># mount /dev/cdrom /mnt</span></span><br><span class="line">mount: block device /dev/sr0 is write-protected, mounting <span class="built_in">read</span>-only</span><br></pre></td></tr></table></figure>
-<a id="more"></a>
-<p>2、修改本地的yum源文件，将源指向光驱挂载的目录<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">vim /etc/yum.repos.d/myiso.repo</span><br></pre></td></tr></table></figure></p>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">&#10;&#28155;&#21152;&#10;[myiso]&#10;name=myiso&#10;baseurl=file:///mnt&#10;gpgcheck=0&#10;enabled=1&#10;gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-6</span><br></pre></td></tr></table></figure>
-<p>3、更新本地的源缓存</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@node1 yum.repos.d]<span class="comment"># yum makecache</span></span><br><span class="line">Loaded plugins: security</span><br><span class="line">myiso                                 | <span class="number">3.6</span> kB     <span class="number">00</span>:<span class="number">00</span> ... </span><br><span class="line">myiso/group_gz                        |  <span class="number">17</span> kB     <span class="number">00</span>:<span class="number">00</span> ... </span><br><span class="line">myiso/filelists_db                    | <span class="number">3.4</span> MB     <span class="number">00</span>:<span class="number">00</span> ... </span><br><span class="line">myiso/primary_db                      | <span class="number">6.8</span> MB     <span class="number">00</span>:<span class="number">00</span> ... </span><br><span class="line">myiso/other_db                        | <span class="number">2.3</span> MB     <span class="number">00</span>:<span class="number">00</span> ... </span><br><span class="line">Metadata Cache Created</span><br></pre></td></tr></table></figure>
-<p>做完上面的就可以使用本地的光驱的中的包使用yum安装了</p>
-<h3 id="使用iso文件作为安装源">使用iso文件作为安装源</h3><p>1、将iso文件拷贝到服务器，然后挂载到服务器本地</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@node1 ~]<span class="comment"># mount -t iso9660 OracleLinux-R6-U5-Server-x86_64-dvd.\[V41362-01\].iso /mnt -o loop</span></span><br><span class="line">mount: /root/OracleLinux-R6-U5-Server-x86_64-dvd.[V41362-<span class="number">01</span>].iso is write-protected, mounting <span class="built_in">read</span>-only</span><br></pre></td></tr></table></figure>
-<p>2、修改本地的yum源文件，将源指向光驱挂载的目录</p>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">vim /etc/yum.repos.d/myiso.repo&#10;&#28155;&#21152;&#10;[myiso]&#10;name=myiso&#10;baseurl=file:///mnt&#10;gpgcheck=0&#10;enabled=1&#10;gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-6</span><br></pre></td></tr></table></figure>
-<p>3、更新本地的源缓存<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">[root@node1 yum.repos.d]# yum makecache&#10;Loaded plugins: security&#10;myiso                                 | 3.6 kB     00:00 ... &#10;myiso/group_gz                        |  17 kB     00:00 ... &#10;myiso/filelists_db                    | 3.4 MB     00:00 ... &#10;myiso/primary_db                      | 6.8 MB     00:00 ... &#10;myiso/other_db                        | 2.3 MB     00:00 ... &#10;Metadata Cache Created</span><br></pre></td></tr></table></figure></p>
-<p>做完上面的就可以使用本地的iso中的包使用yum安装了</p>
-<h3 id="使用安装包做一个ftp的yum安装服务器">使用安装包做一个ftp的yum安装服务器</h3><p>1、安装vsftpd服务器<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rpm -ivh vsftpd-<span class="number">2.2</span>.<span class="number">2</span>-<span class="number">11</span>.el6_4.<span class="number">1</span>.x86_64.rpm</span><br></pre></td></tr></table></figure></p>
-<p>这个包在操作iso中的包路径下面有</p>
-<p>2、配置ftp服务器<br>默认的ftp目录为/var/ftp/pub/<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">&#21019;&#24314;&#28304;&#30446;&#24405;&#10;mkdir /var/ftp/pub/centos&#10;&#23558;iso&#25346;&#36733;&#21040;&#28304;&#30446;&#24405;&#65292;&#20063;&#21487;&#20197;&#30452;&#25509;&#23558;&#25991;&#20214;&#25335;&#36125;&#21040;&#36825;&#20010;&#30446;&#24405;&#24403;&#20013;&#21435;&#10;mount -t iso9660 OracleLinux-R6-U5-Server-x86_64-dvd.\[V41362-01\].iso /var/ftp/pub/centos/  -o loop</span><br></pre></td></tr></table></figure></p>
-<p>配置完成后，镜像的下载地址就为:<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">ftp://youripaddress/pub/centos/</span><br></pre></td></tr></table></figure></p>
-<p>我的为:<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">ftp://172.16.81.129/pub/centos/</span><br></pre></td></tr></table></figure></p>
-<p>3、使用的机器的配置<br>修改yum源<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">vim /etc/yum.repos.d/ftpcentos.repo&#10;&#28155;&#21152;&#10;[ftpcentos]&#10;name=ftpcentos&#10;baseurl=ftp://172.16.81.129/pub/centos/&#10;enabled=1</span><br></pre></td></tr></table></figure></p>
-<p>4、更新yum的缓存<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">[root@node2 yum.repos.d]# yum makecache&#10;Loaded plugins: security&#10;ftpcentos                          | 3.7 kB     00:00     &#10;ftpcentos/filelists_db             | 3.3 MB     00:00     &#10;ftpcentos/primary_db               | 3.0 MB     00:00     &#10;ftpcentos/other_db                 | 1.3 MB     00:00     &#10;ftpcentos/group_gz                 | 203 kB     00:00     &#10;Metadata Cache Created</span><br></pre></td></tr></table></figure></p>
-<h3 id="制作自己的定制源">制作自己的定制源</h3><p>1、安装制作源的工具<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">rpm -ivh deltarpm-3.5-0.5.20090913git.el6.x86_64.rpm&#10;rpm -ivh python-deltarpm-3.5-0.5.20090913git.el6.x86_64.rpm &#10;rpm -ivh createrepo-0.9.9-18.0.1.el6.noarch.rpm</span><br></pre></td></tr></table></figure></p>
-<p>这三个包在默认的iso当中有</p>
-<p>2、将安装包拷贝到指定的目录</p>
-<p>本例子使用leveldb，snappy举例，snappy是leveldb的依赖包。<br>将<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">leveldb-1.7.0-2.el6.x86_64.rpm&#10;snappy-1.0.5-1.el6.x86_64.rpm</span><br></pre></td></tr></table></figure></p>
-<p>拷贝到<br>/usr/src/myepel/目录当中去</p>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">[root@node1 src]# createrepo myepel/&#10;Spawning worker 0 with 2 pkgs&#10;Workers Finished&#10;Gathering worker results&#10;&#10;Saving Primary metadata&#10;Saving file lists metadata&#10;Saving other metadata&#10;Generating sqlite DBs&#10;Sqlite DBs complete</span><br></pre></td></tr></table></figure>
-<p>检查目录下面会生成repodata，存储一些元数据信息<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">[root@node1 src]# ll myepel/&#10;total 200&#10;-rw-r--r-- 1 root root 162052 Apr 16 08:45 leveldb-1.7.0-2.el6.x86_64.rpm&#10;drwxr-xr-x 2 root root   4096 Apr 16 08:48 repodata&#10;-rw-r--r-- 1 root root  34372 Apr 16 08:45 snappy-1.0.5-1.el6.x86_64.rpm</span><br></pre></td></tr></table></figure></p>
-<p>3、修改源列表</p>
-<p>同样的将yum源的目录指向这个myepel/<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">[myiso]&#10;name=myiso&#10;baseurl=file:///usr/src/myepel/&#10;gpgcheck=0&#10;enabled=1</span><br></pre></td></tr></table></figure></p>
-<p>4、更新yum缓存<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">[root@node1 yum.repos.d]# yum makecache&#10;[root@node1 yum.repos.d]# yum install leveldb</span><br></pre></td></tr></table></figure></p>
-<p>即可安装了</p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>linux下的软件包在有网络的情况下比较好安装，在ubuntu下，更新sourcelist，然后使用apt-get就可以很方便的安装包，在centos下面，更新yum列表，然后使用yum也可以进行方便的软件安装，但是在没有网络的情况下就比较难安装，可以用一个个包的安装的方式去安装，这个在少量的包的情况下比较好处理，在多的情况下就比较麻烦了，本篇文档，就是介绍了在无网的情况下，根据自己的需要制作内网的包的安装服务器</p>
-<h2 id="centos系列">centos系列</h2><h3 id="使用光驱作为安装源">使用光驱作为安装源</h3><p>1、将光驱挂载到服务器的本地目录</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@node1 ~]<span class="comment"># mount /dev/cdrom /mnt</span></span><br><span class="line">mount: block device /dev/sr0 is write-protected, mounting <span class="built_in">read</span>-only</span><br></pre></td></tr></table></figure>]]>
-    
-    </summary>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[windows下命令行设置静态IP]]></title>
-    <link href="http://yoursite.com/2015/04/03/windows%E4%B8%8B%E5%91%BD%E4%BB%A4%E8%A1%8C%E8%AE%BE%E7%BD%AE%E9%9D%99%E6%80%81IP/"/>
-    <id>http://yoursite.com/2015/04/03/windows下命令行设置静态IP/</id>
-    <published>2015-04-03T04:25:48.000Z</published>
-    <updated>2015-05-13T01:42:41.093Z</updated>
-    <content type="html"><![CDATA[<p>windows 10 预览版出现无法设置静态IP的bug，只能通过命令行进行设置，开启powershell，然后执行下列的命令即可<br>下面的“以太网 3” 为你设置的网卡的网卡名称,注意不要忘了空格</p>
-<p>设置静态IP:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">netsh interface ipv4 <span class="built_in">set</span> address <span class="string">"以太网 3"</span>  static <span class="number">192.168</span>.<span class="number">0.71</span> <span class="number">255.255</span>.<span class="number">0.0</span> <span class="number">192.168</span>.<span class="number">26.1</span></span><br></pre></td></tr></table></figure></p>
-<p>增加静态IP:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">netsh interface ipv4 <span class="built_in">set</span> dns <span class="string">"以太网 3"</span>  static <span class="number">223.5</span>.<span class="number">5.5</span></span><br></pre></td></tr></table></figure></p>
-<p>增加静态IP:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">netsh interface ipv4 add address <span class="string">"以太网 3"</span> <span class="number">11.12</span>.<span class="number">0.0</span> <span class="number">255.255</span>.<span class="number">0.0</span></span><br></pre></td></tr></table></figure></p>
-<p>重置为dhcp:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">netsh interface ipv4 <span class="built_in">set</span> address <span class="string">"以太网 3"</span>  dhcp</span><br></pre></td></tr></table></figure></p>
-<p>基本设置应该够用了</p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>windows 10 预览版出现无法设置静态IP的bug，只能通过命令行进行设置，开启powershell，然后执行下列的命令即可<br>下面的“以太网 3” 为你设置的网卡的网卡名称,注意不要忘了空格</p>
-<p>设置静态IP:<br><figure class="hi]]>
-    </summary>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[shell脚本的自动交互]]></title>
-    <link href="http://yoursite.com/2015/04/02/shell%E8%84%9A%E6%9C%AC%E7%9A%84%E8%87%AA%E5%8A%A8%E4%BA%A4%E4%BA%92/"/>
-    <id>http://yoursite.com/2015/04/02/shell脚本的自动交互/</id>
-    <published>2015-04-02T09:22:40.000Z</published>
-    <updated>2015-04-02T09:29:51.484Z</updated>
-    <content type="html"><![CDATA[<p>使用expect来自动应答shell的交互</p>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">#!/usr/bin/expect&#10;spawn openssl req -new -key server.key -out server1.csr&#10;expect &#34;Country Name&#34;&#10;send &#34;\n&#34;&#10;expect &#34;State or Province Name&#34;&#10;send &#34;\n&#34;&#10;interact</span><br></pre></td></tr></table></figure>]]></content>
-    <summary type="html">
-    <![CDATA[<p>使用expect来自动应答shell的交互</p>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">#!/usr/bin/expect&#10;spawn opens]]>
-    </summary>
-    
-  </entry>
-  
-  <entry>
     <title><![CDATA[history命令的优化]]></title>
     <link href="http://yoursite.com/2015/03/31/history%E5%91%BD%E4%BB%A4%E7%9A%84%E4%BC%98%E5%8C%96/"/>
     <id>http://yoursite.com/2015/03/31/history命令的优化/</id>
@@ -295,168 +114,6 @@
 <ul>
 <li>让历史记录里面带有时间</li>
 <li>让所有终端命]]>
-    </summary>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[压缩css与js]]></title>
-    <link href="http://yoursite.com/2015/03/25/%E5%8E%8B%E7%BC%A9css%E4%B8%8Ejs/"/>
-    <id>http://yoursite.com/2015/03/25/压缩css与js/</id>
-    <published>2015-03-25T04:52:01.000Z</published>
-    <updated>2015-09-19T11:22:41.956Z</updated>
-    <content type="html"><![CDATA[<p>使用yuicompressor 进行css和js的压缩</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="shebang">#! /bin/sh	</span></span><br><span class="line">yasuocss=<span class="string">"java -jar /root/yuicompressor-2.4.8.jar --type css  --charset utf-8"</span></span><br><span class="line">yasuojs=<span class="string">"java -jar /root/yuicompressor-2.4.8.jar --type js  --charset utf-8"</span></span><br><span class="line"><span class="comment">######################css</span></span><br><span class="line"><span class="keyword">for</span> file <span class="keyword">in</span>  ./SGMag/sites/media/css/sgmag/*.css ./SGMag/sites/media/css/*.css</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"<span class="variable">$file</span>"</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"<span class="variable">$file</span>"</span>bk</span><br><span class="line">mv <span class="variable">$file</span>  <span class="string">"<span class="variable">$file</span>"</span>bk</span><br><span class="line"><span class="variable">$yasuocss</span>  <span class="variable">$file</span><span class="string">"bk"</span> &gt;  <span class="variable">$file</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"<span class="variable">$file</span>"</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"><span class="comment">#######################js</span></span><br><span class="line"><span class="keyword">for</span> file <span class="keyword">in</span>  ./SGMag/sites/media/component/*.js ./SGMag/sites/media/*.js  ./SGMag/sites/media/pagejs/*.js  </span><br><span class="line"><span class="keyword">do</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"<span class="variable">$file</span>"</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"<span class="variable">$file</span>"</span>bk</span><br><span class="line">mv <span class="variable">$file</span>  <span class="string">"<span class="variable">$file</span>"</span>bk</span><br><span class="line"><span class="variable">$yasuojs</span>  <span class="variable">$file</span><span class="string">"bk"</span> &gt;  <span class="variable">$file</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"<span class="variable">$file</span>"</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"><span class="comment">########################报错处理</span></span><br><span class="line">cp -rf  ./SGMag/sites/media/pagejs/cluster/hosttools.jsbk  ./SGMag/sites/media/pagejs/cluster/hosttools.js</span><br></pre></td></tr></table></figure>]]></content>
-    <summary type="html">
-    <![CDATA[<p>使用yuicompressor 进行css和js的压缩</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"></span><br><span class]]>
-    </summary>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[ubuntu配置简单的DNS服务器]]></title>
-    <link href="http://yoursite.com/2015/03/24/ubuntu%E9%85%8D%E7%BD%AE%E7%AE%80%E5%8D%95%E7%9A%84DNS%E6%9C%8D%E5%8A%A1%E5%99%A8/"/>
-    <id>http://yoursite.com/2015/03/24/ubuntu配置简单的DNS服务器/</id>
-    <published>2015-03-24T05:39:44.000Z</published>
-    <updated>2015-03-26T05:56:08.102Z</updated>
-    <content type="html"><![CDATA[<p>之所以说是简单的服务器，实现的功能很简单，通过这个dns server 查询制定域名的时候，能够根据设置的值来返回IP，当前的需求是需要轮询的返回IP</p>
-<p>DNS 轮询机制会受到多方面的影响，如：A记录的TTL时间长短的影响；别的 DNS 服务器 Cache 的影响；windows 客户端也有一个DNS Cache。这些都会影响 DNS 轮询的效果。</p>
-<p>下面的配置就是实现解析test.zp.com到不同的IP地址</p>
-<h3 id="安装dns_server软件包">安装dns server软件包</h3><p>ubuntu下是通过安装bind9软件包来配置dns-server的<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab5106 ~]<span class="comment"># apt-get install bind9</span></span><br></pre></td></tr></table></figure></p>
-<a id="more"></a>
-<h3 id="配置dns">配置dns</h3><p>配置文件的路径在/etc/bind路径下面</p>
-<h4 id="添加一个zone">添加一个zone</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">	root@ubuntu14:/etc/<span class="built_in">bind</span><span class="comment"># vim /etc/bind/named.conf.local </span></span><br><span class="line">	添加下面，语法可以参照/etc/<span class="built_in">bind</span>/zones.rfc1918中的语法添加，如下：</span><br><span class="line"> </span><br><span class="line">	zone <span class="string">"zp.com"</span>  &#123; <span class="built_in">type</span> master; file <span class="string">"/etc/bind/db.zp.com"</span>; &#125;;</span><br><span class="line">```	</span><br><span class="line">修改db的配置文件</span><br><span class="line">```bash</span><br><span class="line">	root@ubuntu14:/etc/<span class="built_in">bind</span><span class="comment"># cp db.local db.zp.com</span></span><br><span class="line">	root@ubuntu14:/etc/<span class="built_in">bind</span><span class="comment"># vim db.zp.com</span></span><br><span class="line">	;</span><br><span class="line">	; BIND data file <span class="keyword">for</span> <span class="built_in">local</span> loopback interface</span><br><span class="line">	;</span><br><span class="line">	<span class="variable">$TTL</span>    <span class="number">604800</span></span><br><span class="line">	@       IN      SOA     zp.com. root.localhost. (</span><br><span class="line">	                              <span class="number">2</span>         ; Serial</span><br><span class="line">	                         <span class="number">604800</span>         ; Refresh</span><br><span class="line">	                          <span class="number">86400</span>         ; Retry</span><br><span class="line">	                        <span class="number">2419200</span>         ; Expire</span><br><span class="line">	                         <span class="number">604800</span> )       ; Negative Cache TTL</span><br><span class="line">	;</span><br><span class="line">	@       IN      NS      localhost.</span><br><span class="line">	@       IN      A       <span class="number">127.0</span>.<span class="number">0.1</span></span><br><span class="line">	@       IN      AAAA    ::<span class="number">1</span></span><br><span class="line">	<span class="built_in">test</span>       IN      A       <span class="number">192.168</span>.<span class="number">0.11</span></span><br><span class="line">	<span class="built_in">test</span>       IN      A       <span class="number">192.168</span>.<span class="number">0.12</span></span><br><span class="line">	<span class="built_in">test</span>       IN      A       <span class="number">192.168</span>.<span class="number">0.13</span></span><br><span class="line">	<span class="built_in">test</span>       IN      A       <span class="number">192.168</span>.<span class="number">0.14</span></span><br><span class="line">	<span class="built_in">test</span>       IN      A       <span class="number">192.168</span>.<span class="number">0.15</span></span><br><span class="line">	<span class="built_in">test</span>       IN      A       <span class="number">192.168</span>.<span class="number">0.16</span></span><br></pre></td></tr></table></figure>
-<p>修改<code>/etc/bind/named.conf.option</code> 配置文件，在 <code>named.conf.option</code> 中可以设置 bind 的 round-robin 的给出结果的顺序：</p>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">rrset-order &#123; order cyclic; &#125;;&#10;&#10;rrset-order &#25903;&#25345;&#19977;&#20010;&#21442;&#25968;&#65306;fixed, random, cyclic &#12290;&#10;fixed &#20250;&#23558;&#22810;&#20010;A&#35760;&#24405;&#25353;&#37197;&#32622;&#25991;&#20214;&#30340;&#39034;&#24207;&#22266;&#23450;&#32473;&#20986;&#10;random &#20250;&#38543;&#26426;&#32473;&#20986;&#10;cyclic &#20250;&#24490;&#29615;&#32473;&#20986;</span><br></pre></td></tr></table></figure>
-<h3 id="重启服务">重启服务</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@ubuntu14:/etc/<span class="built_in">bind</span><span class="comment"># /etc/init.d/bind9 restart</span></span><br></pre></td></tr></table></figure>
-<h3 id="检查配置效果">检查配置效果</h3><figure class="highlight"><table><tr><td class="code"><pre><span class="line">&#20462;&#25913;&#22495;&#21517;&#35299;&#26512;&#37197;&#32622;&#25991;&#20214;&#10;root@ubuntu14:/etc/bind# vim /etc/resolv.conf &#10;nameserver 192.168.0.122&#10;&#28155;&#21152;&#20320;&#30340;&#22495;&#21517;&#26381;&#21153;&#22120;&#30340;IP&#22320;&#22336;&#10;&#10;&#36890;&#36807;&#22810;&#27425;ping&#22495;&#21517;&#26816;&#26597;&#36820;&#22238;&#30340;&#32467;&#26524;&#10;root@ubuntu14:/etc/bind# ping test.zp.com&#10;PING test.zp.com (192.168.0.13) 56(84) bytes of data.&#10;root@ubuntu14:/etc/bind# ping test.zp.com&#10;PING test.zp.com (192.168.0.14) 56(84) bytes of data.</span><br></pre></td></tr></table></figure>
-<hr>
-<h3 id="后话">后话</h3><p>window的dns缓存的处理办法：<br>清空dns缓存<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ipconfig /flushdns</span><br></pre></td></tr></table></figure></p>
-<p>显示缓存的dns信息<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ipconfig/displaydns</span><br></pre></td></tr></table></figure></p>
-<p>临时禁用dns缓存<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">net stop dnscache</span><br></pre></td></tr></table></figure></p>
-<p>启动dns缓存<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">net start dnscache</span><br></pre></td></tr></table></figure></p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>之所以说是简单的服务器，实现的功能很简单，通过这个dns server 查询制定域名的时候，能够根据设置的值来返回IP，当前的需求是需要轮询的返回IP</p>
-<p>DNS 轮询机制会受到多方面的影响，如：A记录的TTL时间长短的影响；别的 DNS 服务器 Cache 的影响；windows 客户端也有一个DNS Cache。这些都会影响 DNS 轮询的效果。</p>
-<p>下面的配置就是实现解析test.zp.com到不同的IP地址</p>
-<h3 id="安装dns_server软件包">安装dns server软件包</h3><p>ubuntu下是通过安装bind9软件包来配置dns-server的<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab5106 ~]<span class="comment"># apt-get install bind9</span></span><br></pre></td></tr></table></figure></p>]]>
-    
-    </summary>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[mdtest测试工具]]></title>
-    <link href="http://yoursite.com/2015/03/24/mdtest%E6%B5%8B%E8%AF%95%E5%B7%A5%E5%85%B7/"/>
-    <id>http://yoursite.com/2015/03/24/mdtest测试工具/</id>
-    <published>2015-03-24T05:33:52.000Z</published>
-    <updated>2015-03-26T05:59:39.814Z</updated>
-    <content type="html"><![CDATA[<p>软件介绍</p>
-<p> mdstest是软件的元数据操作基准测试工具，用来模拟对文件或者目录的open、stat、close操作，然后报告性能</p>
-<p>下载软件压缩包：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum install openmpi openmpi-devel -y</span><br><span class="line">在/root/.bashrc中添加（注意也要添加mdtest的路径）</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:/usr/lib64/openmpi/bin/</span><br><span class="line"></span><br><span class="line"><span class="built_in">source</span> /root/.bashrc</span><br><span class="line">下载</span><br><span class="line">[root@lab8105 ~]<span class="comment"># wget http://sourceforge.net/projects/mdtest/files/latest/download</span></span><br><span class="line">解压</span><br><span class="line">[root@lab8105 ~]<span class="comment"># tar -xvf mdtest-1.9.3.tgz</span></span><br><span class="line">修改makefile：</span><br><span class="line">mdtest: mdtest.c</span><br><span class="line">       mpicc -Wall -D $(OS) $(LARGE_FILE) $(MDTEST_FLAGS) -g -o mdtest mdtest.c -lm</span><br></pre></td></tr></table></figure></p>
-<a id="more"></a>
-<p>参数如下：<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">Usage:  mdtest [-b #] [-B] [-c] [-C] [-d testdir] [-D] [-e] [-E] [-f first] [-F]&#10;               [-h] [-i iterations] [-I #] [-l last] [-L] [-n #] [-N #] [-p seconds]&#10;               [-r] [-R[#]] [-s #] [-S] [-t] [-T] [-u] [-v] [-V #] [-w #] [-y]&#10;               [-z #]&#10;&#10;    -b: branching factor of hierarchical directory structure&#10;&#9;&#9;&#30446;&#24405;&#26641;&#30340;&#20998;&#25903;&#21442;&#25968;&#10;    -B: no barriers between phases (create/stat/remove)&#10;&#9;&#9; &#19981;&#21516;&#30340;&#38454;&#27573;&#27809;&#26377;&#38548;&#31163; (create/stat/remove)&#65307;&#10;    -c: collective creates: task 0 does all creates and deletes&#10;&#9;&#9;&#20849;&#21516;&#21019;&#24314;: task 0 &#23436;&#25104;&#25152;&#26377;&#30340;&#21019;&#24314;&#21644;&#21024;&#38500;&#24037;&#20316;&#65307;&#10;    -C: only create files/dirs&#10;&#9;&#9;&#21482;&#21019;&#24314;&#25991;&#20214;&#25110;&#30446;&#24405;&#65292;&#19981;&#20316;&#21024;&#38500;&#65307;&#10;    -d: the directory in which the tests will run&#10;&#9;&#9;&#25351;&#20986;&#27979;&#35797;&#36816;&#34892;&#30340;&#30446;&#24405;&#65288;&#33509;&#19981;&#25351;&#23450;&#65292;&#21017;&#40664;&#35748;&#24403;&#21069;&#30446;&#24405;&#65289;&#65307;&#10;    -D: perform test on directories only (no files)&#10;&#9;&#9;&#21482;&#23545;&#30446;&#24405;&#25805;&#20316;&#36827;&#34892;&#27979;&#35797;&#65288;&#19981;&#21253;&#25324;&#25991;&#20214;&#65289;&#65307;&#10;    -e: number of bytes to read from each file&#10;&#9;&#9;&#20174;&#27599;&#20010;&#25991;&#20214;&#35835;&#20986;&#30340;&#25991;&#20214;&#22823;&#23567;&#10;    -E: only read files&#10;&#9;&#9;&#21482;&#35835;&#21462;&#25991;&#20214;&#10;    -f: first number of tasks on which the test will run&#10;&#9;&#9;&#39318;&#20808;&#36816;&#34892;&#30340;&#20219;&#21153;&#21495;&#65307;&#10;    -F: perform test on files only (no directories)&#10;&#9;&#9;&#21482;&#21019;&#24314;&#25991;&#20214;&#65292;&#27809;&#26377;&#30446;&#24405;&#65307;&#10;    -h: prints help message&#10;&#9;&#9;&#36755;&#20986;&#24110;&#21161;&#20449;&#24687;&#10;    -i: number of iterations the test will run&#10;&#9;&#9;&#27979;&#35797;&#36845;&#20195;&#24490;&#29615;&#27425;&#25968;&#65307;&#10;    -I: number of items per tree node&#10;&#9;&#9;&#27599;&#20010;&#26641;&#33410;&#28857;&#21253;&#21547;&#30340;&#39033;&#30446;&#10;    -l: last number of tasks on which the test will run&#10;&#9;&#9;&#26368;&#21518;&#36816;&#34892;&#30340;&#20219;&#21153;&#21495;&#10;    -L: files/dirs created only at leaf level&#10;&#9;&#9;&#21482;&#22312;&#30446;&#24405;&#26641;&#30340;&#8220;&#21494;&#23376;&#8221;&#23618;&#21019;&#24314;&#25991;&#20214;/&#30446;&#24405;&#65307;&#10;    -n: every task will create/stat/remove # files/dirs per tree&#10;&#9;&#9;&#27599;&#20010;&#20219;&#21153;&#38656;&#35201;&#20877;&#27599;&#26869;&#26641;&#20013;create/stat/remove&#30340;&#25991;&#20214;/&#30446;&#24405;&#25968;&#65307;&#10;    -N: stride # between neighbor tasks for file/dir stat (local=0)&#10;&#9;&#9;&#36941;&#21382;&#26102;&#25351;&#23450;&#21644;&#30456;&#37051;&#20219;&#21153;&#30340;&#36328;&#24230;&#10;    -p: pre-iteration delay (in seconds)&#10;&#9;&#9;&#27599;&#27425;&#36845;&#20195;&#20043;&#38388;&#24310;&#26102;&#65288;&#20197;&#31186;&#35745;&#31639;&#65289;&#10;    -r: only remove files/dirs&#10;&#9;&#9; &#21024;&#38500;&#25991;&#20214;/&#30446;&#24405;&#10;    -R: randomly stat files/dirs (optional seed can be provided)&#10;&#9;&#9;&#38543;&#26426;&#36941;&#21382;&#25991;&#20214;/&#30446;&#24405; &#65307;&#10;    -s: stride between the number of tasks for each test&#10;&#9;&#9;&#27599;&#27425;&#27979;&#35797;&#30340;&#20219;&#21153;&#25968;&#30340;&#36328;&#24230;&#10;    -S: shared file access (file only, no directories)&#10;&#9;&#9;&#20849;&#20139;&#25991;&#20214;&#35775;&#38382;&#65288;&#21482;&#38024;&#23545;&#25991;&#20214;&#25805;&#20316;&#65289;&#65307;&#10;    -t: time unique working directory overhead&#10;&#9;&#9;&#35760;&#24405;&#29305;&#23450;&#30446;&#24405;&#30340;&#26102;&#38388;&#24320;&#38144;&#10;    -T: only stat files/dirs&#10;&#9;&#9;&#10;    -u: unique working directory for each task&#10;&#9;&#9;&#20026;&#27599;&#20010;&#20219;&#21153;&#25351;&#23450;&#24037;&#20316;&#30446;&#24405;&#65307;&#10;    -v: verbosity (each instance of option increments by one)&#10;&#9;&#9;&#10;    -V: verbosity value&#10;    -w: number of bytes to write to each file&#10;&#9;&#9; &#20889;&#21040;&#27599;&#20010;&#25991;&#20214;&#30340;&#23383;&#33410;&#25968;&#10;    -y: sync file after write completion&#10;&#9;&#9; &#20877;&#20889;&#25191;&#34892;&#23436;&#21518;&#21516;&#27493;&#25991;&#20214;&#21040;&#30913;&#30424;&#65288;&#21516;&#27493;&#20889;&#65289;&#10;    -z: depth of hierarchical directory structure&#10;&#9;&#9;&#30446;&#24405;&#26641;&#30340;&#28145;&#24230;&#65307;&#10;&#10;NOTES:&#10; * -N allows a &#34;read-your-neighbor&#34; approach by setting stride to&#10;    tasks-per-node. Do not use it with -B, as it creates race conditions.&#10;&#9;&#20801;&#35768;&#34;read-your-neighbor&#34; &#26041;&#27861;&#10; * -d allows multiple paths for the form &#39;-d fullpath1@fullpath2@fullpath3&#39;&#10;      &#21487;&#20197;&#25351;&#23450;&#22810;&#20010;&#27979;&#35797;&#36335;&#24452;&#65292;&#39;-d fullpath1@fullpath2@fullpath3&#39;&#10; * -B allows each task to time itself. The aggregate results reflect this&#10;    change.&#10;&#9;&#20801;&#35768;&#27599;&#20010;&#20219;&#21153;&#23545;&#33258;&#24049;&#36827;&#34892;&#35745;&#26102;&#65307;&#10; * -n and -I cannot be used together.  -I specifies the number of files/dirs&#10;   created per tree node, whereas the -n specifies the total number of&#10;   files/dirs created over an entire tree.  When using -n, integer division is&#10;   used to determine the number of files/dirs per tree node.  (E.g. if -n is&#10;   10 and there are 4 tree nodes (z=1 and b=3), there will be 2 files/dirs per&#10;   tree node.)&#10;&#9;&#10;&#9; * -R and -T can be used separately.  -R merely indicates that if files/dirs&#10;   are going to be stat&#39;ed, then they will be stat&#39;ed randomly.&#10;   &#19981;&#33021;&#21516;&#26102;&#20351;&#29992;&#65292;&#22240;&#20026;&#25351;&#23450;&#20102;&#27599;&#20010;&#26641;&#33410;&#28857;&#30340;&#25991;&#20214;/&#30446;&#24405;&#25968;&#37327;&#65292;&#32780;-I&#25351;&#23450;&#30340;&#26159;&#25972;&#26869;&#26641;&#30340;&#25991;&#20214;/&#30446;&#24405;&#25968;&#37327;&#12290;&#10;&#10;Illustration of terminology:&#10;&#10;                     Hierarchical directory structure (tree)&#10;&#10;                                   =======&#10;                                  |       |  (tree node)&#10;                                   =======&#10;                                  /   |   \&#10;                            ------    |    ------&#10;                           /          |          \&#10;                       =======     =======     =======&#10;                      |       |   |       |   |       |    (leaf level)&#10;                       =======     =======     =======&#10;&#10;    In this example, the tree has a depth of one (z=1) and branching factor of&#10;    three (b=3).  The node at the top of the tree is the root node.  The level&#10;    of nodes furthest from the root is the leaf level.  All trees created by&#10;    mdtest are balanced.&#10;&#9;&#36825;&#20010;&#20363;&#23376;&#20013;&#65292;&#30446;&#24405;&#26641;&#28145;&#24230;&#20026;1&#65288;z=1&#65289;,&#27599;&#20010;&#33410;&#28857;&#20998;&#25903;&#20026;3&#65288;b=3&#65289;.&#26368;&#19978;&#38754;&#30340;&#33410;&#28857;&#20026;&#26681;&#33410;&#28857;&#65292;</span><br></pre></td></tr></table></figure></p>
-<p>关于openmpi的软件的使用</p>
-<p>openmpi是并行的运行程序，配置的时候需要注意下<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">&#22686;&#21152;&#24182;&#34892;&#30340;&#36816;&#34892;&#33410;&#28857;&#10;[root@lab8105 ~]# vim /etc/openmpi-x86_64/openmpi-default-hostfile&#10;&#28155;&#21152;&#10;lab8105 slots=1&#10;lab8106 slots=1&#10;&#29305;&#21035;&#27880;&#24847;&#21152;slots &#36825;&#20010;&#26159;&#37197;&#32622;&#26435;&#37325;&#30340;&#65292;&#22914;&#26524;&#19981;&#37197;&#32622;&#65292;&#31532;&#19968;&#26465;&#26377;&#40664;&#35748;&#26435;&#37325;&#65292;&#23601;&#26080;&#27861;&#22312;&#25968;&#30446;&#23567;&#26102;&#36827;&#34892;&#22343;&#34913;&#25805;&#20316;&#10;&#26816;&#26597;&#26159;&#21542;&#37197;&#32622;&#25104;&#21151;&#65292;np&#20026;&#25805;&#20316;&#32447;&#31243;&#25968;&#10;[root@lab8105 ~]# mpirun  --allow-run-as-root -np 2 hostname&#10;lab8105&#10;lab8106&#10;&#22914;&#26524;&#24819;&#21333;&#26426;&#25191;&#34892;&#22810;&#36827;&#31243;&#65292;&#21487;&#20197;&#29992;-host&#25351;&#23450;&#20027;&#26426;&#10;[root@lab8105 ~]# mpirun -host lab8105  --allow-run-as-root -np 2 hostname</span><br></pre></td></tr></table></figure></p>
-<h3 id="单机下多进程测试">单机下多进程测试</h3><figure class="highlight"><table><tr><td class="code"><pre><span class="line">2 task on 1 node&#10;[root@lab8105 ~]# mpirun -host lab8105  --allow-run-as-root -np 2 mdtest -I 10  -z 5 -b 2 -d /mnt/zptest/ -t -c 2&#10;-- started at 01/27/2015 21:06:23 --&#10;&#10;mdtest-1.9.3 was launched with 2 total task(s) on 1 node(s)&#10;Command line used: mdtest -I 10 -z 5 -b 2 -d /mnt/zptest/ -t -c 2&#10;Path: /mnt/zptest&#10;FS: 6.5 TiB   Used FS: 59.2%   Inodes: 0.6 Mi   Used Inodes: 100.0%&#10;&#10;2 tasks, 1260 files/directories&#10;&#10;SUMMARY: (of 1 iterations)&#10;   Operation                      Max            Min           Mean        Std Dev&#10;   ---------                      ---            ---           ----        -------&#10;   Directory creation:        312.088        312.088        312.088          0.000&#10;   Directory stat    :      73447.245      73447.245      73447.245          0.000&#10;   Directory removal :        255.755        255.755        255.755          0.000&#10;   File creation     :        638.824        638.824        638.824          0.000&#10;   File stat         :      86747.366      86747.366      86747.366          0.000&#10;   File read         :      84434.232      84434.232      84434.232          0.000&#10;   File removal      :        207.545        207.545        207.545          0.000&#10;   Tree creation     :         39.062         39.062         39.062          0.000&#10;   Tree removal      :         46.971         46.971         46.971          0.000&#10;&#10;-- finished at 01/27/2015 21:06:43 --</span><br></pre></td></tr></table></figure>
-<h3 id="多机并发测试">多机并发测试</h3><figure class="highlight"><table><tr><td class="code"><pre><span class="line">&#22914;&#19979;&#26174;&#31034;&#30340;2 task on 2 node&#10;&#10;[root@lab8105 ~]#  mpirun  --allow-run-as-root -np 2 mdtest -I 10  -z 5 -b 2 -d /mnt/zptest/ -t -c 2&#10;-- started at 01/27/2015 21:04:35 --&#10;&#10;mdtest-1.9.3 was launched with 2 total task(s) on 2 node(s)&#10;Command line used: mdtest -I 10 -z 5 -b 2 -d /mnt/zptest/ -t -c 2&#10;Path: /mnt/zptest&#10;FS: 6.5 TiB   Used FS: 59.2%   Inodes: 0.6 Mi   Used Inodes: 100.0%&#10;&#10;2 tasks, 1260 files/directories&#10;&#10;SUMMARY: (of 1 iterations)&#10;   Operation                      Max            Min           Mean        Std Dev&#10;   ---------                      ---            ---           ----        -------&#10;   Directory creation:        312.355        312.355        312.355          0.000&#10;   Directory stat    :       1611.000       1611.000       1611.000          0.000&#10;   Directory removal :        127.333        127.333        127.333          0.000&#10;   File creation     :        309.295        309.295        309.295          0.000&#10;   File stat         :     113257.534     113257.534     113257.534          0.000&#10;   File read         :     203458.057     203458.057     203458.057          0.000&#10;   File removal      :         98.523         98.523         98.523          0.000&#10;   Tree creation     :         36.566         36.566         36.566          0.000&#10;   Tree removal      :         20.191         20.191         20.191          0.000&#10;&#10;-- finished at 01/27/2015 21:05:12 --</span><br></pre></td></tr></table></figure>
-<p>关于目录生成的问题：<br>这个是 -z 2 -b 3<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 mnt]<span class="comment"># ls mdtest2/#test-dir.0/mdtest_tree.0/</span></span><br><span class="line">mdtest_tree.<span class="number">1</span>  mdtest_tree.<span class="number">2</span>  mdtest_tree.<span class="number">3</span></span><br><span class="line">[root@lab8106 mnt]<span class="comment"># ls mdtest2/#test-dir.0/mdtest_tree.0/mdtest_tree.1/</span></span><br><span class="line">mdtest_tree.<span class="number">4</span>  mdtest_tree.<span class="number">5</span>  mdtest_tree.<span class="number">6</span></span><br></pre></td></tr></table></figure></p>
-<p>这个是以这个目录开始的<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 mnt]<span class="comment"># ls mdtest2/#test-dir.0/mdtest_tree.0/</span></span><br></pre></td></tr></table></figure></p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>软件介绍</p>
-<p> mdstest是软件的元数据操作基准测试工具，用来模拟对文件或者目录的open、stat、close操作，然后报告性能</p>
-<p>下载软件压缩包：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum install openmpi openmpi-devel -y</span><br><span class="line">在/root/.bashrc中添加（注意也要添加mdtest的路径）</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:/usr/lib64/openmpi/bin/</span><br><span class="line"></span><br><span class="line"><span class="built_in">source</span> /root/.bashrc</span><br><span class="line">下载</span><br><span class="line">[root@lab8105 ~]<span class="comment"># wget http://sourceforge.net/projects/mdtest/files/latest/download</span></span><br><span class="line">解压</span><br><span class="line">[root@lab8105 ~]<span class="comment"># tar -xvf mdtest-1.9.3.tgz</span></span><br><span class="line">修改makefile：</span><br><span class="line">mdtest: mdtest.c</span><br><span class="line">       mpicc -Wall -D $(OS) $(LARGE_FILE) $(MDTEST_FLAGS) -g -o mdtest mdtest.c -lm</span><br></pre></td></tr></table></figure></p>]]>
-    
-    </summary>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[cgroup实践-资源控制]]></title>
-    <link href="http://yoursite.com/2015/03/24/cgroup%E5%AE%9E%E8%B7%B5-%E8%B5%84%E6%BA%90%E6%8E%A7%E5%88%B6/"/>
-    <id>http://yoursite.com/2015/03/24/cgroup实践-资源控制/</id>
-    <published>2015-03-24T05:32:19.000Z</published>
-    <updated>2015-03-26T06:03:51.257Z</updated>
-    <content type="html"><![CDATA[<p>1、Cgroup安装</p>
-<p>安装Cgroups需要libcap-devel和libcgroup两个相关的包<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">	yum install gcc libcap-devel </span><br><span class="line">```	</span><br><span class="line"><span class="number">2</span>、Cgroup挂载配置</span><br><span class="line">```raw</span><br><span class="line">	Cgroup对应服务名称为cgconfig，cgconfig默认采用“多挂载点”挂载。经过实际测试，发现在CentOS环境中应采用“单挂载点”进行挂载，因此应当卸载原有cgroup文件系统，并禁用cgconfig。</span><br><span class="line">	cgclear或者sudo service cgconfig stop <span class="comment"># 停止cgconfig，卸载cgroup目录</span></span><br><span class="line">	sudo chkconfig cgconfig off          <span class="comment"># 禁用cgconfig服务，避免其开机启动</span></span><br><span class="line">	然后采用“单挂载点”方式重新挂载cgroup。</span><br><span class="line">	可以直接手动挂载，这样仅当次挂载成功。</span><br><span class="line">	mount -t cgroup none /cgroup</span><br><span class="line">	然后编辑/etc/fstab/，输入下列内容。这样每次开机后都会自动挂载。</span><br><span class="line">	none   /cgroup  cgroup  defaults   <span class="number">0</span> <span class="number">0</span></span><br></pre></td></tr></table></figure></p>
-<a id="more"></a>
-<p>3、常用的Cgroup相关命令和配置文件<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">&#9;service cgconfig status|start|stop|restart    #&#26597;&#30475;&#24050;&#23384;&#22312;&#23376;&#31995;&#32479;&#10;&#9;lssubsys &#8211;am    #&#26597;&#30475;&#24050;&#23384;&#22312;&#23376;&#31995;&#32479;&#10;&#9;cgclear   # &#28165;&#38500;&#25152;&#26377;&#25346;&#36733;&#28857;&#20869;&#37096;&#25991;&#20214;&#65292;&#30456;&#24403;&#20110;service  cgconfig stop&#10;&#9;cgconfigparser -l /etc/cgconfig.conf    #&#37325;&#26032;&#25346;&#36733;&#10;&#9;&#10;&#9;Cgroup&#40664;&#35748;&#25346;&#36733;&#28857;&#65288;CentOS&#65289;&#65306;/cgroup&#10;&#9;cgconfig&#37197;&#32622;&#25991;&#20214;&#65306;/etc/cgconfig.conf&#10;```&#9;&#10;4&#12289;libcgroup Man Page&#31616;&#20171;&#10;```raw&#10;&#9;man 1 cgclassify -- cgclassify&#21629;&#20196;&#26159;&#29992;&#26469;&#23558;&#36816;&#34892;&#30340;&#20219;&#21153;&#31227;&#21160;&#21040;&#19968;&#20010;&#25110;&#32773;&#22810;&#20010;cgroup&#12290;&#10;&#9;man 1 cgclear -- cgclear &#21629;&#20196;&#26159;&#29992;&#26469;&#21024;&#38500;&#23618;&#32423;&#20013;&#30340;&#25152;&#26377;cgroup&#12290;&#10;&#9;man 5 cgconfig.conf -- &#22312;cgconfig.conf&#25991;&#20214;&#20013;&#23450;&#20041;cgroup&#12290;&#10;&#9;man 8 cgconfigparser -- cgconfigparser&#21629;&#20196;&#35299;&#26512;cgconfig.conf&#25991;&#20214;&#21644;&#24182;&#25346;&#36733;&#23618;&#32423;&#12290;&#10;&#9;&#10;&#9;man 1 cgcreate -- cgcreate&#22312;&#23618;&#32423;&#20013;&#21019;&#24314;&#26032;cgroup&#12290;&#10;&#9;man 1 cgdelete -- cgdelete&#21629;&#20196;&#21024;&#38500;&#25351;&#23450;&#30340;cgroup&#12290;&#10;&#9;man 1 cgexec -- cgexec&#21629;&#20196;&#22312;&#25351;&#23450;&#30340;cgroup&#20013;&#36816;&#34892;&#20219;&#21153;&#12290;&#10;&#9;man 1 cgget -- cgget&#21629;&#20196;&#26174;&#31034;cgroup&#21442;&#25968;&#12290;&#10;&#9;man 5 cgred.conf -- cgred.conf&#26159;cgred&#26381;&#21153;&#30340;&#37197;&#32622;&#25991;&#20214;&#12290;&#10;&#9;man 5 cgrules.conf -- cgrules.conf &#21253;&#21547;&#29992;&#26469;&#20915;&#23450;&#20309;&#26102;&#20219;&#21153;&#26415;&#35821;&#26576;&#20123;  cgroup&#30340;&#35268;&#21017;&#12290;&#10;&#9;&#10;&#9;man 8 cgrulesengd -- cgrulesengd &#22312;  cgroup &#20013;&#21457;&#24067;&#20219;&#21153;&#12290;&#10;&#9;man 1 cgset -- cgset &#21629;&#20196;&#20026;  cgroup &#35774;&#23450;&#21442;&#25968;&#12290;&#10;&#9;man 1 lscgroup -- lscgroup &#21629;&#20196;&#21015;&#20986;&#23618;&#32423;&#20013;&#30340;  cgroup&#12290;&#10;&#9;man 1 lssubsys -- lssubsys &#21629;&#20196;&#21015;&#20986;&#21253;&#21547;&#25351;&#23450;&#23376;&#31995;&#32479;&#30340;&#23618;&#32423;&#12290;</span><br></pre></td></tr></table></figure></p>
-<h3 id="测试一：限制cpu的资源">测试一：限制cpu的资源</h3><p>测试后验证了可以做到：</p>
-<ul>
-<li>限制进程的cpu占用百分比</li>
-<li>限制多个进程组的之间的cpu使用权重</li>
-<li>指定进程的使用的cpu和内存组（绑定cpu）</li>
-</ul>
-<p>跑一个耗cpu的脚本<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">x=<span class="number">0</span></span><br><span class="line"><span class="keyword">while</span> [ True ];<span class="keyword">do</span></span><br><span class="line">    x=<span class="variable">$x</span>+<span class="number">1</span></span><br><span class="line"><span class="keyword">done</span>;</span><br></pre></td></tr></table></figure></p>
-<p>top可以看到这个脚本基本占了100%的cpu资源<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">top - 15:30:01 up  1:03,  5 users,  load average: 0.30, 0.50, 0.39&#10;Tasks: 210 total,   2 running, 208 sleeping,   0 stopped,   0 zombie&#10;Cpu(s):  6.3%us,  0.1%sy,  0.0%ni, 93.5%id,  0.2%wa,  0.0%hi,  0.0%si,  0.0%st&#10;Mem:  49461228k total, 13412644k used, 36048584k free,    75384k buffers&#10;Swap:  2097148k total,        0k used,  2097148k free, 12498636k cached&#10;&#10;  PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND&#10;11605 root      20   0  104m 1528 1016 R 99.7  0.0   2:30.48 sh&#10;105 root      20   0     0    0    0 S  0.3  0.0   0:00.11 kworker/8:1</span><br></pre></td></tr></table></figure></p>
-<p>创建一个控制组控制这个进程的cpu资源<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkdir -p /cgroup/cpu/foo	     <span class="comment">#新建一个控制组foo</span></span><br><span class="line"><span class="built_in">echo</span> <span class="number">50000</span> &gt; /cgroup/cpu/foo/cpu.cfs_quota_us  <span class="comment">#将cpu.cfs_quota_us设为50000，相对于cpu.cfs_period_us的100000是50%</span></span><br><span class="line"><span class="built_in">echo</span> <span class="number">11605</span> &gt; /cgroup/cpu/foo/tasks</span><br></pre></td></tr></table></figure></p>
-<p>然后top的实时统计数据如下，cpu占用率将近50%，看来cgroups关于cpu的控制起了效果<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">top - 15:32:48 up  1:06,  5 users,  load average: 0.80, 0.68, 0.48&#10;Tasks: 210 total,   2 running, 208 sleeping,   0 stopped,   0 zombie&#10;Cpu(s):  3.2%us,  0.0%sy,  0.0%ni, 96.8%id,  0.0%wa,  0.0%hi,  0.0%si,  0.0%st&#10;Mem:  49461228k total, 13412276k used, 36048952k free,    75400k buffers&#10;Swap:  2097148k total,        0k used,  2097148k free, 12498652k cached&#10;&#10;PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND&#10;11605 root      20   0  104m 1724 1016 R 50.2  0.0   5:09.97 sh&#10;11639 root      20   0 15200 1200  820 R  0.3  0.0   0:00.03 top</span><br></pre></td></tr></table></figure></p>
-<p>可以看到，进程的 cpu 占用已经被成功地限制到了 50% 。这里，测试的虚拟机只有一个核心。在多核情况下，看到的值会不一样。另外，cfs_quota_us 也是可以大于 cfs_period_us 的，这主要是对于多核情况。有 n 个核时，一个控制组中的进程自然最多就能用到 n 倍的 cpu 时间。</p>
-<p>这两个值在 cgroups 层次中是有限制的，下层的资源不能超过上层。具体的说，就是下层的 cpu.cfs_period_us 值不能小于上层的值，cpu.cfs_quota_us 值不能大于上层的值。</p>
-<p>另外的一组 cpu.rt_period_us、cpu.rt_runtime_us 对应的是实时进程的限制，平时可能不会有机会用到。</p>
-<p>在 cpu 子系统中，cpu.stat 就是用前面那种方法做的资源限制的统计了。nr_periods、nr_throttled 就是总共经过的周期，和其中受限制的周期。throttled_time 就是总共被控制组掐掉的 cpu 使用时间。</p>
-<p>还有个 cpu.shares， 它也是用来限制 cpu 使用的。但是与 cpu.cfs_quota_us、cpu.cfs_period_us 有挺大区别。cpu.shares 不是限制进程能使用的绝对的 cpu 时间，而是控制各个组之间的配额。比如<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">/cpu/cpu.shares : 1024&#10;/cpu/foo/cpu.shares : 2048</span><br></pre></td></tr></table></figure></p>
-<p>那么当两个组中的进程都满负荷运行时，/foo 中的进程所能占用的 cpu 就是 / 中的进程的两倍。如果再建一个 /foo/bar 的 cpu.shares 也是 1024，且也有满负荷运行的进程，那 /、/foo、/foo/bar 的 cpu 占用比就是 1:2:1 。前面说的是各自都跑满的情况。如果其他控制组中的进程闲着，那某一个组的进程完全可以用满全部 cpu。可见通常情况下，这种方式在保证公平的情况下能更充分利用资源。</p>
-<p>此外，还可以限定进程可以使用哪些 cpu 核心。cpuset 子系统就是处理进程可以使用的 cpu 核心和内存节点，以及其他一些相关配置。这部分的很多配置都和 NUMA 有关。其中 cpuset.cpus、cpuset.mems 就是用来限制进程可以使用的 cpu 核心和内存节点的。这两个参数中 cpu 核心、内存节点都用 id 表示，之间用 “,” 分隔。比如 0,1,2 。也可以用 “-” 表示范围，如 0-3 。两者可以结合起来用。如“0-2,6,7”。在添加进程前，cpuset.cpus、cpuset.mems 必须同时设置，而且必须是兼容的，否则会出错。例如<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># echo 0 &gt;/sys/fs/cgroup/cpuset/foo/cpuset.cpus</span></span><br><span class="line"><span class="comment"># echo 0 &gt;/sys/fs/cgroup/cpuset/foo/cpuset.mems</span></span><br><span class="line">这样， /foo 中的进程只能使用 cpu0 和内存节点<span class="number">0</span>。用</span><br><span class="line"></span><br><span class="line"><span class="comment"># cat /proc/&lt;pid&gt;/status|grep '_allowed_list'</span></span><br></pre></td></tr></table></figure></p>
-<p>cgroups 除了用来限制资源使用外，还有资源统计的功能。做云计算的计费就可以用到它。有一个 cpuacct 子系统专门用来做 cpu 资源统计。cpuacct.stat 统计了该控制组中进程用户态和内核态的 cpu 使用量，单位是 USER_HZ，也就是 jiffies、cpu 滴答数。每秒的滴答数可以用 getconf CLK_TCK 来获取，通常是 100。将看到的值除以这个值就可以换算成秒。</p>
-<h3 id="测试二：限制进程的内存资源">测试二：限制进程的内存资源</h3><p>测试后验证了：</p>
-<ul>
-<li>限制了资源的占用，达到内存以后，进程直接杀掉</li>
-</ul>
-<p>测试方法：</p>
-<p>跑一个耗内存的脚本，内存不断增长<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">x=<span class="string">"a"</span></span><br><span class="line"><span class="keyword">while</span> [ True ];<span class="keyword">do</span></span><br><span class="line">    x=<span class="variable">$x</span><span class="variable">$x</span></span><br><span class="line"><span class="keyword">done</span>;</span><br></pre></td></tr></table></figure></p>
-<p>top看内存占用稳步上升<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line"> PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND&#10;       30215 root      20   0  871m 501m 1036 R 99.8 26.7   0:38.69 sh  &#10;30215 root      20   0 1639m 721m 1036 R 98.7 38.4   1:03.99 sh &#10;30215 root      20   0 1639m 929m 1036 R 98.6 49.5   1:13.73 sh</span><br></pre></td></tr></table></figure></p>
-<p>下面用cgroups控制这个进程的内存资源<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkdir -p /cgroup/memory/foo</span><br><span class="line"><span class="built_in">echo</span> <span class="number">1048576</span> &gt;  /cgroup/memory/foo/memory.limit_<span class="keyword">in</span>_bytes   <span class="comment">#分配1MB的内存给这个控制组</span></span><br><span class="line"><span class="built_in">echo</span> <span class="number">30215</span> &gt; /cgroup/memory/foo/tasks</span><br></pre></td></tr></table></figure></p>
-<p>发现之前的脚本被kill掉<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># sh /home/test.sh </span></span><br><span class="line">已杀死</span><br></pre></td></tr></table></figure></p>
-<p>因为这是强硬的限制内存，当进程试图占用的内存超过了cgroups的限制，会触发out of memory，导致进程被kill掉。</p>
-<p>实际情况中对进程的内存使用会有一个预估，然后会给这个进程的限制超配50%比如，除非发生内存泄露等异常情况，才会因为cgroups的限制被kill掉。</p>
-<p>也可以通过配置关掉cgroups oom kill进程，通过memory.oom_control来实现（oom_kill_disable 1），但是尽管进程不会被直接杀死，但进程也进入了休眠状态，无法继续执行，仍让无法服务。</p>
-<p>关于内存的控制，还有以下配置文件，关于虚拟内存的控制，以及权值比重式的内存控制等<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">[root@localhost /]# ls /cgroup/memory/foo/&#10;cgroup.event_control  memory.force_empty         memory.memsw.failcnt             &#10;memory.memsw.usage_in_bytes      memory.soft_limit_in_bytes  memory.usage_in_bytes  tasks&#10;cgroup.procs          memory.limit_in_bytes      memory.memsw.limit_in_bytes      &#10;memory.move_charge_at_immigrate  memory.stat                 memory.use_hierarchy&#10;memory.failcnt        memory.max_usage_in_bytes  memory.memsw.max_usage_in_bytes  &#10;memory.oom_control               memory.swappiness           notify_on_release</span><br></pre></td></tr></table></figure></p>
-<h3 id="测试三：限制进程的IO资源">测试三：限制进程的IO资源</h3><p>测试验证了：</p>
-<ul>
-<li>能够控制io设备的读写速度</li>
-</ul>
-<p>跑一个耗io的脚本</p>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">&#9; dd if=/dev/sda of=/dev/null &#10;&#10;&#9;&#36890;&#36807;iotop&#30475;io&#21344;&#29992;&#24773;&#20917;&#65292;&#30913;&#30424;&#36895;&#24230;&#21040;&#20102;284M/s&#10;&#10;&#10;&#9;30252 be/4 root      284.71 M/s    0.00 B/s  0.00 %  0.00 % dd if=/dev/sda of=/dev/null&#10;``` &#10;&#19979;&#38754;&#29992;cgroups&#25511;&#21046;&#36825;&#20010;&#36827;&#31243;&#30340;io&#36164;&#28304;&#10;```bash&#10;&#9;mkdir -p /cgroup/blkio/foo&#10;&#9;&#10;&#9;echo &#39;8:0   1048576&#39; &#62;  /cgroup/blkio/foo/blkio.throttle.read_bps_device&#10;&#9;#8:0&#23545;&#24212;&#20027;&#35774;&#22791;&#21495;&#21644;&#21103;&#35774;&#22791;&#21495;&#65292;&#21487;&#20197;&#36890;&#36807;ls -l /dev/sda&#26597;&#30475;&#10;&#9;echo 30252 &#62; /cgroup/blkio/foo/tasks</span><br></pre></td></tr></table></figure>
-<p>再通过iotop看，确实将读速度降到了1M/s<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">30252 be/4 root      993.36 K/s    0.00 B/s  0.00 %  0.00 % dd if=/dev/sda of=/dev/null</span><br></pre></td></tr></table></figure></p>
-<p>对于io还有很多其他可以控制层面和方式，如下<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># ls /cgroup/blkio/foo/</span></span><br><span class="line">blkio.io_merged         blkio.io_serviced      blkio.reset_stats                </span><br><span class="line">blkio.throttle.io_serviced       blkio.throttle.write_bps_device   blkio.weight          cgroup.procs</span><br><span class="line">blkio.io_queued         blkio.io_service_time  blkio.sectors                    </span><br><span class="line">blkio.throttle.read_bps_device   blkio.throttle.write_iops_device  blkio.weight_device   notify_on_release</span><br><span class="line">blkio.io_service_bytes  blkio.io_<span class="built_in">wait</span>_time     blkio.throttle.io_service_bytes  </span><br><span class="line">blkio.throttle.read_iops_device  blkio.time                        cgroup.event_control  tasks</span><br></pre></td></tr></table></figure></p>
-<p>blkio 子系统里东西很多。不过大部分都是只读的状态报告，可写的参数就只有下面这几个：<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">blkio.throttle.read_bps_device&#10;blkio.throttle.read_iops_device&#10;blkio.throttle.write_bps_device&#10;blkio.throttle.write_iops_device&#10;blkio.weight&#10;blkio.weight_device&#10;&#10;&#36825;&#20123;&#37117;&#26159;&#29992;&#26469;&#25511;&#21046;&#36827;&#31243;&#30340;&#30913;&#30424; io &#30340;&#12290;&#24456;&#26126;&#26174;&#22320;&#20998;&#25104;&#20004;&#31867;&#65292;&#20854;&#20013;&#24102;&#8220;throttle&#8221;&#30340;&#65292;&#39038;&#21517;&#24605;&#20041;&#23601;&#26159;&#33410;&#27969;&#38400;&#65292;&#23558;&#27969;&#37327;&#38480;&#21046;&#22312;&#26576;&#20010;&#20540;&#19979;&#12290;&#32780;&#8220;weight&#8221;&#23601;&#26159;&#20998;&#37197; io &#30340;&#26435;&#37325;&#12290;&#10;&#20877;&#30475;&#30475; blkio.weight &#12290;blkio &#30340; throttle &#21644; weight &#26041;&#24335;&#21644; cpu &#23376;&#31995;&#32479;&#30340; quota &#21644; shares &#26377;&#28857;&#20687;&#65292;&#37117;&#26159;&#19968;&#31181;&#26159;&#32477;&#23545;&#38480;&#21046;&#65292;&#21478;&#19968;&#31181;&#26159;&#30456;&#23545;&#38480;&#21046;&#65292;&#24182;&#19988;&#22312;&#19981;&#32321;&#24537;&#30340;&#26102;&#20505;&#21487;&#20197;&#20805;&#20998;&#21033;&#29992;&#36164;&#28304;&#65292;&#26435;&#37325;&#20540;&#30340;&#33539;&#22260;&#22312; 10 &#8211; 1000 &#20043;&#38388;&#12290;</span><br></pre></td></tr></table></figure></p>
-<p>测试权重方式要麻烦一点。因为不是绝对限制，所以会受到文件系统缓存的影响。如在虚拟机中测试，要关闭虚机如我用的 VirtualBox 在宿主机上的缓存。如要测试读 io 的效果，先生成两个几个 G 的大文件 /tmp/file_1，/tmp/file_2 ，可以用 dd 搞。然后设置两个权重<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># echo 500 &gt;/sys/fs/cgroup/blkio/foo/blkio.weight</span></span><br><span class="line"><span class="comment"># echo 100 &gt;/sys/fs/cgroup/blkio/bar/blkio.weight</span></span><br></pre></td></tr></table></figure></p>
-<p>测试前清空文件系统缓存，以免干扰测试结果<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sync</span><br><span class="line"><span class="built_in">echo</span> <span class="number">3</span> &gt;/proc/sys/vm/drop_caches</span><br></pre></td></tr></table></figure></p>
-<p>在这两个控制组中用 dd 产生 io 测试效果。<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># cgexec -g "blkio:foo" dd if=/tmp/file_1 of=/dev/null &amp;</span></span><br><span class="line">[<span class="number">1</span>] <span class="number">1838</span></span><br><span class="line"><span class="comment"># cgexec -g "blkio:bar" dd if=/tmp/file_2 of=/dev/null &amp;</span></span><br><span class="line">[<span class="number">2</span>] <span class="number">1839</span></span><br></pre></td></tr></table></figure></p>
-<p>还是用 iotop 看看效果<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line"> TID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN     IO&#62;    COMMAND&#10;1839 be/4 root       48.14 M/s    0.00 B/s  0.00 % 99.21 % dd if=/tmp/file_2 of=/dev/null&#10;1838 be/4 root      223.59 M/s    0.00 B/s  0.00 % 16.44 % dd if=/tmp/file_1 of=/dev/null</span><br></pre></td></tr></table></figure></p>
-<p>两个进程每秒读的字节数虽然会不断变动，但是大致趋势还是维持在 1:5 左右，和设定的 weight 比例一致。blkio.weight_device 是分设备的。写入时，前面再加上设备号即可。</p>
-<h2 id="实践记录">实践记录</h2><p>1、假如已经配置好一个资源组，现在想让一个服务按这个组的资源分配来运行服务，而不需要去找到进程号再写入到tasks中<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8105 ~]<span class="comment"># cgexec -g cpu:daemons/ftp top</span></span><br></pre></td></tr></table></figure></p>
-<p>这个运行以后有会自动将top进程号写入到tasks当中去</p>
-<p>2、查询一个组里面设置的资源的限制<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">&#35774;&#32622;&#30340;&#20540;&#20250;&#26174;&#31034;&#20986;&#26469;&#65292;&#27809;&#26377;&#35774;&#32622;&#30340;&#23601;&#20250;&#25552;&#31034;&#27809;&#26377;&#25214;&#25171;&#10;&#10;[root@lab8105 ~]# cgget  daemons/ftp&#10;daemons/ftp:&#10;cgget: cannot find controller &#39;cpuset&#39; in group &#39;daemons/ftp&#39;&#10;cpu.rt_period_us: 1000000&#10;cpu.rt_runtime_us: 0&#10;cpu.stat: nr_periods 0&#10;&#9;nr_throttled 0&#10;&#9;throttled_time 0&#10;cpu.cfs_period_us: 5000&#10;cpu.cfs_quota_us: -1&#10;cpu.shares: 1000&#10;cgget: cannot find controller &#39;cpuacct&#39; in group &#39;daemons/ftp&#39;&#10;cgget: cannot find controller &#39;memory&#39; in group &#39;daemons/ftp&#39;&#10;cgget: cannot find controller &#39;devices&#39; in group &#39;daemons/ftp&#39;&#10;cgget: cannot find controller &#39;freezer&#39; in group &#39;daemons/ftp&#39;&#10;cgget: cannot find controller &#39;net_cls&#39; in group &#39;daemons/ftp&#39;&#10;cgget: cannot find controller &#39;blkio&#39; in group &#39;daemons/ftp&#39;</span><br></pre></td></tr></table></figure></p>
-<p>3、需要用两个限制条件对进程进行限制<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8105 ~]<span class="comment"># cgexec -g cpu:daemons/ftp -g memory:daemons/ftp top</span></span><br></pre></td></tr></table></figure></p>
-<p>4、默认情况下是一个大根，然后分了几个资源系统，还支持做一个子系统组，即单独组建一个资源组，然后对这个资源组里面进行配置，具体方法如下：<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">mount &#123;&#10;        cpu     = /cgroup/cpu_and_mem;&#10;        memory  = /cgroup/cpu_and_mem;&#10;&#125;&#10;&#9;&#10;group daemons/ftp &#123;&#10;                     cpu &#123;&#10;                             cpu.shares = &#34;1000&#34;;&#10;                             cpu.cfs_period_us = &#34;5000&#34;;&#10;                     &#125;&#10;                     memory &#123;&#10;                                memory.swappiness = &#34;20&#34;;&#10;                     &#125;&#10;              &#125;</span><br></pre></td></tr></table></figure></p>
-<p>5、需要创建控制组群，如上的daemons/ftp，想通过命令行的方式创建<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8105 ~]<span class="comment"># cgcreate -g cpu:/zp -g memory:/zp	</span></span><br><span class="line">如上命令使用后会在/cgroup/cpu/中多了zp目录，并且里面是继承的上级的cpu里面的参数，这样就创建了一个zp的组群</span><br><span class="line"></span><br><span class="line">删除组群的方式如下（删除cgroup时，其所有任务都移动到了父组群当中）：</span><br><span class="line">[root@lab8105 ~]<span class="comment"># cgdelete cpu:/zp memory:/zp</span></span><br></pre></td></tr></table></figure></p>
-<p>6、设置里面的配置参数<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">&#38656;&#35201;&#35774;&#32622;&#10; /cgroup/cpu/daemons/ftp/cpu.shares&#10;&#25191;&#34892;&#10;[root@lab8105 ~]# cgset -r cpu.shares=500 daemons/ftp&#10;daemons/ftp&#36335;&#24452;&#26159;&#30456;&#23545;&#20110;&#26681;&#30340;&#65292;&#22914;&#26524;&#24819;&#35774;&#32622;&#26681;&#30340;&#36825;&#20010;&#21442;&#25968;&#37027;&#20040;&#23601;&#25191;&#34892;&#10;[root@lab8105 ~]# gset -r cpuacct.usage=0 /&#10;&#9;&#36825;&#37324;&#38656;&#35201;&#27880;&#24847;&#65292;&#21482;&#26377;&#26576;&#20123;&#21442;&#25968;&#26159;&#21487;&#20197;&#20462;&#25913;&#30340;&#65292;&#26576;&#20123;&#21442;&#25968;&#26159;&#19981;&#33021;&#20462;&#25913;&#30340;&#10;&#20063;&#21487;&#20197;&#30452;&#25509;echo&#30340;&#26041;&#24335;&#36827;&#34892;&#21442;&#25968;&#30340;&#35774;&#32622;</span><br></pre></td></tr></table></figure></p>
-<p>7，移动某个进程到控制组群当中（动态的进行资源的调配）<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">&#31227;&#21160;&#25351;&#23450;&#36827;&#31243;&#21040;&#25351;&#23450;&#30340;&#25511;&#21046;&#32452;&#24403;&#20013;&#65292;&#21019;&#24314;&#20004;&#20010;&#36164;&#28304;&#32452;&#65292;&#20351;&#29992;&#19978;&#38754;&#30340;cpu&#30340;&#33050;&#26412;&#65292;&#28982;&#21518;&#36816;&#34892;&#21518;&#65292;&#20351;&#29992;top&#36827;&#34892;&#30417;&#25511;&#10;group half &#123;&#10;                     cpu &#123;&#10;                                 cpu.cfs_period_us=&#34;100000&#34;;&#10;                                 cpu.cfs_quota_us=&#34;50000&#34;;&#10;                     &#125;&#10;                     memory &#123;&#10;                                memory.swappiness = &#34;50&#34;;&#10;                     &#125;&#10;              &#125;&#10;&#10;group eighty &#123;&#10;                     cpu &#123;&#10;                              cpu.cfs_period_us = &#34;100000&#34;;&#10;                              cpu.cfs_quota_us=&#34;50000&#34;;&#10;                     &#125;&#10;                     memory &#123;&#10;                                memory.swappiness = &#34;80&#34;;&#10;                     &#125;&#10;              &#125;&#10;[root@lab8105 ~]# cgclassify -g cpu:half 14245&#10;top&#30417;&#25511;&#30475;&#21040;cpu&#30340;&#21344;&#29992;&#20026;50%&#10;[root@lab8105 ~]# cgclassify -g cpu:eighty 14245&#10;top&#30417;&#25511;&#30475;&#21040;cpu&#30340;&#21344;&#29992;&#20026;80%&#10;&#27880;&#24847;&#25903;&#25345;&#22810;&#36827;&#31243;&#65292;&#22810;&#36164;&#28304;&#32452;&#21516;&#26102;&#31227;&#21160;&#10;[root@lab8105 ~]# cgclassify -g cpu,memory:eighty 14245 14565&#10;&#22791;&#29992;&#26041;&#27861;&#23601;&#26159;&#30452;&#25509;echo</span><br></pre></td></tr></table></figure></p>
-<p>8、通过规则对指定的进程进行控制</p>
-<p>我们还可以通过设置规则来让 cgred（cgroup 规则引擎后台程序）自动将进程分配给特定组。cgred 后台程序根据 /etc/cgrules.conf 文件中的设置将任务移到 cgroup 中<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8105 ~]<span class="comment"># vim /etc/cgrules.conf </span></span><br><span class="line">[root@lab8105 ~]<span class="comment"># man cgrules.conf       </span></span><br><span class="line"></span><br><span class="line"><span class="comment"># /etc/cgrules.conf</span></span><br><span class="line"><span class="comment">#The format of this file is described in cgrules.conf(5)</span></span><br><span class="line"><span class="comment">#manual page.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Example:</span></span><br><span class="line"><span class="comment">#&lt;user&gt;         &lt;controllers&gt;   &lt;destination&gt;</span></span><br><span class="line"><span class="comment">#@student       cpu,memory      usergroup/student/</span></span><br><span class="line"><span class="comment">#peter          cpu             test1/</span></span><br><span class="line"><span class="comment">#%              memory          test2/</span></span><br><span class="line"><span class="comment"># End of file</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line">root:cpu.sh           cpu             half/</span><br><span class="line">root                  cpu             half/</span><br><span class="line"></span><br><span class="line">启动监控进程服务</span><br><span class="line">[root@lab8105 ~]<span class="comment"># /etc/init.d/cgred</span></span><br></pre></td></tr></table></figure></p>
-<p>效果如下，运行相同的命令，所占用的cpu的资源按指定的比例进行占用</p>
-<pre><code class="bash">[root@lab8105 ~]<span class="comment"># top</span>
-top - <span class="number">16</span>:<span class="number">00</span>:<span class="number">40</span> up <span class="number">1</span> day,  <span class="number">1</span>:<span class="number">34</span>,  <span class="number">5</span> users,  load average: <span class="number">1.57</span>, <span class="number">1.13</span>, <span class="number">0.90</span>
-Tasks: <span class="number">216</span> total,   <span class="number">3</span> running, <span class="number">213</span> sleeping,   <span class="number">0</span> stopped,   <span class="number">0</span> zombie
-Cpu(s):  <span class="number">6.9</span>%us,  <span class="number">0.0</span>%sy,  <span class="number">0.0</span>%ni, <span class="number">93.1</span>%id,  <span class="number">0.0</span>%wa,  <span class="number">0.0</span>%hi,  <span class="number">0.0</span>%si,  <span class="number">0.0</span>%st
-Mem:  <span class="number">49461228</span>k total, <span class="number">49346312</span>k used,   <span class="number">114916</span>k free, <span class="number">47374260</span>k buffers
-Swap:  <span class="number">2097148</span>k total,        <span class="number">0</span>k used,  <span class="number">2097148</span>k free,    <span class="number">33116</span>k cached
-
-  PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND                                               
-<span class="number">14648</span> root      <span class="number">20</span>   <span class="number">0</span>  <span class="number">104</span>m <span class="number">1716</span> <span class="number">1012</span> R <span class="number">99.7</span>  <span class="number">0.0</span>   <span class="number">4</span>:<span class="number">58.38</span> cpu1.sh                                                
-<span class="number">14565</span> root      <span class="number">20</span>   <span class="number">0</span>  <span class="number">104</span>m <span class="number">1704</span> <span class="number">1012</span> R <span class="number">10.0</span>  <span class="number">0.0</span>   <span class="number">4</span>:<span class="number">30.53</span> cpu.sh
-</code></pre>
-<p>如上所述，指定用户，可以指定进程进行控制，也可以指定用户的所有进程进行控制，后台的做的操作就是把进行的号移动到了指定的资源组的task当中去了</p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>1、Cgroup安装</p>
-<p>安装Cgroups需要libcap-devel和libcgroup两个相关的包<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">	yum install gcc libcap-devel </span><br><span class="line">```	</span><br><span class="line"><span class="number">2</span>、Cgroup挂载配置</span><br><span class="line">```raw</span><br><span class="line">	Cgroup对应服务名称为cgconfig，cgconfig默认采用“多挂载点”挂载。经过实际测试，发现在CentOS环境中应采用“单挂载点”进行挂载，因此应当卸载原有cgroup文件系统，并禁用cgconfig。</span><br><span class="line">	cgclear或者sudo service cgconfig stop <span class="comment"># 停止cgconfig，卸载cgroup目录</span></span><br><span class="line">	sudo chkconfig cgconfig off          <span class="comment"># 禁用cgconfig服务，避免其开机启动</span></span><br><span class="line">	然后采用“单挂载点”方式重新挂载cgroup。</span><br><span class="line">	可以直接手动挂载，这样仅当次挂载成功。</span><br><span class="line">	mount -t cgroup none /cgroup</span><br><span class="line">	然后编辑/etc/fstab/，输入下列内容。这样每次开机后都会自动挂载。</span><br><span class="line">	none   /cgroup  cgroup  defaults   <span class="number">0</span> <span class="number">0</span></span><br></pre></td></tr></table></figure></p>]]>
-    
     </summary>
     
   </entry>
@@ -513,175 +170,400 @@ Swap:  <span class="number">2097148</span>k total,        <span class="number">0
   </entry>
   
   <entry>
-    <title><![CDATA[linux绑定盘符]]></title>
-    <link href="http://yoursite.com/2015/03/24/linux%E7%BB%91%E5%AE%9A%E7%9B%98%E7%AC%A6/"/>
-    <id>http://yoursite.com/2015/03/24/linux绑定盘符/</id>
-    <published>2015-03-24T05:25:22.000Z</published>
-    <updated>2015-03-26T06:05:27.257Z</updated>
-    <content type="html"><![CDATA[<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@centos6 ~]<span class="comment"># udevadm info -q path -n /dev/sdb</span></span><br><span class="line">[root@centos6 ~]<span class="comment"># udevadm info -q path -n /dev/sdc</span></span><br><span class="line">/devices/pci0000:<span class="number">00</span>/<span class="number">0000</span>:<span class="number">00</span>:<span class="number">10.0</span>/host2/target2:<span class="number">0</span>:<span class="number">1</span>/<span class="number">2</span>:<span class="number">0</span>:<span class="number">1</span>:<span class="number">0</span>/block/sdc</span><br></pre></td></tr></table></figure>
-<p>拿到编号<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@centos6 ~]<span class="comment"># vim /etc/udev/rules.d/80-mydisk.rules</span></span><br></pre></td></tr></table></figure></p>
-<p>增加<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">DEVPATH==<span class="string">"/devices/pci0000:00/0000:00:10.0/host2/target2:0:2/2:0:2:0/block/sd*"</span>, NAME=<span class="string">"sdc"</span>, MODE=<span class="string">"0660"</span></span><br></pre></td></tr></table></figure></p>
-<p>这样对应的插槽的第二个就会一直对应盘符sdc 而不会出现跳盘符的问题了</p>
-<p>写于: 2014年11月07日<br>更新于: 2015年03月24日</p>
+    <title><![CDATA[expect循环的写法]]></title>
+    <link href="http://yoursite.com/2015/03/23/expect%E5%BE%AA%E7%8E%AF%E7%9A%84%E5%86%99%E6%B3%95/"/>
+    <id>http://yoursite.com/2015/03/23/expect循环的写法/</id>
+    <published>2015-03-22T23:55:53.000Z</published>
+    <updated>2015-03-26T06:27:09.879Z</updated>
+    <content type="html"><![CDATA[<p>脚本:<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">#!/usr/bin/expect&#10;spawn sensors-detect&#10;for &#123;set i 0&#125; &#123;$i&#60;=10&#125; &#123;incr i&#125; &#123;&#10;expect &#34;:&#34;&#10;send &#34;\n&#34;&#10;&#125;&#10;interact</span><br></pre></td></tr></table></figure></p>
+<p>解释:</p>
+<p>spawn是启动命令<br>for为循环的写法<br>interact为退出<br>这个脚本目的是在一次运行过程中不断模拟用户的enter操作</p>
+<p>写于:2013年08月12日<br>更新于: 2015年03月23日</p>
 ]]></content>
     <summary type="html">
-    <![CDATA[<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@centos6 ~]<span class="comment"># udevadm info -q p]]>
+    <![CDATA[<p>脚本:<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">#!/usr/bin/expect&#10;spawn sensors-detect&#10;for &]]>
     </summary>
     
   </entry>
   
   <entry>
-    <title><![CDATA[让磁盘硬盘灯常闪定位盘]]></title>
-    <link href="http://yoursite.com/2015/03/24/%E8%AE%A9%E7%A3%81%E7%9B%98%E7%A1%AC%E7%9B%98%E7%81%AF%E5%B8%B8%E9%97%AA%E5%AE%9A%E4%BD%8D%E7%9B%98/"/>
-    <id>http://yoursite.com/2015/03/24/让磁盘硬盘灯常闪定位盘/</id>
-    <published>2015-03-24T05:23:26.000Z</published>
-    <updated>2015-03-26T06:05:45.666Z</updated>
-    <content type="html"><![CDATA[<figure class="highlight"><table><tr><td class="code"><pre><span class="line">#!/bin/bash&#10;hd=$1&#10;for num in &#123;1..5&#125;;do&#10;        dd if=&#34;$hd&#34; of=&#34;/dev/null&#34; bs=4M count=1000 iflag=direct conv=noerror &#62;/dev/null 2&#62;&#38;1&#10;        sleep 1&#10;done</span><br></pre></td></tr></table></figure>
-<p>写于: 2014年11月07日<br>更新于: 2015年03月24日</p>
+    <title><![CDATA[用grub4dos来实现移动硬盘安装linux系统(图重弄)]]></title>
+    <link href="http://yoursite.com/2015/03/22/%E7%94%A8grub4dos%E6%9D%A5%E5%AE%9E%E7%8E%B0%E7%A7%BB%E5%8A%A8%E7%A1%AC%E7%9B%98%E5%AE%89%E8%A3%85linux%E7%B3%BB%E7%BB%9F/"/>
+    <id>http://yoursite.com/2015/03/22/用grub4dos来实现移动硬盘安装linux系统/</id>
+    <published>2015-03-22T14:27:07.000Z</published>
+    <updated>2015-03-26T06:27:32.201Z</updated>
+    <content type="html"><![CDATA[<p>网上看了一些grub4dos相关教程,虽然相关资料很多,但是一步步做下来还是会出现一些问题,并且有些地方也没有说清楚,现在写下来供自己以后查看</p>
+<p>由于使用utraliso软件做centos6.4系统盘的时候,由于centos系统盘超过4G,而utraliso软件做系统盘的时候默认文件系统ext格式,而ext格式不支持超过4G的文件,所以就无法启动,所以研究了下用grub4dos这个软件来实现移动硬盘安装linux系统</p>
+<p>首先需要准备两个文件<br>grub4dos-0.4.4.zip<br>grubinst-1.1-bin-w32-2008-01-01.zip</p>
+<p>解压grub4dos-0.4.4.zip</p>
+<p><img src="http://fmn.rrimg.com/fmn061/20130605/2150/b_large_LQAI_39a3000004ac1262.jpg" alt=""></p>
+<p>&lt;这里需要注意下，如果用移动硬盘想实现的是只装一种系统话，那么就不需要对硬盘分区，如果想装多个系统的话就可以对移动硬盘分几个区，每个分区可以放一种操作系统&gt;</p>
+<p>在win7的开始菜单中搜索 计算机管理&gt;磁盘管理<br>然后选择你的移动硬盘,然后将第一个盘符标记为活动分区,这样移动硬盘这个区才能被识别,从而作为启动分区</p>
+<p><img src="http://fmn.rrimg.com/fmn063/20130605/2200/b_large_VXDK_39a3000004d91262.jpg" alt=""></p>
+<p>解压grubinst-1.1-bin-w32-2008-01-01.zip 运行<br>grubinst_gui.exe<br>磁盘选择你的移动硬盘<br>然后点分区列表右边的刷新<br>然后选择整个磁盘(MBR),然后点击安装</p>
+<p><img src="http://fmn.rrfmn.com/fmn058/20130605/2215/b_large_1Zyp_5715000001f51263.jpg" alt=""></p>
+<p>将刚刚解压得到的grub4dos-0.4.4这个目录下的chinese目录下的三个文件拷贝到你准备用来做安装系统移动硬盘,也就是刚刚设置为活动主分区那个盘还有grub4dos-0.4.4目录下menu.lst也拷贝到移动硬盘活动分区那个盘的根目录下，这个移动硬盘目录下最后看到的文件如下截图</p>
+<p><img src="http://fmn.rrimg.com/fmn065/20130605/2210/b_large_qb9c_30620000080c1263.jpg" alt=""></p>
+<p>如果这个时候你移动硬盘没分区的话，就将你的系统盘的iso全部解压到你的这个目录,系统iso解压可以用360压缩工具<br>然后修改menu.lst  ,如果比较熟悉,可以进行自定义,如果不熟悉,这里直接在下面加几行:<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">title centos6.4 install&#10;kernel (hd0,0)/isolinux/vmlinuz&#10;initrd (hd0,0)/isolinux/initrd.img</span><br></pre></td></tr></table></figure></p>
+<p>上面的title后面写的字段会在系统安装的时候显示，然后安装的时候选择这个centos6.4 install就行,其中(hd0,0)的前面的0是代表第一个盘,也就是你的移动盘,后面的0代表分区,代表第一个分区,如果你把系统iso解压到移动硬盘的第二个分区,那么就把这个改为1<br>isolinux/vmlinuz 就是你解压的iso里面的文件<br>到这里,系统盘已经做好了,在电脑的启动项里面选择centos6.4 install 就可以安装这个linux系统了</p>
+<p>此方法对于centos6.4还是有问题 所以需要多做些工作<br>思路是把第二个分区做成linux的ext2格式就能放4G以上的iso,但是win7又无法识别ext2的盘符,所以需要做两步,第一步将第二分区格式化为ext2<br>使用这个工具:<br>ParagonPartitionManager.rar<br>使用这个工具把盘格式化为ext2<br>使用这个工具是win7下能查看ext2格式的盘符<br>Ext2Fsd-0.51.zip</p>
+<p><img src="http://fmn.xnpic.com/fmn057/20130606/2145/b_large_jgCI_5038000002631263.jpg" alt=""></p>
+<p><img src="http://fmn.rrimg.com/fmn060/20130606/2145/b_large_uSUd_588c000003ba1262.jpg" alt=""></p>
+<p><img src="http://fmn.rrimg.com/fmn061/20130606/2155/b_large_LzJv_2a51000012851262.jpg" alt=""></p>
+<p>写于: 2013年06月05日<br>更新于: 2015年03月22日</p>
 ]]></content>
     <summary type="html">
-    <![CDATA[<figure class="highlight"><table><tr><td class="code"><pre><span class="line">#!/bin/bash&#10;hd=$1&#10;for num in &#123;1..5&#125;;do&#10; ]]>
+    <![CDATA[<p>网上看了一些grub4dos相关教程,虽然相关资料很多,但是一步步做下来还是会出现一些问题,并且有些地方也没有说清楚,现在写下来供自己以后查看</p>
+<p>由于使用utraliso软件做centos6.4系统盘的时候,由于centos系统盘超过4G,而utraliso软件]]>
     </summary>
     
   </entry>
   
   <entry>
-    <title><![CDATA[软件注册码]]></title>
-    <link href="http://yoursite.com/2015/03/24/%E8%BD%AF%E4%BB%B6%E6%B3%A8%E5%86%8C%E7%A0%81/"/>
-    <id>http://yoursite.com/2015/03/24/软件注册码/</id>
-    <published>2015-03-24T05:19:03.000Z</published>
-    <updated>2015-03-26T05:54:37.625Z</updated>
-    <content type="html"><![CDATA[<hr>
-<p>markdownpad2 pro注册信息</p>
-<p>注册信息<br>邮箱地址:<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">Soar360@live.com</span><br></pre></td></tr></table></figure></p>
+    <title><![CDATA[手机中没有该应用所需的共享库（解决手机无法安装Google plus）]]></title>
+    <link href="http://yoursite.com/2015/03/22/%E6%89%8B%E6%9C%BA%E4%B8%AD%E6%B2%A1%E6%9C%89%E8%AF%A5%E5%BA%94%E7%94%A8%E6%89%80%E9%9C%80%E7%9A%84%E5%85%B1%E4%BA%AB%E5%BA%93%EF%BC%88%E8%A7%A3%E5%86%B3%E6%89%8B%E6%9C%BA%E6%97%A0%E6%B3%95%E5%AE%89%E8%A3%85Google-plus%EF%BC%89/"/>
+    <id>http://yoursite.com/2015/03/22/手机中没有该应用所需的共享库（解决手机无法安装Google-plus）/</id>
+    <published>2015-03-22T14:24:09.000Z</published>
+    <updated>2015-03-26T06:29:00.420Z</updated>
+    <content type="html"><![CDATA[<p>国行安卓手机阉割了一些google服务，需要加这三个文件:</p>
+<p>com.google.android.maps.jar<br>com.google.android.maps.xml<br>NetworkLocation.apk</p>
+<p>你只需将上述文件放到手机中的相应位置,重启手机就好了。<br>方法:<br>首先机器要ROOT,然后用RE管理器，把要复制的文件复制到相应的位置,修改三个文件的权限,就是竖着3行,左边全选,中间最上面选上,右边全空。<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">com.google.android.maps.jar   &#23433;&#35013;&#21040;  /system/framework&#10;google.android.maps.xml       &#23433;&#35013;&#21040;  /system/etc/permissions&#10;NetworkLocation.apk           &#23433;&#35013;&#21040;  /data/app_s</span><br></pre></td></tr></table></figure></p>
+<p>app_s目录需要自己建立</p>
+<p>上述三个文件在下面这个地址可以下载到:<br><a href="http://vdisk.weibo.com/s/BFtBO" target="_blank" rel="external">http://vdisk.weibo.com/s/BFtBO</a> </p>
+<p>写于: 2013年05月16日<br>更新于: 2015年03月22日</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>国行安卓手机阉割了一些google服务，需要加这三个文件:</p>
+<p>com.google.android.maps.jar<br>com.google.android.maps.xml<br>NetworkLocation.apk</p>
+<p>你只需将上述文件放到手]]>
+    </summary>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[如何配置谷歌框架与市场（解决google play 闪退）]]></title>
+    <link href="http://yoursite.com/2015/03/22/%E5%A6%82%E4%BD%95%E9%85%8D%E7%BD%AE%E8%B0%B7%E6%AD%8C%E6%A1%86%E6%9E%B6%E4%B8%8E%E5%B8%82%E5%9C%BA%EF%BC%88%E8%A7%A3%E5%86%B3google-play-%E9%97%AA%E9%80%80%EF%BC%89/"/>
+    <id>http://yoursite.com/2015/03/22/如何配置谷歌框架与市场（解决google-play-闪退）/</id>
+    <published>2015-03-22T14:18:20.000Z</published>
+    <updated>2015-03-22T14:23:24.093Z</updated>
+    <content type="html"><![CDATA[<p>没有谷歌电子市场。好多游戏都不能玩。像狂野之血,超凡蜘蛛侠。。。等等大型游戏。</p>
+<p>大家都知道国产机的ROM包把谷歌的GMS和谐掉了,所以直接装谷歌电子市场肯定会出现闪退,这样就又牵扯到另一个基础服务——谷歌框架,估计想玩大型游戏的机友对这个词都不陌生,但是可能大家按照许多热心机友说的最终还是没能把这个电子市场搞定,接下来大家按这个步骤,可以成功,亲测。</p>
+<p>步骤如下:<br>第一步:需要有root权限和RE管理器</p>
+<p>第二步:下载GoogleServiesFramework.apk(谷歌<br>服务框架,必需),将GoogleServiesFramework.apk复制到文件夹/system/app 下,然后点击安装,但是貌似不点安装也行,但是权限一定得改,然后修改权限——第一行,第一个、第二个打勾,第二行,第一个打勾,第三行,第一个打勾。(这个权限一定要搞好,有可能大家都是少了这步) </p>
+<p>第三步:下载谷歌电子市场，无论下载过来的电子市场文件名叫什么,都把它重命名为Vending.apk,像GoogleServiesFramework.apk一样移动到文件夹 /system/app 下,安装(这个必须安装)。然后修改权限,与GoogleServiesFramework.apk一样.</p>
+<p>第四步:重启手机<br>ok,联网,打开谷歌电子市场,就可以登录了。</p>
+<p>写于: 2013年05月16日<br>更新于: 2015年03月22日</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>没有谷歌电子市场。好多游戏都不能玩。像狂野之血,超凡蜘蛛侠。。。等等大型游戏。</p>
+<p>大家都知道国产机的ROM包把谷歌的GMS和谐掉了,所以直接装谷歌电子市场肯定会出现闪退,这样就又牵扯到另一个基础服务——谷歌框架,估计想玩大型游戏的机友对这个词都不陌生,但是可能大]]>
+    </summary>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Vmware Tools is currently being installed on your system]]></title>
+    <link href="http://yoursite.com/2015/03/22/Vmware-Tools-is-currently-being-installed-on-your-system/"/>
+    <id>http://yoursite.com/2015/03/22/Vmware-Tools-is-currently-being-installed-on-your-system/</id>
+    <published>2015-03-22T13:47:15.000Z</published>
+    <updated>2015-03-26T05:50:25.224Z</updated>
+    <content type="html"><![CDATA[<p>问题描述:<br>使用虚拟机安装Ubuntu过程中一直停留在“PLEASE WAIT! Vmware Tools is currently<br>being installed on your system”如下图:</p>
+<p><img src="http://7xi6lo.com1.z0.glb.clouddn.com/vmware1.jpg" alt="">]</p>
+<p>软件环境<br>VMWare 8<br>Ubuntu 12.10</p>
+<p>解决方案如下</p>
 <a id="more"></a>
-<p>授权秘钥:<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">GBPduHjWfJU1mZqcPM3BikjYKF6xKhlKIys3i1MU2eJHqWGImDHzWdD6xhMNLGVpbP2M5SN6bnxn2kSE8qHqNY5QaaRxmO3YSMHxlv2EYpjdwLcPwfeTG7kUdnhKE0vVy4RidP6Y2wZ0q74f47fzsZo45JE2hfQBFi2O9Jldjp1mW8HUpTtLA2a5/sQytXJUQl/QKO0jUQY4pa5CCx20sV1ClOTZtAGngSOJtIOFXK599sBr5aIEFyH0K7H4BoNMiiDMnxt1rD8Vb/ikJdhGMMQr0R4B+L3nWU97eaVPTRKfWGDE8/eAgKzpGwrQQoDh+nzX1xoVQ8NAuH+s4UcSeQ==</span><br></pre></td></tr></table></figure></p>
-<hr>
-<p>xshell注册码(5或者4)<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">690313-111999-999313</span><br></pre></td></tr></table></figure></p>
-<hr>
-<p>snagit 12注册码<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">FFC2M-Z59RE-QLACP-C5MBV-M8RMB</span><br></pre></td></tr></table></figure></p>
-<hr>
-<p>vmware11：<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">1F04Z-6D111-7Z029-AV0Q4-3AEH8</span><br></pre></td></tr></table></figure></p>
-<hr>
-<p>写于:2015年03月24日</p>
+<p>做下面三步操作后重启系统 :</p>
+<p>Restore the /etc/issue file:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo mv /etc/issue.backup /etc/issue</span><br></pre></td></tr></table></figure></p>
+<p>Restore the /etc/rc.local file:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo mv /etc/rc.local.backup /etc/rc.local</span><br></pre></td></tr></table></figure></p>
+<p>Restore the /etc/init/lightdm.conf file:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo mv /opt/vmware-tools-installer/lightdm.conf /etc/init</span><br></pre></td></tr></table></figure></p>
+<p>Then reboot.</p>
+<p>写于: 2012年12月14日<br>更新于: 2015年03月22日</p>
 ]]></content>
     <summary type="html">
-    <![CDATA[<hr>
-<p>markdownpad2 pro注册信息</p>
-<p>注册信息<br>邮箱地址:<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">Soar360@live.com</span><br></pre></td></tr></table></figure></p>]]>
+    <![CDATA[<p>问题描述:<br>使用虚拟机安装Ubuntu过程中一直停留在“PLEASE WAIT! Vmware Tools is currently<br>being installed on your system”如下图:</p>
+<p><img src="http://7xi6lo.com1.z0.glb.clouddn.com/vmware1.jpg" alt="">]</p>
+<p>软件环境<br>VMWare 8<br>Ubuntu 12.10</p>
+<p>解决方案如下</p>]]>
     
     </summary>
     
   </entry>
   
   <entry>
-    <title><![CDATA[配置cobbler步骤]]></title>
-    <link href="http://yoursite.com/2015/03/24/%E9%85%8D%E7%BD%AEcobbler%E6%AD%A5%E9%AA%A4/"/>
-    <id>http://yoursite.com/2015/03/24/配置cobbler步骤/</id>
-    <published>2015-03-24T04:55:06.000Z</published>
-    <updated>2015-03-26T06:08:33.117Z</updated>
-    <content type="html"><![CDATA[<p>首先找到下载包的地址 (使用的是centos6)<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">http://download.opensuse.org/repositories/home:/libertas-ict:/cobbler26/CentOS_CentOS-6/noarch/</span><br></pre></td></tr></table></figure></p>
-<p>添加国内epel源:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget http://mirrors.aliyun.com/epel/<span class="number">6</span>/x86_64/epel-release-<span class="number">6</span>-<span class="number">8</span>.noarch.rpm</span><br></pre></td></tr></table></figure></p>
-<p>本次测试下载这三个包:<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">cobbler-2.6.5-9.1.noarch.rpm &#10;cobbler-web-2.6.5-9.1.noarch.rpm &#10;koan-2.6.5-9.1.noarch.rpm</span><br></pre></td></tr></table></figure></p>
-<a id="more"></a>
-<p>下载rpm包:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">   wget http://download.opensuse.org/repositories/home:/libertas-ict:/cobbler26/CentOS_CentOS-<span class="number">6</span>/noarch/cobbler-<span class="number">2.6</span>.<span class="number">5</span>-<span class="number">9.1</span>.noarch.rpm </span><br><span class="line">wget http://download.opensuse.org/repositories/home:/libertas-ict:/cobbler26/CentOS_CentOS-<span class="number">6</span>/noarch/cob_CentOS-<span class="number">6</span>/noarch/cobbler-web-<span class="number">2.6</span>.<span class="number">5</span>-<span class="number">9.1</span>.noarch.rpm </span><br><span class="line">wget http://download.opensuse.org/repositories/home:/libertas-ict:/cobbler26/CentOS_CentOS-<span class="number">6</span>/noarch/cob_CentOS-<span class="number">6</span>/noarch/koan-<span class="number">2.6</span>.<span class="number">5</span>-<span class="number">9.1</span>.noarch.rpm</span><br></pre></td></tr></table></figure></p>
-<p>安装依赖包:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum install redhat-rpm-config createrepo python-netaddr python-simplejson rsync syslinux yum-utils genisoimage python-cheetah PyYAML httpd mod_wsgi dhcp fence-agents pykickstart <span class="built_in">bind</span> xinetd tftp-server</span><br></pre></td></tr></table></figure></p>
-<p>安装依赖包:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum install Django</span><br></pre></td></tr></table></figure></p>
-<p>安装依赖包:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum install virt-install</span><br></pre></td></tr></table></figure></p>
-<p>安装上面下载的三个cobbler相关包<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rpm -ivh *.rpm</span><br></pre></td></tr></table></figure></p>
-<p>根据提示进行配置</p>
-<p>修改默认密码<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">openssl passwd -<span class="number">1</span> -salt</span><br></pre></td></tr></table></figure></p>
-<p>修改/etc/cobbler/settings 中的127.0.0.1为当前准备使用部署机器的IP</p>
-<p>修改配置文件修改完成后会修改默认的dhcp的配置<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">vim /etc/cobbler/dhcp.template</span><br></pre></td></tr></table></figure></p>
-<p>dhcp配置OK 注意dhcp应该和网络一致</p>
-<p>配置用户密码<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">htdigest /etc/cobbler/users.digest <span class="string">"Cobbler"</span> cobbler</span><br></pre></td></tr></table></figure></p>
-<p>配置tftp要重启xint 可以写kicstart</p>
-<p>导入一个镜像</p>
-<p>命令行下操作:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cobbler import --name=grandocean --arch=x86_64 --path=/mnt</span><br></pre></td></tr></table></figure></p>
-<p>web对应操作: 从这个来看在后台导入镜像要简单一些 同时还会生成一个profile文件信息 后台对应的操作:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rsync <span class="operator">-a</span> /mnt/ /var/www/cobbler/ksmirror/grandocean-x8664 --progress</span><br></pre></td></tr></table></figure></p>
-<p>增加一个系统,类似于定制的意思:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cobbler system add --name=<span class="built_in">test</span> --profile=grandocean-x86_64</span><br></pre></td></tr></table></figure></p>
-<p>编辑kickstart文件相当于system<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cobbler system edit --name=<span class="built_in">test</span> --interface=eth0 --mac=<span class="number">00</span>:<span class="number">11</span>:<span class="number">22</span>:AA:BB:CC --ip-address=<span class="number">192.168</span>.<span class="number">1.100</span> --netmask=<span class="number">255.255</span>.<span class="number">255.0</span> --static=<span class="number">1</span> --dns-name=test.mydomain.com</span><br></pre></td></tr></table></figure></p>
-<p>加入的标签<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line"># LINUX /memdisk # APPEND iso # INITRD /winpe_x86.iso</span><br></pre></td></tr></table></figure></p>
-<p>另外一种<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">LABEL winxppe MENU &#10;LABEL winxppe kernel memdisk raw iso &#10;initrd=/winxppe.iso MENU end&#10;&#10;initrd winre.iso kernel memdisk iso raw boot</span><br></pre></td></tr></table></figure></p>
-<p>System是针对指定的硬件的情况做的操作，目前来说不需要</p>
-<p>SNIPPET里面的变量识别<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">$yumrepostanza&#10;&#10;repo --name=source-1 --baseurl=http://10.0.6.130/cobbler/ksmirror/centos6.4oriigin-x8664&#10;$SNIPPET(&#39;network_config&#39;)&#10;&#10;network --bootproto=dhcp --device=eth0 --onboot=on&#10;$SNIPPET(&#39;logkspre&#39;)&#10;&#10;   set -x -v exec 1&#62;/tmp/ks-pre.log 2&#62;&#38;1 # Once root&#39;s homedir is there, copy over the log. while : ; do sleep 10 if [ -d /mnt/sysimage/root ]; then cp /tmp/ks-pre.log /mnt/sysimage/root/ logger &#34;Copied %pre section log to system&#34; break fi done &#38; &#10;SNIPPET(&#39;kickstart_start&#39;)&#10;&#10;wget &#34;http://10.0.6.130/cblr/svc/op/trig/mode/pre/profile/centos6.4oriigin-x86_64&#34; -O /dev/null&#10;$yumconfigstanza&#10;&#10;wget &#34;http://10.0.6.130/cblr/svc/op/yum/profile/centos6.4oriigin-x86_64&#34; --output-document=/etc/yum.repos.d/cobbler-config.repo</span><br></pre></td></tr></table></figure></p>
-<p>写于: 2014年09月15日<br>更新于: 2015年03月24日</p>
+    <title><![CDATA[win7问题步骤记录器 （远程协助）]]></title>
+    <link href="http://yoursite.com/2015/03/22/win7%E9%97%AE%E9%A2%98%E6%AD%A5%E9%AA%A4%E8%AE%B0%E5%BD%95%E5%99%A8-%EF%BC%88%E8%BF%9C%E7%A8%8B%E5%8D%8F%E5%8A%A9%EF%BC%89/"/>
+    <id>http://yoursite.com/2015/03/22/win7问题步骤记录器-（远程协助）/</id>
+    <published>2015-03-22T11:39:23.000Z</published>
+    <updated>2015-03-22T11:41:20.833Z</updated>
+    <content type="html"><![CDATA[<p>win7问题步骤记录器<br>有很多时候,身在远方的家人或者是朋友会要求您辅导他们计算机问题,但是又不知道该如何明确向您表达这个问题，这个处境是很令人沮丧的。<br>微软在Windows 7中添加的问题步骤记录器,将会帮助您与您的朋友摆脱沮丧。在这种情况下,您的朋友只要单击开始菜单、键入PSR,按住Enter键，再点击开始记录按钮即可。启用这项功能后,当您的朋友进行问题操作时,该记录器将会逐一记录您的朋友的操作步骤,并将它们压缩在一个MHTML文件中发送给您即可。无疑,这是个快捷、简单与高效的方法,这将有助于缩短您的故障排除时间。 </p>
+<p>写于: 2012年08月23日<br>更新于: 2015年03月23日 </p>
 ]]></content>
     <summary type="html">
-    <![CDATA[<p>首先找到下载包的地址 (使用的是centos6)<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">http://download.opensuse.org/repositories/home:/libertas-ict:/cobbler26/CentOS_CentOS-6/noarch/</span><br></pre></td></tr></table></figure></p>
-<p>添加国内epel源:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget http://mirrors.aliyun.com/epel/<span class="number">6</span>/x86_64/epel-release-<span class="number">6</span>-<span class="number">8</span>.noarch.rpm</span><br></pre></td></tr></table></figure></p>
-<p>本次测试下载这三个包:<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">cobbler-2.6.5-9.1.noarch.rpm &#10;cobbler-web-2.6.5-9.1.noarch.rpm &#10;koan-2.6.5-9.1.noarch.rpm</span><br></pre></td></tr></table></figure></p>]]>
+    <![CDATA[<p>win7问题步骤记录器<br>有很多时候,身在远方的家人或者是朋友会要求您辅导他们计算机问题,但是又不知道该如何明确向您表达这个问题，这个处境是很令人沮丧的。<br>微软在Windows 7中添加的问题步骤记录器,将会帮助您与您的朋友摆脱沮丧。在这种情况下,您的朋友只要单击]]>
+    </summary>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[检查linux下服务器的带宽]]></title>
+    <link href="http://yoursite.com/2015/03/22/%E6%A3%80%E6%9F%A5linux%E4%B8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9A%84%E5%B8%A6%E5%AE%BD/"/>
+    <id>http://yoursite.com/2015/03/22/检查linux下服务器的带宽/</id>
+    <published>2015-03-22T11:25:43.000Z</published>
+    <updated>2015-03-22T11:33:25.168Z</updated>
+    <content type="html"><![CDATA[<p>设想:公司 A 有一个名为 bsdocfs 的存储服务器,并通过名为 beckham 的客户端节点装载 NFS。公司 A 确定他们需要从 bsdocfs得到更多的带宽,因为有大量的节点需要访问 bsdocfs 的共享文件系统。<br>实现此操作的最常用和最便宜的方式是将两个千兆网卡组合在一起。这是最便宜的,因为您通常会有一个额外的可用 NIC 和一个额外的端口。<br>所以采取此这个方法。不过现在的问题是?到底需要多少带宽?</p>
+<p>千兆网卡以太网理论上的限制是 128MBit/s。这个数字从何而来,看看这些计算:<br>1Gb = 1024Mb;1024Mb/8 = 128MB;”b” = “bits,”、”B” = “bytes”</p>
+<p>但实际看到的是什么呢,有什么好的测量方法呢,我推荐一个工具 iperf。可以按照以下方法获得 iperf</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ wget http://dast.nlanr.net/Projects/Iperf2.<span class="number">0</span>/iperf-<span class="number">2.0</span>.<span class="number">2</span>.tar.gz</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<p>或者:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ apt-get install iperf</span><br></pre></td></tr></table></figure>
+<p>需要在 bsdocfs 和 beckham 均可见的共享文件系统上安装此工具,或者在两个节点上编译并安装。<br>在 bsdocfs 上,运行:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ iperf <span class="operator">-s</span> <span class="operator">-f</span> M</span><br></pre></td></tr></table></figure>
+<p>这台机器将用作服务器并以 MBit/s 为单位输出执行速度。<br>在 beckham 节点上,运行:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ iperf -c bsdocfs -P <span class="number">4</span> <span class="operator">-f</span> M -w <span class="number">256</span>k -t <span class="number">60</span></span><br></pre></td></tr></table></figure>
+<p>两个屏幕上的结果都指示了速度是多少。在使用千兆网卡的普通服务器上,可能会看到速度约为 112MBit/s。这是 TCP 堆栈和物理电缆中的常用带宽。通过以端到端的方式连接两台服务器,每台服务器使用两个联结的以太网卡,我获得了约 220MBit/s 的带宽。<br>事实上,在联结的网络上看到的 NFS 约为 150-160MBit/s。这仍然表示带宽可以达到预期效果。如果看到更小的值,则应该检查是否有问题。</p>
+<p>我最近碰到一种情况,即通过连接驱动程序连接两个使用了不同驱动程序的 NIC。这导致性能非常低,带宽约为 20MBit/s,比不连接以太网卡时的带宽还小,做bond聚合一定要使用同型号网卡。</p>
+<p>写于: 2013年08月07日<br>更新于: 2015年03月22日</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>设想:公司 A 有一个名为 bsdocfs 的存储服务器,并通过名为 beckham 的客户端节点装载 NFS。公司 A 确定他们需要从 bsdocfs得到更多的带宽,因为有大量的节点需要访问 bsdocfs 的共享文件系统。<br>实现此操作的最常用和最便宜的方式是将两个千兆网卡组合在一起。这是最便宜的,因为您通常会有一个额外的可用 NIC 和一个额外的端口。<br>所以采取此这个方法。不过现在的问题是?到底需要多少带宽?</p>
+<p>千兆网卡以太网理论上的限制是 128MBit/s。这个数字从何而来,看看这些计算:<br>1Gb = 1024Mb;1024Mb/8 = 128MB;”b” = “bits,”、”B” = “bytes”</p>
+<p>但实际看到的是什么呢,有什么好的测量方法呢,我推荐一个工具 iperf。可以按照以下方法获得 iperf</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ wget http://dast.nlanr.net/Projects/Iperf2.<span class="number">0</span>/iperf-<span class="number">2.0</span>.<span class="number">2</span>.tar.gz</span><br></pre></td></tr></table></figure>]]>
     
     </summary>
     
   </entry>
   
   <entry>
-    <title><![CDATA[ubuntu使用iso作为本地源]]></title>
-    <link href="http://yoursite.com/2015/03/24/ubuntu%E4%BD%BF%E7%94%A8iso%E4%BD%9C%E4%B8%BA%E6%9C%AC%E5%9C%B0%E6%BA%90/"/>
-    <id>http://yoursite.com/2015/03/24/ubuntu使用iso作为本地源/</id>
-    <published>2015-03-24T04:52:24.000Z</published>
-    <updated>2015-03-26T06:09:39.030Z</updated>
-    <content type="html"><![CDATA[<p>方式一(路径不要改):<br>挂载光驱到到本地的指定目录<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mount /dev/cdrom /media/cdrom</span><br></pre></td></tr></table></figure></p>
-<p>然后执行:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">apt-cdrom -m <span class="operator">-d</span> /media/cdrom add</span><br></pre></td></tr></table></figure></p>
-<p>会写配置文件<br>然后执行:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">apt-get update</span><br></pre></td></tr></table></figure></p>
-<p>就可以使用</p>
+    <title><![CDATA[linux利用screen进行shell下的屏幕协作]]></title>
+    <link href="http://yoursite.com/2015/03/22/linux%E5%88%A9%E7%94%A8screen%E8%BF%9B%E8%A1%8Cshell%E4%B8%8B%E7%9A%84%E5%B1%8F%E5%B9%95%E5%8D%8F%E4%BD%9C/"/>
+    <id>http://yoursite.com/2015/03/22/linux利用screen进行shell下的屏幕协作/</id>
+    <published>2015-03-22T11:22:22.000Z</published>
+    <updated>2015-03-26T05:44:31.317Z</updated>
+    <content type="html"><![CDATA[<p>我们都知道linux是支持多终端并行处理的<br>但是某些时候我们可能有比较特殊的需求需要两个人同时处理一个终端,screen 正好能满足这个要求</p>
+<p>首先需要安装screen软件:</p>
+<p>debian和ubuntu下面都是通过:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">apt-get install screen</span><br></pre></td></tr></table></figure></p>
+<p>进行安装的.</p>
 <a id="more"></a>
-<p>方式二:直接添加方式<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mount /dev/cdrom /mnt</span><br><span class="line">root@grandocean:/etc/apt<span class="comment"># vim /etc/apt/sources.list</span></span><br></pre></td></tr></table></figure></p>
-<p>添加<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">deb file:///mnt raring main&#10;deb file:///mnt raring restricted</span><br></pre></td></tr></table></figure></p>
-<p>写于: 2014年08月28日<br>更新于: 2015年03月24日</p>
+<p>假如现在有a和b需要进行屏幕协作,那么操作步骤如下:<br>a在终端运行:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">screen -S   zp</span><br></pre></td></tr></table></figure></p>
+<p>b然后在终端运行:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">screen -x  zp</span><br></pre></td></tr></table></figure></p>
+<p>这个时候两边的用户的操作是实时同步的。</p>
+<p>写于: 2012年08月07日<br>更新于: 2015年03月22日</p>
 ]]></content>
     <summary type="html">
-    <![CDATA[<p>方式一(路径不要改):<br>挂载光驱到到本地的指定目录<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mount /dev/cdrom /media/cdrom</span><br></pre></td></tr></table></figure></p>
-<p>然后执行:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">apt-cdrom -m <span class="operator">-d</span> /media/cdrom add</span><br></pre></td></tr></table></figure></p>
-<p>会写配置文件<br>然后执行:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">apt-get update</span><br></pre></td></tr></table></figure></p>
-<p>就可以使用</p>]]>
+    <![CDATA[<p>我们都知道linux是支持多终端并行处理的<br>但是某些时候我们可能有比较特殊的需求需要两个人同时处理一个终端,screen 正好能满足这个要求</p>
+<p>首先需要安装screen软件:</p>
+<p>debian和ubuntu下面都是通过:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">apt-get install screen</span><br></pre></td></tr></table></figure></p>
+<p>进行安装的.</p>]]>
     
     </summary>
     
   </entry>
   
   <entry>
-    <title><![CDATA[custom-ubuntu-server-iso]]></title>
-    <link href="http://yoursite.com/2015/03/24/custom-ubuntu-server-iso/"/>
-    <id>http://yoursite.com/2015/03/24/custom-ubuntu-server-iso/</id>
-    <published>2015-03-24T00:58:38.000Z</published>
-    <updated>2015-03-24T04:48:16.522Z</updated>
-    <content type="html"><![CDATA[<p>Remastering the Ubuntu Desktop ISO is easy considering the existing graphical tools but did you ever wanted to build your custom Ubuntu Server Edition ISO ?</p>
-<p>Preparing the Environment<br>You’ll need a clean copy of the Ubuntu Server ISO that you want to customize. Since 10.04 is the latest Ubuntu version I will write down my examples using it but everything should work pretty much unchanged for older or newer versions.</p>
-<p>After you have you have the original iso image downloaded, make a copy it’s contents so we can later apply our patching there.</p>
-<p>cd /home/rgavril/Work</p>
-<p>mkdir original-iso custom-iso<br>mount -o loop ./ubuntu-10.04-server-i386.iso ./original-iso</p>
+    <title><![CDATA[使用Ganglia监控系统监控集群(debian)]]></title>
+    <link href="http://yoursite.com/2015/03/22/%E4%BD%BF%E7%94%A8Ganglia%E7%9B%91%E6%8E%A7%E7%B3%BB%E7%BB%9F%E7%9B%91%E6%8E%A7%E9%9B%86%E7%BE%A4-debian/"/>
+    <id>http://yoursite.com/2015/03/22/使用Ganglia监控系统监控集群-debian/</id>
+    <published>2015-03-22T09:20:06.000Z</published>
+    <updated>2015-03-26T06:30:01.256Z</updated>
+    <content type="html"><![CDATA[<p>anglia是一个集群监控软件,底层使用RRDTool获得数据。<br>Ganglia分为ganglia-monitor和gmetad两部分,前者运行在集群每个节点上(被监控机器)收集RRDTool产生的数据,后者运行在监控服务器上,收集每个ganglia-monitor的数据,通过Web UI可以看到直观的各种图表。</p>
+<p>在debian上安装Ganglia非常简单,首先安装下面三个包。因为要使用Web服务器才能看到图表,所以如果没有安装apache的话,会自动安装apache服务器。<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">&#9;apt-get installganglia-monitor  #&#36825;&#20010;&#21253;&#23433;&#35013;&#22312;&#34987;&#30417;&#25511;&#26426;&#22120;&#21363;&#21487;&#10;&#9;apt-get install ganglia-webfront gmetad  #&#36825;&#20004;&#20010;&#21253;&#23433;&#35013;&#22312;&#30417;&#25511;&#26381;&#21153;&#22120;&#65292;&#21069;&#32773;&#25552;&#20379;web&#39029;&#38754;&#65292;&#21518;&#32773;&#25910;&#38598;&#20854;&#20182;&#26426;&#22120;&#30340;&#30417;&#25511;&#25968;&#25454;&#10;```   &#10;     &#10;&#34987;&#30417;&#25511;&#23433;&#35013;&#23436;&#25104;&#20043;&#21518;&#65292;gmond&#26381;&#21153;&#20250;&#36816;&#34892;&#36215;&#26469;&#65292;&#20351;&#29992;&#19979;&#38754;&#30340;&#21629;&#20196;&#21487;&#20197;&#21551;&#21160;&#36825;&#20010;&#26381;&#21153;&#12290;&#10;```raw&#10;&#9;/etc/init.d/ganglia-monitor restart</span><br></pre></td></tr></table></figure></p>
+<p>(配置文件的路径在/etc/ganglia/gmond.conf)基本不用配置就可以启用</p>
 <a id="more"></a>
-<p>cp -r ./original-iso/* ./custom-iso/<br>cp -r ./original-iso/.disk/ ./custom-iso/</p>
-<p>umount ./original-iso/<br>Adding a Boot Menu Option<br>For start let’s add a option to the cd boot menu. You’ll need to modify isolinux/text.cfg and insert the next lines between default install and label install:</p>
-<p>label custom<br>  menu label ^Install Custom Ubuntu Server<br>  kernel /install/vmlinuz<br>  append  file=/cdrom/preseed/ubuntu-custom.seed initrd=/install/initrd.gz quiet ks=cdrom:/isolinux/ks-custom.cfg —<br>This newly added block is very similar to the label install one. The two important additions being the file and ks boot options that I will later explain.</p>
-<p>If you want to make your menu option the default one, you only need to change the default install to default custom or whatever you used as a label.</p>
-<p>Kickstart-ing<br>KickStart is a unattended installation method developed by Red Hat and later adopted and adapted by Debian and Ubuntu. To keep it short, the Ubuntu installer can read an external file and figure out how to configure the system (create partitions, set timezones and keyboard layouts ..) without asking the user.</p>
-<p>There’s no need to write everything using a text editor as we have a powerful tool to create such configuration files:</p>
-<p>apt-get install system-config-kickstart<br>ksconfig<br>After creating your ks.cfg file, you will need to move it on the custom-iso/ at the path specified in text.cfg. That’s the location where the ubuntu installer will look for it.</p>
-<p>cp ks.cfg custom-iso/isolinux/ks-custom.cfg<br>Preseeding Packages<br>The installer in not the only one that may present questions to the user. When installed, some package rely on the user to explicitly set different parameters.</p>
-<p>Preseeding is the action of setting, in advance, this kind of package parameters. It’s a very powerful method that you can use even for replacing kickstart. In this article, I’ll use it as a addition to kickstart as is more harder to tune the ubuntu installer, mostly because it lacks a gui.</p>
-<p>The params can be set trough a configuration file specified by the file in text.cfg. I recommend starting with the existing preseed file from the original cd:</p>
-<p>cp custom-iso/preseed/ubuntu-server.seed custom-iso/preseed/ubuntu-custom.seed<br>Using debconf-get-selections from the debconf-utils package you can look over a running ubuntu system to figure out what parameters you can tune. For example here are the possible configuration settings for the openssh-server together with their values :</p>
-<p>root@xps1330:~/work# debconf-get-selections | grep openssh<br>openssh-server    ssh/vulnerable_host_keys    note<br>openssh-server    ssh/use_old_init_script    boolean    true<br>openssh-server    ssh/encrypted_host_key_but_no_keygen    note<br>openssh-server    ssh/disable_cr_auth    boolean    false<br>Adding Extra Packages<br>Ubuntu’s ksconfig utility does’n provide a way to select extra packages as the Package Selection is not working. In order to specify what extra packages you want to install you’ll need to modify the kickstart configuration file by hand.</p>
-<p>vim custom-iso/isolinux/ks-custom.cfg<br>Depending on the extra packages that you want to install by default, add some similar lines to the end of the file :</p>
-<p>%packages<br>openssh-server<br>asterisk<br>asterisk-mysql<br>Offline Installation<br>When having additional packages installed by default, there’s a big chance are that those particular packages may not be on the default iso. If you have an active internet connection during the install, the packages will be automatically fetched from the online repositories. But if you’re internet connection is not working, the install process will fail. In order to prevent the problem and create a offline installable cd, you’ll need to perform some extra steps.</p>
-<p>You’ll need to downloading and copying the extra debs and all their dependencies on your iso. Please note that in doing so you may increase the iso size a lot and be forced to use a dvd.</p>
-<p>It’s very hard to figure out what debs are missing from your iso. In order to make a list of needed debs I use the following steps:</p>
-<p>On a virtual machine, install a ubuntu server using the original cd image.<br>Boot the newly installed ubuntu server, make sure the cd is mountable and cdrom directive is available in sources.list<br>Do an apt-get install of the extra packages that I want to have installed by default<br>Make a backup of the debs located in /var/cache/apt/archives as this are the missing ones that need to be on the iso<br>Considering that you downloaded the extra packages, and that they are located in the extradebs/ directory within the current folder. You will need to copy them on the cd and create a repository by running this commands:</p>
-<p>mkdir -p custom-iso/dists/stable/extras/binary-i386<br>mkdir -p custom-iso/pool/extras/</p>
-<p>cp ./extradebs/*.deb custom-iso/pool/extras/</p>
-<p>pushd custom-iso<br>apt-ftparchive packages ./pool/extras/ &gt; dists/stable/extras/binary-i386/Packages<br>gzip -c ./dists/stable/extras/binary-i386/Packages | tee ./dists/stable/extras/binary-i386/Packages.gz &gt; /dev/null<br>popd<br>Generating the new ISO<br>All you need to do now is build you new iso and give it a test drive to see how it works:</p>
-<p>mkisofs -J -l -b isolinux/isolinux.bin -no-emul-boot -boot-load-size 4 -boot-info-table -z -iso-level 4 -c isolinux/isolinux.cat -o ./ubuntu-10.04-custom-i386.iso custom-iso/</p>
+<p>配置监控服务器(展示页面的服务器)</p>
+<p>因为ganglia-webfront这个包默认将Web相关的代码安装在”/usr/share/ganglia-webfrontend/”路径下,这样apache访问不到。可以使用软链接或者直接将目录移到”/var/www/”目录下。<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">ln-s /usr/share/ganglia-webfrontend//var/www/ganglia</span><br></pre></td></tr></table></figure></p>
+<p>接着在浏览器输入”<a href="http://localhost/ganglia”就可以看到Web" target="_blank" rel="external">http://localhost/ganglia”就可以看到Web</a> UI了</p>
+<p>需要监控更多机器的时候，只需要在机器上安装ganglia-monitor 启动服务即可</p>
+<p>补充说明:<br>一、主页的显示的时间为格林威治时间,所以看起来很奇怪,想要显示为本地时间,需要修改提供网页机器的php.ini文件<br>路径为:/etc/php5/apache2/php.ini </p>
+<p>将[Date]下的设置为date.timezone =Asia/Shanghai</p>
+<p>重启apache2<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">/etc/init.d/apache2 restart</span><br></pre></td></tr></table></figure></p>
+<p>再看主页,时间变成了当前机器时间</p>
+<p>二、python监控插件的扩展<br>为了确保Ganglia的安装有了Python支持的设置,检查一下以下设置<br>gmond.conf 有一行  include (“/etc/ganglia/conf.d/*.conf”) ,这是你应该放置.conf格式的python模块配置文件所在的目录。<br>modpython.conf 这个文件应该存在于/etc/ganglia/conf.d 中,它包含了pyconf文件的所在位置<br>modpython.so应该在/usr/lib/ganglia中<br>/usr/lib/ganglia/python_modules这个目录应该存在,这是你放置以.py结尾的python模块文件所在的目录</p>
+<p>写于: 2012年08月02日<br>更新于: 2015年03月22日</p>
 ]]></content>
     <summary type="html">
-    <![CDATA[<p>Remastering the Ubuntu Desktop ISO is easy considering the existing graphical tools but did you ever wanted to build your custom Ubuntu Server Edition ISO ?</p>
-<p>Preparing the Environment<br>You’ll need a clean copy of the Ubuntu Server ISO that you want to customize. Since 10.04 is the latest Ubuntu version I will write down my examples using it but everything should work pretty much unchanged for older or newer versions.</p>
-<p>After you have you have the original iso image downloaded, make a copy it’s contents so we can later apply our patching there.</p>
-<p>cd /home/rgavril/Work</p>
-<p>mkdir original-iso custom-iso<br>mount -o loop ./ubuntu-10.04-server-i386.iso ./original-iso</p>]]>
+    <![CDATA[<p>anglia是一个集群监控软件,底层使用RRDTool获得数据。<br>Ganglia分为ganglia-monitor和gmetad两部分,前者运行在集群每个节点上(被监控机器)收集RRDTool产生的数据,后者运行在监控服务器上,收集每个ganglia-monitor的数据,通过Web UI可以看到直观的各种图表。</p>
+<p>在debian上安装Ganglia非常简单,首先安装下面三个包。因为要使用Web服务器才能看到图表,所以如果没有安装apache的话,会自动安装apache服务器。<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">&#9;apt-get installganglia-monitor  #&#36825;&#20010;&#21253;&#23433;&#35013;&#22312;&#34987;&#30417;&#25511;&#26426;&#22120;&#21363;&#21487;&#10;&#9;apt-get install ganglia-webfront gmetad  #&#36825;&#20004;&#20010;&#21253;&#23433;&#35013;&#22312;&#30417;&#25511;&#26381;&#21153;&#22120;&#65292;&#21069;&#32773;&#25552;&#20379;web&#39029;&#38754;&#65292;&#21518;&#32773;&#25910;&#38598;&#20854;&#20182;&#26426;&#22120;&#30340;&#30417;&#25511;&#25968;&#25454;&#10;```   &#10;     &#10;&#34987;&#30417;&#25511;&#23433;&#35013;&#23436;&#25104;&#20043;&#21518;&#65292;gmond&#26381;&#21153;&#20250;&#36816;&#34892;&#36215;&#26469;&#65292;&#20351;&#29992;&#19979;&#38754;&#30340;&#21629;&#20196;&#21487;&#20197;&#21551;&#21160;&#36825;&#20010;&#26381;&#21153;&#12290;&#10;```raw&#10;&#9;/etc/init.d/ganglia-monitor restart</span><br></pre></td></tr></table></figure></p>
+<p>(配置文件的路径在/etc/ganglia/gmond.conf)基本不用配置就可以启用</p>]]>
     
+    </summary>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[用rsync备份一台linux服务器上的数据]]></title>
+    <link href="http://yoursite.com/2015/03/22/%E7%94%A8rsync%E5%A4%87%E4%BB%BD%E4%B8%80%E5%8F%B0linux%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E7%9A%84%E6%95%B0%E6%8D%AE/"/>
+    <id>http://yoursite.com/2015/03/22/用rsync备份一台linux服务器上的数据/</id>
+    <published>2015-03-22T08:53:33.000Z</published>
+    <updated>2015-03-26T06:30:42.888Z</updated>
+    <content type="html"><![CDATA[<p>rsync是安装完linux后都会自带的,在机器上运行rsync命令看是否有安装即可</p>
+<h2 id="备份到远程服务器">备份到远程服务器</h2><p>这里介绍的rsync的用途是备份一台linux服务器上的数据到另外一台机器</p>
+<h3 id="环境">环境</h3><p>将需要备份机器叫做服务器端  (192.168.0.195)<br>将备份后数据存放机器叫做客户端 (192.168.0.196)</p>
+<h3 id="配置">配置</h3><h4 id="1-服务器端的配置:">1.服务器端的配置:</h4><p>这里是准备备份/chinfotech/kernel/zp/这个目录,修改配置文件</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">vim /etc/rsyncd.conf (没有就创建)</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<p>配置文件如下:<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">uid=root&#10;gid=root&#10;max connections=10     &#10;use chroot=no&#10;log file=/var/log/rsyncd.log&#10;pid file=/var/run/rsyncd.pid&#10;lock file=/var/run/rsyncd.lock&#10;&#10;[zp]&#10;path=/chinfotech/kernel/zp/ &#10;comment=beifen&#10;ignore errors&#10;read only = no&#10;hosts allow=*</span><br></pre></td></tr></table></figure></p>
+<p>启动进程:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rsync --daemon --config=/etc/rsyncd.conf</span><br></pre></td></tr></table></figure>
+<p>服务器端就配置好了.</p>
+<h4 id="2-客户端机器的配置">2.客户端机器的配置</h4><p>在客户端不需要太多配置只需要执行:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rsync -avz --bwlimit=<span class="number">30000</span> root@<span class="number">192.168</span>.<span class="number">0.195</span>::zp /back/zp/</span><br></pre></td></tr></table></figure>
+<p>参数解释:<br>-a, —archive 归档模式，表示以递归方式传输文件,并保持所有文件属性<br>-v, —verbose 详细模式输出<br>-z, —compress 对备份的文件在传输时进行压缩处理<br>—bwlimit=KBPS 限制I/O带宽，KBytes per second (最好限速,不然长时间数据传输硬盘受不了)<br>::zp这个是上面服务器配置当中的[zp]</p>
+<p>这样备份就开始了</p>
+<hr>
+<h2 id="配置rsync的本地同步">配置rsync的本地同步</h2><p>使用命令进行同步,这个是从lsyncd这个软件里面提取的命令，也可以用那个做实时同步,这个是定期同步</p>
+<p>每天的三点过5分执行同步,加超时:<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">5 3 * * * root timeout 7200  rsync -qvzrtopg    /zbkc /sdl&#10;5 3 * * * root timeout 7200  rsync -qvzrtopg --delete   /zbkc /sdl</span><br></pre></td></tr></table></figure></p>
+<p>让配置文件生效</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">crontab /etc/crontab</span><br></pre></td></tr></table></figure>
+<p>重启服务</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/etc/init.d/cron restart</span><br></pre></td></tr></table></figure>
+<p>写于: 2012年07月20日,2014年06月24日<br>更新于: 2015年03月22日</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>rsync是安装完linux后都会自带的,在机器上运行rsync命令看是否有安装即可</p>
+<h2 id="备份到远程服务器">备份到远程服务器</h2><p>这里介绍的rsync的用途是备份一台linux服务器上的数据到另外一台机器</p>
+<h3 id="环境">环境</h3><p>将需要备份机器叫做服务器端  (192.168.0.195)<br>将备份后数据存放机器叫做客户端 (192.168.0.196)</p>
+<h3 id="配置">配置</h3><h4 id="1-服务器端的配置:">1.服务器端的配置:</h4><p>这里是准备备份/chinfotech/kernel/zp/这个目录,修改配置文件</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">vim /etc/rsyncd.conf (没有就创建)</span><br></pre></td></tr></table></figure>]]>
+    
+    </summary>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[修改ssh的默认22端口，并使用scp的方法]]></title>
+    <link href="http://yoursite.com/2015/03/22/%E4%BF%AE%E6%94%B9ssh%E7%9A%84%E9%BB%98%E8%AE%A422%E7%AB%AF%E5%8F%A3%EF%BC%8C%E5%B9%B6%E4%BD%BF%E7%94%A8scp%E7%9A%84%E6%96%B9%E6%B3%95/"/>
+    <id>http://yoursite.com/2015/03/22/修改ssh的默认22端口，并使用scp的方法/</id>
+    <published>2015-03-22T08:49:01.000Z</published>
+    <updated>2015-03-26T06:31:00.836Z</updated>
+    <content type="html"><![CDATA[<p>修改默认的22的ssh端口只需要修改 /etc/ssh/sshd_config 中的 port 字段为你想要的端口就可以了<br>以后用其他机器ssh登录这台机器只需要:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ssh -p (port)  (ip)</span><br></pre></td></tr></table></figure></p>
+<p>使用scp 就是:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">scp -P (port) /usr/myfile   IP:/tmp</span><br></pre></td></tr></table></figure></p>
+<p>写于: 2012年05月05日<br>更新于: 2015年03月02日</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>修改默认的22的ssh端口只需要修改 /etc/ssh/sshd_config 中的 port 字段为你想要的端口就可以了<br>以后用其他机器ssh登录这台机器只需要:<br><figure class="highlight bash"><table><tr><td cl]]>
+    </summary>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[正确用DD测试磁盘读写速度]]></title>
+    <link href="http://yoursite.com/2015/03/22/%E6%AD%A3%E7%A1%AE%E7%94%A8DD%E6%B5%8B%E8%AF%95%E7%A3%81%E7%9B%98%E8%AF%BB%E5%86%99%E9%80%9F%E5%BA%A6/"/>
+    <id>http://yoursite.com/2015/03/22/正确用DD测试磁盘读写速度/</id>
+    <published>2015-03-22T08:36:15.000Z</published>
+    <updated>2015-03-26T06:31:24.582Z</updated>
+    <content type="html"><![CDATA[<p>问: 以下几种方式测试磁盘读写速度有什么区别?<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">dd <span class="keyword">if</span>=/dev/zero of=<span class="built_in">test</span> bs=<span class="number">1</span>M count=<span class="number">128</span> </span><br><span class="line">dd <span class="keyword">if</span>=/dev/zero of=<span class="built_in">test</span> bs=<span class="number">1</span>M count=<span class="number">128</span> ; sync</span><br><span class="line">dd <span class="keyword">if</span>=/dev/zero of=<span class="built_in">test</span> bs=<span class="number">1</span>M count=<span class="number">128</span> conv=fdatasync</span><br><span class="line">dd <span class="keyword">if</span>=/dev/zero of=<span class="built_in">test</span> bs=<span class="number">1</span>M count=<span class="number">128</span> oflag=dsync</span><br></pre></td></tr></table></figure></p>
+<p>答:区别在于内存中写缓存的处理方式。</p>
+<a id="more"></a>
+<p>1.dd if=/dev/zero of=test bs=1M count=128<br>没有加任何参数,dd默认的方式不包括“同步(sync)”命令。也就是说,dd命令完成前并没有让系统真正把文件写到磁盘上。所以以上命令只是单纯地把这128MB的数据读到内存缓冲当中,写缓存[write cache]。所以你得到的将是一个超级快的速度。因为其实dd给你的只是读取到缓存的速度,直到dd完成后系统才开始真正往磁盘上写数据,但这个速度你是看不到了。所以如果这个速度很快,先不要偷着乐。呵呵</p>
+<p>2.dd if=/dev/zero of=test bs=1M count=128 ; sync<br>和前面1中的完全一样。分号隔开的只是先后两个独立的命令。当sync命令准备开始往磁盘上真正写入数据的时候,前面dd命令已经把错误的“写入速度”值显示在屏幕上了。所以你还是得不到真正的写入速度。</p>
+<p>3.dd if=/dev/zero of=test bs=1M count=128 conv=fdatasync<br>加入这个参数后,dd命令执行到最后会真正执行一次“同步(sync)”操作,所以这时候你得到的是读取这128M数据到内存并写入到磁盘上所需的时间,这样算出来的时间才是比较符合实际的。</p>
+<p>4.dd if=/dev/zero of=test bs=1M count=128 oflag=dsync<br>加入这个参数后,dd在执行时每次都会进行同步写入操作。也就是说,这条命令每次读取1M后就要先把这1M写入磁盘,然后再读取下面这1M,一共重复128次。这可能是最慢的一种方式了,因为基本上没有用到写缓存(write cache)。</p>
+<p>问:那应该用哪一种呢?<br>答:建议使用<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">dd bs=<span class="number">1</span>M count=<span class="number">128</span> <span class="keyword">if</span>=/dev/zero of=<span class="built_in">test</span> conv=fdatasync</span><br></pre></td></tr></table></figure></p>
+<p>因为这种方式最接近计算机实际操作,所以测出来的数据最有参考价值</p>
+<p>写于: 2012年05月02日<br>更新于: 2015年03月22日</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>问: 以下几种方式测试磁盘读写速度有什么区别?<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">dd <span class="keyword">if</span>=/dev/zero of=<span class="built_in">test</span> bs=<span class="number">1</span>M count=<span class="number">128</span> </span><br><span class="line">dd <span class="keyword">if</span>=/dev/zero of=<span class="built_in">test</span> bs=<span class="number">1</span>M count=<span class="number">128</span> ; sync</span><br><span class="line">dd <span class="keyword">if</span>=/dev/zero of=<span class="built_in">test</span> bs=<span class="number">1</span>M count=<span class="number">128</span> conv=fdatasync</span><br><span class="line">dd <span class="keyword">if</span>=/dev/zero of=<span class="built_in">test</span> bs=<span class="number">1</span>M count=<span class="number">128</span> oflag=dsync</span><br></pre></td></tr></table></figure></p>
+<p>答:区别在于内存中写缓存的处理方式。</p>]]>
+    
+    </summary>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[西数WD2T硬盘分区对齐的方法]]></title>
+    <link href="http://yoursite.com/2015/03/22/%E8%A5%BF%E6%95%B0WD2T%E7%A1%AC%E7%9B%98%E5%88%86%E5%8C%BA%E5%AF%B9%E9%BD%90%E7%9A%84%E6%96%B9%E6%B3%95/"/>
+    <id>http://yoursite.com/2015/03/22/西数WD2T硬盘分区对齐的方法/</id>
+    <published>2015-03-22T08:25:08.000Z</published>
+    <updated>2015-03-26T06:31:55.748Z</updated>
+    <content type="html"><![CDATA[<p>新购一个西数2T硬盘,也就是绿盘的那种,淘宝500左右,支持高级格式化。 </p>
+<p>到手以后,分区格式化,前几天格式化完成以后,fdisk -l 发现如下文字 </p>
+<p>引用<br>Partition 1 does not start on physical sector boundary.</p>
+<p>网上找了下,说是软件的问题,后来折腾了下,应该是分区没有对齐的原因,至于为什么要对齐,优点很多,好像这个是跟神马高级分区格式化有关,具体的原理神马的,我就不讨论了,反正有一点,对齐后,性能会有提升。 </p>
+<a id="more"></a>
+<p>对齐后,用fdisk -lu 查看的结果如下<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">Disk /dev/sdc: 2000.4 GB, 2000398934016 bytes&#10;255 heads, 63 sectors/track, 243201 cylinders, total 3907029168 sectors&#10;Units = sectors of 1 * 512 = 512 bytes&#10;Sector size (logical/physical): 512 bytes / 512 bytes&#10;I/O size (minimum/optimal): 512 bytes / 512 bytes&#10;Disk identifier: 0x2fa8ebd1&#10;&#10;   Device Boot      Start         End      Blocks   Id  System&#10;/dev/sdc1            2048  3907028991  1953513472   83  Linux</span><br></pre></td></tr></table></figure></p>
+<p>怎么样个对齐的方法呢,就是分区的时候,要注意,不要用 fdisk 来分区,不是说fdisk不行,经过我的测试,用 fdisk 分区,我明明分的是2T,结果却是1T大小，用 parted 分区就没有这个问题 </p>
+<p>debian 下面,如果没有 parted 这个工具,apt-get 安装,安装完成以后,就可以使用了 </p>
+<p>引用</p>
+<pre><code class="raw">root@localhost ~]# parted /dev/sdb # &#20351;&#29992;parted&#26469;&#23545;GPT&#30913;&#30424;&#25805;&#20316;,&#36827;&#20837;&#20132;&#20114;&#24335;&#27169;&#24335;&#10;GNU Parted 1.8.1 Using /dev/sdb Welcome to GNU Parted! Type &#8216;help&#8217; to view a list of commands.&#10;(parted) mklabel msdos           # &#23558;MBR&#30913;&#30424;&#26684;&#24335;&#21270;&#20026;msdos 2T&#30340;&#30828;&#30424; msdos &#27809;&#26377;&#38382;&#39064;&#10;(parted) p                      #&#25171;&#21360;&#24403;&#21069;&#20998;&#21306;&#10;(parted) mkpart primary 1 2TB                # &#20998;&#19968;&#20010;2T&#30340;&#20027;&#20998;&#21306;,&#36825;&#37324;&#36755;&#20837;1,&#21542;&#21017;&#20250;&#25552;&#31034;&#24615;&#33021;&#38382;&#39064;&#10;(parted) p                         #&#25171;&#21360;&#24403;&#21069;&#20998;&#21306;&#10;(parted) q &#36864;&#20986;&#10;Information: Don&#8217;t forget to update /etc/fstab, if necessary.
+</code></pre>
+<p>退出后,用 mkfs.ext4 格式化就好了 </p>
+<p>然后再用 fdisk -lu 查看,已经没有那个提示了 </p>
+<p>这里说明下,对齐,就是说分区的时候,开始的扇区要以 8 的倍数来开始,而 fisk 默认是 63 ,对老硬盘没有什么问题,但是对西数的新硬盘, 4k 扇区的,就会有对齐的问题,会导致性能下降</p>
+<p>写于: 2012年05月02日<br>更新于:2015年03月22日</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>新购一个西数2T硬盘,也就是绿盘的那种,淘宝500左右,支持高级格式化。 </p>
+<p>到手以后,分区格式化,前几天格式化完成以后,fdisk -l 发现如下文字 </p>
+<p>引用<br>Partition 1 does not start on physical sector boundary.</p>
+<p>网上找了下,说是软件的问题,后来折腾了下,应该是分区没有对齐的原因,至于为什么要对齐,优点很多,好像这个是跟神马高级分区格式化有关,具体的原理神马的,我就不讨论了,反正有一点,对齐后,性能会有提升。 </p>]]>
+    
+    </summary>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Check Host:实时监控网站或者服务器是否可以访问]]></title>
+    <link href="http://yoursite.com/2015/03/22/Check-Host-%E5%AE%9E%E6%97%B6%E7%9B%91%E6%8E%A7%E7%BD%91%E7%AB%99%E6%88%96%E8%80%85%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%98%AF%E5%90%A6%E5%8F%AF%E4%BB%A5%E8%AE%BF%E9%97%AE/"/>
+    <id>http://yoursite.com/2015/03/22/Check-Host-实时监控网站或者服务器是否可以访问/</id>
+    <published>2015-03-22T08:15:10.000Z</published>
+    <updated>2015-03-22T08:24:03.487Z</updated>
+    <content type="html"><![CDATA[<p>如果你拥有一个网站，那么最重要的事情就是要保证它24小时都能够访问。不过国内的虚拟主机服务非常糟糕，经常会出现各种状况,所以我们需要一个软件,可以让我们第一时间知道网站出现了无法访问的情况,从而通知售后人员解决。而Check Host就是这么一个windows下的免费网站时时监控工具。</p>
+<p>服务器无法访问,那么对网站是非常不利的,而搜索引擎也会知道这个状况,因为蜘蛛不能爬行你的网页了。所以对访客以及搜索引擎排名都是不利的。不过这个事情肯定会发生,我们能做的就是提高反应速度,让这样的情况在最短的时间内解决。</p>
+<p>如此一来,对于网站的实时监控就非常有必要的,但是我们又不能每隔一段时间就手动打开网站一次,这样太过于麻烦,甚至是愚蠢的,所以我们必须要使用一个软件,让其代劳，当发生状况的时候还会给你发出警告，而Check Host就可以满足你的愿望。</p>
+<p>Check Host是一个windows下的小软件，只有2.2M,十分的小巧,它的原理是每隔一段时间就自动ping一下你设定的网址。如果无法ping通的话,那么就会通过几种方法告诉你。</p>
+<a id="more"></a>
+<p>这个软件对监控的网站和服务器没有数量方面的限制,所以你同时可以监控多个网站。</p>
+<p><img src="http://7xi6lo.com1.z0.glb.clouddn.com/checkhost1.jpg" alt=""></p>
+<p>使用方法: </p>
+<p>当你安装运行后,点击左上角的“new”按钮添加一个任务,在出现界面的“hostname”下面输入网址。“check interval”是让你设置测试间隔,这个默认是10秒,建议间隔长一点,不然可能会谎报军情。“timeout”是超时的时间,默认1000毫秒,建议也是填较短的时间,不然可能会导致软件无法响应。如果发生这样的状况,只需等待就可以了。</p>
+<p>而在新建任务界面右侧的是当ping不通是触发什么行为,如果又再次ping通又触发什么。</p>
+<p>这个你有三种选择,桌面提醒、往指定邮箱发送邮件、启动某个程序或者批处理命令。并且这个是可以多选的。<br>默认情况下,桌面提醒是被激活的,一旦出现状况,你就会在桌面右侧看到小的弹窗,上面会显示不能访问的网站网址。而系统托盘的图标也会从“勾”变成“叉”。</p>
+<p>而触发程序的话，你可以指定音乐播放器,那么这样就会在网站无法访问时使用声音提醒你。</p>
+<p>“check interval”在软件默认设置中是10秒,不过希望你在使用的时候改成1分钟以上，这样就不会非常敏感了。</p>
+<p><img src="http://7xi6lo.com1.z0.glb.clouddn.com/checkhost2.jpg" alt=""></p>
+<p>写于:2012年04月26日<br>更新于: 2015年03月22日</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>如果你拥有一个网站，那么最重要的事情就是要保证它24小时都能够访问。不过国内的虚拟主机服务非常糟糕，经常会出现各种状况,所以我们需要一个软件,可以让我们第一时间知道网站出现了无法访问的情况,从而通知售后人员解决。而Check Host就是这么一个windows下的免费网站时时监控工具。</p>
+<p>服务器无法访问,那么对网站是非常不利的,而搜索引擎也会知道这个状况,因为蜘蛛不能爬行你的网页了。所以对访客以及搜索引擎排名都是不利的。不过这个事情肯定会发生,我们能做的就是提高反应速度,让这样的情况在最短的时间内解决。</p>
+<p>如此一来,对于网站的实时监控就非常有必要的,但是我们又不能每隔一段时间就手动打开网站一次,这样太过于麻烦,甚至是愚蠢的,所以我们必须要使用一个软件,让其代劳，当发生状况的时候还会给你发出警告，而Check Host就可以满足你的愿望。</p>
+<p>Check Host是一个windows下的小软件，只有2.2M,十分的小巧,它的原理是每隔一段时间就自动ping一下你设定的网址。如果无法ping通的话,那么就会通过几种方法告诉你。</p>]]>
+    
+    </summary>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[清理win7注册表后，没有了右键新建选项处理办法]]></title>
+    <link href="http://yoursite.com/2015/03/22/%E6%B8%85%E7%90%86win7%E6%B3%A8%E5%86%8C%E8%A1%A8%E5%90%8E%EF%BC%8C%E6%B2%A1%E6%9C%89%E4%BA%86%E5%8F%B3%E9%94%AE%E6%96%B0%E5%BB%BA%E9%80%89%E9%A1%B9%E5%A4%84%E7%90%86%E5%8A%9E%E6%B3%95/"/>
+    <id>http://yoursite.com/2015/03/22/清理win7注册表后，没有了右键新建选项处理办法/</id>
+    <published>2015-03-22T08:09:11.000Z</published>
+    <updated>2015-03-26T06:32:11.387Z</updated>
+    <content type="html"><![CDATA[<p>今天清理win7注册表的右键选项,发现清理完了后,居然没有了右键新建,什么文件都无法创建,搜索了下,发现有人给出了解决办法,如下:<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">REGEDIT4 [HKEY_CLASSES_ROOT\Directory\Background\shellex\ContextMenuHandlers\New] @=&#34;&#123;D969A300-E7FF-11d0-A93B-00A0C90F2719&#125;&#34; [HKEY_CLASSES_ROOT\Directory\Background\shellex\ContextMenuHandlers\New\command] @=hex(2):</span><br></pre></td></tr></table></figure></p>
+<p>建一个文本文件,把上面的内容拷过去,然后把文件后缀改成.reg。双击执行就可以了</p>
+<p>写于: 2012年04月25日<br>更新于: 2015年03月22日</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>今天清理win7注册表的右键选项,发现清理完了后,居然没有了右键新建,什么文件都无法创建,搜索了下,发现有人给出了解决办法,如下:<br><figure class="highlight"><table><tr><td class="code"><pre><span cla]]>
+    </summary>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[把你的常用文件夹直接显示在“计算机”中]]></title>
+    <link href="http://yoursite.com/2015/03/22/%E6%8A%8A%E4%BD%A0%E7%9A%84%E5%B8%B8%E7%94%A8%E6%96%87%E4%BB%B6%E5%A4%B9%E7%9B%B4%E6%8E%A5%E6%98%BE%E7%A4%BA%E5%9C%A8%E2%80%9C%E8%AE%A1%E7%AE%97%E6%9C%BA%E2%80%9D%E4%B8%AD/"/>
+    <id>http://yoursite.com/2015/03/22/把你的常用文件夹直接显示在“计算机”中/</id>
+    <published>2015-03-22T08:05:43.000Z</published>
+    <updated>2015-03-26T05:52:02.848Z</updated>
+    <content type="html"><![CDATA[<p>win7 中“我的电脑”改名为了“计算机”,而且计算机中不再有我的文档共享文档等链接,虽然计算机左侧的链接中有常用文件夹的链接，用户也可以把自己的快捷方式放入其中。<br>但某些东西还是想直接放在计算机中，很简单，只要把文件或文件夹或它们的快捷方式放到以下目录即可。<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">C:\Users\&#20320;&#30340;&#29992;&#25143;&#21517;\AppData\Roaming\Microsoft\Windows\Network Shortcuts</span><br></pre></td></tr></table></figure></p>
+<p>即可在“计算机”中显示。</p>
+<p>写于: 2012年4月24日<br>更新于: 2015年03月22日</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>win7 中“我的电脑”改名为了“计算机”,而且计算机中不再有我的文档共享文档等链接,虽然计算机左侧的链接中有常用文件夹的链接，用户也可以把自己的快捷方式放入其中。<br>但某些东西还是想直接放在计算机中，很简单，只要把文件或文件夹或它们的快捷方式放到以下目录即可。<br>]]>
     </summary>
     
   </entry>
