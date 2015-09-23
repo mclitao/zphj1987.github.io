@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>fio的配置使用 | zphj1987&#39;Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="将fio-2.1.10.tar.gz拷贝到linux服务器的/usr/src/下
+解压源码包:root@grandocean:/usr/src# tar xvf fio-2.1.10.tar.gz root@grandocean:/usr/src# cd fio-2.1.10/
+安装依赖包:root@grandocean:/usr/src/fio-2.1.10# apt-get install p">
+<meta property="og:type" content="article">
+<meta property="og:title" content="fio的配置使用">
+<meta property="og:url" content="http://yoursite.com/2015/03/24/fio的配置使用/index.html">
+<meta property="og:site_name" content="zphj1987'Blog">
+<meta property="og:description" content="将fio-2.1.10.tar.gz拷贝到linux服务器的/usr/src/下
+解压源码包:root@grandocean:/usr/src# tar xvf fio-2.1.10.tar.gz root@grandocean:/usr/src# cd fio-2.1.10/
+安装依赖包:root@grandocean:/usr/src/fio-2.1.10# apt-get install p">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="fio的配置使用">
+<meta name="twitter:description" content="将fio-2.1.10.tar.gz拷贝到linux服务器的/usr/src/下
+解压源码包:root@grandocean:/usr/src# tar xvf fio-2.1.10.tar.gz root@grandocean:/usr/src# cd fio-2.1.10/
+安装依赖包:root@grandocean:/usr/src/fio-2.1.10# apt-get install p">
+  
+    <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="/assets/blogImg/mylogo.jpg" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">zphj1987</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">现在所学，终有所用</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						
+						<li>关于我</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+							<li><a href="/tags/说说">说说</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="https://github.com/zphj1987" title="github">github</a>
+					        
+								<a class="weibo" target="_blank" href=" http://weibo.com/zphj1987" title="weibo">weibo</a>
+					        
+								<a class="rss" target="_blank" href="http://www.zphj1987.com/atom.xml" title="rss">rss</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/ceph/" style="font-size: 10px;">ceph</a><a href="/tags/iptables/" style="font-size: 10px;">iptables</a><a href="/tags/linux/" style="font-size: 20px;">linux</a><a href="/tags/nginx/" style="font-size: 12px;">nginx</a><a href="/tags/samba/" style="font-size: 10px;">samba</a><a href="/tags/ubuntu/" style="font-size: 18px;">ubuntu</a><a href="/tags/windows/" style="font-size: 10px;">windows</a><a href="/tags/内核/" style="font-size: 14px;">内核</a><a href="/tags/操作系统/" style="font-size: 12px;">操作系统</a><a href="/tags/杂七杂八/" style="font-size: 12px;">杂七杂八</a><a href="/tags/注册码/" style="font-size: 10px;">注册码</a><a href="/tags/测试工具/" style="font-size: 12px;">测试工具</a><a href="/tags/网卡/" style="font-size: 14px;">网卡</a><a href="/tags/脚本/" style="font-size: 16px;">脚本</a><a href="/tags/高可用/" style="font-size: 10px;">高可用</a>
+					</div>
+				</section>
+				
+				
+				
+
+				
+				
+				<section class="switch-part switch-part3">
+				
+					<div id="js-aboutme">1987 男,武汉。吃货。存储行业。</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">zphj1987</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="/assets/blogImg/mylogo.jpg" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">zphj1987</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">现在所学，终有所用</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+					<li><a href="/tags/说说">说说</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/zphj1987" title="github">github</a>
+			        
+						<a class="weibo" target="_blank" href=" http://weibo.com/zphj1987" title="weibo">weibo</a>
+			        
+						<a class="rss" target="_blank" href="http://www.zphj1987.com/atom.xml" title="rss">rss</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-fio的配置使用" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/03/24/fio的配置使用/" class="article-date">
+  	<time datetime="2015-03-23T23:45:26.000Z" itemprop="datePublished">2015-03-24</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      fio的配置使用
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/测试工具/">测试工具</a></li></ul>
+	</div>
+
+        
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>将fio-2.1.10.tar.gz拷贝到linux服务器的/usr/src/下</p>
+<p>解压源码包:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@grandocean:/usr/src<span class="comment"># tar xvf fio-2.1.10.tar.gz </span></span><br><span class="line">root@grandocean:/usr/src<span class="comment"># cd fio-2.1.10/</span></span><br></pre></td></tr></table></figure></p>
+<p>安装依赖包:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@grandocean:/usr/src/fio-<span class="number">2.1</span>.<span class="number">10</span><span class="comment"># apt-get install pkg-config gtk+-2.0 libaio-dev</span></span><br></pre></td></tr></table></figure></p>
+<p>开启gfio:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@grandocean:/usr/src/fio-<span class="number">2.1</span>.<span class="number">10</span><span class="comment"># ./configure --enable-gfio</span></span><br></pre></td></tr></table></figure></p>
+<a id="more"></a>
+<p>编译fio:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@grandocean:/usr/src/fio-<span class="number">2.1</span>.<span class="number">10</span><span class="comment"># make fio</span></span><br></pre></td></tr></table></figure></p>
+<p>编译gfio:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@grandocean:/usr/src/fio-<span class="number">2.1</span>.<span class="number">10</span><span class="comment"># make gfio</span></span><br></pre></td></tr></table></figure></p>
+<p>启动server模式:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@grandocean:/usr/src/fio-<span class="number">2.1</span>.<span class="number">10</span><span class="comment"># ./fio -S</span></span><br></pre></td></tr></table></figure></p>
+<p>测试脚本:<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">#! /bin/sh&#10;echo &#34;-------------------------------------------------------------------------------&#34;&#10;echo &#34;iozone&#27979;&#35797;&#34;  &#62; result.fio&#10;iozone -i 0 -i 1 -i 2 -i 5 -r 4M -s 16G -f /mnt/test1/iotestthru.iso &#62;&#62;  result.fio&#10;sleep 30&#10;echo &#34;-------------------------------------------------------------------------------&#34;&#10;echo &#34;&#39034;&#24207;&#35835;&#34; &#62;&#62; result.fio&#10;fio -filename=/mnt/fio/cachethrusqread -direct=1 -iodepth 1 -thread  -rw=read -ioengine=psync  -bs=16k  -size=50G -numjobs=30 -runtime=1200 -group_reporting -name=cachesqread  &#62;&#62; result.fio&#10;sleep 30&#10;echo &#34;-------------------------------------------------------------------------------&#34;&#10;echo &#34;&#39034;&#24207;&#20889;&#34; &#62;&#62; result.fio&#10;fio -filename=/mnt/fio/cachethrusqwrite -direct=1 -iodepth 1 -thread  -rw=write -ioengine=psync  -bs=16k  -size=50G -numjobs=30 -runtime=1200 -group_reporting -name=cachewrite&#10;sleep 30&#10;echo &#34;-------------------------------------------------------------------------------&#34;&#10;echo &#34;&#38543;&#26426;&#20889;&#34; &#62;&#62; result.fio&#10;fio -filename=/mnt/fio/cachethrurandwrite -direct=1 -iodepth 1 -thread  -rw=randwrite -ioengine=psync  -bs=16k  -size=50G -numjobs=30 -runtime=1200 -group_reporting -name=cacherandwrite &#62;&#62; result.fio&#10;sleep 30&#10;echo &#34;-------------------------------------------------------------------------------&#34;&#10;echo &#34;&#38543;&#26426;&#35835;&#34;  &#62;&#62; result.fio&#10;fio -filename=/mnt/fio/cachethrurandread -direct=1 -iodepth 1 -thread  -rw=randread -ioengine=psync  -bs=16k  -size=50G -numjobs=30 -runtime=1200 -group_reporting -name=cacherandread     &#62;&#62;  result.fio&#10;sleep 30&#10;echo &#34;-------------------------------------------------------------------------------&#34;&#10;echo &#34;&#38543;&#26426;&#35835;&#20889;&#27604;&#20363;&#21508;50%&#34; &#62;&#62; result.fio&#10;fio -filename=/mnt/fio/cachethrurandreadwrite -direct=1 -iodepth 1 -thread  -rw=randrw -rwmixread=50 -ioengine=psync  -bs=16k  -size=50G -numjobs=30 -runtime=1200 -group_reporting -name=cacherandreadwrite &#62;&#62;  result.fio&#10;echo &#34;-------------------------------------------------------------------------------&#34;</span><br></pre></td></tr></table></figure></p>
+<p>写于: 2014年06月12日<br>更新于: 2015年03月24日</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2015/03/24/xenserver中linux虚拟机修改启动顺序/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          xenserver中linux虚拟机修改启动顺序
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/03/24/持续运行一个命令，并且将结果输出到文本/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">持续运行一个命令，并且将结果输出到文本</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到：</span>
+		<a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+		<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="fio的配置使用" data-title="fio的配置使用" data-url="http://yoursite.com/2015/03/24/fio的配置使用/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"true"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2015 zphj1987
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="/js/main.js" type="text/javascript"></script>
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  </div>
+</body>
+</html>
