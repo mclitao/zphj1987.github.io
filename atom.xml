@@ -3,9 +3,9 @@
   <title><![CDATA[zphj1987'Blog]]></title>
   <subtitle><![CDATA[现在所学，终有所用]]></subtitle>
   <link href="/atom.xml" rel="self"/>
-  <link href="http://yoursite.com/"/>
+  <link href="http://www.zphj1987.com/"/>
   <updated>2015-09-24T03:36:17.055Z</updated>
-  <id>http://yoursite.com/</id>
+  <id>http://www.zphj1987.com/</id>
   
   <author>
     <name><![CDATA[zphj1987]]></name>
@@ -16,8 +16,8 @@
   
   <entry>
     <title><![CDATA[删除ceph集群mds]]></title>
-    <link href="http://yoursite.com/2015/09/24/%E5%88%A0%E9%99%A4ceph%E9%9B%86%E7%BE%A4mds/"/>
-    <id>http://yoursite.com/2015/09/24/删除ceph集群mds/</id>
+    <link href="http://www.zphj1987.com/2015/09/24/%E5%88%A0%E9%99%A4ceph%E9%9B%86%E7%BE%A4mds/"/>
+    <id>http://www.zphj1987.com/2015/09/24/删除ceph集群mds/</id>
     <published>2015-09-24T03:10:49.000Z</published>
     <updated>2015-09-24T03:36:17.055Z</updated>
     <content type="html"><![CDATA[<p>ceph集群新搭建以后是只有一个默认的存储池rbd的池</p>
@@ -37,14 +37,14 @@
 <h2 id="创建文件接口集群">创建文件接口集群</h2><h3 id="1-创建一个元数据池">1.创建一个元数据池</h3><figure class="highlight bash"><table><]]>
     </summary>
     
-      <category term="ceph" scheme="http://yoursite.com/tags/ceph/"/>
+      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[ceph客户端服务端属性匹配关系]]></title>
-    <link href="http://yoursite.com/2015/09/18/ceph%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%B1%9E%E6%80%A7%E5%8C%B9%E9%85%8D%E5%85%B3%E7%B3%BB/"/>
-    <id>http://yoursite.com/2015/09/18/ceph客户端服务端属性匹配关系/</id>
+    <link href="http://www.zphj1987.com/2015/09/18/ceph%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%B1%9E%E6%80%A7%E5%8C%B9%E9%85%8D%E5%85%B3%E7%B3%BB/"/>
+    <id>http://www.zphj1987.com/2015/09/18/ceph客户端服务端属性匹配关系/</id>
     <published>2015-09-18T03:24:08.000Z</published>
     <updated>2015-09-22T16:15:49.600Z</updated>
     <content type="html"><![CDATA[<p>ceph的server是定期会发布版本，而它的客户端是放到linux 内核当中的，一些属性的支持是依赖于内核版本的，这样就存在一些问题，一些功能后端支持，而客户端旧了；还有可能是客户端用的很新的内核，而后端比较旧不支持，所以查看了下内核中的 <code>features</code> 文件，可以看到这个对应关系，总结了下就是下面的列表</p>
@@ -64,14 +64,14 @@
     <![CDATA[<p>ceph的server是定期会发布版本，而它的客户端是放到linux 内核当中的，一些属性的支持是依赖于内核版本的，这样就存在一些问题，一些功能后端支持，而客户端旧了；还有可能是客户端用的很新的内核，而后端比较旧不支持，所以查看了下内核中的 <code>features</]]>
     </summary>
     
-      <category term="ceph" scheme="http://yoursite.com/tags/ceph/"/>
+      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[nginx配置代理缓存]]></title>
-    <link href="http://yoursite.com/2015/07/14/nginx%E9%85%8D%E7%BD%AE%E4%BB%A3%E7%90%86%E7%BC%93%E5%AD%98/"/>
-    <id>http://yoursite.com/2015/07/14/nginx配置代理缓存/</id>
+    <link href="http://www.zphj1987.com/2015/07/14/nginx%E9%85%8D%E7%BD%AE%E4%BB%A3%E7%90%86%E7%BC%93%E5%AD%98/"/>
+    <id>http://www.zphj1987.com/2015/07/14/nginx配置代理缓存/</id>
     <published>2015-07-14T01:57:21.000Z</published>
     <updated>2015-09-23T07:27:31.203Z</updated>
     <content type="html"><![CDATA[<p>nginx可以实现反向代理的配置，并且可以使用缓存来加速，本文是简单的实现功能的配置，暂时没有做其他的优化的部分的配置，从网上的资料来看，很多配置都是没有讲哪些是必须配置的，我自己在配置过程中就发现没有生成缓存文件，下面来记录下配置的内容<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">upstream test&#123;&#10;            server 127.0.0.1:8080;&#10;        &#125;&#10;&#10;proxy_cache_path /var/cache/nginx/proxy_cache keys_zone=cache_zone:2000m max_size=1000m;&#10;&#10;server &#123;&#10;    listen       80;&#10;    server_name  localhost;&#10;    location / &#123;&#10;        proxy_pass http://127.0.0.1:8080;&#10;        proxy_cache cache_zone;&#10;        proxy_cache_valid  200 304 302 24h;&#10;    &#125;&#10;&#10;    error_page   500 502 503 504  /50x.html;&#10;&#10;    location = /50x.html &#123;&#10;        root   /usr/share/nginx/html;&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure></p>
@@ -87,14 +87,14 @@
     
     </summary>
     
-      <category term="nginx" scheme="http://yoursite.com/tags/nginx/"/>
+      <category term="nginx" scheme="http://www.zphj1987.com/tags/nginx/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[linux服务器远程网络开机（wake on lan）]]></title>
-    <link href="http://yoursite.com/2015/05/27/linux%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%BF%9C%E7%A8%8B%E7%BD%91%E7%BB%9C%E5%BC%80%E6%9C%BA%EF%BC%88wake-on-lan%EF%BC%89/"/>
-    <id>http://yoursite.com/2015/05/27/linux服务器远程网络开机（wake-on-lan）/</id>
+    <link href="http://www.zphj1987.com/2015/05/27/linux%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%BF%9C%E7%A8%8B%E7%BD%91%E7%BB%9C%E5%BC%80%E6%9C%BA%EF%BC%88wake-on-lan%EF%BC%89/"/>
+    <id>http://www.zphj1987.com/2015/05/27/linux服务器远程网络开机（wake-on-lan）/</id>
     <published>2015-05-27T06:35:40.000Z</published>
     <updated>2015-09-23T07:27:27.955Z</updated>
     <content type="html"><![CDATA[<h3 id="检查服务器是否支持远程网络开机">检查服务器是否支持远程网络开机</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab5101 ~]<span class="comment"># ethtool eth0</span></span><br><span class="line">    Settings <span class="keyword">for</span> eth0:</span><br><span class="line">        Supported ports: [ TP ]</span><br><span class="line">        Supported link modes: <span class="number">10</span>baseT/Half <span class="number">10</span>baseT/Full </span><br><span class="line">                              <span class="number">100</span>baseT/Half <span class="number">100</span>baseT/Full </span><br><span class="line">                              <span class="number">1000</span>baseT/Full </span><br><span class="line">        Supported pause frame use: No</span><br><span class="line">        Supports auto-negotiation: Yes</span><br><span class="line">        Advertised link modes: </span><br><span class="line">                             <span class="number">10</span>baseT/Half <span class="number">10</span>baseT/Full </span><br><span class="line">                             <span class="number">100</span>baseT/Half <span class="number">100</span>baseT/Full </span><br><span class="line">                             <span class="number">1000</span>baseT/Full </span><br><span class="line">        Advertised pause frame use: No</span><br><span class="line">        Advertised auto-negotiation: Yes</span><br><span class="line">        Speed: <span class="number">1000</span>Mb/s</span><br><span class="line">        Duplex: Full</span><br><span class="line">        Port: Twisted Pair</span><br><span class="line">        PHYAD: <span class="number">2</span></span><br><span class="line">        Transceiver: internal</span><br><span class="line">        Auto-negotiation: onMDI-X: on</span><br><span class="line">        Supports Wake-on: pumbg</span><br><span class="line">        Wake-on: g</span><br><span class="line">        Current message level: <span class="number">0</span>x00000007 (<span class="number">7</span>) </span><br><span class="line">                               drv probe linkLink detected: yes</span><br></pre></td></tr></table></figure>
@@ -111,14 +111,14 @@
     
     </summary>
     
-      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
+      <category term="linux" scheme="http://www.zphj1987.com/tags/linux/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[dm-crypt加密磁盘]]></title>
-    <link href="http://yoursite.com/2015/05/25/dm-crypt%E5%8A%A0%E5%AF%86%E7%A3%81%E7%9B%98/"/>
-    <id>http://yoursite.com/2015/05/25/dm-crypt加密磁盘/</id>
+    <link href="http://www.zphj1987.com/2015/05/25/dm-crypt%E5%8A%A0%E5%AF%86%E7%A3%81%E7%9B%98/"/>
+    <id>http://www.zphj1987.com/2015/05/25/dm-crypt加密磁盘/</id>
     <published>2015-05-25T06:07:58.000Z</published>
     <updated>2015-05-25T06:14:22.406Z</updated>
     <content type="html"><![CDATA[<h3 id="dm-cry加密方式密码与文件">dm-cry加密方式密码与文件</h3><p>与其它创建加密文件系统的方法相比，dm-crypt系统有着无可比拟的优越性：它的速度更快，易用性更强。除此之外，它的适用面也很广，能够运行在各种块设备上，即使这些设备使用了RAID和 LVM也毫无障碍。</p>
@@ -166,8 +166,8 @@
   
   <entry>
     <title><![CDATA[linux系统克隆系统盘]]></title>
-    <link href="http://yoursite.com/2015/05/12/linux%E7%B3%BB%E7%BB%9F%E5%85%8B%E9%9A%86%E7%B3%BB%E7%BB%9F%E7%9B%98/"/>
-    <id>http://yoursite.com/2015/05/12/linux系统克隆系统盘/</id>
+    <link href="http://www.zphj1987.com/2015/05/12/linux%E7%B3%BB%E7%BB%9F%E5%85%8B%E9%9A%86%E7%B3%BB%E7%BB%9F%E7%9B%98/"/>
+    <id>http://www.zphj1987.com/2015/05/12/linux系统克隆系统盘/</id>
     <published>2015-05-12T06:24:31.000Z</published>
     <updated>2015-09-23T07:27:21.750Z</updated>
     <content type="html"><![CDATA[<p>本文将介绍两种方式的系统盘的完整的备份，两种方式各有优缺点，需要根据实际情况来进行选择</p>
@@ -216,14 +216,14 @@
     
     </summary>
     
-      <category term="操作系统" scheme="http://yoursite.com/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
+      <category term="操作系统" scheme="http://www.zphj1987.com/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[linux下制作软件包安装服务器]]></title>
-    <link href="http://yoursite.com/2015/04/28/linux%E4%B8%8B%E5%88%B6%E4%BD%9C%E8%BD%AF%E4%BB%B6%E5%8C%85%E5%AE%89%E8%A3%85%E6%9C%8D%E5%8A%A1%E5%99%A8/"/>
-    <id>http://yoursite.com/2015/04/28/linux下制作软件包安装服务器/</id>
+    <link href="http://www.zphj1987.com/2015/04/28/linux%E4%B8%8B%E5%88%B6%E4%BD%9C%E8%BD%AF%E4%BB%B6%E5%8C%85%E5%AE%89%E8%A3%85%E6%9C%8D%E5%8A%A1%E5%99%A8/"/>
+    <id>http://www.zphj1987.com/2015/04/28/linux下制作软件包安装服务器/</id>
     <published>2015-04-28T08:43:29.000Z</published>
     <updated>2015-09-23T07:27:18.653Z</updated>
     <content type="html"><![CDATA[<p>linux下的软件包在有网络的情况下比较好安装，在ubuntu下，更新sourcelist，然后使用apt-get就可以很方便的安装包，在centos下面，更新yum列表，然后使用yum也可以进行方便的软件安装，但是在没有网络的情况下就比较难安装，可以用一个个包的安装的方式去安装，这个在少量的包的情况下比较好处理，在多的情况下就比较麻烦了，本篇文档，就是介绍了在无网的情况下，根据自己的需要制作内网的包的安装服务器</p>
@@ -267,14 +267,14 @@
     
     </summary>
     
-      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
+      <category term="linux" scheme="http://www.zphj1987.com/tags/linux/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[windows下命令行设置静态IP]]></title>
-    <link href="http://yoursite.com/2015/04/03/windows%E4%B8%8B%E5%91%BD%E4%BB%A4%E8%A1%8C%E8%AE%BE%E7%BD%AE%E9%9D%99%E6%80%81IP/"/>
-    <id>http://yoursite.com/2015/04/03/windows下命令行设置静态IP/</id>
+    <link href="http://www.zphj1987.com/2015/04/03/windows%E4%B8%8B%E5%91%BD%E4%BB%A4%E8%A1%8C%E8%AE%BE%E7%BD%AE%E9%9D%99%E6%80%81IP/"/>
+    <id>http://www.zphj1987.com/2015/04/03/windows下命令行设置静态IP/</id>
     <published>2015-04-03T04:25:48.000Z</published>
     <updated>2015-09-23T07:27:15.004Z</updated>
     <content type="html"><![CDATA[<p>windows 10 预览版出现无法设置静态IP的bug，只能通过命令行进行设置，开启powershell，然后执行下列的命令即可<br>下面的“以太网 3” 为你设置的网卡的网卡名称,注意不要忘了空格</p>
@@ -289,14 +289,14 @@
 <p>设置静态IP:<br><figure class="hi]]>
     </summary>
     
-      <category term="windows" scheme="http://yoursite.com/tags/windows/"/>
+      <category term="windows" scheme="http://www.zphj1987.com/tags/windows/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[shell脚本的自动交互]]></title>
-    <link href="http://yoursite.com/2015/04/02/shell%E8%84%9A%E6%9C%AC%E7%9A%84%E8%87%AA%E5%8A%A8%E4%BA%A4%E4%BA%92/"/>
-    <id>http://yoursite.com/2015/04/02/shell脚本的自动交互/</id>
+    <link href="http://www.zphj1987.com/2015/04/02/shell%E8%84%9A%E6%9C%AC%E7%9A%84%E8%87%AA%E5%8A%A8%E4%BA%A4%E4%BA%92/"/>
+    <id>http://www.zphj1987.com/2015/04/02/shell脚本的自动交互/</id>
     <published>2015-04-02T09:22:40.000Z</published>
     <updated>2015-09-23T07:27:11.524Z</updated>
     <content type="html"><![CDATA[<p>使用expect来自动应答shell的交互</p>
@@ -306,14 +306,14 @@
 <figure class="highlight"><table><tr><td class="code"><pre><span class="line">#!/usr/bin/expect&#10;spawn opens]]>
     </summary>
     
-      <category term="脚本" scheme="http://yoursite.com/tags/%E8%84%9A%E6%9C%AC/"/>
+      <category term="脚本" scheme="http://www.zphj1987.com/tags/%E8%84%9A%E6%9C%AC/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[history命令的优化]]></title>
-    <link href="http://yoursite.com/2015/03/31/history%E5%91%BD%E4%BB%A4%E7%9A%84%E4%BC%98%E5%8C%96/"/>
-    <id>http://yoursite.com/2015/03/31/history命令的优化/</id>
+    <link href="http://www.zphj1987.com/2015/03/31/history%E5%91%BD%E4%BB%A4%E7%9A%84%E4%BC%98%E5%8C%96/"/>
+    <id>http://www.zphj1987.com/2015/03/31/history命令的优化/</id>
     <published>2015-03-31T08:53:28.000Z</published>
     <updated>2015-03-31T08:54:52.846Z</updated>
     <content type="html"><![CDATA[<p>现在在项目中遇到这个情况比较多，在执行了一系列的命令后，想去翻历史记录的时候，翻不到历史记录，不同终端的命令，没有汇总，也不清楚那条命令是什么时候执行的，所以需要对默认的命令进行下面两个优化：</p>
@@ -340,8 +340,8 @@
   
   <entry>
     <title><![CDATA[压缩css与js]]></title>
-    <link href="http://yoursite.com/2015/03/25/%E5%8E%8B%E7%BC%A9css%E4%B8%8Ejs/"/>
-    <id>http://yoursite.com/2015/03/25/压缩css与js/</id>
+    <link href="http://www.zphj1987.com/2015/03/25/%E5%8E%8B%E7%BC%A9css%E4%B8%8Ejs/"/>
+    <id>http://www.zphj1987.com/2015/03/25/压缩css与js/</id>
     <published>2015-03-25T04:52:01.000Z</published>
     <updated>2015-09-23T07:26:33.819Z</updated>
     <content type="html"><![CDATA[<p>使用yuicompressor 进行css和js的压缩</p>
@@ -351,14 +351,14 @@
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"></span><br><span class]]>
     </summary>
     
-      <category term="杂七杂八" scheme="http://yoursite.com/tags/%E6%9D%82%E4%B8%83%E6%9D%82%E5%85%AB/"/>
+      <category term="杂七杂八" scheme="http://www.zphj1987.com/tags/%E6%9D%82%E4%B8%83%E6%9D%82%E5%85%AB/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[ubuntu配置简单的DNS服务器]]></title>
-    <link href="http://yoursite.com/2015/03/24/ubuntu%E9%85%8D%E7%BD%AE%E7%AE%80%E5%8D%95%E7%9A%84DNS%E6%9C%8D%E5%8A%A1%E5%99%A8/"/>
-    <id>http://yoursite.com/2015/03/24/ubuntu配置简单的DNS服务器/</id>
+    <link href="http://www.zphj1987.com/2015/03/24/ubuntu%E9%85%8D%E7%BD%AE%E7%AE%80%E5%8D%95%E7%9A%84DNS%E6%9C%8D%E5%8A%A1%E5%99%A8/"/>
+    <id>http://www.zphj1987.com/2015/03/24/ubuntu配置简单的DNS服务器/</id>
     <published>2015-03-24T05:39:44.000Z</published>
     <updated>2015-09-23T07:25:55.222Z</updated>
     <content type="html"><![CDATA[<p>之所以说是简单的服务器，实现的功能很简单，通过这个dns server 查询制定域名的时候，能够根据设置的值来返回IP，当前的需求是需要轮询的返回IP</p>
@@ -386,14 +386,14 @@
     
     </summary>
     
-      <category term="ubuntu" scheme="http://yoursite.com/tags/ubuntu/"/>
+      <category term="ubuntu" scheme="http://www.zphj1987.com/tags/ubuntu/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[mdtest测试工具]]></title>
-    <link href="http://yoursite.com/2015/03/24/mdtest%E6%B5%8B%E8%AF%95%E5%B7%A5%E5%85%B7/"/>
-    <id>http://yoursite.com/2015/03/24/mdtest测试工具/</id>
+    <link href="http://www.zphj1987.com/2015/03/24/mdtest%E6%B5%8B%E8%AF%95%E5%B7%A5%E5%85%B7/"/>
+    <id>http://www.zphj1987.com/2015/03/24/mdtest测试工具/</id>
     <published>2015-03-24T05:33:52.000Z</published>
     <updated>2015-09-23T07:25:41.021Z</updated>
     <content type="html"><![CDATA[<p>软件介绍</p>
@@ -415,14 +415,14 @@
     
     </summary>
     
-      <category term="测试工具" scheme="http://yoursite.com/tags/%E6%B5%8B%E8%AF%95%E5%B7%A5%E5%85%B7/"/>
+      <category term="测试工具" scheme="http://www.zphj1987.com/tags/%E6%B5%8B%E8%AF%95%E5%B7%A5%E5%85%B7/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[cgroup实践-资源控制]]></title>
-    <link href="http://yoursite.com/2015/03/24/cgroup%E5%AE%9E%E8%B7%B5-%E8%B5%84%E6%BA%90%E6%8E%A7%E5%88%B6/"/>
-    <id>http://yoursite.com/2015/03/24/cgroup实践-资源控制/</id>
+    <link href="http://www.zphj1987.com/2015/03/24/cgroup%E5%AE%9E%E8%B7%B5-%E8%B5%84%E6%BA%90%E6%8E%A7%E5%88%B6/"/>
+    <id>http://www.zphj1987.com/2015/03/24/cgroup实践-资源控制/</id>
     <published>2015-03-24T05:32:19.000Z</published>
     <updated>2015-09-23T07:25:23.788Z</updated>
     <content type="html"><![CDATA[<p>1、Cgroup安装</p>
@@ -504,14 +504,14 @@ Swap:  <span class="number">2097148</span>k total,        <span class="number">0
     
     </summary>
     
-      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
+      <category term="linux" scheme="http://www.zphj1987.com/tags/linux/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[fq教程]]></title>
-    <link href="http://yoursite.com/2015/03/24/fq%E6%95%99%E7%A8%8B/"/>
-    <id>http://yoursite.com/2015/03/24/fq教程/</id>
+    <link href="http://www.zphj1987.com/2015/03/24/fq%E6%95%99%E7%A8%8B/"/>
+    <id>http://www.zphj1987.com/2015/03/24/fq教程/</id>
     <published>2015-03-24T05:30:23.000Z</published>
     <updated>2015-03-26T06:04:51.550Z</updated>
     <content type="html"><![CDATA[<h3 id="手机作为翻墙路由器的方式">手机作为翻墙路由器的方式</h3><p>首先介绍的是手机上的翻墙软件，这个只能走http协议，不能走https协议，在手机上使用很方便，能够方便的访问各种网站，但是作为其他设备的时候，就只能提供http的，那么像google需要用到https的时候，其他设备就出现无法访问情况</p>
@@ -561,8 +561,8 @@ Swap:  <span class="number">2097148</span>k total,        <span class="number">0
   
   <entry>
     <title><![CDATA[linux绑定盘符]]></title>
-    <link href="http://yoursite.com/2015/03/24/linux%E7%BB%91%E5%AE%9A%E7%9B%98%E7%AC%A6/"/>
-    <id>http://yoursite.com/2015/03/24/linux绑定盘符/</id>
+    <link href="http://www.zphj1987.com/2015/03/24/linux%E7%BB%91%E5%AE%9A%E7%9B%98%E7%AC%A6/"/>
+    <id>http://www.zphj1987.com/2015/03/24/linux绑定盘符/</id>
     <published>2015-03-24T05:25:22.000Z</published>
     <updated>2015-09-23T07:25:35.348Z</updated>
     <content type="html"><![CDATA[<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@centos6 ~]<span class="comment"># udevadm info -q path -n /dev/sdb</span></span><br><span class="line">[root@centos6 ~]<span class="comment"># udevadm info -q path -n /dev/sdc</span></span><br><span class="line">/devices/pci0000:<span class="number">00</span>/<span class="number">0000</span>:<span class="number">00</span>:<span class="number">10.0</span>/host2/target2:<span class="number">0</span>:<span class="number">1</span>/<span class="number">2</span>:<span class="number">0</span>:<span class="number">1</span>:<span class="number">0</span>/block/sdc</span><br></pre></td></tr></table></figure>
@@ -575,14 +575,14 @@ Swap:  <span class="number">2097148</span>k total,        <span class="number">0
     <![CDATA[<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@centos6 ~]<span class="comment"># udevadm info -q p]]>
     </summary>
     
-      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
+      <category term="linux" scheme="http://www.zphj1987.com/tags/linux/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[让磁盘硬盘灯常闪定位盘]]></title>
-    <link href="http://yoursite.com/2015/03/24/%E8%AE%A9%E7%A3%81%E7%9B%98%E7%A1%AC%E7%9B%98%E7%81%AF%E5%B8%B8%E9%97%AA%E5%AE%9A%E4%BD%8D%E7%9B%98/"/>
-    <id>http://yoursite.com/2015/03/24/让磁盘硬盘灯常闪定位盘/</id>
+    <link href="http://www.zphj1987.com/2015/03/24/%E8%AE%A9%E7%A3%81%E7%9B%98%E7%A1%AC%E7%9B%98%E7%81%AF%E5%B8%B8%E9%97%AA%E5%AE%9A%E4%BD%8D%E7%9B%98/"/>
+    <id>http://www.zphj1987.com/2015/03/24/让磁盘硬盘灯常闪定位盘/</id>
     <published>2015-03-24T05:23:26.000Z</published>
     <updated>2015-09-23T07:26:19.131Z</updated>
     <content type="html"><![CDATA[<figure class="highlight"><table><tr><td class="code"><pre><span class="line">#!/bin/bash&#10;hd=$1&#10;for num in &#123;1..5&#125;;do&#10;        dd if=&#34;$hd&#34; of=&#34;/dev/null&#34; bs=4M count=1000 iflag=direct conv=noerror &#62;/dev/null 2&#62;&#38;1&#10;        sleep 1&#10;done</span><br></pre></td></tr></table></figure>
@@ -592,14 +592,14 @@ Swap:  <span class="number">2097148</span>k total,        <span class="number">0
     <![CDATA[<figure class="highlight"><table><tr><td class="code"><pre><span class="line">#!/bin/bash&#10;hd=$1&#10;for num in &#123;1..5&#125;;do&#10; ]]>
     </summary>
     
-      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
+      <category term="linux" scheme="http://www.zphj1987.com/tags/linux/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[软件注册码]]></title>
-    <link href="http://yoursite.com/2015/03/24/%E8%BD%AF%E4%BB%B6%E6%B3%A8%E5%86%8C%E7%A0%81/"/>
-    <id>http://yoursite.com/2015/03/24/软件注册码/</id>
+    <link href="http://www.zphj1987.com/2015/03/24/%E8%BD%AF%E4%BB%B6%E6%B3%A8%E5%86%8C%E7%A0%81/"/>
+    <id>http://www.zphj1987.com/2015/03/24/软件注册码/</id>
     <published>2015-03-24T05:19:03.000Z</published>
     <updated>2015-09-23T07:26:22.283Z</updated>
     <content type="html"><![CDATA[<hr>
@@ -623,14 +623,14 @@ Swap:  <span class="number">2097148</span>k total,        <span class="number">0
     
     </summary>
     
-      <category term="注册码" scheme="http://yoursite.com/tags/%E6%B3%A8%E5%86%8C%E7%A0%81/"/>
+      <category term="注册码" scheme="http://www.zphj1987.com/tags/%E6%B3%A8%E5%86%8C%E7%A0%81/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[配置cobbler步骤]]></title>
-    <link href="http://yoursite.com/2015/03/24/%E9%85%8D%E7%BD%AEcobbler%E6%AD%A5%E9%AA%A4/"/>
-    <id>http://yoursite.com/2015/03/24/配置cobbler步骤/</id>
+    <link href="http://www.zphj1987.com/2015/03/24/%E9%85%8D%E7%BD%AEcobbler%E6%AD%A5%E9%AA%A4/"/>
+    <id>http://www.zphj1987.com/2015/03/24/配置cobbler步骤/</id>
     <published>2015-03-24T04:55:06.000Z</published>
     <updated>2015-09-23T07:26:12.004Z</updated>
     <content type="html"><![CDATA[<p>首先找到下载包的地址 (使用的是centos6)<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">http://download.opensuse.org/repositories/home:/libertas-ict:/cobbler26/CentOS_CentOS-6/noarch/</span><br></pre></td></tr></table></figure></p>
@@ -667,14 +667,14 @@ Swap:  <span class="number">2097148</span>k total,        <span class="number">0
     
     </summary>
     
-      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
+      <category term="linux" scheme="http://www.zphj1987.com/tags/linux/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[ubuntu使用iso作为本地源]]></title>
-    <link href="http://yoursite.com/2015/03/24/ubuntu%E4%BD%BF%E7%94%A8iso%E4%BD%9C%E4%B8%BA%E6%9C%AC%E5%9C%B0%E6%BA%90/"/>
-    <id>http://yoursite.com/2015/03/24/ubuntu使用iso作为本地源/</id>
+    <link href="http://www.zphj1987.com/2015/03/24/ubuntu%E4%BD%BF%E7%94%A8iso%E4%BD%9C%E4%B8%BA%E6%9C%AC%E5%9C%B0%E6%BA%90/"/>
+    <id>http://www.zphj1987.com/2015/03/24/ubuntu使用iso作为本地源/</id>
     <published>2015-03-24T04:52:24.000Z</published>
     <updated>2015-09-23T07:25:58.245Z</updated>
     <content type="html"><![CDATA[<p>方式一(路径不要改):<br>挂载光驱到到本地的指定目录<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mount /dev/cdrom /media/cdrom</span><br></pre></td></tr></table></figure></p>
@@ -694,7 +694,7 @@ Swap:  <span class="number">2097148</span>k total,        <span class="number">0
     
     </summary>
     
-      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
+      <category term="linux" scheme="http://www.zphj1987.com/tags/linux/"/>
     
   </entry>
   
