@@ -1723,27 +1723,33 @@ pre .css ~ * .id {
   margin-left: 10px;
 }
 .instagram .album ul {
-  min-height: 149px;
   padding-top: 17px;
   border-bottom: 1px solid #ddd;
-  list-style: none;
+  clear: both;
+  width: 100%;
+  text-align: left;
 }
 .instagram .album li {
+  list-style: none;
+  display: inline-block;
   position: relative;
   width: 25%;
   height: 0;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-  display: inline-block;
+  padding: 0 5px;
   margin: 0;
+  margin-bottom: -10px;
+  padding-bottom: 25%;
 }
 .instagram .album li:before {
   display: none;
 }
 .instagram .album div.img-box {
-  position: relative;
-  margin: 0 20px 10px;
+  position: absolute;
+  width: 90%;
+  height: 90%;
   -webkit-box-shadow: 0 1px 0 rgba(255,255,255,0.4), 0 1px 0 1px rgba(255,255,255,0.1);
   -moz-box-shadow: 0 1px 0 rgba(255,255,255,0.4), 0 1px 0 1px rgba(255,255,255,0.1);
   -webkit-box-shadow: 0 1px 0 rgba(255,255,255,0.4), 0 1px 0 1px rgba(255,255,255,0.1);
@@ -1778,8 +1784,7 @@ pre .css ~ * .id {
 }
 .instagram .album div.img-box img {
   width: 100%;
-  height: auto;
-  display: block;
+  height: 100%;
 }
 @media screen and (max-width: 600px) {
   .instagram .album ul {
