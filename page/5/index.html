@@ -109,7 +109,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/ceph/" style="font-size: 12px;">ceph</a><a href="/tags/iptables/" style="font-size: 10px;">iptables</a><a href="/tags/linux/" style="font-size: 20px;">linux</a><a href="/tags/nginx/" style="font-size: 12px;">nginx</a><a href="/tags/samba/" style="font-size: 10px;">samba</a><a href="/tags/ubuntu/" style="font-size: 18px;">ubuntu</a><a href="/tags/windows/" style="font-size: 10px;">windows</a><a href="/tags/内核/" style="font-size: 14px;">内核</a><a href="/tags/操作系统/" style="font-size: 12px;">操作系统</a><a href="/tags/杂七杂八/" style="font-size: 12px;">杂七杂八</a><a href="/tags/注册码/" style="font-size: 10px;">注册码</a><a href="/tags/测试工具/" style="font-size: 12px;">测试工具</a><a href="/tags/网卡/" style="font-size: 14px;">网卡</a><a href="/tags/脚本/" style="font-size: 16px;">脚本</a><a href="/tags/高可用/" style="font-size: 10px;">高可用</a>
+						<a href="/tags/ceph/" style="font-size: 12px;">ceph</a><a href="/tags/instagram/" style="font-size: 10px;">instagram</a><a href="/tags/iptables/" style="font-size: 10px;">iptables</a><a href="/tags/linux/" style="font-size: 20px;">linux</a><a href="/tags/nginx/" style="font-size: 12px;">nginx</a><a href="/tags/samba/" style="font-size: 10px;">samba</a><a href="/tags/ubuntu/" style="font-size: 18px;">ubuntu</a><a href="/tags/windows/" style="font-size: 10px;">windows</a><a href="/tags/内核/" style="font-size: 14px;">内核</a><a href="/tags/操作系统/" style="font-size: 12px;">操作系统</a><a href="/tags/杂七杂八/" style="font-size: 12px;">杂七杂八</a><a href="/tags/注册码/" style="font-size: 10px;">注册码</a><a href="/tags/测试工具/" style="font-size: 12px;">测试工具</a><a href="/tags/网卡/" style="font-size: 14px;">网卡</a><a href="/tags/脚本/" style="font-size: 16px;">脚本</a><a href="/tags/高可用/" style="font-size: 10px;">高可用</a>
 					</div>
 				</section>
 				
@@ -174,6 +174,60 @@
 	</div>
 </nav>
       <div class="body-wrap">
+  
+    <article id="post-expect循环的写法" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/03/23/expect循环的写法/" class="article-date">
+  	<time datetime="2015-03-22T23:55:53.000Z" itemprop="datePublished">2015-03-23</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/03/23/expect循环的写法/">expect循环的写法</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>脚本:<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">#!/usr/bin/expect&#10;spawn sensors-detect&#10;for &#123;set i 0&#125; &#123;$i&#60;=10&#125; &#123;incr i&#125; &#123;&#10;expect &#34;:&#34;&#10;send &#34;\n&#34;&#10;&#125;&#10;interact</span><br></pre></td></tr></table></figure></p>
+<p>解释:</p>
+<p>spawn是启动命令<br>for为循环的写法<br>interact为退出<br>这个脚本目的是在一次运行过程中不断模拟用户的enter操作</p>
+<p>写于:2013年08月12日<br>更新于: 2015年03月23日</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
   
     <article id="post-linux系统启动的时候用脚本生成ssh密钥对（免输入enter）" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -689,71 +743,6 @@
       
       
 
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-samba配置独立访问配置方法" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/03/22/samba配置独立访问配置方法/" class="article-date">
-  	<time datetime="2015-03-22T14:07:59.000Z" itemprop="datePublished">2015-03-22</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/03/22/samba配置独立访问配置方法/">samba配置独立访问配置方法</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="配置目的:">配置目的:</h3><p>为了给指定用户一个独立访问目录</p>
-<p>首先在samba服务器安装samba软件</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ apt-get install samba</span><br></pre></td></tr></table></figure>
-<p>然后配置独立访问用户<br>配置samba用户前提需要是linux的用户,所以要创建linux用户</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ useradd    zp</span><br><span class="line">$ passwd     zp</span><br></pre></td></tr></table></figure>
-<p>用户创建完了以后<br>需要创建samba用户</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ smbpasswd <span class="operator">-a</span>  zp</span><br></pre></td></tr></table></figure>
-<p>然后输入密码,记住密码,这个是客户端访问samba的密码<br>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/samba/">samba</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/03/22/samba配置独立访问配置方法/#more">more >></a>
-        </p>
       
       <div class="clearfix"></div>
     </div>
