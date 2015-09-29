@@ -240,7 +240,7 @@ $ smbpasswd -a  zp
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ smbpasswd <span class="operator">-a</span>  zp</span><br></pre></td></tr></table></figure>
 <p>然后输入密码,记住密码,这个是客户端访问samba的密码<br><a id="more"></a><br>在服务器的/etc/samba/smb.conf文件的</p>
 <p>[global]字段下面添加:<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">client lanman auth = yes&#10;security = user</span><br></pre></td></tr></table></figure></p>
-<p>在文件末尾添加:<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">&#9;[hj]&#10;&#9;    path=/hj&#10;&#9;    comment=zhangpengdemulu&#10;&#9;    writeable=yes&#10;&#9;    valid users = @zp&#10;``` &#10;&#20462;&#25913;&#37197;&#32622;&#25991;&#20214;&#20197;&#21518;,&#37325;&#21551;samba&#26381;&#21153;&#10;&#27880;&#24847; /hj &#30446;&#24405;&#38656;&#35201;&#26377;&#35835;&#20889;&#25191;&#34892;&#26435;&#38480;,&#22312;samba&#26381;&#21153;&#22120;&#25191;&#34892;:&#10;&#10;```bash&#10;$ chmod 777 /hj</span><br></pre></td></tr></table></figure></p>
+<p>在文件末尾添加:<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">&#9;[hj]&#10;&#9;    path=/hj&#10;&#9;    comment=zhangpengdemulu&#10;&#9;    writeable=yes&#10;&#9;    valid users = zp&#10;``` &#10;&#20462;&#25913;&#37197;&#32622;&#25991;&#20214;&#20197;&#21518;,&#37325;&#21551;samba&#26381;&#21153;&#10;&#27880;&#24847; /hj &#30446;&#24405;&#38656;&#35201;&#26377;&#35835;&#20889;&#25191;&#34892;&#26435;&#38480;,&#22312;samba&#26381;&#21153;&#22120;&#25191;&#34892;:&#10;&#10;```bash&#10;$ chmod 777 /hj</span><br></pre></td></tr></table></figure></p>
 <h4 id="客户端访问方法">客户端访问方法</h4><p>linux下两种方式<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ smbmount <span class="number">192.168</span>.<span class="number">0.194</span>:/hj /zp/<span class="built_in">test</span> -o username=zp</span><br><span class="line">$ mount -t cifs //<span class="number">192.168</span>.<span class="number">0.194</span>/hj /zp/<span class="built_in">test</span> -o username=zp</span><br></pre></td></tr></table></figure></p>
 <p>windows直接挂载</p>
 <h3 id="附加命令:">附加命令:</h3><p>查看samba的用户<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo pdbedit -L</span><br></pre></td></tr></table></figure></p>
@@ -248,8 +248,12 @@ $ smbpasswd -a  zp
 <p>从samba账户中删除一个用户<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo pdbedit -x username</span><br></pre></td></tr></table></figure></p>
 <p>显示samba账户信息<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo pdbedit -r username</span><br></pre></td></tr></table></figure></p>
 <p>测试samba账户是否正常<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">smbclient -L <span class="number">192.168</span>.<span class="number">1.1</span> -U username <span class="operator">-d</span> <span class="number">3</span></span><br></pre></td></tr></table></figure></p>
-<p>写于: 2013年04月17日<br>更新于: 2015年03月22日</p>
-
+<p>写于: 2013年04月17日<br>更新于: 2015年09月29日</p>
+<hr>
+<pre><code><span class="title">valid</span> users：
+<span class="variable">@zp</span> 为zp组
+zp 为zp用户
+</code></pre>
       
     </div>
     
