@@ -3,17 +3,20 @@
 <head>
   <meta charset="utf-8">
   
-  <title>zphj1987&#39;Blog</title>
+  <title>查询osd上的pg数 | zphj1987&#39;Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description">
-<meta property="og:type" content="website">
-<meta property="og:title" content="zphj1987'Blog">
-<meta property="og:url" content="http://www.zphj1987.com/index.html">
+  <meta name="description" content="本文中的命令的第一版来源于国外的一个博客，后面的版本为我自己修改的版本
+查询的命令如下：ceph pg dump | awk &apos; /^pg_stat/ &amp;#123; col=1; while($col!=&quot;up&quot;) &amp;#123;col++&amp;#125;; col++ &amp;#125; /^[0-9a-f]+\.[0-9a-f]+/ &amp;#123; match($0,/^[0-9a-f]+/); pool=">
+<meta property="og:type" content="article">
+<meta property="og:title" content="查询osd上的pg数">
+<meta property="og:url" content="http://www.zphj1987.com/2015/10/04/查询osd上的pg数/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
-<meta property="og:description">
+<meta property="og:description" content="本文中的命令的第一版来源于国外的一个博客，后面的版本为我自己修改的版本
+查询的命令如下：ceph pg dump | awk &apos; /^pg_stat/ &amp;#123; col=1; while($col!=&quot;up&quot;) &amp;#123;col++&amp;#125;; col++ &amp;#125; /^[0-9a-f]+\.[0-9a-f]+/ &amp;#123; match($0,/^[0-9a-f]+/); pool=">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="zphj1987'Blog">
-<meta name="twitter:description">
+<meta name="twitter:title" content="查询osd上的pg数">
+<meta name="twitter:description" content="本文中的命令的第一版来源于国外的一个博客，后面的版本为我自己修改的版本
+查询的命令如下：ceph pg dump | awk &apos; /^pg_stat/ &amp;#123; col=1; while($col!=&quot;up&quot;) &amp;#123;col++&amp;#125;; col++ &amp;#125; /^[0-9a-f]+\.[0-9a-f]+/ &amp;#123; match($0,/^[0-9a-f]+/); pool=">
   
     <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
   
@@ -173,9 +176,7 @@
 		</header>				
 	</div>
 </nav>
-      <div class="body-wrap">
-  
-    <article id="post-查询osd上的pg数" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-查询osd上的pg数" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
       <a href="/2015/10/04/查询osd上的pg数/" class="article-date">
@@ -191,12 +192,19 @@
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/10/04/查询osd上的pg数/">查询osd上的pg数</a>
+    <h1 class="article-title" itemprop="name">
+      查询osd上的pg数
     </h1>
   
 
       </header>
+      
+      <div class="article-info article-info-post">
+        
+        
+
+        <div class="clearfix"></div>
+      </div>
       
     
     <div class="article-entry" itemprop="articleBody">
@@ -268,577 +276,62 @@
       
     </div>
     
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
   </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2015/09/28/rbd的数据在哪里/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">rbd的数据在哪里</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
   
 </article>
 
 
-
-
-
-
-
-  
-    <article id="post-rbd的数据在哪里" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/09/28/rbd的数据在哪里/" class="article-date">
-  	<time datetime="2015-09-28T08:06:29.000Z" itemprop="datePublished">2015-09-28</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/09/28/rbd的数据在哪里/">rbd的数据在哪里</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="创建一个rbd">创建一个rbd</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@mytest ~]<span class="comment"># rbd create test1 --size 4000</span></span><br></pre></td></tr></table></figure>
-<h3 id="查看rbd信息">查看rbd信息</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@mytest ~]<span class="comment"># rbd info test1</span></span><br><span class="line">rbd image <span class="string">'test1'</span>:</span><br><span class="line">	size <span class="number">4000</span> MB <span class="keyword">in</span> <span class="number">1000</span> objects</span><br><span class="line">	order <span class="number">22</span> (<span class="number">4096</span> kB objects)</span><br><span class="line">	block_name_prefix: rb.<span class="number">0</span>.fa6c.<span class="number">6</span>b8b4567</span><br><span class="line">	format: <span class="number">1</span></span><br></pre></td></tr></table></figure>
-<p>可以看出是没写入真实数据的<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@mytest ~]<span class="comment"># ceph df|grep rbd</span></span><br><span class="line">    rbd          <span class="number">0</span>       <span class="number">133</span>         <span class="number">0</span>        <span class="number">30627</span>M           <span class="number">2</span></span><br></pre></td></tr></table></figure></p>
-<h3 id="查询rbd池里面的对象信息">查询rbd池里面的对象信息</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@mytest ~]<span class="comment"># rados ls -p rbd</span></span><br><span class="line"><span class="built_in">test</span>1.rbd</span><br><span class="line">rbd_directory</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+<div class="share">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到：</span>
+		<a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+		<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
 	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
 
-      
 
-      
-        <p class="article-more-link">
-          <a  href="/2015/09/28/rbd的数据在哪里/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
 
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="查询osd上的pg数" data-title="查询osd上的pg数" data-url="http://www.zphj1987.com/2015/10/04/查询osd上的pg数/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"zphj1987"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
 
 
 
 
-
-
-  
-    <article id="post-批量下载instagram图片" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/09/28/批量下载instagram图片/" class="article-date">
-  	<time datetime="2015-09-28T05:54:09.000Z" itemprop="datePublished">2015-09-28</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/09/28/批量下载instagram图片/">批量下载instagram图片</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="下载图片：">下载图片：</h3><p>通过下面的网址可以批量下载图片，需要翻墙</p>
-<p><a href="http://instrport.me/" target="_blank" rel="external">http://instrport.me/</a></p>
-<h3 id="处理图片到blog可用">处理图片到blog可用</h3><p>使用脚本运行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="shebang">#! /bin/sh</span></span><br><span class="line"><span class="keyword">for</span> file <span class="keyword">in</span> `ls ./ins`</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">year=`<span class="built_in">echo</span> <span class="variable">$file</span>|cut <span class="operator">-f</span> <span class="number">1</span> <span class="operator">-d</span> -`</span><br><span class="line">mouth=`<span class="built_in">echo</span> <span class="variable">$file</span>|cut <span class="operator">-f</span> <span class="number">2</span> <span class="operator">-d</span> -`</span><br><span class="line">	</span><br><span class="line"><span class="built_in">echo</span> <span class="operator">-e</span> <span class="string">"&#123;\"src\":\"https://scontent.cdninstagram.com/hphotos-xfa1/t51.2885-15/e15/<span class="variable">$file</span>\",\"text\":\"\",\"y\":<span class="variable">$year</span>,\"m\":<span class="variable">$mouth</span>&#125;,\c"</span></span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure></p>
-<p>替换instagram中的相应字段即可</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/instagram/">instagram</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-删除ceph集群mds" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/09/24/删除ceph集群mds/" class="article-date">
-  	<time datetime="2015-09-24T03:10:49.000Z" itemprop="datePublished">2015-09-24</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/09/24/删除ceph集群mds/">删除ceph集群mds</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>ceph集群新搭建以后是只有一个默认的存储池rbd的池</p>
-<h2 id="创建文件接口集群">创建文件接口集群</h2><h3 id="1-创建一个元数据池">1.创建一个元数据池</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@mytest ~]<span class="comment"># ceph osd pool create metadata  20 20</span></span><br><span class="line">pool <span class="string">'metadata'</span> created</span><br></pre></td></tr></table></figure>
-<h3 id="2-创建一个数据池">2.创建一个数据池</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@mytest ~]<span class="comment"># ceph osd pool create data   20 20</span></span><br><span class="line">pool <span class="string">'data'</span> created</span><br></pre></td></tr></table></figure>
-<h3 id="3-创建一个文件系统">3.创建一个文件系统</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@mytest ~]<span class="comment"># ceph fs new ceph  metadata data</span></span><br><span class="line">new fs with metadata pool <span class="number">4</span> and data pool <span class="number">5</span></span><br></pre></td></tr></table></figure>
-<h3 id="4-创建一个mds">4.创建一个mds</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@mytest ~]<span class="comment"># ceph-deploy mds create mytest</span></span><br></pre></td></tr></table></figure>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/09/24/删除ceph集群mds/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-ceph客户端服务端属性匹配关系" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/09/18/ceph客户端服务端属性匹配关系/" class="article-date">
-  	<time datetime="2015-09-18T03:24:08.000Z" itemprop="datePublished">2015-09-18</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/09/18/ceph客户端服务端属性匹配关系/">ceph客户端服务端属性匹配关系</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>ceph的server是定期会发布版本，而它的客户端是放到linux 内核当中的，一些属性的支持是依赖于内核版本的，这样就存在一些问题，一些功能后端支持，而客户端旧了；还有可能是客户端用的很新的内核，而后端比较旧不支持，所以查看了下内核中的 <code>features</code> 文件，可以看到这个对应关系，总结了下就是下面的列表</p>
-<p>注意表中：</p>
-<ul>
-<li><strong>S</strong>=SUPPORTED_DEFAULT     代表客户端支持这个属性</li>
-<li><strong>R</strong>=REQUIRED_DEFAULT      代表需要服务端支持这个属性</li>
-</ul>
-<p><img src="http://7xi6lo.com1.z0.glb.clouddn.com/属性匹配的问题.png" alt=""></p>
-<p><code>missing 2040000</code> 意思是 <code>CEPH_FEATURE_CRUSH_TUNABLES (40000)</code> 和 <code>CEPH_FEATURE_CRUSH_TUNABLES2 (2000000)</code> 不被当前客户端支持，一般要么关闭新的server端的这个属性，或者升级到支持的版本的内核.</p>
-<p>内核代码查看地址：<a href="http://lxr.free-electrons.com/source/include/linux/ceph/ceph_features.h" target="_blank" rel="external">http://lxr.free-electrons.com/source/include/linux/ceph/ceph_features.h</a></p>
-<p>写于：2015年09月18日夜</p>
-<p><strong>Power by zphj1987</strong></p>
-<p><strong>QQ:199383004</strong></p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-nginx配置代理缓存" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/07/14/nginx配置代理缓存/" class="article-date">
-  	<time datetime="2015-07-14T01:57:21.000Z" itemprop="datePublished">2015-07-14</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/07/14/nginx配置代理缓存/">nginx配置代理缓存</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>nginx可以实现反向代理的配置，并且可以使用缓存来加速，本文是简单的实现功能的配置，暂时没有做其他的优化的部分的配置，从网上的资料来看，很多配置都是没有讲哪些是必须配置的，我自己在配置过程中就发现没有生成缓存文件，下面来记录下配置的内容<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">upstream test&#123;&#10;            server 127.0.0.1:8080;&#10;        &#125;&#10;&#10;proxy_cache_path /var/cache/nginx/proxy_cache keys_zone=cache_zone:2000m max_size=1000m;&#10;&#10;server &#123;&#10;    listen       80;&#10;    server_name  localhost;&#10;    location / &#123;&#10;        proxy_pass http://127.0.0.1:8080;&#10;        proxy_cache cache_zone;&#10;        proxy_cache_valid  200 304 302 24h;&#10;    &#125;&#10;&#10;    error_page   500 502 503 504  /50x.html;&#10;&#10;    location = /50x.html &#123;&#10;        root   /usr/share/nginx/html;&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure></p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nginx/">nginx</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/07/14/nginx配置代理缓存/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-linux服务器远程网络开机（wake-on-lan）" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/05/27/linux服务器远程网络开机（wake-on-lan）/" class="article-date">
-  	<time datetime="2015-05-27T06:35:40.000Z" itemprop="datePublished">2015-05-27</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/05/27/linux服务器远程网络开机（wake-on-lan）/">linux服务器远程网络开机（wake on lan）</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="检查服务器是否支持远程网络开机">检查服务器是否支持远程网络开机</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab5101 ~]<span class="comment"># ethtool eth0</span></span><br><span class="line">    Settings <span class="keyword">for</span> eth0:</span><br><span class="line">        Supported ports: [ TP ]</span><br><span class="line">        Supported link modes: <span class="number">10</span>baseT/Half <span class="number">10</span>baseT/Full </span><br><span class="line">                              <span class="number">100</span>baseT/Half <span class="number">100</span>baseT/Full </span><br><span class="line">                              <span class="number">1000</span>baseT/Full </span><br><span class="line">        Supported pause frame use: No</span><br><span class="line">        Supports auto-negotiation: Yes</span><br><span class="line">        Advertised link modes: </span><br><span class="line">                             <span class="number">10</span>baseT/Half <span class="number">10</span>baseT/Full </span><br><span class="line">                             <span class="number">100</span>baseT/Half <span class="number">100</span>baseT/Full </span><br><span class="line">                             <span class="number">1000</span>baseT/Full </span><br><span class="line">        Advertised pause frame use: No</span><br><span class="line">        Advertised auto-negotiation: Yes</span><br><span class="line">        Speed: <span class="number">1000</span>Mb/s</span><br><span class="line">        Duplex: Full</span><br><span class="line">        Port: Twisted Pair</span><br><span class="line">        PHYAD: <span class="number">2</span></span><br><span class="line">        Transceiver: internal</span><br><span class="line">        Auto-negotiation: onMDI-X: on</span><br><span class="line">        Supports Wake-on: pumbg</span><br><span class="line">        Wake-on: g</span><br><span class="line">        Current message level: <span class="number">0</span>x00000007 (<span class="number">7</span>) </span><br><span class="line">                               drv probe linkLink detected: yes</span><br></pre></td></tr></table></figure>
-<p>注意这两项：<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">Supports Wake-on: pumbg&#10;Wake-on: g</span><br></pre></td></tr></table></figure></p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/05/27/linux服务器远程网络开机（wake-on-lan）/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-dm-crypt加密磁盘" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/05/25/dm-crypt加密磁盘/" class="article-date">
-  	<time datetime="2015-05-25T06:07:58.000Z" itemprop="datePublished">2015-05-25</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/05/25/dm-crypt加密磁盘/">dm-crypt加密磁盘</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="dm-cry加密方式密码与文件">dm-cry加密方式密码与文件</h3><p>与其它创建加密文件系统的方法相比，dm-crypt系统有着无可比拟的优越性：它的速度更快，易用性更强。除此之外，它的适用面也很广，能够运行在各种块设备上，即使这些设备使用了RAID和 LVM也毫无障碍。</p>
-<p>如果看到类似下面的输出，说明AES模块已经加载了。<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">cat /proc/crypto&#10;&#10;name         : aes&#10;driver       : aes-generic&#10;module       : kernel&#10;priority     : 100&#10;refcnt       : 3&#10;selftest     : passed&#10;type         : cipher&#10;blocksize    : 16&#10;min keysize  : 16&#10;max keysize  : 32</span><br></pre></td></tr></table></figure></p>
-<p>否则可以用modprobe命令来手工加载AES模块。<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">modprobe aes</span><br></pre></td></tr></table></figure></p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/05/25/dm-crypt加密磁盘/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-linux系统克隆系统盘" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/05/12/linux系统克隆系统盘/" class="article-date">
-  	<time datetime="2015-05-12T06:24:31.000Z" itemprop="datePublished">2015-05-12</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/05/12/linux系统克隆系统盘/">linux系统克隆系统盘</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>本文将介绍两种方式的系统盘的完整的备份，两种方式各有优缺点，需要根据实际情况来进行选择</p>
-<ul>
-<li>使用dd的完整镜像克隆的方式</li>
-<li>使用tar去备份数据，安装grub的方式</li>
-</ul>
-<h4 id="dd方式">dd方式</h4><p>优点：<br>简单，一条命令 dd if=/dev/sda of=/dev/sdb 就可以进行完整的系统备份了</p>
-<p>缺点：<br>时间非常长，备份一个系统盘，无论数据多少，系统盘全部会读取一遍，时间比较久<br>备份目的盘需要大于原盘<br>分区无法调整，根原分区一模一样</p>
-<h4 id="tar方式">tar方式</h4><p>优点：<br>时间短，只需要备份实际磁盘上的数据即可<br>自定义，可以修改分区的大小，可以控制备份的类容，可以定期备份<br>对目的盘大小无限制，比较灵活</p>
-<p>缺点：<br>人为修改东西比较多，需要手动去修改一些信息<br>当然在掌握了一定的linux基础的情况下建议是使用tar方式的，，下面将介绍tar方式的处理方式：</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/操作系统/">操作系统</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/05/12/linux系统克隆系统盘/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-linux下制作软件包安装服务器" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/04/28/linux下制作软件包安装服务器/" class="article-date">
-  	<time datetime="2015-04-28T08:43:29.000Z" itemprop="datePublished">2015-04-28</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/04/28/linux下制作软件包安装服务器/">linux下制作软件包安装服务器</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>linux下的软件包在有网络的情况下比较好安装，在ubuntu下，更新sourcelist，然后使用apt-get就可以很方便的安装包，在centos下面，更新yum列表，然后使用yum也可以进行方便的软件安装，但是在没有网络的情况下就比较难安装，可以用一个个包的安装的方式去安装，这个在少量的包的情况下比较好处理，在多的情况下就比较麻烦了，本篇文档，就是介绍了在无网的情况下，根据自己的需要制作内网的包的安装服务器</p>
-<h2 id="centos系列">centos系列</h2><h3 id="使用光驱作为安装源">使用光驱作为安装源</h3><p>1、将光驱挂载到服务器的本地目录</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@node1 ~]<span class="comment"># mount /dev/cdrom /mnt</span></span><br><span class="line">mount: block device /dev/sr0 is write-protected, mounting <span class="built_in">read</span>-only</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/04/28/linux下制作软件包安装服务器/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-  
-    <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
-    </nav>
-  
 </div>
       <footer id="footer">
   <div class="outer">
@@ -862,8 +355,8 @@
 		fancybox: true,
 		mathjax: undefined,
 		animate: true,
-		isHome: true,
-		isPost: false,
+		isHome: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,

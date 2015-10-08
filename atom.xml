@@ -4,7 +4,7 @@
   <subtitle><![CDATA[现在所学，终有所用]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2015-09-28T08:21:56.250Z</updated>
+  <updated>2015-10-08T16:09:53.599Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -13,6 +13,83 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[查询osd上的pg数]]></title>
+    <link href="http://www.zphj1987.com/2015/10/04/%E6%9F%A5%E8%AF%A2osd%E4%B8%8A%E7%9A%84pg%E6%95%B0/"/>
+    <id>http://www.zphj1987.com/2015/10/04/查询osd上的pg数/</id>
+    <published>2015-10-03T16:02:06.000Z</published>
+    <updated>2015-10-08T16:09:53.599Z</updated>
+    <content type="html"><![CDATA[<p>本文中的命令的第一版来源于国外的一个博客，后面的版本为我自己修改的版本</p>
+<p>查询的命令如下：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph pg dump | awk <span class="string">'</span><br><span class="line"> /^pg_stat/ &#123; col=1; while($col!="up") &#123;col++&#125;; col++ &#125;</span><br><span class="line"> /^[0-9a-f]+\.[0-9a-f]+/ &#123; match($0,/^[0-9a-f]+/); pool=substr($0, RSTART, RLENGTH); poollist[pool]=0;</span><br><span class="line"> up=$col; i=0; RSTART=0; RLENGTH=0; delete osds; while(match(up,/[0-9]+/)&gt;0) &#123; osds[++i]=substr(up,RSTART,RLENGTH); up = substr(up, RSTART+RLENGTH) &#125;</span><br><span class="line"> for(i in osds) &#123;array[osds[i],pool]++; osdlist[osds[i]];&#125;</span><br><span class="line">&#125;</span><br><span class="line">END &#123;</span><br><span class="line"> printf("\n");</span><br><span class="line"> printf("pool :\t"); for (i in poollist) printf("%s\t",i); printf("| SUM \n");</span><br><span class="line"> for (i in poollist) printf("--------"); printf("----------------\n");</span><br><span class="line"> for (i in osdlist) &#123; printf("osd.%i\t", i); sum=0;</span><br><span class="line"> for (j in poollist) &#123; printf("%i\t", array[i,j]); sum+=array[i,j]; poollist[j]+=array[i,j] &#125;; printf("| %i\n",sum) &#125;</span><br><span class="line"> for (i in poollist) printf("--------"); printf("----------------\n");</span><br><span class="line"> printf("SUM :\t"); for (i in poollist) printf("%s\t",poollist[i]); printf("|\n");</span><br><span class="line">&#125;'</span></span><br></pre></td></tr></table></figure></p>
+<p>默认的输出如下：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">pool :	<span class="number">0</span>	<span class="number">1</span>	<span class="number">2</span>	| SUM </span><br><span class="line">----------------------------------------</span><br><span class="line">osd.<span class="number">4</span>	<span class="number">54</span>	<span class="number">133</span>	<span class="number">79</span>	| <span class="number">266</span></span><br><span class="line">osd.<span class="number">5</span>	<span class="number">57</span>	<span class="number">104</span>	<span class="number">88</span>	| <span class="number">249</span></span><br><span class="line">osd.<span class="number">6</span>	<span class="number">61</span>	<span class="number">132</span>	<span class="number">86</span>	| <span class="number">279</span></span><br><span class="line">osd.<span class="number">7</span>	<span class="number">54</span>	<span class="number">114</span>	<span class="number">85</span>	| <span class="number">253</span></span><br><span class="line">osd.<span class="number">8</span>	<span class="number">63</span>	<span class="number">123</span>	<span class="number">85</span>	| <span class="number">271</span></span><br><span class="line">osd.<span class="number">0</span>	<span class="number">62</span>	<span class="number">120</span>	<span class="number">87</span>	| <span class="number">269</span></span><br><span class="line">osd.<span class="number">1</span>	<span class="number">52</span>	<span class="number">126</span>	<span class="number">81</span>	| <span class="number">259</span></span><br><span class="line">osd.<span class="number">2</span>	<span class="number">52</span>	<span class="number">103</span>	<span class="number">88</span>	| <span class="number">243</span></span><br><span class="line">osd.<span class="number">3</span>	<span class="number">57</span>	<span class="number">125</span>	<span class="number">89</span>	| <span class="number">271</span></span><br><span class="line">----------------------------------------</span><br><span class="line">SUM :	<span class="number">512</span>	<span class="number">1080</span>	<span class="number">768</span>	|</span><br></pre></td></tr></table></figure></p>
+<p>这个有个问题就是osd是乱序的，并且对于一个存储池来说不清楚哪个osd的pg是最多的</p>
+<h3 id="重构第一版：">重构第一版：</h3><p>跟上面的相比按顺序来排列</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">ceph pg dump | awk <span class="string">'</span><br><span class="line"> /^pg_stat/ &#123; col=1; while($col!="up") &#123;col++&#125;; col++ &#125;</span><br><span class="line"> /^[0-9a-f]+\.[0-9a-f]+/ &#123; match($0,/^[0-9a-f]+/); pool=substr($0, RSTART, RLENGTH); poollist[pool]=0;</span><br><span class="line"> up=$col; i=0; RSTART=0; RLENGTH=0; delete osds; while(match(up,/[0-9]+/)&gt;0) &#123; osds[++i]=substr(up,RSTART,RLENGTH); up = substr(up, RSTART+RLENGTH) &#125;</span><br><span class="line"> for(i in osds) &#123;array[osds[i],pool]++; osdlist[osds[i]];&#125;</span><br><span class="line">&#125;</span><br><span class="line">END &#123;</span><br><span class="line"> printf("\n");</span><br><span class="line"> slen=asorti(poollist,newpoollist);</span><br><span class="line"> printf("pool :\t");for (i=1;i&lt;=slen;i++) &#123;printf("%s\t", newpoollist[i])&#125;; printf("| SUM \n");</span><br><span class="line"> for (i in poollist) printf("--------"); printf("----------------\n");</span><br><span class="line"> slen1=asorti(osdlist,newosdlist)</span><br><span class="line"> delete poollist;</span><br><span class="line"> for (i=1;i&lt;=slen1;i++) &#123; printf("osd.%i\t", newosdlist[i]); sum=0; </span><br><span class="line"> for (j=1;j&lt;=slen;j++)  &#123; printf("%i\t", array[newosdlist[i],newpoollist[j]]); sum+=array[newosdlist[i],newpoollist[j]]; poollist[j]+=array[newosdlist[i],newpoollist[j]] &#125;; printf("| %i\n",sum)</span><br><span class="line">&#125; </span><br><span class="line">for (i in poollist) printf("--------"); printf("----------------\n");</span><br><span class="line">slen2=asorti(poollist,newpoollist);</span><br><span class="line"> printf("SUM :\t"); for (i=1;i&lt;=slen2;i++) printf("%s\t",poollist[newpoollist[i]]); printf("|\n");</span><br><span class="line">&#125;'</span></span><br></pre></td></tr></table></figure>
+<p>输出结果为下面的，可以看到现在是按顺序来的，存储池是顺序的，osd编号也是顺序的</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">pool :	<span class="number">0</span>	<span class="number">1</span>	<span class="number">2</span>	| SUM </span><br><span class="line">----------------------------------------</span><br><span class="line">osd.<span class="number">0</span>	<span class="number">62</span>	<span class="number">120</span>	<span class="number">87</span>	| <span class="number">269</span></span><br><span class="line">osd.<span class="number">1</span>	<span class="number">52</span>	<span class="number">126</span>	<span class="number">81</span>	| <span class="number">259</span></span><br><span class="line">osd.<span class="number">2</span>	<span class="number">52</span>	<span class="number">103</span>	<span class="number">88</span>	| <span class="number">243</span></span><br><span class="line">osd.<span class="number">3</span>	<span class="number">57</span>	<span class="number">125</span>	<span class="number">89</span>	| <span class="number">271</span></span><br><span class="line">osd.<span class="number">4</span>	<span class="number">54</span>	<span class="number">133</span>	<span class="number">79</span>	| <span class="number">266</span></span><br><span class="line">osd.<span class="number">5</span>	<span class="number">57</span>	<span class="number">104</span>	<span class="number">88</span>	| <span class="number">249</span></span><br><span class="line">osd.<span class="number">6</span>	<span class="number">61</span>	<span class="number">132</span>	<span class="number">86</span>	| <span class="number">279</span></span><br><span class="line">osd.<span class="number">7</span>	<span class="number">54</span>	<span class="number">114</span>	<span class="number">85</span>	| <span class="number">253</span></span><br><span class="line">osd.<span class="number">8</span>	<span class="number">63</span>	<span class="number">123</span>	<span class="number">85</span>	| <span class="number">271</span></span><br><span class="line">----------------------------------------</span><br><span class="line">SUM :	<span class="number">512</span>	<span class="number">1080</span>	<span class="number">768</span>	|</span><br></pre></td></tr></table></figure>
+<h3 id="重构第三版：">重构第三版：</h3><p>包含osd pool的排序，包含osd的排序，输出平均pg数目，输出最大的osd编号，输出超过平均值的百分比</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph pg dump | awk <span class="string">'</span><br><span class="line"> /^pg_stat/ &#123; col=1; while($col!="up") &#123;col++&#125;; col++ &#125;</span><br><span class="line"> /^[0-9a-f]+\.[0-9a-f]+/ &#123; match($0,/^[0-9a-f]+/); pool=substr($0, RSTART, RLENGTH); poollist[pool]=0;</span><br><span class="line"> up=$col; i=0; RSTART=0; RLENGTH=0; delete osds; while(match(up,/[0-9]+/)&gt;0) &#123; osds[++i]=substr(up,RSTART,RLENGTH); up = substr(up, RSTART+RLENGTH) &#125;</span><br><span class="line"> for(i in osds) &#123;array[osds[i],pool]++; osdlist[osds[i]];&#125;</span><br><span class="line">&#125;</span><br><span class="line">END &#123;</span><br><span class="line"> printf("\n");</span><br><span class="line"> slen=asorti(poollist,newpoollist);</span><br><span class="line"> printf("pool :\t");for (i=1;i&lt;=slen;i++) &#123;printf("%s\t", newpoollist[i])&#125;; printf("| SUM \n");</span><br><span class="line"> for (i in poollist) printf("--------"); printf("----------------\n");</span><br><span class="line"> slen1=asorti(osdlist,newosdlist)</span><br><span class="line"> delete poollist;</span><br><span class="line"> for (i=1;i&lt;=slen1;i++) &#123; printf("osd.%i\t", newosdlist[i]); sum=0; </span><br><span class="line"> for (j=1;j&lt;=slen;j++)  &#123; printf("%i\t", array[newosdlist[i],newpoollist[j]]); sum+=array[newosdlist[i],newpoollist[j]]; poollist[j]+=array[newosdlist[i],newpoollist[j]];if(array[newosdlist[i],newpoollist[j]] != 0)&#123;poolhasid[j]+=1 &#125;;if(array[newosdlist[i],newpoollist[j]]&gt;maxpoolosd[j])&#123;maxpoolosd[j]=array[newosdlist[i],newpoollist[j]];maxosdid[j]=newosdlist[i]&#125;&#125;; printf("| %i\n",sum)&#125; </span><br><span class="line">for (i in poollist) printf("--------"); printf("----------------\n");</span><br><span class="line">slen2=asorti(poollist,newpoollist);</span><br><span class="line"> printf("SUM :\t"); for (i=1;i&lt;=slen2;i++) printf("%s\t",poollist[newpoollist[i]]); printf("|\n");</span><br><span class="line"> printf("AVE :\t"); for (i=1;i&lt;=slen2;i++) printf("%d\t",poollist[newpoollist[i]]/poolhasid[i]); printf("|\n");</span><br><span class="line"> printf("max :\t"); for (i=1;i&lt;=slen2;i++) printf("%s\t",maxpoolosd[i]); printf("|\n");</span><br><span class="line"> printf("osdid :\t"); for (i=1;i&lt;=slen2;i++) printf("osd.%s\t",maxosdid[i]); printf("|\n");</span><br><span class="line"> printf("per:\t"); for (i=1;i&lt;=slen2;i++) printf("%.1f%\t",100*(maxpoolosd[i]-poollist[newpoollist[i]]/poolhasid[i])/(poollist[newpoollist[i]]/poolhasid[i])); printf("|\n");</span><br><span class="line">&#125;'</span></span><br></pre></td></tr></table></figure>
+<p>输出如下：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pool :	<span class="number">0</span>	<span class="number">1</span>	<span class="number">2</span>	| SUM </span><br><span class="line">----------------------------------------</span><br><span class="line">osd.<span class="number">0</span>	<span class="number">62</span>	<span class="number">120</span>	<span class="number">87</span>	| <span class="number">269</span></span><br><span class="line">osd.<span class="number">1</span>	<span class="number">52</span>	<span class="number">126</span>	<span class="number">81</span>	| <span class="number">259</span></span><br><span class="line">osd.<span class="number">2</span>	<span class="number">52</span>	<span class="number">103</span>	<span class="number">88</span>	| <span class="number">243</span></span><br><span class="line">osd.<span class="number">3</span>	<span class="number">57</span>	<span class="number">125</span>	<span class="number">89</span>	| <span class="number">271</span></span><br><span class="line">osd.<span class="number">4</span>	<span class="number">54</span>	<span class="number">133</span>	<span class="number">79</span>	| <span class="number">266</span></span><br><span class="line">osd.<span class="number">5</span>	<span class="number">57</span>	<span class="number">104</span>	<span class="number">88</span>	| <span class="number">249</span></span><br><span class="line">osd.<span class="number">6</span>	<span class="number">61</span>	<span class="number">132</span>	<span class="number">86</span>	| <span class="number">279</span></span><br><span class="line">osd.<span class="number">7</span>	<span class="number">54</span>	<span class="number">114</span>	<span class="number">85</span>	| <span class="number">253</span></span><br><span class="line">osd.<span class="number">8</span>	<span class="number">63</span>	<span class="number">123</span>	<span class="number">85</span>	| <span class="number">271</span></span><br><span class="line">----------------------------------------</span><br><span class="line">SUM :	<span class="number">512</span>	<span class="number">1080</span>	<span class="number">768</span>	|</span><br><span class="line">AVE :	<span class="number">56</span>	<span class="number">120</span>	<span class="number">85</span>	|</span><br><span class="line">max :	<span class="number">63</span>	<span class="number">133</span>	<span class="number">89</span>	|</span><br><span class="line">osdid :	osd.<span class="number">8</span>	osd.<span class="number">4</span>	osd.<span class="number">3</span>	|</span><br><span class="line">per:	<span class="number">10.7</span>%	<span class="number">10.8</span>%	<span class="number">4.3</span>%	|</span><br></pre></td></tr></table></figure></p>
+<hr>
+<p>上面的处理使用的是awk处理，开始的时候看不懂什么意思，然后就去看了这本书 <code>The AWK Programming Language</code> ,网上说这个是awk的圣经，这本书在京东卖1000RMB+,可见这本书的价值，下载地址为： <a href="http://pan.baidu.com/s/1gdwbF71" target="_blank" rel="external">http://pan.baidu.com/s/1gdwbF71</a>，关于原始脚本的意思在这里做一个简单的语法的解释，以及作者脚本的逻辑。</p>
+<hr>
+<h3 id="语法的解释">语法的解释</h3><blockquote>
+<p>/^pg_stat/ { col=1; while($col!=”up”) {col++}; col++ }</p>
+</blockquote>
+<p>这个是匹配pg dump 的输出结果里面pg_stat那个字段，开始计数为1，不是up值就将col的值加1，这个匹配到的就是我们经常看到的[1,10]这个值最后的col++是将col值+1,因为字段里面有up,up_primary,我们需要的是up_primary</p>
+<blockquote>
+<p>/^[0-9a-f]+.[0-9a-f]+/ { match($0,/^[0-9a-f]+/); pool=substr($0, RSTART, RLENGTH); poollist[pool]=0;</p>
+</blockquote>
+<p>这个是匹配前面的 1.17a pg号 ，使用自带的match函数 做字符串的过滤统计匹配.号前面的存储池ID， 并得到 RSTART, RLENGTH 值，这个是取到前面的存储池ID，使用substr 函数，就可以得到pool的值了，poollist[pool]=0，是将数组的值置为0</p>
+<blockquote>
+<p>up=$col; i=0; RSTART=0; RLENGTH=0; delete osds; while(match(up,/[0-9]+/)&gt;0) { osds[++i]=substr(up,RSTART,RLENGTH); up = substr(up, RSTART+RLENGTH) }</p>
+</blockquote>
+<p>先将变量置0，然后将osd编号一个个输入到osds[i]的数组当中去</p>
+<blockquote>
+<p>for(i in osds) {array[osds[i],pool]++; osdlist[osds[i]];}</p>
+</blockquote>
+<p>将osds数组中的值输入到数组当中去，并且记录成osdlist，和数组array[osd[i],pool]</p>
+<blockquote>
+<p>printf(“\n”);<br> printf(“pool :\t”); for (i in poollist) printf(“%s\t”,i); printf(“| SUM \n”);</p>
+</blockquote>
+<p>打印osd pool的编号</p>
+<blockquote>
+<p>for (i in poollist) printf(“————“); printf(“————————\n”);</p>
+</blockquote>
+<p>根据osd pool的长度打印——</p>
+<blockquote>
+<p>for (i in osdlist) { printf(“osd.%i\t”, i); sum=0;</p>
+</blockquote>
+<p>打印osd的编号</p>
+<blockquote>
+<p>for (j in poollist) { printf(“%i\t”, array[i,j]); sum+=array[i,j]; poollist[j]+=array[i,j] }; printf(“| %i\n”,sum) }<br>打印对应的osd的pg数目，并做求和的统计</p>
+<p>for (i in poollist) printf(“————“); printf(“————————\n”);<br> printf(“SUM :\t”); for (i in poollist) printf(“%s\t”,poollist[i]); printf(“|\n”);</p>
+</blockquote>
+<p>打印新的poollist里面的求和的值</p>
+<p>修改版本里面用到的函数</p>
+<blockquote>
+<p>slen1=asorti(osdlist,newosdlist)</p>
+</blockquote>
+<p>这个是将数组里面的下标进行排序，这里是对osd和poollist的编号进行排序 slen1是拿到数组的长度，使用for进行遍历输出</p>
+<hr>
+<h3 id="脚本的逻辑">脚本的逻辑</h3><ul>
+<li>匹配到pg的id和pg对应的osd，</li>
+<li>使用数组的方式，将统计到的osd id存储起来，</li>
+<li>然后打印数组</li>
+</ul>
+<hr>
+<p>其他资源：<br>pg设置的计算器：<br><a href="http://ceph.com/pgcalc/" target="_blank" rel="external">http://ceph.com/pgcalc/</a><br>pg的查询和设置：<br><a href="http://ceph.com/docs/master/rados/operations/placement-groups/" target="_blank" rel="external">http://ceph.com/docs/master/rados/operations/placement-groups/</a></p>
+<hr>
+<p>引用博客地址如下：</p>
+<p><a href="http://cephnotes.ksperis.com/blog/2015/02/23/get-the-number-of-placement-groups-per-osd/" target="_blank" rel="external">http://cephnotes.ksperis.com/blog/2015/02/23/get-the-number-of-placement-groups-per-osd/</a></p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>本文中的命令的第一版来源于国外的一个博客，后面的版本为我自己修改的版本</p>
+<p>查询的命令如下：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"]]>
+    </summary>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[rbd的数据在哪里]]></title>
@@ -660,37 +737,6 @@ Swap:  <span class="number">2097148</span>k total,        <span class="number">0
     </summary>
     
       <category term="linux" scheme="http://www.zphj1987.com/tags/linux/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[软件注册码]]></title>
-    <link href="http://www.zphj1987.com/2015/03/24/%E8%BD%AF%E4%BB%B6%E6%B3%A8%E5%86%8C%E7%A0%81/"/>
-    <id>http://www.zphj1987.com/2015/03/24/软件注册码/</id>
-    <published>2015-03-24T05:19:03.000Z</published>
-    <updated>2015-09-23T07:26:22.283Z</updated>
-    <content type="html"><![CDATA[<hr>
-<p>markdownpad2 pro注册信息</p>
-<p>注册信息<br>邮箱地址:<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">Soar360@live.com</span><br></pre></td></tr></table></figure></p>
-<a id="more"></a>
-<p>授权秘钥:<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">GBPduHjWfJU1mZqcPM3BikjYKF6xKhlKIys3i1MU2eJHqWGImDHzWdD6xhMNLGVpbP2M5SN6bnxn2kSE8qHqNY5QaaRxmO3YSMHxlv2EYpjdwLcPwfeTG7kUdnhKE0vVy4RidP6Y2wZ0q74f47fzsZo45JE2hfQBFi2O9Jldjp1mW8HUpTtLA2a5/sQytXJUQl/QKO0jUQY4pa5CCx20sV1ClOTZtAGngSOJtIOFXK599sBr5aIEFyH0K7H4BoNMiiDMnxt1rD8Vb/ikJdhGMMQr0R4B+L3nWU97eaVPTRKfWGDE8/eAgKzpGwrQQoDh+nzX1xoVQ8NAuH+s4UcSeQ==</span><br></pre></td></tr></table></figure></p>
-<hr>
-<p>xshell注册码(5或者4)<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">690313-111999-999313</span><br></pre></td></tr></table></figure></p>
-<hr>
-<p>snagit 12注册码<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">FFC2M-Z59RE-QLACP-C5MBV-M8RMB</span><br></pre></td></tr></table></figure></p>
-<hr>
-<p>vmware11：<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">1F04Z-6D111-7Z029-AV0Q4-3AEH8</span><br></pre></td></tr></table></figure></p>
-<hr>
-<p>写于:2015年03月24日</p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<hr>
-<p>markdownpad2 pro注册信息</p>
-<p>注册信息<br>邮箱地址:<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">Soar360@live.com</span><br></pre></td></tr></table></figure></p>]]>
-    
-    </summary>
-    
-      <category term="注册码" scheme="http://www.zphj1987.com/tags/%E6%B3%A8%E5%86%8C%E7%A0%81/"/>
     
   </entry>
   
