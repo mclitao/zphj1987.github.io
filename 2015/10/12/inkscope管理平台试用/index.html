@@ -3,20 +3,38 @@
 <head>
   <meta charset="utf-8">
   
-  <title>ubuntu服务器启动过程中重启卡死的问题解决 | zphj1987&#39;Blog</title>
+  <title>inkscope管理平台试用 | zphj1987&#39;Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="在grub默认参数当中添加GRUB_RECORDFAIL_TIMEOUT=0
-写于: 2014年07月23日更新于: 2015年03月24日">
+  <meta name="description" content="下面为inkscope的管理平台的操作记录，一直听说过这个管理平台，但一直没有真正的去配置过，花了一点时间进行了配置
+inkscope的管理平台总结下有下面几个：
+
+使用sysprobe获取节点的操作系统监控信息
+使用cephprobe去跟ceph集群进行交互，调用了ceph-rest-api进行集群的数据和操作交互
+使用mongodb进行监控信息的存储
+
+总体来说架构简单，很容易配置，并且官方提">
 <meta property="og:type" content="article">
-<meta property="og:title" content="ubuntu服务器启动过程中重启卡死的问题解决">
-<meta property="og:url" content="http://www.zphj1987.com/2015/03/24/ubuntu服务器启动过程中重启卡死的问题解决/index.html">
+<meta property="og:title" content="inkscope管理平台试用">
+<meta property="og:url" content="http://www.zphj1987.com/2015/10/12/inkscope管理平台试用/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
-<meta property="og:description" content="在grub默认参数当中添加GRUB_RECORDFAIL_TIMEOUT=0
-写于: 2014年07月23日更新于: 2015年03月24日">
+<meta property="og:description" content="下面为inkscope的管理平台的操作记录，一直听说过这个管理平台，但一直没有真正的去配置过，花了一点时间进行了配置
+inkscope的管理平台总结下有下面几个：
+
+使用sysprobe获取节点的操作系统监控信息
+使用cephprobe去跟ceph集群进行交互，调用了ceph-rest-api进行集群的数据和操作交互
+使用mongodb进行监控信息的存储
+
+总体来说架构简单，很容易配置，并且官方提">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="ubuntu服务器启动过程中重启卡死的问题解决">
-<meta name="twitter:description" content="在grub默认参数当中添加GRUB_RECORDFAIL_TIMEOUT=0
-写于: 2014年07月23日更新于: 2015年03月24日">
+<meta name="twitter:title" content="inkscope管理平台试用">
+<meta name="twitter:description" content="下面为inkscope的管理平台的操作记录，一直听说过这个管理平台，但一直没有真正的去配置过，花了一点时间进行了配置
+inkscope的管理平台总结下有下面几个：
+
+使用sysprobe获取节点的操作系统监控信息
+使用cephprobe去跟ceph集群进行交互，调用了ceph-rest-api进行集群的数据和操作交互
+使用mongodb进行监控信息的存储
+
+总体来说架构简单，很容易配置，并且官方提">
   
     <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
   
@@ -176,11 +194,11 @@
 		</header>				
 	</div>
 </nav>
-      <div class="body-wrap"><article id="post-ubuntu服务器启动过程中重启卡死的问题解决" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-inkscope管理平台试用" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2015/03/24/ubuntu服务器启动过程中重启卡死的问题解决/" class="article-date">
-  	<time datetime="2015-03-24T00:14:36.000Z" itemprop="datePublished">2015-03-24</time>
+      <a href="/2015/10/12/inkscope管理平台试用/" class="article-date">
+  	<time datetime="2015-10-12T13:28:22.000Z" itemprop="datePublished">2015-10-12</time>
 </a>
     </div>
   
@@ -193,7 +211,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      ubuntu服务器启动过程中重启卡死的问题解决
+      inkscope管理平台试用
     </h1>
   
 
@@ -202,7 +220,7 @@
       <div class="article-info article-info-post">
         
 	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ubuntu/">ubuntu</a></li></ul>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
 	</div>
 
         
@@ -213,8 +231,16 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>在grub默认参数当中添加<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">GRUB_RECORDFAIL_TIMEOUT=0</span><br></pre></td></tr></table></figure></p>
-<p>写于: 2014年07月23日<br>更新于: 2015年03月24日</p>
+        <p>下面为inkscope的管理平台的操作记录，一直听说过这个管理平台，但一直没有真正的去配置过，花了一点时间进行了配置</p>
+<p>inkscope的管理平台总结下有下面几个：</p>
+<ul>
+<li>使用sysprobe获取节点的操作系统监控信息</li>
+<li>使用cephprobe去跟ceph集群进行交互，调用了ceph-rest-api进行集群的数据和操作交互</li>
+<li>使用mongodb进行监控信息的存储</li>
+</ul>
+<p>总体来说架构简单，很容易配置，并且官方提供了包，是比较成熟的管理平台了，具体的可以看下面的这个视频<br><a id="more"></a></p>
+<div class="video-container"> <object><br><param name="allowFullScreen" value="true"><param name="flashVars" value="id=23750026 "><param name="movie" value="http://i7.imgs.letv.com/player/swfPlayer.swf?autoplay=0"><embed src="http://i7.imgs.letv.com/player/swfPlayer.swf?autoplay=0" flashvars="id=23750026" allowfullscreen="true" type="application/x-shockwave-flash"></object><br></div>
+
 
       
     </div>
@@ -224,18 +250,18 @@
     
 <nav id="article-nav">
   
-    <a href="/2015/03/24/centos使用U盘做启动盘/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2015/10/13/在页面中嵌入自适应视频的方法/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption"><</strong>
       <div class="article-nav-title">
         
-          centos使用U盘做启动盘
+          在页面中嵌入自适应视频的方法
         
       </div>
     </a>
   
   
-    <a href="/2015/03/24/nginx开启目录浏览/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">nginx开启目录浏览</div>
+    <a href="/2015/10/04/查询osd上的pg数/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">查询osd上的pg数</div>
       <strong class="article-nav-caption">></strong>
     </a>
   
@@ -264,7 +290,7 @@
 
 <div class="duoshuo">
 	<!-- 多说评论框 start -->
-	<div class="ds-thread" data-thread-key="ubuntu服务器启动过程中重启卡死的问题解决" data-title="ubuntu服务器启动过程中重启卡死的问题解决" data-url="http://www.zphj1987.com/2015/03/24/ubuntu服务器启动过程中重启卡死的问题解决/"></div>
+	<div class="ds-thread" data-thread-key="inkscope管理平台试用" data-title="inkscope管理平台试用" data-url="http://www.zphj1987.com/2015/10/12/inkscope管理平台试用/"></div>
 	<!-- 多说评论框 end -->
 	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 	<script type="text/javascript">

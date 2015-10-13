@@ -109,7 +109,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/ceph/" style="font-size: 15px;">ceph</a><a href="/tags/instagram/" style="font-size: 10px;">instagram</a><a href="/tags/iptables/" style="font-size: 10px;">iptables</a><a href="/tags/linux/" style="font-size: 20px;">linux</a><a href="/tags/nginx/" style="font-size: 11.67px;">nginx</a><a href="/tags/samba/" style="font-size: 10px;">samba</a><a href="/tags/ubuntu/" style="font-size: 18.33px;">ubuntu</a><a href="/tags/windows/" style="font-size: 10px;">windows</a><a href="/tags/内核/" style="font-size: 13.33px;">内核</a><a href="/tags/操作系统/" style="font-size: 11.67px;">操作系统</a><a href="/tags/杂七杂八/" style="font-size: 11.67px;">杂七杂八</a><a href="/tags/注册码/" style="font-size: 10px;">注册码</a><a href="/tags/测试工具/" style="font-size: 11.67px;">测试工具</a><a href="/tags/网卡/" style="font-size: 13.33px;">网卡</a><a href="/tags/脚本/" style="font-size: 16.67px;">脚本</a><a href="/tags/高可用/" style="font-size: 10px;">高可用</a>
+						<a href="/tags/ceph/" style="font-size: 16px;">ceph</a><a href="/tags/instagram/" style="font-size: 10px;">instagram</a><a href="/tags/iptables/" style="font-size: 10px;">iptables</a><a href="/tags/linux/" style="font-size: 20px;">linux</a><a href="/tags/nginx/" style="font-size: 12px;">nginx</a><a href="/tags/samba/" style="font-size: 10px;">samba</a><a href="/tags/ubuntu/" style="font-size: 18px;">ubuntu</a><a href="/tags/windows/" style="font-size: 10px;">windows</a><a href="/tags/内核/" style="font-size: 14px;">内核</a><a href="/tags/操作系统/" style="font-size: 12px;">操作系统</a><a href="/tags/杂七杂八/" style="font-size: 14px;">杂七杂八</a><a href="/tags/注册码/" style="font-size: 10px;">注册码</a><a href="/tags/测试工具/" style="font-size: 12px;">测试工具</a><a href="/tags/网卡/" style="font-size: 14px;">网卡</a><a href="/tags/脚本/" style="font-size: 16px;">脚本</a><a href="/tags/高可用/" style="font-size: 10px;">高可用</a>
 					</div>
 				</section>
 				
@@ -174,6 +174,125 @@
 	</div>
 </nav>
       <div class="body-wrap">
+  
+    <article id="post-nginx开启目录浏览" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/03/24/nginx开启目录浏览/" class="article-date">
+  	<time datetime="2015-03-24T00:04:52.000Z" itemprop="datePublished">2015-03-24</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/03/24/nginx开启目录浏览/">nginx开启目录浏览</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>使用nginx作为下载站点,开启目录浏览的功能<br>在/etc/nginx/sites-enabled/default中添加:<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">autoindex on ;&#10;autoindex_exact_size off;&#10;autoindex_localtime on;</span><br></pre></td></tr></table></figure></p>
+<p>说明:</p>
+<p>第一个为目录浏览功能开始<br>第二个为不精确计算文件大小<br>第三个为取时间为服务器本地的时间</p>
+<p>删除location相关的内容<br>修改完成重启nginx服务</p>
+<p>写于: 2014年07月16日<br>更新于: 2015年03月24日</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nginx/">nginx</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-ubuntu13-04修改默认启动内核" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/03/24/ubuntu13-04修改默认启动内核/" class="article-date">
+  	<time datetime="2015-03-24T00:01:44.000Z" itemprop="datePublished">2015-03-24</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/03/24/ubuntu13-04修改默认启动内核/">ubuntu13.04修改默认启动内核</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>ubuntu下面的启动内核选项跟其他操作系统不一样,有个子菜单,比如我在默认的ubuntu13.04上安装了一个新的内核3.14.5,那么默认的第一项是3.14.5内核,第二项是一个子菜单,第二项里面的第一项是3.14.5,第二项是3.14.5 recovery 模式,第三项是3.8.0,第四项是3.8.0(recover)</p>
+<p>那么应该修改<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">/boot/grub/grub.cfg</span><br></pre></td></tr></table></figure></p>
+<p>中的<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">GRUB_DEFAULT=0&#20026;GRUB_DEFAULT=&#34;1&#62;2&#34;</span><br></pre></td></tr></table></figure></p>
+<p>然后:<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">update-grub</span><br></pre></td></tr></table></figure></p>
+<p>重启即可</p>
+<p>写于: 2014年07月11日<br>更新于: 2015年03月24日</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ubuntu/">ubuntu</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
   
     <article id="post-linux域名解析引起登陆慢" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -638,120 +757,6 @@
         <p class="article-more-link">
           <a  href="/2015/03/23/linux中KVM桥接网卡br0/#more">more >></a>
         </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-ubuntu掉电出现检查文件系统的问题" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/03/23/ubuntu掉电出现检查文件系统的问题/" class="article-date">
-  	<time datetime="2015-03-23T14:04:00.000Z" itemprop="datePublished">2015-03-23</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/03/23/ubuntu掉电出现检查文件系统的问题/">ubuntu掉电出现检查文件系统的问题</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>修改:<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">/etc/default/rcS &#10;FSCKFIX=no &#20026; FSCKFIX=yes</span><br></pre></td></tr></table></figure></p>
-<p>出现这个情况的原因是硬件时钟偏移了<br>显示上次挂载根目录在未来时间。</p>
-<p>写于: 2013年11月28日<br>更新于: 2015年03月23日</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ubuntu/">ubuntu</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-ssh配好无密码登录（RSA公钥）后，还要密码登录的问题的解决办法" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/03/23/ssh配好无密码登录（RSA公钥）后，还要密码登录的问题的解决办法/" class="article-date">
-  	<time datetime="2015-03-23T05:01:44.000Z" itemprop="datePublished">2015-03-23</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/03/23/ssh配好无密码登录（RSA公钥）后，还要密码登录的问题的解决办法/">ssh配好无密码登录（RSA公钥）后，还要密码登录的问题的解决办法</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>首先删除 /root/.ssh目录<br>然后ssh-keygen 生成新的认证目录<br>然后检查能否免密码登陆<br>如果还不能可能是/root/目录的权限不对了 可能被异常改到777了<br>做操作<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">chmod <span class="number">650</span> /root/</span><br></pre></td></tr></table></figure></p>
-<p>然后再尝试看能不能免登陆访问</p>
-<p>写于: 2013年11月28日<br>更新于: 2015年03日23日</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
-	</div>
-
-      
-
       
       <div class="clearfix"></div>
     </div>

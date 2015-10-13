@@ -4,7 +4,7 @@
   <subtitle><![CDATA[现在所学，终有所用]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2015-10-08T16:13:00.758Z</updated>
+  <updated>2015-10-13T14:46:32.123Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -13,6 +13,67 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[在页面中嵌入自适应视频的方法]]></title>
+    <link href="http://www.zphj1987.com/2015/10/13/%E5%9C%A8%E9%A1%B5%E9%9D%A2%E4%B8%AD%E5%B5%8C%E5%85%A5%E8%87%AA%E9%80%82%E5%BA%94%E8%A7%86%E9%A2%91%E7%9A%84%E6%96%B9%E6%B3%95/"/>
+    <id>http://www.zphj1987.com/2015/10/13/在页面中嵌入自适应视频的方法/</id>
+    <published>2015-10-13T13:50:23.000Z</published>
+    <updated>2015-10-13T14:46:32.123Z</updated>
+    <content type="html"><![CDATA[<p>准备在博客中嵌入视频，从视频网站获取的embed代码是指定宽度和高度的，这样在一些窗口或者移动端进行访问的时候，就可能视频溢出屏幕了，体验不好，实际上这几年响应式网站比较流行，也就是能让内容自动的适应窗口的大小</p>
+<p>屏幕的宽度可以用 <code>width：100%</code> 进行设置，高度看到有个 <code>height:100%</code> 设置后height实际取的是上一层的高度的百分比，如果没设置的话，这个就为0，看到嵌入的视频就没有高度了，网上关于这个的资料很多，可以搜索下</p>
+<p>关于视频的自适应看到  <a href="https://developers.google.com/web/fundamentals/media/video/size-videos-correctly?hl=zh-cn#section" title="google 自适应设置建议" target="_blank" rel="external">google 自适应设置建议</a> 这个介绍的很好<br><a id="more"></a><br>主要是这段代码:<br><figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="class">.video-container</span> <span class="rules">&#123;</span><br><span class="line">        <span class="rule"><span class="attribute">position</span>:<span class="value"> relative</span></span>;</span><br><span class="line">        <span class="rule"><span class="attribute">padding-bottom</span>:<span class="value"> <span class="number">56.25%</span></span></span>;</span><br><span class="line">        <span class="rule"><span class="attribute">padding-top</span>:<span class="value"> <span class="number">30px</span></span></span>;</span><br><span class="line">        <span class="rule"><span class="attribute">height</span>:<span class="value"> <span class="number">0</span></span></span>;</span><br><span class="line">        <span class="rule"><span class="attribute">overflow</span>:<span class="value"> hidden</span></span>;</span><br><span class="line">    <span class="rule">&#125;</span></span></span><br><span class="line"></span><br><span class="line">    <span class="class">.video-container</span> <span class="tag">iframe</span>,</span><br><span class="line">    <span class="class">.video-container</span> <span class="tag">object</span>,</span><br><span class="line">    <span class="class">.video-container</span> <span class="tag">embed</span> <span class="rules">&#123;</span><br><span class="line">        <span class="rule"><span class="attribute">position</span>:<span class="value"> absolute</span></span>;</span><br><span class="line">        <span class="rule"><span class="attribute">top</span>:<span class="value"> <span class="number">0</span></span></span>;</span><br><span class="line">        <span class="rule"><span class="attribute">left</span>:<span class="value"> <span class="number">0</span></span></span>;</span><br><span class="line">        <span class="rule"><span class="attribute">width</span>:<span class="value"> <span class="number">100%</span></span></span>;</span><br><span class="line">        <span class="rule"><span class="attribute">height</span>:<span class="value"> <span class="number">100%</span></span></span>;</span><br><span class="line">    <span class="rule">&#125;</span></span></span><br></pre></td></tr></table></figure></p>
+<p>上面的56.25%实际是16:9的视频的值，这个可以根据自己的视频高宽比进行设置</p>
+<p>我自己的代码是这样的：<br>css的代码<br><figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="class">.article-entry</span> <span class="class">.video-container</span> <span class="rules">&#123;</span><br><span class="line">  <span class="rule"><span class="attribute">position</span>:<span class="value"> relative</span></span>;</span><br><span class="line">  <span class="rule"><span class="attribute">padding-bottom</span>:<span class="value"> <span class="number">56.25%</span></span></span>;</span><br><span class="line">  <span class="rule"><span class="attribute">padding-top</span>:<span class="value"> <span class="number">30px</span></span></span>;</span><br><span class="line">  <span class="rule"><span class="attribute">height</span>:<span class="value"> <span class="number">0</span></span></span>;</span><br><span class="line">  <span class="rule"><span class="attribute">overflow</span>:<span class="value"> hidden</span></span>;</span><br><span class="line"><span class="rule">&#125;</span></span></span><br><span class="line"><span class="class">.article-entry</span> <span class="class">.video-container</span> <span class="tag">embed</span> <span class="rules">&#123;</span><br><span class="line">  <span class="rule"><span class="attribute">position</span>:<span class="value"> absolute</span></span>;</span><br><span class="line">  <span class="rule"><span class="attribute">top</span>:<span class="value"> <span class="number">0</span></span></span>;</span><br><span class="line">  <span class="rule"><span class="attribute">left</span>:<span class="value"> <span class="number">0</span></span></span>;</span><br><span class="line">  <span class="rule"><span class="attribute">width</span>:<span class="value"> <span class="number">100%</span></span></span>;</span><br><span class="line">  <span class="rule"><span class="attribute">height</span>:<span class="value"> <span class="number">100%</span></span></span>;</span><br><span class="line"><span class="rule">&#125;</span></span></span><br><span class="line"><span class="class">.article-entry</span> <span class="class">.video-container</span> <span class="tag">object</span> <span class="rules">&#123;</span><br><span class="line">  <span class="rule"><span class="attribute">position</span>:<span class="value"> absolute</span></span>;</span><br><span class="line">  <span class="rule"><span class="attribute">top</span>:<span class="value"> <span class="number">0</span></span></span>;</span><br><span class="line">  <span class="rule"><span class="attribute">left</span>:<span class="value"> <span class="number">0</span></span></span>;</span><br><span class="line">  <span class="rule"><span class="attribute">width</span>:<span class="value"> <span class="number">100%</span></span></span>;</span><br><span class="line">  <span class="rule"><span class="attribute">height</span>:<span class="value"> <span class="number">100%</span></span></span>;</span><br><span class="line"><span class="rule">&#125;</span></span></span><br></pre></td></tr></table></figure></p>
+<p>嵌入的页面html代码为：<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">&lt;div class="video-container"&gt; &lt;object&gt;</span><br><span class="line">&lt;param name="allowFullScreen" value="true"&gt;&lt;param name="flashVars" value="id=23750026 " /&gt;&lt;param name="movie" value="http://i7.imgs.letv.com/player/swfPlayer.swf?autoplay=0" /&gt;&lt;embed   src="http://i7.imgs.letv.com/player/swfPlayer.swf?autoplay=0" flashVars="id=23750026"allowFullScreen="true" type="application/x-shockwave-flash" &gt;&lt;/embed&gt;&lt;/object&gt;</span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure></p>
+<p>添加了一个class标签，去掉了网站视频分享代码里面的width和height的值<br>下面为一个视频的例子：可以调整浏览器查看效果</p>
+<div class="video-container"><object><param name="allowFullScreen" value="true"><param name="flashVars" value="id=23739460 "><param name="movie" value="http://i7.imgs.letv.com/player/swfPlayer.swf?autoplay=0"><embed src="http://i7.imgs.letv.com/player/swfPlayer.swf?autoplay=0" flashvars="id=23739460" allowfullscreen="true" type="application/x-shockwave-flash"></object><br></div>
+
+<p><em>ps：测试了很多网站的视频上传，发现还是乐视的清晰度最高，没有压缩很多，并且视频提供高清的观看 </em></p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>准备在博客中嵌入视频，从视频网站获取的embed代码是指定宽度和高度的，这样在一些窗口或者移动端进行访问的时候，就可能视频溢出屏幕了，体验不好，实际上这几年响应式网站比较流行，也就是能让内容自动的适应窗口的大小</p>
+<p>屏幕的宽度可以用 <code>width：100%</code> 进行设置，高度看到有个 <code>height:100%</code> 设置后height实际取的是上一层的高度的百分比，如果没设置的话，这个就为0，看到嵌入的视频就没有高度了，网上关于这个的资料很多，可以搜索下</p>
+<p>关于视频的自适应看到  <a href="https://developers.google.com/web/fundamentals/media/video/size-videos-correctly?hl=zh-cn#section" title="google 自适应设置建议">google 自适应设置建议</a> 这个介绍的很好<br>]]>
+    
+    </summary>
+    
+      <category term="杂七杂八" scheme="http://www.zphj1987.com/tags/%E6%9D%82%E4%B8%83%E6%9D%82%E5%85%AB/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[inkscope管理平台试用]]></title>
+    <link href="http://www.zphj1987.com/2015/10/12/inkscope%E7%AE%A1%E7%90%86%E5%B9%B3%E5%8F%B0%E8%AF%95%E7%94%A8/"/>
+    <id>http://www.zphj1987.com/2015/10/12/inkscope管理平台试用/</id>
+    <published>2015-10-12T13:28:22.000Z</published>
+    <updated>2015-10-13T14:46:38.365Z</updated>
+    <content type="html"><![CDATA[<p>下面为inkscope的管理平台的操作记录，一直听说过这个管理平台，但一直没有真正的去配置过，花了一点时间进行了配置</p>
+<p>inkscope的管理平台总结下有下面几个：</p>
+<ul>
+<li>使用sysprobe获取节点的操作系统监控信息</li>
+<li>使用cephprobe去跟ceph集群进行交互，调用了ceph-rest-api进行集群的数据和操作交互</li>
+<li>使用mongodb进行监控信息的存储</li>
+</ul>
+<p>总体来说架构简单，很容易配置，并且官方提供了包，是比较成熟的管理平台了，具体的可以看下面的这个视频<br><a id="more"></a></p>
+<div class="video-container"> <object><br><param name="allowFullScreen" value="true"><param name="flashVars" value="id=23750026 "><param name="movie" value="http://i7.imgs.letv.com/player/swfPlayer.swf?autoplay=0"><embed src="http://i7.imgs.letv.com/player/swfPlayer.swf?autoplay=0" flashvars="id=23750026" allowfullscreen="true" type="application/x-shockwave-flash"></object><br></div>
+
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>下面为inkscope的管理平台的操作记录，一直听说过这个管理平台，但一直没有真正的去配置过，花了一点时间进行了配置</p>
+<p>inkscope的管理平台总结下有下面几个：</p>
+<ul>
+<li>使用sysprobe获取节点的操作系统监控信息</li>
+<li>使用cephprobe去跟ceph集群进行交互，调用了ceph-rest-api进行集群的数据和操作交互</li>
+<li>使用mongodb进行监控信息的存储</li>
+</ul>
+<p>总体来说架构简单，很容易配置，并且官方提供了包，是比较成熟的管理平台了，具体的可以看下面的这个视频<br>]]>
+    
+    </summary>
+    
+      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[查询osd上的pg数]]></title>
@@ -704,43 +765,6 @@ Swap:  <span class="number">2097148</span>k total,        <span class="number">0
 <p>点击软件后出现下面的界面就可以访问了，这个是全局的代理，所以可以直接使用手机访问外网了，可以开启更多功能</p>]]>
     
     </summary>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[linux绑定盘符]]></title>
-    <link href="http://www.zphj1987.com/2015/03/24/linux%E7%BB%91%E5%AE%9A%E7%9B%98%E7%AC%A6/"/>
-    <id>http://www.zphj1987.com/2015/03/24/linux绑定盘符/</id>
-    <published>2015-03-24T05:25:22.000Z</published>
-    <updated>2015-09-23T07:25:35.348Z</updated>
-    <content type="html"><![CDATA[<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@centos6 ~]<span class="comment"># udevadm info -q path -n /dev/sdb</span></span><br><span class="line">[root@centos6 ~]<span class="comment"># udevadm info -q path -n /dev/sdc</span></span><br><span class="line">/devices/pci0000:<span class="number">00</span>/<span class="number">0000</span>:<span class="number">00</span>:<span class="number">10.0</span>/host2/target2:<span class="number">0</span>:<span class="number">1</span>/<span class="number">2</span>:<span class="number">0</span>:<span class="number">1</span>:<span class="number">0</span>/block/sdc</span><br></pre></td></tr></table></figure>
-<p>拿到编号<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@centos6 ~]<span class="comment"># vim /etc/udev/rules.d/80-mydisk.rules</span></span><br></pre></td></tr></table></figure></p>
-<p>增加<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">DEVPATH==<span class="string">"/devices/pci0000:00/0000:00:10.0/host2/target2:0:2/2:0:2:0/block/sd*"</span>, NAME=<span class="string">"sdc"</span>, MODE=<span class="string">"0660"</span></span><br></pre></td></tr></table></figure></p>
-<p>这样对应的插槽的第二个就会一直对应盘符sdc 而不会出现跳盘符的问题了</p>
-<p>写于: 2014年11月07日<br>更新于: 2015年03月24日</p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@centos6 ~]<span class="comment"># udevadm info -q p]]>
-    </summary>
-    
-      <category term="linux" scheme="http://www.zphj1987.com/tags/linux/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[让磁盘硬盘灯常闪定位盘]]></title>
-    <link href="http://www.zphj1987.com/2015/03/24/%E8%AE%A9%E7%A3%81%E7%9B%98%E7%A1%AC%E7%9B%98%E7%81%AF%E5%B8%B8%E9%97%AA%E5%AE%9A%E4%BD%8D%E7%9B%98/"/>
-    <id>http://www.zphj1987.com/2015/03/24/让磁盘硬盘灯常闪定位盘/</id>
-    <published>2015-03-24T05:23:26.000Z</published>
-    <updated>2015-09-23T07:26:19.131Z</updated>
-    <content type="html"><![CDATA[<figure class="highlight"><table><tr><td class="code"><pre><span class="line">#!/bin/bash&#10;hd=$1&#10;for num in &#123;1..5&#125;;do&#10;        dd if=&#34;$hd&#34; of=&#34;/dev/null&#34; bs=4M count=1000 iflag=direct conv=noerror &#62;/dev/null 2&#62;&#38;1&#10;        sleep 1&#10;done</span><br></pre></td></tr></table></figure>
-<p>写于: 2014年11月07日<br>更新于: 2015年03月24日</p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<figure class="highlight"><table><tr><td class="code"><pre><span class="line">#!/bin/bash&#10;hd=$1&#10;for num in &#123;1..5&#125;;do&#10; ]]>
-    </summary>
-    
-      <category term="linux" scheme="http://www.zphj1987.com/tags/linux/"/>
     
   </entry>
   
