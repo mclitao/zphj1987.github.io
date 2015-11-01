@@ -4,7 +4,7 @@
   <subtitle><![CDATA[现在所学，终有所用]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2015-10-13T14:46:32.123Z</updated>
+  <updated>2015-11-01T15:37:29.310Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -13,6 +13,38 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[Mon失效处理方法]]></title>
+    <link href="http://www.zphj1987.com/2015/11/01/Mon%E5%A4%B1%E6%95%88%E5%A4%84%E7%90%86%E6%96%B9%E6%B3%95/"/>
+    <id>http://www.zphj1987.com/2015/11/01/Mon失效处理方法/</id>
+    <published>2015-11-01T15:34:26.000Z</published>
+    <updated>2015-11-01T15:37:29.310Z</updated>
+    <content type="html"><![CDATA[<p>假设环境为三个mon，主机名为mon1、mon2、mon3，现在mon3上面的系统盘损坏，mon的数据完全丢失，现在需要对mon3进行恢复处理</p>
+<p>1、停止所有mon进程，可以不停其他进程，需要停止内核客户端以及对外的服务，防止卡死<br>在mon1机器上执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/etc/init.d/ceph stop mon</span><br></pre></td></tr></table></figure></p>
+<p>在mon2机器上执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/etc/init.d/ceph stop mon</span><br></pre></td></tr></table></figure></p>
+<p>2、分别在mon主机上获取当前的monmap<br>在mon1机器上执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph-mon -i mon1 --extract-monmap /tmp/monmap</span><br></pre></td></tr></table></figure></p>
+<p>备份原始monmap<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cp /tmp/monmap /tmp/monmapbk</span><br></pre></td></tr></table></figure></p>
+<p>在mon2机器上执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph-mon -i mon2 --extract-monmap /tmp/monmap</span><br></pre></td></tr></table></figure></p>
+<p>备份原始monmap<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cp /tmp/monmap /tmp/monmapbk</span><br></pre></td></tr></table></figure></p>
+<p>3、处理monmap，去掉损坏的mon3的map信息<br>在mon1机器上执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">monmaptool /tmp/monmap --rm mon3</span><br></pre></td></tr></table></figure></p>
+<p>在mon2机器上执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">monmaptool /tmp/monmap --rm mon3</span><br></pre></td></tr></table></figure></p>
+<p>4、导入修改后的monmap信息<br>在mon1机器上执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph-mon -i mon1 --inject-monmap /tmp/monmap</span><br></pre></td></tr></table></figure></p>
+<p>在mon2机器上执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph-mon -i mon1 --inject-monmap /tmp/monmap</span><br></pre></td></tr></table></figure></p>
+<p>5、启动mon进程<br>在mon1机器上执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/etc/init.d/ceph start mon</span><br></pre></td></tr></table></figure></p>
+<p>在mon2机器上执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/etc/init.d/ceph start mon</span><br></pre></td></tr></table></figure></p>
+<p>6、检查当前的mon信息，应该显示的是只有两个mon,再新加mon即可<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph <span class="operator">-s</span></span><br></pre></td></tr></table></figure></p>
+<hr>
+<p>写于：2015年11月1日</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>假设环境为三个mon，主机名为mon1、mon2、mon3，现在mon3上面的系统盘损坏，mon的数据完全丢失，现在需要对mon3进行恢复处理</p>
+<p>1、停止所有mon进程，可以不停其他进程，需要停止内核客户端以及对外的服务，防止卡死<br>在mon1机器上执行<b]]>
+    </summary>
+    
+      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[在页面中嵌入自适应视频的方法]]></title>
@@ -714,57 +746,6 @@ Swap:  <span class="number">2097148</span>k total,        <span class="number">0
     </summary>
     
       <category term="linux" scheme="http://www.zphj1987.com/tags/linux/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[fq教程]]></title>
-    <link href="http://www.zphj1987.com/2015/03/24/fq%E6%95%99%E7%A8%8B/"/>
-    <id>http://www.zphj1987.com/2015/03/24/fq教程/</id>
-    <published>2015-03-24T05:30:23.000Z</published>
-    <updated>2015-03-26T06:04:51.550Z</updated>
-    <content type="html"><![CDATA[<h3 id="手机作为翻墙路由器的方式">手机作为翻墙路由器的方式</h3><p>首先介绍的是手机上的翻墙软件，这个只能走http协议，不能走https协议，在手机上使用很方便，能够方便的访问各种网站，但是作为其他设备的时候，就只能提供http的，那么像google需要用到https的时候，其他设备就出现无法访问情况</p>
-<p>软件下载地址（已经存放到百度盘）<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">&#38142;&#25509;&#65306;http://pan.baidu.com/s/1eQs35a6 &#23494;&#30721;&#65306;3u19</span><br></pre></td></tr></table></figure></p>
-<p><img src="http://i.imgur.com/HeUIJ6e.png" alt=""></p>
-<p>点击软件后出现下面的界面就可以访问了，这个是全局的代理，所以可以直接使用手机访问外网了，可以开启更多功能</p>
-<a id="more"></a>
-<p><img src="http://i.imgur.com/184ajLN.png" alt=""></p>
-<p>开启http代理，点击那个按钮开启</p>
-<p><img src="http://i.imgur.com/0Jmj1Pb.png" alt=""></p>
-<p>可以看到http代理的端口为2516</p>
-<h3 id="windows">windows</h3><p>设置windows的连接为手机上显示的代理的ip和端口</p>
-<p><img src="http://i.imgur.com/LgzLSLN.png" alt=""></p>
-<h3 id="centos">centos</h3><p>给centos设置全局代理的方法</p>
-<p>在 /etc/profile 中添加<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">http_proxy=http://192.168.0.13:2516&#10;export http_proxy</span><br></pre></td></tr></table></figure></p>
-<p>然后执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">source</span> /etc/profile</span><br></pre></td></tr></table></figure></p>
-<p>代理就设置成功了，下面是设置前后的差别</p>
-<p><img src="http://i.imgur.com/Y8rARNg.png" alt=""></p>
-<blockquote>
-<p>这个方式的设置是可以访问google，但是是没法登陆google账号，或者访问youtube视频的，这个只在需要临时用到代理的时候可以用用，手机上用还是比较方便的</p>
-<p>以手机设置代理的方式就介绍到这里，下面将介绍下用goagent的方式翻墙，稳定</p>
-</blockquote>
-<h3 id="goagent作为代理的翻墙方式">goagent作为代理的翻墙方式</h3><p>centos下直接运行goagent并且设置代理</p>
-<p>将安装包下载到操作系统当中，然后进入到目录当中，并且运行python proxy.py</p>
-<p>注意下面的GAE APPID 那个地方是可以设置多个的，每个每台的流量好像是5G，一般是够用的，可以同时设置多个账号<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">[root@vsm local]# pwd&#10;/root/goagent-3.0/local&#10;[root@vsm local]# python proxy.py &#10;GoAgent                                                      ,,   &#10;------------------------------------------------------&#10;GoAgent Version    : 3.1.18 (python/2.6.6 pyopenssl/0.10)&#10;Listen Address     : 0.0.0.0:8087&#10;GAE Mode           : https&#10;GAE Profile        : ipv4&#10;GAE APPID          : zphj19871a|zphj1987b|zphj19872c&#10;Pac Server         : http://192.168.0.15:8086/proxy.pac&#10;Pac File           : file:///root/goagent-3.0/local/proxy.pac&#10;------------------------------------------------------</span><br></pre></td></tr></table></figure></p>
-<p>设置全局代理<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">&#22312; /etc/profile &#20013;&#28155;&#21152; &#10;&#10;&#9;http_proxy=http://192.168.0.13:2516&#10;&#9;export http_proxy&#10;&#9;https_proxy=http://127.0.0.1:8087&#10;&#9;export https_proxy&#10;&#28982;&#21518;&#25191;&#34892;&#10;&#9;source /etc/profile</span><br></pre></td></tr></table></figure></p>
-<p>执行效果：</p>
-<p><img src="http://i.imgur.com/R22rrFZ.png" alt=""></p>
-<p>真正使用浏览器可能还需要导入<code>goagent-3.0/local/CA.crt</code>证书，证书的导入根据软件的需要，chrome浏览器里面是需要导入证书才能登陆google的账户的</p>
-<hr>
-<blockquote>
-<p><strong>本文作者</strong>：zphj1987</p>
-<p><strong>邮箱</strong>：199383004@qq.com</p>
-<p>有技术问题欢迎交流</p>
-<p>写于 2015-02-28 夜</p>
-</blockquote>
-]]></content>
-    <summary type="html">
-    <![CDATA[<h3 id="手机作为翻墙路由器的方式">手机作为翻墙路由器的方式</h3><p>首先介绍的是手机上的翻墙软件，这个只能走http协议，不能走https协议，在手机上使用很方便，能够方便的访问各种网站，但是作为其他设备的时候，就只能提供http的，那么像google需要用到https的时候，其他设备就出现无法访问情况</p>
-<p>软件下载地址（已经存放到百度盘）<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">&#38142;&#25509;&#65306;http://pan.baidu.com/s/1eQs35a6 &#23494;&#30721;&#65306;3u19</span><br></pre></td></tr></table></figure></p>
-<p><img src="http://i.imgur.com/HeUIJ6e.png" alt=""></p>
-<p>点击软件后出现下面的界面就可以访问了，这个是全局的代理，所以可以直接使用手机访问外网了，可以开启更多功能</p>]]>
-    
-    </summary>
     
   </entry>
   

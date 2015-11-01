@@ -3,20 +3,26 @@
 <head>
   <meta charset="utf-8">
   
-  <title>常用linux源列表 | zphj1987&#39;Blog</title>
+  <title>Mon失效处理方法 | zphj1987&#39;Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="centos6 源:
-epel源:wget  http://mirrors.aliyun.com/epel/6/x86_64/epel-release-6-8.noarch.rpm">
+  <meta name="description" content="假设环境为三个mon，主机名为mon1、mon2、mon3，现在mon3上面的系统盘损坏，mon的数据完全丢失，现在需要对mon3进行恢复处理
+1、停止所有mon进程，可以不停其他进程，需要停止内核客户端以及对外的服务，防止卡死在mon1机器上执行/etc/init.d/ceph stop mon
+在mon2机器上执行/etc/init.d/ceph stop mon
+2、分别在mon主机上获取当">
 <meta property="og:type" content="article">
-<meta property="og:title" content="常用linux源列表">
-<meta property="og:url" content="http://www.zphj1987.com/2015/03/22/常用linux源列表/index.html">
+<meta property="og:title" content="Mon失效处理方法">
+<meta property="og:url" content="http://www.zphj1987.com/2015/11/01/Mon失效处理方法/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
-<meta property="og:description" content="centos6 源:
-epel源:wget  http://mirrors.aliyun.com/epel/6/x86_64/epel-release-6-8.noarch.rpm">
+<meta property="og:description" content="假设环境为三个mon，主机名为mon1、mon2、mon3，现在mon3上面的系统盘损坏，mon的数据完全丢失，现在需要对mon3进行恢复处理
+1、停止所有mon进程，可以不停其他进程，需要停止内核客户端以及对外的服务，防止卡死在mon1机器上执行/etc/init.d/ceph stop mon
+在mon2机器上执行/etc/init.d/ceph stop mon
+2、分别在mon主机上获取当">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="常用linux源列表">
-<meta name="twitter:description" content="centos6 源:
-epel源:wget  http://mirrors.aliyun.com/epel/6/x86_64/epel-release-6-8.noarch.rpm">
+<meta name="twitter:title" content="Mon失效处理方法">
+<meta name="twitter:description" content="假设环境为三个mon，主机名为mon1、mon2、mon3，现在mon3上面的系统盘损坏，mon的数据完全丢失，现在需要对mon3进行恢复处理
+1、停止所有mon进程，可以不停其他进程，需要停止内核客户端以及对外的服务，防止卡死在mon1机器上执行/etc/init.d/ceph stop mon
+在mon2机器上执行/etc/init.d/ceph stop mon
+2、分别在mon主机上获取当">
   
     <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
   
@@ -187,11 +193,11 @@ var _hmt = _hmt || [];
 		</header>				
 	</div>
 </nav>
-      <div class="body-wrap"><article id="post-常用linux源列表" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-Mon失效处理方法" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2015/03/22/常用linux源列表/" class="article-date">
-  	<time datetime="2015-03-22T07:16:16.000Z" itemprop="datePublished">2015-03-22</time>
+      <a href="/2015/11/01/Mon失效处理方法/" class="article-date">
+  	<time datetime="2015-11-01T15:34:26.000Z" itemprop="datePublished">2015-11-01</time>
 </a>
     </div>
   
@@ -204,7 +210,7 @@ var _hmt = _hmt || [];
         
   
     <h1 class="article-title" itemprop="name">
-      常用linux源列表
+      Mon失效处理方法
     </h1>
   
 
@@ -213,7 +219,7 @@ var _hmt = _hmt || [];
       <div class="article-info article-info-post">
         
 	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
 	</div>
 
         
@@ -224,13 +230,22 @@ var _hmt = _hmt || [];
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>centos6 源:</p>
-<p>epel源:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget  http://mirrors.aliyun.com/epel/<span class="number">6</span>/x86_64/epel-release-<span class="number">6</span>-<span class="number">8</span>.noarch.rpm</span><br></pre></td></tr></table></figure></p>
-<a id="more"></a>
-<p>base源:<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">[base]&#10;name=CentOS-$releasever - Base - 163.com&#10;baseurl=http://mirrors.163.com/centos/6.6/os/x86_64/&#10;#mirrorlist=http://mirrorlist.centos.org/?release=$releasever&#38;arch=$basearch&#38;repo=os&#10;gpgcheck=0&#10;gpgkey=http://mirror.centos.org/centos/RPM-GPG-KEY-CentOS-6&#10;#released updates &#10;[updates]&#10;name=CentOS-$releasever - Updates - 163.com&#10;baseurl=http://mirrors.163.com/centos/6.6/updates/x86_64/&#10;#mirrorlist=http://mirrorlist.centos.org/?release=$releasever&#38;arch=$basearch&#38;repo=updates&#10;gpgcheck=1&#10;gpgkey=http://mirror.centos.org/centos/RPM-GPG-KEY-CentOS-6&#10;[extras]&#10;name=CentOS-$releasever - Extras - 163.com&#10;baseurl=http://mirrors.163.com/centos/6.6/extras/x86_64/&#10;#mirrorlist=http://mirrorlist.centos.org/?release=$releasever&#38;arch=$basearch&#38;repo=extras&#10;gpgcheck=1&#10;gpgkey=http://mirror.centos.org/centos/RPM-GPG-KEY-CentOS-6&#10;#additional packages that extend functionality of existing packages&#10;[centosplus]&#10;name=CentOS-$releasever - Plus - 163.com&#10;baseurl=http://mirrors.163.com/centos/6.6/centosplus/x86_64/&#10;#mirrorlist=http://mirrorlist.centos.org/?release=$releasever&#38;arch=$basearch&#38;repo=centosplus&#10;gpgcheck=1&#10;enabled=0&#10;gpgkey=http://mirror.centos.org/centos/RPM-GPG-KEY-CentOS-6&#10;#contrib - packages by Centos Users&#10;[contrib]&#10;name=CentOS-$releasever - Contrib - 163.com&#10;baseurl=http://mirrors.163.com/centos/6.6/contrib/x86_64/&#10;#mirrorlist=http://mirrorlist.centos.org/?release=$releasever&#38;arch=$basearch&#38;repo=contrib&#10;gpgcheck=1&#10;enabled=0&#10;gpgkey=http://mirror.centos.org/centos/RPM-GPG-KEY-CentOS-6</span><br></pre></td></tr></table></figure></p>
-<p>arm ubuntu linux 源:<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line"># See http://help.ubuntu.com/community/UpgradeNotes for how to upgrade to&#10;# newer versions of the distribution.&#10;deb http://ports.ubuntu.com/ubuntu-ports/ trusty main restricted&#10;deb-src http://ports.ubuntu.com/ubuntu-ports/ trusty main restricted&#10;&#10;## Major bug fix updates produced after the final release of the&#10;## distribution.&#10;deb http://ports.ubuntu.com/ubuntu-ports/ trusty-updates main restricted&#10;deb-src http://ports.ubuntu.com/ubuntu-ports/ trusty-updates main restricted&#10;&#10;## N.B. software from this repository is ENTIRELY UNSUPPORTED by the Ubuntu&#10;## team. Also, please note that software in universe WILL NOT receive any&#10;## review or updates from the Ubuntu security team.&#10;deb http://ports.ubuntu.com/ubuntu-ports/ trusty universe&#10;deb-src http://ports.ubuntu.com/ubuntu-ports/ trusty universe&#10;deb http://ports.ubuntu.com/ubuntu-ports/ trusty-updates universe&#10;deb-src http://ports.ubuntu.com/ubuntu-ports/ trusty-updates universe&#10;&#10;## N.B. software from this repository is ENTIRELY UNSUPPORTED by the Ubuntu &#10;## team, and may not be under a free licence. Please satisfy yourself as to &#10;## your rights to use the software. Also, please note that software in &#10;## multiverse WILL NOT receive any review or updates from the Ubuntu&#10;## security team.&#10;deb http://ports.ubuntu.com/ubuntu-ports/ trusty multiverse&#10;deb-src http://ports.ubuntu.com/ubuntu-ports/ trusty multiverse&#10;deb http://ports.ubuntu.com/ubuntu-ports/ trusty-updates multiverse&#10;deb-src http://ports.ubuntu.com/ubuntu-ports/ trusty-updates multiverse&#10;&#10;## N.B. software from this repository may not have been tested as&#10;## extensively as that contained in the main release, although it includes&#10;## newer versions of some applications which may provide useful features.&#10;## Also, please note that software in backports WILL NOT receive any review&#10;## or updates from the Ubuntu security team.&#10;# deb http://ports.ubuntu.com/ubuntu-ports/ trusty-backports multiverse universe restricted main&#10;# deb-src http://ports.ubuntu.com/ubuntu-ports/ trusty-backports multiverse universe restricted main&#10;&#10;deb http://ports.ubuntu.com/ubuntu-ports/ trusty-security main restricted&#10;deb-src http://ports.ubuntu.com/ubuntu-ports/ trusty-security main restricted&#10;deb http://ports.ubuntu.com/ubuntu-ports/ trusty-security universe&#10;deb-src http://ports.ubuntu.com/ubuntu-ports/ trusty-security universe&#10;deb http://ports.ubuntu.com/ubuntu-ports/ trusty-security multiverse&#10;deb-src http://ports.ubuntu.com/ubuntu-ports/ trusty-security multiverse</span><br></pre></td></tr></table></figure></p>
-<p>ubuntu-arm下载包的地址<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">http://ports.ubuntu.com/pool/main/</span><br></pre></td></tr></table></figure></p>
-<p>写于:2012年4月18日,2014年8月04日<br>更新于:2015年03月22日</p>
+        <p>假设环境为三个mon，主机名为mon1、mon2、mon3，现在mon3上面的系统盘损坏，mon的数据完全丢失，现在需要对mon3进行恢复处理</p>
+<p>1、停止所有mon进程，可以不停其他进程，需要停止内核客户端以及对外的服务，防止卡死<br>在mon1机器上执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/etc/init.d/ceph stop mon</span><br></pre></td></tr></table></figure></p>
+<p>在mon2机器上执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/etc/init.d/ceph stop mon</span><br></pre></td></tr></table></figure></p>
+<p>2、分别在mon主机上获取当前的monmap<br>在mon1机器上执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph-mon -i mon1 --extract-monmap /tmp/monmap</span><br></pre></td></tr></table></figure></p>
+<p>备份原始monmap<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cp /tmp/monmap /tmp/monmapbk</span><br></pre></td></tr></table></figure></p>
+<p>在mon2机器上执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph-mon -i mon2 --extract-monmap /tmp/monmap</span><br></pre></td></tr></table></figure></p>
+<p>备份原始monmap<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cp /tmp/monmap /tmp/monmapbk</span><br></pre></td></tr></table></figure></p>
+<p>3、处理monmap，去掉损坏的mon3的map信息<br>在mon1机器上执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">monmaptool /tmp/monmap --rm mon3</span><br></pre></td></tr></table></figure></p>
+<p>在mon2机器上执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">monmaptool /tmp/monmap --rm mon3</span><br></pre></td></tr></table></figure></p>
+<p>4、导入修改后的monmap信息<br>在mon1机器上执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph-mon -i mon1 --inject-monmap /tmp/monmap</span><br></pre></td></tr></table></figure></p>
+<p>在mon2机器上执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph-mon -i mon1 --inject-monmap /tmp/monmap</span><br></pre></td></tr></table></figure></p>
+<p>5、启动mon进程<br>在mon1机器上执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/etc/init.d/ceph start mon</span><br></pre></td></tr></table></figure></p>
+<p>在mon2机器上执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/etc/init.d/ceph start mon</span><br></pre></td></tr></table></figure></p>
+<p>6、检查当前的mon信息，应该显示的是只有两个mon,再新加mon即可<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph <span class="operator">-s</span></span><br></pre></td></tr></table></figure></p>
+<hr>
+<p>写于：2015年11月1日</p>
 
       
     </div>
@@ -240,18 +255,9 @@ var _hmt = _hmt || [];
     
 <nav id="article-nav">
   
-    <a href="/2015/03/22/卸载python安装的软件/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption"><</strong>
-      <div class="article-nav-title">
-        
-          卸载python安装的软件
-        
-      </div>
-    </a>
   
-  
-    <a href="/2015/03/22/监控磁盘读写状况/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">监控磁盘读写状况</div>
+    <a href="/2015/10/13/在页面中嵌入自适应视频的方法/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">在页面中嵌入自适应视频的方法</div>
       <strong class="article-nav-caption">></strong>
     </a>
   
@@ -280,7 +286,7 @@ var _hmt = _hmt || [];
 
 <div class="duoshuo">
 	<!-- 多说评论框 start -->
-	<div class="ds-thread" data-thread-key="常用linux源列表" data-title="常用linux源列表" data-url="http://www.zphj1987.com/2015/03/22/常用linux源列表/"></div>
+	<div class="ds-thread" data-thread-key="Mon失效处理方法" data-title="Mon失效处理方法" data-url="http://www.zphj1987.com/2015/11/01/Mon失效处理方法/"></div>
 	<!-- 多说评论框 end -->
 	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 	<script type="text/javascript">

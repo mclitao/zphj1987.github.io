@@ -120,7 +120,7 @@ var _hmt = _hmt || [];
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/ceph/" style="font-size: 16px;">ceph</a><a href="/tags/instagram/" style="font-size: 10px;">instagram</a><a href="/tags/iptables/" style="font-size: 10px;">iptables</a><a href="/tags/linux/" style="font-size: 20px;">linux</a><a href="/tags/nginx/" style="font-size: 12px;">nginx</a><a href="/tags/samba/" style="font-size: 10px;">samba</a><a href="/tags/ubuntu/" style="font-size: 18px;">ubuntu</a><a href="/tags/windows/" style="font-size: 10px;">windows</a><a href="/tags/内核/" style="font-size: 14px;">内核</a><a href="/tags/操作系统/" style="font-size: 12px;">操作系统</a><a href="/tags/杂七杂八/" style="font-size: 14px;">杂七杂八</a><a href="/tags/注册码/" style="font-size: 10px;">注册码</a><a href="/tags/测试工具/" style="font-size: 12px;">测试工具</a><a href="/tags/网卡/" style="font-size: 14px;">网卡</a><a href="/tags/脚本/" style="font-size: 16px;">脚本</a><a href="/tags/高可用/" style="font-size: 10px;">高可用</a>
+						<a href="/tags/ceph/" style="font-size: 16.67px;">ceph</a><a href="/tags/instagram/" style="font-size: 10px;">instagram</a><a href="/tags/iptables/" style="font-size: 10px;">iptables</a><a href="/tags/linux/" style="font-size: 20px;">linux</a><a href="/tags/nginx/" style="font-size: 11.67px;">nginx</a><a href="/tags/samba/" style="font-size: 10px;">samba</a><a href="/tags/ubuntu/" style="font-size: 18.33px;">ubuntu</a><a href="/tags/windows/" style="font-size: 10px;">windows</a><a href="/tags/内核/" style="font-size: 13.33px;">内核</a><a href="/tags/操作系统/" style="font-size: 11.67px;">操作系统</a><a href="/tags/杂七杂八/" style="font-size: 13.33px;">杂七杂八</a><a href="/tags/注册码/" style="font-size: 10px;">注册码</a><a href="/tags/测试工具/" style="font-size: 11.67px;">测试工具</a><a href="/tags/网卡/" style="font-size: 13.33px;">网卡</a><a href="/tags/脚本/" style="font-size: 15px;">脚本</a><a href="/tags/高可用/" style="font-size: 10px;">高可用</a>
 					</div>
 				</section>
 				
@@ -185,6 +185,76 @@ var _hmt = _hmt || [];
 	</div>
 </nav>
       <div class="body-wrap">
+  
+    <article id="post-Mon失效处理方法" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/11/01/Mon失效处理方法/" class="article-date">
+  	<time datetime="2015-11-01T15:34:26.000Z" itemprop="datePublished">2015-11-01</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/11/01/Mon失效处理方法/">Mon失效处理方法</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>假设环境为三个mon，主机名为mon1、mon2、mon3，现在mon3上面的系统盘损坏，mon的数据完全丢失，现在需要对mon3进行恢复处理</p>
+<p>1、停止所有mon进程，可以不停其他进程，需要停止内核客户端以及对外的服务，防止卡死<br>在mon1机器上执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/etc/init.d/ceph stop mon</span><br></pre></td></tr></table></figure></p>
+<p>在mon2机器上执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/etc/init.d/ceph stop mon</span><br></pre></td></tr></table></figure></p>
+<p>2、分别在mon主机上获取当前的monmap<br>在mon1机器上执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph-mon -i mon1 --extract-monmap /tmp/monmap</span><br></pre></td></tr></table></figure></p>
+<p>备份原始monmap<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cp /tmp/monmap /tmp/monmapbk</span><br></pre></td></tr></table></figure></p>
+<p>在mon2机器上执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph-mon -i mon2 --extract-monmap /tmp/monmap</span><br></pre></td></tr></table></figure></p>
+<p>备份原始monmap<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cp /tmp/monmap /tmp/monmapbk</span><br></pre></td></tr></table></figure></p>
+<p>3、处理monmap，去掉损坏的mon3的map信息<br>在mon1机器上执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">monmaptool /tmp/monmap --rm mon3</span><br></pre></td></tr></table></figure></p>
+<p>在mon2机器上执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">monmaptool /tmp/monmap --rm mon3</span><br></pre></td></tr></table></figure></p>
+<p>4、导入修改后的monmap信息<br>在mon1机器上执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph-mon -i mon1 --inject-monmap /tmp/monmap</span><br></pre></td></tr></table></figure></p>
+<p>在mon2机器上执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph-mon -i mon1 --inject-monmap /tmp/monmap</span><br></pre></td></tr></table></figure></p>
+<p>5、启动mon进程<br>在mon1机器上执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/etc/init.d/ceph start mon</span><br></pre></td></tr></table></figure></p>
+<p>在mon2机器上执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/etc/init.d/ceph start mon</span><br></pre></td></tr></table></figure></p>
+<p>6、检查当前的mon信息，应该显示的是只有两个mon,再新加mon即可<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph <span class="operator">-s</span></span><br></pre></td></tr></table></figure></p>
+<hr>
+<p>写于：2015年11月1日</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
   
     <article id="post-在页面中嵌入自适应视频的方法" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -718,62 +788,6 @@ var _hmt = _hmt || [];
       
         <p class="article-more-link">
           <a  href="/2015/05/27/linux服务器远程网络开机（wake-on-lan）/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-dm-crypt加密磁盘" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/05/25/dm-crypt加密磁盘/" class="article-date">
-  	<time datetime="2015-05-25T06:07:58.000Z" itemprop="datePublished">2015-05-25</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/05/25/dm-crypt加密磁盘/">dm-crypt加密磁盘</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="dm-cry加密方式密码与文件">dm-cry加密方式密码与文件</h3><p>与其它创建加密文件系统的方法相比，dm-crypt系统有着无可比拟的优越性：它的速度更快，易用性更强。除此之外，它的适用面也很广，能够运行在各种块设备上，即使这些设备使用了RAID和 LVM也毫无障碍。</p>
-<p>如果看到类似下面的输出，说明AES模块已经加载了。<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">cat /proc/crypto&#10;&#10;name         : aes&#10;driver       : aes-generic&#10;module       : kernel&#10;priority     : 100&#10;refcnt       : 3&#10;selftest     : passed&#10;type         : cipher&#10;blocksize    : 16&#10;min keysize  : 16&#10;max keysize  : 32</span><br></pre></td></tr></table></figure></p>
-<p>否则可以用modprobe命令来手工加载AES模块。<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">modprobe aes</span><br></pre></td></tr></table></figure></p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/05/25/dm-crypt加密磁盘/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>

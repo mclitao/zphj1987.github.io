@@ -3,29 +3,17 @@
 <head>
   <meta charset="utf-8">
   
-  <title>xenserver中linux虚拟机修改启动顺序 | zphj1987&#39;Blog</title>
+  <title>zphj1987&#39;Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="xenserver是思杰的一款类似于vmware ESXI的虚拟化平台,或者说虚拟化操作系统,上面可以安装许多虚拟机,但是当你装完linux虚拟机，你会发现一个问题,不能像windows vm那样直接通过xencenter的虚拟机属性去修改。
-windows的启动属性,很容易修改,
-而linux的启动属性,没有这些
-下面我们介绍一些啊，怎么可以把linux的启动属性,通过命令行解决掉。
-选择xen">
-<meta property="og:type" content="article">
-<meta property="og:title" content="xenserver中linux虚拟机修改启动顺序">
-<meta property="og:url" content="http://www.zphj1987.com/2015/03/24/xenserver中linux虚拟机修改启动顺序/index.html">
+  <meta name="description">
+<meta property="og:type" content="website">
+<meta property="og:title" content="zphj1987'Blog">
+<meta property="og:url" content="http://www.zphj1987.com/archives/2015/11/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
-<meta property="og:description" content="xenserver是思杰的一款类似于vmware ESXI的虚拟化平台,或者说虚拟化操作系统,上面可以安装许多虚拟机,但是当你装完linux虚拟机，你会发现一个问题,不能像windows vm那样直接通过xencenter的虚拟机属性去修改。
-windows的启动属性,很容易修改,
-而linux的启动属性,没有这些
-下面我们介绍一些啊，怎么可以把linux的启动属性,通过命令行解决掉。
-选择xen">
+<meta property="og:description">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="xenserver中linux虚拟机修改启动顺序">
-<meta name="twitter:description" content="xenserver是思杰的一款类似于vmware ESXI的虚拟化平台,或者说虚拟化操作系统,上面可以安装许多虚拟机,但是当你装完linux虚拟机，你会发现一个问题,不能像windows vm那样直接通过xencenter的虚拟机属性去修改。
-windows的启动属性,很容易修改,
-而linux的启动属性,没有这些
-下面我们介绍一些啊，怎么可以把linux的启动属性,通过命令行解决掉。
-选择xen">
+<meta name="twitter:title" content="zphj1987'Blog">
+<meta name="twitter:description">
   
     <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
   
@@ -196,120 +184,53 @@ var _hmt = _hmt || [];
 		</header>				
 	</div>
 </nav>
-      <div class="body-wrap"><article id="post-xenserver中linux虚拟机修改启动顺序" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap">
   
-    <div class="article-meta">
-      <a href="/2015/03/24/xenserver中linux虚拟机修改启动顺序/" class="article-date">
-  	<time datetime="2015-03-23T23:49:21.000Z" itemprop="datePublished">2015-03-24</time>
+  
+    
+    
+      
+      
+      <section class="archives-wrap">
+        <div class="archive-year-wrap">
+          <a href="/archives/2015" class="archive-year">2015</a>
+        </div>
+        <div class="archives">
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      	<div class="article-meta">
+	      	<a href="/2015/11/01/Mon失效处理方法/" class="archive-article-date">
+  	<time datetime="2015-11-01T15:34:26.000Z" itemprop="datePublished">Nov 1</time>
 </a>
-    </div>
+        </div>
+    	 
   
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="article-title" itemprop="name">
-      xenserver中linux虚拟机修改启动顺序
+    <h1 itemprop="name">
+      <a class="archive-article-title" href="/2015/11/01/Mon失效处理方法/">Mon失效处理方法</a>
     </h1>
   
 
-      </header>
-      
-      <div class="article-info article-info-post">
-        
+        <div class="article-info info-on-right">
+          
 	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
 	</div>
 
-        
+          
 
+        </div>
         <div class="clearfix"></div>
-      </div>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>xenserver是思杰的一款类似于vmware ESXI的虚拟化平台,或者说虚拟化操作系统,上面可以安装许多虚拟机,但是当你装完linux虚拟机，你会发现一个问题,不能像windows vm那样直接通过xencenter的虚拟机属性去修改。</p>
-<p>windows的启动属性,很容易修改,</p>
-<p>而linux的启动属性,没有这些</p>
-<p>下面我们介绍一些啊，怎么可以把linux的启动属性,通过命令行解决掉。</p>
-<p>选择xenserver主机的console端,找到linux虚拟机的uuid。</p>
-<p>执行:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">xe vm-list name-lable=xx(虚拟机名称) 就会显示虚拟机的uuid</span><br></pre></td></tr></table></figure></p>
-<p>然后执行:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">xe vm-param-set uuid=xx(上面获取到的) HVM-boot-policy=BIOS\ order</span><br><span class="line">xe vm-param-set uuid=xx(上面获取到的) HVM-boot-params:order=<span class="string">"dc"</span></span><br></pre></td></tr></table></figure></p>
-<p>执行完,你就可以通过XenCenter打开Linux虚拟机的属性查看,和windows一样,可以修改启动顺序了</p>
-<p>写于: 2014年06月19日<br>更新于: 2015年03月24日</p>
-
-      
-    </div>
-    
+    </header>
   </div>
-  
-    
-<nav id="article-nav">
-  
-    <a href="/2015/03/24/重置ubuntu13-04-密码/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption"><</strong>
-      <div class="article-nav-title">
-        
-          重置ubuntu13.04 密码
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2015/03/24/fio的配置使用/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">fio的配置使用</div>
-      <strong class="article-nav-caption">></strong>
-    </a>
-  
-</nav>
-
-  
 </article>
+  
+  
+    </div></section>
+  
 
-
-<div class="share">
-	<!-- JiaThis Button BEGIN -->
-	<div class="jiathis_style">
-		<span class="jiathis_txt">分享到：</span>
-		<a class="jiathis_button_tsina"></a>
-		<a class="jiathis_button_cqq"></a>
-		<a class="jiathis_button_douban"></a>
-		<a class="jiathis_button_weixin"></a>
-		<a class="jiathis_button_tumblr"></a>
-		<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
-	</div>
-	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
-	<!-- JiaThis Button END -->
-</div>
-
-
-
-<div class="duoshuo">
-	<!-- 多说评论框 start -->
-	<div class="ds-thread" data-thread-key="xenserver中linux虚拟机修改启动顺序" data-title="xenserver中linux虚拟机修改启动顺序" data-url="http://www.zphj1987.com/2015/03/24/xenserver中linux虚拟机修改启动顺序/"></div>
-	<!-- 多说评论框 end -->
-	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
-	<script type="text/javascript">
-	var duoshuoQuery = {short_name:"zphj1987"};
-	(function() {
-		var ds = document.createElement('script');
-		ds.type = 'text/javascript';ds.async = true;
-		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-		ds.charset = 'UTF-8';
-		(document.getElementsByTagName('head')[0] 
-		 || document.getElementsByTagName('body')[0]).appendChild(ds);
-	})();
-	</script>
-	<!-- 多说公共JS代码 end -->
-</div>
-
-
-
+    
 
 </div>
       <footer id="footer">
@@ -335,7 +256,7 @@ var _hmt = _hmt || [];
 		mathjax: undefined,
 		animate: true,
 		isHome: false,
-		isPost: true,
+		isPost: false,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,
