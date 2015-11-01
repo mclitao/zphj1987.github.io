@@ -4,7 +4,7 @@
   <subtitle><![CDATA[现在所学，终有所用]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2015-11-01T15:37:29.310Z</updated>
+  <updated>2015-11-01T15:38:49.630Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -19,12 +19,12 @@
     <link href="http://www.zphj1987.com/2015/11/01/Mon%E5%A4%B1%E6%95%88%E5%A4%84%E7%90%86%E6%96%B9%E6%B3%95/"/>
     <id>http://www.zphj1987.com/2015/11/01/Mon失效处理方法/</id>
     <published>2015-11-01T15:34:26.000Z</published>
-    <updated>2015-11-01T15:37:29.310Z</updated>
+    <updated>2015-11-01T15:38:49.630Z</updated>
     <content type="html"><![CDATA[<p>假设环境为三个mon，主机名为mon1、mon2、mon3，现在mon3上面的系统盘损坏，mon的数据完全丢失，现在需要对mon3进行恢复处理</p>
 <p>1、停止所有mon进程，可以不停其他进程，需要停止内核客户端以及对外的服务，防止卡死<br>在mon1机器上执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/etc/init.d/ceph stop mon</span><br></pre></td></tr></table></figure></p>
 <p>在mon2机器上执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/etc/init.d/ceph stop mon</span><br></pre></td></tr></table></figure></p>
 <p>2、分别在mon主机上获取当前的monmap<br>在mon1机器上执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph-mon -i mon1 --extract-monmap /tmp/monmap</span><br></pre></td></tr></table></figure></p>
-<p>备份原始monmap<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cp /tmp/monmap /tmp/monmapbk</span><br></pre></td></tr></table></figure></p>
+<p>备份原始monmap<br><a id="more"></a><br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cp /tmp/monmap /tmp/monmapbk</span><br></pre></td></tr></table></figure></p>
 <p>在mon2机器上执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph-mon -i mon2 --extract-monmap /tmp/monmap</span><br></pre></td></tr></table></figure></p>
 <p>备份原始monmap<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cp /tmp/monmap /tmp/monmapbk</span><br></pre></td></tr></table></figure></p>
 <p>3、处理monmap，去掉损坏的mon3的map信息<br>在mon1机器上执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">monmaptool /tmp/monmap --rm mon3</span><br></pre></td></tr></table></figure></p>
@@ -39,7 +39,11 @@
 ]]></content>
     <summary type="html">
     <![CDATA[<p>假设环境为三个mon，主机名为mon1、mon2、mon3，现在mon3上面的系统盘损坏，mon的数据完全丢失，现在需要对mon3进行恢复处理</p>
-<p>1、停止所有mon进程，可以不停其他进程，需要停止内核客户端以及对外的服务，防止卡死<br>在mon1机器上执行<b]]>
+<p>1、停止所有mon进程，可以不停其他进程，需要停止内核客户端以及对外的服务，防止卡死<br>在mon1机器上执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/etc/init.d/ceph stop mon</span><br></pre></td></tr></table></figure></p>
+<p>在mon2机器上执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/etc/init.d/ceph stop mon</span><br></pre></td></tr></table></figure></p>
+<p>2、分别在mon主机上获取当前的monmap<br>在mon1机器上执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph-mon -i mon1 --extract-monmap /tmp/monmap</span><br></pre></td></tr></table></figure></p>
+<p>备份原始monmap<br>]]>
+    
     </summary>
     
       <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>

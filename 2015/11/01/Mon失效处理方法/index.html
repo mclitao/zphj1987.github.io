@@ -234,7 +234,7 @@ var _hmt = _hmt || [];
 <p>1、停止所有mon进程，可以不停其他进程，需要停止内核客户端以及对外的服务，防止卡死<br>在mon1机器上执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/etc/init.d/ceph stop mon</span><br></pre></td></tr></table></figure></p>
 <p>在mon2机器上执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/etc/init.d/ceph stop mon</span><br></pre></td></tr></table></figure></p>
 <p>2、分别在mon主机上获取当前的monmap<br>在mon1机器上执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph-mon -i mon1 --extract-monmap /tmp/monmap</span><br></pre></td></tr></table></figure></p>
-<p>备份原始monmap<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cp /tmp/monmap /tmp/monmapbk</span><br></pre></td></tr></table></figure></p>
+<p>备份原始monmap<br><a id="more"></a><br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cp /tmp/monmap /tmp/monmapbk</span><br></pre></td></tr></table></figure></p>
 <p>在mon2机器上执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph-mon -i mon2 --extract-monmap /tmp/monmap</span><br></pre></td></tr></table></figure></p>
 <p>备份原始monmap<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cp /tmp/monmap /tmp/monmapbk</span><br></pre></td></tr></table></figure></p>
 <p>3、处理monmap，去掉损坏的mon3的map信息<br>在mon1机器上执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">monmaptool /tmp/monmap --rm mon3</span><br></pre></td></tr></table></figure></p>
