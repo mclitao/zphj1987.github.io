@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>如何删除一台OSD主机 | zphj1987&#39;Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="在ceph的一台OSD主机出现故障的时候，数据可以通过副本的机制进行恢复，之后通过删除osd的操作也能够将故障osd从osd tree当中删除掉，但是故障的 osd 的主机仍然会留在集群当中，通过 ceph osd tree 或者打印 crush map 都可以看到这个损坏的节点主机名，所以这里讲下怎么删除掉这个无用的host
+
+首先集群环境为两台主机 node8109 node8110 , no">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何删除一台OSD主机">
+<meta property="og:url" content="http://www.zphj1987.com/2015/11/12/如何删除一台OSD主机/index.html">
+<meta property="og:site_name" content="zphj1987'Blog">
+<meta property="og:description" content="在ceph的一台OSD主机出现故障的时候，数据可以通过副本的机制进行恢复，之后通过删除osd的操作也能够将故障osd从osd tree当中删除掉，但是故障的 osd 的主机仍然会留在集群当中，通过 ceph osd tree 或者打印 crush map 都可以看到这个损坏的节点主机名，所以这里讲下怎么删除掉这个无用的host
+
+首先集群环境为两台主机 node8109 node8110 , no">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="如何删除一台OSD主机">
+<meta name="twitter:description" content="在ceph的一台OSD主机出现故障的时候，数据可以通过副本的机制进行恢复，之后通过删除osd的操作也能够将故障osd从osd tree当中删除掉，但是故障的 osd 的主机仍然会留在集群当中，通过 ceph osd tree 或者打印 crush map 都可以看到这个损坏的节点主机名，所以这里讲下怎么删除掉这个无用的host
+
+首先集群环境为两台主机 node8109 node8110 , no">
+  
+    <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="http://7xi6lo.com1.z0.glb.clouddn.com/style.css" type="text/css">
+  
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?252ba55374ee0e63b03196973bb9b776";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="http://7xi6lo.com1.z0.glb.clouddn.com/assets/blogImg/mylogo.jpg" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">zphj1987</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">现在所学，终有所用</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						
+						<li>关于我</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+							<li><a href="/instagram">图片</a></li>
+				        
+							<li><a href="/shuoshuo">说说</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="https://github.com/zphj1987" title="github">github</a>
+					        
+								<a class="weibo" target="_blank" href=" http://weibo.com/zphj1987" title="weibo">weibo</a>
+					        
+								<a class="rss" target="_blank" href="http://www.zphj1987.com/atom.xml" title="rss">rss</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/ceph/" style="font-size: 16.67px;">ceph</a><a href="/tags/instagram/" style="font-size: 10px;">instagram</a><a href="/tags/iptables/" style="font-size: 10px;">iptables</a><a href="/tags/linux/" style="font-size: 20px;">linux</a><a href="/tags/nginx/" style="font-size: 11.67px;">nginx</a><a href="/tags/samba/" style="font-size: 10px;">samba</a><a href="/tags/ubuntu/" style="font-size: 18.33px;">ubuntu</a><a href="/tags/windows/" style="font-size: 10px;">windows</a><a href="/tags/内核/" style="font-size: 13.33px;">内核</a><a href="/tags/操作系统/" style="font-size: 11.67px;">操作系统</a><a href="/tags/杂七杂八/" style="font-size: 13.33px;">杂七杂八</a><a href="/tags/注册码/" style="font-size: 10px;">注册码</a><a href="/tags/测试工具/" style="font-size: 11.67px;">测试工具</a><a href="/tags/网卡/" style="font-size: 13.33px;">网卡</a><a href="/tags/脚本/" style="font-size: 15px;">脚本</a><a href="/tags/高可用/" style="font-size: 10px;">高可用</a>
+					</div>
+				</section>
+				
+				
+				
+
+				
+				
+				<section class="switch-part switch-part3">
+				
+					<div id="js-aboutme">1987 男,武汉。吃货。存储行业。</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">zphj1987</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="http://7xi6lo.com1.z0.glb.clouddn.com/assets/blogImg/mylogo.jpg" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">zphj1987</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">现在所学，终有所用</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+					<li><a href="/instagram">图片</a></li>
+		        
+					<li><a href="/shuoshuo">说说</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/zphj1987" title="github">github</a>
+			        
+						<a class="weibo" target="_blank" href=" http://weibo.com/zphj1987" title="weibo">weibo</a>
+			        
+						<a class="rss" target="_blank" href="http://www.zphj1987.com/atom.xml" title="rss">rss</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-如何删除一台OSD主机" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/11/12/如何删除一台OSD主机/" class="article-date">
+  	<time datetime="2015-11-12T13:33:41.000Z" itemprop="datePublished">2015-11-12</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      如何删除一台OSD主机
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+        
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>在ceph的一台OSD主机出现故障的时候，数据可以通过副本的机制进行恢复，之后通过删除osd的操作也能够将故障osd从osd tree当中删除掉，但是故障的 osd 的主机仍然会留在集群当中，通过 ceph osd tree 或者打印 crush map 都可以看到这个损坏的节点主机名，所以这里讲下怎么删除掉这个无用的host</p>
+</blockquote>
+<p>首先集群环境为两台主机 node8109 node8110 , node8110主机出现故障需要清理掉</p>
+<h4 id="先看下当前的osd_tree状态">先看下当前的osd tree状态</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@node8109 webui]<span class="comment"># ceph osd tree</span></span><br><span class="line">ID WEIGHT  TYPE NAME             UP/DOWN REWEIGHT PRIMARY-AFFINITY </span><br><span class="line">-<span class="number">1</span> <span class="number">4.00000</span> root default                                            </span><br><span class="line">-<span class="number">3</span> <span class="number">4.00000</span>     rack localrack                                      </span><br><span class="line">-<span class="number">2</span> <span class="number">2.00000</span>         host node8109                                   </span><br><span class="line"> <span class="number">0</span> <span class="number">1.00000</span>             osd.<span class="number">0</span>          up  <span class="number">1.00000</span>          <span class="number">1.00000</span> </span><br><span class="line"> <span class="number">1</span> <span class="number">1.00000</span>             osd.<span class="number">1</span>          up  <span class="number">1.00000</span>          <span class="number">1.00000</span> </span><br><span class="line">-<span class="number">4</span> <span class="number">2.00000</span>         host node8110                                   </span><br><span class="line"> <span class="number">2</span> <span class="number">1.00000</span>             osd.<span class="number">2</span>        down  <span class="number">1.00000</span>          <span class="number">1.00000</span> </span><br><span class="line"> <span class="number">3</span> <span class="number">1.00000</span>             osd.<span class="number">3</span>        down  <span class="number">1.00000</span>          <span class="number">1.00000</span></span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<h4 id="查看osd的状态">查看osd的状态</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@node8109 webui]<span class="comment"># ceph osd stat</span></span><br><span class="line">     osdmap e66: <span class="number">4</span> osds: <span class="number">2</span> up, <span class="number">4</span> <span class="keyword">in</span>; <span class="number">52</span> remapped pgs</span><br></pre></td></tr></table></figure>
+<h4 id="首先out掉osd">首先out掉osd</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@node8109 ~]<span class="comment"># ceph osd out 2</span></span><br><span class="line">marked out osd.<span class="number">2</span>. </span><br><span class="line">[root@node8109 ~]<span class="comment"># ceph osd out 3</span></span><br><span class="line">marked out osd.<span class="number">3</span>.</span><br></pre></td></tr></table></figure>
+<h4 id="从crush里面删除osd">从crush里面删除osd</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@node8109 ~]<span class="comment"># ceph osd crush remove osd.2</span></span><br><span class="line">removed item id <span class="number">2</span> name <span class="string">'osd.2'</span> from crush map</span><br><span class="line">[root@node8109 ~]<span class="comment"># ceph osd crush remove osd.3</span></span><br><span class="line">removed item id <span class="number">3</span> name <span class="string">'osd.3'</span> from crush map</span><br></pre></td></tr></table></figure>
+<h4 id="从集群中删除OSD">从集群中删除OSD</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@node8109 ~]<span class="comment"># ceph osd rm osd.3</span></span><br><span class="line">removed osd.<span class="number">3</span></span><br><span class="line">[root@node8109 ~]<span class="comment"># ceph osd rm osd.2</span></span><br><span class="line">removed osd.<span class="number">2</span></span><br></pre></td></tr></table></figure>
+<h4 id="从集群认证里面删除osd">从集群认证里面删除osd</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@node8109 ~]<span class="comment"># ceph auth del osd.2</span></span><br><span class="line">updated</span><br><span class="line">[root@node8109 ~]<span class="comment"># ceph auth del osd.3</span></span><br><span class="line">updated</span><br></pre></td></tr></table></figure>
+<hr>
+<p>查看当前的crush map<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@node8109 ~]<span class="comment"># ceph osd tree</span></span><br><span class="line">ID WEIGHT  TYPE NAME             UP/DOWN REWEIGHT PRIMARY-AFFINITY </span><br><span class="line">-<span class="number">1</span> <span class="number">2.00000</span> root default                                            </span><br><span class="line">-<span class="number">3</span> <span class="number">2.00000</span>     rack localrack                                      </span><br><span class="line">-<span class="number">2</span> <span class="number">2.00000</span>         host node8109                                   </span><br><span class="line"> <span class="number">0</span> <span class="number">1.00000</span>             osd.<span class="number">0</span>          up  <span class="number">1.00000</span>          <span class="number">1.00000</span> </span><br><span class="line"> <span class="number">1</span> <span class="number">1.00000</span>             osd.<span class="number">1</span>          up  <span class="number">1.00000</span>          <span class="number">1.00000</span> </span><br><span class="line">-<span class="number">4</span>       <span class="number">0</span>         host node8110</span><br></pre></td></tr></table></figure></p>
+<p>下面有两种方法从osd tree 删除掉node8110,为命令方式和修改crush map 方式</p>
+<h3 id="方式一：命令方式">方式一：命令方式</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@node8109 ~]<span class="comment"># ceph osd crush remove node8110</span></span><br><span class="line">removed item id -<span class="number">4</span> name <span class="string">'node8110'</span> from crush map</span><br><span class="line">[root@node8109 ~]<span class="comment"># ceph osd tree</span></span><br><span class="line">ID WEIGHT  TYPE NAME             UP/DOWN REWEIGHT PRIMARY-AFFINITY </span><br><span class="line">-<span class="number">1</span> <span class="number">2.00000</span> root default                                            </span><br><span class="line">-<span class="number">3</span> <span class="number">2.00000</span>     rack localrack                                      </span><br><span class="line">-<span class="number">2</span> <span class="number">2.00000</span>         host node8109                                   </span><br><span class="line"> <span class="number">0</span> <span class="number">1.00000</span>             osd.<span class="number">0</span>          up  <span class="number">1.00000</span>          <span class="number">1.00000</span> </span><br><span class="line"> <span class="number">1</span> <span class="number">1.00000</span>             osd.<span class="number">1</span>          up  <span class="number">1.00000</span>          <span class="number">1.00000</span></span><br></pre></td></tr></table></figure>
+<h3 id="方式二：通过修改_crush_map_的方式">方式二：通过修改 crush map 的方式</h3><h4 id="导出当前的crush_map">导出当前的crush map</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@node8109 ~]<span class="comment">#ceph osd getcrushmap -o crushmap.txt</span></span><br><span class="line">[root@node8109 ~]<span class="comment">#crushtool -d crushmap.txt -o crushmap-decompile</span></span><br><span class="line">[root@node8109 ~]<span class="comment"># vim crushmap-decompile</span></span><br></pre></td></tr></table></figure>
+<h4 id="删除掉node8109相关的信息">删除掉node8109相关的信息</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@node8109 ~]<span class="comment">#crushtool -c crushmap-decompile  -o crushmap-compile</span></span><br><span class="line">[root@node8109 ~]<span class="comment"># ceph osd setcrushmap -i crushmap-compile </span></span><br><span class="line"><span class="built_in">set</span> crush map</span><br><span class="line">[root@node8109 ~]<span class="comment"># ceph osd tree</span></span><br><span class="line">ID WEIGHT  TYPE NAME             UP/DOWN REWEIGHT PRIMARY-AFFINITY </span><br><span class="line">-<span class="number">1</span> <span class="number">2.00000</span> root default                                            </span><br><span class="line">-<span class="number">3</span> <span class="number">2.00000</span>     rack localrack                                      </span><br><span class="line">-<span class="number">2</span> <span class="number">2.00000</span>         host node8109                                   </span><br><span class="line"> <span class="number">0</span> <span class="number">1.00000</span>             osd.<span class="number">0</span>          up  <span class="number">1.00000</span>          <span class="number">1.00000</span> </span><br><span class="line"> <span class="number">1</span> <span class="number">1.00000</span>             osd.<span class="number">1</span>          up  <span class="number">1.00000</span>          <span class="number">1.00000</span></span><br></pre></td></tr></table></figure>
+<h3 id="总结：">总结：</h3><p>从上面的两种方式可以看出，使用命令的方式更为简单直接，而修改crush map的方式需要去做修改的操作，有一定的修改错误的风险，所以在做crush map的相关操作的时候，建议是能用命令方式做的就用命令方式去做操作</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2015/11/01/Mon失效处理方法/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Mon失效处理方法</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到：</span>
+		<a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+		<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="如何删除一台OSD主机" data-title="如何删除一台OSD主机" data-url="http://www.zphj1987.com/2015/11/12/如何删除一台OSD主机/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"zphj1987"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2015 zphj1987
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="http://7xi6lo.com1.z0.glb.clouddn.com/fancybox/jquery.fancybox.css" type="text/css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: undefined,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: true
+	}
+</script>
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="/js/main.js" type="text/javascript"></script>
+
+
+  </div>
+</body>
+</html>
