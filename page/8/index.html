@@ -186,6 +186,118 @@ var _hmt = _hmt || [];
 </nav>
       <div class="body-wrap">
   
+    <article id="post-正确用DD测试磁盘读写速度" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/03/22/正确用DD测试磁盘读写速度/" class="article-date">
+  	<time datetime="2015-03-22T08:36:15.000Z" itemprop="datePublished">2015-03-22</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/03/22/正确用DD测试磁盘读写速度/">正确用DD测试磁盘读写速度</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>问: 以下几种方式测试磁盘读写速度有什么区别?<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">dd <span class="keyword">if</span>=/dev/zero of=<span class="built_in">test</span> bs=<span class="number">1</span>M count=<span class="number">128</span> </span><br><span class="line">dd <span class="keyword">if</span>=/dev/zero of=<span class="built_in">test</span> bs=<span class="number">1</span>M count=<span class="number">128</span> ; sync</span><br><span class="line">dd <span class="keyword">if</span>=/dev/zero of=<span class="built_in">test</span> bs=<span class="number">1</span>M count=<span class="number">128</span> conv=fdatasync</span><br><span class="line">dd <span class="keyword">if</span>=/dev/zero of=<span class="built_in">test</span> bs=<span class="number">1</span>M count=<span class="number">128</span> oflag=dsync</span><br></pre></td></tr></table></figure></p>
+<p>答:区别在于内存中写缓存的处理方式。</p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2015/03/22/正确用DD测试磁盘读写速度/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-西数WD2T硬盘分区对齐的方法" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/03/22/西数WD2T硬盘分区对齐的方法/" class="article-date">
+  	<time datetime="2015-03-22T08:25:08.000Z" itemprop="datePublished">2015-03-22</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/03/22/西数WD2T硬盘分区对齐的方法/">西数WD2T硬盘分区对齐的方法</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>新购一个西数2T硬盘,也就是绿盘的那种,淘宝500左右,支持高级格式化。 </p>
+<p>到手以后,分区格式化,前几天格式化完成以后,fdisk -l 发现如下文字 </p>
+<p>引用<br>Partition 1 does not start on physical sector boundary.</p>
+<p>网上找了下,说是软件的问题,后来折腾了下,应该是分区没有对齐的原因,至于为什么要对齐,优点很多,好像这个是跟神马高级分区格式化有关,具体的原理神马的,我就不讨论了,反正有一点,对齐后,性能会有提升。 </p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2015/03/22/西数WD2T硬盘分区对齐的方法/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-Check-Host-实时监控网站或者服务器是否可以访问" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -615,120 +727,6 @@ var _hmt = _hmt || [];
       
         <p class="article-more-link">
           <a  href="/2015/03/22/卸载python安装的软件/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-常用linux源列表" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/03/22/常用linux源列表/" class="article-date">
-  	<time datetime="2015-03-22T07:16:16.000Z" itemprop="datePublished">2015-03-22</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/03/22/常用linux源列表/">常用linux源列表</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>centos6 源:</p>
-<p>epel源:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget  http://mirrors.aliyun.com/epel/<span class="number">6</span>/x86_64/epel-release-<span class="number">6</span>-<span class="number">8</span>.noarch.rpm</span><br></pre></td></tr></table></figure></p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/03/22/常用linux源列表/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-监控磁盘读写状况" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/03/22/监控磁盘读写状况/" class="article-date">
-  	<time datetime="2015-03-22T06:41:09.000Z" itemprop="datePublished">2015-03-22</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/03/22/监控磁盘读写状况/">监控磁盘读写状况</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>您有没有碰到过:没有运行任何程序，磁盘却不断执行读写动作,io指示灯常亮,各种操作迟缓甚至卡顿。碰到这种状况往往会感到束手无策,因为并不是 cpu 居高不下,可以立即结束相关进程。而突然结束进程中断磁盘 io 操作甚至可能导致正在写入的数据丢失。</p>
-<h4 id="什么进程在读写磁盘?">什么进程在读写磁盘?</h4><p>可能是 firefox,可能是 updatedb,也可能是正在运行的 pacman -Syu,一切皆有可能 ……<br>怎么查看是什么进程在不断的读写磁盘呢?<br>请使用 iotop 命令查看:<br>通过输出结果我们可以清楚地知晓是什么程序在读写磁盘，速度以及命令行, pid 等信息。</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/03/22/监控磁盘读写状况/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>
