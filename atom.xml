@@ -4,7 +4,7 @@
   <subtitle><![CDATA[现在所学，终有所用]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2015-11-18T15:12:28.872Z</updated>
+  <updated>2015-11-18T15:13:22.757Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -19,12 +19,13 @@
     <link href="http://www.zphj1987.com/2015/11/18/%E5%9C%A8%E7%BA%BF%E8%B0%83%E6%95%B4ceph%E7%9A%84%E5%8F%82%E6%95%B0/"/>
     <id>http://www.zphj1987.com/2015/11/18/在线调整ceph的参数/</id>
     <published>2015-11-18T15:11:44.000Z</published>
-    <updated>2015-11-18T15:12:28.872Z</updated>
+    <updated>2015-11-18T15:13:22.757Z</updated>
     <content type="html"><![CDATA[<p>能够动态的进行系统参数的调整是一个很重要并且有用的属性<br>ceph的集群提供两种方式的调整，使用tell的方式和daemon设置的方式</p>
 <h3 id="一、tell方式设置">一、tell方式设置</h3><p>调整配置使用命令：</p>
 <h4 id="调整mon的参数">调整mon的参数</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#ceph tell mon.* injectargs '--&#123;tunable value_to_be_set&#125;'</span></span><br></pre></td></tr></table></figure>
 <h4 id="调整osd的参数">调整osd的参数</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#ceph tell osd.* injectargs '--&#123;tunable value_to_be_set&#125;'</span></span><br></pre></td></tr></table></figure>
 <h3 id="调整mds的参数">调整mds的参数</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#ceph tell mds.* injectargs '--&#123;tunable value_to_be_set&#125;'</span></span><br></pre></td></tr></table></figure>
+<a id="more"></a>
 <p>例子：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab5134 ~]<span class="comment"># ceph tell mon.* injectargs '--mon_osd_report_timeout 400'</span></span><br><span class="line">injectargs:mon_osd_report_timeout = <span class="string">'400'</span></span><br></pre></td></tr></table></figure></p>
 <p>除了上面的tell的方式调整，还可以使用daemon的方式进行设置</p>
 <h3 id="二、daemon方式设置">二、daemon方式设置</h3><h4 id="1、获取当前的参数">1、获取当前的参数</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab5134 ~]<span class="comment"># ceph daemon osd.1 config get mon_osd_full_ratio</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="string">"mon_osd_full_ratio"</span>: <span class="string">"0.98"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -37,7 +38,10 @@
     <summary type="html">
     <![CDATA[<p>能够动态的进行系统参数的调整是一个很重要并且有用的属性<br>ceph的集群提供两种方式的调整，使用tell的方式和daemon设置的方式</p>
 <h3 id="一、tell方式设置">一、tell方式设置</h3><p>调整配置使用命令：</p>
-<h4 id="调整m]]>
+<h4 id="调整mon的参数">调整mon的参数</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#ceph tell mon.* injectargs '--&#123;tunable value_to_be_set&#125;'</span></span><br></pre></td></tr></table></figure>
+<h4 id="调整osd的参数">调整osd的参数</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#ceph tell osd.* injectargs '--&#123;tunable value_to_be_set&#125;'</span></span><br></pre></td></tr></table></figure>
+<h3 id="调整mds的参数">调整mds的参数</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#ceph tell mds.* injectargs '--&#123;tunable value_to_be_set&#125;'</span></span><br></pre></td></tr></table></figure>]]>
+    
     </summary>
     
       <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
