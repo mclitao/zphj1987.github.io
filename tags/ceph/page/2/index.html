@@ -3,42 +3,17 @@
 <head>
   <meta charset="utf-8">
   
-  <title>ceph集群的安装和配置教程 | zphj1987&#39;Blog</title>
+  <title>zphj1987&#39;Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="本篇主题：1、怎样配置ssh免登陆访问2、为什么搭建集群要关闭防火墙和selinux，如何关闭3、从哪里获取ceph的安装包，怎样安装才是快速正确的4、为什么要配置时间同步服务，怎样配置5、怎样创建集群6、怎样使用不同的方式增加osd（这里我总结了五种）
-
-默认方式
-磁盘journal
-目录配置方式
-btrfs文件系统
-disk+ssd方式
-
-7、怎样配置文件系统8、怎样配置块设备系统9、怎样配置">
-<meta property="og:type" content="article">
-<meta property="og:title" content="ceph集群的安装和配置教程">
-<meta property="og:url" content="http://www.zphj1987.com/2015/12/12/ceph集群的安装和配置教程/index.html">
+  <meta name="description">
+<meta property="og:type" content="website">
+<meta property="og:title" content="zphj1987'Blog">
+<meta property="og:url" content="http://www.zphj1987.com/tags/ceph/page/2/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
-<meta property="og:description" content="本篇主题：1、怎样配置ssh免登陆访问2、为什么搭建集群要关闭防火墙和selinux，如何关闭3、从哪里获取ceph的安装包，怎样安装才是快速正确的4、为什么要配置时间同步服务，怎样配置5、怎样创建集群6、怎样使用不同的方式增加osd（这里我总结了五种）
-
-默认方式
-磁盘journal
-目录配置方式
-btrfs文件系统
-disk+ssd方式
-
-7、怎样配置文件系统8、怎样配置块设备系统9、怎样配置">
-<meta property="og:image" content="http://7xo9we.com1.z0.glb.clouddn.com/zhifubao.png">
+<meta property="og:description">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="ceph集群的安装和配置教程">
-<meta name="twitter:description" content="本篇主题：1、怎样配置ssh免登陆访问2、为什么搭建集群要关闭防火墙和selinux，如何关闭3、从哪里获取ceph的安装包，怎样安装才是快速正确的4、为什么要配置时间同步服务，怎样配置5、怎样创建集群6、怎样使用不同的方式增加osd（这里我总结了五种）
-
-默认方式
-磁盘journal
-目录配置方式
-btrfs文件系统
-disk+ssd方式
-
-7、怎样配置文件系统8、怎样配置块设备系统9、怎样配置">
+<meta name="twitter:title" content="zphj1987'Blog">
+<meta name="twitter:description">
   
     <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
   
@@ -209,128 +184,57 @@ var _hmt = _hmt || [];
 		</header>				
 	</div>
 </nav>
-      <div class="body-wrap"><article id="post-ceph集群的安装和配置教程" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap">
   
-    <div class="article-meta">
-      <a href="/2015/12/12/ceph集群的安装和配置教程/" class="article-date">
-  	<time datetime="2015-12-11T16:36:48.000Z" itemprop="datePublished">2015-12-12</time>
+  
+    
+    
+      
+      
+      <section class="archives-wrap">
+        <div class="archive-year-wrap">
+          <a href="/archives/2015" class="archive-year">2015</a>
+        </div>
+        <div class="archives">
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      	<div class="article-meta">
+	      	<a href="/2015/09/18/ceph客户端服务端属性匹配关系/" class="archive-article-date">
+  	<time datetime="2015-09-18T03:24:08.000Z" itemprop="datePublished">Sep 18</time>
 </a>
-    </div>
+        </div>
+    	 
   
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="article-title" itemprop="name">
-      ceph集群的安装和配置教程
+    <h1 itemprop="name">
+      <a class="archive-article-title" href="/2015/09/18/ceph客户端服务端属性匹配关系/">ceph客户端服务端属性匹配关系</a>
     </h1>
   
 
-      </header>
-      
-      <div class="article-info article-info-post">
-        
+        <div class="article-info info-on-right">
+          
 	<div class="article-tag tagcloud">
 		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
 	</div>
 
-        
+          
 
+        </div>
         <div class="clearfix"></div>
-      </div>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="本篇主题：">本篇主题：</h3><p>1、怎样配置ssh免登陆访问<br>2、为什么搭建集群要关闭防火墙和selinux，如何关闭<br>3、从哪里获取ceph的安装包，怎样安装才是快速正确的<br>4、为什么要配置时间同步服务，怎样配置<br>5、怎样创建集群<br>6、怎样使用不同的方式增加osd（这里我总结了五种）</p>
-<ul>
-<li>默认方式</li>
-<li>磁盘journal</li>
-<li>目录配置方式</li>
-<li>btrfs文件系统</li>
-<li>disk+ssd方式</li>
-</ul>
-<p>7、怎样配置文件系统<br>8、怎样配置块设备系统<br>9、怎样配置S3服务<br>10、如何干净的将集群清理到初始状态</p>
-<h3 id="本篇资源:">本篇资源:</h3><p>包括了视频，操作文档，相关安装包资源，S3的windows客户端</p>
-<a id="more"></a>
-<h3 id="付费方式：支付宝">付费方式：支付宝</h3><p>10块钱就可以获取，如果你觉得这个帮助你很多，你也可以付多点<br>可以先获取资源，再考虑要不要付费<br>可以付费了后，不满意退费<br>支付码如下：</p>
-<p><img src="http://7xo9we.com1.z0.glb.clouddn.com/zhifubao.png" alt=""></p>
-<h3 id="资源获取方式：">资源获取方式：</h3><pre><code>qq：199383004
-</code></pre><p>资源为百度云链接 </p>
-<p>这个视频是不涉及版权的，你可以随便使用，但是如果你想分享给其他朋友的时候，我希望您能让他来我的博客购买，对于购买视频的朋友，我在有空的时候去回答您关于视频当中的问题的</p>
-<hr>
-
-      
-    </div>
-    
+    </header>
   </div>
-  
-    
-<nav id="article-nav">
-  
-    <a href="/2015/12/12/关于开始写教程的事/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption"><</strong>
-      <div class="article-nav-title">
-        
-          关于开始写教程的事
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2015/11/18/在线调整ceph的参数/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">在线调整ceph的参数</div>
-      <strong class="article-nav-caption">></strong>
-    </a>
-  
-</nav>
-
-  
 </article>
+  
+  
+    </div></section>
+  
 
-
-<div class="share">
-	<!-- JiaThis Button BEGIN -->
-	<div class="jiathis_style">
-		<span class="jiathis_txt">分享到：</span>
-		<a class="jiathis_button_tsina"></a>
-		<a class="jiathis_button_cqq"></a>
-		<a class="jiathis_button_douban"></a>
-		<a class="jiathis_button_weixin"></a>
-		<a class="jiathis_button_tumblr"></a>
-		<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
-	</div>
-	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
-	<!-- JiaThis Button END -->
-</div>
-
-
-
-<div class="duoshuo">
-	<!-- 多说评论框 start -->
-	<div class="ds-thread" data-thread-key="ceph集群的安装和配置教程" data-title="ceph集群的安装和配置教程" data-url="http://www.zphj1987.com/2015/12/12/ceph集群的安装和配置教程/"></div>
-	<!-- 多说评论框 end -->
-	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
-	<script type="text/javascript">
-	var duoshuoQuery = {short_name:"zphj1987"};
-	(function() {
-		var ds = document.createElement('script');
-		ds.type = 'text/javascript';ds.async = true;
-		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-		ds.charset = 'UTF-8';
-		(document.getElementsByTagName('head')[0] 
-		 || document.getElementsByTagName('body')[0]).appendChild(ds);
-	})();
-	</script>
-	<!-- 多说公共JS代码 end -->
-</div>
-
-
-
+    
+    <nav id="page-nav">
+      <a class="extend prev" rel="prev" href="/tags/ceph/">&laquo; Prev</a><a class="page-number" href="/tags/ceph/">1</a><span class="page-number current">2</span>
+    </nav>
+  
 
 </div>
       <footer id="footer">
@@ -356,7 +260,7 @@ var _hmt = _hmt || [];
 		mathjax: undefined,
 		animate: true,
 		isHome: false,
-		isPost: true,
+		isPost: false,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,
