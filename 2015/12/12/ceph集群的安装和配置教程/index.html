@@ -3,26 +3,17 @@
 <head>
   <meta charset="utf-8">
   
-  <title>在线调整ceph的参数 | zphj1987&#39;Blog</title>
+  <title>ceph集群的安装和配置教程 | zphj1987&#39;Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="能够动态的进行系统参数的调整是一个很重要并且有用的属性ceph的集群提供两种方式的调整，使用tell的方式和daemon设置的方式
-一、tell方式设置调整配置使用命令：
-调整mon的参数#ceph tell mon.* injectargs &apos;--&amp;#123;tunable value_to_be_set&amp;#125;&apos;
-调整osd的参数#ceph tell osd.* injectargs &apos;-">
+  <meta name="description">
 <meta property="og:type" content="article">
-<meta property="og:title" content="在线调整ceph的参数">
-<meta property="og:url" content="http://www.zphj1987.com/2015/11/18/在线调整ceph的参数/index.html">
+<meta property="og:title" content="ceph集群的安装和配置教程">
+<meta property="og:url" content="http://www.zphj1987.com/2015/12/12/ceph集群的安装和配置教程/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
-<meta property="og:description" content="能够动态的进行系统参数的调整是一个很重要并且有用的属性ceph的集群提供两种方式的调整，使用tell的方式和daemon设置的方式
-一、tell方式设置调整配置使用命令：
-调整mon的参数#ceph tell mon.* injectargs &apos;--&amp;#123;tunable value_to_be_set&amp;#125;&apos;
-调整osd的参数#ceph tell osd.* injectargs &apos;-">
+<meta property="og:description">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="在线调整ceph的参数">
-<meta name="twitter:description" content="能够动态的进行系统参数的调整是一个很重要并且有用的属性ceph的集群提供两种方式的调整，使用tell的方式和daemon设置的方式
-一、tell方式设置调整配置使用命令：
-调整mon的参数#ceph tell mon.* injectargs &apos;--&amp;#123;tunable value_to_be_set&amp;#125;&apos;
-调整osd的参数#ceph tell osd.* injectargs &apos;-">
+<meta name="twitter:title" content="ceph集群的安装和配置教程">
+<meta name="twitter:description">
   
     <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
   
@@ -193,11 +184,11 @@ var _hmt = _hmt || [];
 		</header>				
 	</div>
 </nav>
-      <div class="body-wrap"><article id="post-在线调整ceph的参数" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-ceph集群的安装和配置教程" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2015/11/18/在线调整ceph的参数/" class="article-date">
-  	<time datetime="2015-11-18T15:11:44.000Z" itemprop="datePublished">2015-11-18</time>
+      <a href="/2015/12/12/ceph集群的安装和配置教程/" class="article-date">
+  	<time datetime="2015-12-11T16:36:48.000Z" itemprop="datePublished">2015-12-12</time>
 </a>
     </div>
   
@@ -210,7 +201,7 @@ var _hmt = _hmt || [];
         
   
     <h1 class="article-title" itemprop="name">
-      在线调整ceph的参数
+      ceph集群的安装和配置教程
     </h1>
   
 
@@ -218,10 +209,6 @@ var _hmt = _hmt || [];
       
       <div class="article-info article-info-post">
         
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
         
 
         <div class="clearfix"></div>
@@ -230,21 +217,7 @@ var _hmt = _hmt || [];
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>能够动态的进行系统参数的调整是一个很重要并且有用的属性<br>ceph的集群提供两种方式的调整，使用tell的方式和daemon设置的方式</p>
-<h3 id="一、tell方式设置">一、tell方式设置</h3><p>调整配置使用命令：</p>
-<h4 id="调整mon的参数">调整mon的参数</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#ceph tell mon.* injectargs '--&#123;tunable value_to_be_set&#125;'</span></span><br></pre></td></tr></table></figure>
-<h4 id="调整osd的参数">调整osd的参数</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#ceph tell osd.* injectargs '--&#123;tunable value_to_be_set&#125;'</span></span><br></pre></td></tr></table></figure>
-<h3 id="调整mds的参数">调整mds的参数</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#ceph tell mds.* injectargs '--&#123;tunable value_to_be_set&#125;'</span></span><br></pre></td></tr></table></figure>
-<a id="more"></a>
-<p>例子：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab5134 ~]<span class="comment"># ceph tell mon.* injectargs '--mon_osd_report_timeout 400'</span></span><br><span class="line">injectargs:mon_osd_report_timeout = <span class="string">'400'</span></span><br></pre></td></tr></table></figure></p>
-<p>除了上面的tell的方式调整，还可以使用daemon的方式进行设置</p>
-<h3 id="二、daemon方式设置">二、daemon方式设置</h3><h4 id="1、获取当前的参数">1、获取当前的参数</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab5134 ~]<span class="comment"># ceph daemon osd.1 config get mon_osd_full_ratio</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="string">"mon_osd_full_ratio"</span>: <span class="string">"0.98"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="2、修改配置">2、修改配置</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab5134 ~]<span class="comment"># ceph daemon osd.1 config set mon_osd_full_ratio 0.97</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="string">"success"</span>: <span class="string">"mon_osd_full_ratio = '0.97' "</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="3、检查配置">3、检查配置</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab5134 ~]<span class="comment"># ceph daemon osd.1 config get mon_osd_full_ratio</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="string">"mon_osd_full_ratio"</span>: <span class="string">"0.97"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>注意重启进程后配置会恢复到默认参数，在进行在线调整后，如果这个参数是后续是需要使用的，那么就需要将相关的参数写入到配置文件ceph.conf当中</p>
-<h3 id="两种设置的使用场景">两种设置的使用场景</h3><p>使用tell的方式适合对整个集群进行设置，使用*号进行匹配，就可以对整个集群的角色进行设置，而出现节点异常无法设置时候，只会在命令行当中进行报错，不太便于查找</p>
-<p>使用daemon进行设置的方式就是一个个的去设置，这样可以比较好的反馈，这个设置是需要在设置的角色所在的主机上进行设置，daemon的方式还提供通过asok去获取到进行的其他的信息，可以使用 ceph daemon osd.1 help去查询相关的可以使用的命令</p>
-
+        
       
     </div>
     
@@ -253,18 +226,18 @@ var _hmt = _hmt || [];
     
 <nav id="article-nav">
   
-    <a href="/2015/12/12/ceph集群的安装和配置教程/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2015/12/12/关于开始写教程的事/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption"><</strong>
       <div class="article-nav-title">
         
-          ceph集群的安装和配置教程
+          关于开始写教程的事
         
       </div>
     </a>
   
   
-    <a href="/2015/11/16/验证rbd的缓存是否开启/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">验证rbd的缓存是否开启</div>
+    <a href="/2015/11/18/在线调整ceph的参数/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">在线调整ceph的参数</div>
       <strong class="article-nav-caption">></strong>
     </a>
   
@@ -293,7 +266,7 @@ var _hmt = _hmt || [];
 
 <div class="duoshuo">
 	<!-- 多说评论框 start -->
-	<div class="ds-thread" data-thread-key="在线调整ceph的参数" data-title="在线调整ceph的参数" data-url="http://www.zphj1987.com/2015/11/18/在线调整ceph的参数/"></div>
+	<div class="ds-thread" data-thread-key="ceph集群的安装和配置教程" data-title="ceph集群的安装和配置教程" data-url="http://www.zphj1987.com/2015/12/12/ceph集群的安装和配置教程/"></div>
 	<!-- 多说评论框 end -->
 	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 	<script type="text/javascript">
