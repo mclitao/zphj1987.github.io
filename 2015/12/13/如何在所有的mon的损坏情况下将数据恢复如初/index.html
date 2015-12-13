@@ -3,26 +3,21 @@
 <head>
   <meta charset="utf-8">
   
-  <title>西数WD2T硬盘分区对齐的方法 | zphj1987&#39;Blog</title>
+  <title>如何在所有的mon的损坏情况下将数据恢复如初 | zphj1987&#39;Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="新购一个西数2T硬盘,也就是绿盘的那种,淘宝500左右,支持高级格式化。 
-到手以后,分区格式化,前几天格式化完成以后,fdisk -l 发现如下文字 
-引用Partition 1 does not start on physical sector boundary.
-网上找了下,说是软件的问题,后来折腾了下,应该是分区没有对齐的原因,至于为什么要对齐,优点很多,好像这个是跟神马高级分区格式化有关">
+  <meta name="description" content="本篇主题：在mon无法启动，或者所有的mon的数据盘都损坏的情况下，如何把所有的数据恢复如初
+写本章的缘由在ceph中国的群里有看到一个技术人员有提到，在一次意外机房掉电后，三台mon的系统盘同时损坏了，这个对于熟悉ceph的人都知道这意味着什么，所有的集群数据将无法访问，关于这个的解决办法目前没有在哪里有看到，这个对于大多数人是用不上的，但是一旦出现了，这个损失将是无法估量的，当然谁都不希望这个">
 <meta property="og:type" content="article">
-<meta property="og:title" content="西数WD2T硬盘分区对齐的方法">
-<meta property="og:url" content="http://www.zphj1987.com/2015/03/22/西数WD2T硬盘分区对齐的方法/index.html">
+<meta property="og:title" content="如何在所有的mon的损坏情况下将数据恢复如初">
+<meta property="og:url" content="http://www.zphj1987.com/2015/12/13/如何在所有的mon的损坏情况下将数据恢复如初/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
-<meta property="og:description" content="新购一个西数2T硬盘,也就是绿盘的那种,淘宝500左右,支持高级格式化。 
-到手以后,分区格式化,前几天格式化完成以后,fdisk -l 发现如下文字 
-引用Partition 1 does not start on physical sector boundary.
-网上找了下,说是软件的问题,后来折腾了下,应该是分区没有对齐的原因,至于为什么要对齐,优点很多,好像这个是跟神马高级分区格式化有关">
+<meta property="og:description" content="本篇主题：在mon无法启动，或者所有的mon的数据盘都损坏的情况下，如何把所有的数据恢复如初
+写本章的缘由在ceph中国的群里有看到一个技术人员有提到，在一次意外机房掉电后，三台mon的系统盘同时损坏了，这个对于熟悉ceph的人都知道这意味着什么，所有的集群数据将无法访问，关于这个的解决办法目前没有在哪里有看到，这个对于大多数人是用不上的，但是一旦出现了，这个损失将是无法估量的，当然谁都不希望这个">
+<meta property="og:image" content="http://7xo9we.com1.z0.glb.clouddn.com/zhifubao.png">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="西数WD2T硬盘分区对齐的方法">
-<meta name="twitter:description" content="新购一个西数2T硬盘,也就是绿盘的那种,淘宝500左右,支持高级格式化。 
-到手以后,分区格式化,前几天格式化完成以后,fdisk -l 发现如下文字 
-引用Partition 1 does not start on physical sector boundary.
-网上找了下,说是软件的问题,后来折腾了下,应该是分区没有对齐的原因,至于为什么要对齐,优点很多,好像这个是跟神马高级分区格式化有关">
+<meta name="twitter:title" content="如何在所有的mon的损坏情况下将数据恢复如初">
+<meta name="twitter:description" content="本篇主题：在mon无法启动，或者所有的mon的数据盘都损坏的情况下，如何把所有的数据恢复如初
+写本章的缘由在ceph中国的群里有看到一个技术人员有提到，在一次意外机房掉电后，三台mon的系统盘同时损坏了，这个对于熟悉ceph的人都知道这意味着什么，所有的集群数据将无法访问，关于这个的解决办法目前没有在哪里有看到，这个对于大多数人是用不上的，但是一旦出现了，这个损失将是无法估量的，当然谁都不希望这个">
   
     <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
   
@@ -193,11 +188,11 @@ var _hmt = _hmt || [];
 		</header>				
 	</div>
 </nav>
-      <div class="body-wrap"><article id="post-西数WD2T硬盘分区对齐的方法" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-如何在所有的mon的损坏情况下将数据恢复如初" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2015/03/22/西数WD2T硬盘分区对齐的方法/" class="article-date">
-  	<time datetime="2015-03-22T08:25:08.000Z" itemprop="datePublished">2015-03-22</time>
+      <a href="/2015/12/13/如何在所有的mon的损坏情况下将数据恢复如初/" class="article-date">
+  	<time datetime="2015-12-13T11:26:43.000Z" itemprop="datePublished">2015-12-13</time>
 </a>
     </div>
   
@@ -210,7 +205,7 @@ var _hmt = _hmt || [];
         
   
     <h1 class="article-title" itemprop="name">
-      西数WD2T硬盘分区对齐的方法
+      如何在所有的mon的损坏情况下将数据恢复如初
     </h1>
   
 
@@ -218,6 +213,10 @@ var _hmt = _hmt || [];
       
       <div class="article-info article-info-post">
         
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
         
 
         <div class="clearfix"></div>
@@ -226,21 +225,15 @@ var _hmt = _hmt || [];
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>新购一个西数2T硬盘,也就是绿盘的那种,淘宝500左右,支持高级格式化。 </p>
-<p>到手以后,分区格式化,前几天格式化完成以后,fdisk -l 发现如下文字 </p>
-<p>引用<br>Partition 1 does not start on physical sector boundary.</p>
-<p>网上找了下,说是软件的问题,后来折腾了下,应该是分区没有对齐的原因,至于为什么要对齐,优点很多,好像这个是跟神马高级分区格式化有关,具体的原理神马的,我就不讨论了,反正有一点,对齐后,性能会有提升。 </p>
+        <h3 id="本篇主题：">本篇主题：</h3><p>在mon无法启动，或者所有的mon的数据盘都损坏的情况下，如何把所有的数据恢复如初</p>
+<h3 id="写本章的缘由">写本章的缘由</h3><p>在ceph中国的群里有看到一个技术人员有提到，在一次意外机房掉电后，三台mon的系统盘同时损坏了，这个对于熟悉ceph的人都知道这意味着什么，所有的集群数据将无法访问，关于这个的解决办法目前没有在哪里有看到，这个对于大多数人是用不上的，但是一旦出现了，这个损失将是无法估量的，当然谁都不希望这个情况的发生<br>所以在研究了下ceph的一些操作后，自己尝试去找了一些关于集群的故障修复的，目前看到了一个是关于单个rbd镜像的恢复的文章，那个需要将数据映射本地的loop设备后重新读取，这个我曾经验证过一遍，确实可以实现，在周末的时候我尝试了另外一个办法，实现了在mon完全失效的情况下全集群的完整数据的恢复，并且保留了原来的数据结构和数据信息，当然这中间需要进行一定的操作去完成它，这个我准备写成一个标准的操作流程，并用视频的方式来记录这个恢复的流程</p>
+<h3 id="本篇资源:">本篇资源:</h3><p>包括了视频，操作文档（本篇还未完成，接受预定）</p>
 <a id="more"></a>
-<p>对齐后,用fdisk -lu 查看的结果如下<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">Disk /dev/sdc: 2000.4 GB, 2000398934016 bytes&#10;255 heads, 63 sectors/track, 243201 cylinders, total 3907029168 sectors&#10;Units = sectors of 1 * 512 = 512 bytes&#10;Sector size (logical/physical): 512 bytes / 512 bytes&#10;I/O size (minimum/optimal): 512 bytes / 512 bytes&#10;Disk identifier: 0x2fa8ebd1&#10;&#10;   Device Boot      Start         End      Blocks   Id  System&#10;/dev/sdc1            2048  3907028991  1953513472   83  Linux</span><br></pre></td></tr></table></figure></p>
-<p>怎么样个对齐的方法呢,就是分区的时候,要注意,不要用 fdisk 来分区,不是说fdisk不行,经过我的测试,用 fdisk 分区,我明明分的是2T,结果却是1T大小，用 parted 分区就没有这个问题 </p>
-<p>debian 下面,如果没有 parted 这个工具,apt-get 安装,安装完成以后,就可以使用了 </p>
-<p>引用</p>
-<pre><code class="raw">root@localhost ~]# parted /dev/sdb # &#20351;&#29992;parted&#26469;&#23545;GPT&#30913;&#30424;&#25805;&#20316;,&#36827;&#20837;&#20132;&#20114;&#24335;&#27169;&#24335;&#10;GNU Parted 1.8.1 Using /dev/sdb Welcome to GNU Parted! Type &#8216;help&#8217; to view a list of commands.&#10;(parted) mklabel msdos           # &#23558;MBR&#30913;&#30424;&#26684;&#24335;&#21270;&#20026;msdos 2T&#30340;&#30828;&#30424; msdos &#27809;&#26377;&#38382;&#39064;&#10;(parted) p                      #&#25171;&#21360;&#24403;&#21069;&#20998;&#21306;&#10;(parted) mkpart primary 1 2TB                # &#20998;&#19968;&#20010;2T&#30340;&#20027;&#20998;&#21306;,&#36825;&#37324;&#36755;&#20837;1,&#21542;&#21017;&#20250;&#25552;&#31034;&#24615;&#33021;&#38382;&#39064;&#10;(parted) p                         #&#25171;&#21360;&#24403;&#21069;&#20998;&#21306;&#10;(parted) q &#36864;&#20986;&#10;Information: Don&#8217;t forget to update /etc/fstab, if necessary.
-</code></pre>
-<p>退出后,用 mkfs.ext4 格式化就好了 </p>
-<p>然后再用 fdisk -lu 查看,已经没有那个提示了 </p>
-<p>这里说明下,对齐,就是说分区的时候,开始的扇区要以 8 的倍数来开始,而 fisk 默认是 63 ,对老硬盘没有什么问题,但是对西数的新硬盘, 4k 扇区的,就会有对齐的问题,会导致性能下降</p>
-<p>写于: 2012年05月02日<br>更新于:2015年03月22日</p>
+<h3 id="付费方式：支付宝">付费方式：支付宝</h3><p>10块钱就可以获取，如果你觉得这个帮助你很多，你也可以付多点<br>可以先获取资源，再考虑要不要付费<br>可以付费了后，不满意退费<br>支付码如下：</p>
+<p><img src="http://7xo9we.com1.z0.glb.clouddn.com/zhifubao.png" alt=""></p>
+<h3 id="资源获取方式：">资源获取方式：</h3><pre><code>qq：199383004
+</code></pre><p>资源为百度云链接 </p>
+<p>这个视频是不涉及版权的，你可以随便使用，如果你想分享给其他朋友的时候，希望您能让他来我的博客购买</p>
 
       
     </div>
@@ -250,18 +243,9 @@ var _hmt = _hmt || [];
     
 <nav id="article-nav">
   
-    <a href="/2015/03/22/正确用DD测试磁盘读写速度/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption"><</strong>
-      <div class="article-nav-title">
-        
-          正确用DD测试磁盘读写速度
-        
-      </div>
-    </a>
   
-  
-    <a href="/2015/03/22/Check-Host-实时监控网站或者服务器是否可以访问/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">Check Host:实时监控网站或者服务器是否可以访问</div>
+    <a href="/2015/12/12/关于开始写教程的事/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">关于开始写教程的事</div>
       <strong class="article-nav-caption">></strong>
     </a>
   
@@ -290,7 +274,7 @@ var _hmt = _hmt || [];
 
 <div class="duoshuo">
 	<!-- 多说评论框 start -->
-	<div class="ds-thread" data-thread-key="西数WD2T硬盘分区对齐的方法" data-title="西数WD2T硬盘分区对齐的方法" data-url="http://www.zphj1987.com/2015/03/22/西数WD2T硬盘分区对齐的方法/"></div>
+	<div class="ds-thread" data-thread-key="如何在所有的mon的损坏情况下将数据恢复如初" data-title="如何在所有的mon的损坏情况下将数据恢复如初" data-url="http://www.zphj1987.com/2015/12/13/如何在所有的mon的损坏情况下将数据恢复如初/"></div>
 	<!-- 多说评论框 end -->
 	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 	<script type="text/javascript">
