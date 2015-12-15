@@ -226,10 +226,10 @@ var _hmt = _hmt || [];
 <p>准备添加sdb1作为存储<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@xenserver-eqtwbths ~]<span class="comment"># xe sr-create type=lvm content-type=user device-config:device=/dev/disk/by-id/edd-int13_dev81-part1 name-label="Local storage 2(sdb)"</span></span><br></pre></td></tr></table></figure></p>
 <p>2.XS删除本地存储连接 </p>
 <p>列出pdb模块，找到对应存储的UUID<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">xe pbd-list</span><br></pre></td></tr></table></figure></p>
-<p>卸载对应uuid的存储<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">xe pbd-unplug uuid=“uuid of PBD”</span><br></pre></td></tr></table></figure></p>
+<p>卸载对应uuid的存储<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">xe pbd-unplug uuid=<span class="string">"uuid of PBD"</span></span><br></pre></td></tr></table></figure></p>
 <p>列出存储的UUID，找到对应存储的UUID<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">xe sr-list</span><br></pre></td></tr></table></figure></p>
-<p>删除本地存储连接<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">xe sr-destroy uuid=“uuid of SR ”</span><br></pre></td></tr></table></figure></p>
-<p>写于: 2014年06月05日<br>更新于: 2015年03月24日</p>
+<p>删除本地存储连接<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">xe sr-destroy uuid=<span class="string">"uuid of SR"</span> </span><br><span class="line">xe sr-forget uuid=<span class="string">"uuid of SR"</span></span><br></pre></td></tr></table></figure></p>
+<p>写于: 2014年06月05日<br>更新于: 2015年12月15日</p>
 
       
     </div>
