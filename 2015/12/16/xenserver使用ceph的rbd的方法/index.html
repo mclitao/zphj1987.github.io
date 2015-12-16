@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>xenserver使用ceph的rbd的方法 | zphj1987&#39;Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="首先安装的xenserver6.5的环境，看到有地方有提到这个上面可以安装rbd的支持，网上有一种方式是libvirt+kvm方式，因为ceph对libviet是原生支持的，但是xenserver底层是xen的，这个就不去研究太多，这个用最简单的方式最好
+https://github.com/mstarikov/rbdsr这个是个第三方的插件，最近才出来的
+实现原理是ssh到ceph的机器上获取到">
+<meta property="og:type" content="article">
+<meta property="og:title" content="xenserver使用ceph的rbd的方法">
+<meta property="og:url" content="http://www.zphj1987.com/2015/12/16/xenserver使用ceph的rbd的方法/index.html">
+<meta property="og:site_name" content="zphj1987'Blog">
+<meta property="og:description" content="首先安装的xenserver6.5的环境，看到有地方有提到这个上面可以安装rbd的支持，网上有一种方式是libvirt+kvm方式，因为ceph对libviet是原生支持的，但是xenserver底层是xen的，这个就不去研究太多，这个用最简单的方式最好
+https://github.com/mstarikov/rbdsr这个是个第三方的插件，最近才出来的
+实现原理是ssh到ceph的机器上获取到">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="xenserver使用ceph的rbd的方法">
+<meta name="twitter:description" content="首先安装的xenserver6.5的环境，看到有地方有提到这个上面可以安装rbd的支持，网上有一种方式是libvirt+kvm方式，因为ceph对libviet是原生支持的，但是xenserver底层是xen的，这个就不去研究太多，这个用最简单的方式最好
+https://github.com/mstarikov/rbdsr这个是个第三方的插件，最近才出来的
+实现原理是ssh到ceph的机器上获取到">
+  
+    <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="http://7xi6lo.com1.z0.glb.clouddn.com/style.css" type="text/css">
+  
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?252ba55374ee0e63b03196973bb9b776";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="http://7xi6lo.com1.z0.glb.clouddn.com/assets/blogImg/mylogo.jpg" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">zphj1987</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">现在所学，终有所用</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						
+						<li>关于我</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+							<li><a href="/instagram">图片</a></li>
+				        
+							<li><a href="/shuoshuo">说说</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="https://github.com/zphj1987" title="github">github</a>
+					        
+								<a class="weibo" target="_blank" href=" http://weibo.com/zphj1987" title="weibo">weibo</a>
+					        
+								<a class="rss" target="_blank" href="http://www.zphj1987.com/atom.xml" title="rss">rss</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/ceph/" style="font-size: 18.33px;">ceph</a><a href="/tags/instagram/" style="font-size: 10px;">instagram</a><a href="/tags/iptables/" style="font-size: 10px;">iptables</a><a href="/tags/linux/" style="font-size: 20px;">linux</a><a href="/tags/nginx/" style="font-size: 11.67px;">nginx</a><a href="/tags/samba/" style="font-size: 10px;">samba</a><a href="/tags/ubuntu/" style="font-size: 16.67px;">ubuntu</a><a href="/tags/windows/" style="font-size: 10px;">windows</a><a href="/tags/内核/" style="font-size: 13.33px;">内核</a><a href="/tags/操作系统/" style="font-size: 11.67px;">操作系统</a><a href="/tags/杂七杂八/" style="font-size: 13.33px;">杂七杂八</a><a href="/tags/注册码/" style="font-size: 10px;">注册码</a><a href="/tags/测试工具/" style="font-size: 11.67px;">测试工具</a><a href="/tags/网卡/" style="font-size: 13.33px;">网卡</a><a href="/tags/脚本/" style="font-size: 15px;">脚本</a><a href="/tags/高可用/" style="font-size: 10px;">高可用</a>
+					</div>
+				</section>
+				
+				
+				
+
+				
+				
+				<section class="switch-part switch-part3">
+				
+					<div id="js-aboutme">1987 男,武汉。吃货。存储行业。</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">zphj1987</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="http://7xi6lo.com1.z0.glb.clouddn.com/assets/blogImg/mylogo.jpg" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">zphj1987</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">现在所学，终有所用</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+					<li><a href="/instagram">图片</a></li>
+		        
+					<li><a href="/shuoshuo">说说</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/zphj1987" title="github">github</a>
+			        
+						<a class="weibo" target="_blank" href=" http://weibo.com/zphj1987" title="weibo">weibo</a>
+			        
+						<a class="rss" target="_blank" href="http://www.zphj1987.com/atom.xml" title="rss">rss</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-xenserver使用ceph的rbd的方法" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/12/16/xenserver使用ceph的rbd的方法/" class="article-date">
+  	<time datetime="2015-12-16T06:08:00.000Z" itemprop="datePublished">2015-12-16</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      xenserver使用ceph的rbd的方法
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+        
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>首先安装的xenserver6.5的环境，看到有地方有提到这个上面可以安装rbd的支持，网上有一种方式是libvirt+kvm方式，因为ceph对libviet是原生支持的，但是xenserver底层是xen的，这个就不去研究太多，这个用最简单的方式最好</p>
+<p><a href="https://github.com/mstarikov/rbdsr" target="_blank" rel="external">https://github.com/mstarikov/rbdsr</a><br>这个是个第三方的插件，最近才出来的</p>
+<p>实现原理是ssh到ceph的机器上获取到可以使用的rbd信息，然后在xenserver的图形界面上通过配置iscsi的方式去配置rbd，里面套用了iscsi的界面，实际去xenserver机器后台同样做的是map的操作<br>这个试了下，界面的操作都可以实现，都可以获取到rbd的信息，但是在最后提交的一下的时候，后台会报错误的信息，这个有可能才出来，还有点问题<br>这个地方可以用其他的方式实现，xenserver在添加硬盘的时候本来就支持的命令行模式，下面为实现方式</p>
+<a id="more"></a>
+<p>先检查内核的信息，这个有rbd模块，并且用的是3.10的，这个是用的centos7同等的内核，问题不大<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@xenserver ]<span class="comment"># modinfo rbd</span></span><br><span class="line">filename:       /lib/modules/<span class="number">3.10</span>.<span class="number">0</span>+<span class="number">2</span>/kernel/drivers/block/rbd.ko</span><br><span class="line">license:        GPL</span><br><span class="line">author:         Jeff Garzik &lt;jeff@garzik.org&gt;</span><br><span class="line">description:    rados block device</span><br><span class="line">author:         Yehuda Sadeh &lt;yehuda@hq.newdream.net&gt;</span><br><span class="line">author:         Sage Weil &lt;sage@newdream.net&gt;</span><br><span class="line">srcversion:     B03197D54ABE3BD7A32A276</span><br><span class="line">depends:        libceph</span><br><span class="line">intree:         Y</span><br><span class="line">vermagic:       <span class="number">3.10</span>.<span class="number">0</span>+<span class="number">2</span> SMP mod_unload modversions</span><br></pre></td></tr></table></figure></p>
+<p>查看系统上软件包的信息，可以看到xenserver6.5虽然用的是centos7同等的内核，实际上环境还是基于centos5的软件版本进行的定制，这个地方本来准备把ceph的软件包安装上去，版本上的依赖相隔太大，就没装了，也没太多的必要，能实现需求即可<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@xenserver]<span class="comment"># rpm -qa|grep ssh</span></span><br><span class="line">openssh-<span class="number">4.3</span>p2-<span class="number">82</span>.el5</span><br></pre></td></tr></table></figure></p>
+<p>这个地方在xenserver的机器上使用这个方式使用rbd，需要做下面几个事情：</p>
+<ul>
+<li>一个是写rbdmap配置文件 </li>
+<li>一个是rbdmap启动的脚本 </li>
+<li>一个是ceph.conf的配置文件</li>
+</ul>
+<h3 id="修改/etc/ceph/rbdmap配置文件">修改/etc/ceph/rbdmap配置文件</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/etc/ceph/rbdmap 里面的配置文件书写方式</span><br><span class="line"><span class="comment"># RbdDevice             Parameters</span></span><br><span class="line"><span class="comment">#poolname/imagename     id=client,keyring=/etc/ceph/ceph.client.keyring</span></span><br><span class="line">rbd/testrbd             id=admin</span><br></pre></td></tr></table></figure>
+<p>/etc/ceph/rbdmap根据需要去写，我不喜欢用keyring就没写keyring,但是id是必须写，否则会报错</p>
+<h3 id="修改rbdmap启动的脚本">修改rbdmap启动的脚本</h3><p>/etc/init.d/rbdmap这个脚本要修改，默认的脚本是要去使用rbd命令里面的，rbd命令是在ceph-common里面的这个可以修改一个不需要安装ceph-common的版本的启动脚本</p>
+<p>改版的如下：<br>/etc/init.d/rbdmap文件内容替换如下：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="shebang">#!/bin/bash</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># rbdmap Ceph RBD Mapping</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># chkconfig: 2345 20 80</span></span><br><span class="line"><span class="comment"># description: Ceph RBD Mapping</span></span><br><span class="line"></span><br><span class="line"><span class="comment">### BEGIN INIT INFO</span></span><br><span class="line"><span class="comment"># Provides:          rbdmap</span></span><br><span class="line"><span class="comment"># Required-Start:    $network</span></span><br><span class="line"><span class="comment"># Required-Stop:     $network</span></span><br><span class="line"><span class="comment"># Default-Start:     2 3 4 5</span></span><br><span class="line"><span class="comment"># Default-Stop:      0 1 6</span></span><br><span class="line"><span class="comment"># Short-Description: Ceph RBD Mapping</span></span><br><span class="line"><span class="comment"># Description:       Ceph RBD Mapping</span></span><br><span class="line"><span class="comment">### END INIT INFO</span></span><br><span class="line"></span><br><span class="line">DESC=<span class="string">"RBD Mapping"</span></span><br><span class="line">RBDMAPFILE=<span class="string">"/etc/ceph/rbdmap"</span></span><br><span class="line"></span><br><span class="line">. /lib/lsb/init-functions</span><br><span class="line"></span><br><span class="line">modprobe rbd || <span class="built_in">exit</span> <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">do_map</span></span>() &#123;</span><br><span class="line">	<span class="keyword">if</span> [ ! <span class="operator">-f</span> <span class="string">"<span class="variable">$RBDMAPFILE</span>"</span> ]; <span class="keyword">then</span></span><br><span class="line">		<span class="built_in">echo</span> <span class="string">"<span class="variable">$DESC</span> : No <span class="variable">$RBDMAPFILE</span> found."</span></span><br><span class="line">		<span class="built_in">exit</span> <span class="number">0</span></span><br><span class="line">	<span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">	<span class="built_in">echo</span> <span class="string">"Starting <span class="variable">$DESC</span>"</span></span><br><span class="line">	<span class="comment"># Read /etc/rbdtab to create non-existant mapping</span></span><br><span class="line">	newrbd=</span><br><span class="line">	RET=<span class="number">0</span></span><br><span class="line">	<span class="keyword">while</span> <span class="built_in">read</span> DEV PARAMS; <span class="keyword">do</span></span><br><span class="line">		<span class="keyword">case</span> <span class="string">"<span class="variable">$DEV</span>"</span> <span class="keyword">in</span></span><br><span class="line">		  <span class="string">""</span>|\<span class="comment">#*)</span></span><br><span class="line">			<span class="built_in">continue</span></span><br><span class="line">			;;</span><br><span class="line">		  */*)</span><br><span class="line">			;;</span><br><span class="line">		  *)</span><br><span class="line">			DEV=rbd/<span class="variable">$DEV</span></span><br><span class="line">			;;</span><br><span class="line">		<span class="keyword">esac</span></span><br><span class="line">		<span class="keyword">if</span> [ ! -b /dev/rbd/<span class="variable">$DEV</span> ]; <span class="keyword">then</span></span><br><span class="line">			<span class="built_in">echo</span> <span class="variable">$DEV</span></span><br><span class="line">			<span class="comment">#rbd map $DEV $CMDPARAMS</span></span><br><span class="line">			mons=`egrep <span class="string">'mon[ _]host'</span> /etc/ceph/ceph.conf | cut <span class="operator">-f</span>2 <span class="operator">-d</span><span class="string">'='</span> | sed <span class="string">'s/ //g'</span>`</span><br><span class="line">			args=`<span class="built_in">echo</span> <span class="variable">$PARAMS</span> | sed <span class="string">'s/id/name/g'</span>`</span><br><span class="line">			rbddev=`<span class="built_in">echo</span> <span class="variable">$DEV</span> | tr <span class="string">'/'</span> <span class="string">' '</span>`</span><br><span class="line">			<span class="built_in">echo</span> <span class="string">"<span class="variable">$mons</span> <span class="variable">$args</span> <span class="variable">$rbddev</span>"</span> &gt; /sys/bus/rbd/add</span><br><span class="line">			[ $? <span class="operator">-ne</span> <span class="string">"0"</span> ] &amp;&amp; RET=<span class="number">1</span></span><br><span class="line">			newrbd=<span class="string">"yes"</span></span><br><span class="line">		<span class="keyword">fi</span></span><br><span class="line">	<span class="keyword">done</span> &lt; <span class="variable">$RBDMAPFILE</span></span><br><span class="line">	<span class="built_in">echo</span> <span class="variable">$RET</span></span><br><span class="line"></span><br><span class="line">	<span class="comment"># Mount new rbd</span></span><br><span class="line">	<span class="keyword">if</span> [ <span class="string">"<span class="variable">$newrbd</span>"</span> ]; <span class="keyword">then</span></span><br><span class="line">                <span class="built_in">echo</span> <span class="string">"Mounting all filesystems"</span></span><br><span class="line">		mount <span class="operator">-a</span></span><br><span class="line">		<span class="built_in">echo</span> $?</span><br><span class="line">	<span class="keyword">fi</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">do_unmap</span></span>() &#123;</span><br><span class="line">	<span class="built_in">echo</span> <span class="string">"Stopping <span class="variable">$DESC</span>"</span></span><br><span class="line">	RET=<span class="number">0</span></span><br><span class="line">	<span class="comment"># Recursive umount that depends /dev/rbd*</span></span><br><span class="line"><span class="comment">#原始版本可能没这个命令</span></span><br><span class="line"><span class="comment">#	MNTDEP=$(findmnt --mtab | awk '$2 ~ /^\/dev\/rbd[0-9]*$/ &#123;print $1&#125;' | sort -r)</span></span><br><span class="line"><span class="comment">#修改如下：</span></span><br><span class="line">	MNTDEP=$(mount| awk <span class="string">'$1 ~ /^\/dev\/rbd[0-9]*$/ &#123;print $3&#125;'</span> | sort -r)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> MNT <span class="keyword">in</span> <span class="variable">$MNTDEP</span>; <span class="keyword">do</span></span><br><span class="line">		umount <span class="variable">$MNT</span></span><br><span class="line">	<span class="keyword">done</span> </span><br><span class="line">	<span class="comment"># Unmap all rbd device</span></span><br><span class="line">	<span class="built_in">cd</span> /sys/bus/rbd/devices/</span><br><span class="line">	<span class="keyword">if</span> ls * &gt;/dev/null <span class="number">2</span>&gt;&amp;<span class="number">1</span>; <span class="keyword">then</span></span><br><span class="line">		<span class="keyword">for</span> DEV <span class="keyword">in</span> *; <span class="keyword">do</span></span><br><span class="line">			<span class="built_in">echo</span> <span class="variable">$DEV</span></span><br><span class="line">			<span class="built_in">echo</span> <span class="variable">$DEV</span> &gt; /sys/bus/rbd/remove</span><br><span class="line">			[ $? <span class="operator">-ne</span> <span class="string">"0"</span> ] &amp;&amp; RET=<span class="number">1</span></span><br><span class="line">		<span class="keyword">done</span></span><br><span class="line">	<span class="keyword">fi</span></span><br><span class="line">	<span class="built_in">echo</span> <span class="variable">$RET</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">case</span> <span class="string">"<span class="variable">$1</span>"</span> <span class="keyword">in</span></span><br><span class="line">  start)</span><br><span class="line">	<span class="keyword">do</span>_map</span><br><span class="line">	;;</span><br><span class="line"></span><br><span class="line">  stop)</span><br><span class="line">	<span class="keyword">do</span>_unmap</span><br><span class="line">	;;</span><br><span class="line"></span><br><span class="line">  reload)</span><br><span class="line">	<span class="keyword">do</span>_map</span><br><span class="line">	;;</span><br><span class="line"></span><br><span class="line">  status)</span><br><span class="line">	ls /sys/bus/rbd/devices/</span><br><span class="line">	;;</span><br><span class="line"></span><br><span class="line">  *)</span><br><span class="line">	<span class="built_in">echo</span> <span class="string">"Usage: rbdmap &#123;start|stop|reload|status&#125;"</span></span><br><span class="line">	<span class="built_in">exit</span> <span class="number">1</span></span><br><span class="line">	;;</span><br><span class="line"><span class="keyword">esac</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">exit</span> <span class="number">0</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="使用下面的命令进行rbd的挂载:">使用下面的命令进行rbd的挂载:</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/etc/init.d/rbdmap start</span><br></pre></td></tr></table></figure>
+<h4 id="启动后可以查看本地rbd映射的磁盘">启动后可以查看本地rbd映射的磁盘</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@xenserver15 ceph]<span class="comment"># ll /dev/rbd1 </span></span><br><span class="line">brw-r----- <span class="number">1</span> root disk <span class="number">252</span>, <span class="number">0</span> Dec <span class="number">16</span> <span class="number">11</span>:<span class="number">35</span> /dev/rbd1</span><br></pre></td></tr></table></figure>
+<h4 id="卸载rbd的命令为">卸载rbd的命令为</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/etc/init.d/rbdmap stop</span><br></pre></td></tr></table></figure>
+<h4 id="加入到自启动">加入到自启动</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@xenserver]<span class="comment"># chkconfig rbdmap on</span></span><br></pre></td></tr></table></figure>
+<h4 id="检查rbdmap的自启动状态">检查rbdmap的自启动状态</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@xenserver]<span class="comment"># chkconfig --list|grep rbdmap</span></span><br><span class="line">rbdmap         	<span class="number">0</span>:off	<span class="number">1</span>:off	<span class="number">2</span>:on	<span class="number">3</span>:on	<span class="number">4</span>:on	<span class="number">5</span>:on	<span class="number">6</span>:off</span><br></pre></td></tr></table></figure>
+<h4 id="将rbdmap从自启动删除">将rbdmap从自启动删除</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@xenserver]<span class="comment"># chkconfig rbdmap off</span></span><br></pre></td></tr></table></figure>
+<p>这个地方因为xenserver添加存储的时候选择类型为lvm,而系统默认是识别不了rbdmap到本地的那个文件系统的类型的，所以需要修改一点东西：<br>在/etc/lvm/lvm.conf的98行修改如下<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#types= [ "nvme", 64, "mtip32xx", 64 ]</span></span><br><span class="line"> types= [ <span class="string">"nvme"</span>, <span class="number">64</span>, <span class="string">"mtip32xx"</span>, <span class="number">64</span> , <span class="string">"rbd"</span>, <span class="number">64</span> ]</span><br></pre></td></tr></table></figure></p>
+<h4 id="查询新加磁盘的uuid">查询新加磁盘的uuid</h4><p>用绝对路径的时候可能会出现编号错乱的问题，因为/dev/rbd*只是一个软链接<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@xenserver ceph]<span class="comment"># ll /dev/disk/by-uuid/</span></span><br><span class="line">total <span class="number">0</span></span><br><span class="line">lrwxrwxrwx <span class="number">1</span> root root <span class="number">10</span> Dec <span class="number">16</span> <span class="number">11</span>:<span class="number">35</span> <span class="number">0</span>edeba9a-<span class="number">8</span>b58-<span class="number">463</span>c-bdea-<span class="number">0</span>d46e90dd929 -&gt; ../../rbd1</span><br><span class="line">lrwxrwxrwx <span class="number">1</span> root root <span class="number">10</span> Dec  <span class="number">7</span> <span class="number">09</span>:<span class="number">23</span> <span class="number">5170</span>e462-<span class="number">18</span>db-<span class="number">4</span><span class="built_in">fc</span>6<span class="operator">-a</span>45c-dfc160cb86ee -&gt; ../../sda1</span><br></pre></td></tr></table></figure></p>
+<h4 id="添加磁盘rbd到xenserver中">添加磁盘rbd到xenserver中</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@xenserver ceph]<span class="comment">#  xe sr-create type=lvm content-type=user device-config:device=/dev/disk/by-uuid/0edeba9a-8b58-463c-bdea-0d46e90dd929 name-label="ceph storage (rbdtest)"</span></span><br></pre></td></tr></table></figure>
+<p>然后去图形管理界面就可以看到添加的存储了</p>
+<p>到这里就创建好了，这里介绍下删除存储的的操作</p>
+<h4 id="列出pdb模块，找到对应存储的UUID">列出pdb模块，找到对应存储的UUID</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">xe pbd-list</span><br></pre></td></tr></table></figure>
+<h4 id="找到对应设备的_uuid_卸载对应uuid的存储">找到对应设备的 uuid 卸载对应uuid的存储</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@xenserver ceph]<span class="comment"># xe pbd-unplug uuid="09b97cda-24ad-0a36-8cf7-f7fb0b61cd55"</span></span><br></pre></td></tr></table></figure>
+<h4 id="列出存储的UUID，找到对应存储的UUID">列出存储的UUID，找到对应存储的UUID</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@xenserver ceph]<span class="comment"># xe sr-list</span></span><br></pre></td></tr></table></figure>
+<h4 id="删除本地存储连接">删除本地存储连接</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@xenserver ceph]<span class="comment"># xe sr-forget uuid=bb24ee6f-e457-685b-f0b9-fe7c92387042</span></span><br></pre></td></tr></table></figure>
+<h3 id="对于已经挂载的rbd磁盘的信息查询的问题">对于已经挂载的rbd磁盘的信息查询的问题</h3><p>如果用的是/dev/rbd4</p>
+<h4 id="查询存储池">查询存储池</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@xenserver ceph]<span class="comment"># cat /sys/bus/rbd/devices/4/pool_id</span></span><br></pre></td></tr></table></figure>
+<h4 id="查询镜像名称">查询镜像名称</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@xenserver ceph]<span class="comment"># cat /sys/bus/rbd/devices/4/name</span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2015/12/13/如何在所有的mon的损坏情况下将数据恢复如初/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">如何在所有的mon的损坏情况下将数据恢复如初</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到：</span>
+		<a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+		<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="xenserver使用ceph的rbd的方法" data-title="xenserver使用ceph的rbd的方法" data-url="http://www.zphj1987.com/2015/12/16/xenserver使用ceph的rbd的方法/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"zphj1987"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2015 zphj1987
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="http://7xi6lo.com1.z0.glb.clouddn.com/fancybox/jquery.fancybox.css" type="text/css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: undefined,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: true
+	}
+</script>
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="/js/main.js" type="text/javascript"></script>
+
+
+  </div>
+</body>
+</html>
