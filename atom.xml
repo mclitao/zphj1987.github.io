@@ -4,7 +4,7 @@
   <subtitle><![CDATA[现在所学，终有所用]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2015-12-19T14:19:19.526Z</updated>
+  <updated>2015-12-19T14:22:53.490Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="http://www.zphj1987.com/2015/12/19/centos6%E5%AE%89%E8%A3%85calamari/"/>
     <id>http://www.zphj1987.com/2015/12/19/centos6安装calamari/</id>
     <published>2015-12-19T14:07:01.000Z</published>
-    <updated>2015-12-19T14:19:19.526Z</updated>
+    <updated>2015-12-19T14:22:53.490Z</updated>
     <content type="html"><![CDATA[<h3 id="一、安装操作系统">一、安装操作系统</h3><p>首先安装操作系统centos6,安装过程选择的是base server，这个不相同不要紧，出现缺少包的时候去iso找出来安装就可以了</p>
 <h3 id="二、calamari的简单介绍">二、calamari的简单介绍</h3><p>首先简单的介绍下calamari的这个软件系统的组成，主要是calamari-server,romana，salt-minion，salt-server，diamond，</p>
 <p>这些模块各自的作用：</p>
@@ -31,7 +31,26 @@
 <li>diamond这个是系统的监控信息的收集控件，提供集群的硬件信息的监控和集群的信息的监控，数据是发送到romana的机器上的，是由romana上的carbon来收取数据并存储到机器当中的数据库当中的</li>
 </ul>
 <a id="more"></a>
-<p>所以总结下来安装的方式是<br>| 节点情况| 需要安装软件 |<br>| :————:  | :——-:  |<br>|  单独一台非集群节点装calmari-server  |calamri-server romana salt-master salt-minion  |<br>|集群节点  |  salt-minion diamond|<br>注意：<br>如果calamri-server选择安装在集群内节点，那么这台机器就安装 calamri-server romana salt-master salt-minion diamond </p>
+<p>所以总结下来安装的方式是:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">节点情况</th>
+<th style="text-align:center">需要安装软件</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">单独一台非集群节点装calmari-server</td>
+<td style="text-align:center">calamri-server romana salt-master salt-minion</td>
+</tr>
+<tr>
+<td style="text-align:center">集群节点</td>
+<td style="text-align:center">salt-minion diamond</td>
+</tr>
+</tbody>
+</table>
+<p>注意：<br>如果calamri-server选择安装在集群内节点，那么这台机器就安装 calamri-server romana salt-master salt-minion diamond </p>
 <h3 id="三、软件安装">三、软件安装</h3><p>安装过程很简单就是安装上面的包就可以了，这个包的资源我已经打包好了在这篇的结尾的链接下面，分好了目录,管理节点就安装calamriserver,集群的节点就安装clusternode里面的，出现的冲突的一个包就用rpm -Uvh 升级安装一下，这里面有一个包需要升级安装下<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@myserver centos6calamari]<span class="comment"># ll</span></span><br><span class="line">total <span class="number">8</span></span><br><span class="line">drwxr-xr-x. <span class="number">7</span> root root <span class="number">4096</span> Dec <span class="number">11</span> <span class="number">10</span>:<span class="number">59</span> calamariserver</span><br><span class="line">drwxr-xr-x. <span class="number">4</span> root root <span class="number">4096</span> Dec <span class="number">11</span> <span class="number">11</span>:<span class="number">00</span> clusternode</span><br><span class="line">[root@myserver centos6calamari]<span class="comment"># ll calamariserver/</span></span><br><span class="line">total <span class="number">22092</span></span><br><span class="line">-rw-r--r--. <span class="number">1</span> root root <span class="number">20965336</span> Dec <span class="number">11</span> <span class="number">10</span>:<span class="number">59</span> calamari-server-<span class="number">1.3</span>.<span class="number">1.1</span>-<span class="number">105</span>_g79c8df2.el6.x86_64.rpm</span><br><span class="line">drwxr-xr-x. <span class="number">2</span> root root     <span class="number">4096</span> Dec <span class="number">11</span> <span class="number">10</span>:<span class="number">59</span> httpd</span><br><span class="line">drwxr-xr-x. <span class="number">2</span> root root     <span class="number">4096</span> Dec <span class="number">11</span> <span class="number">10</span>:<span class="number">59</span> postgresql</span><br><span class="line">-rw-r--r--. <span class="number">1</span> root root      <span class="number">658</span> Dec <span class="number">11</span> <span class="number">10</span>:<span class="number">59</span> readme</span><br><span class="line">-rw-r--r--. <span class="number">1</span> root root  <span class="number">1629144</span> Dec <span class="number">11</span> <span class="number">10</span>:<span class="number">59</span> romana-<span class="number">1.2</span>.<span class="number">2</span>-<span class="number">36</span>_gc62bb5b.el6.x86_64.rpm</span><br><span class="line">drwxr-xr-x. <span class="number">2</span> root root     <span class="number">4096</span> Dec <span class="number">11</span> <span class="number">10</span>:<span class="number">59</span> salt-master</span><br><span class="line">drwxr-xr-x. <span class="number">2</span> root root     <span class="number">4096</span> Dec <span class="number">11</span> <span class="number">10</span>:<span class="number">59</span> salt-minion</span><br><span class="line">drwxr-xr-x. <span class="number">2</span> root root     <span class="number">4096</span> Dec <span class="number">11</span> <span class="number">10</span>:<span class="number">59</span> supervisor</span><br><span class="line">[root@myserver centos6calamari]<span class="comment"># ll clusternode/</span></span><br><span class="line">total <span class="number">8</span></span><br><span class="line">drwxr-xr-x. <span class="number">2</span> root root <span class="number">4096</span> Dec <span class="number">11</span> <span class="number">10</span>:<span class="number">59</span> diamond</span><br><span class="line">drwxr-xr-x. <span class="number">3</span> root root <span class="number">4096</span> Dec <span class="number">11</span> <span class="number">11</span>:<span class="number">05</span> salt-minion</span><br></pre></td></tr></table></figure></p>
 <p>需要注意一点安装完calamari的server以后需要处理下权限<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@myserver calamari]<span class="comment"># chmod 777 -R /var/log/calamari/</span></span><br><span class="line">[root@myserver calamari]<span class="comment"># chmod 777 -R /opt/calamari/</span></span><br></pre></td></tr></table></figure></p>
 <p>然后再去做<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@myserver calamari]<span class="comment">#calamari-ctl initialize</span></span><br></pre></td></tr></table></figure></p>
