@@ -4,7 +4,7 @@
   <subtitle><![CDATA[现在所学，终有所用]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2015-12-19T14:22:53.490Z</updated>
+  <updated>2015-12-21T15:59:16.615Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="http://www.zphj1987.com/2015/12/19/centos6%E5%AE%89%E8%A3%85calamari/"/>
     <id>http://www.zphj1987.com/2015/12/19/centos6安装calamari/</id>
     <published>2015-12-19T14:07:01.000Z</published>
-    <updated>2015-12-19T14:22:53.490Z</updated>
+    <updated>2015-12-21T15:59:16.615Z</updated>
     <content type="html"><![CDATA[<h3 id="一、安装操作系统">一、安装操作系统</h3><p>首先安装操作系统centos6,安装过程选择的是base server，这个不相同不要紧，出现缺少包的时候去iso找出来安装就可以了</p>
 <h3 id="二、calamari的简单介绍">二、calamari的简单介绍</h3><p>首先简单的介绍下calamari的这个软件系统的组成，主要是calamari-server,romana，salt-minion，salt-server，diamond，</p>
 <p>这些模块各自的作用：</p>
@@ -57,6 +57,10 @@
 <h2 id="目前已经测试通过，就是可能我的是虚拟机的原因，会提示web的状态没更新的问题，集群的状态都拿到了">目前已经测试通过，就是可能我的是虚拟机的原因，会提示web的状态没更新的问题，集群的状态都拿到了</h2><h3 id="四、故障排查：">四、故障排查：</h3><p>配置好了后用<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@myserver calamari]<span class="comment"># salt '*' test.ping</span></span><br><span class="line">[root@myserver calamari]<span class="comment"># salt '*' ceph.get_heartbeats</span></span><br></pre></td></tr></table></figure></p>
 <p>我的出现了calamari连接了集群发现检测不到集群，就用上面的检测，然后发现确实拿不到集群的信息，然后就去节点的机器上检查salt-minion的日志，发现是一个提示认证的错误，就做了下面的处理后就好了<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@node1 ~]<span class="comment">#rm -rf /etc/salt/pki/minion/minion_master.pub</span></span><br><span class="line">[root@node1 ~]<span class="comment">#service salt-minion restart</span></span><br></pre></td></tr></table></figure></p>
 <h3 id="资源链接：">资源链接：</h3><p>链接：<a href="http://pan.baidu.com/s/1eRtLZvO" target="_blank" rel="external">http://pan.baidu.com/s/1eRtLZvO</a> 密码：0ael</p>
+<p>资源更新说明：</p>
+<ul>
+<li>增加了osd限制为256个数的修改patch包，使用rpm -Uvh进行安装，在满足当前的情况下就不需要更新，解决溢出的情况</li>
+</ul>
 <h3 id="支持链接：">支持链接：</h3><p>如果本文对您有所帮助，可以打赏一点小费，如果您有支持，麻烦在qq上通知一下我</p>
 <p>QQ：199383004<br>@运维-武汉-磨磨</p>
 <p><img src="http://7xo9we.com1.z0.glb.clouddn.com/zhifubao.png" alt=""></p>
