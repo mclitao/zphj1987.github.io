@@ -4,7 +4,7 @@
   <subtitle><![CDATA[现在所学，终有所用]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2015-12-21T15:59:16.615Z</updated>
+  <updated>2016-01-11T08:46:18.944Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -13,6 +13,34 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[ceph写osd的配置文件/etc/ceph/ceph.conf]]></title>
+    <link href="http://www.zphj1987.com/2016/01/11/ceph%E5%86%99osd%E7%9A%84%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6-etc-ceph-ceph-conf/"/>
+    <id>http://www.zphj1987.com/2016/01/11/ceph写osd的配置文件-etc-ceph-ceph-conf/</id>
+    <published>2016-01-11T08:38:25.000Z</published>
+    <updated>2016-01-11T08:46:18.944Z</updated>
+    <content type="html"><![CDATA[<p>ceph在部署过程中是写进行部署，再去进行配置文件的编写的，而一些新手在部署完了后，并没有写配置文件，在重启服务器后，因为挂载点没有挂载，所以服务无法启动，所以需要写好配置文件，还有一种情况是集群有几百个osd，在新加入或者修改的时候，再去进行变更配置文件就是一个很麻烦的事情，所以写配置文件这个如果脚本来处理，就可以节约很多时间，所以写了一个脚本如下，这个地方如果熟悉python的可以用python写，我这个是自己使用，并且使用的频率不会太高，因此，怎么方便怎么来</p>
+<p>脚本里面用了一个二进制文件是解析json用的，这个拷贝到运行的机器上就可以了</p>
+<p>解析的二进制文件在这里下载：<br><a href="http://stedolan.github.io/jq/" target="_blank" rel="external">http://stedolan.github.io/jq/</a></p>
+<p>备用下载地址：<br><a href="http://pan.baidu.com/s/1pKgefmr" target="_blank" rel="external">http://pan.baidu.com/s/1pKgefmr</a></p>
+<p>下载后拷贝到linux机器的/sbin/下面，为了方便重命名为 /sbin/jq</p>
+<p>后面的输出可以方便的修改，原理是获取当前的osd状态，然后去osd上获取信息</p>
+<a id="more"></a>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="shebang">#! /bin/sh</span></span><br><span class="line"><span class="comment">#注意要配合js使用http://stedolan.github.io/jq/</span></span><br><span class="line"><span class="keyword">for</span> osd <span class="keyword">in</span> `zbkc osd dump |awk  <span class="string">'/^osd/ &#123;print $1&#125;'</span>|cut <span class="operator">-d</span> . <span class="operator">-f</span> <span class="number">2</span>`</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line"><span class="comment">#获取主机名</span></span><br><span class="line">osdhost=`zbkc osd find <span class="variable">$osd</span> |jq <span class="string">'.crush_location'</span> |jq <span class="string">'.host'</span>|cut <span class="operator">-d</span> \<span class="string">" -f 2`</span><br><span class="line">#获取主机的ip</span><br><span class="line">osdip=`zbkc osd find <span class="variable">$osd</span> |jq '.ip' |cut -d : -f 1|cut -d \" -f 2`</span><br><span class="line">#获取主机的磁盘</span><br><span class="line">osddisk=`ssh <span class="variable">$osdip</span> findmnt /var/lib/zbkc/osd/zbkc-<span class="variable">$osd</span>|awk '&#123;print <span class="variable">$2</span>&#125;'|tail -n 1`</span><br><span class="line">#获取主机的uuid</span><br><span class="line">uuid=`ssh <span class="variable">$osdip</span> blkid <span class="variable">$osddisk</span>|cut -d : -f 2|cut -d "</span> <span class="string">" -f 2|cut -d \" -f 2`</span><br><span class="line">#写入文件</span><br><span class="line">echo "</span>osd.<span class="variable">$osd</span>.host = <span class="variable">$osdhost</span><span class="string">" &gt;&gt; mydiskinfo</span><br><span class="line">echo "</span>osd.<span class="variable">$osd</span>.uuid = <span class="variable">$uuid</span>  <span class="string">" &gt;&gt; mydiskinfo</span><br><span class="line">echo "</span>osd.<span class="variable">$osd</span>.devs = <span class="variable">$osddisk</span><span class="string">" &gt;&gt; mydiskinfo</span><br><span class="line">done</span></span><br></pre></td></tr></table></figure>]]></content>
+    <summary type="html">
+    <![CDATA[<p>ceph在部署过程中是写进行部署，再去进行配置文件的编写的，而一些新手在部署完了后，并没有写配置文件，在重启服务器后，因为挂载点没有挂载，所以服务无法启动，所以需要写好配置文件，还有一种情况是集群有几百个osd，在新加入或者修改的时候，再去进行变更配置文件就是一个很麻烦的事情，所以写配置文件这个如果脚本来处理，就可以节约很多时间，所以写了一个脚本如下，这个地方如果熟悉python的可以用python写，我这个是自己使用，并且使用的频率不会太高，因此，怎么方便怎么来</p>
+<p>脚本里面用了一个二进制文件是解析json用的，这个拷贝到运行的机器上就可以了</p>
+<p>解析的二进制文件在这里下载：<br><a href="http://stedolan.github.io/jq/">http://stedolan.github.io/jq/</a></p>
+<p>备用下载地址：<br><a href="http://pan.baidu.com/s/1pKgefmr">http://pan.baidu.com/s/1pKgefmr</a></p>
+<p>下载后拷贝到linux机器的/sbin/下面，为了方便重命名为 /sbin/jq</p>
+<p>后面的输出可以方便的修改，原理是获取当前的osd状态，然后去osd上获取信息</p>]]>
+    
+    </summary>
+    
+      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[centos6安装calamari]]></title>
@@ -725,62 +753,6 @@
 <p>否则可以用modprobe命令来手工加载AES模块。<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">modprobe aes</span><br></pre></td></tr></table></figure></p>]]>
     
     </summary>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[linux系统克隆系统盘]]></title>
-    <link href="http://www.zphj1987.com/2015/05/12/linux%E7%B3%BB%E7%BB%9F%E5%85%8B%E9%9A%86%E7%B3%BB%E7%BB%9F%E7%9B%98/"/>
-    <id>http://www.zphj1987.com/2015/05/12/linux系统克隆系统盘/</id>
-    <published>2015-05-12T06:24:31.000Z</published>
-    <updated>2015-09-23T07:27:21.750Z</updated>
-    <content type="html"><![CDATA[<p>本文将介绍两种方式的系统盘的完整的备份，两种方式各有优缺点，需要根据实际情况来进行选择</p>
-<ul>
-<li>使用dd的完整镜像克隆的方式</li>
-<li>使用tar去备份数据，安装grub的方式</li>
-</ul>
-<h4 id="dd方式">dd方式</h4><p>优点：<br>简单，一条命令 dd if=/dev/sda of=/dev/sdb 就可以进行完整的系统备份了</p>
-<p>缺点：<br>时间非常长，备份一个系统盘，无论数据多少，系统盘全部会读取一遍，时间比较久<br>备份目的盘需要大于原盘<br>分区无法调整，根原分区一模一样</p>
-<h4 id="tar方式">tar方式</h4><p>优点：<br>时间短，只需要备份实际磁盘上的数据即可<br>自定义，可以修改分区的大小，可以控制备份的类容，可以定期备份<br>对目的盘大小无限制，比较灵活</p>
-<p>缺点：<br>人为修改东西比较多，需要手动去修改一些信息<br>当然在掌握了一定的linux基础的情况下建议是使用tar方式的，，下面将介绍tar方式的处理方式：</p>
-<a id="more"></a>
-<h3 id="给准备用来备份的磁盘进行分区和格式化">给准备用来备份的磁盘进行分区和格式化</h3><p>首先使用 df -h 来检查当前的挂载的系统分区：<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">Filesystem      Size  Used Avail Use% Mounted on&#10;/dev/sdb5       285G  4.1G  266G   2% /&#10;tmpfs           2.0G  4.0K  2.0G   1% /dev/shm&#10;/dev/sdb1       239M   81M  141M  37% /boot&#10;/dev/sdb2       6.7G   17M  6.3G   1% /var/log</span><br></pre></td></tr></table></figure></p>
-<p>查看磁盘的大小：<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">[root@zhongbo ~]# fdisk -l&#9;&#10;Disk /dev/sdb: 320.1 GB, 320072933376 bytes</span><br></pre></td></tr></table></figure></p>
-<p>本例子中备用磁盘为sda,大小为240G：<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">[root@zhongbo ~]# fdisk -l /dev/sda &#10;Disk /dev/sda: 240.1 GB, 240057409536 bytes</span><br></pre></td></tr></table></figure></p>
-<p>查看系统盘详细的分区信息<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">[root@zhongbo ~]# parted -l&#10;Model: ATA WDC WD3200AAJS-2 (scsi)&#10;Disk /dev/sdb: 320GB&#10;Sector size (logical/physical): 512B/512B&#10;Partition Table: msdos&#10;&#10;Number  Start   End     Size    Type      File system     Flags&#10; 1      1049kB  263MB   262MB   primary   ext4            boot&#10; 2      263MB   7603MB  7340MB  primary   ext4&#10; 3      7603MB  9751MB  2147MB  primary   linux-swap(v1)&#10; 4      9751MB  320GB   310GB   extended&#10; 5      9752MB  320GB   310GB   logical   ext4</span><br></pre></td></tr></table></figure></p>
-<p>可以看到分区表模式为msdos，分区信息为含有扩展分区，逻辑分区了，下面为新准备的盘进行分区，分区信息跟原来尽量一样，这个地方也可以根据自己的需要进行调整<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">[root@zhongbo ~]# parted /dev/sda&#10;(parted) mklabel msdos &#10;(parted) mkpart primary 1049kB 263&#10;(parted) mkpart primary 263 7603&#10;(parted) mkpart primary 7603 9751 &#10;(parted) mkpart extended 9751 100%&#10;(parted) mkpart logical 9752 100%&#10;(parted) p                                                                &#10;Model: ATA INTEL SSDSC2BF24 (scsi)&#10;Disk /dev/sda: 240GB&#10;Sector size (logical/physical): 512B/512B&#10;Partition Table: msdos&#10;&#10;Number  Start   End     Size    Type      File system     Flags&#10; 1      1049kB  263MB   262MB   primary   ext4&#10; 2      263MB   7603MB  7340MB  primary   ext4&#10; 3      7603MB  9751MB  2147MB  primary   linux-swap(v1)&#10; 4      9751MB  240GB   230GB   extended                  lba&#10; 5      9752MB  240GB   230GB   logical   ext4</span><br></pre></td></tr></table></figure></p>
-<p>格式化硬盘</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@zhongbo ~]<span class="comment"># mkfs.ext4 /dev/sda1  </span></span><br><span class="line">[root@zhongbo ~]<span class="comment"># mkfs.ext4 /dev/sda2</span></span><br><span class="line">[root@zhongbo ~]<span class="comment"># mkswap /dev/sda3 </span></span><br><span class="line">[root@zhongbo ~]<span class="comment"># mkfs.ext4 /dev/sda5</span></span><br></pre></td></tr></table></figure>
-<h3 id="备份原始磁盘上的数据到备份目的盘">备份原始磁盘上的数据到备份目的盘</h3><p>在本地系统盘上创建一个备份的目录，将数据打包放到这个目录下面</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@zhongbo ~]<span class="comment"># mkdir /backup</span></span><br></pre></td></tr></table></figure>
-<p>按这个系统来说需要备份三个分区/ , /var/log/, /boot </p>
-<p>开始备份/<br>所有的操作都进入到/目录下操作<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@zhongbo ~]<span class="comment"># cd /</span></span><br><span class="line">[root@zhongbo /]<span class="comment"># tar zcvpf /backup/gen.tar.gz -C /  --exclude=boot/* --exclude=var/log/* --exclude=backup/*  --exclude=lost+found/* --exclude=mnt/*  --exclude=dev/* --exclude=proc/* --exclude=tmp/* --exclude=sys/* .</span></span><br></pre></td></tr></table></figure></p>
-<p>注意这里排除了很多不需要备份的目录</p>
-<p>备份boot分区<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@zhongbo /]<span class="comment"># tar zcvpf /backup/boot.tar.gz -C /boot/ .</span></span><br></pre></td></tr></table></figure></p>
-<p>备份/var/log<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@zhongbo /]<span class="comment"># tar zcvpf /backup/log.tar.gz -C /var/log/ .</span></span><br></pre></td></tr></table></figure></p>
-<p>恢复/的数据<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@zhongbo /]<span class="comment"># mkdir /mnt/gen</span></span><br><span class="line">[root@zhongbo /]<span class="comment"># mount /dev/sda5 /mnt/gen/</span></span><br><span class="line">[root@zhongbo /]<span class="comment"># tar zxvpf /backup/gen.tar.gz -C /mnt/gen/</span></span><br></pre></td></tr></table></figure></p>
-<p>恢复/boot的数据<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@zhongbo /]<span class="comment"># mkdir /mnt/boot</span></span><br><span class="line">[root@zhongbo /]<span class="comment"># mount /dev/sda1 /mnt/boot/</span></span><br><span class="line">[root@zhongbo /]<span class="comment"># tar zxvpf /backup/boot.tar.gz -C /mnt/boot/</span></span><br></pre></td></tr></table></figure></p>
-<p>恢复/var/log<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@zhongbo /]<span class="comment"># mkdir /mnt/log</span></span><br><span class="line">[root@zhongbo /]<span class="comment"># mount /dev/sda2 /mnt/log/</span></span><br><span class="line">[root@zhongbo /]<span class="comment"># tar zxvpf /backup/log.tar.gz -C /mnt/log/</span></span><br></pre></td></tr></table></figure></p>
-<h3 id="修改启动文件">修改启动文件</h3><p>拿到新的分区的blkid<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">[root@zhongbo /]# blkid /dev/sda1&#10;/dev/sda1: UUID=&#34;a6ca4369-109c-47ed-a522-7e1752a6681b&#34; TYPE=&#34;ext4&#34; &#10;&#23545;&#24212;boot&#10;[root@zhongbo /]# blkid /dev/sda2&#10;/dev/sda2: UUID=&#34;f775f248-57d8-49a7-9334-60bc75a53685&#34; TYPE=&#34;ext4&#34; &#10;&#23545;&#24212;log&#10;&#10;[root@zhongbo /]# blkid /dev/sda5&#10;/dev/sda5: UUID=&#34;6942c7d6-486c-4d51-bb4d-a126ee0c05b1&#34; TYPE=&#34;ext4&#34;&#10;&#23545;&#24212;/&#10;&#10;[root@zhongbo /]# blkid /dev/sda3&#10;/dev/sda3: UUID=&#34;154784d8-dbe3-45c8-8fcb-cb4f5a14ae44&#34; TYPE=&#34;swap&#34; &#10;&#23545;&#24212;swap</span><br></pre></td></tr></table></figure></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@zhongbo /]<span class="comment"># vim /mnt/gen/etc/fstab </span></span><br><span class="line">修改对应分区的uuid信息</span><br><span class="line"></span><br><span class="line">修改menu.list </span><br><span class="line">[root@zhongbo ~]<span class="comment"># vim /mnt/boot/grub/menu.lst</span></span><br><span class="line">修改root= 根分区的uuid，第一次做的时候，就是在这个地方忘了修改，进入系统后能够看到启动画面，但是没法启动内核，修改好了后，就可以正常的启动了</span><br></pre></td></tr></table></figure>
-<h3 id="安装grub">安装grub</h3><p>查找grub分区<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">grub&#62; find /grub/grub.conf&#10;find /grub/grub.conf&#10; (hd0,0)&#10; (hd1,0)&#10;grub&#62;</span><br></pre></td></tr></table></figure></p>
-<p>修改其中的新盘上的grub然后分辨新的grub在哪台机器上，我的新盘是(hd0,0)<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">grub&gt; root (hd0,<span class="number">0</span>) </span><br><span class="line">grub&gt; setup (hd0)    </span><br><span class="line">setup (hd0)</span><br><span class="line"> Checking <span class="keyword">if</span> <span class="string">"/boot/grub/stage1"</span> exists... no</span><br><span class="line"> Checking <span class="keyword">if</span> <span class="string">"/grub/stage1"</span> exists... yes</span><br><span class="line"> Checking <span class="keyword">if</span> <span class="string">"/grub/stage2"</span> exists... yes</span><br><span class="line"> Checking <span class="keyword">if</span> <span class="string">"/grub/e2fs_stage1_5"</span> exists... yes</span><br><span class="line"> Running <span class="string">"embed /grub/e2fs_stage1_5 (hd0)"</span>...  <span class="number">27</span> sectors are embedded.</span><br><span class="line">succeeded</span><br><span class="line"> Running <span class="string">"install /grub/stage1 (hd0) (hd0)1+27 p (hd0,0)/grub/stage2 /grub/grub.conf"</span>... succeeded</span><br><span class="line">Done.</span><br><span class="line">grub&gt; quit</span><br></pre></td></tr></table></figure></p>
-<p>完成后，系统盘就完全备份了一份了，重启就可以启动一个一模一样的系统了</p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>本文将介绍两种方式的系统盘的完整的备份，两种方式各有优缺点，需要根据实际情况来进行选择</p>
-<ul>
-<li>使用dd的完整镜像克隆的方式</li>
-<li>使用tar去备份数据，安装grub的方式</li>
-</ul>
-<h4 id="dd方式">dd方式</h4><p>优点：<br>简单，一条命令 dd if=/dev/sda of=/dev/sdb 就可以进行完整的系统备份了</p>
-<p>缺点：<br>时间非常长，备份一个系统盘，无论数据多少，系统盘全部会读取一遍，时间比较久<br>备份目的盘需要大于原盘<br>分区无法调整，根原分区一模一样</p>
-<h4 id="tar方式">tar方式</h4><p>优点：<br>时间短，只需要备份实际磁盘上的数据即可<br>自定义，可以修改分区的大小，可以控制备份的类容，可以定期备份<br>对目的盘大小无限制，比较灵活</p>
-<p>缺点：<br>人为修改东西比较多，需要手动去修改一些信息<br>当然在掌握了一定的linux基础的情况下建议是使用tar方式的，，下面将介绍tar方式的处理方式：</p>]]>
-    
-    </summary>
-    
-      <category term="操作系统" scheme="http://www.zphj1987.com/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
     
   </entry>
   
