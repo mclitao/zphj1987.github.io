@@ -3,17 +3,62 @@
 <head>
   <meta charset="utf-8">
   
-  <title>ceph写osd的配置文件/etc/ceph/ceph.conf | zphj1987&#39;Blog</title>
+  <title>删除osd的正确方式 | zphj1987&#39;Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="ceph在部署过程中是先进行部署，再去写配置文件的，而一些新手在部署完了后，并没有写配置文件，在重启服务器后，因为挂载点没有挂载，所以服务无法启动，所以需要写好配置文件还有一种情况是集群有几百个osd，在新加入或者修改的时候，再去进行变更配置文件就是一个很麻烦的事情，所以写配置文件这个如果脚本来处理，就可以节约很多时间，所以写了一个脚本如下，这个地方如果熟悉python的可以用python写，我这">
+  <meta name="description" content="在ceph的集群当中关于节点的替换的问题，一直按照以前的方式进行的处理，处理的步骤如下：
+
+停止osd进程
+/etc/init.d/ceph stop osd.0
+
+将节点状态标记为out
+ceph osd out osd.0
+
+从crush中移除节点
+ceph osd crush remove osd.0
+
+删除节点
+ceph osd rm osd.0
+
+删除节点认证（不删除编号会占住）
+cep">
 <meta property="og:type" content="article">
-<meta property="og:title" content="ceph写osd的配置文件/etc/ceph/ceph.conf">
-<meta property="og:url" content="http://www.zphj1987.com/2016/01/11/ceph写osd的配置文件-etc-ceph-ceph-conf/index.html">
+<meta property="og:title" content="删除osd的正确方式">
+<meta property="og:url" content="http://www.zphj1987.com/2016/01/12/删除osd的正确方式/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
-<meta property="og:description" content="ceph在部署过程中是先进行部署，再去写配置文件的，而一些新手在部署完了后，并没有写配置文件，在重启服务器后，因为挂载点没有挂载，所以服务无法启动，所以需要写好配置文件还有一种情况是集群有几百个osd，在新加入或者修改的时候，再去进行变更配置文件就是一个很麻烦的事情，所以写配置文件这个如果脚本来处理，就可以节约很多时间，所以写了一个脚本如下，这个地方如果熟悉python的可以用python写，我这">
+<meta property="og:description" content="在ceph的集群当中关于节点的替换的问题，一直按照以前的方式进行的处理，处理的步骤如下：
+
+停止osd进程
+/etc/init.d/ceph stop osd.0
+
+将节点状态标记为out
+ceph osd out osd.0
+
+从crush中移除节点
+ceph osd crush remove osd.0
+
+删除节点
+ceph osd rm osd.0
+
+删除节点认证（不删除编号会占住）
+cep">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="ceph写osd的配置文件/etc/ceph/ceph.conf">
-<meta name="twitter:description" content="ceph在部署过程中是先进行部署，再去写配置文件的，而一些新手在部署完了后，并没有写配置文件，在重启服务器后，因为挂载点没有挂载，所以服务无法启动，所以需要写好配置文件还有一种情况是集群有几百个osd，在新加入或者修改的时候，再去进行变更配置文件就是一个很麻烦的事情，所以写配置文件这个如果脚本来处理，就可以节约很多时间，所以写了一个脚本如下，这个地方如果熟悉python的可以用python写，我这">
+<meta name="twitter:title" content="删除osd的正确方式">
+<meta name="twitter:description" content="在ceph的集群当中关于节点的替换的问题，一直按照以前的方式进行的处理，处理的步骤如下：
+
+停止osd进程
+/etc/init.d/ceph stop osd.0
+
+将节点状态标记为out
+ceph osd out osd.0
+
+从crush中移除节点
+ceph osd crush remove osd.0
+
+删除节点
+ceph osd rm osd.0
+
+删除节点认证（不删除编号会占住）
+cep">
   
     <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
   
@@ -184,11 +229,11 @@ var _hmt = _hmt || [];
 		</header>				
 	</div>
 </nav>
-      <div class="body-wrap"><article id="post-ceph写osd的配置文件-etc-ceph-ceph-conf" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-删除osd的正确方式" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2016/01/11/ceph写osd的配置文件-etc-ceph-ceph-conf/" class="article-date">
-  	<time datetime="2016-01-11T08:38:25.000Z" itemprop="datePublished">2016-01-11</time>
+      <a href="/2016/01/12/删除osd的正确方式/" class="article-date">
+  	<time datetime="2016-01-12T02:14:39.000Z" itemprop="datePublished">2016-01-12</time>
 </a>
     </div>
   
@@ -201,7 +246,7 @@ var _hmt = _hmt || [];
         
   
     <h1 class="article-title" itemprop="name">
-      ceph写osd的配置文件/etc/ceph/ceph.conf
+      删除osd的正确方式
     </h1>
   
 
@@ -221,14 +266,50 @@ var _hmt = _hmt || [];
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>ceph在部署过程中是先进行部署，再去写配置文件的，而一些新手在部署完了后，并没有写配置文件，在重启服务器后，因为挂载点没有挂载，所以服务无法启动，所以需要写好配置文件<br>还有一种情况是集群有几百个osd，在新加入或者修改的时候，再去进行变更配置文件就是一个很麻烦的事情，所以写配置文件这个如果脚本来处理，就可以节约很多时间，所以写了一个脚本如下，这个地方如果熟悉python的可以用python写，我这个是自己使用，并且使用的频率不会太高，因此，怎么方便怎么来</p>
-<p>脚本里面用了一个二进制文件是解析json用的，这个拷贝到运行的机器上就可以了</p>
-<p>解析的二进制文件在这里下载：<br><a href="http://stedolan.github.io/jq/" target="_blank" rel="external">http://stedolan.github.io/jq/</a></p>
-<p>备用下载地址：<br><a href="http://pan.baidu.com/s/1pKgefmr" target="_blank" rel="external">http://pan.baidu.com/s/1pKgefmr</a></p>
-<p>下载后拷贝到linux机器的/sbin/下面，为了方便重命名为 /sbin/jq</p>
-<p>后面的输出可以方便的修改，原理是获取当前的osd状态，然后去osd上获取信息</p>
+        <p>在ceph的集群当中关于节点的替换的问题，一直按照以前的方式进行的处理，处理的步骤如下：</p>
+<ol>
+<li><p>停止osd进程</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/etc/init.d/ceph stop osd.<span class="number">0</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>将节点状态标记为out</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph osd out osd.<span class="number">0</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>从crush中移除节点</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph osd crush remove osd.<span class="number">0</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>删除节点</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph osd rm osd.<span class="number">0</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>删除节点认证（不删除编号会占住）</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph auth del osd.<span class="number">0</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
 <a id="more"></a>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="shebang">#! /bin/sh</span></span><br><span class="line"><span class="comment">#注意要配合js使用http://stedolan.github.io/jq/</span></span><br><span class="line"><span class="keyword">for</span> osd <span class="keyword">in</span> `ceph osd dump |awk  <span class="string">'/^osd/ &#123;print $1&#125;'</span>|cut <span class="operator">-d</span> . <span class="operator">-f</span> <span class="number">2</span>`</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line"><span class="comment">#获取主机名</span></span><br><span class="line">osdhost=`ceph osd find <span class="variable">$osd</span> |jq <span class="string">'.crush_location'</span> |jq <span class="string">'.host'</span>|cut <span class="operator">-d</span> \<span class="string">" -f 2`</span><br><span class="line">#获取主机的ip</span><br><span class="line">osdip=`ceph osd find <span class="variable">$osd</span> |jq '.ip' |cut -d : -f 1|cut -d \" -f 2`</span><br><span class="line">#获取主机的磁盘</span><br><span class="line">osddisk=`ssh <span class="variable">$osdip</span> findmnt /var/lib/ceph/osd/ceph-<span class="variable">$osd</span>|awk '&#123;print <span class="variable">$2</span>&#125;'|tail -n 1`</span><br><span class="line">#获取主机的uuid</span><br><span class="line">uuid=`ssh <span class="variable">$osdip</span> blkid <span class="variable">$osddisk</span>|cut -d : -f 2|cut -d "</span> <span class="string">" -f 2|cut -d \" -f 2`</span><br><span class="line">#写入文件</span><br><span class="line">echo "</span>osd.<span class="variable">$osd</span>.host = <span class="variable">$osdhost</span><span class="string">" &gt;&gt; mydiskinfo</span><br><span class="line">echo "</span>osd.<span class="variable">$osd</span>.uuid = <span class="variable">$uuid</span>  <span class="string">" &gt;&gt; mydiskinfo</span><br><span class="line">echo "</span>osd.<span class="variable">$osd</span>.devs = <span class="variable">$osddisk</span><span class="string">" &gt;&gt; mydiskinfo</span><br><span class="line">done</span></span><br></pre></td></tr></table></figure>
+<p>这个一直是我处理故障的节点osd的方式，其实这个会触发两次迁移，一次是在节点osd以后，一个是在crush remove以后，两次迁移对于集群来说是不好的，其实是调整步骤是可以避免二次迁移的</p>
+<h3 id="新的处理方式">新的处理方式</h3><ol>
+<li>调整osd的crush weight <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph osd crush reweight osd.<span class="number">0</span> <span class="number">0.1</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>说明：这个地方如果想慢慢的调整就分几次将crush 的weight 减低到0 ，这个过程实际上是让数据不分布在这个节点上，让数据慢慢的分布到其他节点上，直到最终为没有分布在这个osd，并且迁移完成</p>
+<ol>
+<li><p>停止osd进程</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/etc/init.d/ceph stop osd.<span class="number">0</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>将节点状态标记为out</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph osd out osd.<span class="number">0</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>从crush中移除节点</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph osd crush remove osd.<span class="number">0</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>删除节点</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph osd rm osd.<span class="number">0</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>删除节点认证（不删除编号会占住）</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph auth del osd.<span class="number">0</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>经过验证，第二种方式只触发了一次迁移，虽然只是一个步骤先后上的调整，对于生产环境的的集群来说，迁移的量要少了一次，实际生产环境当中节点是有自动out的功能，这个可以考虑自己去控制，只是监控的密度需要加大，毕竟这个是一个需要监控的集群，完全让其自己处理数据的迁移是不可能的，带来的故障只会更多</p>
+
       
     </div>
     
@@ -237,18 +318,9 @@ var _hmt = _hmt || [];
     
 <nav id="article-nav">
   
-    <a href="/2016/01/12/删除osd的正确方式/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption"><</strong>
-      <div class="article-nav-title">
-        
-          删除osd的正确方式
-        
-      </div>
-    </a>
   
-  
-    <a href="/2015/12/19/centos6安装calamari/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">centos6安装calamari</div>
+    <a href="/2016/01/11/ceph写osd的配置文件-etc-ceph-ceph-conf/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">ceph写osd的配置文件/etc/ceph/ceph.conf</div>
       <strong class="article-nav-caption">></strong>
     </a>
   
@@ -277,7 +349,7 @@ var _hmt = _hmt || [];
 
 <div class="duoshuo">
 	<!-- 多说评论框 start -->
-	<div class="ds-thread" data-thread-key="ceph写osd的配置文件-etc-ceph-ceph-conf" data-title="ceph写osd的配置文件/etc/ceph/ceph.conf" data-url="http://www.zphj1987.com/2016/01/11/ceph写osd的配置文件-etc-ceph-ceph-conf/"></div>
+	<div class="ds-thread" data-thread-key="删除osd的正确方式" data-title="删除osd的正确方式" data-url="http://www.zphj1987.com/2016/01/12/删除osd的正确方式/"></div>
 	<!-- 多说评论框 end -->
 	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 	<script type="text/javascript">
