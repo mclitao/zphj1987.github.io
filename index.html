@@ -214,22 +214,30 @@ var _hmt = _hmt || [];
       
         <p>在ceph的集群当中关于节点的替换的问题，一直按照以前的方式进行的处理，处理的步骤如下：</p>
 <ol>
-<li><p>停止osd进程</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/etc/init.d/ceph stop osd.<span class="number">0</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>将节点状态标记为out</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph osd out osd.<span class="number">0</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>从crush中移除节点</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph osd crush remove osd.<span class="number">0</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>删除节点</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph osd rm osd.<span class="number">0</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>删除节点认证（不删除编号会占住）</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph auth del osd.<span class="number">0</span></span><br></pre></td></tr></table></figure>
+<li>停止osd进程<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/etc/init.d/ceph stop osd.<span class="number">0</span></span><br></pre></td></tr></table></figure>
 </li>
 </ol>
+<p>这一步是停止osd的进程，让其他的osd知道这个节点不提供服务了</p>
+<ol>
+<li>将节点状态标记为out<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph osd out osd.<span class="number">0</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>这个一步是告诉mon，这个节点已经不能服务了，需要在其他的osd上进行数据的恢复了</p>
+<ol>
+<li>从crush中移除节点<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph osd crush remove osd.<span class="number">0</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>从crush中删除是告诉集群这个点回不来了，完全从集群的分布当中剔除掉，让集群的crush进行一次重新计算，之前节点还占着这个crush weight，会影响到当前主机的host crush weight </p>
+<ol>
+<li>删除节点<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph osd rm osd.<span class="number">0</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>这个是从集群里面删除这个节点的记录</p>
+<ol>
+<li>删除节点认证（不删除编号会占住）<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph auth del osd.<span class="number">0</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>这个是从认证当中去删除这个节点的信息<br>
       
     </div>
     
