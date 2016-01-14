@@ -835,11 +835,12 @@
     <link href="http://www.zphj1987.com/2015/09/28/%E6%89%B9%E9%87%8F%E4%B8%8B%E8%BD%BDinstagram%E5%9B%BE%E7%89%87/"/>
     <id>http://www.zphj1987.com/2015/09/28/批量下载instagram图片/</id>
     <published>2015-09-28T05:54:09.000Z</published>
-    <updated>2015-09-28T06:09:12.916Z</updated>
+    <updated>2016-01-14T09:28:54.563Z</updated>
     <content type="html"><![CDATA[<h3 id="下载图片：">下载图片：</h3><p>通过下面的网址可以批量下载图片，需要翻墙</p>
 <p><a href="http://instrport.me/" target="_blank" rel="external">http://instrport.me/</a></p>
 <h3 id="处理图片到blog可用">处理图片到blog可用</h3><p>使用脚本运行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="shebang">#! /bin/sh</span></span><br><span class="line"><span class="keyword">for</span> file <span class="keyword">in</span> `ls ./ins`</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">year=`<span class="built_in">echo</span> <span class="variable">$file</span>|cut <span class="operator">-f</span> <span class="number">1</span> <span class="operator">-d</span> -`</span><br><span class="line">mouth=`<span class="built_in">echo</span> <span class="variable">$file</span>|cut <span class="operator">-f</span> <span class="number">2</span> <span class="operator">-d</span> -`</span><br><span class="line">	</span><br><span class="line"><span class="built_in">echo</span> <span class="operator">-e</span> <span class="string">"&#123;\"src\":\"https://scontent.cdninstagram.com/hphotos-xfa1/t51.2885-15/e15/<span class="variable">$file</span>\",\"text\":\"\",\"y\":<span class="variable">$year</span>,\"m\":<span class="variable">$mouth</span>&#125;,\c"</span></span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure></p>
 <p>替换instagram中的相应字段即可</p>
+<p>本地修改：themes\yilia\source\js</p>
 ]]></content>
     <summary type="html">
     <![CDATA[<h3 id="下载图片：">下载图片：</h3><p>通过下面的网址可以批量下载图片，需要翻墙</p>
