@@ -4,7 +4,7 @@
   <subtitle><![CDATA[现在所学，终有所用]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2016-01-13T03:29:12.847Z</updated>
+  <updated>2016-01-14T01:48:51.169Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -13,6 +13,58 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[centos7下做内存盘的方法]]></title>
+    <link href="http://www.zphj1987.com/2016/01/14/centos7%E4%B8%8B%E5%81%9A%E5%86%85%E5%AD%98%E7%9B%98%E7%9A%84%E6%96%B9%E6%B3%95/"/>
+    <id>http://www.zphj1987.com/2016/01/14/centos7下做内存盘的方法/</id>
+    <published>2016-01-14T01:07:28.000Z</published>
+    <updated>2016-01-14T01:48:51.169Z</updated>
+    <content type="html"><![CDATA[<p>在找这个资料的时候，基本没几个能用的或者过时了的，或者是换了概念，做的不是需要的那种盘，只有少数文章有提到关键部分应该怎么去操作，现在还是自己总结一下</p>
+<h3 id="内存盘tmpfs和ramdisk的区别">内存盘tmpfs和ramdisk的区别</h3><p>这个在网上的很多资料里面都有提到，很多文章去写怎么做ramdisk的时候，都是去做的tmpfs，两者虽然都是使用的内存来存储东西，但是是完全有区别的</p>
+<ul>
+<li>tmpfs这个只需要mount挂载就可以分配一个目录使用内存了，只是一个目录</li>
+<li>ramdisk这个是真的分配一个空间，这个分区是可以格式化的（这个格式化是关键）</li>
+<li>tmpfs卸载再挂载数据会消失，randisk卸载再挂载数据还在</li>
+<li>二者共同点是，系统重启后，里面的东西会消失</li>
+</ul>
+<blockquote>
+<p>本文章主要是讲怎么去做ramdisk</p>
+</blockquote>
+<p>ramdisk是依赖于内核模块brd的，首先可以查看下这个模块的信息<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 src]<span class="comment"># modinfo brd</span></span><br><span class="line">filename:       /lib/modules/<span class="number">3.10</span>.<span class="number">0</span>-<span class="number">229</span>.el7.x86_64/kernel/drivers/block/brd.ko</span><br><span class="line"><span class="built_in">alias</span>:          rd</span><br><span class="line"><span class="built_in">alias</span>:          block-major-<span class="number">1</span>-*</span><br><span class="line">license:        GPL</span><br><span class="line">rhelversion:    <span class="number">7.1</span></span><br><span class="line">srcversion:     F38BA5B60FC8B94786C7907</span><br><span class="line">depends:        </span><br><span class="line">intree:         Y</span><br><span class="line">vermagic:       <span class="number">3.10</span>.<span class="number">0</span> SMP mod_unload modversions </span><br><span class="line">parm:           rd_nr:Maximum number of brd devices (int)</span><br><span class="line">parm:           rd_size:Size of each RAM disk <span class="keyword">in</span> kbytes. (int)</span><br><span class="line">parm:           max_part:Maximum number of partitions per RAM disk (int)</span><br></pre></td></tr></table></figure></p>
+<p>默认是不加载的，需要加载这个模块<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 src]<span class="comment"># modprobe brd</span></span><br></pre></td></tr></table></figure></p>
+<p>加载模块后就会生成下面的的盘符路径，这个就是内存盘<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 src]<span class="comment"># ll /dev/ram*</span></span><br><span class="line">brw-rw---- <span class="number">1</span> root disk <span class="number">1</span>, <span class="number">0</span> Jan <span class="number">14</span> <span class="number">00</span>:<span class="number">43</span> /dev/ram0</span><br><span class="line">brw-rw---- <span class="number">1</span> root disk <span class="number">1</span>, <span class="number">1</span> Jan <span class="number">14</span> <span class="number">00</span>:<span class="number">43</span> /dev/ram1</span><br><span class="line">brw-rw---- <span class="number">1</span> root disk <span class="number">1</span>, <span class="number">2</span> Jan <span class="number">14</span> <span class="number">00</span>:<span class="number">42</span> /dev/ram2</span><br><span class="line">brw-rw---- <span class="number">1</span> root disk <span class="number">1</span>, <span class="number">3</span> Jan <span class="number">14</span> <span class="number">00</span>:<span class="number">42</span> /dev/ram3</span><br></pre></td></tr></table></figure></p>
+<p>这个的默认大小是16M，设备的数目是16个，这个显然是不符合我们的需求的</p>
+<p>这个个数信息和大小信息是写在内核模块里面的这个目前还找到办法在外面修改的地方，现在通过修改内核模块的方式来达到修改的目的</p>
+<h3 id="1、获取内核源码">1、获取内核源码</h3><p> CentOS-7-x86_64-1503-01版本的内核是3.10.0-229.el7.x86_64，这个最好是使用的对应版本的内核代码，这样不会出现其他的问题，下载该distribution版本的内核源码，拷贝到根目录：<br><a href="http://vault.centos.org/7.1.1503/updates/Source/SPackages/kernel-3.10.0-229.1.2.el7.src.rpm" target="_blank" rel="external">http://vault.centos.org/7.1.1503/updates/Source/SPackages/kernel-3.10.0-229.1.2.el7.src.rpm</a></p>
+<h4 id="安装该源码包">安装该源码包</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># rpm -i kernel-3.10.0-229.1.2.el7.src.rpm</span></span><br></pre></td></tr></table></figure>
+<p>安装完了以后，这个rpm包里面的源码会被放在 ~/rpmbuild/SOURCES/ 这个目录内，源码文件是linux-3.10.0-229.1.2.el7.tar.xz </p>
+<h3 id="2、编译内核源码">2、编译内核源码</h3><p>将linux-3.10.0-229.1.2.el7.tar.xz 文件拷贝到目录  /usr/src/zp 下<br>这个是你自己定义一个编译的目录</p>
+<h3 id="3、解压内核源码">3、解压内核源码</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 zp]<span class="comment"># tar -xvf linux-3.10.0-229.1.2.el7.tar.xz</span></span><br><span class="line">[root@lab8106 zp]<span class="comment"># cd linux-3.10.0-229.1.2.el7/</span></span><br></pre></td></tr></table></figure>
+<h3 id="4、清理编译环境的状态，如果你是下载的内核源码，而且是第一次编译，就没有必要执行这一步操作">4、清理编译环境的状态，如果你是下载的内核源码，而且是第一次编译，就没有必要执行这一步操作</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># make mrproper</span></span><br></pre></td></tr></table></figure>
+<h4 id="将已存在的-/-config文件内容，作为新版本内核的默认值">将已存在的./.config文件内容，作为新版本内核的默认值</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># make oldconfig</span></span><br></pre></td></tr></table></figure>
+<h4 id="配置内核的参数，修改ramdisk的相关属性">配置内核的参数，修改ramdisk的相关属性</h4><p>在内核配置菜单中配置ramdisk块驱动模块的个数和大小，并保存退出<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Device Drivers </span><br><span class="line">       |--&gt;Block devices </span><br><span class="line">                  |--&gt;  [M]RAM block device support </span><br><span class="line">                           (xx) Default number of RAM disks </span><br><span class="line">                           (xx) Default RAM disk size(kbytes)</span><br></pre></td></tr></table></figure></p>
+<p>如果内存够大，可以修改大点，注意这个地方是每个内存盘的大小</p>
+<h3 id="5、编译内核模块">5、编译内核模块</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 zp]<span class="comment">#make modules -j8</span></span><br></pre></td></tr></table></figure>
+<h4 id="编译后的Ramdisk模块的存放位置">编译后的Ramdisk模块的存放位置</h4><figure class="highlight gradle"><table><tr><td class="code"><pre><span class="line"><span class="regexp">/usr/</span>src<span class="regexp">/zp/</span>linux-<span class="number">3.10</span>.<span class="number">0</span>-<span class="number">229.1</span>.<span class="number">2</span>.el7<span class="regexp">/drivers/</span>block<span class="regexp">/brd.ko</span></span><br></pre></td></tr></table></figure>
+<h3 id="6、安装新的brd-ko模块">6、安装新的brd.ko模块</h3><p>将旧的brd.ko模块从内核中移除。<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 zp]<span class="comment"># rmmod brd</span></span><br></pre></td></tr></table></figure></p>
+<p>将新的brd.ko模块拷贝到Centos7系统的 如下目录/lib/modules/3.10.0-229.el7.x86_64/kernel/drivers/block/，<br>覆盖原来的ramDisk模块brd.ko</p>
+<h3 id="7、更新内核模块依赖">7、更新内核模块依赖</h3><pre><code>[root<span class="property">@lab8106</span> zp]<span class="comment"># depmod -a</span>
+</code></pre><h3 id="8、重新挂载内核模块。_如果加载的时候报错就强制加载_modprobe_-f_brd">8、重新挂载内核模块。 如果加载的时候报错就强制加载  <code>modprobe -f brd</code></h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 zp]<span class="comment"># modprobe brd</span></span><br></pre></td></tr></table></figure>
+<h3 id="9、检查是否生成了">9、检查是否生成了</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 zp]<span class="comment">#  ls /dev/ram*</span></span><br></pre></td></tr></table></figure>
+<p>然后就可以使用/dev/ram*这个设备了，当磁盘一样使用</p>
+<p>我的为测试环境，内存不是那么大，就是5G内存盘，4个，做对比测试，ceph默认的5G的journal，这个内存就稍微给大那么一点点6G，防止单位换算的原因造成空间不够，需要重来</p>
+<hr>
+<p>这篇文章基本都是参考了：<br><a href="http://my.oschina.net/u/658505/blog/544547?fromerr=wWO13oYJ" target="_blank" rel="external">http://my.oschina.net/u/658505/blog/544547?fromerr=wWO13oYJ</a></p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>在找这个资料的时候，基本没几个能用的或者过时了的，或者是换了概念，做的不是需要的那种盘，只有少数文章有提到关键部分应该怎么去操作，现在还是自己总结一下</p>
+<h3 id="内存盘tmpfs和ramdisk的区别">内存盘tmpfs和ramdisk的区别</h3><p>这]]>
+    </summary>
+    
+      <category term="linux" scheme="http://www.zphj1987.com/tags/linux/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[删除osd的正确方式]]></title>
@@ -779,30 +831,6 @@
     </summary>
     
       <category term="nginx" scheme="http://www.zphj1987.com/tags/nginx/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[linux服务器远程网络开机（wake on lan）]]></title>
-    <link href="http://www.zphj1987.com/2015/05/27/linux%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%BF%9C%E7%A8%8B%E7%BD%91%E7%BB%9C%E5%BC%80%E6%9C%BA%EF%BC%88wake-on-lan%EF%BC%89/"/>
-    <id>http://www.zphj1987.com/2015/05/27/linux服务器远程网络开机（wake-on-lan）/</id>
-    <published>2015-05-27T06:35:40.000Z</published>
-    <updated>2015-09-23T07:27:27.955Z</updated>
-    <content type="html"><![CDATA[<h3 id="检查服务器是否支持远程网络开机">检查服务器是否支持远程网络开机</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab5101 ~]<span class="comment"># ethtool eth0</span></span><br><span class="line">    Settings <span class="keyword">for</span> eth0:</span><br><span class="line">        Supported ports: [ TP ]</span><br><span class="line">        Supported link modes: <span class="number">10</span>baseT/Half <span class="number">10</span>baseT/Full </span><br><span class="line">                              <span class="number">100</span>baseT/Half <span class="number">100</span>baseT/Full </span><br><span class="line">                              <span class="number">1000</span>baseT/Full </span><br><span class="line">        Supported pause frame use: No</span><br><span class="line">        Supports auto-negotiation: Yes</span><br><span class="line">        Advertised link modes: </span><br><span class="line">                             <span class="number">10</span>baseT/Half <span class="number">10</span>baseT/Full </span><br><span class="line">                             <span class="number">100</span>baseT/Half <span class="number">100</span>baseT/Full </span><br><span class="line">                             <span class="number">1000</span>baseT/Full </span><br><span class="line">        Advertised pause frame use: No</span><br><span class="line">        Advertised auto-negotiation: Yes</span><br><span class="line">        Speed: <span class="number">1000</span>Mb/s</span><br><span class="line">        Duplex: Full</span><br><span class="line">        Port: Twisted Pair</span><br><span class="line">        PHYAD: <span class="number">2</span></span><br><span class="line">        Transceiver: internal</span><br><span class="line">        Auto-negotiation: onMDI-X: on</span><br><span class="line">        Supports Wake-on: pumbg</span><br><span class="line">        Wake-on: g</span><br><span class="line">        Current message level: <span class="number">0</span>x00000007 (<span class="number">7</span>) </span><br><span class="line">                               drv probe linkLink detected: yes</span><br></pre></td></tr></table></figure>
-<p>注意这两项：<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">Supports Wake-on: pumbg&#10;Wake-on: g</span><br></pre></td></tr></table></figure></p>
-<a id="more"></a>
-<p>可以通过命令设置，也可以去bios中设置<br>d表示禁用，g表示开启<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab5101 ~]<span class="comment"># ethtool -s eth0 wol g</span></span><br></pre></td></tr></table></figure></p>
-<p>拿到网卡的mac地址<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab5101 ~]<span class="comment"># ifconfig </span></span><br><span class="line">eth0  Link encap:Ethernet HWaddr <span class="number">00</span>:<span class="number">30</span>:<span class="number">67</span>:<span class="number">6</span>D:<span class="number">3</span>D:<span class="number">7</span>C </span><br><span class="line">     inet addr:<span class="number">192.168</span>.<span class="number">5.101</span> Bcast:<span class="number">192.168</span>.<span class="number">255.255</span> Mask:<span class="number">255.255</span>.<span class="number">0.0</span> </span><br><span class="line">     inet6 addr: fe80::<span class="number">215</span>:<span class="number">17</span>ff:fed0:be85/<span class="number">64</span> Scope:Link</span><br><span class="line">     UP BROADCAST RUNNING MULTICAST MTU:<span class="number">1500</span> Metric:<span class="number">1</span> </span><br><span class="line">     RX packets:<span class="number">17752</span> errors:<span class="number">0</span> dropped:<span class="number">4</span> overruns:<span class="number">0</span> frame:<span class="number">0</span> </span><br><span class="line">     TX packets:<span class="number">1101</span> errors:<span class="number">0</span> dropped:<span class="number">0</span> overruns:<span class="number">0</span> carrier:<span class="number">0</span> </span><br><span class="line">     collisions:<span class="number">0</span> txqueuelen:<span class="number">1000</span> </span><br><span class="line">     RX bytes:<span class="number">1288183</span> (<span class="number">1.2</span> MiB) TX bytes:<span class="number">262525</span> (<span class="number">256.3</span> KiB) </span><br><span class="line">     Interrupt:<span class="number">16</span> Memory:b1100000-b1120000 </span><br><span class="line">lo   Link encap:Local Loopback inet addr:<span class="number">127.0</span>.<span class="number">0.1</span> Mask:<span class="number">255.0</span>.<span class="number">0.0</span> </span><br><span class="line">     inet6 addr: ::<span class="number">1</span>/<span class="number">128</span> Scope:Host </span><br><span class="line">     UP LOOPBACK RUNNING MTU:<span class="number">65536</span> Metric:<span class="number">1</span> </span><br><span class="line">     RX packets:<span class="number">62566</span> errors:<span class="number">0</span> dropped:<span class="number">0</span> overruns:<span class="number">0</span> frame:<span class="number">0</span> </span><br><span class="line">     TX packets:<span class="number">62566</span> errors:<span class="number">0</span> dropped:<span class="number">0</span> overruns:<span class="number">0</span> carrier:<span class="number">0</span> </span><br><span class="line">     collisions:<span class="number">0</span> txqueuelen:<span class="number">0</span> </span><br><span class="line">     RX bytes:<span class="number">91540393</span> (<span class="number">87.2</span> MiB) TX bytes:<span class="number">91540393</span> (<span class="number">87.2</span> MiB)</span><br></pre></td></tr></table></figure></p>
-<p>得到：<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">HWaddr 00:15:17:D0:BE:85</span><br></pre></td></tr></table></figure></p>
-<p>在另外一台服务器上执行：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab901 ~]<span class="comment"># ether-wake -i eth0 00:30:67:6d:3d:7c</span></span><br></pre></td></tr></table></figure></p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<h3 id="检查服务器是否支持远程网络开机">检查服务器是否支持远程网络开机</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab5101 ~]<span class="comment"># ethtool eth0</span></span><br><span class="line">    Settings <span class="keyword">for</span> eth0:</span><br><span class="line">        Supported ports: [ TP ]</span><br><span class="line">        Supported link modes: <span class="number">10</span>baseT/Half <span class="number">10</span>baseT/Full </span><br><span class="line">                              <span class="number">100</span>baseT/Half <span class="number">100</span>baseT/Full </span><br><span class="line">                              <span class="number">1000</span>baseT/Full </span><br><span class="line">        Supported pause frame use: No</span><br><span class="line">        Supports auto-negotiation: Yes</span><br><span class="line">        Advertised link modes: </span><br><span class="line">                             <span class="number">10</span>baseT/Half <span class="number">10</span>baseT/Full </span><br><span class="line">                             <span class="number">100</span>baseT/Half <span class="number">100</span>baseT/Full </span><br><span class="line">                             <span class="number">1000</span>baseT/Full </span><br><span class="line">        Advertised pause frame use: No</span><br><span class="line">        Advertised auto-negotiation: Yes</span><br><span class="line">        Speed: <span class="number">1000</span>Mb/s</span><br><span class="line">        Duplex: Full</span><br><span class="line">        Port: Twisted Pair</span><br><span class="line">        PHYAD: <span class="number">2</span></span><br><span class="line">        Transceiver: internal</span><br><span class="line">        Auto-negotiation: onMDI-X: on</span><br><span class="line">        Supports Wake-on: pumbg</span><br><span class="line">        Wake-on: g</span><br><span class="line">        Current message level: <span class="number">0</span>x00000007 (<span class="number">7</span>) </span><br><span class="line">                               drv probe linkLink detected: yes</span><br></pre></td></tr></table></figure>
-<p>注意这两项：<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">Supports Wake-on: pumbg&#10;Wake-on: g</span><br></pre></td></tr></table></figure></p>]]>
-    
-    </summary>
-    
-      <category term="linux" scheme="http://www.zphj1987.com/tags/linux/"/>
     
   </entry>
   
