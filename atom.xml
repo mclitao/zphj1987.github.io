@@ -4,7 +4,7 @@
   <subtitle><![CDATA[现在所学，终有所用]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2016-01-14T04:07:03.546Z</updated>
+  <updated>2016-01-14T04:11:38.093Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="http://www.zphj1987.com/2016/01/14/ceph%E4%BD%BF%E7%94%A8memdisk%E5%81%9Ajournal/"/>
     <id>http://www.zphj1987.com/2016/01/14/ceph使用memdisk做journal/</id>
     <published>2016-01-14T02:00:59.000Z</published>
-    <updated>2016-01-14T04:07:03.546Z</updated>
+    <updated>2016-01-14T04:11:38.093Z</updated>
     <content type="html"><![CDATA[<p>记得在很久很久以前，ceph当时的版本是有提供使用内存做journal的配置的，当时是使用的tmpfs，但是现在的版本在搜资料的时候，发现关于这个的没怎么找到资料，邮件列表里面有人有提到怎么做，看了下大致的原理，然后还是自己来实践一次</p>
 <h3 id="预备知识：">预备知识：</h3><p>首先需要知道的是什么是内存盘，内存盘就是划分了一个内存空间来当磁盘使用来进行加速的，这个在某些操作系统里面会把/tmp/分区挂载到tmpfs下，来达到加速的目的，这样就是重启后，会清空/tmp的内容，centos7 默认的分区方式也使用了tmpfs来加速，df -h可以看下那个tmpfs就是内存盘了</p>
 <p>本文使用的不是tmpfs，这个是因为tmpfs不是我们常见意义上的那种文件系统，它不能格式化，ceph 在进行日志创建的时候会去检查journal 所在分区的 uuid， 而tmpfs在检测的时候 会返回一个全0的字符串，这个在校验的时候显示的无效的，所以也就部署起来有问题，下面开始介绍我的做法，这个里面做法很多，步骤也可以自己去变化，这里只是提供了我的一种思路</p>
@@ -47,7 +47,7 @@
 <p>测试二：采用默认的磁盘journal的方式，环境恢复要原始的情况<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># rados bench -p rbd 120 write --no-cleanup --run-name testmemdisk</span></span><br><span class="line">Total time run:         <span class="number">120.613851</span></span><br><span class="line">Total writes made:      <span class="number">3404</span></span><br><span class="line">Write size:             <span class="number">4194304</span></span><br><span class="line">Bandwidth (MB/sec):     <span class="number">112.889</span> </span><br><span class="line"></span><br><span class="line">Stddev Bandwidth:       <span class="number">26.3641</span></span><br><span class="line">Max bandwidth (MB/sec): <span class="number">160</span></span><br><span class="line">M<span class="keyword">in</span> bandwidth (MB/sec): <span class="number">0</span></span><br><span class="line">Average Latency:        <span class="number">0.566656</span></span><br><span class="line">Stddev Latency:         <span class="number">0.305038</span></span><br><span class="line">Max latency:            <span class="number">2.00623</span></span><br><span class="line">M<span class="keyword">in</span> latency:            <span class="number">0.105026</span></span><br></pre></td></tr></table></figure></p>
 <p>测试的结果如上，上表格也许看的更直观，正好之前在找一个表格插件，现在用用</p>
 <h3 id="内存盘journal与磁盘journal性能对比">内存盘journal与磁盘journal性能对比</h3><p></p><p><link rel="stylesheet" href="http://7xo9we.com1.z0.glb.clouddn.com/compareninja%2Fskin.css" type="text/css"></p><div id="tableWrapper" style="width: 100%; "><table id="vsTable"><tbody><tr><td class="cat title" style="width: 20%; "></td><td class="title" style="width: 40%; "><div class="">内存盘journal</div></td><td class="title" style="width: 40%; "><div class="">磁盘journal</div></td></tr><tr class="second"><td class="cat" style="width: 20%; "><div class="">测试时间(s)</div></td><td style="width: 40%; "><div class="">120.568031</div></td><td style="width: 40%; "><div class="">120.613851</div></td></tr><tr><td class="cat" style="width: 20%; "><div class="">写数据块数</div></td><td style="width: 40%; "><div class="">5857</div></td><td style="width: 40%; "><div class="">3404</div></td></tr><tr><td class="cat" style="width: 20%; "><div class="">总共写入数据(MB)</div></td><td style="width: 40%; "><div class="">23428</div></td><td style="width: 40%; "><div class="">13616</div></td></tr><tr><td class="cat" style="width: 20%; "><div class="">数据块大小</div></td><td style="width: 40%; "><div class="">4194304</div></td><td style="width: 40%; "><div class="">4194304</div></td></tr><tr class="second"><td class="cat" style="width: 20%; "><div class="">写带宽(MB/sec)</div></td><td style="width: 40%; "><div class="">194.314</div></td><td style="width: 40%; "><div class="">112.889</div></td></tr><tr><td class="cat" style="width: 20%; "><div class="">带宽标准偏差</div></td><td style="width: 40%; "><div class="">144.18</div></td><td style="width: 40%; "><div class="">26.3641</div></td></tr><tr class="second"><td class="cat" style="width: 20%; "><div class="">最大带宽(MB/sec)</div></td><td style="width: 40%; "><div class="">504</div></td><td style="width: 40%; "><div class="">160</div></td></tr><tr><td class="cat" style="width: 20%; "><div class="">平均延时</div></td><td style="width: 40%; "><div class="">0.32932</div></td><td style="width: 40%; "><div class="">0.566656</div></td></tr><tr class="second"><td class="cat" style="width: 20%; "><div class="">延时偏差</div></td><td style="width: 40%; "><div class="">0.48777</div></td><td style="width: 40%; "><div class="">0.305038</div></td></tr><tr class="second"><td class="cat" style="width: 20%; "><div class="">最大延时</div></td><td style="width: 40%; "><div class="">3.01612</div></td><td style="width: 40%; "><div class="">2.00623</div></td></tr><tr class="second"><td class="cat" style="width: 20%; "><div class="">最小延时</div></td><td style="width: 40%; "><div class="">0.0377235</div></td><td style="width: 40%; "><div class="">0.105026</div></td></tr></tbody></table></div><p></p>
-<p>可以看到相关数据，光写带宽就提升了接近一倍，这个是因为，在磁盘journal情况下，写入journal的同时还是filestore的数据写入，相当于同时有两个写入在磁盘上，磁盘的性能自然只有一半了</p>
+<p>可以看到相关数据，光写带宽就提升了接近一倍，这个是因为，在磁盘journal情况下，写入journal的同时还有filestore的数据写入，相当于同时有两个写入在磁盘上，磁盘的性能自然只有一半了</p>
 <p>以上就是关于journal的内存盘实现，这里面还会面临着其他的问题</p>
 <ul>
 <li>机器内存的占用问题</li>
@@ -57,7 +57,7 @@
 </ul>
 <p>如果解决了这些问题，这个不失为一种性能提升的方案，毕竟内存的成本和速度是ssd的磁盘和单独磁盘journal不能比的，journal本身也是一种循环的写入的空间</p>
 <hr>
-<p>结尾还是来个支持的链接，如果你觉得文章写得好，欢迎打赏，如果有新文章我会第一时间推送给支持我的朋友</p>
+<p>教程的方式暂时停止了，毕竟推广这块还是有问题<br>结尾还是来个支持的链接，如果你觉得文章写得好，欢迎打赏，如果有新文章我会第一时间推送给支持我的朋友</p>
 <p><img src="http://7xo9we.com1.z0.glb.clouddn.com/zhifubao.png" alt=""></p>
 ]]></content>
     <summary type="html">
