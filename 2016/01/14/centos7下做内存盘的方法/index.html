@@ -256,13 +256,13 @@ var _hmt = _hmt || [];
 <h4 id="将已存在的-/-config文件内容，作为新版本内核的默认值">将已存在的./.config文件内容，作为新版本内核的默认值</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># make oldconfig</span></span><br></pre></td></tr></table></figure>
 <h4 id="配置内核的参数，修改ramdisk的相关属性">配置内核的参数，修改ramdisk的相关属性</h4><p>在内核配置菜单中配置ramdisk块驱动模块的个数和大小，并保存退出<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Device Drivers </span><br><span class="line">       |--&gt;Block devices </span><br><span class="line">                  |--&gt;  [M]RAM block device support </span><br><span class="line">                           (xx) Default number of RAM disks </span><br><span class="line">                           (xx) Default RAM disk size(kbytes)</span><br></pre></td></tr></table></figure></p>
 <p>如果内存够大，可以修改大点，注意这个地方是每个内存盘的大小</p>
-<h3 id="5、编译内核模块">5、编译内核模块</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 zp]<span class="comment">#make modules -j8</span></span><br></pre></td></tr></table></figure>
+<h3 id="5、编译内核模块">5、编译内核模块</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 zp]<span class="comment"># make modules -j8</span></span><br></pre></td></tr></table></figure>
 <h4 id="编译后的Ramdisk模块的存放位置">编译后的Ramdisk模块的存放位置</h4><figure class="highlight gradle"><table><tr><td class="code"><pre><span class="line"><span class="regexp">/usr/</span>src<span class="regexp">/zp/</span>linux-<span class="number">3.10</span>.<span class="number">0</span>-<span class="number">229.1</span>.<span class="number">2</span>.el7<span class="regexp">/drivers/</span>block<span class="regexp">/brd.ko</span></span><br></pre></td></tr></table></figure>
 <h3 id="6、安装新的brd-ko模块">6、安装新的brd.ko模块</h3><p>将旧的brd.ko模块从内核中移除。<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 zp]<span class="comment"># rmmod brd</span></span><br></pre></td></tr></table></figure></p>
 <p>将新的brd.ko模块拷贝到Centos7系统的 如下目录/lib/modules/3.10.0-229.el7.x86_64/kernel/drivers/block/，<br>覆盖原来的ramDisk模块brd.ko</p>
-<h3 id="7、更新内核模块依赖">7、更新内核模块依赖</h3><pre><code>[root<span class="property">@lab8106</span> zp]<span class="comment"># depmod -a</span>
-</code></pre><h3 id="8、重新挂载内核模块。_如果加载的时候报错就强制加载_modprobe_-f_brd">8、重新挂载内核模块。 如果加载的时候报错就强制加载  <code>modprobe -f brd</code></h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 zp]<span class="comment"># modprobe brd</span></span><br></pre></td></tr></table></figure>
-<h3 id="9、检查是否生成了">9、检查是否生成了</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 zp]<span class="comment">#  ls /dev/ram*</span></span><br></pre></td></tr></table></figure>
+<h3 id="7、更新内核模块依赖">7、更新内核模块依赖</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 zp]<span class="comment"># depmod -a</span></span><br></pre></td></tr></table></figure>
+<h3 id="8、重新挂载内核模块。_如果加载的时候报错就强制加载_modprobe_-f_brd">8、重新挂载内核模块。 如果加载的时候报错就强制加载  <code>modprobe -f brd</code></h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 zp]<span class="comment"># modprobe brd</span></span><br></pre></td></tr></table></figure>
+<h3 id="9、检查是否生成了">9、检查是否生成了</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 zp]<span class="comment"># ls /dev/ram*</span></span><br></pre></td></tr></table></figure>
 <p>然后就可以使用/dev/ram*这个设备了，当磁盘一样使用</p>
 <p>我的为测试环境，内存不是那么大，就是5G内存盘，4个，做对比测试，ceph默认的5G的journal，这个内存就稍微给大那么一点点6G，防止单位换算的原因造成空间不够，需要重来</p>
 <hr>
@@ -275,6 +275,15 @@ var _hmt = _hmt || [];
   
     
 <nav id="article-nav">
+  
+    <a href="/2016/01/14/ceph使用memdisk做journal/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          ceph使用memdisk做journal
+        
+      </div>
+    </a>
   
   
     <a href="/2016/01/12/删除osd的正确方式/" id="article-nav-older" class="article-nav-link-wrap">
