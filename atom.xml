@@ -4,7 +4,7 @@
   <subtitle><![CDATA[现在所学，终有所用]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2016-01-14T09:11:03.572Z</updated>
+  <updated>2016-01-22T15:52:45.114Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -15,11 +15,36 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title><![CDATA[关于ceph的rbd属性设置研究]]></title>
+    <link href="http://www.zphj1987.com/2016/01/20/%E5%85%B3%E4%BA%8Eceph%E7%9A%84rbd%E5%B1%9E%E6%80%A7%E8%AE%BE%E7%BD%AE%E7%A0%94%E7%A9%B6/"/>
+    <id>http://www.zphj1987.com/2016/01/20/关于ceph的rbd属性设置研究/</id>
+    <published>2016-01-20T14:57:53.000Z</published>
+    <updated>2016-01-22T15:52:45.114Z</updated>
+    <content type="html"><![CDATA[<p>一个rbd在存储到后台以后,在后台是对象存储的，对象</p>
+<p>[root@lab8106 rbdre]# rados -p rbd  listomapvals  rbd_directory<br>id_399a456aa808<br>value (6 bytes) :<br>0000 : 02 00 00 00 7a 70                               : ….zp</p>
+<p>name_zp<br>value (16 bytes) :<br>0000 : 0c 00 00 00 33 39 39 61 34 35 36 61 61 38 30 38 : ….399a456aa808</p>
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- myweb -->
+<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3305801963238415" data-ad-slot="9673687470" data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>一个rbd在存储到后台以后,在后台是对象存储的，对象</p>
+<p>[root@lab8106 rbdre]# rados -p rbd  listomapvals  rbd_directory<br>id_399a456aa808<br>value (6 bytes) :]]>
+    </summary>
+    
+  </entry>
+  
+  <entry>
     <title><![CDATA[ceph单机多mon的实现]]></title>
     <link href="http://www.zphj1987.com/2016/01/14/ceph%E5%8D%95%E6%9C%BA%E5%A4%9Amon%E7%9A%84%E5%AE%9E%E7%8E%B0/"/>
     <id>http://www.zphj1987.com/2016/01/14/ceph单机多mon的实现/</id>
     <published>2016-01-14T09:03:56.000Z</published>
-    <updated>2016-01-14T09:11:03.572Z</updated>
+    <updated>2016-01-14T09:11:03.000Z</updated>
     <content type="html"><![CDATA[<p>ceph默认情况下是以主机名来作为mon的识别的，所以这个情况下用部署工具是无法创建多个mon的，这个地方使用手动的方式可以很方便的创建多个mon</p>
 <h3 id="1、创建mon的数据存储目录">1、创建mon的数据存储目录</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkdir /var/lib/ceph/mon/ceph-<span class="number">1</span></span><br></pre></td></tr></table></figure>
 <h3 id="2、获取当前的monmap">2、获取当前的monmap</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph mon getmap -o /tmp/monmap</span><br></pre></td></tr></table></figure>
@@ -47,7 +72,7 @@
     <link href="http://www.zphj1987.com/2016/01/14/ceph%E4%BD%BF%E7%94%A8memdisk%E5%81%9Ajournal/"/>
     <id>http://www.zphj1987.com/2016/01/14/ceph使用memdisk做journal/</id>
     <published>2016-01-14T02:00:59.000Z</published>
-    <updated>2016-01-14T04:11:38.093Z</updated>
+    <updated>2016-01-14T04:11:38.000Z</updated>
     <content type="html"><![CDATA[<p>记得在很久很久以前，ceph当时的版本是有提供使用内存做journal的配置的，当时是使用的tmpfs，但是现在的版本在搜资料的时候，发现关于这个的没怎么找到资料，邮件列表里面有人有提到怎么做，看了下大致的原理，然后还是自己来实践一次</p>
 <h3 id="预备知识：">预备知识：</h3><p>首先需要知道的是什么是内存盘，内存盘就是划分了一个内存空间来当磁盘使用来进行加速的，这个在某些操作系统里面会把/tmp/分区挂载到tmpfs下，来达到加速的目的，这样就是重启后，会清空/tmp的内容，centos7 默认的分区方式也使用了tmpfs来加速，df -h可以看下那个tmpfs就是内存盘了</p>
 <p>本文使用的不是tmpfs，这个是因为tmpfs不是我们常见意义上的那种文件系统，它不能格式化，ceph 在进行日志创建的时候会去检查journal 所在分区的 uuid， 而tmpfs在检测的时候 会返回一个全0的字符串，这个在校验的时候显示的无效的，所以也就部署起来有问题，下面开始介绍我的做法，这个里面做法很多，步骤也可以自己去变化，这里只是提供了我的一种思路</p>
@@ -106,7 +131,7 @@
     <link href="http://www.zphj1987.com/2016/01/14/centos7%E4%B8%8B%E5%81%9A%E5%86%85%E5%AD%98%E7%9B%98%E7%9A%84%E6%96%B9%E6%B3%95/"/>
     <id>http://www.zphj1987.com/2016/01/14/centos7下做内存盘的方法/</id>
     <published>2016-01-14T01:07:28.000Z</published>
-    <updated>2016-01-14T01:58:56.316Z</updated>
+    <updated>2016-01-14T01:58:56.000Z</updated>
     <content type="html"><![CDATA[<p>在找这个资料的时候，基本没几个能用的或者过时了的，或者是换了概念，做的不是需要的那种盘，只有少数文章有提到关键部分应该怎么去操作，现在还是自己总结一下</p>
 <h3 id="内存盘tmpfs和ramdisk的区别">内存盘tmpfs和ramdisk的区别</h3><p>这个在网上的很多资料里面都有提到，很多文章去写怎么做ramdisk的时候，都是去做的tmpfs，两者虽然都是使用的内存来存储东西，但是是完全有区别的</p>
 <ul>
@@ -169,7 +194,7 @@
     <link href="http://www.zphj1987.com/2016/01/12/%E5%88%A0%E9%99%A4osd%E7%9A%84%E6%AD%A3%E7%A1%AE%E6%96%B9%E5%BC%8F/"/>
     <id>http://www.zphj1987.com/2016/01/12/删除osd的正确方式/</id>
     <published>2016-01-12T02:14:39.000Z</published>
-    <updated>2016-01-13T03:29:12.847Z</updated>
+    <updated>2016-01-13T03:29:12.000Z</updated>
     <content type="html"><![CDATA[<p>在ceph的集群当中关于节点的替换的问题，一直按照以前的方式进行的处理，处理的步骤如下：</p>
 <ol>
 <li>停止osd进程<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/etc/init.d/ceph stop osd.<span class="number">0</span></span><br></pre></td></tr></table></figure>
@@ -268,7 +293,7 @@
     <link href="http://www.zphj1987.com/2016/01/11/ceph%E5%86%99osd%E7%9A%84%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6-etc-ceph-ceph-conf/"/>
     <id>http://www.zphj1987.com/2016/01/11/ceph写osd的配置文件-etc-ceph-ceph-conf/</id>
     <published>2016-01-11T08:38:25.000Z</published>
-    <updated>2016-01-11T08:50:49.321Z</updated>
+    <updated>2016-01-11T08:50:49.000Z</updated>
     <content type="html"><![CDATA[<p>ceph在部署过程中是先进行部署，再去写配置文件的，而一些新手在部署完了后，并没有写配置文件，在重启服务器后，因为挂载点没有挂载，所以服务无法启动，所以需要写好配置文件<br>还有一种情况是集群有几百个osd，在新加入或者修改的时候，再去进行变更配置文件就是一个很麻烦的事情，所以写配置文件这个如果脚本来处理，就可以节约很多时间，所以写了一个脚本如下，这个地方如果熟悉python的可以用python写，我这个是自己使用，并且使用的频率不会太高，因此，怎么方便怎么来</p>
 <p>脚本里面用了一个二进制文件是解析json用的，这个拷贝到运行的机器上就可以了</p>
 <p>解析的二进制文件在这里下载：<br><a href="http://stedolan.github.io/jq/" target="_blank" rel="external">http://stedolan.github.io/jq/</a></p>
@@ -296,7 +321,7 @@
     <link href="http://www.zphj1987.com/2015/12/19/centos6%E5%AE%89%E8%A3%85calamari/"/>
     <id>http://www.zphj1987.com/2015/12/19/centos6安装calamari/</id>
     <published>2015-12-19T14:07:01.000Z</published>
-    <updated>2015-12-21T15:59:16.615Z</updated>
+    <updated>2015-12-21T15:59:16.000Z</updated>
     <content type="html"><![CDATA[<h3 id="一、安装操作系统">一、安装操作系统</h3><p>首先安装操作系统centos6,安装过程选择的是base server，这个不相同不要紧，出现缺少包的时候去iso找出来安装就可以了</p>
 <h3 id="二、calamari的简单介绍">二、calamari的简单介绍</h3><p>首先简单的介绍下calamari的这个软件系统的组成，主要是calamari-server,romana，salt-minion，salt-server，diamond，</p>
 <p>这些模块各自的作用：</p>
@@ -365,7 +390,7 @@
     <link href="http://www.zphj1987.com/2015/12/16/xenserver%E4%BD%BF%E7%94%A8ceph%E7%9A%84rbd%E7%9A%84%E6%96%B9%E6%B3%95/"/>
     <id>http://www.zphj1987.com/2015/12/16/xenserver使用ceph的rbd的方法/</id>
     <published>2015-12-16T06:08:00.000Z</published>
-    <updated>2015-12-16T06:11:43.964Z</updated>
+    <updated>2015-12-16T06:11:43.000Z</updated>
     <content type="html"><![CDATA[<p>首先安装的xenserver6.5的环境，看到有地方有提到这个上面可以安装rbd的支持，网上有一种方式是libvirt+kvm方式，因为ceph对libviet是原生支持的，但是xenserver底层是xen的，这个就不去研究太多，这个用最简单的方式最好</p>
 <p><a href="https://github.com/mstarikov/rbdsr" target="_blank" rel="external">https://github.com/mstarikov/rbdsr</a><br>这个是个第三方的插件，最近才出来的</p>
 <p>实现原理是ssh到ceph的机器上获取到可以使用的rbd信息，然后在xenserver的图形界面上通过配置iscsi的方式去配置rbd，里面套用了iscsi的界面，实际去xenserver机器后台同样做的是map的操作<br>这个试了下，界面的操作都可以实现，都可以获取到rbd的信息，但是在最后提交的一下的时候，后台会报错误的信息，这个有可能才出来，还有点问题<br>这个地方可以用其他的方式实现，xenserver在添加硬盘的时候本来就支持的命令行模式，下面为实现方式</p>
@@ -417,7 +442,7 @@
     <link href="http://www.zphj1987.com/2015/12/13/%E5%A6%82%E4%BD%95%E5%9C%A8%E6%89%80%E6%9C%89%E7%9A%84mon%E7%9A%84%E6%8D%9F%E5%9D%8F%E6%83%85%E5%86%B5%E4%B8%8B%E5%B0%86%E6%95%B0%E6%8D%AE%E6%81%A2%E5%A4%8D%E5%A6%82%E5%88%9D/"/>
     <id>http://www.zphj1987.com/2015/12/13/如何在所有的mon的损坏情况下将数据恢复如初/</id>
     <published>2015-12-13T11:26:43.000Z</published>
-    <updated>2015-12-13T11:38:08.478Z</updated>
+    <updated>2015-12-13T11:38:08.000Z</updated>
     <content type="html"><![CDATA[<h3 id="本篇主题：">本篇主题：</h3><p>在mon无法启动，或者所有的mon的数据盘都损坏的情况下，如何把所有的数据恢复如初</p>
 <h3 id="写本章的缘由">写本章的缘由</h3><p>在ceph中国的群里有看到一个技术人员有提到，在一次意外机房掉电后，三台mon的系统盘同时损坏了，这个对于熟悉ceph的人都知道这意味着什么，所有的集群数据将无法访问，关于这个的解决办法目前没有在哪里有看到，这个对于大多数人是用不上的，但是一旦出现了，这个损失将是无法估量的，当然谁都不希望这个情况的发生<br>所以在研究了下ceph的一些操作后，自己尝试去找了一些关于集群的故障修复的，目前看到了一个是关于单个rbd镜像的恢复的文章，那个需要将数据映射本地的loop设备后重新读取，这个我曾经验证过一遍，确实可以实现，在周末的时候我尝试了另外一个办法，实现了在mon完全失效的情况下全集群的完整数据的恢复，并且保留了原来的数据结构和数据信息，当然这中间需要进行一定的操作去完成它，这个我准备写成一个标准的操作流程，并用视频的方式来记录这个恢复的流程</p>
 <h3 id="本篇资源:">本篇资源:</h3><p>包括了视频，操作文档（本篇还未完成，接受预定）</p>
@@ -444,7 +469,7 @@
     <link href="http://www.zphj1987.com/2015/12/12/%E5%85%B3%E4%BA%8E%E5%BC%80%E5%A7%8B%E5%86%99%E6%95%99%E7%A8%8B%E7%9A%84%E4%BA%8B/"/>
     <id>http://www.zphj1987.com/2015/12/12/关于开始写教程的事/</id>
     <published>2015-12-11T16:37:22.000Z</published>
-    <updated>2015-12-11T17:48:30.321Z</updated>
+    <updated>2015-12-11T17:48:30.000Z</updated>
     <content type="html"><![CDATA[<p>在加入到ceph社区的群里以后，尝试着去回答一些有关ceph的问题，发现很多问题其实自己都遇到过，而且很多问题是反复的会被人提起，对于新手来说，由于资源太多，可能就无法比较系统的去学习这个东西，网上的文档也很多，到底从哪里开始，怎么去做，遇到的问题到底是什么造成的，这些都很难一下找到解决办法</p>
 <p>有一天想到了是不是自己也可以尝试着去做一下这个事情，网上也会有相关的教程，但是这个实在太少太少，一来专业的讲师可能不会非常的熟悉集群，二来非常熟悉集群的人，也不一定有精力去完成这个事情，而我也不确定能不能很好的去做这个事情，但是总算是起步了</p>
 <a id="more"></a>
@@ -471,7 +496,7 @@
     <link href="http://www.zphj1987.com/2015/12/12/ceph%E9%9B%86%E7%BE%A4%E7%9A%84%E5%AE%89%E8%A3%85%E5%92%8C%E9%85%8D%E7%BD%AE%E6%95%99%E7%A8%8B/"/>
     <id>http://www.zphj1987.com/2015/12/12/ceph集群的安装和配置教程/</id>
     <published>2015-12-11T16:36:48.000Z</published>
-    <updated>2015-12-11T17:51:41.040Z</updated>
+    <updated>2015-12-11T17:51:41.000Z</updated>
     <content type="html"><![CDATA[<h3 id="本篇主题：">本篇主题：</h3><p>1、怎样配置ssh免登陆访问<br>2、为什么搭建集群要关闭防火墙和selinux，如何关闭<br>3、从哪里获取ceph的安装包，怎样安装才是快速正确的<br>4、为什么要配置时间同步服务，怎样配置<br>5、怎样创建集群<br>6、怎样使用不同的方式增加osd（这里我总结了五种）</p>
 <ul>
 <li>默认方式</li>
@@ -519,7 +544,7 @@
     <link href="http://www.zphj1987.com/2015/11/18/%E5%9C%A8%E7%BA%BF%E8%B0%83%E6%95%B4ceph%E7%9A%84%E5%8F%82%E6%95%B0/"/>
     <id>http://www.zphj1987.com/2015/11/18/在线调整ceph的参数/</id>
     <published>2015-11-18T15:11:44.000Z</published>
-    <updated>2015-11-18T15:13:22.757Z</updated>
+    <updated>2015-11-18T15:13:22.000Z</updated>
     <content type="html"><![CDATA[<p>能够动态的进行系统参数的调整是一个很重要并且有用的属性<br>ceph的集群提供两种方式的调整，使用tell的方式和daemon设置的方式</p>
 <h3 id="一、tell方式设置">一、tell方式设置</h3><p>调整配置使用命令：</p>
 <h4 id="调整mon的参数">调整mon的参数</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#ceph tell mon.* injectargs '--&#123;tunable value_to_be_set&#125;'</span></span><br></pre></td></tr></table></figure>
@@ -553,7 +578,7 @@
     <link href="http://www.zphj1987.com/2015/11/16/%E9%AA%8C%E8%AF%81rbd%E7%9A%84%E7%BC%93%E5%AD%98%E6%98%AF%E5%90%A6%E5%BC%80%E5%90%AF/"/>
     <id>http://www.zphj1987.com/2015/11/16/验证rbd的缓存是否开启/</id>
     <published>2015-11-16T08:49:16.000Z</published>
-    <updated>2015-11-16T08:50:05.286Z</updated>
+    <updated>2015-11-16T08:50:05.000Z</updated>
     <content type="html"><![CDATA[<p>简单快速的在客户端验证rbd的cache是否开启<br>首先修改配置文件<br>在ceph.conf中添加：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[client]</span><br><span class="line">rbd cache = <span class="literal">true</span></span><br><span class="line">rbd cache writethrough until flush = <span class="literal">true</span></span><br></pre></td></tr></table></figure></p>
 <p>开启以后，在这台机器上进行测试<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@node8109 ~]<span class="comment"># rbd -p rbd bench-write zp  --io-size 4096 --io-threads 256  --io-total 102400000   --io-pattern seq</span></span><br><span class="line">bench-write  io_size <span class="number">4096</span> io_threads <span class="number">256</span> bytes <span class="number">102400000</span> pattern seq</span><br><span class="line">  SEC       OPS   OPS/SEC   BYTES/SEC</span><br><span class="line">elapsed:     <span class="number">0</span>  ops:    <span class="number">25000</span>  ops/sec: <span class="number">26830.05</span>  bytes/sec: <span class="number">109895890.09</span></span><br></pre></td></tr></table></figure></p>
 <p>可以看到io还是何况的达到了26830每秒<br><a id="more"></a><br>下面进行关闭后再测试：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@node8109 ~]<span class="comment"># rbd -p rbd bench-write zp  --io-size 4096 --io-threads 256  --io-total 102400000   --io-pattern seq</span></span><br><span class="line">bench-write  io_size <span class="number">4096</span> io_threads <span class="number">256</span> bytes <span class="number">102400000</span> pattern seq</span><br><span class="line">  SEC       OPS   OPS/SEC   BYTES/SEC</span><br><span class="line">    <span class="number">1</span>       <span class="number">893</span>   <span class="number">1076.16</span>  <span class="number">4407933.78</span></span><br><span class="line">    <span class="number">2</span>      <span class="number">1344</span>    <span class="number">795.81</span>  <span class="number">3259636.35</span></span><br><span class="line">    <span class="number">3</span>      <span class="number">1794</span>    <span class="number">655.20</span>  <span class="number">2683695.60</span></span><br><span class="line">    <span class="number">4</span>      <span class="number">2198</span>    <span class="number">613.23</span>  <span class="number">2511789.77</span></span><br></pre></td></tr></table></figure></p>
@@ -577,7 +602,7 @@
     <link href="http://www.zphj1987.com/2015/11/12/%E5%A6%82%E4%BD%95%E5%88%A0%E9%99%A4%E4%B8%80%E5%8F%B0OSD%E4%B8%BB%E6%9C%BA/"/>
     <id>http://www.zphj1987.com/2015/11/12/如何删除一台OSD主机/</id>
     <published>2015-11-12T13:33:41.000Z</published>
-    <updated>2015-11-12T13:35:14.130Z</updated>
+    <updated>2015-11-12T13:35:14.000Z</updated>
     <content type="html"><![CDATA[<blockquote>
 <p>在ceph的一台OSD主机出现故障的时候，数据可以通过副本的机制进行恢复，之后通过删除osd的操作也能够将故障osd从osd tree当中删除掉，但是故障的 osd 的主机仍然会留在集群当中，通过 ceph osd tree 或者打印 crush map 都可以看到这个损坏的节点主机名，所以这里讲下怎么删除掉这个无用的host</p>
 </blockquote>
@@ -615,7 +640,7 @@
     <link href="http://www.zphj1987.com/2015/11/01/Mon%E5%A4%B1%E6%95%88%E5%A4%84%E7%90%86%E6%96%B9%E6%B3%95/"/>
     <id>http://www.zphj1987.com/2015/11/01/Mon失效处理方法/</id>
     <published>2015-11-01T15:34:26.000Z</published>
-    <updated>2015-11-01T15:38:49.630Z</updated>
+    <updated>2015-11-01T15:38:49.000Z</updated>
     <content type="html"><![CDATA[<p>假设环境为三个mon，主机名为mon1、mon2、mon3，现在mon3上面的系统盘损坏，mon的数据完全丢失，现在需要对mon3进行恢复处理</p>
 <p>1、停止所有mon进程，可以不停其他进程，需要停止内核客户端以及对外的服务，防止卡死<br>在mon1机器上执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/etc/init.d/ceph stop mon</span><br></pre></td></tr></table></figure></p>
 <p>在mon2机器上执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/etc/init.d/ceph stop mon</span><br></pre></td></tr></table></figure></p>
@@ -651,7 +676,7 @@
     <link href="http://www.zphj1987.com/2015/10/13/%E5%9C%A8%E9%A1%B5%E9%9D%A2%E4%B8%AD%E5%B5%8C%E5%85%A5%E8%87%AA%E9%80%82%E5%BA%94%E8%A7%86%E9%A2%91%E7%9A%84%E6%96%B9%E6%B3%95/"/>
     <id>http://www.zphj1987.com/2015/10/13/在页面中嵌入自适应视频的方法/</id>
     <published>2015-10-13T13:50:23.000Z</published>
-    <updated>2015-10-13T14:46:32.123Z</updated>
+    <updated>2015-10-13T14:46:32.000Z</updated>
     <content type="html"><![CDATA[<p>准备在博客中嵌入视频，从视频网站获取的embed代码是指定宽度和高度的，这样在一些窗口或者移动端进行访问的时候，就可能视频溢出屏幕了，体验不好，实际上这几年响应式网站比较流行，也就是能让内容自动的适应窗口的大小</p>
 <p>屏幕的宽度可以用 <code>width：100%</code> 进行设置，高度看到有个 <code>height:100%</code> 设置后height实际取的是上一层的高度的百分比，如果没设置的话，这个就为0，看到嵌入的视频就没有高度了，网上关于这个的资料很多，可以搜索下</p>
 <p>关于视频的自适应看到  <a href="https://developers.google.com/web/fundamentals/media/video/size-videos-correctly?hl=zh-cn#section" title="google 自适应设置建议" target="_blank" rel="external">google 自适应设置建议</a> 这个介绍的很好<br><a id="more"></a><br>主要是这段代码:<br><figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="class">.video-container</span> <span class="rules">&#123;</span><br><span class="line">        <span class="rule"><span class="attribute">position</span>:<span class="value"> relative</span></span>;</span><br><span class="line">        <span class="rule"><span class="attribute">padding-bottom</span>:<span class="value"> <span class="number">56.25%</span></span></span>;</span><br><span class="line">        <span class="rule"><span class="attribute">padding-top</span>:<span class="value"> <span class="number">30px</span></span></span>;</span><br><span class="line">        <span class="rule"><span class="attribute">height</span>:<span class="value"> <span class="number">0</span></span></span>;</span><br><span class="line">        <span class="rule"><span class="attribute">overflow</span>:<span class="value"> hidden</span></span>;</span><br><span class="line">    <span class="rule">&#125;</span></span></span><br><span class="line"></span><br><span class="line">    <span class="class">.video-container</span> <span class="tag">iframe</span>,</span><br><span class="line">    <span class="class">.video-container</span> <span class="tag">object</span>,</span><br><span class="line">    <span class="class">.video-container</span> <span class="tag">embed</span> <span class="rules">&#123;</span><br><span class="line">        <span class="rule"><span class="attribute">position</span>:<span class="value"> absolute</span></span>;</span><br><span class="line">        <span class="rule"><span class="attribute">top</span>:<span class="value"> <span class="number">0</span></span></span>;</span><br><span class="line">        <span class="rule"><span class="attribute">left</span>:<span class="value"> <span class="number">0</span></span></span>;</span><br><span class="line">        <span class="rule"><span class="attribute">width</span>:<span class="value"> <span class="number">100%</span></span></span>;</span><br><span class="line">        <span class="rule"><span class="attribute">height</span>:<span class="value"> <span class="number">100%</span></span></span>;</span><br><span class="line">    <span class="rule">&#125;</span></span></span><br></pre></td></tr></table></figure></p>
@@ -679,7 +704,7 @@
     <link href="http://www.zphj1987.com/2015/10/12/inkscope%E7%AE%A1%E7%90%86%E5%B9%B3%E5%8F%B0%E8%AF%95%E7%94%A8/"/>
     <id>http://www.zphj1987.com/2015/10/12/inkscope管理平台试用/</id>
     <published>2015-10-12T13:28:22.000Z</published>
-    <updated>2015-10-13T14:46:38.365Z</updated>
+    <updated>2015-10-13T14:46:38.000Z</updated>
     <content type="html"><![CDATA[<p>下面为inkscope的管理平台的操作记录，一直听说过这个管理平台，但一直没有真正的去配置过，花了一点时间进行了配置</p>
 <p>inkscope的管理平台总结下有下面几个：</p>
 <ul>
@@ -712,7 +737,7 @@
     <link href="http://www.zphj1987.com/2015/10/04/%E6%9F%A5%E8%AF%A2osd%E4%B8%8A%E7%9A%84pg%E6%95%B0/"/>
     <id>http://www.zphj1987.com/2015/10/04/查询osd上的pg数/</id>
     <published>2015-10-03T16:02:06.000Z</published>
-    <updated>2015-10-08T16:13:00.758Z</updated>
+    <updated>2015-10-08T16:13:00.000Z</updated>
     <content type="html"><![CDATA[<p>本文中的命令的第一版来源于国外的一个博客，后面的版本为我自己修改的版本</p>
 <p>查询的命令如下：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph pg dump | awk <span class="string">'</span><br><span class="line"> /^pg_stat/ &#123; col=1; while($col!="up") &#123;col++&#125;; col++ &#125;</span><br><span class="line"> /^[0-9a-f]+\.[0-9a-f]+/ &#123; match($0,/^[0-9a-f]+/); pool=substr($0, RSTART, RLENGTH); poollist[pool]=0;</span><br><span class="line"> up=$col; i=0; RSTART=0; RLENGTH=0; delete osds; while(match(up,/[0-9]+/)&gt;0) &#123; osds[++i]=substr(up,RSTART,RLENGTH); up = substr(up, RSTART+RLENGTH) &#125;</span><br><span class="line"> for(i in osds) &#123;array[osds[i],pool]++; osdlist[osds[i]];&#125;</span><br><span class="line">&#125;</span><br><span class="line">END &#123;</span><br><span class="line"> printf("\n");</span><br><span class="line"> printf("pool :\t"); for (i in poollist) printf("%s\t",i); printf("| SUM \n");</span><br><span class="line"> for (i in poollist) printf("--------"); printf("----------------\n");</span><br><span class="line"> for (i in osdlist) &#123; printf("osd.%i\t", i); sum=0;</span><br><span class="line"> for (j in poollist) &#123; printf("%i\t", array[i,j]); sum+=array[i,j]; poollist[j]+=array[i,j] &#125;; printf("| %i\n",sum) &#125;</span><br><span class="line"> for (i in poollist) printf("--------"); printf("----------------\n");</span><br><span class="line"> printf("SUM :\t"); for (i in poollist) printf("%s\t",poollist[i]); printf("|\n");</span><br><span class="line">&#125;'</span></span><br></pre></td></tr></table></figure></p>
 <a id="more"></a>
@@ -793,7 +818,7 @@
     <link href="http://www.zphj1987.com/2015/09/28/rbd%E7%9A%84%E6%95%B0%E6%8D%AE%E5%9C%A8%E5%93%AA%E9%87%8C/"/>
     <id>http://www.zphj1987.com/2015/09/28/rbd的数据在哪里/</id>
     <published>2015-09-28T08:06:29.000Z</published>
-    <updated>2015-09-28T08:21:56.250Z</updated>
+    <updated>2015-09-28T08:21:56.000Z</updated>
     <content type="html"><![CDATA[<h3 id="创建一个rbd">创建一个rbd</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@mytest ~]<span class="comment"># rbd create test1 --size 4000</span></span><br></pre></td></tr></table></figure>
 <h3 id="查看rbd信息">查看rbd信息</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@mytest ~]<span class="comment"># rbd info test1</span></span><br><span class="line">rbd image <span class="string">'test1'</span>:</span><br><span class="line">	size <span class="number">4000</span> MB <span class="keyword">in</span> <span class="number">1000</span> objects</span><br><span class="line">	order <span class="number">22</span> (<span class="number">4096</span> kB objects)</span><br><span class="line">	block_name_prefix: rb.<span class="number">0</span>.fa6c.<span class="number">6</span>b8b4567</span><br><span class="line">	format: <span class="number">1</span></span><br></pre></td></tr></table></figure>
 <p>可以看出是没写入真实数据的<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@mytest ~]<span class="comment"># ceph df|grep rbd</span></span><br><span class="line">    rbd          <span class="number">0</span>       <span class="number">133</span>         <span class="number">0</span>        <span class="number">30627</span>M           <span class="number">2</span></span><br></pre></td></tr></table></figure></p>
@@ -835,7 +860,7 @@
     <link href="http://www.zphj1987.com/2015/09/28/%E6%89%B9%E9%87%8F%E4%B8%8B%E8%BD%BDinstagram%E5%9B%BE%E7%89%87/"/>
     <id>http://www.zphj1987.com/2015/09/28/批量下载instagram图片/</id>
     <published>2015-09-28T05:54:09.000Z</published>
-    <updated>2016-01-14T09:28:54.563Z</updated>
+    <updated>2016-01-14T09:28:54.000Z</updated>
     <content type="html"><![CDATA[<h3 id="下载图片：">下载图片：</h3><p>通过下面的网址可以批量下载图片，需要翻墙</p>
 <p><a href="http://instrport.me/" target="_blank" rel="external">http://instrport.me/</a></p>
 <h3 id="处理图片到blog可用">处理图片到blog可用</h3><p>使用脚本运行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="shebang">#! /bin/sh</span></span><br><span class="line"><span class="keyword">for</span> file <span class="keyword">in</span> `ls ./ins`</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">year=`<span class="built_in">echo</span> <span class="variable">$file</span>|cut <span class="operator">-f</span> <span class="number">1</span> <span class="operator">-d</span> -`</span><br><span class="line">mouth=`<span class="built_in">echo</span> <span class="variable">$file</span>|cut <span class="operator">-f</span> <span class="number">2</span> <span class="operator">-d</span> -`</span><br><span class="line">	</span><br><span class="line"><span class="built_in">echo</span> <span class="operator">-e</span> <span class="string">"&#123;\"src\":\"https://scontent.cdninstagram.com/hphotos-xfa1/t51.2885-15/e15/<span class="variable">$file</span>\",\"text\":\"\",\"y\":<span class="variable">$year</span>,\"m\":<span class="variable">$mouth</span>&#125;,\c"</span></span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure></p>
@@ -848,38 +873,6 @@
     </summary>
     
       <category term="instagram" scheme="http://www.zphj1987.com/tags/instagram/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[删除ceph集群mds]]></title>
-    <link href="http://www.zphj1987.com/2015/09/24/%E5%88%A0%E9%99%A4ceph%E9%9B%86%E7%BE%A4mds/"/>
-    <id>http://www.zphj1987.com/2015/09/24/删除ceph集群mds/</id>
-    <published>2015-09-24T03:10:49.000Z</published>
-    <updated>2015-09-28T08:24:14.398Z</updated>
-    <content type="html"><![CDATA[<p>ceph集群新搭建以后是只有一个默认的存储池rbd的池</p>
-<h2 id="创建文件接口集群">创建文件接口集群</h2><h3 id="1-创建一个元数据池">1.创建一个元数据池</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@mytest ~]<span class="comment"># ceph osd pool create metadata  20 20</span></span><br><span class="line">pool <span class="string">'metadata'</span> created</span><br></pre></td></tr></table></figure>
-<h3 id="2-创建一个数据池">2.创建一个数据池</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@mytest ~]<span class="comment"># ceph osd pool create data   20 20</span></span><br><span class="line">pool <span class="string">'data'</span> created</span><br></pre></td></tr></table></figure>
-<h3 id="3-创建一个文件系统">3.创建一个文件系统</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@mytest ~]<span class="comment"># ceph fs new ceph  metadata data</span></span><br><span class="line">new fs with metadata pool <span class="number">4</span> and data pool <span class="number">5</span></span><br></pre></td></tr></table></figure>
-<h3 id="4-创建一个mds">4.创建一个mds</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@mytest ~]<span class="comment"># ceph-deploy mds create mytest</span></span><br></pre></td></tr></table></figure>
-<a id="more"></a>
-<h3 id="5-部署完检查状态">5.部署完检查状态</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@mytest ceph]<span class="comment"># ceph -s</span></span><br><span class="line">    cluster <span class="number">7</span>e5469ac-ae1f-<span class="number">494</span>f-<span class="number">9913</span>-<span class="number">901</span>f60c0a76b</span><br><span class="line">     health HEALTH_OK</span><br><span class="line">     monmap e1: <span class="number">1</span> mons at &#123;mytest=<span class="number">192.168</span>.<span class="number">0.76</span>:<span class="number">6789</span>/<span class="number">0</span>&#125;</span><br><span class="line">            election epoch <span class="number">1</span>, quorum <span class="number">0</span> mytest</span><br><span class="line">     mdsmap e60: <span class="number">1</span>/<span class="number">1</span>/<span class="number">1</span> up &#123;<span class="number">0</span>=mytest=up:active&#125;</span><br><span class="line">     osdmap e70: <span class="number">2</span> osds: <span class="number">2</span> up, <span class="number">2</span> <span class="keyword">in</span></span><br><span class="line">      pgmap v252: <span class="number">104</span> pgs, <span class="number">3</span> pools, <span class="number">1962</span> bytes data, <span class="number">20</span> objects</span><br><span class="line">            <span class="number">75144</span> kB used, <span class="number">30624</span> MB / <span class="number">30697</span> MB avail</span><br><span class="line">                 <span class="number">104</span> active+clean</span><br><span class="line">  client io <span class="number">108</span> B/s wr, <span class="number">0</span> op/s</span><br></pre></td></tr></table></figure>
-<h2 id="删除文件接口集群（删除mds）">删除文件接口集群（删除mds）</h2><h3 id="1-停止mds进程">1.停止mds进程</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@mytest ceph]<span class="comment"># /etc/init.d/ceph stop mds</span></span><br><span class="line">=== mds.mytest === </span><br><span class="line">Stopping Ceph mds.mytest on mytest...kill <span class="number">9638</span>...done</span><br></pre></td></tr></table></figure>
-<h3 id="2-将mds状态标记为失效">2.将mds状态标记为失效</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@mytest ceph]<span class="comment"># ceph mds fail 0</span></span><br><span class="line">failed mds.<span class="number">0</span></span><br></pre></td></tr></table></figure>
-<h3 id="3-删除ceph文件系统">3.删除ceph文件系统</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@mytest ceph]<span class="comment"># ceph fs rm ceph --yes-i-really-mean-it</span></span><br></pre></td></tr></table></figure>
-<h3 id="4-删除完了检查状态">4.删除完了检查状态</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@mytest ceph]<span class="comment"># ceph -s</span></span><br><span class="line">    cluster <span class="number">7</span>e5469ac-ae1f-<span class="number">494</span>f-<span class="number">9913</span>-<span class="number">901</span>f60c0a76b</span><br><span class="line">     health HEALTH_OK</span><br><span class="line">     monmap e1: <span class="number">1</span> mons at &#123;mytest=<span class="number">192.168</span>.<span class="number">0.76</span>:<span class="number">6789</span>/<span class="number">0</span>&#125;</span><br><span class="line">            election epoch <span class="number">1</span>, quorum <span class="number">0</span> mytest</span><br><span class="line">     osdmap e71: <span class="number">2</span> osds: <span class="number">2</span> up, <span class="number">2</span> <span class="keyword">in</span></span><br><span class="line">      pgmap v253: <span class="number">104</span> pgs, <span class="number">3</span> pools, <span class="number">1962</span> bytes data, <span class="number">20</span> objects</span><br><span class="line">            <span class="number">75144</span> kB used, <span class="number">30624</span> MB / <span class="number">30697</span> MB avail</span><br><span class="line">                 <span class="number">104</span> active+clean</span><br></pre></td></tr></table></figure>
-<p>可以看到已经没有了mds的那一条了</p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>ceph集群新搭建以后是只有一个默认的存储池rbd的池</p>
-<h2 id="创建文件接口集群">创建文件接口集群</h2><h3 id="1-创建一个元数据池">1.创建一个元数据池</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@mytest ~]<span class="comment"># ceph osd pool create metadata  20 20</span></span><br><span class="line">pool <span class="string">'metadata'</span> created</span><br></pre></td></tr></table></figure>
-<h3 id="2-创建一个数据池">2.创建一个数据池</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@mytest ~]<span class="comment"># ceph osd pool create data   20 20</span></span><br><span class="line">pool <span class="string">'data'</span> created</span><br></pre></td></tr></table></figure>
-<h3 id="3-创建一个文件系统">3.创建一个文件系统</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@mytest ~]<span class="comment"># ceph fs new ceph  metadata data</span></span><br><span class="line">new fs with metadata pool <span class="number">4</span> and data pool <span class="number">5</span></span><br></pre></td></tr></table></figure>
-<h3 id="4-创建一个mds">4.创建一个mds</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@mytest ~]<span class="comment"># ceph-deploy mds create mytest</span></span><br></pre></td></tr></table></figure>]]>
-    
-    </summary>
-    
-      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
     
   </entry>
   

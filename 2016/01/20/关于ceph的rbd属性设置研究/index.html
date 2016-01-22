@@ -3,17 +3,23 @@
 <head>
   <meta charset="utf-8">
   
-  <title>zphj1987&#39;Blog</title>
+  <title>关于ceph的rbd属性设置研究 | zphj1987&#39;Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description">
-<meta property="og:type" content="website">
-<meta property="og:title" content="zphj1987'Blog">
-<meta property="og:url" content="http://www.zphj1987.com/archives/2016/index.html">
+  <meta name="description" content="一个rbd在存储到后台以后,在后台是对象存储的，对象
+[root@lab8106 rbdre]# rados -p rbd  listomapvals  rbd_directoryid_399a456aa808value (6 bytes) :0000 : 02 00 00 00 7a 70                               : ….zp
+name_zpvalue (16">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关于ceph的rbd属性设置研究">
+<meta property="og:url" content="http://www.zphj1987.com/2016/01/20/关于ceph的rbd属性设置研究/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
-<meta property="og:description">
+<meta property="og:description" content="一个rbd在存储到后台以后,在后台是对象存储的，对象
+[root@lab8106 rbdre]# rados -p rbd  listomapvals  rbd_directoryid_399a456aa808value (6 bytes) :0000 : 02 00 00 00 7a 70                               : ….zp
+name_zpvalue (16">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="zphj1987'Blog">
-<meta name="twitter:description">
+<meta name="twitter:title" content="关于ceph的rbd属性设置研究">
+<meta name="twitter:description" content="一个rbd在存储到后台以后,在后台是对象存储的，对象
+[root@lab8106 rbdre]# rados -p rbd  listomapvals  rbd_directoryid_399a456aa808value (6 bytes) :0000 : 02 00 00 00 7a 70                               : ….zp
+name_zpvalue (16">
   
     <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
   
@@ -184,204 +190,109 @@ var _hmt = _hmt || [];
 		</header>				
 	</div>
 </nav>
-      <div class="body-wrap">
+      <div class="body-wrap"><article id="post-关于ceph的rbd属性设置研究" class="article article-type-post" itemscope itemprop="blogPost">
   
+    <div class="article-meta">
+      <a href="/2016/01/20/关于ceph的rbd属性设置研究/" class="article-date">
+  	<time datetime="2016-01-20T14:57:53.000Z" itemprop="datePublished">2016-01-20</time>
+</a>
+    </div>
   
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
     
     
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      关于ceph的rbd属性设置研究
+    </h1>
+  
+
+      </header>
       
+      <div class="article-info article-info-post">
+        
+        
+
+        <div class="clearfix"></div>
+      </div>
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2016" class="archive-year">2016</a>
-        </div>
-        <div class="archives">
     
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2016/01/20/关于ceph的rbd属性设置研究/" class="archive-article-date">
-  	<time datetime="2016-01-20T14:57:53.000Z" itemprop="datePublished">Jan 20</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/01/20/关于ceph的rbd属性设置研究/">关于ceph的rbd属性设置研究</a>
-    </h1>
-  
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>一个rbd在存储到后台以后,在后台是对象存储的，对象</p>
+<p>[root@lab8106 rbdre]# rados -p rbd  listomapvals  rbd_directory<br>id_399a456aa808<br>value (6 bytes) :<br>0000 : 02 00 00 00 7a 70                               : ….zp</p>
+<p>name_zp<br>value (16 bytes) :<br>0000 : 0c 00 00 00 33 39 39 61 34 35 36 61 61 38 30 38 : ….399a456aa808</p>
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- myweb -->
+<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3305801963238415" data-ad-slot="9673687470" data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
 
-        <div class="article-info info-on-right">
-          
-          
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
+
+      
+    </div>
+    
   </div>
-</article>
   
     
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2016/01/14/ceph单机多mon的实现/" class="archive-article-date">
-  	<time datetime="2016-01-14T09:03:56.000Z" itemprop="datePublished">Jan 14</time>
-</a>
-        </div>
-    	 
+<nav id="article-nav">
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/01/14/ceph单机多mon的实现/">ceph单机多mon的实现</a>
-    </h1>
   
+    <a href="/2016/01/14/ceph单机多mon的实现/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">ceph单机多mon的实现</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+  
+</article>
+
+
+<div class="share">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到：</span>
+		<a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+		<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
 	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
 
-          
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2016/01/14/ceph使用memdisk做journal/" class="archive-article-date">
-  	<time datetime="2016-01-14T02:00:59.000Z" itemprop="datePublished">Jan 14</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/01/14/ceph使用memdisk做journal/">ceph使用memdisk做journal</a>
-    </h1>
-  
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="关于ceph的rbd属性设置研究" data-title="关于ceph的rbd属性设置研究" data-url="http://www.zphj1987.com/2016/01/20/关于ceph的rbd属性设置研究/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"zphj1987"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
 
-          
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2016/01/14/centos7下做内存盘的方法/" class="archive-article-date">
-  	<time datetime="2016-01-14T01:07:28.000Z" itemprop="datePublished">Jan 14</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/01/14/centos7下做内存盘的方法/">centos7下做内存盘的方法</a>
-    </h1>
-  
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2016/01/12/删除osd的正确方式/" class="archive-article-date">
-  	<time datetime="2016-01-12T02:14:39.000Z" itemprop="datePublished">Jan 12</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/01/12/删除osd的正确方式/">删除osd的正确方式</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2016/01/11/ceph写osd的配置文件-etc-ceph-ceph-conf/" class="archive-article-date">
-  	<time datetime="2016-01-11T08:38:25.000Z" itemprop="datePublished">Jan 11</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/01/11/ceph写osd的配置文件-etc-ceph-ceph-conf/">ceph写osd的配置文件/etc/ceph/ceph.conf</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
-
-    
 
 </div>
       <footer id="footer">
@@ -407,7 +318,7 @@ var _hmt = _hmt || [];
 		mathjax: undefined,
 		animate: true,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,
