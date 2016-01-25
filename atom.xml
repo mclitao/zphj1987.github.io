@@ -4,7 +4,7 @@
   <subtitle><![CDATA[现在所学，终有所用]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2016-01-25T06:43:06.342Z</updated>
+  <updated>2016-01-25T09:05:58.008Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="http://www.zphj1987.com/2016/01/25/%E7%A3%A8%E7%A3%A8%E8%B0%88-ceph-users-%E9%82%AE%E4%BB%B6%E5%88%97%E8%A1%A8%E4%B9%8BVol-36-Issue-23/"/>
     <id>http://www.zphj1987.com/2016/01/25/磨磨谈-ceph-users-邮件列表之Vol-36-Issue-23/</id>
     <published>2016-01-24T16:06:58.000Z</published>
-    <updated>2016-01-25T06:43:06.342Z</updated>
+    <updated>2016-01-25T09:05:58.008Z</updated>
     <content type="html"><![CDATA[<h2 id="前言：">前言：</h2><p>一个技术的邮件列表其实是个大宝藏，看你怎么去挖掘它了，里面有太多的灵光一现，太多的大牛的引导，而我等也只能在某些出现问题的时候，去搜索的时候，才发现这些问题是很多人遇到过的，最近看到一个技术人说的一句话深有同感,意思是说，很多时候我们花精力重复解决问题</p>
 <ul>
 <li>一流的公司在从整体上去解决一批的问题</li>
@@ -42,7 +42,7 @@
 <li>CephFS</li>
 <li>ceph fuse closing stale session while still   operable</li>
 </ul>
-<h3 id="三、问题解析">三、问题解析</h3><p>问题一：<br>journal encryption with dmcrypt （Reno Rainz）</p>
+<h3 id="三、问题解析">三、问题解析</h3><h4 id="问题一：">问题一：</h4><p>journal encryption with dmcrypt （Reno Rainz）</p>
 <p>问题原文：<br>I’m trying to setup a cluster with encryption on osd data and journal.<br>To do  that I use ceph-deploy with this 2 options —dmcrypt<br>—dmcrypt-key-dir on /dev/sdc disk.<br>……</p>
 <p>分析：<br>问题的提出者试图在部署osd的时候使用 encryption 对 osd 进行加密,在用 ceph-deploy 的时候，部署的时候出现了失败</p>
 <p>总结：</p>
@@ -53,6 +53,14 @@
 <p>2、进行osd的激活<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph-deploy osd activate /dev/mapper/f6244401-c848-<span class="number">42</span>d1-<span class="number">9096</span>-<span class="number">9</span>a3ee5a136e9</span><br></pre></td></tr></table></figure></p>
 <p>这样就可以了</p>
 <p>另外：<br>取消映射的操作是<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cryptsetup remove f6244401-c848-<span class="number">42</span>d1-<span class="number">9096</span>-<span class="number">9</span>a3ee5a136e9</span><br></pre></td></tr></table></figure></p>
+<h4 id="问题二：">问题二：</h4><p>ceph fuse closing stale session while still   operable （Oliver Dzombic）</p>
+<p>问题原文：<br>Hi,<br>i am testing on centos 6 x64 minimal install.<br>i am mounting successfully:<br>ceph-fuse -m 10.0.0.1:6789,10.0.0.2:6789,10.0.0.3:6789,10.0.0.4:6789<br>/ceph-storage/<br>……</p>
+<p>分析：<br>问题的提出者在使用ceph-fuse去挂载集群的时候，写入一个大文件的时候出现无法写入的问题，在mds的日志当中可以看到<br>closing stale session client.21176728 10.0.0.91:0/1635 after 301.302291 的日志信息</p>
+<p>从日志检查过程看<br>ceph -s 出现了  62 requests are blocked &gt; 32 sec<br>问题提出者在认证的时候，出现了语法错误 ceph auth list showed 可以检查，后经修改，还是问题一样</p>
+<p>查看客户端的请求：<br>ceph daemon /var/run/ceph/ceph-client.admin.asok<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="string">"ops"</span>: [</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="string">"tid"</span>: <span class="number">12</span>,</span><br><span class="line">            <span class="string">"pg"</span>: <span class="string">"6.7230bd94"</span>,</span><br><span class="line">            <span class="string">"osd"</span>: <span class="number">1</span>,</span><br><span class="line">            <span class="string">"object_id"</span>: <span class="string">"10000000017.00000004"</span>,</span><br><span class="line">            <span class="string">"object_locator"</span>: <span class="string">"@6"</span>,</span><br><span class="line">            <span class="string">"target_object_id"</span>: <span class="string">"10000000017.00000004"</span>,</span><br><span class="line">            <span class="string">"target_object_locator"</span>: <span class="string">"@6"</span>,</span><br><span class="line">            <span class="string">"paused"</span>: <span class="number">0</span>,</span><br><span class="line">            <span class="string">"used_replica"</span>: <span class="number">0</span>,</span><br><span class="line">            <span class="string">"precalc_pgid"</span>: <span class="number">0</span>,</span><br><span class="line">            <span class="string">"last_sent"</span>: <span class="string">"2016-01-22 23:11:28.788800"</span>,</span><br><span class="line">            <span class="string">"attempts"</span>: <span class="number">95</span>,</span><br><span class="line">            <span class="string">"snapid"</span>: <span class="string">"head"</span>,</span><br><span class="line">            <span class="string">"snap_context"</span>: <span class="string">"1=[]"</span>,</span><br><span class="line">            <span class="string">"mtime"</span>: <span class="string">"2016-01-21 23:41:18.001327"</span>,</span><br><span class="line">            <span class="string">"osd_ops"</span>: [</span><br><span class="line">                <span class="string">"write 0~4194304 [5@0]"</span></span><br><span class="line">            ]</span><br></pre></td></tr></table></figure></p>
+<p>其中<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="string">"attempts"</span>: <span class="number">95</span>,</span><br></pre></td></tr></table></figure></p>
+<p>这个可以说明请求了95次还没有回应，从这个分析，应该是问题提出者的环境中的某个osd出现了问题，阻塞了请求</p>
+<p>总结：<br>在无法写入的时候，可以查看下客户端的sock去查看哪个请求被阻塞了，然后去排查对应的osd即可</p>
 <hr>
 <p>文档最后更新时间：<br>2016年01月25日 00:27</p>
 ]]></content>
