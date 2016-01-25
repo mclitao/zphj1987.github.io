@@ -261,8 +261,14 @@ var _hmt = _hmt || [];
 <h3 id="三、问题解析">三、问题解析</h3><p>问题一：<br>journal encryption with dmcrypt （Reno Rainz）</p>
 <p>问题原文：<br>I’m trying to setup a cluster with encryption on osd data and journal.<br>To do  that I use ceph-deploy with this 2 options —dmcrypt<br>—dmcrypt-key-dir on /dev/sdc disk.<br>……</p>
 <p>分析：<br>问题的提出者试图在部署osd的时候使用 encryption 对 osd 进行加密,在用 ceph-deploy 的时候，部署的时候出现了失败</p>
-<p>这个地方我会复现这个问题</p>
 <p>总结：</p>
+<p>这个地方是因为 ceph-deploy 在进行 activate 操作的时候，把这个加密分区当做了 crypto_LUKS 分区格式进行了 mount 操作，这个肯定是不能成功的，因为这个加密盘是需要进行映射操作的，这里缺少了这个操作，不清楚是需要加其他的参数还是怎样，这个地方可以通过其他方式进行处理</p>
+<p>在进行 ceph-deploy osd prepare 操作的时候，可以查看看到有一行这个，这个中间的 f6244401-c848-42d1-9096-9a3ee5a136e9 即为 osd 的 fsid<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Running <span class="built_in">command</span>: /usr/sbin/cryptsetup --batch-mode --key-file /root/keydir/f6244401-c848-<span class="number">42</span>d1-<span class="number">9096</span>-<span class="number">9</span>a3ee5a136e9.luks.key luksFormat /dev/sdd1</span><br></pre></td></tr></table></figure></p>
+<p>等待osd prepare 操作做完了以后，就进行下面的操作</p>
+<p>1、进行磁盘的映射<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cryptsetup --key-file /root/keydir/f6244401-c848-<span class="number">42</span>d1-<span class="number">9096</span>-<span class="number">9</span>a3ee5a136e9.luks.key luksOpen /dev/sdd1 f6244401-c848-<span class="number">42</span>d1-<span class="number">9096</span>-<span class="number">9</span>a3ee5a136e9</span><br></pre></td></tr></table></figure></p>
+<p>2、进行osd的激活<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph-deploy osd activate /dev/mapper/f6244401-c848-<span class="number">42</span>d1-<span class="number">9096</span>-<span class="number">9</span>a3ee5a136e9</span><br></pre></td></tr></table></figure></p>
+<p>这样就可以了</p>
+<p>另外：<br>取消映射的操作是<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cryptsetup remove f6244401-c848-<span class="number">42</span>d1-<span class="number">9096</span>-<span class="number">9</span>a3ee5a136e9</span><br></pre></td></tr></table></figure></p>
 <hr>
 <p>文档最后更新时间：<br>2016年01月25日 00:27</p>
 
