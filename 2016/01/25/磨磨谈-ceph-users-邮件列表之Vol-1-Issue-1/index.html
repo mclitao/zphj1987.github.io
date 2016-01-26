@@ -236,12 +236,14 @@ var _hmt = _hmt || [];
 <li>journal encryption with dmcrypt （Date: Fri, 22 Jan 2016 20:35:46 +0000）</li>
 <li>CephFS</li>
 <li>ceph fuse closing stale session while still operable</li>
+<li>inkscope version 1.3.1  </li>
 </ul>
 <hr>
 <h3 id="二、涉及问题：">二、涉及问题：</h3><ul>
 <li>osd分区加密</li>
 <li>文件系统加密挂载问题</li>
 <li>ceph-fuse写入僵住的问题</li>
+<li>inkscope发布了新版本</li>
 </ul>
 <h3 id="三、问题解析">三、问题解析</h3><h4 id="问题一：">问题一：</h4><p>journal encryption with dmcrypt （Reno Rainz）</p>
 <h5 id="问题原文：">问题原文：</h5><p>I’m trying to setup a cluster with encryption on osd data and journal.<br>To do  that I use ceph-deploy with this 2 options —dmcrypt<br>—dmcrypt-key-dir on /dev/sdc disk.<br>……</p>
@@ -269,6 +271,10 @@ var _hmt = _hmt || [];
 <p>然后在客户端挂载的格式为<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mount -t ceph <span class="number">192.168</span>.<span class="number">8.106</span>:<span class="number">6789</span>:/ /mnt -o name=zp,secret=&#123;secretkey&#125;</span><br></pre></td></tr></table></figure></p>
 <p>这样就完成了认证模式下的挂载</p>
 <h5 id="总结:">总结:</h5><p>在ceph的一些操作中，需要弄清楚里面的操作的格式问题，不然会出现一些很奇怪的问题</p>
+<h4 id="问题四：">问题四：</h4><p>inkscope version 1.3.1 </p>
+<h5 id="问题原文-1">问题原文</h5><p>Hi,<br> We are  glad to announce the  version 1.3.1 of inkscope.<br> you have a  description of this version at <a href="http://inkscope.blogspot.fr/" target="_blank" rel="external">http://inkscope.blogspot.fr/</a>,<br> the github projet: <a href="https://github.com/inkscope/inkscope-packaging" target="_blank" rel="external">https://github.com/inkscope/inkscope-packaging</a><br>  This version has been tested with Firefly, Hammer et Infernalis.<br>……</p>
+<h5 id="分析：-3">分析：</h5><p>这个是inkscope的作者在发布了新版本后发送到了ceph的邮件列表，增加了一些新的功能，这个地方将单独用一篇文章介绍这个地方的安装<br>链接如下：</p>
+<h5 id="总结">总结</h5><p>邮件列表不光是提问题的地方，还有一些优秀的资源的发布的作者也可以发布上去</p>
 <hr>
 <p>文档最后更新时间：<br>2016年01月26日 </p>
 
