@@ -4,7 +4,7 @@
   <subtitle><![CDATA[现在所学，终有所用]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2016-01-27T08:35:29.389Z</updated>
+  <updated>2016-01-27T08:38:59.526Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -19,10 +19,11 @@
     <link href="http://www.zphj1987.com/2016/01/27/ubuntu%E5%AE%89%E8%A3%85%E8%BD%AF%E4%BB%B6%E8%87%AA%E5%8A%A8%E4%BA%A4%E4%BA%92/"/>
     <id>http://www.zphj1987.com/2016/01/27/ubuntu安装软件自动交互/</id>
     <published>2016-01-27T08:26:30.000Z</published>
-    <updated>2016-01-27T08:35:29.389Z</updated>
+    <updated>2016-01-27T08:38:59.526Z</updated>
     <content type="html"><![CDATA[<p>在ubuntu下安装软件过程中可能会出现需要你输入密码或者其他的一些交互类的操作，这样在脚本安装的时候就可能出现阻断，这个在ubuntu里面已经考虑到了这个情况，以前我在安装这个的时候，通过的是脚本传递参数的方式，这里介绍的是原生的控制方式，这个方式更好</p>
 <p>以安装mariadb-server-5.5为例</p>
 <h3 id="1、查询需要应答的问题">1、查询需要应答的问题</h3><p>首先通过命令查询这个软件需要问答什么问题<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@mytest:/var/cache/apt/archives<span class="comment"># debconf-show mariadb-server-5.5 </span></span><br><span class="line">* mysql-server/root_password: (password omitted)</span><br><span class="line">* mysql-server/root_password_again: (password omitted)</span><br><span class="line">  mysql-server/password_mismatch:</span><br><span class="line">  mysql-server/error_setting_password:</span><br><span class="line">* mariadb-server/oneway_migration: <span class="literal">true</span></span><br><span class="line">  mysql-server-<span class="number">5.5</span>/nis_warning:</span><br><span class="line">  mysql-server-<span class="number">5.5</span>/postrm_remove_databases: <span class="literal">false</span></span><br><span class="line">  mariadb-server-<span class="number">5.5</span>/really_downgrade: <span class="literal">false</span></span><br><span class="line">  mysql-server/no_upgrade_when_using_ndb:</span><br></pre></td></tr></table></figure></p>
+<a id="more"></a>
 <p>这里可以看到需要处理的是密码的问题</p>
 <h3 id="2、执行命令传递参数进去">2、执行命令传递参数进去</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">debconf-set-selections &lt;&lt;&lt; <span class="string">'mariadb-server-5.5 mysql-server/root_password password 123456'</span></span><br><span class="line">debconf-set-selections &lt;&lt;&lt; <span class="string">'mariadb-server-5.5 mysql-server/root_password_again password 123456'</span></span><br></pre></td></tr></table></figure>
 <p>这个地方实际是把这个值记录到了这个地方,如果要修改可以覆盖或者删除即可<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@mytest:/var/cache/apt/archives<span class="comment"># cat /var/cache/debconf/passwords.dat</span></span><br><span class="line">Name: mysql-server/root_password</span><br><span class="line">Template: mysql-server/root_password</span><br><span class="line">Value: <span class="number">123456</span></span><br><span class="line">Owners: mariadb-server-<span class="number">5.5</span></span><br><span class="line">Flags: seen</span><br><span class="line"></span><br><span class="line">Name: mysql-server/root_password_again</span><br><span class="line">Template: mysql-server/root_password_again</span><br><span class="line">Value: <span class="number">123456</span></span><br><span class="line">Owners: mariadb-server-<span class="number">5.5</span></span><br><span class="line">Flags: seen</span><br></pre></td></tr></table></figure></p>
@@ -32,7 +33,9 @@
 ]]></content>
     <summary type="html">
     <![CDATA[<p>在ubuntu下安装软件过程中可能会出现需要你输入密码或者其他的一些交互类的操作，这样在脚本安装的时候就可能出现阻断，这个在ubuntu里面已经考虑到了这个情况，以前我在安装这个的时候，通过的是脚本传递参数的方式，这里介绍的是原生的控制方式，这个方式更好</p>
-<p>以安]]>
+<p>以安装mariadb-server-5.5为例</p>
+<h3 id="1、查询需要应答的问题">1、查询需要应答的问题</h3><p>首先通过命令查询这个软件需要问答什么问题<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@mytest:/var/cache/apt/archives<span class="comment"># debconf-show mariadb-server-5.5 </span></span><br><span class="line">* mysql-server/root_password: (password omitted)</span><br><span class="line">* mysql-server/root_password_again: (password omitted)</span><br><span class="line">  mysql-server/password_mismatch:</span><br><span class="line">  mysql-server/error_setting_password:</span><br><span class="line">* mariadb-server/oneway_migration: <span class="literal">true</span></span><br><span class="line">  mysql-server-<span class="number">5.5</span>/nis_warning:</span><br><span class="line">  mysql-server-<span class="number">5.5</span>/postrm_remove_databases: <span class="literal">false</span></span><br><span class="line">  mariadb-server-<span class="number">5.5</span>/really_downgrade: <span class="literal">false</span></span><br><span class="line">  mysql-server/no_upgrade_when_using_ndb:</span><br></pre></td></tr></table></figure></p>]]>
+    
     </summary>
     
       <category term="ubuntu" scheme="http://www.zphj1987.com/tags/ubuntu/"/>
