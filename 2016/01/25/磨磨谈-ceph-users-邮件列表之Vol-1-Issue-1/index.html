@@ -3,18 +3,18 @@
 <head>
   <meta charset="utf-8">
   
-  <title>磨磨谈 ceph-users 邮件列表之Vol-1-Issue-1 | zphj1987&#39;Blog</title>
+  <title>磨磨谈 ceph-users 邮件列表之Vol-1-Issue-1(完结) | zphj1987&#39;Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="关于归档方式本来开始准备采用邮件列表的vol和issue的方式，但是因为issue里面是以天为单位，而里面的问题可能是重复的，这个不好进行规整了，那么在我这里，准备以Thread的方式，每个Issue里面包含5个问题，每10个issue为一个vol，进行规整，以2016年开始为起点，前后去收集，会记录问题提问者和发起问题的时间
 前言：一个技术的邮件列表其实是个大宝藏，看你怎么去挖掘它了，里面有太多">
 <meta property="og:type" content="article">
-<meta property="og:title" content="磨磨谈 ceph-users 邮件列表之Vol-1-Issue-1">
+<meta property="og:title" content="磨磨谈 ceph-users 邮件列表之Vol-1-Issue-1(完结)">
 <meta property="og:url" content="http://www.zphj1987.com/2016/01/25/磨磨谈-ceph-users-邮件列表之Vol-1-Issue-1/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
 <meta property="og:description" content="关于归档方式本来开始准备采用邮件列表的vol和issue的方式，但是因为issue里面是以天为单位，而里面的问题可能是重复的，这个不好进行规整了，那么在我这里，准备以Thread的方式，每个Issue里面包含5个问题，每10个issue为一个vol，进行规整，以2016年开始为起点，前后去收集，会记录问题提问者和发起问题的时间
 前言：一个技术的邮件列表其实是个大宝藏，看你怎么去挖掘它了，里面有太多">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="磨磨谈 ceph-users 邮件列表之Vol-1-Issue-1">
+<meta name="twitter:title" content="磨磨谈 ceph-users 邮件列表之Vol-1-Issue-1(完结)">
 <meta name="twitter:description" content="关于归档方式本来开始准备采用邮件列表的vol和issue的方式，但是因为issue里面是以天为单位，而里面的问题可能是重复的，这个不好进行规整了，那么在我这里，准备以Thread的方式，每个Issue里面包含5个问题，每10个issue为一个vol，进行规整，以2016年开始为起点，前后去收集，会记录问题提问者和发起问题的时间
 前言：一个技术的邮件列表其实是个大宝藏，看你怎么去挖掘它了，里面有太多">
   
@@ -204,7 +204,7 @@ var _hmt = _hmt || [];
         
   
     <h1 class="article-title" itemprop="name">
-      磨磨谈 ceph-users 邮件列表之Vol-1-Issue-1
+      磨磨谈 ceph-users 邮件列表之Vol-1-Issue-1(完结)
     </h1>
   
 
@@ -283,7 +283,7 @@ var _hmt = _hmt || [];
 <h5 id="解决办法：">解决办法：</h5><p>mon的磁盘空间加大，这个在PB级别的集群中更需要重视这个问题，特别是在集群频繁的读写，或者pg变化比较多，osd变化比较多的情况下，这个数据量将是很大的，因为里面是用了leveldb的数据库，并且多个mon之间是需要同步的数据的，然后各自再做compact的操作，所以建议如下：<br>1、mon的数据分区需要是ssd的，加快数据的读写速度<br>2、mon的数据分区要100G以上，建议是150G，mon数据大概在80G左右后不会再大量的增长<br>3、在mon的参数中加入启动压缩的参数 mon_compact_on_start = false 和 mon_compact_on_bootstrap = false<br>4、尽量不要做在线的compact，这个是一个锁死的过程，此时mon会停止响应，可以采取重启的方式<br>5、mon的分区中dd 一个4G 左右的大文件，防止真的出现写满的情况下，再去重启进程的时候，好有空间可以释放<br>如果能按上面的几个操作去配置集群，关于mon的磁盘满的问题基本可以避免或者解决</p>
 <h5 id="总结：-2">总结：</h5><p>关键的地方不要省配置，准备的越多，出问题的概率越小</p>
 <hr>
-<p>文档最后更新时间：<br>2016年01月26日 </p>
+<p>文档最后更新时间：<br>2016年01月28日 </p>
 
       
     </div>
@@ -333,7 +333,7 @@ var _hmt = _hmt || [];
 
 <div class="duoshuo">
 	<!-- 多说评论框 start -->
-	<div class="ds-thread" data-thread-key="磨磨谈-ceph-users-邮件列表之Vol-1-Issue-1" data-title="磨磨谈 ceph-users 邮件列表之Vol-1-Issue-1" data-url="http://www.zphj1987.com/2016/01/25/磨磨谈-ceph-users-邮件列表之Vol-1-Issue-1/"></div>
+	<div class="ds-thread" data-thread-key="磨磨谈-ceph-users-邮件列表之Vol-1-Issue-1" data-title="磨磨谈 ceph-users 邮件列表之Vol-1-Issue-1(完结)" data-url="http://www.zphj1987.com/2016/01/25/磨磨谈-ceph-users-邮件列表之Vol-1-Issue-1/"></div>
 	<!-- 多说评论框 end -->
 	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 	<script type="text/javascript">
