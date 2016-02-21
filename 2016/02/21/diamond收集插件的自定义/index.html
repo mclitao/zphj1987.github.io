@@ -267,6 +267,8 @@ var _hmt = _hmt || [];
 <li>metric_name = “my.cephhealth.metric”     （插件py中配置）</li>
 </ul>
 <p>到这来插件就完成了，写起来还是比较简单方便的，上面的地方因为ceph里面的输出的是字符串，而grafana里面的显示状态的地方使用的是数字的，所以在这里可以通过字符串转数字，然后在web界面上使用数字字符的匹配来显示这个状态</p>
+<hr>
+<p>diamond的性能是很牛的，1000 台服务器每分钟总共300万个监控数值的压力也能扛下来，对于我们普通级别的使用时绰绰有余的，关于这个规模的有人写了文章，优化的时候可以参考（<a href="https://answers.launchpad.net/graphite/+question/178969" title="1000台监控" target="_blank" rel="external">1000台监控</a>）</p>
 
       
     </div>

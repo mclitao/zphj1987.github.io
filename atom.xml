@@ -4,7 +4,7 @@
   <subtitle><![CDATA[现在所学，终有所用]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2016-02-21T12:40:38.929Z</updated>
+  <updated>2016-02-21T12:55:14.192Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="http://www.zphj1987.com/2016/02/21/diamond%E6%94%B6%E9%9B%86%E6%8F%92%E4%BB%B6%E7%9A%84%E8%87%AA%E5%AE%9A%E4%B9%89/"/>
     <id>http://www.zphj1987.com/2016/02/21/diamond收集插件的自定义/</id>
     <published>2016-02-21T11:23:55.000Z</published>
-    <updated>2016-02-21T12:40:38.929Z</updated>
+    <updated>2016-02-21T12:55:14.192Z</updated>
     <content type="html"><![CDATA[<p>diamond是与graphite配合使用的一个数据收集的软件，关于这个配置的资料很多，使用起来也比较简单，详细的安装和配置会在后面的关于整套监控系统的文章里面写到，本篇是专门讲解怎么自定义这个数据收集的插件</p>
 <p>diamond的结构比较简单:</p>
 <ul>
@@ -48,6 +48,8 @@
 <li>metric_name = “my.cephhealth.metric”     （插件py中配置）</li>
 </ul>
 <p>到这来插件就完成了，写起来还是比较简单方便的，上面的地方因为ceph里面的输出的是字符串，而grafana里面的显示状态的地方使用的是数字的，所以在这里可以通过字符串转数字，然后在web界面上使用数字字符的匹配来显示这个状态</p>
+<hr>
+<p>diamond的性能是很牛的，1000 台服务器每分钟总共300万个监控数值的压力也能扛下来，对于我们普通级别的使用时绰绰有余的，关于这个规模的有人写了文章，优化的时候可以参考（<a href="https://answers.launchpad.net/graphite/+question/178969" title="1000台监控" target="_blank" rel="external">1000台监控</a>）</p>
 ]]></content>
     <summary type="html">
     <![CDATA[<p>diamond是与graphite配合使用的一个数据收集的软件，关于这个配置的资料很多，使用起来也比较简单，详细的安装和配置会在后面的关于整套监控系统的文章里面写到，本篇是专门讲解怎么自定义这个数据收集的插件</p>
