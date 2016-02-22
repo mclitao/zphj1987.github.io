@@ -4,7 +4,7 @@
   <subtitle><![CDATA[现在所学，终有所用]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2016-02-21T12:55:14.192Z</updated>
+  <updated>2016-02-22T16:38:22.995Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -15,11 +15,44 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title><![CDATA[nginx状态监控统计]]></title>
+    <link href="http://www.zphj1987.com/2016/02/22/nginx%E7%8A%B6%E6%80%81%E7%9B%91%E6%8E%A7%E7%BB%9F%E8%AE%A1/"/>
+    <id>http://www.zphj1987.com/2016/02/22/nginx状态监控统计/</id>
+    <published>2016-02-22T15:58:02.000Z</published>
+    <updated>2016-02-22T16:38:22.995Z</updated>
+    <content type="html"><![CDATA[<p>nginx是一款很优秀的web服务器软件，很多地方都有接触和使用到他，大部分的场景压力还没达到需要调优的地步，而调优的难点其实不在于调，而在于各项状态的监控，能够很快的找到资源在什么时候出现问题，调整前后出现的变化，如果都不知道变化在哪里所做的调优只能是凭感觉的</p>
+<p>之前看到有技术人员用nginx作为rgw的前端的时候，通过优化去实现将nginx的并发提高到很大，而不出现4xx等问题，nginx的access.log里面是有记录访问的状态码的，而这个日志的分析如果是一次次的去看，这样的分析是无法用精确的数据去展示的</p>
+<p>最开始的想法是想根据时间点去统计时间点的状态码，后来发现这样做既复杂，又无法输出到一些数据展示软件当中，实际上我只需要统计一定时间的总的状态值，然后定期去取这个值，然后在数据展示的时候，就可以看到一个数值的曲线图，增量即为这个时间区间所产生的状态值</p>
+<p>下面就是我的实现，一个脚本就可以统计了，这个是最初的版本，纯统计状态码，还没有区分读写分离的情况，这个在后面会加入分离的情况</p>
+<a id="more"></a>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="shebang">#!/bin/sh</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">### BEGIN INIT INFO</span></span><br><span class="line"><span class="comment"># Provides:          nginxstatus</span></span><br><span class="line"><span class="comment"># Required-Start:    $nginx</span></span><br><span class="line"><span class="comment"># Short-Description: nginxstatus</span></span><br><span class="line"><span class="comment"># Description: collectstatus of nginx</span></span><br><span class="line"><span class="comment">### END INIT INFO</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># pidfile: /var/run/nginx/nginxstatus.pid</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Source function library.</span></span><br><span class="line"><span class="comment">##########################################</span></span><br><span class="line"><span class="comment">#状态码一般分为1xx,2xx,3xx,4xx,5xx,total</span></span><br><span class="line">statucode=<span class="string">"2 3 4 5"</span></span><br><span class="line"><span class="comment">##check intervel setting </span></span><br><span class="line">interval=<span class="number">2</span></span><br><span class="line"><span class="comment">########################################</span></span><br><span class="line"><span class="comment">#check the nginxstatus pid dir if exist</span></span><br><span class="line"><span class="keyword">if</span> [ ! <span class="operator">-d</span> /var/run/nginxstatus/ ];<span class="keyword">then</span></span><br><span class="line">mkdir  /var/run/nginxstatus/</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"><span class="comment">##check the status of nginx access </span></span><br><span class="line"><span class="function"><span class="title">check</span></span>()&#123;</span><br><span class="line"><span class="keyword">for</span> code <span class="keyword">in</span> <span class="variable">$statucode</span></span><br><span class="line"><span class="keyword">do</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"<span class="variable">$code</span>"</span>xx:`cat /var/<span class="built_in">log</span>/nginx/access.log |awk <span class="string">'&#123;if( substr($9,0,1) == '</span><span class="string">''</span><span class="variable">$code</span><span class="string">''</span><span class="string">' )  print</span><br><span class="line"> $9&#125;'</span>  |wc <span class="operator">-l</span>` &gt; /var/<span class="built_in">log</span>/nginx/<span class="string">"<span class="variable">$code</span>"</span>xx.log</span><br><span class="line"><span class="keyword">done</span></span><br><span class="line">sleep <span class="variable">$interval</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">#start nginx status</span></span><br><span class="line"><span class="function"><span class="title">start</span></span>() &#123;</span><br><span class="line"><span class="built_in">echo</span> <span class="operator">-e</span> Starting nginxstatus:                              <span class="string">"\033[32m [  OK  ] \033[0m"</span></span><br><span class="line"><span class="keyword">while</span> [ <span class="number">2</span> &gt; <span class="number">1</span> ]</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">check</span><br><span class="line"></span><br><span class="line"><span class="keyword">done</span> &amp;</span><br><span class="line">pid=`ps ax | grep -i <span class="string">'nginxstatus'</span> | head -n <span class="number">1</span>|awk <span class="string">'&#123;print $1&#125;'</span>`</span><br><span class="line"><span class="built_in">echo</span> <span class="operator">-e</span>  pid is  <span class="string">"\033[33m  $! \033[0m"</span> </span><br><span class="line"><span class="built_in">echo</span> $! &gt;&gt; /var/run/nginxstatus/nginxstatus.pid</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">#stop nginx </span></span><br><span class="line"><span class="function"><span class="title">stop</span></span>() &#123;</span><br><span class="line"><span class="built_in">echo</span> <span class="operator">-e</span> stop nginxstatus collect  <span class="string">"\033[32m  [  OK  ] \033[0m"</span> </span><br><span class="line"></span><br><span class="line">pid=`cat /var/run/nginxstatus/nginxstatus.pid  <span class="number">2</span>&gt;/dev/null`</span><br><span class="line"><span class="built_in">kill</span> -<span class="number">10</span> <span class="variable">$pid</span>  <span class="number">2</span>&gt;/dev/null</span><br><span class="line"><span class="comment">#killall nginxstatus</span></span><br><span class="line">rm -rf /var/run/nginxstatus/nginxstatus.pid</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">status</span></span>() &#123;</span><br><span class="line"><span class="keyword">for</span> code <span class="keyword">in</span> <span class="variable">$statucode</span></span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">cat /var/<span class="built_in">log</span>/nginx/<span class="string">"<span class="variable">$code</span>"</span>xx.log</span><br><span class="line"><span class="keyword">done</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">clean</span></span> () &#123;</span><br><span class="line"><span class="keyword">for</span> code <span class="keyword">in</span> <span class="variable">$statucode</span></span><br><span class="line"><span class="keyword">do</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">""</span> &gt;  /var/<span class="built_in">log</span>/nginx/<span class="string">"<span class="variable">$code</span>"</span>xx.log</span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">""</span> &gt; /var/<span class="built_in">log</span>/nginx/access.log</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"clean /var/log/nginx/access.log"</span></span><br><span class="line"><span class="built_in">echo</span> <span class="operator">-e</span> <span class="string">"clean /var/log/nginx/access.log"</span> <span class="string">"\033[32m  [  OK  ] \033[0m"</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">case</span> <span class="string">"<span class="variable">$1</span>"</span> <span class="keyword">in</span></span><br><span class="line">        start)</span><br><span class="line">                start  &amp;&amp; <span class="built_in">exit</span> <span class="number">0</span></span><br><span class="line">                ;;</span><br><span class="line">        stop)</span><br><span class="line">                stop || <span class="built_in">exit</span> <span class="number">0</span></span><br><span class="line">                ;;</span><br><span class="line">        status)</span><br><span class="line">                status</span><br><span class="line">                ;;</span><br><span class="line">        clean)</span><br><span class="line">                clean</span><br><span class="line">                ;;</span><br><span class="line">        *)</span><br><span class="line">                <span class="built_in">echo</span> $<span class="string">"Usage: <span class="variable">$0</span> &#123;start|stop|status|clean&#125;"</span></span><br><span class="line">                <span class="built_in">exit</span> <span class="number">2</span></span><br><span class="line"><span class="keyword">esac</span></span><br><span class="line"><span class="built_in">exit</span> $?</span><br></pre></td></tr></table></figure>
+<p>使用方法：</p>
+<h3 id="1、启动进程">1、启动进程</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@zhongbo ~]<span class="comment"># /etc/init.d/nginxstatus start</span></span><br><span class="line">Starting nginxstatus:  [  OK  ] </span><br><span class="line">pid is   <span class="number">166534</span></span><br></pre></td></tr></table></figure>
+<p>会生成下面的状态文件，周期为2s一更新<br>[root@zhongbo ~]# ll /var/log/nginx/*xx.log<br>-rw-r—r— 1 root root 7 Feb 23 00:25 /var/log/nginx/2xx.log<br>-rw-r—r— 1 root root 6 Feb 23 00:25 /var/log/nginx/3xx.log<br>-rw-r—r— 1 root root 7 Feb 23 00:25 /var/log/nginx/4xx.log<br>-rw-r—r— 1 root root 6 Feb 23 00:25 /var/log/nginx/5xx.log</p>
+<h3 id="2、当前nginx的状态查询">2、当前nginx的状态查询</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@zhongbo ~]<span class="comment"># /etc/init.d/nginxstatus status</span></span><br><span class="line"><span class="number">2</span>xx:<span class="number">21</span></span><br><span class="line"><span class="number">3</span>xx:<span class="number">1</span></span><br><span class="line"><span class="number">4</span>xx:<span class="number">10</span></span><br><span class="line"><span class="number">5</span>xx:<span class="number">0</span></span><br></pre></td></tr></table></figure>
+<h3 id="3、停止nginxstatus进程">3、停止nginxstatus进程</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@zhongbo ~]<span class="comment"># /etc/init.d/nginxstatus stop</span></span><br><span class="line">stop nginxstatus collect   [  OK  ]</span><br></pre></td></tr></table></figure>
+<h3 id="4、清理历史数据">4、清理历史数据</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@zhongbo ~]<span class="comment"># /etc/init.d/nginxstatus clean</span></span><br><span class="line">clean /var/<span class="built_in">log</span>/nginx/access.log   [  OK  ]</span><br></pre></td></tr></table></figure>
+<p>这个操作会清空/var/log/nginx/access.log日志的内容重新统计</p>
+<p>这个会在后期根据需求进行优化</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>nginx是一款很优秀的web服务器软件，很多地方都有接触和使用到他，大部分的场景压力还没达到需要调优的地步，而调优的难点其实不在于调，而在于各项状态的监控，能够很快的找到资源在什么时候出现问题，调整前后出现的变化，如果都不知道变化在哪里所做的调优只能是凭感觉的</p>
+<p>之前看到有技术人员用nginx作为rgw的前端的时候，通过优化去实现将nginx的并发提高到很大，而不出现4xx等问题，nginx的access.log里面是有记录访问的状态码的，而这个日志的分析如果是一次次的去看，这样的分析是无法用精确的数据去展示的</p>
+<p>最开始的想法是想根据时间点去统计时间点的状态码，后来发现这样做既复杂，又无法输出到一些数据展示软件当中，实际上我只需要统计一定时间的总的状态值，然后定期去取这个值，然后在数据展示的时候，就可以看到一个数值的曲线图，增量即为这个时间区间所产生的状态值</p>
+<p>下面就是我的实现，一个脚本就可以统计了，这个是最初的版本，纯统计状态码，还没有区分读写分离的情况，这个在后面会加入分离的情况</p>]]>
+    
+    </summary>
+    
+      <category term="nginx" scheme="http://www.zphj1987.com/tags/nginx/"/>
+    
+  </entry>
+  
+  <entry>
     <title><![CDATA[diamond收集插件的自定义]]></title>
     <link href="http://www.zphj1987.com/2016/02/21/diamond%E6%94%B6%E9%9B%86%E6%8F%92%E4%BB%B6%E7%9A%84%E8%87%AA%E5%AE%9A%E4%B9%89/"/>
     <id>http://www.zphj1987.com/2016/02/21/diamond收集插件的自定义/</id>
     <published>2016-02-21T11:23:55.000Z</published>
-    <updated>2016-02-21T12:55:14.192Z</updated>
+    <updated>2016-02-21T12:55:14.000Z</updated>
     <content type="html"><![CDATA[<p>diamond是与graphite配合使用的一个数据收集的软件，关于这个配置的资料很多，使用起来也比较简单，详细的安装和配置会在后面的关于整套监控系统的文章里面写到，本篇是专门讲解怎么自定义这个数据收集的插件</p>
 <p>diamond的结构比较简单:</p>
 <ul>
@@ -72,7 +105,7 @@
     <link href="http://www.zphj1987.com/2016/01/27/ubuntu%E5%AE%89%E8%A3%85%E8%BD%AF%E4%BB%B6%E8%87%AA%E5%8A%A8%E4%BA%A4%E4%BA%92/"/>
     <id>http://www.zphj1987.com/2016/01/27/ubuntu安装软件自动交互/</id>
     <published>2016-01-27T08:26:30.000Z</published>
-    <updated>2016-01-27T08:38:59.000Z</updated>
+    <updated>2016-01-27T08:38:59.526Z</updated>
     <content type="html"><![CDATA[<p>在ubuntu下安装软件过程中可能会出现需要你输入密码或者其他的一些交互类的操作，这样在脚本安装的时候就可能出现阻断，这个在ubuntu里面已经考虑到了这个情况，以前我在安装这个的时候，通过的是脚本传递参数的方式，这里介绍的是原生的控制方式，这个方式更好</p>
 <p>以安装mariadb-server-5.5为例</p>
 <h3 id="1、查询需要应答的问题">1、查询需要应答的问题</h3><p>首先通过命令查询这个软件需要问答什么问题<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@mytest:/var/cache/apt/archives<span class="comment"># debconf-show mariadb-server-5.5 </span></span><br><span class="line">* mysql-server/root_password: (password omitted)</span><br><span class="line">* mysql-server/root_password_again: (password omitted)</span><br><span class="line">  mysql-server/password_mismatch:</span><br><span class="line">  mysql-server/error_setting_password:</span><br><span class="line">* mariadb-server/oneway_migration: <span class="literal">true</span></span><br><span class="line">  mysql-server-<span class="number">5.5</span>/nis_warning:</span><br><span class="line">  mysql-server-<span class="number">5.5</span>/postrm_remove_databases: <span class="literal">false</span></span><br><span class="line">  mariadb-server-<span class="number">5.5</span>/really_downgrade: <span class="literal">false</span></span><br><span class="line">  mysql-server/no_upgrade_when_using_ndb:</span><br></pre></td></tr></table></figure></p>
@@ -100,7 +133,7 @@
     <link href="http://www.zphj1987.com/2016/01/25/%E7%A3%A8%E7%A3%A8%E8%B0%88-ceph-users-%E9%82%AE%E4%BB%B6%E5%88%97%E8%A1%A8%E4%B9%8BVol-1-Issue-1/"/>
     <id>http://www.zphj1987.com/2016/01/25/磨磨谈-ceph-users-邮件列表之Vol-1-Issue-1/</id>
     <published>2016-01-24T16:06:58.000Z</published>
-    <updated>2016-01-28T07:36:48.000Z</updated>
+    <updated>2016-01-28T07:36:48.181Z</updated>
     <content type="html"><![CDATA[<p>关于归档方式本来开始准备采用邮件列表的vol和issue的方式，但是因为issue里面是以天为单位，而里面的问题可能是重复的，这个不好进行规整了，那么在我这里，准备以Thread的方式，每个Issue里面包含5个问题，每10个issue为一个vol，进行规整，以2016年开始为起点，前后去收集，会记录问题提问者和发起问题的时间</p>
 <h2 id="前言：">前言：</h2><p>一个技术的邮件列表其实是个大宝藏，看你怎么去挖掘它了，里面有太多的灵光一现，太多的大牛的引导，而我等也只能在某些出现问题的时候，去搜索的时候，才发现这些问题是很多人遇到过的，最近看到一个技术人说的一句话深有同感,意思是说，很多时候我们花精力重复解决问题</p>
 <ul>
@@ -182,7 +215,7 @@
     <link href="http://www.zphj1987.com/2016/01/20/%E5%85%B3%E4%BA%8Eceph%E7%9A%84rbd%E5%B1%9E%E6%80%A7%E8%AE%BE%E7%BD%AE%E7%A0%94%E7%A9%B6/"/>
     <id>http://www.zphj1987.com/2016/01/20/关于ceph的rbd属性设置研究/</id>
     <published>2016-01-20T14:57:53.000Z</published>
-    <updated>2016-02-05T01:19:42.000Z</updated>
+    <updated>2016-02-05T01:19:42.433Z</updated>
     <content type="html"><![CDATA[<p>一个rbd在存储到后台以后,在后台是对象存储的，对象</p>
 <p>[root@lab8106 rbdre]# rados -p rbd  listomapvals  rbd_directory<br>id_399a456aa808<br>value (6 bytes) :<br>0000 : 02 00 00 00 7a 70                               : ….zp</p>
 <p>name_zp<br>value (16 bytes) :<br>0000 : 0c 00 00 00 33 39 39 61 34 35 36 61 61 38 30 38 : ….399a456aa808</p>
@@ -206,7 +239,7 @@
     <link href="http://www.zphj1987.com/2016/01/14/ceph%E5%8D%95%E6%9C%BA%E5%A4%9Amon%E7%9A%84%E5%AE%9E%E7%8E%B0/"/>
     <id>http://www.zphj1987.com/2016/01/14/ceph单机多mon的实现/</id>
     <published>2016-01-14T09:03:56.000Z</published>
-    <updated>2016-01-14T09:11:03.000Z</updated>
+    <updated>2016-01-14T09:11:03.572Z</updated>
     <content type="html"><![CDATA[<p>ceph默认情况下是以主机名来作为mon的识别的，所以这个情况下用部署工具是无法创建多个mon的，这个地方使用手动的方式可以很方便的创建多个mon</p>
 <h3 id="1、创建mon的数据存储目录">1、创建mon的数据存储目录</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkdir /var/lib/ceph/mon/ceph-<span class="number">1</span></span><br></pre></td></tr></table></figure>
 <h3 id="2、获取当前的monmap">2、获取当前的monmap</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph mon getmap -o /tmp/monmap</span><br></pre></td></tr></table></figure>
@@ -234,7 +267,7 @@
     <link href="http://www.zphj1987.com/2016/01/14/ceph%E4%BD%BF%E7%94%A8memdisk%E5%81%9Ajournal/"/>
     <id>http://www.zphj1987.com/2016/01/14/ceph使用memdisk做journal/</id>
     <published>2016-01-14T02:00:59.000Z</published>
-    <updated>2016-01-22T16:34:27.532Z</updated>
+    <updated>2016-01-22T16:34:27.000Z</updated>
     <content type="html"><![CDATA[<p>记得在很久很久以前，ceph当时的版本是有提供使用内存做journal的配置的，当时是使用的tmpfs，但是现在的版本在搜资料的时候，发现关于这个的没怎么找到资料，邮件列表里面有人有提到怎么做，看了下大致的原理，然后还是自己来实践一次</p>
 <h3 id="预备知识：">预备知识：</h3><p>首先需要知道的是什么是内存盘，内存盘就是划分了一个内存空间来当磁盘使用来进行加速的，这个在某些操作系统里面会把/tmp/分区挂载到tmpfs下，来达到加速的目的，这样就是重启后，会清空/tmp的内容，centos7 默认的分区方式也使用了tmpfs来加速，df -h可以看下那个tmpfs就是内存盘了</p>
 <p>本文使用的不是tmpfs，这个是因为tmpfs不是我们常见意义上的那种文件系统，它不能格式化，ceph 在进行日志创建的时候会去检查journal 所在分区的 uuid， 而tmpfs在检测的时候 会返回一个全0的字符串，这个在校验的时候显示的无效的，所以也就部署起来有问题，下面开始介绍我的做法，这个里面做法很多，步骤也可以自己去变化，这里只是提供了我的一种思路</p>
@@ -298,7 +331,7 @@
     <link href="http://www.zphj1987.com/2016/01/14/centos7%E4%B8%8B%E5%81%9A%E5%86%85%E5%AD%98%E7%9B%98%E7%9A%84%E6%96%B9%E6%B3%95/"/>
     <id>http://www.zphj1987.com/2016/01/14/centos7下做内存盘的方法/</id>
     <published>2016-01-14T01:07:28.000Z</published>
-    <updated>2016-01-14T01:58:56.000Z</updated>
+    <updated>2016-01-14T01:58:56.316Z</updated>
     <content type="html"><![CDATA[<p>在找这个资料的时候，基本没几个能用的或者过时了的，或者是换了概念，做的不是需要的那种盘，只有少数文章有提到关键部分应该怎么去操作，现在还是自己总结一下</p>
 <h3 id="内存盘tmpfs和ramdisk的区别">内存盘tmpfs和ramdisk的区别</h3><p>这个在网上的很多资料里面都有提到，很多文章去写怎么做ramdisk的时候，都是去做的tmpfs，两者虽然都是使用的内存来存储东西，但是是完全有区别的</p>
 <ul>
@@ -361,7 +394,7 @@
     <link href="http://www.zphj1987.com/2016/01/12/%E5%88%A0%E9%99%A4osd%E7%9A%84%E6%AD%A3%E7%A1%AE%E6%96%B9%E5%BC%8F/"/>
     <id>http://www.zphj1987.com/2016/01/12/删除osd的正确方式/</id>
     <published>2016-01-12T02:14:39.000Z</published>
-    <updated>2016-01-13T03:29:12.000Z</updated>
+    <updated>2016-01-13T03:29:12.847Z</updated>
     <content type="html"><![CDATA[<p>在ceph的集群当中关于节点的替换的问题，一直按照以前的方式进行的处理，处理的步骤如下：</p>
 <ol>
 <li>停止osd进程<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/etc/init.d/ceph stop osd.<span class="number">0</span></span><br></pre></td></tr></table></figure>
@@ -460,7 +493,7 @@
     <link href="http://www.zphj1987.com/2016/01/11/ceph%E5%86%99osd%E7%9A%84%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6-etc-ceph-ceph-conf/"/>
     <id>http://www.zphj1987.com/2016/01/11/ceph写osd的配置文件-etc-ceph-ceph-conf/</id>
     <published>2016-01-11T08:38:25.000Z</published>
-    <updated>2016-01-11T08:50:49.000Z</updated>
+    <updated>2016-01-11T08:50:49.321Z</updated>
     <content type="html"><![CDATA[<p>ceph在部署过程中是先进行部署，再去写配置文件的，而一些新手在部署完了后，并没有写配置文件，在重启服务器后，因为挂载点没有挂载，所以服务无法启动，所以需要写好配置文件<br>还有一种情况是集群有几百个osd，在新加入或者修改的时候，再去进行变更配置文件就是一个很麻烦的事情，所以写配置文件这个如果脚本来处理，就可以节约很多时间，所以写了一个脚本如下，这个地方如果熟悉python的可以用python写，我这个是自己使用，并且使用的频率不会太高，因此，怎么方便怎么来</p>
 <p>脚本里面用了一个二进制文件是解析json用的，这个拷贝到运行的机器上就可以了</p>
 <p>解析的二进制文件在这里下载：<br><a href="http://stedolan.github.io/jq/" target="_blank" rel="external">http://stedolan.github.io/jq/</a></p>
@@ -488,7 +521,7 @@
     <link href="http://www.zphj1987.com/2015/12/19/centos6%E5%AE%89%E8%A3%85calamari/"/>
     <id>http://www.zphj1987.com/2015/12/19/centos6安装calamari/</id>
     <published>2015-12-19T14:07:01.000Z</published>
-    <updated>2015-12-21T15:59:16.000Z</updated>
+    <updated>2015-12-21T15:59:16.615Z</updated>
     <content type="html"><![CDATA[<h3 id="一、安装操作系统">一、安装操作系统</h3><p>首先安装操作系统centos6,安装过程选择的是base server，这个不相同不要紧，出现缺少包的时候去iso找出来安装就可以了</p>
 <h3 id="二、calamari的简单介绍">二、calamari的简单介绍</h3><p>首先简单的介绍下calamari的这个软件系统的组成，主要是calamari-server,romana，salt-minion，salt-server，diamond，</p>
 <p>这些模块各自的作用：</p>
@@ -557,7 +590,7 @@
     <link href="http://www.zphj1987.com/2015/12/16/xenserver%E4%BD%BF%E7%94%A8ceph%E7%9A%84rbd%E7%9A%84%E6%96%B9%E6%B3%95/"/>
     <id>http://www.zphj1987.com/2015/12/16/xenserver使用ceph的rbd的方法/</id>
     <published>2015-12-16T06:08:00.000Z</published>
-    <updated>2015-12-16T06:11:43.000Z</updated>
+    <updated>2015-12-16T06:11:43.964Z</updated>
     <content type="html"><![CDATA[<p>首先安装的xenserver6.5的环境，看到有地方有提到这个上面可以安装rbd的支持，网上有一种方式是libvirt+kvm方式，因为ceph对libviet是原生支持的，但是xenserver底层是xen的，这个就不去研究太多，这个用最简单的方式最好</p>
 <p><a href="https://github.com/mstarikov/rbdsr" target="_blank" rel="external">https://github.com/mstarikov/rbdsr</a><br>这个是个第三方的插件，最近才出来的</p>
 <p>实现原理是ssh到ceph的机器上获取到可以使用的rbd信息，然后在xenserver的图形界面上通过配置iscsi的方式去配置rbd，里面套用了iscsi的界面，实际去xenserver机器后台同样做的是map的操作<br>这个试了下，界面的操作都可以实现，都可以获取到rbd的信息，但是在最后提交的一下的时候，后台会报错误的信息，这个有可能才出来，还有点问题<br>这个地方可以用其他的方式实现，xenserver在添加硬盘的时候本来就支持的命令行模式，下面为实现方式</p>
@@ -609,7 +642,7 @@
     <link href="http://www.zphj1987.com/2015/12/13/%E5%A6%82%E4%BD%95%E5%9C%A8%E6%89%80%E6%9C%89%E7%9A%84mon%E7%9A%84%E6%8D%9F%E5%9D%8F%E6%83%85%E5%86%B5%E4%B8%8B%E5%B0%86%E6%95%B0%E6%8D%AE%E6%81%A2%E5%A4%8D%E5%A6%82%E5%88%9D/"/>
     <id>http://www.zphj1987.com/2015/12/13/如何在所有的mon的损坏情况下将数据恢复如初/</id>
     <published>2015-12-13T11:26:43.000Z</published>
-    <updated>2015-12-13T11:38:08.000Z</updated>
+    <updated>2015-12-13T11:38:08.478Z</updated>
     <content type="html"><![CDATA[<h3 id="本篇主题：">本篇主题：</h3><p>在mon无法启动，或者所有的mon的数据盘都损坏的情况下，如何把所有的数据恢复如初</p>
 <h3 id="写本章的缘由">写本章的缘由</h3><p>在ceph中国的群里有看到一个技术人员有提到，在一次意外机房掉电后，三台mon的系统盘同时损坏了，这个对于熟悉ceph的人都知道这意味着什么，所有的集群数据将无法访问，关于这个的解决办法目前没有在哪里有看到，这个对于大多数人是用不上的，但是一旦出现了，这个损失将是无法估量的，当然谁都不希望这个情况的发生<br>所以在研究了下ceph的一些操作后，自己尝试去找了一些关于集群的故障修复的，目前看到了一个是关于单个rbd镜像的恢复的文章，那个需要将数据映射本地的loop设备后重新读取，这个我曾经验证过一遍，确实可以实现，在周末的时候我尝试了另外一个办法，实现了在mon完全失效的情况下全集群的完整数据的恢复，并且保留了原来的数据结构和数据信息，当然这中间需要进行一定的操作去完成它，这个我准备写成一个标准的操作流程，并用视频的方式来记录这个恢复的流程</p>
 <h3 id="本篇资源:">本篇资源:</h3><p>包括了视频，操作文档（本篇还未完成，接受预定）</p>
@@ -636,7 +669,7 @@
     <link href="http://www.zphj1987.com/2015/12/12/%E5%85%B3%E4%BA%8E%E5%BC%80%E5%A7%8B%E5%86%99%E6%95%99%E7%A8%8B%E7%9A%84%E4%BA%8B/"/>
     <id>http://www.zphj1987.com/2015/12/12/关于开始写教程的事/</id>
     <published>2015-12-11T16:37:22.000Z</published>
-    <updated>2015-12-11T17:48:30.000Z</updated>
+    <updated>2015-12-11T17:48:30.321Z</updated>
     <content type="html"><![CDATA[<p>在加入到ceph社区的群里以后，尝试着去回答一些有关ceph的问题，发现很多问题其实自己都遇到过，而且很多问题是反复的会被人提起，对于新手来说，由于资源太多，可能就无法比较系统的去学习这个东西，网上的文档也很多，到底从哪里开始，怎么去做，遇到的问题到底是什么造成的，这些都很难一下找到解决办法</p>
 <p>有一天想到了是不是自己也可以尝试着去做一下这个事情，网上也会有相关的教程，但是这个实在太少太少，一来专业的讲师可能不会非常的熟悉集群，二来非常熟悉集群的人，也不一定有精力去完成这个事情，而我也不确定能不能很好的去做这个事情，但是总算是起步了</p>
 <a id="more"></a>
@@ -663,7 +696,7 @@
     <link href="http://www.zphj1987.com/2015/12/12/ceph%E9%9B%86%E7%BE%A4%E7%9A%84%E5%AE%89%E8%A3%85%E5%92%8C%E9%85%8D%E7%BD%AE%E6%95%99%E7%A8%8B/"/>
     <id>http://www.zphj1987.com/2015/12/12/ceph集群的安装和配置教程/</id>
     <published>2015-12-11T16:36:48.000Z</published>
-    <updated>2015-12-11T17:51:41.000Z</updated>
+    <updated>2015-12-11T17:51:41.040Z</updated>
     <content type="html"><![CDATA[<h3 id="本篇主题：">本篇主题：</h3><p>1、怎样配置ssh免登陆访问<br>2、为什么搭建集群要关闭防火墙和selinux，如何关闭<br>3、从哪里获取ceph的安装包，怎样安装才是快速正确的<br>4、为什么要配置时间同步服务，怎样配置<br>5、怎样创建集群<br>6、怎样使用不同的方式增加osd（这里我总结了五种）</p>
 <ul>
 <li>默认方式</li>
@@ -711,7 +744,7 @@
     <link href="http://www.zphj1987.com/2015/11/18/%E5%9C%A8%E7%BA%BF%E8%B0%83%E6%95%B4ceph%E7%9A%84%E5%8F%82%E6%95%B0/"/>
     <id>http://www.zphj1987.com/2015/11/18/在线调整ceph的参数/</id>
     <published>2015-11-18T15:11:44.000Z</published>
-    <updated>2015-11-18T15:13:22.000Z</updated>
+    <updated>2015-11-18T15:13:22.757Z</updated>
     <content type="html"><![CDATA[<p>能够动态的进行系统参数的调整是一个很重要并且有用的属性<br>ceph的集群提供两种方式的调整，使用tell的方式和daemon设置的方式</p>
 <h3 id="一、tell方式设置">一、tell方式设置</h3><p>调整配置使用命令：</p>
 <h4 id="调整mon的参数">调整mon的参数</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#ceph tell mon.* injectargs '--&#123;tunable value_to_be_set&#125;'</span></span><br></pre></td></tr></table></figure>
@@ -745,7 +778,7 @@
     <link href="http://www.zphj1987.com/2015/11/16/%E9%AA%8C%E8%AF%81rbd%E7%9A%84%E7%BC%93%E5%AD%98%E6%98%AF%E5%90%A6%E5%BC%80%E5%90%AF/"/>
     <id>http://www.zphj1987.com/2015/11/16/验证rbd的缓存是否开启/</id>
     <published>2015-11-16T08:49:16.000Z</published>
-    <updated>2016-01-25T09:55:53.000Z</updated>
+    <updated>2016-01-25T09:55:53.136Z</updated>
     <content type="html"><![CDATA[<p>简单快速的在客户端验证rbd的cache是否开启<br>首先修改配置文件<br>在ceph.conf中添加：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[client]</span><br><span class="line">rbd cache = <span class="literal">true</span></span><br><span class="line">rbd cache writethrough until flush = <span class="literal">true</span></span><br></pre></td></tr></table></figure></p>
 <p>开启以后，在这台机器上进行测试<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@node8109 ~]<span class="comment"># rbd -p rbd bench-write zp  --io-size 4096 --io-threads 256  --io-total 102400000   --io-pattern seq</span></span><br><span class="line">bench-write  io_size <span class="number">4096</span> io_threads <span class="number">256</span> bytes <span class="number">102400000</span> pattern seq</span><br><span class="line">  SEC       OPS   OPS/SEC   BYTES/SEC</span><br><span class="line">elapsed:     <span class="number">0</span>  ops:    <span class="number">25000</span>  ops/sec: <span class="number">26830.05</span>  bytes/sec: <span class="number">109895890.09</span></span><br></pre></td></tr></table></figure></p>
 <p>可以看到io达到了26830每秒<br><a id="more"></a><br>下面进行关闭后再测试：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@node8109 ~]<span class="comment"># rbd -p rbd bench-write zp  --io-size 4096 --io-threads 256  --io-total 102400000   --io-pattern seq</span></span><br><span class="line">bench-write  io_size <span class="number">4096</span> io_threads <span class="number">256</span> bytes <span class="number">102400000</span> pattern seq</span><br><span class="line">  SEC       OPS   OPS/SEC   BYTES/SEC</span><br><span class="line">    <span class="number">1</span>       <span class="number">893</span>   <span class="number">1076.16</span>  <span class="number">4407933.78</span></span><br><span class="line">    <span class="number">2</span>      <span class="number">1344</span>    <span class="number">795.81</span>  <span class="number">3259636.35</span></span><br><span class="line">    <span class="number">3</span>      <span class="number">1794</span>    <span class="number">655.20</span>  <span class="number">2683695.60</span></span><br><span class="line">    <span class="number">4</span>      <span class="number">2198</span>    <span class="number">613.23</span>  <span class="number">2511789.77</span></span><br></pre></td></tr></table></figure></p>
@@ -769,7 +802,7 @@
     <link href="http://www.zphj1987.com/2015/11/12/%E5%A6%82%E4%BD%95%E5%88%A0%E9%99%A4%E4%B8%80%E5%8F%B0OSD%E4%B8%BB%E6%9C%BA/"/>
     <id>http://www.zphj1987.com/2015/11/12/如何删除一台OSD主机/</id>
     <published>2015-11-12T13:33:41.000Z</published>
-    <updated>2015-11-12T13:35:14.000Z</updated>
+    <updated>2015-11-12T13:35:14.130Z</updated>
     <content type="html"><![CDATA[<blockquote>
 <p>在ceph的一台OSD主机出现故障的时候，数据可以通过副本的机制进行恢复，之后通过删除osd的操作也能够将故障osd从osd tree当中删除掉，但是故障的 osd 的主机仍然会留在集群当中，通过 ceph osd tree 或者打印 crush map 都可以看到这个损坏的节点主机名，所以这里讲下怎么删除掉这个无用的host</p>
 </blockquote>
@@ -807,7 +840,7 @@
     <link href="http://www.zphj1987.com/2015/11/01/Mon%E5%A4%B1%E6%95%88%E5%A4%84%E7%90%86%E6%96%B9%E6%B3%95/"/>
     <id>http://www.zphj1987.com/2015/11/01/Mon失效处理方法/</id>
     <published>2015-11-01T15:34:26.000Z</published>
-    <updated>2015-11-01T15:38:49.000Z</updated>
+    <updated>2015-11-01T15:38:49.630Z</updated>
     <content type="html"><![CDATA[<p>假设环境为三个mon，主机名为mon1、mon2、mon3，现在mon3上面的系统盘损坏，mon的数据完全丢失，现在需要对mon3进行恢复处理</p>
 <p>1、停止所有mon进程，可以不停其他进程，需要停止内核客户端以及对外的服务，防止卡死<br>在mon1机器上执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/etc/init.d/ceph stop mon</span><br></pre></td></tr></table></figure></p>
 <p>在mon2机器上执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/etc/init.d/ceph stop mon</span><br></pre></td></tr></table></figure></p>
@@ -843,7 +876,7 @@
     <link href="http://www.zphj1987.com/2015/10/13/%E5%9C%A8%E9%A1%B5%E9%9D%A2%E4%B8%AD%E5%B5%8C%E5%85%A5%E8%87%AA%E9%80%82%E5%BA%94%E8%A7%86%E9%A2%91%E7%9A%84%E6%96%B9%E6%B3%95/"/>
     <id>http://www.zphj1987.com/2015/10/13/在页面中嵌入自适应视频的方法/</id>
     <published>2015-10-13T13:50:23.000Z</published>
-    <updated>2015-10-13T14:46:32.000Z</updated>
+    <updated>2015-10-13T14:46:32.123Z</updated>
     <content type="html"><![CDATA[<p>准备在博客中嵌入视频，从视频网站获取的embed代码是指定宽度和高度的，这样在一些窗口或者移动端进行访问的时候，就可能视频溢出屏幕了，体验不好，实际上这几年响应式网站比较流行，也就是能让内容自动的适应窗口的大小</p>
 <p>屏幕的宽度可以用 <code>width：100%</code> 进行设置，高度看到有个 <code>height:100%</code> 设置后height实际取的是上一层的高度的百分比，如果没设置的话，这个就为0，看到嵌入的视频就没有高度了，网上关于这个的资料很多，可以搜索下</p>
 <p>关于视频的自适应看到  <a href="https://developers.google.com/web/fundamentals/media/video/size-videos-correctly?hl=zh-cn#section" title="google 自适应设置建议" target="_blank" rel="external">google 自适应设置建议</a> 这个介绍的很好<br><a id="more"></a><br>主要是这段代码:<br><figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="class">.video-container</span> <span class="rules">&#123;</span><br><span class="line">        <span class="rule"><span class="attribute">position</span>:<span class="value"> relative</span></span>;</span><br><span class="line">        <span class="rule"><span class="attribute">padding-bottom</span>:<span class="value"> <span class="number">56.25%</span></span></span>;</span><br><span class="line">        <span class="rule"><span class="attribute">padding-top</span>:<span class="value"> <span class="number">30px</span></span></span>;</span><br><span class="line">        <span class="rule"><span class="attribute">height</span>:<span class="value"> <span class="number">0</span></span></span>;</span><br><span class="line">        <span class="rule"><span class="attribute">overflow</span>:<span class="value"> hidden</span></span>;</span><br><span class="line">    <span class="rule">&#125;</span></span></span><br><span class="line"></span><br><span class="line">    <span class="class">.video-container</span> <span class="tag">iframe</span>,</span><br><span class="line">    <span class="class">.video-container</span> <span class="tag">object</span>,</span><br><span class="line">    <span class="class">.video-container</span> <span class="tag">embed</span> <span class="rules">&#123;</span><br><span class="line">        <span class="rule"><span class="attribute">position</span>:<span class="value"> absolute</span></span>;</span><br><span class="line">        <span class="rule"><span class="attribute">top</span>:<span class="value"> <span class="number">0</span></span></span>;</span><br><span class="line">        <span class="rule"><span class="attribute">left</span>:<span class="value"> <span class="number">0</span></span></span>;</span><br><span class="line">        <span class="rule"><span class="attribute">width</span>:<span class="value"> <span class="number">100%</span></span></span>;</span><br><span class="line">        <span class="rule"><span class="attribute">height</span>:<span class="value"> <span class="number">100%</span></span></span>;</span><br><span class="line">    <span class="rule">&#125;</span></span></span><br></pre></td></tr></table></figure></p>
@@ -863,39 +896,6 @@
     </summary>
     
       <category term="杂七杂八" scheme="http://www.zphj1987.com/tags/%E6%9D%82%E4%B8%83%E6%9D%82%E5%85%AB/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[inkscope管理平台试用]]></title>
-    <link href="http://www.zphj1987.com/2015/10/12/inkscope%E7%AE%A1%E7%90%86%E5%B9%B3%E5%8F%B0%E8%AF%95%E7%94%A8/"/>
-    <id>http://www.zphj1987.com/2015/10/12/inkscope管理平台试用/</id>
-    <published>2015-10-12T13:28:22.000Z</published>
-    <updated>2015-10-13T14:46:38.000Z</updated>
-    <content type="html"><![CDATA[<p>下面为inkscope的管理平台的操作记录，一直听说过这个管理平台，但一直没有真正的去配置过，花了一点时间进行了配置</p>
-<p>inkscope的管理平台总结下有下面几个：</p>
-<ul>
-<li>使用sysprobe获取节点的操作系统监控信息</li>
-<li>使用cephprobe去跟ceph集群进行交互，调用了ceph-rest-api进行集群的数据和操作交互</li>
-<li>使用mongodb进行监控信息的存储</li>
-</ul>
-<p>总体来说架构简单，很容易配置，并且官方提供了包，是比较成熟的管理平台了，具体的可以看下面的这个视频<br><a id="more"></a></p>
-<div class="video-container"> <object><br><param name="allowFullScreen" value="true"><param name="flashVars" value="id=23750026 "><param name="movie" value="http://i7.imgs.letv.com/player/swfPlayer.swf?autoplay=0"><embed src="http://i7.imgs.letv.com/player/swfPlayer.swf?autoplay=0" flashvars="id=23750026" allowfullscreen="true" type="application/x-shockwave-flash"></object><br></div>
-
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>下面为inkscope的管理平台的操作记录，一直听说过这个管理平台，但一直没有真正的去配置过，花了一点时间进行了配置</p>
-<p>inkscope的管理平台总结下有下面几个：</p>
-<ul>
-<li>使用sysprobe获取节点的操作系统监控信息</li>
-<li>使用cephprobe去跟ceph集群进行交互，调用了ceph-rest-api进行集群的数据和操作交互</li>
-<li>使用mongodb进行监控信息的存储</li>
-</ul>
-<p>总体来说架构简单，很容易配置，并且官方提供了包，是比较成熟的管理平台了，具体的可以看下面的这个视频<br>]]>
-    
-    </summary>
-    
-      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
     
   </entry>
   
