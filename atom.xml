@@ -4,7 +4,7 @@
   <subtitle><![CDATA[现在所学，终有所用]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2016-02-22T16:42:14.296Z</updated>
+  <updated>2016-02-23T05:15:56.579Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -15,11 +15,28 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title><![CDATA[内核参数比较]]></title>
+    <link href="http://www.zphj1987.com/2016/02/23/%E5%86%85%E6%A0%B8%E5%8F%82%E6%95%B0%E6%AF%94%E8%BE%83/"/>
+    <id>http://www.zphj1987.com/2016/02/23/内核参数比较/</id>
+    <published>2016-02-23T05:14:19.000Z</published>
+    <updated>2016-02-23T05:15:56.579Z</updated>
+    <content type="html"><![CDATA[<p>使用sysctl -a &gt; file1.log<br>取出系统的内核参数，拷贝到同一个目录下面<br>然后用下面的脚本打印出不同的值<br>然后分析差异<br>diff只能按行比较，而这个文件有错行，所以用一个简单的办法实现<br><a id="more"></a></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="shebang">#! /bin/sh</span></span><br><span class="line"><span class="comment"># the output is the different from file1 to file2 ,so you must change the position of the file1name of file1 and file2 ;</span></span><br><span class="line">file1=centos.log</span><br><span class="line">file2=centos2.log</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> key <span class="keyword">in</span> `cat <span class="variable">$file1</span> |awk <span class="string">'&#123;print $1&#125;'</span>`</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">va1=`cat <span class="variable">$file1</span> |grep <span class="variable">$key</span>|cut <span class="operator">-f</span> <span class="number">2</span> <span class="operator">-d</span> <span class="string">"="</span>`</span><br><span class="line">va2=`cat <span class="variable">$file2</span> |grep <span class="variable">$key</span>|cut <span class="operator">-f</span> <span class="number">2</span> <span class="operator">-d</span> <span class="string">"="</span>`</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ <span class="string">"<span class="variable">$va1</span>"</span> != <span class="string">"<span class="variable">$va2</span>"</span> ];<span class="keyword">then</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$key</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"<span class="variable">$file1</span>"</span>:<span class="variable">$va1</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"<span class="variable">$file2</span>"</span>:<span class="variable">$va2</span></span><br><span class="line"><span class="built_in">echo</span> ======================</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>]]></content>
+    <summary type="html">
+    <![CDATA[<p>使用sysctl -a &gt; file1.log<br>取出系统的内核参数，拷贝到同一个目录下面<br>然后用下面的脚本打印出不同的值<br>然后分析差异<br>diff只能按行比较，而这个文件有错行，所以用一个简单的办法实现<br>]]>
+    
+    </summary>
+    
+      <category term="linux" scheme="http://www.zphj1987.com/tags/linux/"/>
+    
+  </entry>
+  
+  <entry>
     <title><![CDATA[nginx状态监控统计]]></title>
     <link href="http://www.zphj1987.com/2016/02/22/nginx%E7%8A%B6%E6%80%81%E7%9B%91%E6%8E%A7%E7%BB%9F%E8%AE%A1/"/>
     <id>http://www.zphj1987.com/2016/02/22/nginx状态监控统计/</id>
     <published>2016-02-22T15:58:02.000Z</published>
-    <updated>2016-02-22T16:42:14.296Z</updated>
+    <updated>2016-02-22T16:42:14.000Z</updated>
     <content type="html"><![CDATA[<p>nginx是一款很优秀的web服务器软件，很多地方都有接触和使用到他，大部分的场景压力还没达到需要调优的地步，而调优的难点其实不在于调，而在于各项状态的监控，能够很快的找到资源在什么时候出现问题，调整前后出现的变化，如果都不知道变化在哪里所做的调优只能是凭感觉的</p>
 <p>之前看到有技术人员用nginx作为rgw的前端的时候，通过优化去实现将nginx的并发提高到很大，而不出现4xx等问题，nginx的access.log里面是有记录访问的状态码的，而这个日志的分析如果是一次次的去看，这样的分析是无法用精确的数据去展示的</p>
 <p>最开始的想法是想根据时间点去统计时间点的状态码，后来发现这样做既复杂，又无法输出到一些数据展示软件当中，实际上我只需要统计一定时间的总的状态值，然后定期去取这个值，然后在数据展示的时候，就可以看到一个数值的曲线图，增量即为这个时间区间所产生的状态值</p>
@@ -868,34 +885,6 @@
     </summary>
     
       <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[在页面中嵌入自适应视频的方法]]></title>
-    <link href="http://www.zphj1987.com/2015/10/13/%E5%9C%A8%E9%A1%B5%E9%9D%A2%E4%B8%AD%E5%B5%8C%E5%85%A5%E8%87%AA%E9%80%82%E5%BA%94%E8%A7%86%E9%A2%91%E7%9A%84%E6%96%B9%E6%B3%95/"/>
-    <id>http://www.zphj1987.com/2015/10/13/在页面中嵌入自适应视频的方法/</id>
-    <published>2015-10-13T13:50:23.000Z</published>
-    <updated>2015-10-13T14:46:32.123Z</updated>
-    <content type="html"><![CDATA[<p>准备在博客中嵌入视频，从视频网站获取的embed代码是指定宽度和高度的，这样在一些窗口或者移动端进行访问的时候，就可能视频溢出屏幕了，体验不好，实际上这几年响应式网站比较流行，也就是能让内容自动的适应窗口的大小</p>
-<p>屏幕的宽度可以用 <code>width：100%</code> 进行设置，高度看到有个 <code>height:100%</code> 设置后height实际取的是上一层的高度的百分比，如果没设置的话，这个就为0，看到嵌入的视频就没有高度了，网上关于这个的资料很多，可以搜索下</p>
-<p>关于视频的自适应看到  <a href="https://developers.google.com/web/fundamentals/media/video/size-videos-correctly?hl=zh-cn#section" title="google 自适应设置建议" target="_blank" rel="external">google 自适应设置建议</a> 这个介绍的很好<br><a id="more"></a><br>主要是这段代码:<br><figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="class">.video-container</span> <span class="rules">&#123;</span><br><span class="line">        <span class="rule"><span class="attribute">position</span>:<span class="value"> relative</span></span>;</span><br><span class="line">        <span class="rule"><span class="attribute">padding-bottom</span>:<span class="value"> <span class="number">56.25%</span></span></span>;</span><br><span class="line">        <span class="rule"><span class="attribute">padding-top</span>:<span class="value"> <span class="number">30px</span></span></span>;</span><br><span class="line">        <span class="rule"><span class="attribute">height</span>:<span class="value"> <span class="number">0</span></span></span>;</span><br><span class="line">        <span class="rule"><span class="attribute">overflow</span>:<span class="value"> hidden</span></span>;</span><br><span class="line">    <span class="rule">&#125;</span></span></span><br><span class="line"></span><br><span class="line">    <span class="class">.video-container</span> <span class="tag">iframe</span>,</span><br><span class="line">    <span class="class">.video-container</span> <span class="tag">object</span>,</span><br><span class="line">    <span class="class">.video-container</span> <span class="tag">embed</span> <span class="rules">&#123;</span><br><span class="line">        <span class="rule"><span class="attribute">position</span>:<span class="value"> absolute</span></span>;</span><br><span class="line">        <span class="rule"><span class="attribute">top</span>:<span class="value"> <span class="number">0</span></span></span>;</span><br><span class="line">        <span class="rule"><span class="attribute">left</span>:<span class="value"> <span class="number">0</span></span></span>;</span><br><span class="line">        <span class="rule"><span class="attribute">width</span>:<span class="value"> <span class="number">100%</span></span></span>;</span><br><span class="line">        <span class="rule"><span class="attribute">height</span>:<span class="value"> <span class="number">100%</span></span></span>;</span><br><span class="line">    <span class="rule">&#125;</span></span></span><br></pre></td></tr></table></figure></p>
-<p>上面的56.25%实际是16:9的视频的值，这个可以根据自己的视频高宽比进行设置</p>
-<p>我自己的代码是这样的：<br>css的代码<br><figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="class">.article-entry</span> <span class="class">.video-container</span> <span class="rules">&#123;</span><br><span class="line">  <span class="rule"><span class="attribute">position</span>:<span class="value"> relative</span></span>;</span><br><span class="line">  <span class="rule"><span class="attribute">padding-bottom</span>:<span class="value"> <span class="number">56.25%</span></span></span>;</span><br><span class="line">  <span class="rule"><span class="attribute">padding-top</span>:<span class="value"> <span class="number">30px</span></span></span>;</span><br><span class="line">  <span class="rule"><span class="attribute">height</span>:<span class="value"> <span class="number">0</span></span></span>;</span><br><span class="line">  <span class="rule"><span class="attribute">overflow</span>:<span class="value"> hidden</span></span>;</span><br><span class="line"><span class="rule">&#125;</span></span></span><br><span class="line"><span class="class">.article-entry</span> <span class="class">.video-container</span> <span class="tag">embed</span> <span class="rules">&#123;</span><br><span class="line">  <span class="rule"><span class="attribute">position</span>:<span class="value"> absolute</span></span>;</span><br><span class="line">  <span class="rule"><span class="attribute">top</span>:<span class="value"> <span class="number">0</span></span></span>;</span><br><span class="line">  <span class="rule"><span class="attribute">left</span>:<span class="value"> <span class="number">0</span></span></span>;</span><br><span class="line">  <span class="rule"><span class="attribute">width</span>:<span class="value"> <span class="number">100%</span></span></span>;</span><br><span class="line">  <span class="rule"><span class="attribute">height</span>:<span class="value"> <span class="number">100%</span></span></span>;</span><br><span class="line"><span class="rule">&#125;</span></span></span><br><span class="line"><span class="class">.article-entry</span> <span class="class">.video-container</span> <span class="tag">object</span> <span class="rules">&#123;</span><br><span class="line">  <span class="rule"><span class="attribute">position</span>:<span class="value"> absolute</span></span>;</span><br><span class="line">  <span class="rule"><span class="attribute">top</span>:<span class="value"> <span class="number">0</span></span></span>;</span><br><span class="line">  <span class="rule"><span class="attribute">left</span>:<span class="value"> <span class="number">0</span></span></span>;</span><br><span class="line">  <span class="rule"><span class="attribute">width</span>:<span class="value"> <span class="number">100%</span></span></span>;</span><br><span class="line">  <span class="rule"><span class="attribute">height</span>:<span class="value"> <span class="number">100%</span></span></span>;</span><br><span class="line"><span class="rule">&#125;</span></span></span><br></pre></td></tr></table></figure></p>
-<p>嵌入的页面html代码为：<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">&lt;div class="video-container"&gt; &lt;object&gt;</span><br><span class="line">&lt;param name="allowFullScreen" value="true"&gt;&lt;param name="flashVars" value="id=23750026 " /&gt;&lt;param name="movie" value="http://i7.imgs.letv.com/player/swfPlayer.swf?autoplay=0" /&gt;&lt;embed   src="http://i7.imgs.letv.com/player/swfPlayer.swf?autoplay=0" flashVars="id=23750026"allowFullScreen="true" type="application/x-shockwave-flash" &gt;&lt;/embed&gt;&lt;/object&gt;</span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure></p>
-<p>添加了一个class标签，去掉了网站视频分享代码里面的width和height的值<br>下面为一个视频的例子：可以调整浏览器查看效果</p>
-<div class="video-container"><object><param name="allowFullScreen" value="true"><param name="flashVars" value="id=23739460 "><param name="movie" value="http://i7.imgs.letv.com/player/swfPlayer.swf?autoplay=0"><embed src="http://i7.imgs.letv.com/player/swfPlayer.swf?autoplay=0" flashvars="id=23739460" allowfullscreen="true" type="application/x-shockwave-flash"></object><br></div>
-
-<p><em>ps：测试了很多网站的视频上传，发现还是乐视的清晰度最高，没有压缩很多，并且视频提供高清的观看 </em></p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>准备在博客中嵌入视频，从视频网站获取的embed代码是指定宽度和高度的，这样在一些窗口或者移动端进行访问的时候，就可能视频溢出屏幕了，体验不好，实际上这几年响应式网站比较流行，也就是能让内容自动的适应窗口的大小</p>
-<p>屏幕的宽度可以用 <code>width：100%</code> 进行设置，高度看到有个 <code>height:100%</code> 设置后height实际取的是上一层的高度的百分比，如果没设置的话，这个就为0，看到嵌入的视频就没有高度了，网上关于这个的资料很多，可以搜索下</p>
-<p>关于视频的自适应看到  <a href="https://developers.google.com/web/fundamentals/media/video/size-videos-correctly?hl=zh-cn#section" title="google 自适应设置建议">google 自适应设置建议</a> 这个介绍的很好<br>]]>
-    
-    </summary>
-    
-      <category term="杂七杂八" scheme="http://www.zphj1987.com/tags/%E6%9D%82%E4%B8%83%E6%9D%82%E5%85%AB/"/>
     
   </entry>
   

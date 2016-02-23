@@ -3,17 +3,17 @@
 <head>
   <meta charset="utf-8">
   
-  <title>zphj1987&#39;Blog</title>
+  <title>内核参数比较 | zphj1987&#39;Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description">
-<meta property="og:type" content="website">
-<meta property="og:title" content="zphj1987'Blog">
-<meta property="og:url" content="http://www.zphj1987.com/tags/linux/page/3/index.html">
+  <meta name="description" content="使用sysctl -a &amp;gt; file1.log取出系统的内核参数，拷贝到同一个目录下面然后用下面的脚本打印出不同的值然后分析差异diff只能按行比较，而这个文件有错行，所以用一个简单的办法实现">
+<meta property="og:type" content="article">
+<meta property="og:title" content="内核参数比较">
+<meta property="og:url" content="http://www.zphj1987.com/2016/02/23/内核参数比较/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
-<meta property="og:description">
+<meta property="og:description" content="使用sysctl -a &amp;gt; file1.log取出系统的内核参数，拷贝到同一个目录下面然后用下面的脚本打印出不同的值然后分析差异diff只能按行比较，而这个文件有错行，所以用一个简单的办法实现">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="zphj1987'Blog">
-<meta name="twitter:description">
+<meta name="twitter:title" content="内核参数比较">
+<meta name="twitter:description" content="使用sysctl -a &amp;gt; file1.log取出系统的内核参数，拷贝到同一个目录下面然后用下面的脚本打印出不同的值然后分析差异diff只能按行比较，而这个文件有错行，所以用一个简单的办法实现">
   
     <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
   
@@ -184,88 +184,103 @@ var _hmt = _hmt || [];
 		</header>				
 	</div>
 </nav>
-      <div class="body-wrap">
+      <div class="body-wrap"><article id="post-内核参数比较" class="article article-type-post" itemscope itemprop="blogPost">
   
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2015" class="archive-year">2015</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2015/03/22/du查看的目录大小与df查看的大小不同的时候用lsof查找/" class="archive-article-date">
-  	<time datetime="2015-03-22T06:21:07.000Z" itemprop="datePublished">Mar 22</time>
+    <div class="article-meta">
+      <a href="/2016/02/23/内核参数比较/" class="article-date">
+  	<time datetime="2016-02-23T05:14:19.000Z" itemprop="datePublished">2016-02-23</time>
 </a>
-        </div>
-    	 
+    </div>
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2015/03/22/du查看的目录大小与df查看的大小不同的时候用lsof查找/">du查看的目录大小与df查看的大小不同的时候用lsof查找</a>
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      内核参数比较
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+      </header>
+      
+      <div class="article-info article-info-post">
+        
 	<div class="article-tag tagcloud">
 		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
 	</div>
 
-          
+        
 
-        </div>
         <div class="clearfix"></div>
-    </header>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>使用sysctl -a &gt; file1.log<br>取出系统的内核参数，拷贝到同一个目录下面<br>然后用下面的脚本打印出不同的值<br>然后分析差异<br>diff只能按行比较，而这个文件有错行，所以用一个简单的办法实现<br><a id="more"></a></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="shebang">#! /bin/sh</span></span><br><span class="line"><span class="comment"># the output is the different from file1 to file2 ,so you must change the position of the file1name of file1 and file2 ;</span></span><br><span class="line">file1=centos.log</span><br><span class="line">file2=centos2.log</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> key <span class="keyword">in</span> `cat <span class="variable">$file1</span> |awk <span class="string">'&#123;print $1&#125;'</span>`</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">va1=`cat <span class="variable">$file1</span> |grep <span class="variable">$key</span>|cut <span class="operator">-f</span> <span class="number">2</span> <span class="operator">-d</span> <span class="string">"="</span>`</span><br><span class="line">va2=`cat <span class="variable">$file2</span> |grep <span class="variable">$key</span>|cut <span class="operator">-f</span> <span class="number">2</span> <span class="operator">-d</span> <span class="string">"="</span>`</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ <span class="string">"<span class="variable">$va1</span>"</span> != <span class="string">"<span class="variable">$va2</span>"</span> ];<span class="keyword">then</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$key</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"<span class="variable">$file1</span>"</span>:<span class="variable">$va1</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"<span class="variable">$file2</span>"</span>:<span class="variable">$va2</span></span><br><span class="line"><span class="built_in">echo</span> ======================</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
   </div>
-</article>
   
     
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2015/03/22/linux下内存释放/" class="archive-article-date">
-  	<time datetime="2015-03-22T04:24:24.000Z" itemprop="datePublished">Mar 22</time>
-</a>
-        </div>
-    	 
+<nav id="article-nav">
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2015/03/22/linux下内存释放/">linux下内存释放</a>
-    </h1>
   
+    <a href="/2016/02/22/nginx状态监控统计/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">nginx状态监控统计</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
+  
+</article>
+
+
+<div class="share">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到：</span>
+		<a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+		<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
 	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
 
-          
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
 
-    
-    <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/tags/linux/page/2/">&laquo; Prev</a><a class="page-number" href="/tags/linux/">1</a><a class="page-number" href="/tags/linux/page/2/">2</a><span class="page-number current">3</span>
-    </nav>
-  
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="内核参数比较" data-title="内核参数比较" data-url="http://www.zphj1987.com/2016/02/23/内核参数比较/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"zphj1987"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
 
 </div>
       <footer id="footer">
@@ -291,7 +306,7 @@ var _hmt = _hmt || [];
 		mathjax: undefined,
 		animate: true,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,
