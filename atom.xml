@@ -4,7 +4,7 @@
   <subtitle><![CDATA[现在所学，终有所用]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2016-02-24T14:40:56.808Z</updated>
+  <updated>2016-02-24T15:35:52.064Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="http://www.zphj1987.com/2016/02/24/%E4%B8%80%E6%AD%A5%E4%B8%80%E6%AD%A5%E6%89%93%E9%80%A0%E9%9B%86%E7%BE%A4%E7%9B%91%E6%8E%A7%E7%B3%BB%E7%BB%9F/"/>
     <id>http://www.zphj1987.com/2016/02/24/一步一步打造集群监控系统/</id>
     <published>2016-02-24T12:28:00.000Z</published>
-    <updated>2016-02-24T14:40:56.808Z</updated>
+    <updated>2016-02-24T15:35:52.064Z</updated>
     <content type="html"><![CDATA[<p>目前的开源的ceph的监控平台有几个，inkscope，calamari，vsm，ceph-dash，这几个软件各有各的特色各有个的特点，按需取用，下面先简单介绍下这几个软件的运行模式</p>
 <ul>
 <li>inkscope自己封装了一套api，在集群数据方面直接调用的ceph的自己的ceph-rest-api,节点硬件数据通过一个自带的插件收取数据，里面的osd的pg显示非常有特色，使用了sankey chart来显示关联关系</li>
@@ -45,7 +45,7 @@
 <p>这样做的好处可以方便的分辨出状态的变化，可以从下面的堆叠图看到是否有短时的状态异常的情况</p>
 <hr>
 <p>最后更新时间：<br>2016-02-24 夜</p>
-<p>欢迎打赏 and tell me :</p>
+<p><strong>如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作！</strong></p>
 <div style="text-align:center"><br><img src="http://7xo9we.com1.z0.glb.clouddn.com/payforzp.png" alt="支付宝" title="支付宝扫一扫"><br></div>]]></content>
     <summary type="html">
     <![CDATA[<p>目前的开源的ceph的监控平台有几个，inkscope，calamari，vsm，ceph-dash，这几个软件各有各的特色各有个的特点，按需取用，下面先简单介绍下这几个软件的运行模式</p>
