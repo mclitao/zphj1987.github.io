@@ -223,12 +223,7 @@ var _hmt = _hmt || [];
       
         <p>使用sysctl -a &gt; file1.log<br>取出系统的内核参数，拷贝到同一个目录下面<br>然后用下面的脚本打印出不同的值<br>然后分析差异<br>diff只能按行比较，而这个文件有错行，所以用一个简单的办法实现<br><a id="more"></a></p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="shebang">#! /bin/sh</span></span><br><span class="line"><span class="comment"># the output is the different from file1 to file2 ,so you must change the position of the file1name of file1 and file2 ;</span></span><br><span class="line">file1=centos.log</span><br><span class="line">file2=centos2.log</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> key <span class="keyword">in</span> `cat <span class="variable">$file1</span> |awk <span class="string">'&#123;print $1&#125;'</span>`</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">va1=`cat <span class="variable">$file1</span> |grep <span class="variable">$key</span>|cut <span class="operator">-f</span> <span class="number">2</span> <span class="operator">-d</span> <span class="string">"="</span>`</span><br><span class="line">va2=`cat <span class="variable">$file2</span> |grep <span class="variable">$key</span>|cut <span class="operator">-f</span> <span class="number">2</span> <span class="operator">-d</span> <span class="string">"="</span>`</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ <span class="string">"<span class="variable">$va1</span>"</span> != <span class="string">"<span class="variable">$va2</span>"</span> ];<span class="keyword">then</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$key</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"<span class="variable">$file1</span>"</span>:<span class="variable">$va1</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"<span class="variable">$file2</span>"</span>:<span class="variable">$va2</span></span><br><span class="line"><span class="built_in">echo</span> ======================</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>
-<script type="text/javascript">
-var sogou_ad_id=544345;
-var sogou_ad_height=90;
-var sogou_ad_width=728;
-</script>
-<script type="text/javascript" src="http://images.sohu.com/cs/jsfile/js/c.js"></script>
+
       
     </div>
     
