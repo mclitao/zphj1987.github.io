@@ -3,17 +3,24 @@
 <head>
   <meta charset="utf-8">
   
-  <title>zphj1987&#39;Blog</title>
+  <title>一步一步打造集群监控系统 | zphj1987&#39;Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description">
-<meta property="og:type" content="website">
-<meta property="og:title" content="zphj1987'Blog">
-<meta property="og:url" content="http://www.zphj1987.com/archives/2016/02/index.html">
+  <meta name="description" content="目前的开源的ceph的监控平台有几个，inkscope，calamari，vsm，ceph-dash，这几个软件各有各的特色各有个的特点，按需取用，下面先简单介绍下这几个软件的运行模式
+
+inkscope自己封装了一套api，在集群数据方面直接调用的ceph的自己的ceph-rest-api,节点硬件数据通过一个自带的插件收取数据，里面的osd的pg显示非常有特色，使用了sankey chart来">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一步一步打造集群监控系统">
+<meta property="og:url" content="http://www.zphj1987.com/2016/02/24/一步一步打造集群监控系统/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
-<meta property="og:description">
+<meta property="og:description" content="目前的开源的ceph的监控平台有几个，inkscope，calamari，vsm，ceph-dash，这几个软件各有各的特色各有个的特点，按需取用，下面先简单介绍下这几个软件的运行模式
+
+inkscope自己封装了一套api，在集群数据方面直接调用的ceph的自己的ceph-rest-api,节点硬件数据通过一个自带的插件收取数据，里面的osd的pg显示非常有特色，使用了sankey chart来">
+<meta property="og:image" content="http://7xo9we.com1.z0.glb.clouddn.com/payforzp.png">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="zphj1987'Blog">
-<meta name="twitter:description">
+<meta name="twitter:title" content="一步一步打造集群监控系统">
+<meta name="twitter:description" content="目前的开源的ceph的监控平台有几个，inkscope，calamari，vsm，ceph-dash，这几个软件各有各的特色各有个的特点，按需取用，下面先简单介绍下这几个软件的运行模式
+
+inkscope自己封装了一套api，在集群数据方面直接调用的ceph的自己的ceph-rest-api,节点硬件数据通过一个自带的插件收取数据，里面的osd的pg显示非常有特色，使用了sankey chart来">
   
     <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
   
@@ -184,146 +191,112 @@ var _hmt = _hmt || [];
 		</header>				
 	</div>
 </nav>
-      <div class="body-wrap">
+      <div class="body-wrap"><article id="post-一步一步打造集群监控系统" class="article article-type-post" itemscope itemprop="blogPost">
   
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2016" class="archive-year">2016</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2016/02/24/一步一步打造集群监控系统/" class="archive-article-date">
-  	<time datetime="2016-02-24T12:28:00.000Z" itemprop="datePublished">Feb 24</time>
+    <div class="article-meta">
+      <a href="/2016/02/24/一步一步打造集群监控系统/" class="article-date">
+  	<time datetime="2016-02-24T12:28:00.000Z" itemprop="datePublished">2016-02-24</time>
 </a>
-        </div>
-    	 
+    </div>
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/02/24/一步一步打造集群监控系统/">一步一步打造集群监控系统</a>
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      一步一步打造集群监控系统
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+      </header>
+      
+      <div class="article-info article-info-post">
+        
 	<div class="article-tag tagcloud">
 		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
 	</div>
 
-          
+        
 
-        </div>
         <div class="clearfix"></div>
-    </header>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>目前的开源的ceph的监控平台有几个，inkscope，calamari，vsm，ceph-dash，这几个软件各有各的特色各有个的特点，按需取用，下面先简单介绍下这几个软件的运行模式</p>
+<ul>
+<li>inkscope自己封装了一套api，在集群数据方面直接调用的ceph的自己的ceph-rest-api,节点硬件数据通过一个自带的插件收取数据，里面的osd的pg显示非常有特色，使用了sankey chart来显示关联关系</li>
+<li>calamari 是 redhat官方提供的一个开源监控，监控基于的graphite，diamond收集各个节点的数据发送给管理平台的机器，然后显示，目前结构稳定，基本没太多变化</li>
+<li>vsm 是intel出的一个监控加管理的平台，可以进行部署和监控，现在还处于开发阶段，版本在一直发布，与openstack有结合</li>
+<li>ceph-dash配置很简单，直接运行即可，可以获取到一些基本的数据</li>
+</ul>
+<p>以上软件都非常不错，如果需求不是太高，直接取用就行</p>
+<p>本篇将根据我自己的经验，根据现有的软件，打造一个自己需要的监控系统，本篇不会具体写细节如何实现，主要是记录，在监控一套系统的时候，需要去关注什么数据，数据以什么形式的展示，整个过程会比较久，会持续更新，欢迎探讨</p>
+<h3 id="监控组成">监控组成</h3><p>监控采用了grafana+graphite+diamond的方式，需要开发量的主要在diamond的数据的获取方面，这个部分会有单独的文章介绍，页面采用grafana，这个数据展示是目前比较的地方</p>
+<h4 id="1、健康状态的监控">1、健康状态的监控</h4><div style="text-align:center"><br><img src="http://7xo9we.com1.z0.glb.clouddn.com/payforzp.png" alt="pay"><br></div>
+      
+    </div>
+    
   </div>
-</article>
   
     
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2016/02/23/内核参数比较/" class="archive-article-date">
-  	<time datetime="2016-02-23T05:14:19.000Z" itemprop="datePublished">Feb 23</time>
-</a>
-        </div>
-    	 
+<nav id="article-nav">
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/02/23/内核参数比较/">内核参数比较</a>
-    </h1>
   
+    <a href="/2016/02/23/内核参数比较/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">内核参数比较</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
+  
+</article>
+
+
+<div class="share">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到：</span>
+		<a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+		<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
 	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
 
-          
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2016/02/22/nginx状态监控统计/" class="archive-article-date">
-  	<time datetime="2016-02-22T15:58:02.000Z" itemprop="datePublished">Feb 22</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/02/22/nginx状态监控统计/">nginx状态监控统计</a>
-    </h1>
-  
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nginx/">nginx</a></li></ul>
-	</div>
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="一步一步打造集群监控系统" data-title="一步一步打造集群监控系统" data-url="http://www.zphj1987.com/2016/02/24/一步一步打造集群监控系统/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"zphj1987"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
 
-          
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2016/02/21/diamond收集插件的自定义/" class="archive-article-date">
-  	<time datetime="2016-02-21T11:23:55.000Z" itemprop="datePublished">Feb 21</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/02/21/diamond收集插件的自定义/">diamond收集插件的自定义</a>
-    </h1>
-  
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/监控/">监控</a></li></ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
-
-    
 
 </div>
       <footer id="footer">
@@ -349,7 +322,7 @@ var _hmt = _hmt || [];
 		mathjax: undefined,
 		animate: true,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,
