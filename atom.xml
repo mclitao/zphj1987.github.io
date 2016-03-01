@@ -4,7 +4,7 @@
   <subtitle><![CDATA[现在所学，终有所用]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2016-02-24T15:35:52.064Z</updated>
+  <updated>2016-03-01T05:13:24.851Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -13,6 +13,41 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[yum安装指定版本ceph包]]></title>
+    <link href="http://www.zphj1987.com/2016/03/01/yum%E5%AE%89%E8%A3%85%E6%8C%87%E5%AE%9A%E7%89%88%E6%9C%ACceph%E5%8C%85/"/>
+    <id>http://www.zphj1987.com/2016/03/01/yum安装指定版本ceph包/</id>
+    <published>2016-03-01T04:21:56.000Z</published>
+    <updated>2016-03-01T05:13:24.851Z</updated>
+    <content type="html"><![CDATA[<p>安装ceph包的方式有很多，这里讲的是从官网直接通过yum源的安装方式进行安装</p>
+<p>yum源对应的地址为<br><a href="http://download.ceph.com/rpm-hammer/el6/x86_64/" target="_blank" rel="external">http://download.ceph.com/rpm-hammer/el6/x86_64/</a></p>
+<p>怎么配置ceph源就不在这里赘述了</p>
+<p>下图为ceph官网的yum源里面的文件列表：</p>
+<a id="more"></a>
+<p><img src="http://7xo9we.com1.z0.glb.clouddn.com/16-3-1/80906036.jpg" alt=""></p>
+<p>可以看到有多个版本的，默认的会安装最新的版本的</p>
+<p>这样就会有个问题：<br>安装了一个老版本的包，需要安装一个附属的包，安装的版本就会是最新版本的，而不是已经安装的版本的附属的包，会引起版本错乱</p>
+<p>解决办法：</p>
+<h3 id="1、查询源里面的包有多少个版本">1、查询源里面的包有多少个版本</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@zhongbo ~]<span class="comment"># yum --showduplicates list ceph | expand</span></span><br><span class="line">Loaded plugins: security</span><br><span class="line">Available Packages</span><br><span class="line">ceph.x86_64                         <span class="number">1</span>:<span class="number">0.94</span>-<span class="number">0</span>.el6                            ceph</span><br><span class="line">ceph.x86_64                         <span class="number">1</span>:<span class="number">0.94</span>.<span class="number">1</span>-<span class="number">0</span>.el6                          ceph</span><br><span class="line">ceph.x86_64                         <span class="number">1</span>:<span class="number">0.94</span>.<span class="number">2</span>-<span class="number">0</span>.el6                          ceph</span><br><span class="line">ceph.x86_64                         <span class="number">1</span>:<span class="number">0.94</span>.<span class="number">3</span>-<span class="number">0</span>.el6                          ceph</span><br><span class="line">ceph.x86_64                         <span class="number">1</span>:<span class="number">0.94</span>.<span class="number">4</span>-<span class="number">0</span>.el6                          ceph</span><br><span class="line">ceph.x86_64                         <span class="number">1</span>:<span class="number">0.94</span>.<span class="number">5</span>-<span class="number">0</span>.el6                          ceph</span><br></pre></td></tr></table></figure>
+<h3 id="2、安装指定版本的包">2、安装指定版本的包</h3><p>假如现在需要安装的是1:0.94.4-0.el6这个版本<br>安装的格式为：</p>
+<pre><code>yum install &lt;package <span class="property">name</span>&gt;-&lt;<span class="property">version</span> info&gt;
+</code></pre><p>对应到这里<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum install ceph-<span class="number">0.94</span>.<span class="number">4</span>-<span class="number">0</span>.el6</span><br></pre></td></tr></table></figure></p>
+<p>注意名称规则是前面的名称，中间的版本去掉 1: 然后就可以安装指定版本的包了</p>
+<hr>
+<h3 id="My_daily">My daily</h3><p>今天的午饭不错<br>天气也很好<br><img src="http://7xo9we.com1.z0.glb.clouddn.com/16-3-1/62352295.jpg" alt=""></p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>安装ceph包的方式有很多，这里讲的是从官网直接通过yum源的安装方式进行安装</p>
+<p>yum源对应的地址为<br><a href="http://download.ceph.com/rpm-hammer/el6/x86_64/">http://download.ceph.com/rpm-hammer/el6/x86_64/</a></p>
+<p>怎么配置ceph源就不在这里赘述了</p>
+<p>下图为ceph官网的yum源里面的文件列表：</p>]]>
+    
+    </summary>
+    
+      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[一步一步打造集群监控系统(持续更新中-最后更新20160224)]]></title>
@@ -858,44 +893,6 @@ var sogou_ad_width=728;
     <![CDATA[<p>简单快速的在客户端验证rbd的cache是否开启<br>首先修改配置文件<br>在ceph.conf中添加：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[client]</span><br><span class="line">rbd cache = <span class="literal">true</span></span><br><span class="line">rbd cache writethrough until flush = <span class="literal">true</span></span><br></pre></td></tr></table></figure></p>
 <p>开启以后，在这台机器上进行测试<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@node8109 ~]<span class="comment"># rbd -p rbd bench-write zp  --io-size 4096 --io-threads 256  --io-total 102400000   --io-pattern seq</span></span><br><span class="line">bench-write  io_size <span class="number">4096</span> io_threads <span class="number">256</span> bytes <span class="number">102400000</span> pattern seq</span><br><span class="line">  SEC       OPS   OPS/SEC   BYTES/SEC</span><br><span class="line">elapsed:     <span class="number">0</span>  ops:    <span class="number">25000</span>  ops/sec: <span class="number">26830.05</span>  bytes/sec: <span class="number">109895890.09</span></span><br></pre></td></tr></table></figure></p>
 <p>可以看到io达到了26830每秒<br>]]>
-    
-    </summary>
-    
-      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[如何删除一台OSD主机]]></title>
-    <link href="http://www.zphj1987.com/2015/11/12/%E5%A6%82%E4%BD%95%E5%88%A0%E9%99%A4%E4%B8%80%E5%8F%B0OSD%E4%B8%BB%E6%9C%BA/"/>
-    <id>http://www.zphj1987.com/2015/11/12/如何删除一台OSD主机/</id>
-    <published>2015-11-12T13:33:41.000Z</published>
-    <updated>2015-11-12T13:35:14.130Z</updated>
-    <content type="html"><![CDATA[<blockquote>
-<p>在ceph的一台OSD主机出现故障的时候，数据可以通过副本的机制进行恢复，之后通过删除osd的操作也能够将故障osd从osd tree当中删除掉，但是故障的 osd 的主机仍然会留在集群当中，通过 ceph osd tree 或者打印 crush map 都可以看到这个损坏的节点主机名，所以这里讲下怎么删除掉这个无用的host</p>
-</blockquote>
-<p>首先集群环境为两台主机 node8109 node8110 , node8110主机出现故障需要清理掉</p>
-<h4 id="先看下当前的osd_tree状态">先看下当前的osd tree状态</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@node8109 webui]<span class="comment"># ceph osd tree</span></span><br><span class="line">ID WEIGHT  TYPE NAME             UP/DOWN REWEIGHT PRIMARY-AFFINITY </span><br><span class="line">-<span class="number">1</span> <span class="number">4.00000</span> root default                                            </span><br><span class="line">-<span class="number">3</span> <span class="number">4.00000</span>     rack localrack                                      </span><br><span class="line">-<span class="number">2</span> <span class="number">2.00000</span>         host node8109                                   </span><br><span class="line"> <span class="number">0</span> <span class="number">1.00000</span>             osd.<span class="number">0</span>          up  <span class="number">1.00000</span>          <span class="number">1.00000</span> </span><br><span class="line"> <span class="number">1</span> <span class="number">1.00000</span>             osd.<span class="number">1</span>          up  <span class="number">1.00000</span>          <span class="number">1.00000</span> </span><br><span class="line">-<span class="number">4</span> <span class="number">2.00000</span>         host node8110                                   </span><br><span class="line"> <span class="number">2</span> <span class="number">1.00000</span>             osd.<span class="number">2</span>        down  <span class="number">1.00000</span>          <span class="number">1.00000</span> </span><br><span class="line"> <span class="number">3</span> <span class="number">1.00000</span>             osd.<span class="number">3</span>        down  <span class="number">1.00000</span>          <span class="number">1.00000</span></span><br></pre></td></tr></table></figure>
-<a id="more"></a>
-<h4 id="查看osd的状态">查看osd的状态</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@node8109 webui]<span class="comment"># ceph osd stat</span></span><br><span class="line">     osdmap e66: <span class="number">4</span> osds: <span class="number">2</span> up, <span class="number">4</span> <span class="keyword">in</span>; <span class="number">52</span> remapped pgs</span><br></pre></td></tr></table></figure>
-<h4 id="首先out掉osd">首先out掉osd</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@node8109 ~]<span class="comment"># ceph osd out 2</span></span><br><span class="line">marked out osd.<span class="number">2</span>. </span><br><span class="line">[root@node8109 ~]<span class="comment"># ceph osd out 3</span></span><br><span class="line">marked out osd.<span class="number">3</span>.</span><br></pre></td></tr></table></figure>
-<h4 id="从crush里面删除osd">从crush里面删除osd</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@node8109 ~]<span class="comment"># ceph osd crush remove osd.2</span></span><br><span class="line">removed item id <span class="number">2</span> name <span class="string">'osd.2'</span> from crush map</span><br><span class="line">[root@node8109 ~]<span class="comment"># ceph osd crush remove osd.3</span></span><br><span class="line">removed item id <span class="number">3</span> name <span class="string">'osd.3'</span> from crush map</span><br></pre></td></tr></table></figure>
-<h4 id="从集群中删除OSD">从集群中删除OSD</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@node8109 ~]<span class="comment"># ceph osd rm osd.3</span></span><br><span class="line">removed osd.<span class="number">3</span></span><br><span class="line">[root@node8109 ~]<span class="comment"># ceph osd rm osd.2</span></span><br><span class="line">removed osd.<span class="number">2</span></span><br></pre></td></tr></table></figure>
-<h4 id="从集群认证里面删除osd">从集群认证里面删除osd</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@node8109 ~]<span class="comment"># ceph auth del osd.2</span></span><br><span class="line">updated</span><br><span class="line">[root@node8109 ~]<span class="comment"># ceph auth del osd.3</span></span><br><span class="line">updated</span><br></pre></td></tr></table></figure>
-<hr>
-<p>查看当前的crush map<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@node8109 ~]<span class="comment"># ceph osd tree</span></span><br><span class="line">ID WEIGHT  TYPE NAME             UP/DOWN REWEIGHT PRIMARY-AFFINITY </span><br><span class="line">-<span class="number">1</span> <span class="number">2.00000</span> root default                                            </span><br><span class="line">-<span class="number">3</span> <span class="number">2.00000</span>     rack localrack                                      </span><br><span class="line">-<span class="number">2</span> <span class="number">2.00000</span>         host node8109                                   </span><br><span class="line"> <span class="number">0</span> <span class="number">1.00000</span>             osd.<span class="number">0</span>          up  <span class="number">1.00000</span>          <span class="number">1.00000</span> </span><br><span class="line"> <span class="number">1</span> <span class="number">1.00000</span>             osd.<span class="number">1</span>          up  <span class="number">1.00000</span>          <span class="number">1.00000</span> </span><br><span class="line">-<span class="number">4</span>       <span class="number">0</span>         host node8110</span><br></pre></td></tr></table></figure></p>
-<p>下面有两种方法从osd tree 删除掉node8110,为命令方式和修改crush map 方式</p>
-<h3 id="方式一：命令方式">方式一：命令方式</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@node8109 ~]<span class="comment"># ceph osd crush remove node8110</span></span><br><span class="line">removed item id -<span class="number">4</span> name <span class="string">'node8110'</span> from crush map</span><br><span class="line">[root@node8109 ~]<span class="comment"># ceph osd tree</span></span><br><span class="line">ID WEIGHT  TYPE NAME             UP/DOWN REWEIGHT PRIMARY-AFFINITY </span><br><span class="line">-<span class="number">1</span> <span class="number">2.00000</span> root default                                            </span><br><span class="line">-<span class="number">3</span> <span class="number">2.00000</span>     rack localrack                                      </span><br><span class="line">-<span class="number">2</span> <span class="number">2.00000</span>         host node8109                                   </span><br><span class="line"> <span class="number">0</span> <span class="number">1.00000</span>             osd.<span class="number">0</span>          up  <span class="number">1.00000</span>          <span class="number">1.00000</span> </span><br><span class="line"> <span class="number">1</span> <span class="number">1.00000</span>             osd.<span class="number">1</span>          up  <span class="number">1.00000</span>          <span class="number">1.00000</span></span><br></pre></td></tr></table></figure>
-<h3 id="方式二：通过修改_crush_map_的方式">方式二：通过修改 crush map 的方式</h3><h4 id="导出当前的crush_map">导出当前的crush map</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@node8109 ~]<span class="comment">#ceph osd getcrushmap -o crushmap.txt</span></span><br><span class="line">[root@node8109 ~]<span class="comment">#crushtool -d crushmap.txt -o crushmap-decompile</span></span><br><span class="line">[root@node8109 ~]<span class="comment"># vim crushmap-decompile</span></span><br></pre></td></tr></table></figure>
-<h4 id="删除掉node8109相关的信息">删除掉node8109相关的信息</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@node8109 ~]<span class="comment">#crushtool -c crushmap-decompile  -o crushmap-compile</span></span><br><span class="line">[root@node8109 ~]<span class="comment"># ceph osd setcrushmap -i crushmap-compile </span></span><br><span class="line"><span class="built_in">set</span> crush map</span><br><span class="line">[root@node8109 ~]<span class="comment"># ceph osd tree</span></span><br><span class="line">ID WEIGHT  TYPE NAME             UP/DOWN REWEIGHT PRIMARY-AFFINITY </span><br><span class="line">-<span class="number">1</span> <span class="number">2.00000</span> root default                                            </span><br><span class="line">-<span class="number">3</span> <span class="number">2.00000</span>     rack localrack                                      </span><br><span class="line">-<span class="number">2</span> <span class="number">2.00000</span>         host node8109                                   </span><br><span class="line"> <span class="number">0</span> <span class="number">1.00000</span>             osd.<span class="number">0</span>          up  <span class="number">1.00000</span>          <span class="number">1.00000</span> </span><br><span class="line"> <span class="number">1</span> <span class="number">1.00000</span>             osd.<span class="number">1</span>          up  <span class="number">1.00000</span>          <span class="number">1.00000</span></span><br></pre></td></tr></table></figure>
-<h3 id="总结：">总结：</h3><p>从上面的两种方式可以看出，使用命令的方式更为简单直接，而修改crush map的方式需要去做修改的操作，有一定的修改错误的风险，所以在做crush map的相关操作的时候，建议是能用命令方式做的就用命令方式去做操作</p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<blockquote>
-<p>在ceph的一台OSD主机出现故障的时候，数据可以通过副本的机制进行恢复，之后通过删除osd的操作也能够将故障osd从osd tree当中删除掉，但是故障的 osd 的主机仍然会留在集群当中，通过 ceph osd tree 或者打印 crush map 都可以看到这个损坏的节点主机名，所以这里讲下怎么删除掉这个无用的host</p>
-</blockquote>
-<p>首先集群环境为两台主机 node8109 node8110 , node8110主机出现故障需要清理掉</p>
-<h4 id="先看下当前的osd_tree状态">先看下当前的osd tree状态</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@node8109 webui]<span class="comment"># ceph osd tree</span></span><br><span class="line">ID WEIGHT  TYPE NAME             UP/DOWN REWEIGHT PRIMARY-AFFINITY </span><br><span class="line">-<span class="number">1</span> <span class="number">4.00000</span> root default                                            </span><br><span class="line">-<span class="number">3</span> <span class="number">4.00000</span>     rack localrack                                      </span><br><span class="line">-<span class="number">2</span> <span class="number">2.00000</span>         host node8109                                   </span><br><span class="line"> <span class="number">0</span> <span class="number">1.00000</span>             osd.<span class="number">0</span>          up  <span class="number">1.00000</span>          <span class="number">1.00000</span> </span><br><span class="line"> <span class="number">1</span> <span class="number">1.00000</span>             osd.<span class="number">1</span>          up  <span class="number">1.00000</span>          <span class="number">1.00000</span> </span><br><span class="line">-<span class="number">4</span> <span class="number">2.00000</span>         host node8110                                   </span><br><span class="line"> <span class="number">2</span> <span class="number">1.00000</span>             osd.<span class="number">2</span>        down  <span class="number">1.00000</span>          <span class="number">1.00000</span> </span><br><span class="line"> <span class="number">3</span> <span class="number">1.00000</span>             osd.<span class="number">3</span>        down  <span class="number">1.00000</span>          <span class="number">1.00000</span></span><br></pre></td></tr></table></figure>]]>
     
     </summary>
     
