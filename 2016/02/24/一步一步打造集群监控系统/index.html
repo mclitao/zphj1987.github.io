@@ -3,22 +3,23 @@
 <head>
   <meta charset="utf-8">
   
-  <title>一步一步打造集群监控系统(持续更新中-最后更新20160224) | zphj1987&#39;Blog</title>
+  <title>一步一步打造集群监控系统(持续更新中-最后更新20160301) | zphj1987&#39;Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="目前的开源的ceph的监控平台有几个，inkscope，calamari，vsm，ceph-dash，这几个软件各有各的特色各有个的特点，按需取用，下面先简单介绍下这几个软件的运行模式
 
 inkscope自己封装了一套api，在集群数据方面直接调用的ceph的自己的ceph-rest-api,节点硬件数据通过一个自带的插件收取数据，里面的osd的pg显示非常有特色，使用了sankey chart来">
 <meta property="og:type" content="article">
-<meta property="og:title" content="一步一步打造集群监控系统(持续更新中-最后更新20160224)">
+<meta property="og:title" content="一步一步打造集群监控系统(持续更新中-最后更新20160301)">
 <meta property="og:url" content="http://www.zphj1987.com/2016/02/24/一步一步打造集群监控系统/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
 <meta property="og:description" content="目前的开源的ceph的监控平台有几个，inkscope，calamari，vsm，ceph-dash，这几个软件各有各的特色各有个的特点，按需取用，下面先简单介绍下这几个软件的运行模式
 
 inkscope自己封装了一套api，在集群数据方面直接调用的ceph的自己的ceph-rest-api,节点硬件数据通过一个自带的插件收取数据，里面的osd的pg显示非常有特色，使用了sankey chart来">
 <meta property="og:image" content="http://www.zphj1987.com/assets/blogImg/jiankong/health.png">
+<meta property="og:image" content="http://7xo9we.com1.z0.glb.clouddn.com/16-3-1/32340024.jpg">
 <meta property="og:image" content="http://7xo9we.com1.z0.glb.clouddn.com/payforzp.png">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="一步一步打造集群监控系统(持续更新中-最后更新20160224)">
+<meta name="twitter:title" content="一步一步打造集群监控系统(持续更新中-最后更新20160301)">
 <meta name="twitter:description" content="目前的开源的ceph的监控平台有几个，inkscope，calamari，vsm，ceph-dash，这几个软件各有各的特色各有个的特点，按需取用，下面先简单介绍下这几个软件的运行模式
 
 inkscope自己封装了一套api，在集群数据方面直接调用的ceph的自己的ceph-rest-api,节点硬件数据通过一个自带的插件收取数据，里面的osd的pg显示非常有特色，使用了sankey chart来">
@@ -209,7 +210,7 @@ var _hmt = _hmt || [];
         
   
     <h1 class="article-title" itemprop="name">
-      一步一步打造集群监控系统(持续更新中-最后更新20160224)
+      一步一步打造集群监控系统(持续更新中-最后更新20160301)
     </h1>
   
 
@@ -252,8 +253,9 @@ var _hmt = _hmt || [];
 <li>区块的堆叠图记录了集群的状态，OK为值2，WARN为值1，ERR为值0，基于时间线</li>
 </ul>
 <p>这样做的好处可以方便的分辨出状态的变化，可以从下面的堆叠图看到是否有短时的状态异常的情况</p>
-<hr>
-<p>最后更新时间：<br>2016-02-24 夜</p>
+<h4 id="2-2、服务状态监控和pg状态监控">2.2、服务状态监控和pg状态监控</h4><p>监控从底层往上面走，集群的服务的监控包括了mon的状态的监控，和osd的监控，这里的监控设计是满足监控状态的时候为绿色，不满足的时候为黄色，显示数目</p>
+<p>监控pg的状态是各种状态都监控，active+clean为健康状态的，显示各个状态的数目，这里因为状态太多，后期需要优化下显示，提取重要的状态进行显示</p>
+<h2 id=""><img src="http://7xo9we.com1.z0.glb.clouddn.com/16-3-1/32340024.jpg" alt=""></h2><p>最后更新时间：<br>2016-03-01 </p>
 <p><strong>如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作！</strong></p>
 <div style="text-align:center"><br><img src="http://7xo9we.com1.z0.glb.clouddn.com/payforzp.png" alt="支付宝" title="支付宝扫一扫"><br></div>
       
@@ -304,7 +306,7 @@ var _hmt = _hmt || [];
 
 <div class="duoshuo">
 	<!-- 多说评论框 start -->
-	<div class="ds-thread" data-thread-key="一步一步打造集群监控系统" data-title="一步一步打造集群监控系统(持续更新中-最后更新20160224)" data-url="http://www.zphj1987.com/2016/02/24/一步一步打造集群监控系统/"></div>
+	<div class="ds-thread" data-thread-key="一步一步打造集群监控系统" data-title="一步一步打造集群监控系统(持续更新中-最后更新20160301)" data-url="http://www.zphj1987.com/2016/02/24/一步一步打造集群监控系统/"></div>
 	<!-- 多说评论框 end -->
 	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 	<script type="text/javascript">
