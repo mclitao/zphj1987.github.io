@@ -4,7 +4,7 @@
   <subtitle><![CDATA[现在所学，终有所用]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2016-03-01T05:13:24.851Z</updated>
+  <updated>2016-03-01T05:17:28.224Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="http://www.zphj1987.com/2016/03/01/yum%E5%AE%89%E8%A3%85%E6%8C%87%E5%AE%9A%E7%89%88%E6%9C%ACceph%E5%8C%85/"/>
     <id>http://www.zphj1987.com/2016/03/01/yum安装指定版本ceph包/</id>
     <published>2016-03-01T04:21:56.000Z</published>
-    <updated>2016-03-01T05:13:24.851Z</updated>
+    <updated>2016-03-01T05:17:28.224Z</updated>
     <content type="html"><![CDATA[<p>安装ceph包的方式有很多，这里讲的是从官网直接通过yum源的安装方式进行安装</p>
 <p>yum源对应的地址为<br><a href="http://download.ceph.com/rpm-hammer/el6/x86_64/" target="_blank" rel="external">http://download.ceph.com/rpm-hammer/el6/x86_64/</a></p>
 <p>怎么配置ceph源就不在这里赘述了</p>
@@ -35,7 +35,7 @@
 </code></pre><p>对应到这里<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum install ceph-<span class="number">0.94</span>.<span class="number">4</span>-<span class="number">0</span>.el6</span><br></pre></td></tr></table></figure></p>
 <p>注意名称规则是前面的名称，中间的版本去掉 1: 然后就可以安装指定版本的包了</p>
 <hr>
-<h3 id="My_daily">My daily</h3><p>今天的午饭不错<br>天气也很好<br><img src="http://7xo9we.com1.z0.glb.clouddn.com/16-3-1/62352295.jpg" alt=""></p>
+<h3 id="My_daily">My daily</h3><p>今天的午饭不错<br>天气也很好<br><img src="http://7xo9we.com1.z0.glb.clouddn.com/16-3-1/67526735.jpg" alt=""></p>
 ]]></content>
     <summary type="html">
     <![CDATA[<p>安装ceph包的方式有很多，这里讲的是从官网直接通过yum源的安装方式进行安装</p>
