@@ -120,7 +120,7 @@ var _hmt = _hmt || [];
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/ceph/" style="font-size: 18.33px;">ceph</a><a href="/tags/instagram/" style="font-size: 10px;">instagram</a><a href="/tags/iptables/" style="font-size: 10px;">iptables</a><a href="/tags/linux/" style="font-size: 20px;">linux</a><a href="/tags/momotan/" style="font-size: 10px;">momotan</a><a href="/tags/nginx/" style="font-size: 13.33px;">nginx</a><a href="/tags/samba/" style="font-size: 10px;">samba</a><a href="/tags/ubuntu/" style="font-size: 16.67px;">ubuntu</a><a href="/tags/windows/" style="font-size: 10px;">windows</a><a href="/tags/内核/" style="font-size: 13.33px;">内核</a><a href="/tags/操作系统/" style="font-size: 11.67px;">操作系统</a><a href="/tags/杂七杂八/" style="font-size: 13.33px;">杂七杂八</a><a href="/tags/注册码/" style="font-size: 10px;">注册码</a><a href="/tags/测试工具/" style="font-size: 11.67px;">测试工具</a><a href="/tags/监控/" style="font-size: 10px;">监控</a><a href="/tags/网卡/" style="font-size: 13.33px;">网卡</a><a href="/tags/脚本/" style="font-size: 15px;">脚本</a><a href="/tags/高可用/" style="font-size: 10px;">高可用</a>
+						<a href="/tags/ceph/" style="font-size: 20px;">ceph</a><a href="/tags/instagram/" style="font-size: 10px;">instagram</a><a href="/tags/iptables/" style="font-size: 10px;">iptables</a><a href="/tags/linux/" style="font-size: 20px;">linux</a><a href="/tags/momotan/" style="font-size: 10px;">momotan</a><a href="/tags/nginx/" style="font-size: 14px;">nginx</a><a href="/tags/samba/" style="font-size: 10px;">samba</a><a href="/tags/ubuntu/" style="font-size: 18px;">ubuntu</a><a href="/tags/windows/" style="font-size: 10px;">windows</a><a href="/tags/内核/" style="font-size: 14px;">内核</a><a href="/tags/操作系统/" style="font-size: 12px;">操作系统</a><a href="/tags/杂七杂八/" style="font-size: 14px;">杂七杂八</a><a href="/tags/注册码/" style="font-size: 10px;">注册码</a><a href="/tags/测试工具/" style="font-size: 12px;">测试工具</a><a href="/tags/监控/" style="font-size: 10px;">监控</a><a href="/tags/网卡/" style="font-size: 14px;">网卡</a><a href="/tags/脚本/" style="font-size: 16px;">脚本</a><a href="/tags/高可用/" style="font-size: 10px;">高可用</a>
 					</div>
 				</section>
 				
@@ -185,6 +185,62 @@ var _hmt = _hmt || [];
 	</div>
 </nav>
       <div class="body-wrap">
+  
+    <article id="post-持续运行一个命令，并且将结果输出到文本" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/03/24/持续运行一个命令，并且将结果输出到文本/" class="article-date">
+  	<time datetime="2015-03-23T23:43:09.000Z" itemprop="datePublished">2015-03-24</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/03/24/持续运行一个命令，并且将结果输出到文本/">持续运行一个命令，并且将结果输出到文本</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <figure class="highlight"><table><tr><td class="code"><pre><span class="line">#! /bin/sh&#10;while [ 2 &#62; 1 ]&#10;do&#10;    echo `date` &#62;&#62; recode.txt&#10;    df -h &#62;&#62; recode.txt&#10;    sleep  5&#10;done</span><br></pre></td></tr></table></figure>
+<p>写于: 2014年06月12日<br>更新于: 2015年03月24日</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/脚本/">脚本</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
   
     <article id="post-配置xenserver本地存储" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -693,66 +749,6 @@ var _hmt = _hmt || [];
 
       
 
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-centos做时间同步服务器" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/03/22/centos做时间同步服务器/" class="article-date">
-  	<time datetime="2015-03-22T15:02:10.000Z" itemprop="datePublished">2015-03-22</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/03/22/centos做时间同步服务器/">centos做时间同步服务器</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>修改同步服务器的配置文件/etc/ntp.conf ,删除所有的内容,添加<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">restrict default nomodify&#10;server  127.127.1.0     # local clock&#10;fudge   127.127.1.0 stratum 8</span><br></pre></td></tr></table></figure></p>
-<p>重启ntpd<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/etc/init.d/ntpd restart</span><br></pre></td></tr></table></figure></p>
-<p>等待ntp服务器自身同步完成<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">watch ntpq -p</span><br></pre></td></tr></table></figure></p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/03/22/centos做时间同步服务器/#more">more >></a>
-        </p>
       
       <div class="clearfix"></div>
     </div>

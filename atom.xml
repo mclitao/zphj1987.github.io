@@ -4,7 +4,7 @@
   <subtitle><![CDATA[现在所学，终有所用]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2016-03-03T14:13:50.661Z</updated>
+  <updated>2016-03-03T16:00:09.456Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -13,6 +13,56 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[丢了ceph.mon.keying解决办法]]></title>
+    <link href="http://www.zphj1987.com/2016/03/03/%E4%B8%A2%E4%BA%86ceph-mon-kerying%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95/"/>
+    <id>http://www.zphj1987.com/2016/03/03/丢了ceph-mon-kerying解决办法/</id>
+    <published>2016-03-03T15:38:47.000Z</published>
+    <updated>2016-03-03T16:00:09.456Z</updated>
+    <content type="html"><![CDATA[<p>在linux操作系统下，可能因为一些很小的误操作，都会造成非常重要的文件的丢失，而文件的备份并不是每时每刻都会注意到，一般是等到文件丢失了才会去想办法，这里讲下ceph.mon.keyring丢失的解决办法</p>
+<h3 id="1、没有启用部署认证的">1、没有启用部署认证的</h3><blockquote>
+<p>auth_cluster_required =none</p>
+</blockquote>
+<p>在进行部署的时候 ceph-deploy new 以后会生成ceph.mon.keyring文件,内容如下<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[mon.]</span><br><span class="line">key = AQBnutdWAAAAABAAPmLaAd9CeKaCRj1CIrztyA==</span><br><span class="line">caps mon = allow *</span><br></pre></td></tr></table></figure></p>
+<a id="more"></a>
+<p>这个keyring在增加mon的时候，mon之间加密会用到的，如果在未开启认证的情况下，只需要在部署目录下面创建一个同名文件，里面填入一个格式相同的任意内容即可（需要有这个文件，不然无法部署新的mon)，在没有开启认证的时候是没有生成这个文件的 <code>/var/lib/ceph/mon/ceph-lab8106/keyring</code></p>
+<p>一般是在系统盘损坏的时候容易丢失这个部署目录,并且没有做备份</p>
+<h3 id="2、启用了部署认证">2、启用了部署认证</h3><blockquote>
+<p>auth_cluster_required =cephx</p>
+</blockquote>
+<p>开启了以后，在进行mon的部署以后，是会生成/var/lib/ceph/mon/ceph-lab8106/keyring这个文件的，这个文件的内容跟部署的目录下面的keyring是一样的，所以丢失了部署目录以后，去mon的路径下面查看文件，然后写入一个同名文件里面即可<br>如下所示</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># cat /var/lib/ceph/mon/ceph-lab8106/keyring </span></span><br><span class="line">[mon.]</span><br><span class="line">key = AQC4V9hWAAAAABAArPTf+Az43NWsoU88okI+Mg==</span><br><span class="line">caps mon = <span class="string">"allow *"</span></span><br><span class="line">[root@lab8106 ceph]<span class="comment"># cat ceph.mon.keyring </span></span><br><span class="line">[mon.]</span><br><span class="line">key = AQC4V9hWAAAAABAArPTf+Az43NWsoU88okI+Mg==</span><br><span class="line">caps mon = allow *</span><br></pre></td></tr></table></figure>
+<p>这个是个简单的操作即可避免无法新加mon的问题，当然做好预备工作是最好的，建议做好下面的两个工作：</p>
+<ul>
+<li>1、直接备份部署目录里面的文件，最好备份到自己的电脑上</li>
+<li>2、将这个keyring的信息备份到集群里面去,记录到认证信息中<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># ceph auth import -i ceph.mon.keyring</span></span><br><span class="line">imported keyring</span><br><span class="line">[root@lab8106 ceph]<span class="comment"># ceph auth get mon.</span></span><br><span class="line">exported keyring <span class="keyword">for</span> mon.</span><br><span class="line">[mon.]</span><br><span class="line">key = AQC4V9hWAAAAABAArPTf+Az43NWsoU88okI+Mg==</span><br><span class="line">caps mon = <span class="string">"allow *"</span></span><br><span class="line">[root@lab8106 ceph]<span class="comment"># cat ceph.mon.keyring </span></span><br><span class="line">[mon.]</span><br><span class="line">key = AQC4V9hWAAAAABAArPTf+Az43NWsoU88okI+Mg==</span><br><span class="line">caps mon = allow *</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<hr>
+<p><strong>如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作！</strong></p>
+<div style="text-align:center"><br><img src="http://7xo9we.com1.z0.glb.clouddn.com/payforzp.png" alt="支付宝" title="支付宝扫一扫"><br></div>
+
+
+<p>广告：</p>
+<script type="text/javascript">
+var sogou_ad_id=547108;
+var sogou_ad_height=90;
+var sogou_ad_width=728;
+</script>
+<script type="text/javascript" src="http://images.sohu.com/cs/jsfile/js/c.js"></script>]]></content>
+    <summary type="html">
+    <![CDATA[<p>在linux操作系统下，可能因为一些很小的误操作，都会造成非常重要的文件的丢失，而文件的备份并不是每时每刻都会注意到，一般是等到文件丢失了才会去想办法，这里讲下ceph.mon.keyring丢失的解决办法</p>
+<h3 id="1、没有启用部署认证的">1、没有启用部署认证的</h3><blockquote>
+<p>auth_cluster_required =none</p>
+</blockquote>
+<p>在进行部署的时候 ceph-deploy new 以后会生成ceph.mon.keyring文件,内容如下<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[mon.]</span><br><span class="line">key = AQBnutdWAAAAABAAPmLaAd9CeKaCRj1CIrztyA==</span><br><span class="line">caps mon = allow *</span><br></pre></td></tr></table></figure></p>]]>
+    
+    </summary>
+    
+      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[快速增加osdmap的epoch]]></title>
@@ -873,40 +923,6 @@ var sogou_ad_width=728;
 <p>（本篇基于centos7,其他系统除了安装方式其他通用）</p>
 </blockquote>
 <h3 id="本篇资源:">本篇资源:</h3><p>包括了视频，操作文档，相关安装包资源，S3的windows客户端</p>]]>
-    
-    </summary>
-    
-      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[在线调整ceph的参数]]></title>
-    <link href="http://www.zphj1987.com/2015/11/18/%E5%9C%A8%E7%BA%BF%E8%B0%83%E6%95%B4ceph%E7%9A%84%E5%8F%82%E6%95%B0/"/>
-    <id>http://www.zphj1987.com/2015/11/18/在线调整ceph的参数/</id>
-    <published>2015-11-18T15:11:44.000Z</published>
-    <updated>2015-11-18T15:13:22.757Z</updated>
-    <content type="html"><![CDATA[<p>能够动态的进行系统参数的调整是一个很重要并且有用的属性<br>ceph的集群提供两种方式的调整，使用tell的方式和daemon设置的方式</p>
-<h3 id="一、tell方式设置">一、tell方式设置</h3><p>调整配置使用命令：</p>
-<h4 id="调整mon的参数">调整mon的参数</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#ceph tell mon.* injectargs '--&#123;tunable value_to_be_set&#125;'</span></span><br></pre></td></tr></table></figure>
-<h4 id="调整osd的参数">调整osd的参数</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#ceph tell osd.* injectargs '--&#123;tunable value_to_be_set&#125;'</span></span><br></pre></td></tr></table></figure>
-<h3 id="调整mds的参数">调整mds的参数</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#ceph tell mds.* injectargs '--&#123;tunable value_to_be_set&#125;'</span></span><br></pre></td></tr></table></figure>
-<a id="more"></a>
-<p>例子：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab5134 ~]<span class="comment"># ceph tell mon.* injectargs '--mon_osd_report_timeout 400'</span></span><br><span class="line">injectargs:mon_osd_report_timeout = <span class="string">'400'</span></span><br></pre></td></tr></table></figure></p>
-<p>除了上面的tell的方式调整，还可以使用daemon的方式进行设置</p>
-<h3 id="二、daemon方式设置">二、daemon方式设置</h3><h4 id="1、获取当前的参数">1、获取当前的参数</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab5134 ~]<span class="comment"># ceph daemon osd.1 config get mon_osd_full_ratio</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="string">"mon_osd_full_ratio"</span>: <span class="string">"0.98"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="2、修改配置">2、修改配置</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab5134 ~]<span class="comment"># ceph daemon osd.1 config set mon_osd_full_ratio 0.97</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="string">"success"</span>: <span class="string">"mon_osd_full_ratio = '0.97' "</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="3、检查配置">3、检查配置</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab5134 ~]<span class="comment"># ceph daemon osd.1 config get mon_osd_full_ratio</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="string">"mon_osd_full_ratio"</span>: <span class="string">"0.97"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>注意重启进程后配置会恢复到默认参数，在进行在线调整后，如果这个参数是后续是需要使用的，那么就需要将相关的参数写入到配置文件ceph.conf当中</p>
-<h3 id="两种设置的使用场景">两种设置的使用场景</h3><p>使用tell的方式适合对整个集群进行设置，使用*号进行匹配，就可以对整个集群的角色进行设置，而出现节点异常无法设置时候，只会在命令行当中进行报错，不太便于查找</p>
-<p>使用daemon进行设置的方式就是一个个的去设置，这样可以比较好的反馈，这个设置是需要在设置的角色所在的主机上进行设置，daemon的方式还提供通过asok去获取到进行的其他的信息，可以使用 ceph daemon osd.1 help去查询相关的可以使用的命令</p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>能够动态的进行系统参数的调整是一个很重要并且有用的属性<br>ceph的集群提供两种方式的调整，使用tell的方式和daemon设置的方式</p>
-<h3 id="一、tell方式设置">一、tell方式设置</h3><p>调整配置使用命令：</p>
-<h4 id="调整mon的参数">调整mon的参数</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#ceph tell mon.* injectargs '--&#123;tunable value_to_be_set&#125;'</span></span><br></pre></td></tr></table></figure>
-<h4 id="调整osd的参数">调整osd的参数</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#ceph tell osd.* injectargs '--&#123;tunable value_to_be_set&#125;'</span></span><br></pre></td></tr></table></figure>
-<h3 id="调整mds的参数">调整mds的参数</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#ceph tell mds.* injectargs '--&#123;tunable value_to_be_set&#125;'</span></span><br></pre></td></tr></table></figure>]]>
     
     </summary>
     

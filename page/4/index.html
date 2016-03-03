@@ -120,7 +120,7 @@ var _hmt = _hmt || [];
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/ceph/" style="font-size: 18.33px;">ceph</a><a href="/tags/instagram/" style="font-size: 10px;">instagram</a><a href="/tags/iptables/" style="font-size: 10px;">iptables</a><a href="/tags/linux/" style="font-size: 20px;">linux</a><a href="/tags/momotan/" style="font-size: 10px;">momotan</a><a href="/tags/nginx/" style="font-size: 13.33px;">nginx</a><a href="/tags/samba/" style="font-size: 10px;">samba</a><a href="/tags/ubuntu/" style="font-size: 16.67px;">ubuntu</a><a href="/tags/windows/" style="font-size: 10px;">windows</a><a href="/tags/内核/" style="font-size: 13.33px;">内核</a><a href="/tags/操作系统/" style="font-size: 11.67px;">操作系统</a><a href="/tags/杂七杂八/" style="font-size: 13.33px;">杂七杂八</a><a href="/tags/注册码/" style="font-size: 10px;">注册码</a><a href="/tags/测试工具/" style="font-size: 11.67px;">测试工具</a><a href="/tags/监控/" style="font-size: 10px;">监控</a><a href="/tags/网卡/" style="font-size: 13.33px;">网卡</a><a href="/tags/脚本/" style="font-size: 15px;">脚本</a><a href="/tags/高可用/" style="font-size: 10px;">高可用</a>
+						<a href="/tags/ceph/" style="font-size: 20px;">ceph</a><a href="/tags/instagram/" style="font-size: 10px;">instagram</a><a href="/tags/iptables/" style="font-size: 10px;">iptables</a><a href="/tags/linux/" style="font-size: 20px;">linux</a><a href="/tags/momotan/" style="font-size: 10px;">momotan</a><a href="/tags/nginx/" style="font-size: 14px;">nginx</a><a href="/tags/samba/" style="font-size: 10px;">samba</a><a href="/tags/ubuntu/" style="font-size: 18px;">ubuntu</a><a href="/tags/windows/" style="font-size: 10px;">windows</a><a href="/tags/内核/" style="font-size: 14px;">内核</a><a href="/tags/操作系统/" style="font-size: 12px;">操作系统</a><a href="/tags/杂七杂八/" style="font-size: 14px;">杂七杂八</a><a href="/tags/注册码/" style="font-size: 10px;">注册码</a><a href="/tags/测试工具/" style="font-size: 12px;">测试工具</a><a href="/tags/监控/" style="font-size: 10px;">监控</a><a href="/tags/网卡/" style="font-size: 14px;">网卡</a><a href="/tags/脚本/" style="font-size: 16px;">脚本</a><a href="/tags/高可用/" style="font-size: 10px;">高可用</a>
 					</div>
 				</section>
 				
@@ -185,6 +185,72 @@ var _hmt = _hmt || [];
 	</div>
 </nav>
       <div class="body-wrap">
+  
+    <article id="post-ceph客户端服务端属性匹配关系" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/09/18/ceph客户端服务端属性匹配关系/" class="article-date">
+  	<time datetime="2015-09-18T03:24:08.000Z" itemprop="datePublished">2015-09-18</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/09/18/ceph客户端服务端属性匹配关系/">ceph客户端服务端属性匹配关系</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>ceph的server是定期会发布版本，而它的客户端是放到linux 内核当中的，一些属性的支持是依赖于内核版本的，这样就存在一些问题，一些功能后端支持，而客户端旧了；还有可能是客户端用的很新的内核，而后端比较旧不支持，所以查看了下内核中的 <code>features</code> 文件，可以看到这个对应关系，总结了下就是下面的列表</p>
+<p>注意表中：</p>
+<ul>
+<li><strong>S</strong>=SUPPORTED_DEFAULT     代表客户端支持这个属性</li>
+<li><strong>R</strong>=REQUIRED_DEFAULT      代表需要服务端支持这个属性</li>
+</ul>
+<p><img src="http://7xi6lo.com1.z0.glb.clouddn.com/属性匹配的问题.png" alt=""></p>
+<p><code>missing 2040000</code> 意思是 <code>CEPH_FEATURE_CRUSH_TUNABLES (40000)</code> 和 <code>CEPH_FEATURE_CRUSH_TUNABLES2 (2000000)</code> 不被当前客户端支持，一般要么关闭新的server端的这个属性，或者升级到支持的版本的内核.</p>
+<p>内核代码查看地址：<a href="http://lxr.free-electrons.com/source/include/linux/ceph/ceph_features.h" target="_blank" rel="external">http://lxr.free-electrons.com/source/include/linux/ceph/ceph_features.h</a></p>
+<p>写于：2015年09月18日夜</p>
+<p><strong>Power by zphj1987</strong></p>
+<p><strong>QQ:199383004</strong></p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
   
     <article id="post-nginx配置代理缓存" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -702,67 +768,6 @@ var _hmt = _hmt || [];
 
       
 
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-ubuntu配置简单的DNS服务器" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/03/24/ubuntu配置简单的DNS服务器/" class="article-date">
-  	<time datetime="2015-03-24T05:39:44.000Z" itemprop="datePublished">2015-03-24</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/03/24/ubuntu配置简单的DNS服务器/">ubuntu配置简单的DNS服务器</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>之所以说是简单的服务器，实现的功能很简单，通过这个dns server 查询制定域名的时候，能够根据设置的值来返回IP，当前的需求是需要轮询的返回IP</p>
-<p>DNS 轮询机制会受到多方面的影响，如：A记录的TTL时间长短的影响；别的 DNS 服务器 Cache 的影响；windows 客户端也有一个DNS Cache。这些都会影响 DNS 轮询的效果。</p>
-<p>下面的配置就是实现解析test.zp.com到不同的IP地址</p>
-<h3 id="安装dns_server软件包">安装dns server软件包</h3><p>ubuntu下是通过安装bind9软件包来配置dns-server的<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab5106 ~]<span class="comment"># apt-get install bind9</span></span><br></pre></td></tr></table></figure></p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ubuntu/">ubuntu</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/03/24/ubuntu配置简单的DNS服务器/#more">more >></a>
-        </p>
       
       <div class="clearfix"></div>
     </div>

@@ -120,7 +120,7 @@ var _hmt = _hmt || [];
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/ceph/" style="font-size: 18.33px;">ceph</a><a href="/tags/instagram/" style="font-size: 10px;">instagram</a><a href="/tags/iptables/" style="font-size: 10px;">iptables</a><a href="/tags/linux/" style="font-size: 20px;">linux</a><a href="/tags/momotan/" style="font-size: 10px;">momotan</a><a href="/tags/nginx/" style="font-size: 13.33px;">nginx</a><a href="/tags/samba/" style="font-size: 10px;">samba</a><a href="/tags/ubuntu/" style="font-size: 16.67px;">ubuntu</a><a href="/tags/windows/" style="font-size: 10px;">windows</a><a href="/tags/内核/" style="font-size: 13.33px;">内核</a><a href="/tags/操作系统/" style="font-size: 11.67px;">操作系统</a><a href="/tags/杂七杂八/" style="font-size: 13.33px;">杂七杂八</a><a href="/tags/注册码/" style="font-size: 10px;">注册码</a><a href="/tags/测试工具/" style="font-size: 11.67px;">测试工具</a><a href="/tags/监控/" style="font-size: 10px;">监控</a><a href="/tags/网卡/" style="font-size: 13.33px;">网卡</a><a href="/tags/脚本/" style="font-size: 15px;">脚本</a><a href="/tags/高可用/" style="font-size: 10px;">高可用</a>
+						<a href="/tags/ceph/" style="font-size: 20px;">ceph</a><a href="/tags/instagram/" style="font-size: 10px;">instagram</a><a href="/tags/iptables/" style="font-size: 10px;">iptables</a><a href="/tags/linux/" style="font-size: 20px;">linux</a><a href="/tags/momotan/" style="font-size: 10px;">momotan</a><a href="/tags/nginx/" style="font-size: 14px;">nginx</a><a href="/tags/samba/" style="font-size: 10px;">samba</a><a href="/tags/ubuntu/" style="font-size: 18px;">ubuntu</a><a href="/tags/windows/" style="font-size: 10px;">windows</a><a href="/tags/内核/" style="font-size: 14px;">内核</a><a href="/tags/操作系统/" style="font-size: 12px;">操作系统</a><a href="/tags/杂七杂八/" style="font-size: 14px;">杂七杂八</a><a href="/tags/注册码/" style="font-size: 10px;">注册码</a><a href="/tags/测试工具/" style="font-size: 12px;">测试工具</a><a href="/tags/监控/" style="font-size: 10px;">监控</a><a href="/tags/网卡/" style="font-size: 14px;">网卡</a><a href="/tags/脚本/" style="font-size: 16px;">脚本</a><a href="/tags/高可用/" style="font-size: 10px;">高可用</a>
 					</div>
 				</section>
 				
@@ -185,6 +185,68 @@ var _hmt = _hmt || [];
 	</div>
 </nav>
       <div class="body-wrap">
+  
+    <article id="post-ceph单机多mon的实现" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/01/14/ceph单机多mon的实现/" class="article-date">
+  	<time datetime="2016-01-14T09:03:56.000Z" itemprop="datePublished">2016-01-14</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/01/14/ceph单机多mon的实现/">ceph单机多mon的实现</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>ceph默认情况下是以主机名来作为mon的识别的，所以这个情况下用部署工具是无法创建多个mon的，这个地方使用手动的方式可以很方便的创建多个mon</p>
+<h3 id="1、创建mon的数据存储目录">1、创建mon的数据存储目录</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkdir /var/lib/ceph/mon/ceph-<span class="number">1</span></span><br></pre></td></tr></table></figure>
+<h3 id="2、获取当前的monmap">2、获取当前的monmap</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph mon getmap -o /tmp/monmap</span><br></pre></td></tr></table></figure>
+<h3 id="3、根据当前的monmap生成mon的数据">3、根据当前的monmap生成mon的数据</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph-mon -i <span class="number">1</span>  --mkfs --monmap /tmp/monmap</span><br></pre></td></tr></table></figure>
+<h3 id="4、启动进程（后面指定端口）">4、启动进程（后面指定端口）</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph-mon -i <span class="number">1</span>  --public-addr  <span class="number">192.168</span>.<span class="number">8.106</span>:<span class="number">6791</span></span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2016/01/14/ceph单机多mon的实现/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
   
     <article id="post-ceph使用memdisk做journal" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -762,68 +824,6 @@ var _hmt = _hmt || [];
       
         <p class="article-more-link">
           <a  href="/2015/12/12/ceph集群的安装和配置教程/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-在线调整ceph的参数" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/11/18/在线调整ceph的参数/" class="article-date">
-  	<time datetime="2015-11-18T15:11:44.000Z" itemprop="datePublished">2015-11-18</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/11/18/在线调整ceph的参数/">在线调整ceph的参数</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>能够动态的进行系统参数的调整是一个很重要并且有用的属性<br>ceph的集群提供两种方式的调整，使用tell的方式和daemon设置的方式</p>
-<h3 id="一、tell方式设置">一、tell方式设置</h3><p>调整配置使用命令：</p>
-<h4 id="调整mon的参数">调整mon的参数</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#ceph tell mon.* injectargs '--&#123;tunable value_to_be_set&#125;'</span></span><br></pre></td></tr></table></figure>
-<h4 id="调整osd的参数">调整osd的参数</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#ceph tell osd.* injectargs '--&#123;tunable value_to_be_set&#125;'</span></span><br></pre></td></tr></table></figure>
-<h3 id="调整mds的参数">调整mds的参数</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#ceph tell mds.* injectargs '--&#123;tunable value_to_be_set&#125;'</span></span><br></pre></td></tr></table></figure>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/11/18/在线调整ceph的参数/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>
