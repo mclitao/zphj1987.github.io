@@ -4,7 +4,7 @@
   <subtitle><![CDATA[现在所学，终有所用]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2016-03-01T05:17:28.224Z</updated>
+  <updated>2016-03-03T14:13:50.661Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -13,6 +13,43 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[快速增加osdmap的epoch]]></title>
+    <link href="http://www.zphj1987.com/2016/03/03/%E5%BF%AB%E9%80%9F%E5%A2%9E%E5%8A%A0osdmap%E7%9A%84epoch/"/>
+    <id>http://www.zphj1987.com/2016/03/03/快速增加osdmap的epoch/</id>
+    <published>2016-03-03T13:57:26.000Z</published>
+    <updated>2016-03-03T14:13:50.661Z</updated>
+    <content type="html"><![CDATA[<p>最近因为一个实验需要用到一个功能，需要快速的增加 ceph 的 osdmap 的 epoch 编号</p>
+<h3 id="查询osd的epoch编号">查询osd的epoch编号</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@lab8107:~<span class="comment"># ceph osd stat</span></span><br><span class="line">     osdmap e4686: <span class="number">8</span> osds: <span class="number">8</span> up, <span class="number">8</span> <span class="keyword">in</span></span><br></pre></td></tr></table></figure>
+<p>上面显示的 <code>e4686</code> 即为osdmap的epoch的编号</p>
+<h3 id="增加epoch">增加epoch</h3><p>现在需要增加1000<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph osd thrash <span class="number">1000</span></span><br></pre></td></tr></table></figure></p>
+<a id="more"></a>
+<p>执行完了后<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph osd <span class="built_in">stat</span></span><br><span class="line">osdmap e5687: <span class="number">8</span> osds: <span class="number">3</span> up, <span class="number">3</span> <span class="keyword">in</span>; <span class="number">232</span> remapped pgs</span><br></pre></td></tr></table></figure></p>
+<p>很快就增加了1000的编号，这个命令执行完了后，osd weight 会变成0，这个做下恢复即可，节点会down，调整下weight，恢复下状态就可以了</p>
+<hr>
+<p><strong>如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作！</strong></p>
+<div style="text-align:center"><br><img src="http://7xo9we.com1.z0.glb.clouddn.com/payforzp.png" alt="支付宝" title="支付宝扫一扫"><br></div>
+
+
+<p>广告：</p>
+<script type="text/javascript">
+var sogou_ad_id=547108;
+var sogou_ad_height=90;
+var sogou_ad_width=728;
+</script>
+<script type="text/javascript" src="http://images.sohu.com/cs/jsfile/js/c.js"></script>]]></content>
+    <summary type="html">
+    <![CDATA[<p>最近因为一个实验需要用到一个功能，需要快速的增加 ceph 的 osdmap 的 epoch 编号</p>
+<h3 id="查询osd的epoch编号">查询osd的epoch编号</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@lab8107:~<span class="comment"># ceph osd stat</span></span><br><span class="line">     osdmap e4686: <span class="number">8</span> osds: <span class="number">8</span> up, <span class="number">8</span> <span class="keyword">in</span></span><br></pre></td></tr></table></figure>
+<p>上面显示的 <code>e4686</code> 即为osdmap的epoch的编号</p>
+<h3 id="增加epoch">增加epoch</h3><p>现在需要增加1000<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph osd thrash <span class="number">1000</span></span><br></pre></td></tr></table></figure></p>]]>
+    
+    </summary>
+    
+      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[yum安装指定版本ceph包]]></title>
@@ -870,30 +907,6 @@ var sogou_ad_width=728;
 <h4 id="调整mon的参数">调整mon的参数</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#ceph tell mon.* injectargs '--&#123;tunable value_to_be_set&#125;'</span></span><br></pre></td></tr></table></figure>
 <h4 id="调整osd的参数">调整osd的参数</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#ceph tell osd.* injectargs '--&#123;tunable value_to_be_set&#125;'</span></span><br></pre></td></tr></table></figure>
 <h3 id="调整mds的参数">调整mds的参数</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#ceph tell mds.* injectargs '--&#123;tunable value_to_be_set&#125;'</span></span><br></pre></td></tr></table></figure>]]>
-    
-    </summary>
-    
-      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[验证rbd的缓存是否开启]]></title>
-    <link href="http://www.zphj1987.com/2015/11/16/%E9%AA%8C%E8%AF%81rbd%E7%9A%84%E7%BC%93%E5%AD%98%E6%98%AF%E5%90%A6%E5%BC%80%E5%90%AF/"/>
-    <id>http://www.zphj1987.com/2015/11/16/验证rbd的缓存是否开启/</id>
-    <published>2015-11-16T08:49:16.000Z</published>
-    <updated>2016-01-25T09:55:53.136Z</updated>
-    <content type="html"><![CDATA[<p>简单快速的在客户端验证rbd的cache是否开启<br>首先修改配置文件<br>在ceph.conf中添加：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[client]</span><br><span class="line">rbd cache = <span class="literal">true</span></span><br><span class="line">rbd cache writethrough until flush = <span class="literal">true</span></span><br></pre></td></tr></table></figure></p>
-<p>开启以后，在这台机器上进行测试<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@node8109 ~]<span class="comment"># rbd -p rbd bench-write zp  --io-size 4096 --io-threads 256  --io-total 102400000   --io-pattern seq</span></span><br><span class="line">bench-write  io_size <span class="number">4096</span> io_threads <span class="number">256</span> bytes <span class="number">102400000</span> pattern seq</span><br><span class="line">  SEC       OPS   OPS/SEC   BYTES/SEC</span><br><span class="line">elapsed:     <span class="number">0</span>  ops:    <span class="number">25000</span>  ops/sec: <span class="number">26830.05</span>  bytes/sec: <span class="number">109895890.09</span></span><br></pre></td></tr></table></figure></p>
-<p>可以看到io达到了26830每秒<br><a id="more"></a><br>下面进行关闭后再测试：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@node8109 ~]<span class="comment"># rbd -p rbd bench-write zp  --io-size 4096 --io-threads 256  --io-total 102400000   --io-pattern seq</span></span><br><span class="line">bench-write  io_size <span class="number">4096</span> io_threads <span class="number">256</span> bytes <span class="number">102400000</span> pattern seq</span><br><span class="line">  SEC       OPS   OPS/SEC   BYTES/SEC</span><br><span class="line">    <span class="number">1</span>       <span class="number">893</span>   <span class="number">1076.16</span>  <span class="number">4407933.78</span></span><br><span class="line">    <span class="number">2</span>      <span class="number">1344</span>    <span class="number">795.81</span>  <span class="number">3259636.35</span></span><br><span class="line">    <span class="number">3</span>      <span class="number">1794</span>    <span class="number">655.20</span>  <span class="number">2683695.60</span></span><br><span class="line">    <span class="number">4</span>      <span class="number">2198</span>    <span class="number">613.23</span>  <span class="number">2511789.77</span></span><br></pre></td></tr></table></figure></p>
-<p>可以看到大概只有600左右的IOPS</p>
-<p>结论：<br>开启和关闭cache的差别还是很大的，可以通过上面简单的测试来验证rbd的cache是否开启</p>
-<p>Power by  Sebastien Han’s blog</p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>简单快速的在客户端验证rbd的cache是否开启<br>首先修改配置文件<br>在ceph.conf中添加：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[client]</span><br><span class="line">rbd cache = <span class="literal">true</span></span><br><span class="line">rbd cache writethrough until flush = <span class="literal">true</span></span><br></pre></td></tr></table></figure></p>
-<p>开启以后，在这台机器上进行测试<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@node8109 ~]<span class="comment"># rbd -p rbd bench-write zp  --io-size 4096 --io-threads 256  --io-total 102400000   --io-pattern seq</span></span><br><span class="line">bench-write  io_size <span class="number">4096</span> io_threads <span class="number">256</span> bytes <span class="number">102400000</span> pattern seq</span><br><span class="line">  SEC       OPS   OPS/SEC   BYTES/SEC</span><br><span class="line">elapsed:     <span class="number">0</span>  ops:    <span class="number">25000</span>  ops/sec: <span class="number">26830.05</span>  bytes/sec: <span class="number">109895890.09</span></span><br></pre></td></tr></table></figure></p>
-<p>可以看到io达到了26830每秒<br>]]>
     
     </summary>
     

@@ -3,28 +3,27 @@
 <head>
   <meta charset="utf-8">
   
-  <title>yum安装指定版本ceph包 | zphj1987&#39;Blog</title>
+  <title>快速增加osdmap的epoch | zphj1987&#39;Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="安装ceph包的方式有很多，这里讲的是从官网直接通过yum源的安装方式进行安装
-yum源对应的地址为http://download.ceph.com/rpm-hammer/el6/x86_64/
-怎么配置ceph源就不在这里赘述了
-下图为ceph官网的yum源里面的文件列表：">
+  <meta name="description" content="最近因为一个实验需要用到一个功能，需要快速的增加 ceph 的 osdmap 的 epoch 编号
+查询osd的epoch编号root@lab8107:~# ceph osd stat     osdmap e4686: 8 osds: 8 up, 8 in
+上面显示的 e4686 即为osdmap的epoch的编号
+增加epoch现在需要增加1000ceph osd thrash 1000">
 <meta property="og:type" content="article">
-<meta property="og:title" content="yum安装指定版本ceph包">
-<meta property="og:url" content="http://www.zphj1987.com/2016/03/01/yum安装指定版本ceph包/index.html">
+<meta property="og:title" content="快速增加osdmap的epoch">
+<meta property="og:url" content="http://www.zphj1987.com/2016/03/03/快速增加osdmap的epoch/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
-<meta property="og:description" content="安装ceph包的方式有很多，这里讲的是从官网直接通过yum源的安装方式进行安装
-yum源对应的地址为http://download.ceph.com/rpm-hammer/el6/x86_64/
-怎么配置ceph源就不在这里赘述了
-下图为ceph官网的yum源里面的文件列表：">
-<meta property="og:image" content="http://7xo9we.com1.z0.glb.clouddn.com/16-3-1/80906036.jpg">
-<meta property="og:image" content="http://7xo9we.com1.z0.glb.clouddn.com/16-3-1/67526735.jpg">
+<meta property="og:description" content="最近因为一个实验需要用到一个功能，需要快速的增加 ceph 的 osdmap 的 epoch 编号
+查询osd的epoch编号root@lab8107:~# ceph osd stat     osdmap e4686: 8 osds: 8 up, 8 in
+上面显示的 e4686 即为osdmap的epoch的编号
+增加epoch现在需要增加1000ceph osd thrash 1000">
+<meta property="og:image" content="http://7xo9we.com1.z0.glb.clouddn.com/payforzp.png">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="yum安装指定版本ceph包">
-<meta name="twitter:description" content="安装ceph包的方式有很多，这里讲的是从官网直接通过yum源的安装方式进行安装
-yum源对应的地址为http://download.ceph.com/rpm-hammer/el6/x86_64/
-怎么配置ceph源就不在这里赘述了
-下图为ceph官网的yum源里面的文件列表：">
+<meta name="twitter:title" content="快速增加osdmap的epoch">
+<meta name="twitter:description" content="最近因为一个实验需要用到一个功能，需要快速的增加 ceph 的 osdmap 的 epoch 编号
+查询osd的epoch编号root@lab8107:~# ceph osd stat     osdmap e4686: 8 osds: 8 up, 8 in
+上面显示的 e4686 即为osdmap的epoch的编号
+增加epoch现在需要增加1000ceph osd thrash 1000">
   
     <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
   
@@ -195,11 +194,11 @@ var _hmt = _hmt || [];
 		</header>				
 	</div>
 </nav>
-      <div class="body-wrap"><article id="post-yum安装指定版本ceph包" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-快速增加osdmap的epoch" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2016/03/01/yum安装指定版本ceph包/" class="article-date">
-  	<time datetime="2016-03-01T04:21:56.000Z" itemprop="datePublished">2016-03-01</time>
+      <a href="/2016/03/03/快速增加osdmap的epoch/" class="article-date">
+  	<time datetime="2016-03-03T13:57:26.000Z" itemprop="datePublished">2016-03-03</time>
 </a>
     </div>
   
@@ -212,7 +211,7 @@ var _hmt = _hmt || [];
         
   
     <h1 class="article-title" itemprop="name">
-      yum安装指定版本ceph包
+      快速增加osdmap的epoch
     </h1>
   
 
@@ -232,23 +231,25 @@ var _hmt = _hmt || [];
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>安装ceph包的方式有很多，这里讲的是从官网直接通过yum源的安装方式进行安装</p>
-<p>yum源对应的地址为<br><a href="http://download.ceph.com/rpm-hammer/el6/x86_64/" target="_blank" rel="external">http://download.ceph.com/rpm-hammer/el6/x86_64/</a></p>
-<p>怎么配置ceph源就不在这里赘述了</p>
-<p>下图为ceph官网的yum源里面的文件列表：</p>
+        <p>最近因为一个实验需要用到一个功能，需要快速的增加 ceph 的 osdmap 的 epoch 编号</p>
+<h3 id="查询osd的epoch编号">查询osd的epoch编号</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@lab8107:~<span class="comment"># ceph osd stat</span></span><br><span class="line">     osdmap e4686: <span class="number">8</span> osds: <span class="number">8</span> up, <span class="number">8</span> <span class="keyword">in</span></span><br></pre></td></tr></table></figure>
+<p>上面显示的 <code>e4686</code> 即为osdmap的epoch的编号</p>
+<h3 id="增加epoch">增加epoch</h3><p>现在需要增加1000<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph osd thrash <span class="number">1000</span></span><br></pre></td></tr></table></figure></p>
 <a id="more"></a>
-<p><img src="http://7xo9we.com1.z0.glb.clouddn.com/16-3-1/80906036.jpg" alt=""></p>
-<p>可以看到有多个版本的，默认的会安装最新的版本的</p>
-<p>这样就会有个问题：<br>安装了一个老版本的包，需要安装一个附属的包，安装的版本就会是最新版本的，而不是已经安装的版本的附属的包，会引起版本错乱</p>
-<p>解决办法：</p>
-<h3 id="1、查询源里面的包有多少个版本">1、查询源里面的包有多少个版本</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@zhongbo ~]<span class="comment"># yum --showduplicates list ceph | expand</span></span><br><span class="line">Loaded plugins: security</span><br><span class="line">Available Packages</span><br><span class="line">ceph.x86_64                         <span class="number">1</span>:<span class="number">0.94</span>-<span class="number">0</span>.el6                            ceph</span><br><span class="line">ceph.x86_64                         <span class="number">1</span>:<span class="number">0.94</span>.<span class="number">1</span>-<span class="number">0</span>.el6                          ceph</span><br><span class="line">ceph.x86_64                         <span class="number">1</span>:<span class="number">0.94</span>.<span class="number">2</span>-<span class="number">0</span>.el6                          ceph</span><br><span class="line">ceph.x86_64                         <span class="number">1</span>:<span class="number">0.94</span>.<span class="number">3</span>-<span class="number">0</span>.el6                          ceph</span><br><span class="line">ceph.x86_64                         <span class="number">1</span>:<span class="number">0.94</span>.<span class="number">4</span>-<span class="number">0</span>.el6                          ceph</span><br><span class="line">ceph.x86_64                         <span class="number">1</span>:<span class="number">0.94</span>.<span class="number">5</span>-<span class="number">0</span>.el6                          ceph</span><br></pre></td></tr></table></figure>
-<h3 id="2、安装指定版本的包">2、安装指定版本的包</h3><p>假如现在需要安装的是1:0.94.4-0.el6这个版本<br>安装的格式为：</p>
-<pre><code>yum install &lt;package <span class="property">name</span>&gt;-&lt;<span class="property">version</span> info&gt;
-</code></pre><p>对应到这里<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum install ceph-<span class="number">0.94</span>.<span class="number">4</span>-<span class="number">0</span>.el6</span><br></pre></td></tr></table></figure></p>
-<p>注意名称规则是前面的名称，中间的版本去掉 1: 然后就可以安装指定版本的包了</p>
+<p>执行完了后<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph osd <span class="built_in">stat</span></span><br><span class="line">osdmap e5687: <span class="number">8</span> osds: <span class="number">3</span> up, <span class="number">3</span> <span class="keyword">in</span>; <span class="number">232</span> remapped pgs</span><br></pre></td></tr></table></figure></p>
+<p>很快就增加了1000的编号，这个命令执行完了后，osd weight 会变成0，这个做下恢复即可，节点会down，调整下weight，恢复下状态就可以了</p>
 <hr>
-<h3 id="My_daily">My daily</h3><p>今天的午饭不错<br>天气也很好<br><img src="http://7xo9we.com1.z0.glb.clouddn.com/16-3-1/67526735.jpg" alt=""></p>
+<p><strong>如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作！</strong></p>
+<div style="text-align:center"><br><img src="http://7xo9we.com1.z0.glb.clouddn.com/payforzp.png" alt="支付宝" title="支付宝扫一扫"><br></div>
 
+
+<p>广告：</p>
+<script type="text/javascript">
+var sogou_ad_id=547108;
+var sogou_ad_height=90;
+var sogou_ad_width=728;
+</script>
+<script type="text/javascript" src="http://images.sohu.com/cs/jsfile/js/c.js"></script>
       
     </div>
     
@@ -257,18 +258,9 @@ var _hmt = _hmt || [];
     
 <nav id="article-nav">
   
-    <a href="/2016/03/03/快速增加osdmap的epoch/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption"><</strong>
-      <div class="article-nav-title">
-        
-          快速增加osdmap的epoch
-        
-      </div>
-    </a>
   
-  
-    <a href="/2016/02/24/一步一步打造集群监控系统/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">一步一步打造集群监控系统(持续更新中-最后更新20160301)</div>
+    <a href="/2016/03/01/yum安装指定版本ceph包/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">yum安装指定版本ceph包</div>
       <strong class="article-nav-caption">></strong>
     </a>
   
@@ -297,7 +289,7 @@ var _hmt = _hmt || [];
 
 <div class="duoshuo">
 	<!-- 多说评论框 start -->
-	<div class="ds-thread" data-thread-key="yum安装指定版本ceph包" data-title="yum安装指定版本ceph包" data-url="http://www.zphj1987.com/2016/03/01/yum安装指定版本ceph包/"></div>
+	<div class="ds-thread" data-thread-key="快速增加osdmap的epoch" data-title="快速增加osdmap的epoch" data-url="http://www.zphj1987.com/2016/03/03/快速增加osdmap的epoch/"></div>
 	<!-- 多说评论框 end -->
 	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 	<script type="text/javascript">
