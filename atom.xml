@@ -4,7 +4,7 @@
   <subtitle><![CDATA[现在所学，终有所用]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2016-03-24T13:47:03.643Z</updated>
+  <updated>2016-03-24T13:48:27.927Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -19,9 +19,10 @@
     <link href="http://www.zphj1987.com/2016/03/24/ceph%E6%9F%A5%E8%AF%A2rbd%E7%9A%84%E4%BD%BF%E7%94%A8%E5%AE%B9%E9%87%8F%EF%BC%88%E5%BF%AB%E9%80%9F%EF%BC%89/"/>
     <id>http://www.zphj1987.com/2016/03/24/ceph查询rbd的使用容量（快速）/</id>
     <published>2016-03-24T13:42:59.000Z</published>
-    <updated>2016-03-24T13:47:03.643Z</updated>
+    <updated>2016-03-24T13:48:27.927Z</updated>
     <content type="html"><![CDATA[<p>ceph在Infernalis加入了一个功能是查询rbd的块设备的使用的大小，默认是可以查询的，但是无法快速查询，那么我们来看看这个功能是怎么开启的</p>
 <h3 id="ceph版本">ceph版本</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@lab8107:~/ceph<span class="comment"># ceph -v</span></span><br><span class="line">ceph version <span class="number">9.2</span>.<span class="number">0</span> (bb2ecea240f3a1d525bcb35670cb07bd1f0ca299)</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
 <h3 id="创建RBD设备">创建RBD设备</h3><p>我们先来创建一个rbd<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@lab8107:~/ceph<span class="comment"># rbd create test --size 4000</span></span><br><span class="line">root@lab8107:~/ceph<span class="comment"># rbd info test</span></span><br><span class="line">rbd image <span class="string">'test'</span>:</span><br><span class="line">	size <span class="number">4000</span> MB <span class="keyword">in</span> <span class="number">1000</span> objects</span><br><span class="line">	order <span class="number">22</span> (<span class="number">4096</span> kB objects)</span><br><span class="line">	block_name_prefix: rbd_data.<span class="number">10305695</span>d26a</span><br><span class="line">	format: <span class="number">2</span></span><br><span class="line">	features: layering</span><br><span class="line">	flags:</span><br></pre></td></tr></table></figure></p>
 <h3 id="进行RBD容量使用查询">进行RBD容量使用查询</h3><p>我们来试一下rbd du命令<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@lab8107:~/ceph<span class="comment"># rbd du test</span></span><br><span class="line">warning: fast-diff map is not enabled <span class="keyword">for</span> test. operation may be slow.</span><br><span class="line">NAME PROVISIONED USED </span><br><span class="line"><span class="built_in">test</span>       <span class="number">4000</span>M    <span class="number">0</span></span><br></pre></td></tr></table></figure></p>
 <p>可以看到有个提示需要开启fast-diff的属性<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@lab8107:~/ceph<span class="comment"># rbd --help</span></span><br><span class="line">···</span><br><span class="line">Supported image features:</span><br><span class="line">  layering (+), striping (+), exclusive-lock (*), object-map (*), fast-diff (*), deep-flatten</span><br><span class="line"></span><br><span class="line">  (*) supports enabling/disabling on existing images</span><br><span class="line">  (+) enabled by default <span class="keyword">for</span> new images <span class="keyword">if</span> features are not specified</span><br></pre></td></tr></table></figure></p>
@@ -45,7 +46,8 @@
 <div style="text-align:center"><br><img src="http://7xo9we.com1.z0.glb.clouddn.com/payforzp.png" alt="支付宝" title="支付宝扫一扫"><br></div>]]></content>
     <summary type="html">
     <![CDATA[<p>ceph在Infernalis加入了一个功能是查询rbd的块设备的使用的大小，默认是可以查询的，但是无法快速查询，那么我们来看看这个功能是怎么开启的</p>
-<h3 id="ceph版本">ceph版本</h3><figure class="highlight bash">]]>
+<h3 id="ceph版本">ceph版本</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@lab8107:~/ceph<span class="comment"># ceph -v</span></span><br><span class="line">ceph version <span class="number">9.2</span>.<span class="number">0</span> (bb2ecea240f3a1d525bcb35670cb07bd1f0ca299)</span><br></pre></td></tr></table></figure>]]>
+    
     </summary>
     
       <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>

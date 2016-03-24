@@ -6,21 +6,18 @@
   <title>ceph查询rbd的使用容量（快速） | zphj1987&#39;Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="ceph在Infernalis加入了一个功能是查询rbd的块设备的使用的大小，默认是可以查询的，但是无法快速查询，那么我们来看看这个功能是怎么开启的
-ceph版本root@lab8107:~/ceph# ceph -vceph version 9.2.0 (bb2ecea240f3a1d525bcb35670cb07bd1f0ca299)
-创建RBD设备我们先来创建一个rbdroot@lab810">
+ceph版本root@lab8107:~/ceph# ceph -vceph version 9.2.0 (bb2ecea240f3a1d525bcb35670cb07bd1f0ca299)">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ceph查询rbd的使用容量（快速）">
 <meta property="og:url" content="http://www.zphj1987.com/2016/03/24/ceph查询rbd的使用容量（快速）/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
 <meta property="og:description" content="ceph在Infernalis加入了一个功能是查询rbd的块设备的使用的大小，默认是可以查询的，但是无法快速查询，那么我们来看看这个功能是怎么开启的
-ceph版本root@lab8107:~/ceph# ceph -vceph version 9.2.0 (bb2ecea240f3a1d525bcb35670cb07bd1f0ca299)
-创建RBD设备我们先来创建一个rbdroot@lab810">
+ceph版本root@lab8107:~/ceph# ceph -vceph version 9.2.0 (bb2ecea240f3a1d525bcb35670cb07bd1f0ca299)">
 <meta property="og:image" content="http://7xo9we.com1.z0.glb.clouddn.com/payforzp.png">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ceph查询rbd的使用容量（快速）">
 <meta name="twitter:description" content="ceph在Infernalis加入了一个功能是查询rbd的块设备的使用的大小，默认是可以查询的，但是无法快速查询，那么我们来看看这个功能是怎么开启的
-ceph版本root@lab8107:~/ceph# ceph -vceph version 9.2.0 (bb2ecea240f3a1d525bcb35670cb07bd1f0ca299)
-创建RBD设备我们先来创建一个rbdroot@lab810">
+ceph版本root@lab8107:~/ceph# ceph -vceph version 9.2.0 (bb2ecea240f3a1d525bcb35670cb07bd1f0ca299)">
   
     <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
   
@@ -230,6 +227,7 @@ var _hmt = _hmt || [];
       
         <p>ceph在Infernalis加入了一个功能是查询rbd的块设备的使用的大小，默认是可以查询的，但是无法快速查询，那么我们来看看这个功能是怎么开启的</p>
 <h3 id="ceph版本">ceph版本</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@lab8107:~/ceph<span class="comment"># ceph -v</span></span><br><span class="line">ceph version <span class="number">9.2</span>.<span class="number">0</span> (bb2ecea240f3a1d525bcb35670cb07bd1f0ca299)</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
 <h3 id="创建RBD设备">创建RBD设备</h3><p>我们先来创建一个rbd<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@lab8107:~/ceph<span class="comment"># rbd create test --size 4000</span></span><br><span class="line">root@lab8107:~/ceph<span class="comment"># rbd info test</span></span><br><span class="line">rbd image <span class="string">'test'</span>:</span><br><span class="line">	size <span class="number">4000</span> MB <span class="keyword">in</span> <span class="number">1000</span> objects</span><br><span class="line">	order <span class="number">22</span> (<span class="number">4096</span> kB objects)</span><br><span class="line">	block_name_prefix: rbd_data.<span class="number">10305695</span>d26a</span><br><span class="line">	format: <span class="number">2</span></span><br><span class="line">	features: layering</span><br><span class="line">	flags:</span><br></pre></td></tr></table></figure></p>
 <h3 id="进行RBD容量使用查询">进行RBD容量使用查询</h3><p>我们来试一下rbd du命令<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@lab8107:~/ceph<span class="comment"># rbd du test</span></span><br><span class="line">warning: fast-diff map is not enabled <span class="keyword">for</span> test. operation may be slow.</span><br><span class="line">NAME PROVISIONED USED </span><br><span class="line"><span class="built_in">test</span>       <span class="number">4000</span>M    <span class="number">0</span></span><br></pre></td></tr></table></figure></p>
 <p>可以看到有个提示需要开启fast-diff的属性<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@lab8107:~/ceph<span class="comment"># rbd --help</span></span><br><span class="line">···</span><br><span class="line">Supported image features:</span><br><span class="line">  layering (+), striping (+), exclusive-lock (*), object-map (*), fast-diff (*), deep-flatten</span><br><span class="line"></span><br><span class="line">  (*) supports enabling/disabling on existing images</span><br><span class="line">  (+) enabled by default <span class="keyword">for</span> new images <span class="keyword">if</span> features are not specified</span><br></pre></td></tr></table></figure></p>
