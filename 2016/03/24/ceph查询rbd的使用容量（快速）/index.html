@@ -13,6 +13,7 @@ ceph版本root@lab8107:~/ceph# ceph -vceph version 9.2.0 (bb2ecea240f3a1d525bcb3
 <meta property="og:site_name" content="zphj1987'Blog">
 <meta property="og:description" content="ceph在Infernalis加入了一个功能是查询rbd的块设备的使用的大小，默认是可以查询的，但是无法快速查询，那么我们来看看这个功能是怎么开启的
 ceph版本root@lab8107:~/ceph# ceph -vceph version 9.2.0 (bb2ecea240f3a1d525bcb35670cb07bd1f0ca299)">
+<meta property="og:image" content="http://static.zybuluo.com/zphj1987/1amw9dopkoohq90dfwme7z6p/%E5%B1%9E%E6%80%A7.png">
 <meta property="og:image" content="http://7xo9we.com1.z0.glb.clouddn.com/payforzp.png">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ceph查询rbd的使用容量（快速）">
@@ -240,7 +241,7 @@ var _hmt = _hmt || [];
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@lab8107:~/ceph<span class="comment"># rbd du test</span></span><br><span class="line">NAME PROVISIONED USED </span><br><span class="line"><span class="built_in">test</span>       <span class="number">4000</span>M    <span class="number">0</span></span><br></pre></td></tr></table></figure>
 <p>好了，这个功能已经开启了，这个是对已经创建好的rbd，然后开启这个属性，那么如果不想这么麻烦，默认就开启，创建的时候就开启，有什么方法么，当然是有的</p>
 <h3 id="默认开启RBD容量快速查询的方法">默认开启RBD容量快速查询的方法</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@lab8107:~/ceph<span class="comment"># ceph --show-config|grep rbd_default_features</span></span><br><span class="line">rbd_default_features = <span class="number">3</span></span><br></pre></td></tr></table></figure>
-<p>查看下默认配置，这个是3，那么3是什么意思，3=1+2，这个是属性中常用的一种做法，给属性设置一个bit码，在配置的时候，只需要设置加起来的和<br>在RBD的属性里面：<br>| 属性| BIT码|<br>| :————:  | :——-:  |<br> |layering| 1 |<br> |striping| 2 |<br> |exclusive-lock| 4|<br>|object-map| 8|<br>|fast-diff| 16|<br>|deep-flatten|32|</p>
+<p>查看下默认配置，这个是3，那么3是什么意思，3=1+2，这个是属性中常用的一种做法，给属性设置一个bit码，在配置的时候，只需要设置加起来的和<br>在RBD的属性里面：<br><img src="http://static.zybuluo.com/zphj1987/1amw9dopkoohq90dfwme7z6p/%E5%B1%9E%E6%80%A7.png" alt="属性.png-14.1kB"></p>
 <p>我们要开启 前五个属性那么就是 31<br>在ceph.conf中添加配置</p>
 <blockquote>
 <p>rbd_default_features = 31</p>
@@ -249,6 +250,8 @@ var _hmt = _hmt || [];
 <p>可以看到默认就把几个属性都开启好了，关于这个属性的开启就记录到这里，之前已经测试了一次</p>
 <p><strong>如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作！</strong></p>
 <div style="text-align:center"><br><img src="http://7xo9we.com1.z0.glb.clouddn.com/payforzp.png" alt="支付宝" title="支付宝扫一扫"><br></div>
+
+
       
     </div>
     
