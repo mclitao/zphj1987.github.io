@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>ceph查询rbd的使用容量（快速） | zphj1987&#39;Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="ceph在Infernalis加入了一个功能是查询rbd的块设备的使用的大小，默认是可以查询的，但是无法快速查询，那么我们来看看这个功能是怎么开启的
+ceph版本root@lab8107:~/ceph# ceph -vceph version 9.2.0 (bb2ecea240f3a1d525bcb35670cb07bd1f0ca299)
+创建RBD设备我们先来创建一个rbdroot@lab810">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ceph查询rbd的使用容量（快速）">
+<meta property="og:url" content="http://www.zphj1987.com/2016/03/24/ceph查询rbd的使用容量（快速）/index.html">
+<meta property="og:site_name" content="zphj1987'Blog">
+<meta property="og:description" content="ceph在Infernalis加入了一个功能是查询rbd的块设备的使用的大小，默认是可以查询的，但是无法快速查询，那么我们来看看这个功能是怎么开启的
+ceph版本root@lab8107:~/ceph# ceph -vceph version 9.2.0 (bb2ecea240f3a1d525bcb35670cb07bd1f0ca299)
+创建RBD设备我们先来创建一个rbdroot@lab810">
+<meta property="og:image" content="http://7xo9we.com1.z0.glb.clouddn.com/payforzp.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ceph查询rbd的使用容量（快速）">
+<meta name="twitter:description" content="ceph在Infernalis加入了一个功能是查询rbd的块设备的使用的大小，默认是可以查询的，但是无法快速查询，那么我们来看看这个功能是怎么开启的
+ceph版本root@lab8107:~/ceph# ceph -vceph version 9.2.0 (bb2ecea240f3a1d525bcb35670cb07bd1f0ca299)
+创建RBD设备我们先来创建一个rbdroot@lab810">
+  
+    <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="http://7xi6lo.com1.z0.glb.clouddn.com/style.css" type="text/css">
+  
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?252ba55374ee0e63b03196973bb9b776";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="http://7xi6lo.com1.z0.glb.clouddn.com/assets/blogImg/mylogo.jpg" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">zphj1987</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">现在所学，终有所用</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						
+						<li>关于我</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+							<li><a href="/instagram">图片</a></li>
+				        
+							<li><a href="/shuoshuo">说说</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="https://github.com/zphj1987" title="github">github</a>
+					        
+								<a class="weibo" target="_blank" href=" http://weibo.com/zphj1987" title="weibo">weibo</a>
+					        
+								<a class="rss" target="_blank" href="http://www.zphj1987.com/atom.xml" title="rss">rss</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/ceph/" style="font-size: 20px;">ceph</a><a href="/tags/instagram/" style="font-size: 10px;">instagram</a><a href="/tags/iptables/" style="font-size: 10px;">iptables</a><a href="/tags/linux/" style="font-size: 18.33px;">linux</a><a href="/tags/momotan/" style="font-size: 10px;">momotan</a><a href="/tags/nginx/" style="font-size: 13.33px;">nginx</a><a href="/tags/samba/" style="font-size: 10px;">samba</a><a href="/tags/ubuntu/" style="font-size: 16.67px;">ubuntu</a><a href="/tags/windows/" style="font-size: 10px;">windows</a><a href="/tags/内核/" style="font-size: 13.33px;">内核</a><a href="/tags/操作系统/" style="font-size: 11.67px;">操作系统</a><a href="/tags/杂七杂八/" style="font-size: 13.33px;">杂七杂八</a><a href="/tags/注册码/" style="font-size: 10px;">注册码</a><a href="/tags/测试工具/" style="font-size: 11.67px;">测试工具</a><a href="/tags/监控/" style="font-size: 10px;">监控</a><a href="/tags/网卡/" style="font-size: 13.33px;">网卡</a><a href="/tags/脚本/" style="font-size: 15px;">脚本</a><a href="/tags/高可用/" style="font-size: 10px;">高可用</a>
+					</div>
+				</section>
+				
+				
+				
+
+				
+				
+				<section class="switch-part switch-part3">
+				
+					<div id="js-aboutme">1987 男,武汉。吃货。存储行业。</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">zphj1987</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="http://7xi6lo.com1.z0.glb.clouddn.com/assets/blogImg/mylogo.jpg" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">zphj1987</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">现在所学，终有所用</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+					<li><a href="/instagram">图片</a></li>
+		        
+					<li><a href="/shuoshuo">说说</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/zphj1987" title="github">github</a>
+			        
+						<a class="weibo" target="_blank" href=" http://weibo.com/zphj1987" title="weibo">weibo</a>
+			        
+						<a class="rss" target="_blank" href="http://www.zphj1987.com/atom.xml" title="rss">rss</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-ceph查询rbd的使用容量（快速）" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/03/24/ceph查询rbd的使用容量（快速）/" class="article-date">
+  	<time datetime="2016-03-24T13:42:59.000Z" itemprop="datePublished">2016-03-24</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      ceph查询rbd的使用容量（快速）
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+        
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>ceph在Infernalis加入了一个功能是查询rbd的块设备的使用的大小，默认是可以查询的，但是无法快速查询，那么我们来看看这个功能是怎么开启的</p>
+<h3 id="ceph版本">ceph版本</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@lab8107:~/ceph<span class="comment"># ceph -v</span></span><br><span class="line">ceph version <span class="number">9.2</span>.<span class="number">0</span> (bb2ecea240f3a1d525bcb35670cb07bd1f0ca299)</span><br></pre></td></tr></table></figure>
+<h3 id="创建RBD设备">创建RBD设备</h3><p>我们先来创建一个rbd<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@lab8107:~/ceph<span class="comment"># rbd create test --size 4000</span></span><br><span class="line">root@lab8107:~/ceph<span class="comment"># rbd info test</span></span><br><span class="line">rbd image <span class="string">'test'</span>:</span><br><span class="line">	size <span class="number">4000</span> MB <span class="keyword">in</span> <span class="number">1000</span> objects</span><br><span class="line">	order <span class="number">22</span> (<span class="number">4096</span> kB objects)</span><br><span class="line">	block_name_prefix: rbd_data.<span class="number">10305695</span>d26a</span><br><span class="line">	format: <span class="number">2</span></span><br><span class="line">	features: layering</span><br><span class="line">	flags:</span><br></pre></td></tr></table></figure></p>
+<h3 id="进行RBD容量使用查询">进行RBD容量使用查询</h3><p>我们来试一下rbd du命令<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@lab8107:~/ceph<span class="comment"># rbd du test</span></span><br><span class="line">warning: fast-diff map is not enabled <span class="keyword">for</span> test. operation may be slow.</span><br><span class="line">NAME PROVISIONED USED </span><br><span class="line"><span class="built_in">test</span>       <span class="number">4000</span>M    <span class="number">0</span></span><br></pre></td></tr></table></figure></p>
+<p>可以看到有个提示需要开启fast-diff的属性<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@lab8107:~/ceph<span class="comment"># rbd --help</span></span><br><span class="line">···</span><br><span class="line">Supported image features:</span><br><span class="line">  layering (+), striping (+), exclusive-lock (*), object-map (*), fast-diff (*), deep-flatten</span><br><span class="line"></span><br><span class="line">  (*) supports enabling/disabling on existing images</span><br><span class="line">  (+) enabled by default <span class="keyword">for</span> new images <span class="keyword">if</span> features are not specified</span><br></pre></td></tr></table></figure></p>
+<p>可以看到默认开启了  layering striping 属性，后面属性没有开启<br>我们看一下rbd的man page<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@lab8107:~/ceph<span class="comment"># man rbd</span></span><br><span class="line">···</span><br><span class="line">--image-feature feature-name</span><br><span class="line">    Specifies <span class="built_in">which</span> RBD format <span class="number">2</span> feature should be enabled when creating an image. Multiple features can be enabled by repeating  this  option  multiple times. The following features are supported:</span><br><span class="line"></span><br><span class="line">    · layering: layering support</span><br><span class="line">    · striping: striping v2 support</span><br><span class="line">    · exclusive-lock: exclusive locking support</span><br><span class="line">    · object-map: object map support (requires exclusive-lock)</span><br><span class="line">    · fast-diff: fast diff calculations (requires object-map)</span><br><span class="line">    · deep-flatten: snapshot flatten support</span><br></pre></td></tr></table></figure></p>
+<h3 id="开启RBD属性">开启RBD属性</h3><p>可以看到开启fast-diff 需要开启<code>exclusive-lock</code>和 <code>object-map</code> 属性<br>那么依次开启就好了<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@lab8107:~/ceph<span class="comment"># rbd  feature enable test  exclusive-lock</span></span><br><span class="line">root@lab8107:~/ceph<span class="comment"># rbd  feature enable test  object-map</span></span><br><span class="line">root@lab8107:~/ceph<span class="comment"># rbd  feature enable test  fast-diff</span></span><br><span class="line"><span class="number">2016</span>-<span class="number">03</span>-<span class="number">24</span> <span class="number">21</span>:<span class="number">17</span>:<span class="number">23.822720</span> <span class="number">7</span>f241a5447c0 -<span class="number">1</span> librbd::ObjectMap: error refreshing object map: (<span class="number">2</span>) No such file or directory</span><br><span class="line"><span class="number">2016</span>-<span class="number">03</span>-<span class="number">24</span> <span class="number">21</span>:<span class="number">17</span>:<span class="number">23.823191</span> <span class="number">7</span>f241a5447c0 -<span class="number">1</span> librbd::ObjectMap: error refreshing object map: (<span class="number">2</span>) No such file or directory</span><br></pre></td></tr></table></figure></p>
+<p>来查看下 rbd info<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@lab8107:~/ceph<span class="comment"># rbd info test</span></span><br><span class="line"><span class="number">2016</span>-<span class="number">03</span>-<span class="number">24</span> <span class="number">21</span>:<span class="number">18</span>:<span class="number">37.972235</span> <span class="number">7</span>f9918a7d7c0 -<span class="number">1</span> librbd::ObjectMap: error refreshing object map: (<span class="number">2</span>) No such file or directory</span><br><span class="line">rbd image <span class="string">'test'</span>:</span><br><span class="line">	size <span class="number">4000</span> MB <span class="keyword">in</span> <span class="number">2016</span>-<span class="number">03</span>-<span class="number">24</span> <span class="number">21</span>:<span class="number">18</span>:<span class="number">37.972900</span> <span class="number">7</span>f9918a7d7c0 -<span class="number">1</span> <span class="number">1000</span>librbd::ObjectMap: error refreshing object map: (<span class="number">2</span>) No such file or directory objects</span><br><span class="line"></span><br><span class="line">	order <span class="number">22</span> (<span class="number">4096</span> kB objects)</span><br><span class="line">	block_name_prefix: rbd_data.<span class="number">10305695</span>d26a</span><br><span class="line">	format: <span class="number">2</span></span><br><span class="line">	features: layering, exclusive-lock, object-map, fast-diff</span><br><span class="line">	flags: object map invalid, fast diff invalid</span><br></pre></td></tr></table></figure></p>
+<p>我们可以看到又报错了，这个是因为是后开启object map，需要重建一下<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@lab8107:~/ceph<span class="comment"># rbd  object-map rebuild  test  </span></span><br><span class="line"><span class="number">2016</span>-<span class="number">03</span>-<span class="number">24</span> <span class="number">21</span>:<span class="number">20</span>:<span class="number">05.488515</span> <span class="number">7</span>fa0141917c0 -<span class="number">1</span> librbd::ObjectMap: error refreshing object map: (<span class="number">2</span>) No such file or directory</span><br><span class="line"><span class="number">2016</span>-<span class="number">03</span>-<span class="number">24</span> <span class="number">21</span>:<span class="number">20</span>:<span class="number">05.489142</span> <span class="number">7</span>fa0141917c0 -<span class="number">1</span> librbd::ObjectMap: error refreshing object map: (<span class="number">2</span>) No such file or directory</span><br><span class="line"><span class="number">2016</span>-<span class="number">03</span>-<span class="number">24</span> <span class="number">21</span>:<span class="number">20</span>:<span class="number">05.530344</span> <span class="number">7</span>fa0141917c0 -<span class="number">1</span> librbd::ObjectMap: error refreshing object map: (<span class="number">2</span>) No such file or directory</span><br><span class="line">Object Map Rebuild: <span class="number">100</span>% complete...done.</span><br></pre></td></tr></table></figure></p>
+<p>再次查看下<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@lab8107:~/ceph<span class="comment"># rbd info test</span></span><br><span class="line">rbd image <span class="string">'test'</span>:</span><br><span class="line">	size <span class="number">4000</span> MB <span class="keyword">in</span> <span class="number">1000</span> objects</span><br><span class="line">	order <span class="number">22</span> (<span class="number">4096</span> kB objects)</span><br><span class="line">	block_name_prefix: rbd_data.<span class="number">10305695</span>d26a</span><br><span class="line">	format: <span class="number">2</span></span><br><span class="line">	features: layering, exclusive-lock, object-map, fast-diff</span><br><span class="line">	flags:</span><br></pre></td></tr></table></figure></p>
+<p>已经可以了，我们来试下这个功能</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@lab8107:~/ceph<span class="comment"># rbd du test</span></span><br><span class="line">NAME PROVISIONED USED </span><br><span class="line"><span class="built_in">test</span>       <span class="number">4000</span>M    <span class="number">0</span></span><br></pre></td></tr></table></figure>
+<p>好了，这个功能已经开启了，这个是对已经创建好的rbd，然后开启这个属性，那么如果不想这么麻烦，默认就开启，创建的时候就开启，有什么方法么，当然是有的</p>
+<h3 id="默认开启RBD容量快速查询的方法">默认开启RBD容量快速查询的方法</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@lab8107:~/ceph<span class="comment"># ceph --show-config|grep rbd_default_features</span></span><br><span class="line">rbd_default_features = <span class="number">3</span></span><br></pre></td></tr></table></figure>
+<p>查看下默认配置，这个是3，那么3是什么意思，3=1+2，这个是属性中常用的一种做法，给属性设置一个bit码，在配置的时候，只需要设置加起来的和<br>在RBD的属性里面：<br>| 属性| BIT码|<br>| :————:  | :——-:  |<br> |layering| 1 |<br> |striping| 2 |<br> |exclusive-lock| 4|<br>|object-map| 8|<br>|fast-diff| 16|<br>|deep-flatten|32|</p>
+<p>我们要开启 前五个属性那么就是 31<br>在ceph.conf中添加配置</p>
+<blockquote>
+<p>rbd_default_features = 31</p>
+</blockquote>
+<p>创建后不做任何操作直接查询<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@lab8107:~/ceph<span class="comment"># rbd create test1 --size 1000</span></span><br><span class="line">root@lab8107:~/ceph<span class="comment"># rbd info test1</span></span><br><span class="line">rbd image <span class="string">'test1'</span>:</span><br><span class="line">	size <span class="number">1000</span> MB <span class="keyword">in</span> <span class="number">250</span> objects</span><br><span class="line">	order <span class="number">22</span> (<span class="number">4096</span> kB objects)</span><br><span class="line">	block_name_prefix: rbd_data.<span class="number">103</span>c29f2280d</span><br><span class="line">	format: <span class="number">2</span></span><br><span class="line">	features: layering, exclusive-lock, object-map, fast-diff</span><br><span class="line">	flags: </span><br><span class="line">root@lab8107:~/ceph<span class="comment"># rbd du test1</span></span><br><span class="line">NAME  PROVISIONED USED </span><br><span class="line"><span class="built_in">test</span>1       <span class="number">1000</span>M    <span class="number">0</span></span><br></pre></td></tr></table></figure></p>
+<p>可以看到默认就把几个属性都开启好了，关于这个属性的开启就记录到这里，之前已经测试了一次</p>
+<p><strong>如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作！</strong></p>
+<div style="text-align:center"><br><img src="http://7xo9we.com1.z0.glb.clouddn.com/payforzp.png" alt="支付宝" title="支付宝扫一扫"><br></div>
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2016/03/12/ceph的书/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">ceph的书</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到：</span>
+		<a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+		<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="ceph查询rbd的使用容量（快速）" data-title="ceph查询rbd的使用容量（快速）" data-url="http://www.zphj1987.com/2016/03/24/ceph查询rbd的使用容量（快速）/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"zphj1987"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2016 zphj1987
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="http://7xi6lo.com1.z0.glb.clouddn.com/fancybox/jquery.fancybox.css" type="text/css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: undefined,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: true
+	}
+</script>
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="/js/main.js" type="text/javascript"></script>
+
+
+  </div>
+</body>
+</html>

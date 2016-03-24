@@ -4,7 +4,7 @@
   <subtitle><![CDATA[现在所学，终有所用]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2016-03-16T15:19:02.007Z</updated>
+  <updated>2016-03-24T13:47:03.643Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -15,11 +15,49 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title><![CDATA[ceph的学习之旅，欢迎加入]]></title>
-    <link href="http://www.zphj1987.com/2016/03/12/ceph%E7%9A%84%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%97%85%EF%BC%8C%E6%AC%A2%E8%BF%8E%E5%8A%A0%E5%85%A5/"/>
-    <id>http://www.zphj1987.com/2016/03/12/ceph的学习之旅，欢迎加入/</id>
+    <title><![CDATA[ceph查询rbd的使用容量（快速）]]></title>
+    <link href="http://www.zphj1987.com/2016/03/24/ceph%E6%9F%A5%E8%AF%A2rbd%E7%9A%84%E4%BD%BF%E7%94%A8%E5%AE%B9%E9%87%8F%EF%BC%88%E5%BF%AB%E9%80%9F%EF%BC%89/"/>
+    <id>http://www.zphj1987.com/2016/03/24/ceph查询rbd的使用容量（快速）/</id>
+    <published>2016-03-24T13:42:59.000Z</published>
+    <updated>2016-03-24T13:47:03.643Z</updated>
+    <content type="html"><![CDATA[<p>ceph在Infernalis加入了一个功能是查询rbd的块设备的使用的大小，默认是可以查询的，但是无法快速查询，那么我们来看看这个功能是怎么开启的</p>
+<h3 id="ceph版本">ceph版本</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@lab8107:~/ceph<span class="comment"># ceph -v</span></span><br><span class="line">ceph version <span class="number">9.2</span>.<span class="number">0</span> (bb2ecea240f3a1d525bcb35670cb07bd1f0ca299)</span><br></pre></td></tr></table></figure>
+<h3 id="创建RBD设备">创建RBD设备</h3><p>我们先来创建一个rbd<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@lab8107:~/ceph<span class="comment"># rbd create test --size 4000</span></span><br><span class="line">root@lab8107:~/ceph<span class="comment"># rbd info test</span></span><br><span class="line">rbd image <span class="string">'test'</span>:</span><br><span class="line">	size <span class="number">4000</span> MB <span class="keyword">in</span> <span class="number">1000</span> objects</span><br><span class="line">	order <span class="number">22</span> (<span class="number">4096</span> kB objects)</span><br><span class="line">	block_name_prefix: rbd_data.<span class="number">10305695</span>d26a</span><br><span class="line">	format: <span class="number">2</span></span><br><span class="line">	features: layering</span><br><span class="line">	flags:</span><br></pre></td></tr></table></figure></p>
+<h3 id="进行RBD容量使用查询">进行RBD容量使用查询</h3><p>我们来试一下rbd du命令<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@lab8107:~/ceph<span class="comment"># rbd du test</span></span><br><span class="line">warning: fast-diff map is not enabled <span class="keyword">for</span> test. operation may be slow.</span><br><span class="line">NAME PROVISIONED USED </span><br><span class="line"><span class="built_in">test</span>       <span class="number">4000</span>M    <span class="number">0</span></span><br></pre></td></tr></table></figure></p>
+<p>可以看到有个提示需要开启fast-diff的属性<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@lab8107:~/ceph<span class="comment"># rbd --help</span></span><br><span class="line">···</span><br><span class="line">Supported image features:</span><br><span class="line">  layering (+), striping (+), exclusive-lock (*), object-map (*), fast-diff (*), deep-flatten</span><br><span class="line"></span><br><span class="line">  (*) supports enabling/disabling on existing images</span><br><span class="line">  (+) enabled by default <span class="keyword">for</span> new images <span class="keyword">if</span> features are not specified</span><br></pre></td></tr></table></figure></p>
+<p>可以看到默认开启了  layering striping 属性，后面属性没有开启<br>我们看一下rbd的man page<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@lab8107:~/ceph<span class="comment"># man rbd</span></span><br><span class="line">···</span><br><span class="line">--image-feature feature-name</span><br><span class="line">    Specifies <span class="built_in">which</span> RBD format <span class="number">2</span> feature should be enabled when creating an image. Multiple features can be enabled by repeating  this  option  multiple times. The following features are supported:</span><br><span class="line"></span><br><span class="line">    · layering: layering support</span><br><span class="line">    · striping: striping v2 support</span><br><span class="line">    · exclusive-lock: exclusive locking support</span><br><span class="line">    · object-map: object map support (requires exclusive-lock)</span><br><span class="line">    · fast-diff: fast diff calculations (requires object-map)</span><br><span class="line">    · deep-flatten: snapshot flatten support</span><br></pre></td></tr></table></figure></p>
+<h3 id="开启RBD属性">开启RBD属性</h3><p>可以看到开启fast-diff 需要开启<code>exclusive-lock</code>和 <code>object-map</code> 属性<br>那么依次开启就好了<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@lab8107:~/ceph<span class="comment"># rbd  feature enable test  exclusive-lock</span></span><br><span class="line">root@lab8107:~/ceph<span class="comment"># rbd  feature enable test  object-map</span></span><br><span class="line">root@lab8107:~/ceph<span class="comment"># rbd  feature enable test  fast-diff</span></span><br><span class="line"><span class="number">2016</span>-<span class="number">03</span>-<span class="number">24</span> <span class="number">21</span>:<span class="number">17</span>:<span class="number">23.822720</span> <span class="number">7</span>f241a5447c0 -<span class="number">1</span> librbd::ObjectMap: error refreshing object map: (<span class="number">2</span>) No such file or directory</span><br><span class="line"><span class="number">2016</span>-<span class="number">03</span>-<span class="number">24</span> <span class="number">21</span>:<span class="number">17</span>:<span class="number">23.823191</span> <span class="number">7</span>f241a5447c0 -<span class="number">1</span> librbd::ObjectMap: error refreshing object map: (<span class="number">2</span>) No such file or directory</span><br></pre></td></tr></table></figure></p>
+<p>来查看下 rbd info<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@lab8107:~/ceph<span class="comment"># rbd info test</span></span><br><span class="line"><span class="number">2016</span>-<span class="number">03</span>-<span class="number">24</span> <span class="number">21</span>:<span class="number">18</span>:<span class="number">37.972235</span> <span class="number">7</span>f9918a7d7c0 -<span class="number">1</span> librbd::ObjectMap: error refreshing object map: (<span class="number">2</span>) No such file or directory</span><br><span class="line">rbd image <span class="string">'test'</span>:</span><br><span class="line">	size <span class="number">4000</span> MB <span class="keyword">in</span> <span class="number">2016</span>-<span class="number">03</span>-<span class="number">24</span> <span class="number">21</span>:<span class="number">18</span>:<span class="number">37.972900</span> <span class="number">7</span>f9918a7d7c0 -<span class="number">1</span> <span class="number">1000</span>librbd::ObjectMap: error refreshing object map: (<span class="number">2</span>) No such file or directory objects</span><br><span class="line"></span><br><span class="line">	order <span class="number">22</span> (<span class="number">4096</span> kB objects)</span><br><span class="line">	block_name_prefix: rbd_data.<span class="number">10305695</span>d26a</span><br><span class="line">	format: <span class="number">2</span></span><br><span class="line">	features: layering, exclusive-lock, object-map, fast-diff</span><br><span class="line">	flags: object map invalid, fast diff invalid</span><br></pre></td></tr></table></figure></p>
+<p>我们可以看到又报错了，这个是因为是后开启object map，需要重建一下<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@lab8107:~/ceph<span class="comment"># rbd  object-map rebuild  test  </span></span><br><span class="line"><span class="number">2016</span>-<span class="number">03</span>-<span class="number">24</span> <span class="number">21</span>:<span class="number">20</span>:<span class="number">05.488515</span> <span class="number">7</span>fa0141917c0 -<span class="number">1</span> librbd::ObjectMap: error refreshing object map: (<span class="number">2</span>) No such file or directory</span><br><span class="line"><span class="number">2016</span>-<span class="number">03</span>-<span class="number">24</span> <span class="number">21</span>:<span class="number">20</span>:<span class="number">05.489142</span> <span class="number">7</span>fa0141917c0 -<span class="number">1</span> librbd::ObjectMap: error refreshing object map: (<span class="number">2</span>) No such file or directory</span><br><span class="line"><span class="number">2016</span>-<span class="number">03</span>-<span class="number">24</span> <span class="number">21</span>:<span class="number">20</span>:<span class="number">05.530344</span> <span class="number">7</span>fa0141917c0 -<span class="number">1</span> librbd::ObjectMap: error refreshing object map: (<span class="number">2</span>) No such file or directory</span><br><span class="line">Object Map Rebuild: <span class="number">100</span>% complete...done.</span><br></pre></td></tr></table></figure></p>
+<p>再次查看下<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@lab8107:~/ceph<span class="comment"># rbd info test</span></span><br><span class="line">rbd image <span class="string">'test'</span>:</span><br><span class="line">	size <span class="number">4000</span> MB <span class="keyword">in</span> <span class="number">1000</span> objects</span><br><span class="line">	order <span class="number">22</span> (<span class="number">4096</span> kB objects)</span><br><span class="line">	block_name_prefix: rbd_data.<span class="number">10305695</span>d26a</span><br><span class="line">	format: <span class="number">2</span></span><br><span class="line">	features: layering, exclusive-lock, object-map, fast-diff</span><br><span class="line">	flags:</span><br></pre></td></tr></table></figure></p>
+<p>已经可以了，我们来试下这个功能</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@lab8107:~/ceph<span class="comment"># rbd du test</span></span><br><span class="line">NAME PROVISIONED USED </span><br><span class="line"><span class="built_in">test</span>       <span class="number">4000</span>M    <span class="number">0</span></span><br></pre></td></tr></table></figure>
+<p>好了，这个功能已经开启了，这个是对已经创建好的rbd，然后开启这个属性，那么如果不想这么麻烦，默认就开启，创建的时候就开启，有什么方法么，当然是有的</p>
+<h3 id="默认开启RBD容量快速查询的方法">默认开启RBD容量快速查询的方法</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@lab8107:~/ceph<span class="comment"># ceph --show-config|grep rbd_default_features</span></span><br><span class="line">rbd_default_features = <span class="number">3</span></span><br></pre></td></tr></table></figure>
+<p>查看下默认配置，这个是3，那么3是什么意思，3=1+2，这个是属性中常用的一种做法，给属性设置一个bit码，在配置的时候，只需要设置加起来的和<br>在RBD的属性里面：<br>| 属性| BIT码|<br>| :————:  | :——-:  |<br> |layering| 1 |<br> |striping| 2 |<br> |exclusive-lock| 4|<br>|object-map| 8|<br>|fast-diff| 16|<br>|deep-flatten|32|</p>
+<p>我们要开启 前五个属性那么就是 31<br>在ceph.conf中添加配置</p>
+<blockquote>
+<p>rbd_default_features = 31</p>
+</blockquote>
+<p>创建后不做任何操作直接查询<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@lab8107:~/ceph<span class="comment"># rbd create test1 --size 1000</span></span><br><span class="line">root@lab8107:~/ceph<span class="comment"># rbd info test1</span></span><br><span class="line">rbd image <span class="string">'test1'</span>:</span><br><span class="line">	size <span class="number">1000</span> MB <span class="keyword">in</span> <span class="number">250</span> objects</span><br><span class="line">	order <span class="number">22</span> (<span class="number">4096</span> kB objects)</span><br><span class="line">	block_name_prefix: rbd_data.<span class="number">103</span>c29f2280d</span><br><span class="line">	format: <span class="number">2</span></span><br><span class="line">	features: layering, exclusive-lock, object-map, fast-diff</span><br><span class="line">	flags: </span><br><span class="line">root@lab8107:~/ceph<span class="comment"># rbd du test1</span></span><br><span class="line">NAME  PROVISIONED USED </span><br><span class="line"><span class="built_in">test</span>1       <span class="number">1000</span>M    <span class="number">0</span></span><br></pre></td></tr></table></figure></p>
+<p>可以看到默认就把几个属性都开启好了，关于这个属性的开启就记录到这里，之前已经测试了一次</p>
+<p><strong>如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作！</strong></p>
+<div style="text-align:center"><br><img src="http://7xo9we.com1.z0.glb.clouddn.com/payforzp.png" alt="支付宝" title="支付宝扫一扫"><br></div>]]></content>
+    <summary type="html">
+    <![CDATA[<p>ceph在Infernalis加入了一个功能是查询rbd的块设备的使用的大小，默认是可以查询的，但是无法快速查询，那么我们来看看这个功能是怎么开启的</p>
+<h3 id="ceph版本">ceph版本</h3><figure class="highlight bash">]]>
+    </summary>
+    
+      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[ceph的书]]></title>
+    <link href="http://www.zphj1987.com/2016/03/12/ceph%E7%9A%84%E4%B9%A6/"/>
+    <id>http://www.zphj1987.com/2016/03/12/ceph的书/</id>
     <published>2016-03-12T15:50:34.000Z</published>
-    <updated>2016-03-16T15:19:02.007Z</updated>
+    <updated>2016-03-24T13:43:56.452Z</updated>
     <content type="html"><![CDATA[<p>以下是最新的一本ceph英文书的目录，我会学习里面的内容，并且翻译成中文的读书笔记，接触ceph也有几年了，还记得那个夏天毕业的时候辞掉了一份月薪接近4K的工作，转而换了一份月薪差不多1K的工作，然后就接触了现在非常火的ceph，有时候就是这样的，如果没有当时进入这个行业，也就没有今天的我<br>现在在接触的越多的相关知识后，越发发现自己还需要学的东西很多，只有掌握的越多，越能对你所做的事情能后有确定的信心，所以抓住一切能成长的机会，在技术上，我是很喜欢遇到问题的，遇到的问题越多，能够学到的东西越多，所以在ceph的中国社区里面，在一段时间内，我都尽力去回答每一个我知道的问题，但是我们毕竟是一家商业的公司，自己的技术不是都能够去无私的告诉别人，所以在某些时候，还是需要有所保留的。在公司没有涉及的领域，技术方面是可以共同学习成长的，这个也能够认识一些技术圈的朋友，之前有录过几段小的视频教程，之所以停止下来，发现那个太耗时间了，并且能够之前传递的知识面比较小，在这里感谢之前支持的朋友<br>在ceph这套系统里面，在跟一些朋友有过技术的交流后，发现真的是不知者不惧，在没有深入了解运行机制的情况下，做着一些非常危险的操作，很多操作可能会直接弄崩掉集群，我们应该对未知的东西充满敬畏之心，小心小心再小心<br>在任何情况下，如果有条件允许，ceph的集群一定要部署两套，一个作为备份，这个是我一直坚持的观点，因为系统级别的故障是你永远无法预料的，副本只能解决系统内的故障，你的修复能力也只能将损失降到最低</p>
 <p>好吧那么开始下面的学习之旅了！<br><a id="more"></a></p>
 <p><img src="http://i.imgur.com/mVe4yqv.png" alt=""></p>
@@ -161,7 +199,7 @@
 <hr>
 <p>关于本书的讨论群：</p>
 <p><img src="http://7xi6lo.com1.z0.glb.clouddn.com/qqqun2.png" alt=""></p>
-<p>感谢支持人员：<br>运维-北京-struggle<br>研发-北京-solar<br>运维-北京-小白</p>
+<p>感谢支持人员：<br>运维-北京-struggle<br>研发-北京-solar<br>运维-北京-小白<br>研发-北京-猪呆呆</p>
 </div>]]></content>
     <summary type="html">
     <![CDATA[<p>以下是最新的一本ceph英文书的目录，我会学习里面的内容，并且翻译成中文的读书笔记，接触ceph也有几年了，还记得那个夏天毕业的时候辞掉了一份月薪接近4K的工作，转而换了一份月薪差不多1K的工作，然后就接触了现在非常火的ceph，有时候就是这样的，如果没有当时进入这个行业，也就没有今天的我<br>现在在接触的越多的相关知识后，越发发现自己还需要学的东西很多，只有掌握的越多，越能对你所做的事情能后有确定的信心，所以抓住一切能成长的机会，在技术上，我是很喜欢遇到问题的，遇到的问题越多，能够学到的东西越多，所以在ceph的中国社区里面，在一段时间内，我都尽力去回答每一个我知道的问题，但是我们毕竟是一家商业的公司，自己的技术不是都能够去无私的告诉别人，所以在某些时候，还是需要有所保留的。在公司没有涉及的领域，技术方面是可以共同学习成长的，这个也能够认识一些技术圈的朋友，之前有录过几段小的视频教程，之所以停止下来，发现那个太耗时间了，并且能够之前传递的知识面比较小，在这里感谢之前支持的朋友<br>在ceph这套系统里面，在跟一些朋友有过技术的交流后，发现真的是不知者不惧，在没有深入了解运行机制的情况下，做着一些非常危险的操作，很多操作可能会直接弄崩掉集群，我们应该对未知的东西充满敬畏之心，小心小心再小心<br>在任何情况下，如果有条件允许，ceph的集群一定要部署两套，一个作为备份，这个是我一直坚持的观点，因为系统级别的故障是你永远无法预料的，副本只能解决系统内的故障，你的修复能力也只能将损失降到最低</p>
@@ -178,7 +216,7 @@
     <link href="http://www.zphj1987.com/2016/03/03/%E4%B8%A2%E4%BA%86ceph-mon-kerying%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95/"/>
     <id>http://www.zphj1987.com/2016/03/03/丢了ceph-mon-kerying解决办法/</id>
     <published>2016-03-03T15:38:47.000Z</published>
-    <updated>2016-03-03T16:00:09.456Z</updated>
+    <updated>2016-03-24T13:45:53.340Z</updated>
     <content type="html"><![CDATA[<p>在linux操作系统下，可能因为一些很小的误操作，都会造成非常重要的文件的丢失，而文件的备份并不是每时每刻都会注意到，一般是等到文件丢失了才会去想办法，这里讲下ceph.mon.keyring丢失的解决办法</p>
 <h3 id="1、没有启用部署认证的">1、没有启用部署认证的</h3><blockquote>
 <p>auth_cluster_required =none</p>
@@ -203,13 +241,7 @@
 <div style="text-align:center"><br><img src="http://7xo9we.com1.z0.glb.clouddn.com/payforzp.png" alt="支付宝" title="支付宝扫一扫"><br></div>
 
 
-<p>广告：</p>
-<script type="text/javascript">
-var sogou_ad_id=547108;
-var sogou_ad_height=90;
-var sogou_ad_width=728;
-</script>
-<script type="text/javascript" src="http://images.sohu.com/cs/jsfile/js/c.js"></script>]]></content>
+]]></content>
     <summary type="html">
     <![CDATA[<p>在linux操作系统下，可能因为一些很小的误操作，都会造成非常重要的文件的丢失，而文件的备份并不是每时每刻都会注意到，一般是等到文件丢失了才会去想办法，这里讲下ceph.mon.keyring丢失的解决办法</p>
 <h3 id="1、没有启用部署认证的">1、没有启用部署认证的</h3><blockquote>
@@ -1000,33 +1032,6 @@ var sogou_ad_width=728;
     <![CDATA[<h3 id="本篇主题：">本篇主题：</h3><p>在mon无法启动，或者所有的mon的数据盘都损坏的情况下，如何把所有的数据恢复如初</p>
 <h3 id="写本章的缘由">写本章的缘由</h3><p>在ceph中国的群里有看到一个技术人员有提到，在一次意外机房掉电后，三台mon的系统盘同时损坏了，这个对于熟悉ceph的人都知道这意味着什么，所有的集群数据将无法访问，关于这个的解决办法目前没有在哪里有看到，这个对于大多数人是用不上的，但是一旦出现了，这个损失将是无法估量的，当然谁都不希望这个情况的发生<br>所以在研究了下ceph的一些操作后，自己尝试去找了一些关于集群的故障修复的，目前看到了一个是关于单个rbd镜像的恢复的文章，那个需要将数据映射本地的loop设备后重新读取，这个我曾经验证过一遍，确实可以实现，在周末的时候我尝试了另外一个办法，实现了在mon完全失效的情况下全集群的完整数据的恢复，并且保留了原来的数据结构和数据信息，当然这中间需要进行一定的操作去完成它，这个我准备写成一个标准的操作流程，并用视频的方式来记录这个恢复的流程</p>
 <h3 id="本篇资源:">本篇资源:</h3><p>包括了视频，操作文档（本篇还未完成，接受预定）</p>]]>
-    
-    </summary>
-    
-      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[关于开始写教程的事]]></title>
-    <link href="http://www.zphj1987.com/2015/12/12/%E5%85%B3%E4%BA%8E%E5%BC%80%E5%A7%8B%E5%86%99%E6%95%99%E7%A8%8B%E7%9A%84%E4%BA%8B/"/>
-    <id>http://www.zphj1987.com/2015/12/12/关于开始写教程的事/</id>
-    <published>2015-12-11T16:37:22.000Z</published>
-    <updated>2015-12-11T17:48:30.321Z</updated>
-    <content type="html"><![CDATA[<p>在加入到ceph社区的群里以后，尝试着去回答一些有关ceph的问题，发现很多问题其实自己都遇到过，而且很多问题是反复的会被人提起，对于新手来说，由于资源太多，可能就无法比较系统的去学习这个东西，网上的文档也很多，到底从哪里开始，怎么去做，遇到的问题到底是什么造成的，这些都很难一下找到解决办法</p>
-<p>有一天想到了是不是自己也可以尝试着去做一下这个事情，网上也会有相关的教程，但是这个实在太少太少，一来专业的讲师可能不会非常的熟悉集群，二来非常熟悉集群的人，也不一定有精力去完成这个事情，而我也不确定能不能很好的去做这个事情，但是总算是起步了</p>
-<a id="more"></a>
-<p>关于教程，我想一方面需要有视频，一方面是要有很好的文档作为支撑的，最好观看视频的人，可以根据这个文档去一步一步实现视频里面所能实现的东西，作为技术来说文档一般可以很好的去完成一个配置，但是视频的效果也许会更直接，在你还没看完文档的情况下，就能清楚的知道，这个到底是不是我要的，还有一个就是在有时间情况下，我可以对所提到的问题进行反馈</p>
-<p>视频的质量自己也不好评判，只是记录了自己的操作，和一些个人的理解，通过相同的操作，能够实现你所想要的，这里面举个最简单的例子，在做ceph的osd的部署的时候，格式化osd的方式就有五种之多，这个对于我自己来说，进行操作的时候，都需要验证几次才能确定这样能去部署好，然后总结下来，当然你可以选择你自己想要的一种即可</p>
-<p>前期可能出的都是比较基础的操作，在一定的时候会去尝试讲解一些国外大牛做的ppt，在一些峰会上，总会有一些比较好的经验总结，这些都是值得学习的，有的时候也能提供一些不一样的思路</p>
-<p>关于视频，这个我想了下，还是准备收费的，关于收费的问题，这想提出我自己的一个想法，我会在博客中提到我的视频会讲到哪些东西，如果值得看，你就可以通过支付宝的方式进行购买，并告诉我您需要哪个资源，如果你想先看再考虑是不是要付钱，这个也是可以的，如果你付了钱看完了视频，觉得这个视频也就这样，看的东西我都知道，那么你也可以告诉我，我会从支付宝上原路退回的，所以就算这样的：</p>
-<p>视频的获取是会收费的，都是10块钱就可以获取，如果你觉得这个帮助你很多，你也可以付多点，这个我不会介意的，这个完全自愿我会发资源链接给你<br>可以先获取资源，再考虑要不要付费<br>也可以付费了后，不满意退费<br>所以，我想这个对于大多数人应该是个可以接受的方式，10块钱不多，当然得由您来判断它的价值了，如果有我的视频没有提到的，而您又比较关心的问题，我也可以尝试做一个新的专题</p>
-<p>最后一点，这个视频是不涉及版权的，你可以随便使用，但是如果你想分享给其他朋友的时候，我希望您能让他来我的博客购买，对于购买视频的朋友，我在有空的时候去回答您关于视频当中的问题的，当然我也有我自己的工作，这些可能只能在空余时间进行了</p>
-<p>最后希望大家都能成为朋友，毕竟都是这一行的，在不涉及到各自公司的机密技术的情况下，共同进步应该是对整个生态圈是有好处的，好了就写到这里了，欢迎大家多多支持，多多提出宝贵的意见，共同进步</p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>在加入到ceph社区的群里以后，尝试着去回答一些有关ceph的问题，发现很多问题其实自己都遇到过，而且很多问题是反复的会被人提起，对于新手来说，由于资源太多，可能就无法比较系统的去学习这个东西，网上的文档也很多，到底从哪里开始，怎么去做，遇到的问题到底是什么造成的，这些都很难一下找到解决办法</p>
-<p>有一天想到了是不是自己也可以尝试着去做一下这个事情，网上也会有相关的教程，但是这个实在太少太少，一来专业的讲师可能不会非常的熟悉集群，二来非常熟悉集群的人，也不一定有精力去完成这个事情，而我也不确定能不能很好的去做这个事情，但是总算是起步了</p>]]>
     
     </summary>
     
