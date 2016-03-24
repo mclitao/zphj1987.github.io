@@ -4,7 +4,7 @@
   <subtitle><![CDATA[现在所学，终有所用]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2016-03-24T13:53:57.127Z</updated>
+  <updated>2016-03-24T14:18:41.233Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -13,6 +13,39 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[Ceph Bluestore首测]]></title>
+    <link href="http://www.zphj1987.com/2016/03/24/Ceph-Bluestore%E9%A6%96%E6%B5%8B/"/>
+    <id>http://www.zphj1987.com/2016/03/24/Ceph-Bluestore首测/</id>
+    <published>2016-03-24T14:07:43.000Z</published>
+    <updated>2016-03-24T14:18:41.233Z</updated>
+    <content type="html"><![CDATA[<p>Bluestore 作为 Ceph Jewel 版本推出的一个重大的更新，提供了一种之前没有的存储形式，一直以来ceph的存储方式一直是以filestore的方式存储的，也就是对象是以文件方式存储在osd的磁盘上的，pg是以目录的方式存在于osd的磁盘上的<br>在发展过程中，中间出现了kvstore，这个还是存储在文件系统之上，以leveldb或者rocksdb的方式存储对象数据，这个也没有推广开来，性能上没有太大的改观，在某些情况下性能还低于filestore<br>最终在sage的大力支持下，ceph社区准备撸一个新的文件系统，这个系统类似于rocksdb，但是数据是可以直接存储到裸设备上去的，也就是存储对象数据的地方是没有传统意义上的文件系统的，并且解决了一种被抱怨的写双份数据的问题，在filestore中，数据需要先写入journal再入磁盘，对于磁盘来说实际就是双份写了</p>
+<p>在这里不做过多的探讨技术上的细节，bluestore处于开发阶段，在最新的版本的ceph中，发现已经集成了这个，虽然还是实验阶段，但是还是体现出其未来巨大的价值</p>
+<a id="more"></a>
+<h3 id="环境准备">环境准备</h3><p>由于没有测试大量的设备，就在一个小环境下进行性能的验证，基准的性能不需要大量的机器，至于数据可靠性，就靠自己去判断了</p>
+<h4 id="硬件环境：">硬件环境：</h4><p><img src="http://7xi6lo.com1.z0.glb.clouddn.com/blue%E7%A1%AC%E4%BB%B6.png" alt=""></p>
+<h4 id="软件环境：">软件环境：</h4><p><img src="http://7xi6lo.com1.z0.glb.clouddn.com/blue%E8%BD%AF%E4%BB%B6.png" alt=""></p>
+<h3 id="一、先测试Filestore">一、先测试Filestore</h3><p>ceph-disk有个update_partition的bug，部署过程需要处理一下，后期发版本应该会解决</p>
+<h4 id="1、4K随机写200G的rbd测试时间300s">1、4K随机写200G的rbd测试时间300s</h4><p><img src="http://static.zybuluo.com/zphj1987/5azadvfqzqny89fduyodbwpw/filestorefio%E8%BF%87%E7%A8%8B.png" alt="filestorefio过程.png-132.1kB"><br>测试的io的抖动的情况</p>
+<p><img src="http://static.zybuluo.com/zphj1987/455zwwxtc16zs4m49wfd5qhq/filestoreresul.png" alt="filestoreresul.png-89.4kB"><br>测试的FIO结果的页面</p>
+<h4 id="2、4M顺序写200G的rbd测试时间300s">2、4M顺序写200G的rbd测试时间300s</h4><p><img src="http://static.zybuluo.com/zphj1987/89bnflxt1imyzld02ur78qum/filestorefio%E8%BF%87%E7%A8%8B4M.png" alt="filestorefio过程4M.png-166.9kB"><br>测试的io的抖动的情况<br><img src="http://static.zybuluo.com/zphj1987/taicqvht6iz757w0ioo6ww82/filestoreresul4M.png" alt="filestoreresul4M.png-88kB"></p>
+<h3 id="二、测试bluestore">二、测试bluestore</h3><h4 id="1、4K随机写200G的rbd测试时间300s-1">1、4K随机写200G的rbd测试时间300s</h4><p><img src="http://static.zybuluo.com/zphj1987/iqy1lk80fa07aq8f71dug2xh/blueresult4K.png" alt="blueresult4K.png-99.6kB"><br><img src="http://static.zybuluo.com/zphj1987/xbr4sjr3u8ahmf2sfcr2x72l/bluefinal4K.png" alt="bluefinal4K.png-87.9kB"></p>
+<h4 id="2、4M顺序写200G的rbd测试时间300s-1">2、4M顺序写200G的rbd测试时间300s</h4><p><img src="http://static.zybuluo.com/zphj1987/o7r57lpqf49rlpmfmchfwrrt/blueresult4M.png" alt="blueresult4M.png-133.6kB"><br><img src="http://static.zybuluo.com/zphj1987/7kkhhmnxy55jwwseljw767e1/blueiostatfinal4M.png" alt="blueiostatfinal4M.png-90.9kB"></p>
+<p>以上为测试过程的数据记录，下面为对比的</p>
+<p><img src="http://7xi6lo.com1.z0.glb.clouddn.com/blue%E6%AF%94%E8%BE%83.png" alt=""></p>
+<p>整个测试来看改进非常的大，数据的曲线比之前要平滑很多，延时也变得更小，但是还是开发阶段，估计bug还是很多，不可控因素太多，并且暂时还没有修复工具，作为对未来ceph发展的一种期待吧，肯定会越来越好</p>
+<p><strong>如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作！</strong></p>
+<div style="text-align:center"><br><img src="http://7xo9we.com1.z0.glb.clouddn.com/payforzp.png" alt="支付宝" title="支付宝扫一扫"><br></div>
+
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>Bluestore 作为 Ceph Jewel 版本推出的一个重大的更新，提供了一种之前没有的存储形式，一直以来ceph的存储方式一直是以filestore的方式存储的，也就是对象是以文件方式存储在osd的磁盘上的，pg是以目录的方式存在于osd的磁盘上的<br>在发展过程中，中间出现了kvstore，这个还是存储在文件系统之上，以leveldb或者rocksdb的方式存储对象数据，这个也没有推广开来，性能上没有太大的改观，在某些情况下性能还低于filestore<br>最终在sage的大力支持下，ceph社区准备撸一个新的文件系统，这个系统类似于rocksdb，但是数据是可以直接存储到裸设备上去的，也就是存储对象数据的地方是没有传统意义上的文件系统的，并且解决了一种被抱怨的写双份数据的问题，在filestore中，数据需要先写入journal再入磁盘，对于磁盘来说实际就是双份写了</p>
+<p>在这里不做过多的探讨技术上的细节，bluestore处于开发阶段，在最新的版本的ceph中，发现已经集成了这个，虽然还是实验阶段，但是还是体现出其未来巨大的价值</p>]]>
+    
+    </summary>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[ceph查询rbd的使用容量（快速）]]></title>
@@ -1009,33 +1042,6 @@ var sogou_ad_width=728;
     <![CDATA[<p>首先安装的xenserver6.5的环境，看到有地方有提到这个上面可以安装rbd的支持，网上有一种方式是libvirt+kvm方式，因为ceph对libviet是原生支持的，但是xenserver底层是xen的，这个就不去研究太多，这个用最简单的方式最好</p>
 <p><a href="https://github.com/mstarikov/rbdsr">https://github.com/mstarikov/rbdsr</a><br>这个是个第三方的插件，最近才出来的</p>
 <p>实现原理是ssh到ceph的机器上获取到可以使用的rbd信息，然后在xenserver的图形界面上通过配置iscsi的方式去配置rbd，里面套用了iscsi的界面，实际去xenserver机器后台同样做的是map的操作<br>这个试了下，界面的操作都可以实现，都可以获取到rbd的信息，但是在最后提交的一下的时候，后台会报错误的信息，这个有可能才出来，还有点问题<br>这个地方可以用其他的方式实现，xenserver在添加硬盘的时候本来就支持的命令行模式，下面为实现方式</p>]]>
-    
-    </summary>
-    
-      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[如何在所有的mon的损坏情况下将数据恢复如初]]></title>
-    <link href="http://www.zphj1987.com/2015/12/13/%E5%A6%82%E4%BD%95%E5%9C%A8%E6%89%80%E6%9C%89%E7%9A%84mon%E7%9A%84%E6%8D%9F%E5%9D%8F%E6%83%85%E5%86%B5%E4%B8%8B%E5%B0%86%E6%95%B0%E6%8D%AE%E6%81%A2%E5%A4%8D%E5%A6%82%E5%88%9D/"/>
-    <id>http://www.zphj1987.com/2015/12/13/如何在所有的mon的损坏情况下将数据恢复如初/</id>
-    <published>2015-12-13T11:26:43.000Z</published>
-    <updated>2015-12-13T11:38:08.478Z</updated>
-    <content type="html"><![CDATA[<h3 id="本篇主题：">本篇主题：</h3><p>在mon无法启动，或者所有的mon的数据盘都损坏的情况下，如何把所有的数据恢复如初</p>
-<h3 id="写本章的缘由">写本章的缘由</h3><p>在ceph中国的群里有看到一个技术人员有提到，在一次意外机房掉电后，三台mon的系统盘同时损坏了，这个对于熟悉ceph的人都知道这意味着什么，所有的集群数据将无法访问，关于这个的解决办法目前没有在哪里有看到，这个对于大多数人是用不上的，但是一旦出现了，这个损失将是无法估量的，当然谁都不希望这个情况的发生<br>所以在研究了下ceph的一些操作后，自己尝试去找了一些关于集群的故障修复的，目前看到了一个是关于单个rbd镜像的恢复的文章，那个需要将数据映射本地的loop设备后重新读取，这个我曾经验证过一遍，确实可以实现，在周末的时候我尝试了另外一个办法，实现了在mon完全失效的情况下全集群的完整数据的恢复，并且保留了原来的数据结构和数据信息，当然这中间需要进行一定的操作去完成它，这个我准备写成一个标准的操作流程，并用视频的方式来记录这个恢复的流程</p>
-<h3 id="本篇资源:">本篇资源:</h3><p>包括了视频，操作文档（本篇还未完成，接受预定）</p>
-<a id="more"></a>
-<h3 id="付费方式：支付宝">付费方式：支付宝</h3><p>10块钱就可以获取，如果你觉得这个帮助你很多，你也可以付多点<br>可以先获取资源，再考虑要不要付费<br>可以付费了后，不满意退费<br>支付码如下：</p>
-<p><img src="http://7xo9we.com1.z0.glb.clouddn.com/zhifubao.png" alt=""></p>
-<h3 id="资源获取方式：">资源获取方式：</h3><pre><code>qq：199383004
-</code></pre><p>资源为百度云链接 </p>
-<p>这个视频是不涉及版权的，你可以随便使用，如果你想分享给其他朋友的时候，希望您能让他来我的博客购买</p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<h3 id="本篇主题：">本篇主题：</h3><p>在mon无法启动，或者所有的mon的数据盘都损坏的情况下，如何把所有的数据恢复如初</p>
-<h3 id="写本章的缘由">写本章的缘由</h3><p>在ceph中国的群里有看到一个技术人员有提到，在一次意外机房掉电后，三台mon的系统盘同时损坏了，这个对于熟悉ceph的人都知道这意味着什么，所有的集群数据将无法访问，关于这个的解决办法目前没有在哪里有看到，这个对于大多数人是用不上的，但是一旦出现了，这个损失将是无法估量的，当然谁都不希望这个情况的发生<br>所以在研究了下ceph的一些操作后，自己尝试去找了一些关于集群的故障修复的，目前看到了一个是关于单个rbd镜像的恢复的文章，那个需要将数据映射本地的loop设备后重新读取，这个我曾经验证过一遍，确实可以实现，在周末的时候我尝试了另外一个办法，实现了在mon完全失效的情况下全集群的完整数据的恢复，并且保留了原来的数据结构和数据信息，当然这中间需要进行一定的操作去完成它，这个我准备写成一个标准的操作流程，并用视频的方式来记录这个恢复的流程</p>
-<h3 id="本篇资源:">本篇资源:</h3><p>包括了视频，操作文档（本篇还未完成，接受预定）</p>]]>
     
     </summary>
     
