@@ -3,29 +3,26 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Ceph Bluestore首测 | zphj1987&#39;Blog</title>
+  <title>rbd-mirror新功能 | zphj1987&#39;Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Bluestore 作为 Ceph Jewel 版本推出的一个重大的更新，提供了一种之前没有的存储形式，一直以来ceph的存储方式一直是以filestore的方式存储的，也就是对象是以文件方式存储在osd的磁盘上的，pg是以目录的方式存在于osd的磁盘上的在发展过程中，中间出现了kvstore，这个还是存储在文件系统之上，以leveldb或者rocksdb的方式存储对象数据，这个也没有推广开来，性">
+  <meta name="description" content="RBD 的 mirroring 功能将会在下一个稳定版本Jewel中实现，这个Jewel版本已经发布了第一个版本10.1.0,这个功能已经在这个发布的版本中实现了
+一、基本原理我们试图解决的或者至少需要克服的问题是，ceph在内部是强一致性的，这个对于跨区域的情况数据同步是无法接受的，一个请求需要异地返回再确认完成，这个在性能上肯定是无法接受的，这就是为什么基本上无法部署跨区域的ceph集群
+因此">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Ceph Bluestore首测">
-<meta property="og:url" content="http://www.zphj1987.com/2016/03/24/Ceph-Bluestore首测/index.html">
+<meta property="og:title" content="rbd-mirror新功能">
+<meta property="og:url" content="http://www.zphj1987.com/2016/03/30/rbd-mirror新功能/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
-<meta property="og:description" content="Bluestore 作为 Ceph Jewel 版本推出的一个重大的更新，提供了一种之前没有的存储形式，一直以来ceph的存储方式一直是以filestore的方式存储的，也就是对象是以文件方式存储在osd的磁盘上的，pg是以目录的方式存在于osd的磁盘上的在发展过程中，中间出现了kvstore，这个还是存储在文件系统之上，以leveldb或者rocksdb的方式存储对象数据，这个也没有推广开来，性">
-<meta property="og:image" content="http://7xi6lo.com1.z0.glb.clouddn.com/blue%E7%A1%AC%E4%BB%B6.png">
-<meta property="og:image" content="http://7xi6lo.com1.z0.glb.clouddn.com/blue%E8%BD%AF%E4%BB%B6.png">
-<meta property="og:image" content="http://static.zybuluo.com/zphj1987/5azadvfqzqny89fduyodbwpw/filestorefio%E8%BF%87%E7%A8%8B.png">
-<meta property="og:image" content="http://static.zybuluo.com/zphj1987/455zwwxtc16zs4m49wfd5qhq/filestoreresul.png">
-<meta property="og:image" content="http://static.zybuluo.com/zphj1987/89bnflxt1imyzld02ur78qum/filestorefio%E8%BF%87%E7%A8%8B4M.png">
-<meta property="og:image" content="http://static.zybuluo.com/zphj1987/taicqvht6iz757w0ioo6ww82/filestoreresul4M.png">
-<meta property="og:image" content="http://static.zybuluo.com/zphj1987/iqy1lk80fa07aq8f71dug2xh/blueresult4K.png">
-<meta property="og:image" content="http://static.zybuluo.com/zphj1987/xbr4sjr3u8ahmf2sfcr2x72l/bluefinal4K.png">
-<meta property="og:image" content="http://static.zybuluo.com/zphj1987/o7r57lpqf49rlpmfmchfwrrt/blueresult4M.png">
-<meta property="og:image" content="http://static.zybuluo.com/zphj1987/7kkhhmnxy55jwwseljw767e1/blueiostatfinal4M.png">
-<meta property="og:image" content="http://7xi6lo.com1.z0.glb.clouddn.com/blue%E6%AF%94%E8%BE%83.png">
-<meta property="og:image" content="http://7xo9we.com1.z0.glb.clouddn.com/payforzp.png">
+<meta property="og:description" content="RBD 的 mirroring 功能将会在下一个稳定版本Jewel中实现，这个Jewel版本已经发布了第一个版本10.1.0,这个功能已经在这个发布的版本中实现了
+一、基本原理我们试图解决的或者至少需要克服的问题是，ceph在内部是强一致性的，这个对于跨区域的情况数据同步是无法接受的，一个请求需要异地返回再确认完成，这个在性能上肯定是无法接受的，这就是为什么基本上无法部署跨区域的ceph集群
+因此">
+<meta property="og:image" content="http://static.zybuluo.com/zphj1987/owvwxjz172f2aokh699fd008/%E7%94%BB%E5%9B%BE.png">
+<meta property="og:image" content="http://static.zybuluo.com/zphj1987/60ehzzmtrvrf8rhdl9yelyqw/ceph-rbd-mirror-inside.png">
+<meta property="og:image" content="http://static.zybuluo.com/zphj1987/fi2557g55ucsdpyblopyfudl/newpay.png">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Ceph Bluestore首测">
-<meta name="twitter:description" content="Bluestore 作为 Ceph Jewel 版本推出的一个重大的更新，提供了一种之前没有的存储形式，一直以来ceph的存储方式一直是以filestore的方式存储的，也就是对象是以文件方式存储在osd的磁盘上的，pg是以目录的方式存在于osd的磁盘上的在发展过程中，中间出现了kvstore，这个还是存储在文件系统之上，以leveldb或者rocksdb的方式存储对象数据，这个也没有推广开来，性">
+<meta name="twitter:title" content="rbd-mirror新功能">
+<meta name="twitter:description" content="RBD 的 mirroring 功能将会在下一个稳定版本Jewel中实现，这个Jewel版本已经发布了第一个版本10.1.0,这个功能已经在这个发布的版本中实现了
+一、基本原理我们试图解决的或者至少需要克服的问题是，ceph在内部是强一致性的，这个对于跨区域的情况数据同步是无法接受的，一个请求需要异地返回再确认完成，这个在性能上肯定是无法接受的，这就是为什么基本上无法部署跨区域的ceph集群
+因此">
   
     <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
   
@@ -196,11 +193,11 @@ var _hmt = _hmt || [];
 		</header>				
 	</div>
 </nav>
-      <div class="body-wrap"><article id="post-Ceph-Bluestore首测" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-rbd-mirror新功能" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2016/03/24/Ceph-Bluestore首测/" class="article-date">
-  	<time datetime="2016-03-24T14:07:43.000Z" itemprop="datePublished">2016-03-24</time>
+      <a href="/2016/03/30/rbd-mirror新功能/" class="article-date">
+  	<time datetime="2016-03-30T15:55:31.000Z" itemprop="datePublished">2016-03-30</time>
 </a>
     </div>
   
@@ -213,7 +210,7 @@ var _hmt = _hmt || [];
         
   
     <h1 class="article-title" itemprop="name">
-      Ceph Bluestore首测
+      rbd-mirror新功能
     </h1>
   
 
@@ -221,6 +218,10 @@ var _hmt = _hmt || [];
       
       <div class="article-info article-info-post">
         
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
         
 
         <div class="clearfix"></div>
@@ -229,23 +230,42 @@ var _hmt = _hmt || [];
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>Bluestore 作为 Ceph Jewel 版本推出的一个重大的更新，提供了一种之前没有的存储形式，一直以来ceph的存储方式一直是以filestore的方式存储的，也就是对象是以文件方式存储在osd的磁盘上的，pg是以目录的方式存在于osd的磁盘上的<br>在发展过程中，中间出现了kvstore，这个还是存储在文件系统之上，以leveldb或者rocksdb的方式存储对象数据，这个也没有推广开来，性能上没有太大的改观，在某些情况下性能还低于filestore<br>最终在sage的大力支持下，ceph社区准备撸一个新的文件系统，这个系统类似于rocksdb，但是数据是可以直接存储到裸设备上去的，也就是存储对象数据的地方是没有传统意义上的文件系统的，并且解决了一种被抱怨的写双份数据的问题，在filestore中，数据需要先写入journal再入磁盘，对于磁盘来说实际就是双份写了</p>
-<p>在这里不做过多的探讨技术上的细节，bluestore处于开发阶段，在最新的版本的ceph中，发现已经集成了这个，虽然还是实验阶段，但是还是体现出其未来巨大的价值</p>
+        <p>RBD 的 mirroring 功能将会在下一个稳定版本Jewel中实现，这个Jewel版本已经发布了第一个版本10.1.0,这个功能已经在这个发布的版本中实现了</p>
+<p>一、基本原理<br>我们试图解决的或者至少需要克服的问题是，ceph在内部是强一致性的，这个对于跨区域的情况数据同步是无法接受的，一个请求需要异地返回再确认完成，这个在性能上肯定是无法接受的，这就是为什么基本上无法部署跨区域的ceph集群</p>
+<p>因此我们需要有一种机制能够让我们在不同区域的集群之间复制块设备。这个能够帮助我们实现两个功能：</p>
+<ul>
+<li>灾难恢复</li>
+<li>全球块设备分布（跨地理位置）</li>
+</ul>
+<p>二、内部的实现</p>
+<p><img src="http://static.zybuluo.com/zphj1987/owvwxjz172f2aokh699fd008/%E7%94%BB%E5%9B%BE.png" alt="画图.png-34.8kB"></p>
+<p>从上图所示是进行的主备模式的备份，其实这个只是看怎么应用了，在里面是自动实现的主主的模式，双向同步的，只是在应用中需要注意不要去同时操作同一个image，这个功能是作为主备去使用的，以备真正有问题的时候去实现故障恢复，这个同步是异步的</p>
 <a id="more"></a>
-<h3 id="环境准备">环境准备</h3><p>由于没有测试大量的设备，就在一个小环境下进行性能的验证，基准的性能不需要大量的机器，至于数据可靠性，就靠自己去判断了</p>
-<h4 id="硬件环境：">硬件环境：</h4><p><img src="http://7xi6lo.com1.z0.glb.clouddn.com/blue%E7%A1%AC%E4%BB%B6.png" alt=""></p>
-<h4 id="软件环境：">软件环境：</h4><p><img src="http://7xi6lo.com1.z0.glb.clouddn.com/blue%E8%BD%AF%E4%BB%B6.png" alt=""></p>
-<h3 id="一、先测试Filestore">一、先测试Filestore</h3><p>ceph-disk有个update_partition的bug，部署过程需要处理一下，后期发版本应该会解决</p>
-<h4 id="1、4K随机写200G的rbd测试时间300s">1、4K随机写200G的rbd测试时间300s</h4><p><img src="http://static.zybuluo.com/zphj1987/5azadvfqzqny89fduyodbwpw/filestorefio%E8%BF%87%E7%A8%8B.png" alt="filestorefio过程.png-132.1kB"><br>测试的io的抖动的情况</p>
-<p><img src="http://static.zybuluo.com/zphj1987/455zwwxtc16zs4m49wfd5qhq/filestoreresul.png" alt="filestoreresul.png-89.4kB"><br>测试的FIO结果的页面</p>
-<h4 id="2、4M顺序写200G的rbd测试时间300s">2、4M顺序写200G的rbd测试时间300s</h4><p><img src="http://static.zybuluo.com/zphj1987/89bnflxt1imyzld02ur78qum/filestorefio%E8%BF%87%E7%A8%8B4M.png" alt="filestorefio过程4M.png-166.9kB"><br>测试的io的抖动的情况<br><img src="http://static.zybuluo.com/zphj1987/taicqvht6iz757w0ioo6ww82/filestoreresul4M.png" alt="filestoreresul4M.png-88kB"></p>
-<h3 id="二、测试bluestore">二、测试bluestore</h3><h4 id="1、4K随机写200G的rbd测试时间300s-1">1、4K随机写200G的rbd测试时间300s</h4><p><img src="http://static.zybuluo.com/zphj1987/iqy1lk80fa07aq8f71dug2xh/blueresult4K.png" alt="blueresult4K.png-99.6kB"><br><img src="http://static.zybuluo.com/zphj1987/xbr4sjr3u8ahmf2sfcr2x72l/bluefinal4K.png" alt="bluefinal4K.png-87.9kB"></p>
-<h4 id="2、4M顺序写200G的rbd测试时间300s-1">2、4M顺序写200G的rbd测试时间300s</h4><p><img src="http://static.zybuluo.com/zphj1987/o7r57lpqf49rlpmfmchfwrrt/blueresult4M.png" alt="blueresult4M.png-133.6kB"><br><img src="http://static.zybuluo.com/zphj1987/7kkhhmnxy55jwwseljw767e1/blueiostatfinal4M.png" alt="blueiostatfinal4M.png-90.9kB"></p>
-<p>以上为测试过程的数据记录，下面为对比的</p>
-<p><img src="http://7xi6lo.com1.z0.glb.clouddn.com/blue%E6%AF%94%E8%BE%83.png" alt=""></p>
-<p>整个测试来看改进非常的大，数据的曲线比之前要平滑很多，延时也变得更小，但是还是开发阶段，估计bug还是很多，不可控因素太多，并且暂时还没有修复工具，作为对未来ceph发展的一种期待吧，肯定会越来越好</p>
-<p><strong>如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作！</strong></p>
-<div style="text-align:center"><br><img src="http://7xo9we.com1.z0.glb.clouddn.com/payforzp.png" alt="支付宝" title="支付宝扫一扫"><br></div>
+<p>二、一个新的进程<br>一个新的守护程序：rbd-mirror 将会负责将一个镜像从一个集群同步到另一个，rbd-mirror需要在两个集群上都配置，它会同时连接本地和远程的集群。在jewel版本中还是一对一的方式，在以后的版本中会实现一对多的，所以在以后的版本可以配置一对多的备份</p>
+<p>作为起点，这个功能讲使用配置文件连接集群，使用用户和密钥。使用admin用户就可以了，使用的验证方式就是默认的cephx的方式</p>
+<p>为了相互识别，两个集群都需要相互注册使用 <code>rbd mirror pool peer add</code>命令， 这个在下面会实践</p>
+<p>二、镜像<br><img src="http://static.zybuluo.com/zphj1987/60ehzzmtrvrf8rhdl9yelyqw/ceph-rbd-mirror-inside.png" alt="ceph-rbd-mirror-inside.png-80.8kB"><br>The RBD mirroring 依赖两个新的rbd的属性<br>journaling: 启动后会记录image的事件<br>mirroring: 明确告诉rbd-mirror需要复制这个镜像</p>
+<p>也有命令可以禁用单独的某个镜像。journaling可以看做是另一个rbd的image（一些rados对象），一般情况下，先写日志，然后返回客户端，然后被写入底层的rbd的image，出于性能考虑，这个journal可以跟它的镜像不在一个存储池当中，目前是一个image一个journal，最近应该会沿用这个策略，直到ceph引入一致性组。关于一致性组的概念就是一组卷，然后用的是一个RBD image。可以在所有的组中执行快照操作，有了一致性的保证，所有的卷就都在一致的状态。当一致性组实现的时候，我们就可以用一个journal来管理所有的RBD的镜像</p>
+<p>可以给一个已经存在image开启journal么，可以的，ceph将会将你的镜像做一个快照，然后对快照做一个复制，然后开启journal，这都是后台执行的一个任务</p>
+<p>可以启用和关闭单个镜像或者存储池的mirror功能，如果启用了journal功能，那么每个镜像将会被复制</p>
+<p>可以使用 rbd mirror pool enable启用它</p>
+<p>三、灾难恢复<br>交叉同步复制是可以的，默认的就是这个方式，这意味着<strong>两个地方的存储池名称需要相同的</strong>这个会带来两个问题</p>
+<ul>
+<li>使用相同的存储做备份做使用会影响性能的</li>
+<li>相同的池名称在进行恢复的时候也更容易。openstack里面只需要记录卷ID即可</li>
+</ul>
+<p>每个image都有 mirroring_directory 记录当前active的地方。在本地镜像提示为 primary的时候，是可写的并且远程的站点上就会有锁，这个image就是不可写的。只有在primary镜像降级，备份的点升级就可以了，demoted 和 promoted来控制这里，这就是为什么引入了等级制度，一旦备份的地方升级了，那么主的就自动降级了，这就意味着同步的方向就会发生变化了</p>
+<p>如果出现脑裂的情况，那么rbd-mirror将会停止同步，你自己需要判断哪个是最新的image，然后手动强制去同步<code>rbd mirror image resync</code></p>
+<p>上面基本参照的是sebastien翻译的，原文只是做了简短的说明，下面是我的实践部分</p>
+<h2 id="下面在我的环境下进行实践">下面在我的环境下进行实践</h2><p>下面的环境是在两个集群上进行的，集群分别为：</p>
+<ul>
+<li>机器lab8106 </li>
+<li>机器lab8107</li>
+</ul>
+<p><a href="https://www.zybuluo.com/zphj1987/note/328708" target="_blank" rel="external">实践详细文档</a></p>
+<p>感谢一直在支持我的朋友，技术是无价的，也是免费的，天下没有免费的午餐，关键是你自己觉得划算不</p>
+<p><strong>如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作！10元足矣！</strong></p>
+<center><br><img src="http://static.zybuluo.com/zphj1987/fi2557g55ucsdpyblopyfudl/newpay.png" alt="打赏" title="打赏"><br></center>
 
 
       
@@ -256,18 +276,9 @@ var _hmt = _hmt || [];
     
 <nav id="article-nav">
   
-    <a href="/2016/03/30/rbd-mirror新功能/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption"><</strong>
-      <div class="article-nav-title">
-        
-          rbd-mirror新功能
-        
-      </div>
-    </a>
   
-  
-    <a href="/2016/03/24/ceph查询rbd的使用容量（快速）/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">ceph查询rbd的使用容量（快速）</div>
+    <a href="/2016/03/24/Ceph-Bluestore首测/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Ceph Bluestore首测</div>
       <strong class="article-nav-caption">></strong>
     </a>
   
@@ -296,7 +307,7 @@ var _hmt = _hmt || [];
 
 <div class="duoshuo">
 	<!-- 多说评论框 start -->
-	<div class="ds-thread" data-thread-key="Ceph-Bluestore首测" data-title="Ceph Bluestore首测" data-url="http://www.zphj1987.com/2016/03/24/Ceph-Bluestore首测/"></div>
+	<div class="ds-thread" data-thread-key="rbd-mirror新功能" data-title="rbd-mirror新功能" data-url="http://www.zphj1987.com/2016/03/30/rbd-mirror新功能/"></div>
 	<!-- 多说评论框 end -->
 	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 	<script type="text/javascript">
