@@ -4,7 +4,7 @@
   <subtitle><![CDATA[现在所学，终有所用]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2016-03-30T16:11:01.486Z</updated>
+  <updated>2016-03-31T08:20:38.371Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -13,6 +13,41 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[ceph在centos7下一个不容易发现的改变]]></title>
+    <link href="http://www.zphj1987.com/2016/03/31/ceph%E5%9C%A8centos7%E4%B8%8B%E4%B8%80%E4%B8%AA%E4%B8%8D%E5%AE%B9%E6%98%93%E5%8F%91%E7%8E%B0%E7%9A%84%E6%94%B9%E5%8F%98/"/>
+    <id>http://www.zphj1987.com/2016/03/31/ceph在centos7下一个不容易发现的改变/</id>
+    <published>2016-03-31T08:19:27.000Z</published>
+    <updated>2016-03-31T08:20:38.371Z</updated>
+    <content type="html"><![CDATA[<p>在centos6以及以前的osd版本，在启动osd的时候，回去根据ceph.conf的配置文件进行挂载osd，然后进行进程的启动，这个格式是这样的<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[osd.<span class="number">0</span>]</span><br><span class="line">host = hostname</span><br><span class="line">devs=/dev/sdb1</span><br></pre></td></tr></table></figure></p>
+<p>启动的时候就会把sdb1盘符挂载到0的目录里面去了</p>
+<p>然后在centos7的版本的时候，发现居然不写配置文件也能够自动挂载启动，这个地方是什么地方发生了变化，在做了一些日志的查询以后，发现centos7下居然做了一个改变</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># systemctl list-unit-files |grep ceph-disk</span></span><br><span class="line">ceph-disk@.service                          static</span><br></pre></td></tr></table></figure>
+<p>可以看到有这个服务</p>
+<a id="more"></a>
+<h3 id="我们来验证下这个服务">我们来验证下这个服务</h3><h4 id="先停止服务">先停止服务</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">systemctl stop ceph-osd@<span class="number">1</span></span><br></pre></td></tr></table></figure>
+<h4 id="umount挂载点">umount挂载点</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">umount /var/lib/ceph/osd/ceph-<span class="number">1</span></span><br></pre></td></tr></table></figure>
+<p>现在已经没有挂载点了</p>
+<h4 id="现在执行下面的服务（我的sdc1是刚刚的osd-1）">现在执行下面的服务（我的sdc1是刚刚的osd.1）</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># systemctl start ceph-disk@/dev/sdc1</span></span><br><span class="line">[root@lab8106 ~]<span class="comment"># systemctl status ceph-disk@/dev/sdc1</span></span><br><span class="line">● ceph-disk@-dev-sdc1.service - Ceph disk activation: /dev/sdc1</span><br><span class="line">   Loaded: loaded (/usr/lib/systemd/system/ceph-disk@.service; static; vendor preset: disabled)</span><br><span class="line">   Active: inactive (dead)</span><br><span class="line"></span><br><span class="line">Mar <span class="number">31</span> <span class="number">16</span>:<span class="number">11</span>:<span class="number">37</span> lab8106 sh[<span class="number">17847</span>]: <span class="built_in">command</span>: Running <span class="built_in">command</span>: /usr/bin/ceph-detect-init --default sysvinit</span><br><span class="line">Mar <span class="number">31</span> <span class="number">16</span>:<span class="number">11</span>:<span class="number">37</span> lab8106 sh[<span class="number">17847</span>]: activate: Marking with init system systemd</span><br><span class="line">Mar <span class="number">31</span> <span class="number">16</span>:<span class="number">11</span>:<span class="number">37</span> lab8106 sh[<span class="number">17847</span>]: activate: ceph osd.<span class="number">1</span> data dir is ready at /var/lib/ceph/tmp/mnt.<span class="number">3</span>a8xNK</span><br><span class="line">Mar <span class="number">31</span> <span class="number">16</span>:<span class="number">11</span>:<span class="number">37</span> lab8106 sh[<span class="number">17847</span>]: move_mount: Moving mount to final location...</span><br><span class="line">Mar <span class="number">31</span> <span class="number">16</span>:<span class="number">11</span>:<span class="number">37</span> lab8106 sh[<span class="number">17847</span>]: <span class="built_in">command</span>_check_call: Running <span class="built_in">command</span>: /bin/mount -o noatime,inode64 -- /dev/sdc1 /var/lib/ceph/osd/ceph-<span class="number">1</span></span><br><span class="line">Mar <span class="number">31</span> <span class="number">16</span>:<span class="number">11</span>:<span class="number">37</span> lab8106 sh[<span class="number">17847</span>]: <span class="built_in">command</span>_check_call: Running <span class="built_in">command</span>: /bin/umount <span class="operator">-l</span> -- /var/lib/ceph/tmp/mnt.<span class="number">3</span>a8xNK</span><br><span class="line">Mar <span class="number">31</span> <span class="number">16</span>:<span class="number">11</span>:<span class="number">37</span> lab8106 sh[<span class="number">17847</span>]: start_daemon: Starting ceph osd.<span class="number">1</span>...</span><br><span class="line">Mar <span class="number">31</span> <span class="number">16</span>:<span class="number">11</span>:<span class="number">37</span> lab8106 sh[<span class="number">17847</span>]: <span class="built_in">command</span>_check_call: Running <span class="built_in">command</span>: /usr/bin/systemctl <span class="built_in">enable</span> ceph-osd@<span class="number">1</span></span><br><span class="line">Mar <span class="number">31</span> <span class="number">16</span>:<span class="number">11</span>:<span class="number">37</span> lab8106 sh[<span class="number">17847</span>]: <span class="built_in">command</span>_check_call: Running <span class="built_in">command</span>: /usr/bin/systemctl start ceph-osd@<span class="number">1</span></span><br><span class="line">Mar <span class="number">31</span> <span class="number">16</span>:<span class="number">11</span>:<span class="number">37</span> lab8106 systemd[<span class="number">1</span>]: Started Ceph disk activation: /dev/sdc1.</span><br></pre></td></tr></table></figure>
+<p>执行完检查<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># df -h |grep ceph-1</span></span><br><span class="line">/dev/sdc1       <span class="number">275</span>G   <span class="number">35</span>M  <span class="number">275</span>G   <span class="number">1</span>% /var/lib/ceph/osd/ceph-<span class="number">1</span></span><br></pre></td></tr></table></figure></p>
+<p>可以看到已经挂载好，并且启动了服务<br>可以看到我没有使用任何配置情况下，没有告诉集群sdc1就是要挂载到<code>/var/lib/ceph/osd/ceph-1</code>这个目录的，自动挂载好了，这个是集群自己先mount到一个临时目录根据磁盘里面的信息来判断了这个osd真实的数据，根据这个数据来mount到一个挂载点，这个做法是非常好的做法</p>
+<p><strong>如果觉得我的文章对您有用，欢迎打赏。您的支持将鼓励我继续创作！10元足矣！</strong></p>
+<center><br><img src="http://static.zybuluo.com/zphj1987/fi2557g55ucsdpyblopyfudl/newpay.png" alt="打赏" title="打赏"><br></center>
+
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>在centos6以及以前的osd版本，在启动osd的时候，回去根据ceph.conf的配置文件进行挂载osd，然后进行进程的启动，这个格式是这样的<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[osd.<span class="number">0</span>]</span><br><span class="line">host = hostname</span><br><span class="line">devs=/dev/sdb1</span><br></pre></td></tr></table></figure></p>
+<p>启动的时候就会把sdb1盘符挂载到0的目录里面去了</p>
+<p>然后在centos7的版本的时候，发现居然不写配置文件也能够自动挂载启动，这个地方是什么地方发生了变化，在做了一些日志的查询以后，发现centos7下居然做了一个改变</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># systemctl list-unit-files |grep ceph-disk</span></span><br><span class="line">ceph-disk@.service                          static</span><br></pre></td></tr></table></figure>
+<p>可以看到有这个服务</p>]]>
+    
+    </summary>
+    
+      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[rbd-mirror新功能]]></title>
@@ -987,75 +1022,6 @@ var sogou_ad_width=728;
 <p>备用下载地址：<br><a href="http://pan.baidu.com/s/1pKgefmr">http://pan.baidu.com/s/1pKgefmr</a></p>
 <p>下载后拷贝到linux机器的/sbin/下面，为了方便重命名为 /sbin/jq</p>
 <p>后面的输出可以方便的修改，原理是获取当前的osd状态，然后去osd上获取信息</p>]]>
-    
-    </summary>
-    
-      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[centos6安装calamari]]></title>
-    <link href="http://www.zphj1987.com/2015/12/19/centos6%E5%AE%89%E8%A3%85calamari/"/>
-    <id>http://www.zphj1987.com/2015/12/19/centos6安装calamari/</id>
-    <published>2015-12-19T14:07:01.000Z</published>
-    <updated>2015-12-21T15:59:16.615Z</updated>
-    <content type="html"><![CDATA[<h3 id="一、安装操作系统">一、安装操作系统</h3><p>首先安装操作系统centos6,安装过程选择的是base server，这个不相同不要紧，出现缺少包的时候去iso找出来安装就可以了</p>
-<h3 id="二、calamari的简单介绍">二、calamari的简单介绍</h3><p>首先简单的介绍下calamari的这个软件系统的组成，主要是calamari-server,romana，salt-minion，salt-server，diamond，</p>
-<p>这些模块各自的作用：</p>
-<ul>
-<li>calamari-server这个是提供一个与集群进行交互，并且自己封装了一个自己的API，做集中管理的地方，这个只需要在集群当中的某一台机器上安装，也可以独立安装</li>
-<li>romana就是原来的calamari-client，这个叫client,其实是一个web的界面，这个叫calamari-web更好，现在已经更名为romana，这个也是只需要在集群当中的某一台机器上安装，也可以独立安装，这个需要跟calamari-server安装在一台机器上</li>
-<li>salt-server是一个管理的工具，可以批量的管理其他的机器，可以对安装了salt-minion的机器进行管理，在集群当中，这个也是跟calamari-server安装在一起的</li>
-<li>salt-minion是安装在集群的所有节点上的，这个是接收salt-server的指令对集群的机器进行操作，并且反馈一些信息到salt-server上</li>
-<li>diamond这个是系统的监控信息的收集控件，提供集群的硬件信息的监控和集群的信息的监控，数据是发送到romana的机器上的，是由romana上的carbon来收取数据并存储到机器当中的数据库当中的</li>
-</ul>
-<a id="more"></a>
-<p>所以总结下来安装的方式是:</p>
-<table>
-<thead>
-<tr>
-<th style="text-align:center">节点情况</th>
-<th style="text-align:center">需要安装软件</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">单独一台非集群节点装calmari-server</td>
-<td style="text-align:center">calamri-server romana salt-master salt-minion</td>
-</tr>
-<tr>
-<td style="text-align:center">集群节点</td>
-<td style="text-align:center">salt-minion diamond</td>
-</tr>
-</tbody>
-</table>
-<p>注意：<br>如果calamri-server选择安装在集群内节点，那么这台机器就安装 calamri-server romana salt-master salt-minion diamond </p>
-<h3 id="三、软件安装">三、软件安装</h3><p>安装过程很简单就是安装上面的包就可以了，这个包的资源我已经打包好了在这篇的结尾的链接下面，分好了目录,管理节点就安装calamriserver,集群的节点就安装clusternode里面的，出现的冲突的一个包就用rpm -Uvh 升级安装一下，这里面有一个包需要升级安装下<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@myserver centos6calamari]<span class="comment"># ll</span></span><br><span class="line">total <span class="number">8</span></span><br><span class="line">drwxr-xr-x. <span class="number">7</span> root root <span class="number">4096</span> Dec <span class="number">11</span> <span class="number">10</span>:<span class="number">59</span> calamariserver</span><br><span class="line">drwxr-xr-x. <span class="number">4</span> root root <span class="number">4096</span> Dec <span class="number">11</span> <span class="number">11</span>:<span class="number">00</span> clusternode</span><br><span class="line">[root@myserver centos6calamari]<span class="comment"># ll calamariserver/</span></span><br><span class="line">total <span class="number">22092</span></span><br><span class="line">-rw-r--r--. <span class="number">1</span> root root <span class="number">20965336</span> Dec <span class="number">11</span> <span class="number">10</span>:<span class="number">59</span> calamari-server-<span class="number">1.3</span>.<span class="number">1.1</span>-<span class="number">105</span>_g79c8df2.el6.x86_64.rpm</span><br><span class="line">drwxr-xr-x. <span class="number">2</span> root root     <span class="number">4096</span> Dec <span class="number">11</span> <span class="number">10</span>:<span class="number">59</span> httpd</span><br><span class="line">drwxr-xr-x. <span class="number">2</span> root root     <span class="number">4096</span> Dec <span class="number">11</span> <span class="number">10</span>:<span class="number">59</span> postgresql</span><br><span class="line">-rw-r--r--. <span class="number">1</span> root root      <span class="number">658</span> Dec <span class="number">11</span> <span class="number">10</span>:<span class="number">59</span> readme</span><br><span class="line">-rw-r--r--. <span class="number">1</span> root root  <span class="number">1629144</span> Dec <span class="number">11</span> <span class="number">10</span>:<span class="number">59</span> romana-<span class="number">1.2</span>.<span class="number">2</span>-<span class="number">36</span>_gc62bb5b.el6.x86_64.rpm</span><br><span class="line">drwxr-xr-x. <span class="number">2</span> root root     <span class="number">4096</span> Dec <span class="number">11</span> <span class="number">10</span>:<span class="number">59</span> salt-master</span><br><span class="line">drwxr-xr-x. <span class="number">2</span> root root     <span class="number">4096</span> Dec <span class="number">11</span> <span class="number">10</span>:<span class="number">59</span> salt-minion</span><br><span class="line">drwxr-xr-x. <span class="number">2</span> root root     <span class="number">4096</span> Dec <span class="number">11</span> <span class="number">10</span>:<span class="number">59</span> supervisor</span><br><span class="line">[root@myserver centos6calamari]<span class="comment"># ll clusternode/</span></span><br><span class="line">total <span class="number">8</span></span><br><span class="line">drwxr-xr-x. <span class="number">2</span> root root <span class="number">4096</span> Dec <span class="number">11</span> <span class="number">10</span>:<span class="number">59</span> diamond</span><br><span class="line">drwxr-xr-x. <span class="number">3</span> root root <span class="number">4096</span> Dec <span class="number">11</span> <span class="number">11</span>:<span class="number">05</span> salt-minion</span><br></pre></td></tr></table></figure></p>
-<p>需要注意一点安装完calamari的server以后需要处理下权限<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@myserver calamari]<span class="comment"># chmod 777 -R /var/log/calamari/</span></span><br><span class="line">[root@myserver calamari]<span class="comment"># chmod 777 -R /opt/calamari/</span></span><br></pre></td></tr></table></figure></p>
-<p>然后再去做<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@myserver calamari]<span class="comment">#calamari-ctl initialize</span></span><br></pre></td></tr></table></figure></p>
-<h2 id="目前已经测试通过，就是可能我的是虚拟机的原因，会提示web的状态没更新的问题，集群的状态都拿到了">目前已经测试通过，就是可能我的是虚拟机的原因，会提示web的状态没更新的问题，集群的状态都拿到了</h2><h3 id="四、故障排查：">四、故障排查：</h3><p>配置好了后用<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@myserver calamari]<span class="comment"># salt '*' test.ping</span></span><br><span class="line">[root@myserver calamari]<span class="comment"># salt '*' ceph.get_heartbeats</span></span><br></pre></td></tr></table></figure></p>
-<p>我的出现了calamari连接了集群发现检测不到集群，就用上面的检测，然后发现确实拿不到集群的信息，然后就去节点的机器上检查salt-minion的日志，发现是一个提示认证的错误，就做了下面的处理后就好了<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@node1 ~]<span class="comment">#rm -rf /etc/salt/pki/minion/minion_master.pub</span></span><br><span class="line">[root@node1 ~]<span class="comment">#service salt-minion restart</span></span><br></pre></td></tr></table></figure></p>
-<h3 id="资源链接：">资源链接：</h3><p>链接：<a href="http://pan.baidu.com/s/1eRtLZvO" target="_blank" rel="external">http://pan.baidu.com/s/1eRtLZvO</a> 密码：0ael</p>
-<p>资源更新说明：</p>
-<ul>
-<li>增加了osd限制为256个数的修改patch包，使用rpm -Uvh进行安装，在满足当前的情况下就不需要更新，解决溢出的情况</li>
-</ul>
-<h3 id="支持链接：">支持链接：</h3><p>如果本文对您有所帮助，可以打赏一点小费，如果您有支持，麻烦在qq上通知一下我</p>
-<p>QQ：199383004<br>@运维-武汉-磨磨</p>
-<p><img src="http://7xo9we.com1.z0.glb.clouddn.com/zhifubao.png" alt=""></p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<h3 id="一、安装操作系统">一、安装操作系统</h3><p>首先安装操作系统centos6,安装过程选择的是base server，这个不相同不要紧，出现缺少包的时候去iso找出来安装就可以了</p>
-<h3 id="二、calamari的简单介绍">二、calamari的简单介绍</h3><p>首先简单的介绍下calamari的这个软件系统的组成，主要是calamari-server,romana，salt-minion，salt-server，diamond，</p>
-<p>这些模块各自的作用：</p>
-<ul>
-<li>calamari-server这个是提供一个与集群进行交互，并且自己封装了一个自己的API，做集中管理的地方，这个只需要在集群当中的某一台机器上安装，也可以独立安装</li>
-<li>romana就是原来的calamari-client，这个叫client,其实是一个web的界面，这个叫calamari-web更好，现在已经更名为romana，这个也是只需要在集群当中的某一台机器上安装，也可以独立安装，这个需要跟calamari-server安装在一台机器上</li>
-<li>salt-server是一个管理的工具，可以批量的管理其他的机器，可以对安装了salt-minion的机器进行管理，在集群当中，这个也是跟calamari-server安装在一起的</li>
-<li>salt-minion是安装在集群的所有节点上的，这个是接收salt-server的指令对集群的机器进行操作，并且反馈一些信息到salt-server上</li>
-<li>diamond这个是系统的监控信息的收集控件，提供集群的硬件信息的监控和集群的信息的监控，数据是发送到romana的机器上的，是由romana上的carbon来收取数据并存储到机器当中的数据库当中的</li>
-</ul>]]>
     
     </summary>
     
