@@ -186,6 +186,72 @@ var _hmt = _hmt || [];
 </nav>
       <div class="body-wrap">
   
+    <article id="post-linux系统克隆系统盘" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/05/12/linux系统克隆系统盘/" class="article-date">
+  	<time datetime="2015-05-12T06:24:31.000Z" itemprop="datePublished">2015-05-12</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/05/12/linux系统克隆系统盘/">linux系统克隆系统盘</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>本文将介绍两种方式的系统盘的完整的备份，两种方式各有优缺点，需要根据实际情况来进行选择</p>
+<ul>
+<li>使用dd的完整镜像克隆的方式</li>
+<li>使用tar去备份数据，安装grub的方式</li>
+</ul>
+<h4 id="dd方式">dd方式</h4><p>优点：<br>简单，一条命令 dd if=/dev/sda of=/dev/sdb 就可以进行完整的系统备份了</p>
+<p>缺点：<br>时间非常长，备份一个系统盘，无论数据多少，系统盘全部会读取一遍，时间比较久<br>备份目的盘需要大于原盘<br>分区无法调整，根原分区一模一样</p>
+<h4 id="tar方式">tar方式</h4><p>优点：<br>时间短，只需要备份实际磁盘上的数据即可<br>自定义，可以修改分区的大小，可以控制备份的类容，可以定期备份<br>对目的盘大小无限制，比较灵活</p>
+<p>缺点：<br>人为修改东西比较多，需要手动去修改一些信息<br>当然在掌握了一定的linux基础的情况下建议是使用tar方式的，，下面将介绍tar方式的处理方式：</p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/操作系统/">操作系统</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2015/05/12/linux系统克隆系统盘/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-linux下制作软件包安装服务器" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -700,65 +766,6 @@ var _hmt = _hmt || [];
         <p class="article-more-link">
           <a  href="/2015/03/24/fq教程/#more">more >></a>
         </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-linux绑定盘符" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/03/24/linux绑定盘符/" class="article-date">
-  	<time datetime="2015-03-24T05:25:22.000Z" itemprop="datePublished">2015-03-24</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/03/24/linux绑定盘符/">linux绑定盘符</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@centos6 ~]<span class="comment"># udevadm info -q path -n /dev/sdb</span></span><br><span class="line">[root@centos6 ~]<span class="comment"># udevadm info -q path -n /dev/sdc</span></span><br><span class="line">/devices/pci0000:<span class="number">00</span>/<span class="number">0000</span>:<span class="number">00</span>:<span class="number">10.0</span>/host2/target2:<span class="number">0</span>:<span class="number">1</span>/<span class="number">2</span>:<span class="number">0</span>:<span class="number">1</span>:<span class="number">0</span>/block/sdc</span><br></pre></td></tr></table></figure>
-<p>拿到编号<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@centos6 ~]<span class="comment"># vim /etc/udev/rules.d/80-mydisk.rules</span></span><br></pre></td></tr></table></figure></p>
-<p>增加<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">DEVPATH==<span class="string">"/devices/pci0000:00/0000:00:10.0/host2/target2:0:2/2:0:2:0/block/sd*"</span>, NAME=<span class="string">"sdc"</span>, MODE=<span class="string">"0660"</span></span><br></pre></td></tr></table></figure></p>
-<p>这样对应的插槽的第二个就会一直对应盘符sdc 而不会出现跳盘符的问题了</p>
-<p>写于: 2014年11月07日<br>更新于: 2015年03月24日</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
-	</div>
-
-      
-
       
       <div class="clearfix"></div>
     </div>
