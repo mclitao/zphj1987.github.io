@@ -4,7 +4,7 @@
   <subtitle><![CDATA[现在所学，终有所用]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2016-04-10T17:25:35.657Z</updated>
+  <updated>2016-04-12T16:08:35.986Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -15,11 +15,57 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title><![CDATA[记一次不完全成功的失效恢复(20160412)]]></title>
+    <link href="http://www.zphj1987.com/2016/04/13/%E8%AE%B0%E4%B8%80%E6%AC%A1%E4%B8%8D%E5%AE%8C%E5%85%A8%E6%88%90%E5%8A%9F%E7%9A%84%E5%A4%B1%E6%95%88%E6%81%A2%E5%A4%8D-20160412/"/>
+    <id>http://www.zphj1987.com/2016/04/13/记一次不完全成功的失效恢复-20160412/</id>
+    <published>2016-04-12T16:04:56.000Z</published>
+    <updated>2016-04-12T16:08:35.986Z</updated>
+    <content type="html"><![CDATA[<p>在不久前处理了一个故障恢复以后，又碰上一个群友的集群出现了严重故障，本篇将记录这个中间大致处理的过程，一些细节在以后会补充</p>
+<p>首先看到给出的截图显示的是大量的pg处于异常的状态，从经验上判断，环境要么处于down机的边缘，或者是刚经历了一次大量的重启，这个时候集群可以说是前端的访问肯定全断的，这个故障的时候资源一般会比较紧张，所以在启动的过程中也要注意不要触发更大面积的down机，对于集群来说是会有连带效应的</p>
+<p>在启动了部分osd后，集群还是有大量的pg出现的是down+peering的状态，而发现down的osd实际全部在一台服务器上的，这个从ceph的架构来说是不应该出现这个状态的，这个可能是在down机过程中，频繁的pg的状态变化造成了pg的状态停留在之前的down的状态上，而pg出现锁死的状况，这个在之前的那位群友的环境中出现过一次，那个是多机有osd出现异常的情况，这次是单机出现的情况</p>
+<a id="more"></a>
+<p>尝试加大日志级别，从几个osd里面看日志出现两类的异常，从后面的处理的情况来看，实际这个是触发了两个bug，第一个问题出现是部分的数据丢失，这个在进行处理以后，再次启动的时候，几个osd出现了同样的错误，在询问了我们的研发大牛后，基本能判断这个是一个0.94.x的bug，并且在邮件列表里面已经解决</p>
+<p>然后尝试对其中的一台进行升级，这次升级直接升级到了10.1.1，然后启动osd，确实可以启动了，具体的怎么触发这个bug，就不是太清楚里面的过程，这个环境是经历了一个比较复杂的状态变化</p>
+<p>启动了部分osd后，发现还是osd无法启动，一检查，发现居然是这个机器的5个磁盘都有文件系统的错误，之前的部分数据丢失，也可能是文件系统错误引起的，很有可能是异常后造成了大面积的异常，这个地方只是推断，因为没有看到监控中间的过程，在修复了文件系统以后，osd都能起来了，只是又碰上另外的一个问题，<br>incomplete状态，就是事情没做完，在检查了里面的数据，发现数据没问题</p>
+<p>尝试做修复，使用cephobjecttool导出数据再导入另外的pg，状态还是无法变化，然后根据之前另外一个国外的处理经验，将pg导入到非pg映射的osd，然后让其自动backfiill，发现还是无法生效，pg仍然停留在imcomplete状态</p>
+<p>在询问了对方里面的数据情况后得知只有一个镜像比较重要，果断尝试后端的修复，大概思路就是将img镜像所对应的数据全部拷贝到一个目录，然后进行拼接的操作，这个在我之前的测试环境测试过没问题，这次在这个环境上进行了操作，因为环境的对象大小经过了修改，所以脚本也要对应修改，最后合成看了一个raw文件，在经过验证后，能够启动，数据基本是算是恢复了</p>
+<p>然后做了pg repair osd repair deep-scrub等操作都是无法改变状态</p>
+<p>环境还停留在不可用的状态，尝试做最后的修复，将pg数据进行备份后，强制创建pg，这个在我自己的测试环境下是可行的方案，但是这个环境在停留在creating状态比较久后，还是会进入imcomplete状态，尝试几次还是不行，开始怀疑是这两个osd问题，然后将osd out以后，在重新分布的osd上进行了创建pg操作，还是creating后进入imcomplete状态，到此，基本判断环境无法恢复了，数据算是保住了</p>
+<p>这个是国内一个比较牛的cepher也碰到的情况 <a href="http://m.oschina.net/blog/360274" target="_blank" rel="external">osd盘崩溃的总结</a>，他这个环境也是最终无法救回来<br>这是他查询到的国外的一个人写的情况：</p>
+<blockquote>
+<p>查了一圈无果。一个有同样遭遇的人的一段话：<br>I already tried “ceph pg repair 4.77”, stop/start OSDs, “ceph osd lost”, “ceph pg force_create_pg 4.77”.<br>Most scary thing is “force_create_pg” does not work. At least it should be a way to wipe out a incomplete PG without destroying a whole pool.</p>
+</blockquote>
+<p>这个地方出故障的环境做一个总结：</p>
+<ul>
+<li>环境做了比较极端的优化，这里就不说了，ceph的journal这一层就是防止down机出现数据不一致做replay的，做了极端的环境优化需要做多次整机down机测试，这个down机是无法完全避免的，所以要考虑</li>
+<li>磁盘出现了多个同时的损坏，这个没有办法，文件系统的损坏有可能是主机系统出现比较特殊的异常造成磁盘数据异常，这个单机多磁盘损坏的可能是有的，最怕就是部分损坏</li>
+<li>ceph有部分bug是在比较极端的情况下出现的，并不是没有，所以不能想着完全避免bug，多想想真出问题了，怎样把损失降低到最小，我的底线是数据回来</li>
+<li>ceph集群的副本只能保证系统内的高可用，系统级别的高可用，只能是双系统，能搭两套一定两套，哪怕非实时定期备份也好</li>
+<li>随着ceph使用者越多，出现问题的情况会越来越多的，特别是在使用的越久，概率就越大，磁盘也是有寿命的，集群呢？还是早做防范措施</li>
+</ul>
+<blockquote>
+<p>by 运维-武汉-磨渣<br>2016年04月12日夜</p>
+</blockquote>
+<h3 id="打赏通道">打赏通道</h3><center><br><img src="http://static.zybuluo.com/zphj1987/fi2557g55ucsdpyblopyfudl/newpay.png" alt="打赏" title="打赏"><br></center>
+
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>在不久前处理了一个故障恢复以后，又碰上一个群友的集群出现了严重故障，本篇将记录这个中间大致处理的过程，一些细节在以后会补充</p>
+<p>首先看到给出的截图显示的是大量的pg处于异常的状态，从经验上判断，环境要么处于down机的边缘，或者是刚经历了一次大量的重启，这个时候集群可以说是前端的访问肯定全断的，这个故障的时候资源一般会比较紧张，所以在启动的过程中也要注意不要触发更大面积的down机，对于集群来说是会有连带效应的</p>
+<p>在启动了部分osd后，集群还是有大量的pg出现的是down+peering的状态，而发现down的osd实际全部在一台服务器上的，这个从ceph的架构来说是不应该出现这个状态的，这个可能是在down机过程中，频繁的pg的状态变化造成了pg的状态停留在之前的down的状态上，而pg出现锁死的状况，这个在之前的那位群友的环境中出现过一次，那个是多机有osd出现异常的情况，这次是单机出现的情况</p>]]>
+    
+    </summary>
+    
+      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
+    
+  </entry>
+  
+  <entry>
     <title><![CDATA[记一次ceph的故障修复(20160408)]]></title>
     <link href="http://www.zphj1987.com/2016/04/11/%E8%AE%B0%E4%B8%80%E6%AC%A1ceph%E7%9A%84%E6%95%85%E9%9A%9C%E4%BF%AE%E5%A4%8D-20160408/"/>
     <id>http://www.zphj1987.com/2016/04/11/记一次ceph的故障修复-20160408/</id>
     <published>2016-04-10T17:24:35.000Z</published>
-    <updated>2016-04-10T17:25:35.657Z</updated>
+    <updated>2016-04-12T16:08:46.947Z</updated>
     <content type="html"><![CDATA[<p>ceph的在正常运行的时候基本不会出现故障，出现故障一般在变动的时候，具体有下面几种可能出现的情形</p>
 <ul>
 <li>软件升级</li>
@@ -67,6 +113,11 @@
 <h3 id="后记">后记</h3><p>集群的删除操作随意，集群的信息基本无记录，环境的基础记录都没有，这个是这个事故的最大原因，再往上走就是对于数据操作这块，公司没有一个重视的态度，上面的boss永远不会关心你运维做了什么操作，而运维人员也可以说是我按标准流程操作的，也没法去定谁的责任，丢了就是丢了，运维最多也就是丢了工作，而企业损失应该就是以万为单位的损失加客户的流失了<br>到这里也许这家公司的头并不知道发生了什么，也许只是认为是一个小的业务中断，但真的某一天出事了，这就是大事了，所以一定要重视系统的监控和系统操作的谨慎，boss不需要关心，你cto，研发的头，运维的头，总有一个人需要重视这个问题，而大部分应该是散养状态，也是就是在集群交付以后基本是没有运维监控的状态，因为即使在我们的环境下，即使我有这个意识，但是也无法推动这个事情的</p>
 <p>之前我总在跟别人说欢迎打赏，有时能收到几十，目前最高就是小白的100块，其实我知道大家都是上着班，为公司而工作，为了公司的事情需要自己再去掏钱，似乎也没有太多理由，所以对于一般的情况，别人要感谢，要请吃饭，我也就是说着好好，心意我领了，我的收入在我所在的城市其实已经可以了，只是最近因为有一些需要用钱的地方，所以又是录课程，又是翻译书籍，为了赚取10块钱也是费尽心机啊，其实大家不打赏也无所谓的，能认识一些朋友，在某天，记得我有帮过你就行了，我认识的一个中科院的博士，那个时候还是2011年，他是我的老师的同学，即使现在他linux或者服务器有什么问题，需要帮助的时候，我有时间也会帮处理他，举手之劳就能帮别人解决问题，对于自己也是很开心的</p>
 <p>好了，就到这里，如果你的集群是生产环境，相信我话，需要帮助的话，留个ssh，有时间的时候我可以帮忙处理，绝对不会出现要给钱才弄的情况，当然你如果财力雄厚，事后给点劳务费，我也不会拒绝的，测试环境话，就自己研究下为好，特别不好解决的问题也可以沟通一下，当然我也有我的工作，需要我有时间的时候</p>
+<blockquote>
+<p>by 运维-武汉-磨渣<br>2016年04月12日夜</p>
+</blockquote>
+<h3 id="打赏通道">打赏通道</h3><center><br><img src="http://static.zybuluo.com/zphj1987/fi2557g55ucsdpyblopyfudl/newpay.png" alt="打赏" title="打赏"><br></center>
+
 ]]></content>
     <summary type="html">
     <![CDATA[<p>ceph的在正常运行的时候基本不会出现故障，出现故障一般在变动的时候，具体有下面几种可能出现的情形</p>
@@ -972,105 +1023,6 @@ var sogou_ad_width=728;
     </summary>
     
       <category term="linux" scheme="http://www.zphj1987.com/tags/linux/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[删除osd的正确方式]]></title>
-    <link href="http://www.zphj1987.com/2016/01/12/%E5%88%A0%E9%99%A4osd%E7%9A%84%E6%AD%A3%E7%A1%AE%E6%96%B9%E5%BC%8F/"/>
-    <id>http://www.zphj1987.com/2016/01/12/删除osd的正确方式/</id>
-    <published>2016-01-12T02:14:39.000Z</published>
-    <updated>2016-01-13T03:29:12.847Z</updated>
-    <content type="html"><![CDATA[<p>在ceph的集群当中关于节点的替换的问题，一直按照以前的方式进行的处理，处理的步骤如下：</p>
-<ol>
-<li>停止osd进程<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/etc/init.d/ceph stop osd.<span class="number">0</span></span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>这一步是停止osd的进程，让其他的osd知道这个节点不提供服务了</p>
-<ol>
-<li>将节点状态标记为out<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph osd out osd.<span class="number">0</span></span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>这个一步是告诉mon，这个节点已经不能服务了，需要在其他的osd上进行数据的恢复了</p>
-<ol>
-<li>从crush中移除节点<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph osd crush remove osd.<span class="number">0</span></span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>从crush中删除是告诉集群这个点回不来了，完全从集群的分布当中剔除掉，让集群的crush进行一次重新计算，之前节点还占着这个crush weight，会影响到当前主机的host crush weight </p>
-<ol>
-<li>删除节点<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph osd rm osd.<span class="number">0</span></span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>这个是从集群里面删除这个节点的记录</p>
-<ol>
-<li>删除节点认证（不删除编号会占住）<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph auth del osd.<span class="number">0</span></span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>这个是从认证当中去删除这个节点的信息<br><a id="more"></a></p>
-<p>这个一直是我处理故障的节点osd的方式，其实这个会触发两次迁移，一次是在节点osd以后，一个是在crush remove以后，两次迁移对于集群来说是不好的，其实是调整步骤是可以避免二次迁移的</p>
-<h3 id="新的处理方式">新的处理方式</h3><ol>
-<li>调整osd的crush weight <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph osd crush reweight osd.<span class="number">0</span> <span class="number">0.1</span></span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>说明：这个地方如果想慢慢的调整就分几次将crush 的weight 减低到0 ，这个过程实际上是让数据不分布在这个节点上，让数据慢慢的分布到其他节点上，直到最终为没有分布在这个osd，并且迁移完成<br>这个地方不光调整了osd 的crush weight ，实际上同时调整了host 的 weight ，这样会调整集群的整体的crush 分布，在osd 的crush 为0 后， 再对这个osd的任何删除相关操作都不会影响到集群的数据的分布</p>
-<ol>
-<li>停止osd进程<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/etc/init.d/ceph stop osd.<span class="number">0</span></span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>停止到osd的进程，这个是通知集群这个osd进程不在了，不提供服务了，因为本身没权重，就不会影响到整体的分布，也就没有迁移</p>
-<ol>
-<li>将节点状态标记为out<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph osd out osd.<span class="number">0</span></span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>停止到osd的进程，这个是通知集群这个osd不再映射数据了，不提供服务了，因为本身没权重，就不会影响到整体的分布，也就没有迁移</p>
-<ol>
-<li>从crush中移除节点<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph osd crush remove osd.<span class="number">0</span></span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>这个是从crush中删除，因为已经是0了  所以没影响主机的权重，也就没有迁移了</p>
-<ol>
-<li>删除节点<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph osd rm osd.<span class="number">0</span></span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>这个是从集群里面删除这个节点的记录</p>
-<ol>
-<li>删除节点认证（不删除编号会占住）<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph auth del osd.<span class="number">0</span></span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>这个是从认证当中去删除这个节点的信息</p>
-<p>经过验证，第二种方式只触发了一次迁移，虽然只是一个步骤先后上的调整，对于生产环境的的集群来说，迁移的量要少了一次，实际生产环境当中节点是有自动out的功能，这个可以考虑自己去控制，只是监控的密度需要加大，毕竟这个是一个需要监控的集群，完全让其自己处理数据的迁移是不可能的，带来的故障只会更多</p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>在ceph的集群当中关于节点的替换的问题，一直按照以前的方式进行的处理，处理的步骤如下：</p>
-<ol>
-<li>停止osd进程<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/etc/init.d/ceph stop osd.<span class="number">0</span></span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>这一步是停止osd的进程，让其他的osd知道这个节点不提供服务了</p>
-<ol>
-<li>将节点状态标记为out<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph osd out osd.<span class="number">0</span></span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>这个一步是告诉mon，这个节点已经不能服务了，需要在其他的osd上进行数据的恢复了</p>
-<ol>
-<li>从crush中移除节点<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph osd crush remove osd.<span class="number">0</span></span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>从crush中删除是告诉集群这个点回不来了，完全从集群的分布当中剔除掉，让集群的crush进行一次重新计算，之前节点还占着这个crush weight，会影响到当前主机的host crush weight </p>
-<ol>
-<li>删除节点<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph osd rm osd.<span class="number">0</span></span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>这个是从集群里面删除这个节点的记录</p>
-<ol>
-<li>删除节点认证（不删除编号会占住）<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph auth del osd.<span class="number">0</span></span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>这个是从认证当中去删除这个节点的信息<br>]]>
-    
-    </summary>
-    
-      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
     
   </entry>
   

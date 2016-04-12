@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>记一次不完全成功的失效恢复(20160412) | zphj1987&#39;Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="在不久前处理了一个故障恢复以后，又碰上一个群友的集群出现了严重故障，本篇将记录这个中间大致处理的过程，一些细节在以后会补充
+首先看到给出的截图显示的是大量的pg处于异常的状态，从经验上判断，环境要么处于down机的边缘，或者是刚经历了一次大量的重启，这个时候集群可以说是前端的访问肯定全断的，这个故障的时候资源一般会比较紧张，所以在启动的过程中也要注意不要触发更大面积的down机，对于集群来说是会有">
+<meta property="og:type" content="article">
+<meta property="og:title" content="记一次不完全成功的失效恢复(20160412)">
+<meta property="og:url" content="http://www.zphj1987.com/2016/04/13/记一次不完全成功的失效恢复-20160412/index.html">
+<meta property="og:site_name" content="zphj1987'Blog">
+<meta property="og:description" content="在不久前处理了一个故障恢复以后，又碰上一个群友的集群出现了严重故障，本篇将记录这个中间大致处理的过程，一些细节在以后会补充
+首先看到给出的截图显示的是大量的pg处于异常的状态，从经验上判断，环境要么处于down机的边缘，或者是刚经历了一次大量的重启，这个时候集群可以说是前端的访问肯定全断的，这个故障的时候资源一般会比较紧张，所以在启动的过程中也要注意不要触发更大面积的down机，对于集群来说是会有">
+<meta property="og:image" content="http://static.zybuluo.com/zphj1987/fi2557g55ucsdpyblopyfudl/newpay.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="记一次不完全成功的失效恢复(20160412)">
+<meta name="twitter:description" content="在不久前处理了一个故障恢复以后，又碰上一个群友的集群出现了严重故障，本篇将记录这个中间大致处理的过程，一些细节在以后会补充
+首先看到给出的截图显示的是大量的pg处于异常的状态，从经验上判断，环境要么处于down机的边缘，或者是刚经历了一次大量的重启，这个时候集群可以说是前端的访问肯定全断的，这个故障的时候资源一般会比较紧张，所以在启动的过程中也要注意不要触发更大面积的down机，对于集群来说是会有">
+  
+    <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="http://7xi6lo.com1.z0.glb.clouddn.com/style.css" type="text/css">
+  
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?252ba55374ee0e63b03196973bb9b776";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="http://7xi6lo.com1.z0.glb.clouddn.com/assets/blogImg/mylogo.jpg" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">zphj1987</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">现在所学，终有所用</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						
+						<li>关于我</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+							<li><a href="/instagram">图片</a></li>
+				        
+							<li><a href="/shuoshuo">说说</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="https://github.com/zphj1987" title="github">github</a>
+					        
+								<a class="weibo" target="_blank" href=" http://weibo.com/zphj1987" title="weibo">weibo</a>
+					        
+								<a class="rss" target="_blank" href="http://www.zphj1987.com/atom.xml" title="rss">rss</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/ceph/" style="font-size: 20px;">ceph</a><a href="/tags/instagram/" style="font-size: 10px;">instagram</a><a href="/tags/iptables/" style="font-size: 10px;">iptables</a><a href="/tags/linux/" style="font-size: 18.33px;">linux</a><a href="/tags/momotan/" style="font-size: 10px;">momotan</a><a href="/tags/nginx/" style="font-size: 13.33px;">nginx</a><a href="/tags/samba/" style="font-size: 10px;">samba</a><a href="/tags/ubuntu/" style="font-size: 16.67px;">ubuntu</a><a href="/tags/windows/" style="font-size: 10px;">windows</a><a href="/tags/内核/" style="font-size: 13.33px;">内核</a><a href="/tags/操作系统/" style="font-size: 11.67px;">操作系统</a><a href="/tags/杂七杂八/" style="font-size: 13.33px;">杂七杂八</a><a href="/tags/注册码/" style="font-size: 10px;">注册码</a><a href="/tags/测试工具/" style="font-size: 11.67px;">测试工具</a><a href="/tags/监控/" style="font-size: 10px;">监控</a><a href="/tags/网卡/" style="font-size: 13.33px;">网卡</a><a href="/tags/脚本/" style="font-size: 15px;">脚本</a><a href="/tags/高可用/" style="font-size: 10px;">高可用</a>
+					</div>
+				</section>
+				
+				
+				
+
+				
+				
+				<section class="switch-part switch-part3">
+				
+					<div id="js-aboutme">1987 男,武汉。吃货。存储行业。</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">zphj1987</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="http://7xi6lo.com1.z0.glb.clouddn.com/assets/blogImg/mylogo.jpg" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">zphj1987</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">现在所学，终有所用</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+					<li><a href="/instagram">图片</a></li>
+		        
+					<li><a href="/shuoshuo">说说</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/zphj1987" title="github">github</a>
+			        
+						<a class="weibo" target="_blank" href=" http://weibo.com/zphj1987" title="weibo">weibo</a>
+			        
+						<a class="rss" target="_blank" href="http://www.zphj1987.com/atom.xml" title="rss">rss</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-记一次不完全成功的失效恢复-20160412" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/04/13/记一次不完全成功的失效恢复-20160412/" class="article-date">
+  	<time datetime="2016-04-12T16:04:56.000Z" itemprop="datePublished">2016-04-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      记一次不完全成功的失效恢复(20160412)
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+        
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在不久前处理了一个故障恢复以后，又碰上一个群友的集群出现了严重故障，本篇将记录这个中间大致处理的过程，一些细节在以后会补充</p>
+<p>首先看到给出的截图显示的是大量的pg处于异常的状态，从经验上判断，环境要么处于down机的边缘，或者是刚经历了一次大量的重启，这个时候集群可以说是前端的访问肯定全断的，这个故障的时候资源一般会比较紧张，所以在启动的过程中也要注意不要触发更大面积的down机，对于集群来说是会有连带效应的</p>
+<p>在启动了部分osd后，集群还是有大量的pg出现的是down+peering的状态，而发现down的osd实际全部在一台服务器上的，这个从ceph的架构来说是不应该出现这个状态的，这个可能是在down机过程中，频繁的pg的状态变化造成了pg的状态停留在之前的down的状态上，而pg出现锁死的状况，这个在之前的那位群友的环境中出现过一次，那个是多机有osd出现异常的情况，这次是单机出现的情况</p>
+<a id="more"></a>
+<p>尝试加大日志级别，从几个osd里面看日志出现两类的异常，从后面的处理的情况来看，实际这个是触发了两个bug，第一个问题出现是部分的数据丢失，这个在进行处理以后，再次启动的时候，几个osd出现了同样的错误，在询问了我们的研发大牛后，基本能判断这个是一个0.94.x的bug，并且在邮件列表里面已经解决</p>
+<p>然后尝试对其中的一台进行升级，这次升级直接升级到了10.1.1，然后启动osd，确实可以启动了，具体的怎么触发这个bug，就不是太清楚里面的过程，这个环境是经历了一个比较复杂的状态变化</p>
+<p>启动了部分osd后，发现还是osd无法启动，一检查，发现居然是这个机器的5个磁盘都有文件系统的错误，之前的部分数据丢失，也可能是文件系统错误引起的，很有可能是异常后造成了大面积的异常，这个地方只是推断，因为没有看到监控中间的过程，在修复了文件系统以后，osd都能起来了，只是又碰上另外的一个问题，<br>incomplete状态，就是事情没做完，在检查了里面的数据，发现数据没问题</p>
+<p>尝试做修复，使用cephobjecttool导出数据再导入另外的pg，状态还是无法变化，然后根据之前另外一个国外的处理经验，将pg导入到非pg映射的osd，然后让其自动backfiill，发现还是无法生效，pg仍然停留在imcomplete状态</p>
+<p>在询问了对方里面的数据情况后得知只有一个镜像比较重要，果断尝试后端的修复，大概思路就是将img镜像所对应的数据全部拷贝到一个目录，然后进行拼接的操作，这个在我之前的测试环境测试过没问题，这次在这个环境上进行了操作，因为环境的对象大小经过了修改，所以脚本也要对应修改，最后合成看了一个raw文件，在经过验证后，能够启动，数据基本是算是恢复了</p>
+<p>然后做了pg repair osd repair deep-scrub等操作都是无法改变状态</p>
+<p>环境还停留在不可用的状态，尝试做最后的修复，将pg数据进行备份后，强制创建pg，这个在我自己的测试环境下是可行的方案，但是这个环境在停留在creating状态比较久后，还是会进入imcomplete状态，尝试几次还是不行，开始怀疑是这两个osd问题，然后将osd out以后，在重新分布的osd上进行了创建pg操作，还是creating后进入imcomplete状态，到此，基本判断环境无法恢复了，数据算是保住了</p>
+<p>这个是国内一个比较牛的cepher也碰到的情况 <a href="http://m.oschina.net/blog/360274" target="_blank" rel="external">osd盘崩溃的总结</a>，他这个环境也是最终无法救回来<br>这是他查询到的国外的一个人写的情况：</p>
+<blockquote>
+<p>查了一圈无果。一个有同样遭遇的人的一段话：<br>I already tried “ceph pg repair 4.77”, stop/start OSDs, “ceph osd lost”, “ceph pg force_create_pg 4.77”.<br>Most scary thing is “force_create_pg” does not work. At least it should be a way to wipe out a incomplete PG without destroying a whole pool.</p>
+</blockquote>
+<p>这个地方出故障的环境做一个总结：</p>
+<ul>
+<li>环境做了比较极端的优化，这里就不说了，ceph的journal这一层就是防止down机出现数据不一致做replay的，做了极端的环境优化需要做多次整机down机测试，这个down机是无法完全避免的，所以要考虑</li>
+<li>磁盘出现了多个同时的损坏，这个没有办法，文件系统的损坏有可能是主机系统出现比较特殊的异常造成磁盘数据异常，这个单机多磁盘损坏的可能是有的，最怕就是部分损坏</li>
+<li>ceph有部分bug是在比较极端的情况下出现的，并不是没有，所以不能想着完全避免bug，多想想真出问题了，怎样把损失降低到最小，我的底线是数据回来</li>
+<li>ceph集群的副本只能保证系统内的高可用，系统级别的高可用，只能是双系统，能搭两套一定两套，哪怕非实时定期备份也好</li>
+<li>随着ceph使用者越多，出现问题的情况会越来越多的，特别是在使用的越久，概率就越大，磁盘也是有寿命的，集群呢？还是早做防范措施</li>
+</ul>
+<blockquote>
+<p>by 运维-武汉-磨渣<br>2016年04月12日夜</p>
+</blockquote>
+<h3 id="打赏通道">打赏通道</h3><center><br><img src="http://static.zybuluo.com/zphj1987/fi2557g55ucsdpyblopyfudl/newpay.png" alt="打赏" title="打赏"><br></center>
+
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2016/04/11/记一次ceph的故障修复-20160408/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">记一次ceph的故障修复(20160408)</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到：</span>
+		<a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+		<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="记一次不完全成功的失效恢复-20160412" data-title="记一次不完全成功的失效恢复(20160412)" data-url="http://www.zphj1987.com/2016/04/13/记一次不完全成功的失效恢复-20160412/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"zphj1987"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2016 zphj1987
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="http://7xi6lo.com1.z0.glb.clouddn.com/fancybox/jquery.fancybox.css" type="text/css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: undefined,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: true
+	}
+</script>
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="/js/main.js" type="text/javascript"></script>
+
+
+  </div>
+</body>
+</html>
