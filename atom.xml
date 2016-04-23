@@ -4,7 +4,7 @@
   <subtitle><![CDATA[现在所学，终有所用]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2016-04-19T05:57:15.383Z</updated>
+  <updated>2016-04-23T03:09:23.612Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -13,6 +13,35 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[福昕pdf加载慢崩溃的解决办法]]></title>
+    <link href="http://www.zphj1987.com/2016/04/23/%E7%A6%8F%E6%98%95pdf%E5%8A%A0%E8%BD%BD%E6%85%A2%E5%B4%A9%E6%BA%83%E7%9A%84%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95/"/>
+    <id>http://www.zphj1987.com/2016/04/23/福昕pdf加载慢崩溃的解决办法/</id>
+    <published>2016-04-23T03:01:48.000Z</published>
+    <updated>2016-04-23T03:09:23.612Z</updated>
+    <content type="html"><![CDATA[<p>以前使用福昕pdf阅读器一直没有问题，但是最近打开网上下载的各种pdf都出现了崩溃的情况，并且我的办公电脑和家里的电脑都出现了情况，只能说软件开发的越来越大，最基本的功能反而保证不了了，那么就自己来找解决办法了，通过网上的一些搜寻，终于找到了办法，这里做下记录以备不时之需，对于其他做软件的都有这个问题，我们不要忘了我们为了什么出发，一切都是为了解决问题</p>
+<a id="more"></a>
+<p>福昕阅读器启动速度变慢的罪魁祸首就是加载项，可以删除4个文件夹：</p>
+<ul>
+<li>plugins（变慢的主要文件夹）</li>
+<li>ShellExtensions（扩展功能）</li>
+<li>Advertisement（广告文件夹）</li>
+<li>FoxitCloud（福昕云服务，如果用户使用他们家的这个服务，就不要删）。</li>
+</ul>
+<p>删除之后，再去试着打开PDF文件，速度要快了很多，也没有崩溃的问题了</p>
+<p>打开福昕阅读器—&gt;文件—&gt;偏好设置—&gt;常规，最下面一行把“显示启动页面”和“显示广告条”的打钩都去掉</p>
+<h3 id="打赏通道">打赏通道</h3><center><br><img src="http://static.zybuluo.com/zphj1987/fi2557g55ucsdpyblopyfudl/newpay.png" alt="打赏" title="打赏"><br></center>
+
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>以前使用福昕pdf阅读器一直没有问题，但是最近打开网上下载的各种pdf都出现了崩溃的情况，并且我的办公电脑和家里的电脑都出现了情况，只能说软件开发的越来越大，最基本的功能反而保证不了了，那么就自己来找解决办法了，通过网上的一些搜寻，终于找到了办法，这里做下记录以备不时之需，对于其他做软件的都有这个问题，我们不要忘了我们为了什么出发，一切都是为了解决问题</p>]]>
+    
+    </summary>
+    
+      <category term="其他" scheme="http://www.zphj1987.com/tags/%E5%85%B6%E4%BB%96/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[inkscope完整安装配置]]></title>
@@ -1010,70 +1039,6 @@ var sogou_ad_width=728;
 <h3 id="2、获取当前的monmap">2、获取当前的monmap</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph mon getmap -o /tmp/monmap</span><br></pre></td></tr></table></figure>
 <h3 id="3、根据当前的monmap生成mon的数据">3、根据当前的monmap生成mon的数据</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph-mon -i <span class="number">1</span>  --mkfs --monmap /tmp/monmap</span><br></pre></td></tr></table></figure>
 <h3 id="4、启动进程（后面指定端口）">4、启动进程（后面指定端口）</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph-mon -i <span class="number">1</span>  --public-addr  <span class="number">192.168</span>.<span class="number">8.106</span>:<span class="number">6791</span></span><br></pre></td></tr></table></figure>]]>
-    
-    </summary>
-    
-      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[ceph使用memdisk做journal]]></title>
-    <link href="http://www.zphj1987.com/2016/01/14/ceph%E4%BD%BF%E7%94%A8memdisk%E5%81%9Ajournal/"/>
-    <id>http://www.zphj1987.com/2016/01/14/ceph使用memdisk做journal/</id>
-    <published>2016-01-14T02:00:59.000Z</published>
-    <updated>2016-01-22T16:34:27.000Z</updated>
-    <content type="html"><![CDATA[<p>记得在很久很久以前，ceph当时的版本是有提供使用内存做journal的配置的，当时是使用的tmpfs，但是现在的版本在搜资料的时候，发现关于这个的没怎么找到资料，邮件列表里面有人有提到怎么做，看了下大致的原理，然后还是自己来实践一次</p>
-<h3 id="预备知识：">预备知识：</h3><p>首先需要知道的是什么是内存盘，内存盘就是划分了一个内存空间来当磁盘使用来进行加速的，这个在某些操作系统里面会把/tmp/分区挂载到tmpfs下，来达到加速的目的，这样就是重启后，会清空/tmp的内容，centos7 默认的分区方式也使用了tmpfs来加速，df -h可以看下那个tmpfs就是内存盘了</p>
-<p>本文使用的不是tmpfs，这个是因为tmpfs不是我们常见意义上的那种文件系统，它不能格式化，ceph 在进行日志创建的时候会去检查journal 所在分区的 uuid， 而tmpfs在检测的时候 会返回一个全0的字符串，这个在校验的时候显示的无效的，所以也就部署起来有问题，下面开始介绍我的做法，这个里面做法很多，步骤也可以自己去变化，这里只是提供了我的一种思路</p>
-<p>我使用的是ramdisk，关于怎么做ramdisk这个也研究了一下，因为篇幅有点长并且属于预备步骤，请参考我的另外一篇文章：</p>
-<p><a href="http://www.zphj1987.com/2016/01/14/centos7%E4%B8%8B%E5%81%9A%E5%86%85%E5%AD%98%E7%9B%98%E7%9A%84%E6%96%B9%E6%B3%95/" title="centos7下做内存盘的方法" target="_blank" rel="external">centos7下做内存盘的方法</a></p>
-<a id="more"></a>
-<h3 id="测试环境：">测试环境：</h3><p>单机，四块SAS的OSD，日志为5G（内存盘大小为6G），副本 2， osd分组</p>
-<p>说明：因为这里只去研究这个内存盘journal的实现，以及性能的差别，其他的组合方案需要自己去配置，所以单机的环境已经可以完成这个</p>
-<h3 id="1、准备journal的内存盘">1、准备journal的内存盘</h3><h4 id="检查内存盘大小">检查内存盘大小</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># fdisk -l /dev/ram0</span></span><br><span class="line"></span><br><span class="line">Disk /dev/ram0: <span class="number">6797</span> MB, <span class="number">6797721600</span> bytes, <span class="number">13276800</span> sectors</span><br><span class="line">Units = sectors of <span class="number">1</span> * <span class="number">512</span> = <span class="number">512</span> bytes</span><br><span class="line">Sector size (logical/physical): <span class="number">512</span> bytes / <span class="number">512</span> bytes</span><br><span class="line">I/O size (minimum/optimal): <span class="number">512</span> bytes / <span class="number">512</span> bytes</span><br></pre></td></tr></table></figure>
-<p>我的大小为6G</p>
-<h4 id="格式化内存盘，并且挂载">格式化内存盘，并且挂载</h4><h5 id="创建挂载目录（有多少osd建几个）">创建挂载目录（有多少osd建几个）</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># mkdir -p /var/lib/ceph/mem/ceph-0</span></span><br></pre></td></tr></table></figure>
-<h5 id="格式化memdisk(需要几个格式化几个)">格式化memdisk(需要几个格式化几个)</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># mkfs.xfs /dev/ram0  -f</span></span><br></pre></td></tr></table></figure>
-<h5 id="挂载内存盘">挂载内存盘</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># mount /dev/ram0 /var/lib/ceph/mem/ceph-0/</span></span><br></pre></td></tr></table></figure>
-<h5 id="挂载完了后的效果如下：">挂载完了后的效果如下：</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># df -h</span></span><br><span class="line">Filesystem      Size  Used Avail Use% Mounted on</span><br><span class="line">/dev/sda2        <span class="number">50</span>G  <span class="number">9.7</span>G   <span class="number">41</span>G  <span class="number">20</span>% /</span><br><span class="line">devtmpfs         <span class="number">24</span>G     <span class="number">0</span>   <span class="number">24</span>G   <span class="number">0</span>% /dev</span><br><span class="line">tmpfs            <span class="number">24</span>G     <span class="number">0</span>   <span class="number">24</span>G   <span class="number">0</span>% /dev/shm</span><br><span class="line">tmpfs            <span class="number">24</span>G   <span class="number">17</span>M   <span class="number">24</span>G   <span class="number">1</span>% /run</span><br><span class="line">tmpfs            <span class="number">24</span>G     <span class="number">0</span>   <span class="number">24</span>G   <span class="number">0</span>% /sys/fs/cgroup</span><br><span class="line">/dev/sda1       <span class="number">283</span>M   <span class="number">94</span>M  <span class="number">190</span>M  <span class="number">33</span>% /boot</span><br><span class="line">/dev/ram0       <span class="number">6.4</span>G   <span class="number">33</span>M  <span class="number">6.3</span>G   <span class="number">1</span>% /var/lib/ceph/mem/ceph-<span class="number">0</span></span><br><span class="line">/dev/ram1       <span class="number">6.4</span>G   <span class="number">33</span>M  <span class="number">6.3</span>G   <span class="number">1</span>% /var/lib/ceph/mem/ceph-<span class="number">1</span></span><br><span class="line">/dev/ram2       <span class="number">6.4</span>G   <span class="number">33</span>M  <span class="number">6.3</span>G   <span class="number">1</span>% /var/lib/ceph/mem/ceph-<span class="number">2</span></span><br><span class="line">/dev/ram3       <span class="number">6.4</span>G   <span class="number">33</span>M  <span class="number">6.3</span>G   <span class="number">1</span>% /var/lib/ceph/mem/ceph-<span class="number">3</span></span><br></pre></td></tr></table></figure>
-<h3 id="2、准备ceph的环境">2、准备ceph的环境</h3><p>修改deploy的ceph.conf文件，在部署前修改好<br>单机环境添加下面的三个<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">osd_crush_chooseleaf_<span class="built_in">type</span> = <span class="number">0</span></span><br><span class="line">osd_pool_default_size = <span class="number">2</span></span><br><span class="line">osd_journal = /var/lib/ceph/mem/<span class="variable">$cluster</span>-<span class="variable">$id</span>/journal</span><br></pre></td></tr></table></figure></p>
-<p>意思就不在这里介绍了</p>
-<h4 id="创建mon">创建mon</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># ceph-deploy mon create lab8106</span></span><br><span class="line">[root@lab8106 ceph]<span class="comment"># ceph-deploy gatherkeys lab8106</span></span><br></pre></td></tr></table></figure>
-<h4 id="创建osd">创建osd</h4><p>[root@lab8106 ceph]# ceph-deploy osd prepare lab8106:/dev/sdb1:/var/lib/ceph/mem/ceph-0/journal<br>[root@lab8106 ceph]# ceph-deploy osd activate lab8106:/dev/sdb1<br>部署完这个检查下<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># df -h</span></span><br><span class="line">Filesystem      Size  Used Avail Use% Mounted on</span><br><span class="line">……</span><br><span class="line">/dev/ram0       <span class="number">6.4</span>G  <span class="number">5.1</span>G  <span class="number">1.3</span>G  <span class="number">80</span>% /var/lib/ceph/mem/ceph-<span class="number">0</span></span><br><span class="line">/dev/ram1       <span class="number">6.4</span>G   <span class="number">33</span>M  <span class="number">6.3</span>G   <span class="number">1</span>% /var/lib/ceph/mem/ceph-<span class="number">1</span></span><br><span class="line">/dev/ram2       <span class="number">6.4</span>G   <span class="number">33</span>M  <span class="number">6.3</span>G   <span class="number">1</span>% /var/lib/ceph/mem/ceph-<span class="number">2</span></span><br><span class="line">/dev/ram3       <span class="number">6.4</span>G   <span class="number">33</span>M  <span class="number">6.3</span>G   <span class="number">1</span>% /var/lib/ceph/mem/ceph-<span class="number">3</span></span><br><span class="line">/dev/sdb1       <span class="number">280</span>G   <span class="number">34</span>M  <span class="number">280</span>G   <span class="number">1</span>% /var/lib/ceph/osd/ceph-<span class="number">0</span></span><br></pre></td></tr></table></figure></p>
-<p>可以看到内存盘分区内已经生成可一个5G的journal文件<br><figure class="highlight groovy"><table><tr><td class="code"><pre><span class="line">[root<span class="annotation">@lab</span>8106 ceph]# ll <span class="regexp">/var/</span>lib<span class="regexp">/ceph/</span>osd/ceph-<span class="number">0</span></span><br><span class="line">total <span class="number">40</span></span><br><span class="line">……</span><br><span class="line">lrwxrwxrwx  <span class="number">1</span> root root   <span class="number">32</span> Jan <span class="number">14</span> <span class="number">10</span>:<span class="number">28</span> journal -&gt; <span class="regexp">/var/</span>lib<span class="regexp">/ceph/</span>mem<span class="regexp">/ceph-0/</span>journal</span><br></pre></td></tr></table></figure></p>
-<p>可以看到osd分区的也是链接到了内存盘，环境没问题</p>
-<h4 id="继续部署生效的三个osd">继续部署生效的三个osd</h4><p>部署完再次检查环境<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># df -h|grep ceph</span></span><br><span class="line">/dev/ram0       <span class="number">6.4</span>G  <span class="number">5.1</span>G  <span class="number">1.3</span>G  <span class="number">80</span>% /var/lib/ceph/mem/ceph-<span class="number">0</span></span><br><span class="line">/dev/ram1       <span class="number">6.4</span>G  <span class="number">5.1</span>G  <span class="number">1.3</span>G  <span class="number">80</span>% /var/lib/ceph/mem/ceph-<span class="number">1</span></span><br><span class="line">/dev/ram2       <span class="number">6.4</span>G  <span class="number">5.1</span>G  <span class="number">1.3</span>G  <span class="number">80</span>% /var/lib/ceph/mem/ceph-<span class="number">2</span></span><br><span class="line">/dev/ram3       <span class="number">6.4</span>G  <span class="number">5.1</span>G  <span class="number">1.3</span>G  <span class="number">80</span>% /var/lib/ceph/mem/ceph-<span class="number">3</span></span><br><span class="line">/dev/sdb1       <span class="number">280</span>G   <span class="number">34</span>M  <span class="number">280</span>G   <span class="number">1</span>% /var/lib/ceph/osd/ceph-<span class="number">0</span></span><br><span class="line">/dev/sdc1       <span class="number">280</span>G   <span class="number">34</span>M  <span class="number">280</span>G   <span class="number">1</span>% /var/lib/ceph/osd/ceph-<span class="number">1</span></span><br><span class="line">/dev/sdd1       <span class="number">280</span>G   <span class="number">34</span>M  <span class="number">280</span>G   <span class="number">1</span>% /var/lib/ceph/osd/ceph-<span class="number">2</span></span><br><span class="line">/dev/sde1       <span class="number">280</span>G   <span class="number">33</span>M  <span class="number">280</span>G   <span class="number">1</span>% /var/lib/ceph/osd/ceph-<span class="number">3</span></span><br></pre></td></tr></table></figure></p>
-<p>都挂载正确<br>检查集群的状态<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># ceph -s</span></span><br><span class="line">    cluster <span class="number">68735617</span>-<span class="number">2</span>d30-<span class="number">4</span>a81-<span class="number">9865</span>-aeab3ea85e6e</span><br><span class="line">     health HEALTH_OK</span><br><span class="line">     monmap e1: <span class="number">1</span> mons at &#123;lab8106=<span class="number">192.168</span>.<span class="number">8.106</span>:<span class="number">6789</span>/<span class="number">0</span>&#125;</span><br><span class="line">            election epoch <span class="number">2</span>, quorum <span class="number">0</span> lab8106</span><br><span class="line">     osdmap e21: <span class="number">4</span> osds: <span class="number">4</span> up, <span class="number">4</span> <span class="keyword">in</span></span><br><span class="line">      pgmap v35: <span class="number">192</span> pgs, <span class="number">1</span> pools, <span class="number">0</span> bytes data, <span class="number">0</span> objects</span><br><span class="line">            <span class="number">136</span> MB used, <span class="number">1116</span> GB / <span class="number">1117</span> GB avail</span><br><span class="line">                 <span class="number">192</span> active+clean</span><br></pre></td></tr></table></figure></p>
-<p>环境部署完毕</p>
-<h3 id="开始测试">开始测试</h3><p>测试一：采用内存盘journal的方式<br>使用radosbench进行测试（采取默认的写，并且不删除的测试，尽量把内存写满，未进行任何调优）<br><figure class="highlight groovy"><table><tr><td class="code"><pre><span class="line">[root<span class="annotation">@lab</span>8106 ceph]# rados bench -p rbd <span class="number">120</span> write --no-cleanup --run-name testmemdisk</span><br><span class="line">Total time <span class="string">run:</span>         <span class="number">120.568031</span></span><br><span class="line">Total writes <span class="string">made:</span>      <span class="number">5857</span></span><br><span class="line">Write <span class="string">size:</span>             <span class="number">4194304</span></span><br><span class="line">Bandwidth (MB/sec):     <span class="number">194.314</span> </span><br><span class="line"></span><br><span class="line">Stddev <span class="string">Bandwidth:</span>       <span class="number">144.18</span></span><br><span class="line">Max bandwidth (MB/sec): <span class="number">504</span></span><br><span class="line">Min bandwidth (MB/sec): <span class="number">0</span></span><br><span class="line">Average <span class="string">Latency:</span>        <span class="number">0.329322</span></span><br><span class="line">Stddev <span class="string">Latency:</span>         <span class="number">0.48777</span></span><br><span class="line">Max <span class="string">latency:</span>            <span class="number">3.01612</span></span><br><span class="line">Min <span class="string">latency:</span>            <span class="number">0.0377235</span></span><br></pre></td></tr></table></figure></p>
-<p>测试二：采用默认的磁盘journal的方式，环境恢复要原始的情况<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># rados bench -p rbd 120 write --no-cleanup --run-name testmemdisk</span></span><br><span class="line">Total time run:         <span class="number">120.613851</span></span><br><span class="line">Total writes made:      <span class="number">3404</span></span><br><span class="line">Write size:             <span class="number">4194304</span></span><br><span class="line">Bandwidth (MB/sec):     <span class="number">112.889</span> </span><br><span class="line"></span><br><span class="line">Stddev Bandwidth:       <span class="number">26.3641</span></span><br><span class="line">Max bandwidth (MB/sec): <span class="number">160</span></span><br><span class="line">M<span class="keyword">in</span> bandwidth (MB/sec): <span class="number">0</span></span><br><span class="line">Average Latency:        <span class="number">0.566656</span></span><br><span class="line">Stddev Latency:         <span class="number">0.305038</span></span><br><span class="line">Max latency:            <span class="number">2.00623</span></span><br><span class="line">M<span class="keyword">in</span> latency:            <span class="number">0.105026</span></span><br></pre></td></tr></table></figure></p>
-<p>测试的结果如上，上表格也许看的更直观，正好之前在找一个表格插件，现在用用</p>
-<h3 id="内存盘journal与磁盘journal性能对比">内存盘journal与磁盘journal性能对比</h3><p></p><p><link rel="stylesheet" href="http://7xo9we.com1.z0.glb.clouddn.com/compareninja%2Fskin.css" type="text/css"></p><div id="tableWrapper" style="width: 100%; "><table id="vsTable"><tbody><tr><td class="cat title" style="width: 20%; "></td><td class="title" style="width: 40%; "><div class="">内存盘journal</div></td><td class="title" style="width: 40%; "><div class="">磁盘journal</div></td></tr><tr class="second"><td class="cat" style="width: 20%; "><div class="">测试时间(s)</div></td><td style="width: 40%; "><div class="">120.568031</div></td><td style="width: 40%; "><div class="">120.613851</div></td></tr><tr><td class="cat" style="width: 20%; "><div class="">写数据块数</div></td><td style="width: 40%; "><div class="">5857</div></td><td style="width: 40%; "><div class="">3404</div></td></tr><tr><td class="cat" style="width: 20%; "><div class="">总共写入数据(MB)</div></td><td style="width: 40%; "><div class="">23428</div></td><td style="width: 40%; "><div class="">13616</div></td></tr><tr><td class="cat" style="width: 20%; "><div class="">数据块大小</div></td><td style="width: 40%; "><div class="">4194304</div></td><td style="width: 40%; "><div class="">4194304</div></td></tr><tr class="second"><td class="cat" style="width: 20%; "><div class="">写带宽(MB/sec)</div></td><td style="width: 40%; "><div class="">194.314</div></td><td style="width: 40%; "><div class="">112.889</div></td></tr><tr><td class="cat" style="width: 20%; "><div class="">带宽标准偏差</div></td><td style="width: 40%; "><div class="">144.18</div></td><td style="width: 40%; "><div class="">26.3641</div></td></tr><tr class="second"><td class="cat" style="width: 20%; "><div class="">最大带宽(MB/sec)</div></td><td style="width: 40%; "><div class="">504</div></td><td style="width: 40%; "><div class="">160</div></td></tr><tr><td class="cat" style="width: 20%; "><div class="">平均延时</div></td><td style="width: 40%; "><div class="">0.32932</div></td><td style="width: 40%; "><div class="">0.566656</div></td></tr><tr class="second"><td class="cat" style="width: 20%; "><div class="">延时偏差</div></td><td style="width: 40%; "><div class="">0.48777</div></td><td style="width: 40%; "><div class="">0.305038</div></td></tr><tr class="second"><td class="cat" style="width: 20%; "><div class="">最大延时</div></td><td style="width: 40%; "><div class="">3.01612</div></td><td style="width: 40%; "><div class="">2.00623</div></td></tr><tr class="second"><td class="cat" style="width: 20%; "><div class="">最小延时</div></td><td style="width: 40%; "><div class="">0.0377235</div></td><td style="width: 40%; "><div class="">0.105026</div></td></tr></tbody></table></div><p></p>
-<p>可以看到相关数据，光写带宽就提升了接近一倍，这个是因为，在磁盘journal情况下，写入journal的同时还有filestore的数据写入，相当于同时有两个写入在磁盘上，磁盘的性能自然只有一半了</p>
-<p>以上就是关于journal的内存盘实现，这里面还会面临着其他的问题</p>
-<ul>
-<li>机器内存的占用问题</li>
-<li>断电后的处理</li>
-<li>同时断电是否会搞坏pg状态</li>
-<li>搞坏的情况是否能恢复</li>
-</ul>
-<p>如果解决了这些问题，这个不失为一种性能提升的方案，毕竟内存的成本和速度是ssd的磁盘和单独磁盘journal不能比的，journal本身也是一种循环的写入的空间</p>
-<hr>
-<p>教程的方式暂时停止了，毕竟推广这块还是有问题<br>结尾还是来个支持的链接，如果你觉得文章写得好，欢迎打赏，如果有新文章我会第一时间推送给支持我的朋友</p>
-<p><img src="http://7xo9we.com1.z0.glb.clouddn.com/zhifubao.png" alt=""></p>
-<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- myweb -->
-<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3305801963238415" data-ad-slot="9673687470" data-ad-format="auto"></ins>
-<script>
-(adsbygoogle = window.adsbygoogle || []).push({});
-</script>]]></content>
-    <summary type="html">
-    <![CDATA[<p>记得在很久很久以前，ceph当时的版本是有提供使用内存做journal的配置的，当时是使用的tmpfs，但是现在的版本在搜资料的时候，发现关于这个的没怎么找到资料，邮件列表里面有人有提到怎么做，看了下大致的原理，然后还是自己来实践一次</p>
-<h3 id="预备知识：">预备知识：</h3><p>首先需要知道的是什么是内存盘，内存盘就是划分了一个内存空间来当磁盘使用来进行加速的，这个在某些操作系统里面会把/tmp/分区挂载到tmpfs下，来达到加速的目的，这样就是重启后，会清空/tmp的内容，centos7 默认的分区方式也使用了tmpfs来加速，df -h可以看下那个tmpfs就是内存盘了</p>
-<p>本文使用的不是tmpfs，这个是因为tmpfs不是我们常见意义上的那种文件系统，它不能格式化，ceph 在进行日志创建的时候会去检查journal 所在分区的 uuid， 而tmpfs在检测的时候 会返回一个全0的字符串，这个在校验的时候显示的无效的，所以也就部署起来有问题，下面开始介绍我的做法，这个里面做法很多，步骤也可以自己去变化，这里只是提供了我的一种思路</p>
-<p>我使用的是ramdisk，关于怎么做ramdisk这个也研究了一下，因为篇幅有点长并且属于预备步骤，请参考我的另外一篇文章：</p>
-<p><a href="http://www.zphj1987.com/2016/01/14/centos7%E4%B8%8B%E5%81%9A%E5%86%85%E5%AD%98%E7%9B%98%E7%9A%84%E6%96%B9%E6%B3%95/" title="centos7下做内存盘的方法">centos7下做内存盘的方法</a></p>]]>
     
     </summary>
     
