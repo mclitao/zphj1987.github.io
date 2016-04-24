@@ -4,7 +4,7 @@
   <subtitle><![CDATA[现在所学，终有所用]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2016-04-23T03:09:23.612Z</updated>
+  <updated>2016-04-24T15:43:36.247Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -13,6 +13,84 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[backfill和recovery的最优值]]></title>
+    <link href="http://www.zphj1987.com/2016/04/24/backfill%E5%92%8Crecovery%E7%9A%84%E6%9C%80%E4%BC%98%E5%80%BC/"/>
+    <id>http://www.zphj1987.com/2016/04/24/backfill和recovery的最优值/</id>
+    <published>2016-04-24T15:37:21.000Z</published>
+    <updated>2016-04-24T15:43:36.247Z</updated>
+    <content type="html"><![CDATA[<p>ceph在增加osd的时候会触发backfill，让数据得到平均，触发数据的迁移<br>ceph在移除osd的时候需要在节点上进行数据的恢复，也有数据的迁移和生成</p>
+<p>只要是集群里面有数据的变动就会有网卡流量，cpu，内存等资源的占用，并且最重要的是还有磁盘的占用，这个客户端也是需要对磁盘进行访问的，当请求出现碰撞的时候，肯定会比正常的情况下要慢很多，而且还有可能因为资源方面的原因而引起机器down机等异常状况的出现</p>
+<p>主要引起的问题可能：</p>
+<ul>
+<li>在peering的时候 block 了IO请求</li>
+<li>在backfill的引起了slow requests</li>
+<li>上面的两个情况会引起客户端的降速和出现soft lockup</li>
+</ul>
+<p>这个在一般情况下会出现不同的需求：</p>
+<ol>
+<li>慢点可以一定不能出问题，不能中断业务</li>
+<li>越快迁移完越好，早点结束维护服务</li>
+<li>需要又快又不能影响业务</li>
+</ol>
+<a id="more"></a>
+<p>这个需要根据自己可以掌控的程度来进行控制，首先环境的不同，影响不同，迁移数据量，网卡的带宽都是重要的影响因素，从整体上可以根据自己的环境按照上面的三个要求中的一个进行控制</p>
+<p>上面的三种情况：<br>第一个慢点迁移不能出问题，这个处理方式比较简单，直接将相关参数控制到最低的值，这个能保证业务的影响最低，但是带来的影响就是迁移需要很久的时间，可能长达几十个小时</p>
+<p>第二个越快越好就是用默认的参数或者加大参数，然后观察这个迁移过程中的资源的占用情况</p>
+<p>第三个就是需要在自己的环境下进行多测试验证这个参数，本篇主要就是根据思科的测试出来的参数进行分析</p>
+<p>下面的参数是思科测试出来的值：</p>
+<blockquote>
+<p>osd recovery max active = 3    （default    : 15)<br>osd    recovery op priority = 3    (default : 10)<br>osd    max    backfills = 1 (default : 10)    </p>
+</blockquote>
+<h3 id="测试过程的数据图">测试过程的数据图</h3><p><img src="http://static.zybuluo.com/zphj1987/u6iiuglqxdx47nuogt9r6a0g/back%E5%BD%B1%E5%93%8D.png" alt="back影响.png-58.2kB"></p>
+<p>这个图开始的时候我也没太明白，后来多看下就理解了，实际上在很多情况下，一个因素的变化是会引起其他两个因素的变化，而这两个因素是一个正面的因素和一个负面的因素，而找到这个平衡值就是最优的情况，在这里的因素包括：<br>max-backfill和max-recovery :迁移相关参数<br>MTTR（mean time to recovery）:失效恢复时间，也就是迁移完成<br>Soft Lockup:前面虚拟机出现的soft lockup，也可以理解为对前端的影响</p>
+<p>测试环境一致，都是 down 掉10%的osd进行恢复：<br>在迁移参数最低的时候，没有出现soft lockup ，也就是最低迁移参数的时候，影响最小，恢复使用了45分钟<br>随着迁移相关参数调大的时候，迁移的时间的曲线是先降低，在到达一定的值后又开始增加（这个地方可能是迁移过大出现了前端io锁住，然后影响了迁移速度）<br>随着迁移相关参数的调大，出现soft lockup的情况是增加的</p>
+<p>从测试的曲线来看，在2-6之间是出现的最优值，也就是出现异常的情况概率最低，并且迁移速度最快，最终选择了一组最优的值 ：</p>
+<blockquote>
+<p>osd recovery max active = 3    （default    : 15)<br>osd    recovery op priority = 3    (default : 10)<br>osd    max    backfills = 1 (default : 10)</p>
+</blockquote>
+<p>这个值是思科的测试出来的值，这个值可以根据自己的需要进行取用，大概的情况是这样</p>
+<ul>
+<li>完全无法把控就把参数调整到最低</li>
+<li>使用思科的推荐值</li>
+<li>根据自己的环境测出自己环境的最优值</li>
+</ul>
+<p>很多参数是别人根据自己的环境测试出来的，很多情况并不是通用的，得到别人测试的思路是最重要的，然后消化后自己根据自己的需要得出自己的值</p>
+<hr>
+<h3 id="说点自己最近的感想">说点自己最近的感想</h3><p>根据自己的观察和自己的经验，所有的知识都是需要自己主动去获取主动的去消化，然后去实践的，在任何地方没有说通过传授知识，你就能学会了，公司的程序员的技术也是自己主动的去学习的，所谓的经验也只能是告诉你一些方法，而且你也没办法要求任何人与你一样的努力，一样的对你所做的东西感兴趣，认同你的观点，很多时候需要的是技术的碰撞，在一家公司需要的是员工能够完成你的事情，所以我们要尊重努力的员工，这类员工非常努力，但是可能无法达到你的要求，这个需要鼓励，还有一种是效率非常高的员工，这类员工能够轻松的完成任何事情，这类员工可以给与充分的自由，最终以时间以及结果双向评估员工对公司的贡献</p>
+<p>最近tinyfool老师在进行ios开发的一个分享的时候，一堆想获取的干活的人去听，而tinyfool老师在这个分享会上通知了自己公司破产解散的事情，宣告再次的失败，而一些来想获取干货的人却开喷了，说没有获取到任何干货，这些人想获取的干货就是拿来直接干的货，而tinyfool老师分享的经验，包括在最后宣告解散的时候准备开源自己的东西，极力的推荐自己的员工是多么的优秀，还有其他的一些东西，这些其实都是干货，引用高春辉老师对这件事的看法的一段话：</p>
+<blockquote>
+<p>很多人可能相比之下，觉得代码语言这些硬技能最重要。其实我和我周边的朋友基本都认为，软技能才最重要，其实人的智商都差不多，再笨也不会笨很多，但如何待人接物，如何对待同事和朋友，如何高效利用时间，内心对成功的渴望，还有是否有责任心和荣誉感还有成就感这些，包括个人兴趣以及性格，这些是很难在进入社会之后再改变的了，除非有重大事情发生，否则很难很难改变。所以多数情况下，十年后的你的境遇，其实是十年前就已经决定的了  —高春辉</p>
+</blockquote>
+<p>任何公司任何员工都不可能十全十美，其实有时候换位思考一下，站在企业角度想一下，公司需要什么样的员工，站在员工的角度想一下，想要公司怎么的为自己保证最大利益，如果能够做到相互的价值观一致，就能处于一个和谐的状态了</p>
+<blockquote>
+<p>今后会写更多文字来分享一些东西，这些也不再仅限于ceph，这也是一个二次消化的过程，欢迎大家点评讨论</p>
+</blockquote>
+<h3 id="打赏通道">打赏通道</h3><center><br><img src="http://static.zybuluo.com/zphj1987/fi2557g55ucsdpyblopyfudl/newpay.png" alt="打赏" title="打赏"><br></center>
+
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>ceph在增加osd的时候会触发backfill，让数据得到平均，触发数据的迁移<br>ceph在移除osd的时候需要在节点上进行数据的恢复，也有数据的迁移和生成</p>
+<p>只要是集群里面有数据的变动就会有网卡流量，cpu，内存等资源的占用，并且最重要的是还有磁盘的占用，这个客户端也是需要对磁盘进行访问的，当请求出现碰撞的时候，肯定会比正常的情况下要慢很多，而且还有可能因为资源方面的原因而引起机器down机等异常状况的出现</p>
+<p>主要引起的问题可能：</p>
+<ul>
+<li>在peering的时候 block 了IO请求</li>
+<li>在backfill的引起了slow requests</li>
+<li>上面的两个情况会引起客户端的降速和出现soft lockup</li>
+</ul>
+<p>这个在一般情况下会出现不同的需求：</p>
+<ol>
+<li>慢点可以一定不能出问题，不能中断业务</li>
+<li>越快迁移完越好，早点结束维护服务</li>
+<li>需要又快又不能影响业务</li>
+</ol>]]>
+    
+    </summary>
+    
+      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[福昕pdf加载慢崩溃的解决办法]]></title>
@@ -1015,34 +1093,6 @@ var sogou_ad_width=728;
     <![CDATA[<p>一个rbd在存储到后台以后,在后台是对象存储的，对象</p>
 <p>[root@lab8106 rbdre]# rados -p rbd  listomapvals  rbd_directory<br>id_399a456aa808<br>value (6 bytes) :]]>
     </summary>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[ceph单机多mon的实现]]></title>
-    <link href="http://www.zphj1987.com/2016/01/14/ceph%E5%8D%95%E6%9C%BA%E5%A4%9Amon%E7%9A%84%E5%AE%9E%E7%8E%B0/"/>
-    <id>http://www.zphj1987.com/2016/01/14/ceph单机多mon的实现/</id>
-    <published>2016-01-14T09:03:56.000Z</published>
-    <updated>2016-01-14T09:11:03.572Z</updated>
-    <content type="html"><![CDATA[<p>ceph默认情况下是以主机名来作为mon的识别的，所以这个情况下用部署工具是无法创建多个mon的，这个地方使用手动的方式可以很方便的创建多个mon</p>
-<h3 id="1、创建mon的数据存储目录">1、创建mon的数据存储目录</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkdir /var/lib/ceph/mon/ceph-<span class="number">1</span></span><br></pre></td></tr></table></figure>
-<h3 id="2、获取当前的monmap">2、获取当前的monmap</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph mon getmap -o /tmp/monmap</span><br></pre></td></tr></table></figure>
-<h3 id="3、根据当前的monmap生成mon的数据">3、根据当前的monmap生成mon的数据</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph-mon -i <span class="number">1</span>  --mkfs --monmap /tmp/monmap</span><br></pre></td></tr></table></figure>
-<h3 id="4、启动进程（后面指定端口）">4、启动进程（后面指定端口）</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph-mon -i <span class="number">1</span>  --public-addr  <span class="number">192.168</span>.<span class="number">8.106</span>:<span class="number">6791</span></span><br></pre></td></tr></table></figure>
-<a id="more"></a>
-<p>现在mon就加进去了</p>
-<p>然后去写配置文件相关的信息即可，操作还是很便捷的，这个地方可以防止单mon的情况下的数据盘的损坏的情况，增加一点安全系数，当然最好是多主机的mon</p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>ceph默认情况下是以主机名来作为mon的识别的，所以这个情况下用部署工具是无法创建多个mon的，这个地方使用手动的方式可以很方便的创建多个mon</p>
-<h3 id="1、创建mon的数据存储目录">1、创建mon的数据存储目录</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkdir /var/lib/ceph/mon/ceph-<span class="number">1</span></span><br></pre></td></tr></table></figure>
-<h3 id="2、获取当前的monmap">2、获取当前的monmap</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph mon getmap -o /tmp/monmap</span><br></pre></td></tr></table></figure>
-<h3 id="3、根据当前的monmap生成mon的数据">3、根据当前的monmap生成mon的数据</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph-mon -i <span class="number">1</span>  --mkfs --monmap /tmp/monmap</span><br></pre></td></tr></table></figure>
-<h3 id="4、启动进程（后面指定端口）">4、启动进程（后面指定端口）</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph-mon -i <span class="number">1</span>  --public-addr  <span class="number">192.168</span>.<span class="number">8.106</span>:<span class="number">6791</span></span><br></pre></td></tr></table></figure>]]>
-    
-    </summary>
-    
-      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
     
   </entry>
   
