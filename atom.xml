@@ -4,7 +4,7 @@
   <subtitle><![CDATA[现在所学，终有所用]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2016-04-24T15:43:36.247Z</updated>
+  <updated>2016-04-25T15:51:59.949Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -13,6 +13,48 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[mon的稳定性问题]]></title>
+    <link href="http://www.zphj1987.com/2016/04/25/mon%E7%9A%84%E7%A8%B3%E5%AE%9A%E6%80%A7%E9%97%AE%E9%A2%98/"/>
+    <id>http://www.zphj1987.com/2016/04/25/mon的稳定性问题/</id>
+    <published>2016-04-25T15:36:28.000Z</published>
+    <updated>2016-04-25T15:51:59.949Z</updated>
+    <content type="html"><![CDATA[<h3 id="MON的稳定性问题：">MON的稳定性问题：</h3><ul>
+<li>mon的选举风暴影响客户端IO</li>
+<li>LevelDB的暴涨</li>
+<li>频繁的客户端请求的DDOS</li>
+</ul>
+<h4 id="mon选举风暴：">mon选举风暴：</h4><p>monmap会因为mon之间或者mon与客户端之间网络的影响或者消息传递的异常发生变化,从而触发选举<br>会造成客户端的请求变慢或者锁住</p>
+<h4 id="LevelDB的暴涨：">LevelDB的暴涨：</h4><p>LevelDB的大小会涨到几十GB然后影响了osd的请求<br>会造成客户端的请求变慢或者锁住</p>
+<h4 id="频繁的客户端请求的DDOS：">频繁的客户端请求的DDOS：</h4><p>mon的响应因为levelDB变慢或者选举风暴，都会造成客户端发出大量的消息流<br>让客户端操作失效，包括卷创建，rbd的连接</p>
+<a id="more"></a>
+<h3 id="解决办法：">解决办法：</h3><h4 id="LevelDB的暴涨的问题解决办法">LevelDB的暴涨的问题解决办法</h4><p>升级ceph的版本，这个在0.94.6版本解决了这个问题<br><img src="http://static.zybuluo.com/zphj1987/yjdvldb3xyxl84bwlc3cjaxw/leveldb.png" alt="leveldb.png-21.9kB"></p>
+<h4 id="选举风暴问题解决办法">选举风暴问题解决办法</h4><blockquote>
+<p>[mon]<br>mon_lease = 20 (default = 5)<br>mon_lease_renew_interval = 12 (default 3)<br>mon_lease_ack_timeout = 40 (default 10)<br>mon_accept_timeout = 40 (default 10)<br>[client]<br>mon_client_hunt_interval = 40 (defaiult 3)</p>
+</blockquote>
+<p>将mon的数据放置在ssd上，因为LevelDB存储了集群的 metadata,包括 osdmap, pgmap, monmap,clientID, authID etc 等等，很大的leveldb会有更长的查询时间，更长的IO等待，然后就是更慢的客户端请求</p>
+<p>这个地方是增长了mon之间判断需要切换的时间，降低客户端的请求的频率，使用ssd加快查询的速度</p>
+<hr>
+<p>这个问题是一个不太容易发觉的问题，有时候就是ceph -s反应的很慢，但是很多时候可能体现的就是客户端出现请求缓慢，然后还找不到原因，所以说硬件的隔离是非常有必要的，不要为了省成本然后影响了整个环境的稳定性和性能，对于很大的环境mon需要用三台独立的机器，这个机器需要一定的内存和cpu，磁盘使用ssd，1U服务器就可以了，上面可以运行一些其他类似管理平台，或者一些监控服务什么的，混合在osd的机器上的时候，一旦OSD出现大量的数据迁移的时候，或者大量的请求的时候，会阻塞了消息，这个就是做方案的时候需要考虑的问题，当然在性能要求不那么高的时候将mon混合在osd上使用也是可以的，这个时候尽量有更多的内存和更好的磁盘性能也能减少一些负担</p>
+<h3 id="打赏通道">打赏通道</h3><center><br><img src="http://static.zybuluo.com/zphj1987/fi2557g55ucsdpyblopyfudl/newpay.png" alt="打赏" title="打赏"><br></center>
+
+]]></content>
+    <summary type="html">
+    <![CDATA[<h3 id="MON的稳定性问题：">MON的稳定性问题：</h3><ul>
+<li>mon的选举风暴影响客户端IO</li>
+<li>LevelDB的暴涨</li>
+<li>频繁的客户端请求的DDOS</li>
+</ul>
+<h4 id="mon选举风暴：">mon选举风暴：</h4><p>monmap会因为mon之间或者mon与客户端之间网络的影响或者消息传递的异常发生变化,从而触发选举<br>会造成客户端的请求变慢或者锁住</p>
+<h4 id="LevelDB的暴涨：">LevelDB的暴涨：</h4><p>LevelDB的大小会涨到几十GB然后影响了osd的请求<br>会造成客户端的请求变慢或者锁住</p>
+<h4 id="频繁的客户端请求的DDOS：">频繁的客户端请求的DDOS：</h4><p>mon的响应因为levelDB变慢或者选举风暴，都会造成客户端发出大量的消息流<br>让客户端操作失效，包括卷创建，rbd的连接</p>]]>
+    
+    </summary>
+    
+      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[backfill和recovery的最优值]]></title>
@@ -1076,23 +1118,6 @@ var sogou_ad_width=728;
     </summary>
     
       <category term="momotan" scheme="http://www.zphj1987.com/tags/momotan/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[关于ceph的rbd属性设置研究]]></title>
-    <link href="http://www.zphj1987.com/2016/01/20/%E5%85%B3%E4%BA%8Eceph%E7%9A%84rbd%E5%B1%9E%E6%80%A7%E8%AE%BE%E7%BD%AE%E7%A0%94%E7%A9%B6/"/>
-    <id>http://www.zphj1987.com/2016/01/20/关于ceph的rbd属性设置研究/</id>
-    <published>2016-01-20T14:57:53.000Z</published>
-    <updated>2016-02-24T14:07:27.597Z</updated>
-    <content type="html"><![CDATA[<p>一个rbd在存储到后台以后,在后台是对象存储的，对象</p>
-<p>[root@lab8106 rbdre]# rados -p rbd  listomapvals  rbd_directory<br>id_399a456aa808<br>value (6 bytes) :<br>0000 : 02 00 00 00 7a 70                               : ….zp</p>
-<p>name_zp<br>value (16 bytes) :<br>0000 : 0c 00 00 00 33 39 39 61 34 35 36 61 61 38 30 38 : ….399a456aa808</p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>一个rbd在存储到后台以后,在后台是对象存储的，对象</p>
-<p>[root@lab8106 rbdre]# rados -p rbd  listomapvals  rbd_directory<br>id_399a456aa808<br>value (6 bytes) :]]>
-    </summary>
     
   </entry>
   

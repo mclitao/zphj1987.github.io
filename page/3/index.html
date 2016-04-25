@@ -186,6 +186,59 @@ var _hmt = _hmt || [];
 </nav>
       <div class="body-wrap">
   
+    <article id="post-关于ceph的rbd属性设置研究" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/01/20/关于ceph的rbd属性设置研究/" class="article-date">
+  	<time datetime="2016-01-20T14:57:53.000Z" itemprop="datePublished">2016-01-20</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/01/20/关于ceph的rbd属性设置研究/">关于ceph的rbd属性设置研究</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>一个rbd在存储到后台以后,在后台是对象存储的，对象</p>
+<p>[root@lab8106 rbdre]# rados -p rbd  listomapvals  rbd_directory<br>id_399a456aa808<br>value (6 bytes) :<br>0000 : 02 00 00 00 7a 70                               : ….zp</p>
+<p>name_zp<br>value (16 bytes) :<br>0000 : 0c 00 00 00 33 39 39 61 34 35 36 61 61 38 30 38 : ….399a456aa808</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-ceph单机多mon的实现" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -754,76 +807,6 @@ var _hmt = _hmt || [];
       
         <p class="article-more-link">
           <a  href="/2015/12/12/关于开始写教程的事/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-ceph集群的安装和配置教程" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/12/12/ceph集群的安装和配置教程/" class="article-date">
-  	<time datetime="2015-12-11T16:36:48.000Z" itemprop="datePublished">2015-12-12</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/12/12/ceph集群的安装和配置教程/">ceph集群的安装和配置教程</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="本篇主题：">本篇主题：</h3><p>1、怎样配置ssh免登陆访问<br>2、为什么搭建集群要关闭防火墙和selinux，如何关闭<br>3、从哪里获取ceph的安装包，怎样安装才是快速正确的<br>4、为什么要配置时间同步服务，怎样配置<br>5、怎样创建集群<br>6、怎样使用不同的方式增加osd（这里我总结了五种）</p>
-<ul>
-<li>默认方式</li>
-<li>磁盘journal</li>
-<li>目录配置方式</li>
-<li>btrfs文件系统</li>
-<li>disk+ssd方式</li>
-</ul>
-<p>7、怎样配置文件系统<br>8、怎样配置块设备系统<br>9、怎样配置S3服务<br>10、如何干净的将集群清理到初始状态</p>
-<blockquote>
-<p>（本篇基于centos7,其他系统除了安装方式其他通用）</p>
-</blockquote>
-<h3 id="本篇资源:">本篇资源:</h3><p>包括了视频，操作文档，相关安装包资源，S3的windows客户端</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/12/12/ceph集群的安装和配置教程/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>
