@@ -4,7 +4,7 @@
   <subtitle><![CDATA[现在所学，终有所用]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2016-04-25T15:51:59.949Z</updated>
+  <updated>2016-04-27T15:56:12.515Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -13,6 +13,74 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[性能数据的可视化]]></title>
+    <link href="http://www.zphj1987.com/2016/04/27/%E6%B5%8B%E8%AF%95%E6%95%B0%E6%8D%AE%E7%9A%84%E5%8F%AF%E8%A7%86%E5%8C%96/"/>
+    <id>http://www.zphj1987.com/2016/04/27/测试数据的可视化/</id>
+    <published>2016-04-27T15:25:03.000Z</published>
+    <updated>2016-04-27T15:56:12.515Z</updated>
+    <content type="html"><![CDATA[<p>在工作当中，很多时候我们在去分析一个性能的时候，会产生大量的数据，面对数据的时候我们一般应该会有以下几个处理过程</p>
+<ul>
+<li>直接肉眼看<br>这个属于第一个级别，比如监控系统负载的时候去用top观察，这个方法是我最开始经常使用的一种方法，这个适合异常的时候使用，但是实际上获取的数据是有偏差的</li>
+<li>有监控系统<br>使用数据监控系统对需要监控的数据进行监控，这个前提是有一个监控系统，并且方便的去增加数据，可以根据需求去设定数据，这个监控系统有很多，能可视化的也很多，这篇文章就不做介绍</li>
+<li>使用监控脚本采集数据，采用excel进行可视化<br>使用脚本收集大量的数据，然后将数据导入到excel当中，然后显示出来，这个是我们公司测试人员采用的方法，也是比较容易实现的一个方式</li>
+</ul>
+<p>也可能还有其他的方法，总之一图胜千言，通过图形来展示数据，会获取到更多的信息，我也一直在寻找一些方案来方便的展示数据，从目前的监控系统来看，一般的实现方法都是</p>
+<ul>
+<li>数据采集到数据库</li>
+<li>使用图形展示数据库中间的问题</li>
+</ul>
+<p>我现在需要的一个功能就是，使用一个采集工具将数据收集起来，然后直接将数据输出为图片，这个图片的渲染是可以根据我的需要进行定制的，最近在研究web自动化测试的发现可以有办法对html进行渲染成图片，想到这个地方可以跟这个地方进行结合</p>
+<p>这里的思路是使用html+highchart方式进行数据的渲染，然后将页面导出成图片，最终做成一个简单的数据展示工具，并且为其他地方的提供数据图片</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>在工作当中，很多时候我们在去分析一个性能的时候，会产生大量的数据，面对数据的时候我们一般应该会有以下几个处理过程</p>
+<ul>
+<li>直接肉眼看<br>这个属于第一个级别，比如监控系统负载的时候去用top观察，这个方法是我最开始经常使用的一种方法，这个适合异常的时候使]]>
+    </summary>
+    
+      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[性能数据的可视化]]></title>
+    <link href="http://www.zphj1987.com/2016/04/27/%E6%80%A7%E8%83%BD%E6%95%B0%E6%8D%AE%E7%9A%84%E5%8F%AF%E8%A7%86%E5%8C%96/"/>
+    <id>http://www.zphj1987.com/2016/04/27/性能数据的可视化/</id>
+    <published>2016-04-27T15:25:03.000Z</published>
+    <updated>2016-04-27T16:04:32.585Z</updated>
+    <content type="html"><![CDATA[<p>在工作当中，很多时候我们在去分析一个性能的时候，会产生大量的数据，面对数据的时候我们一般应该会有以下几个处理过程</p>
+<ul>
+<li>直接肉眼看<br>这个属于第一个级别，比如监控系统负载的时候去用top观察，这个方法是我最开始经常使用的一种方法，这个适合异常的时候使用，但是实际上获取的数据是有偏差的</li>
+<li>有监控系统<br>使用数据监控系统对需要监控的数据进行监控，这个前提是有一个监控系统，并且方便的去增加数据，可以根据需求去设定数据，这个监控系统有很多，能可视化的也很多，这篇文章就不做介绍</li>
+<li>使用监控脚本采集数据，采用excel进行可视化<br>使用脚本收集大量的数据，然后将数据导入到excel当中，然后显示出来，这个是我们公司测试人员采用的方法，也是比较容易实现的一个方式</li>
+</ul>
+<a id="more"></a>
+<p>也可能还有其他的方法，总之一图胜千言，通过图形来展示数据，会获取到更多的信息，我也一直在寻找一些方案来方便的展示数据，从目前的监控系统来看，一般的实现方法都是</p>
+<ul>
+<li>数据采集到数据库</li>
+<li>使用图形展示数据库中间的问题</li>
+</ul>
+<p>我现在需要的一个功能就是，使用一个采集工具将数据收集起来，然后直接将数据输出为图片，这个图片的渲染是可以根据我的需要进行定制的，最近在研究web自动化测试的发现可以有办法对html进行渲染成图片，想到这个地方可以跟这个地方进行结合</p>
+<p>这里的思路是使用html+highchart方式进行数据的渲染，然后将页面导出成图片，最终做成一个简单的数据展示工具，并且为其他地方的提供数据图片</p>
+<p>下面是这个工具渲染的图片效果：</p>
+<p><img src="http://static.zybuluo.com/zphj1987/ixyicn1b5ps5m3x380nsbpz1/chart.png" alt=""></p>
+<p>可以根据自己的需要去显示数据，后续会记录方法，这里暂时只记录一个思路</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>在工作当中，很多时候我们在去分析一个性能的时候，会产生大量的数据，面对数据的时候我们一般应该会有以下几个处理过程</p>
+<ul>
+<li>直接肉眼看<br>这个属于第一个级别，比如监控系统负载的时候去用top观察，这个方法是我最开始经常使用的一种方法，这个适合异常的时候使用，但是实际上获取的数据是有偏差的</li>
+<li>有监控系统<br>使用数据监控系统对需要监控的数据进行监控，这个前提是有一个监控系统，并且方便的去增加数据，可以根据需求去设定数据，这个监控系统有很多，能可视化的也很多，这篇文章就不做介绍</li>
+<li>使用监控脚本采集数据，采用excel进行可视化<br>使用脚本收集大量的数据，然后将数据导入到excel当中，然后显示出来，这个是我们公司测试人员采用的方法，也是比较容易实现的一个方式</li>
+</ul>]]>
+    
+    </summary>
+    
+      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[mon的稳定性问题]]></title>
@@ -1006,118 +1074,6 @@ var sogou_ad_width=728;
     </summary>
     
       <category term="监控" scheme="http://www.zphj1987.com/tags/%E7%9B%91%E6%8E%A7/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[ubuntu安装软件自动交互]]></title>
-    <link href="http://www.zphj1987.com/2016/01/27/ubuntu%E5%AE%89%E8%A3%85%E8%BD%AF%E4%BB%B6%E8%87%AA%E5%8A%A8%E4%BA%A4%E4%BA%92/"/>
-    <id>http://www.zphj1987.com/2016/01/27/ubuntu安装软件自动交互/</id>
-    <published>2016-01-27T08:26:30.000Z</published>
-    <updated>2016-01-27T08:38:59.526Z</updated>
-    <content type="html"><![CDATA[<p>在ubuntu下安装软件过程中可能会出现需要你输入密码或者其他的一些交互类的操作，这样在脚本安装的时候就可能出现阻断，这个在ubuntu里面已经考虑到了这个情况，以前我在安装这个的时候，通过的是脚本传递参数的方式，这里介绍的是原生的控制方式，这个方式更好</p>
-<p>以安装mariadb-server-5.5为例</p>
-<h3 id="1、查询需要应答的问题">1、查询需要应答的问题</h3><p>首先通过命令查询这个软件需要问答什么问题<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@mytest:/var/cache/apt/archives<span class="comment"># debconf-show mariadb-server-5.5 </span></span><br><span class="line">* mysql-server/root_password: (password omitted)</span><br><span class="line">* mysql-server/root_password_again: (password omitted)</span><br><span class="line">  mysql-server/password_mismatch:</span><br><span class="line">  mysql-server/error_setting_password:</span><br><span class="line">* mariadb-server/oneway_migration: <span class="literal">true</span></span><br><span class="line">  mysql-server-<span class="number">5.5</span>/nis_warning:</span><br><span class="line">  mysql-server-<span class="number">5.5</span>/postrm_remove_databases: <span class="literal">false</span></span><br><span class="line">  mariadb-server-<span class="number">5.5</span>/really_downgrade: <span class="literal">false</span></span><br><span class="line">  mysql-server/no_upgrade_when_using_ndb:</span><br></pre></td></tr></table></figure></p>
-<a id="more"></a>
-<p>这里可以看到需要处理的是密码的问题</p>
-<h3 id="2、执行命令传递参数进去">2、执行命令传递参数进去</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">debconf-set-selections &lt;&lt;&lt; <span class="string">'mariadb-server-5.5 mysql-server/root_password password 123456'</span></span><br><span class="line">debconf-set-selections &lt;&lt;&lt; <span class="string">'mariadb-server-5.5 mysql-server/root_password_again password 123456'</span></span><br></pre></td></tr></table></figure>
-<p>这个地方实际是把这个值记录到了这个地方,如果要修改可以覆盖或者删除即可<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@mytest:/var/cache/apt/archives<span class="comment"># cat /var/cache/debconf/passwords.dat</span></span><br><span class="line">Name: mysql-server/root_password</span><br><span class="line">Template: mysql-server/root_password</span><br><span class="line">Value: <span class="number">123456</span></span><br><span class="line">Owners: mariadb-server-<span class="number">5.5</span></span><br><span class="line">Flags: seen</span><br><span class="line"></span><br><span class="line">Name: mysql-server/root_password_again</span><br><span class="line">Template: mysql-server/root_password_again</span><br><span class="line">Value: <span class="number">123456</span></span><br><span class="line">Owners: mariadb-server-<span class="number">5.5</span></span><br><span class="line">Flags: seen</span><br></pre></td></tr></table></figure></p>
-<p>然后执行安装的操作：<br>修改环境变量（这一步不做也没看到有问题）<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">export</span> DEBIAN_FRONTEND=noninteractive</span><br></pre></td></tr></table></figure></p>
-<h3 id="3、安装相应的包">3、安装相应的包</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">dpkg -i mariadb-server-<span class="number">5.5</span>_5.<span class="number">5.46</span>-<span class="number">1</span>ubuntu0.<span class="number">14.04</span>.<span class="number">2</span>_amd64.deb</span><br></pre></td></tr></table></figure>
-<p>以上即为ubuntu下的deb包的自动应答的处理</p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>在ubuntu下安装软件过程中可能会出现需要你输入密码或者其他的一些交互类的操作，这样在脚本安装的时候就可能出现阻断，这个在ubuntu里面已经考虑到了这个情况，以前我在安装这个的时候，通过的是脚本传递参数的方式，这里介绍的是原生的控制方式，这个方式更好</p>
-<p>以安装mariadb-server-5.5为例</p>
-<h3 id="1、查询需要应答的问题">1、查询需要应答的问题</h3><p>首先通过命令查询这个软件需要问答什么问题<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@mytest:/var/cache/apt/archives<span class="comment"># debconf-show mariadb-server-5.5 </span></span><br><span class="line">* mysql-server/root_password: (password omitted)</span><br><span class="line">* mysql-server/root_password_again: (password omitted)</span><br><span class="line">  mysql-server/password_mismatch:</span><br><span class="line">  mysql-server/error_setting_password:</span><br><span class="line">* mariadb-server/oneway_migration: <span class="literal">true</span></span><br><span class="line">  mysql-server-<span class="number">5.5</span>/nis_warning:</span><br><span class="line">  mysql-server-<span class="number">5.5</span>/postrm_remove_databases: <span class="literal">false</span></span><br><span class="line">  mariadb-server-<span class="number">5.5</span>/really_downgrade: <span class="literal">false</span></span><br><span class="line">  mysql-server/no_upgrade_when_using_ndb:</span><br></pre></td></tr></table></figure></p>]]>
-    
-    </summary>
-    
-      <category term="ubuntu" scheme="http://www.zphj1987.com/tags/ubuntu/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[磨磨谈 ceph-users 邮件列表之Vol-1-Issue-1(完结)]]></title>
-    <link href="http://www.zphj1987.com/2016/01/25/%E7%A3%A8%E7%A3%A8%E8%B0%88-ceph-users-%E9%82%AE%E4%BB%B6%E5%88%97%E8%A1%A8%E4%B9%8BVol-1-Issue-1/"/>
-    <id>http://www.zphj1987.com/2016/01/25/磨磨谈-ceph-users-邮件列表之Vol-1-Issue-1/</id>
-    <published>2016-01-24T16:06:58.000Z</published>
-    <updated>2016-02-24T13:46:45.097Z</updated>
-    <content type="html"><![CDATA[<p>关于归档方式本来开始准备采用邮件列表的vol和issue的方式，但是因为issue里面是以天为单位，而里面的问题可能是重复的，这个不好进行规整了，那么在我这里，准备以Thread的方式，每个Issue里面包含5个问题，每10个issue为一个vol，进行规整，以2016年开始为起点，前后去收集，会记录问题提问者和发起问题的时间</p>
-<h2 id="前言：">前言：</h2><p>一个技术的邮件列表其实是个大宝藏，看你怎么去挖掘它了，里面有太多的灵光一现，太多的大牛的引导，而我等也只能在某些出现问题的时候，去搜索的时候，才发现这些问题是很多人遇到过的，最近看到一个技术人说的一句话深有同感,意思是说，很多时候我们花精力重复解决问题</p>
-<ul>
-<li>一流的公司在从整体上去解决一批的问题</li>
-<li>二流的公司在一次又一次解决相同的问题</li>
-</ul>
-<p>与其等待别人去整理，还不如自己去做这个事情，没有压力，没有人催促，最后自己还能有所收获，何乐而不为，这个系列我会去将邮件列表的里面的内容进行整理，提出我个人的处理办法或者方式，或者总结一下里面别人的经验，这个系列将以现在的时间线往前和往后的方式进行整理，这个会是一个很长的过程，希望尽量的获取更多的东西，文档格式尽量保持一致</p>
-<a id="more"></a>
-<h3 id="一、今天的_Topics:">一、今天的 Topics:</h3><ul>
-<li>journal encryption with dmcrypt （Date: Fri, 22 Jan 2016 20:35:46 +0000）</li>
-<li>CephFS</li>
-<li>ceph fuse closing stale session while still operable</li>
-<li>inkscope version 1.3.1  </li>
-<li>Ceph monitors 100% full filesystem, refusing start</li>
-</ul>
-<hr>
-<h3 id="二、涉及问题：">二、涉及问题：</h3><ul>
-<li>osd分区加密</li>
-<li>文件系统加密挂载问题</li>
-<li>ceph-fuse写入僵住的问题</li>
-<li>inkscope发布了新版本</li>
-<li>monitor的文件系统磁盘满了无法启动的问题</li>
-</ul>
-<h3 id="三、问题解析">三、问题解析</h3><h4 id="问题一：">问题一：</h4><p>journal encryption with dmcrypt （Reno Rainz）</p>
-<h5 id="问题原文：">问题原文：</h5><p>I’m trying to setup a cluster with encryption on osd data and journal.<br>To do  that I use ceph-deploy with this 2 options —dmcrypt<br>—dmcrypt-key-dir on /dev/sdc disk.<br>……</p>
-<h5 id="分析：">分析：</h5><p>问题的提出者试图在部署osd的时候使用 encryption 对 osd 进行加密,在用 ceph-deploy 的时候，部署的时候出现了失败</p>
-<h5 id="总结：">总结：</h5><p>这个地方是因为 ceph-deploy 在进行 activate 操作的时候，把这个加密分区当做了 crypto_LUKS 分区格式进行了 mount 操作，这个肯定是不能成功的，因为这个加密盘是需要进行映射操作的，这里缺少了这个操作，不清楚是需要加其他的参数还是怎样，这个地方可以通过其他方式进行处理</p>
-<p>在进行 ceph-deploy osd prepare 操作的时候，可以查看看到有一行这个，这个中间的 f6244401-c848-42d1-9096-9a3ee5a136e9 即为 osd 的 fsid<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Running <span class="built_in">command</span>: /usr/sbin/cryptsetup --batch-mode --key-file /root/keydir/f6244401-c848-<span class="number">42</span>d1-<span class="number">9096</span>-<span class="number">9</span>a3ee5a136e9.luks.key luksFormat /dev/sdd1</span><br></pre></td></tr></table></figure></p>
-<p>等待osd prepare 操作做完了以后，就进行下面的操作</p>
-<p>1、进行磁盘的映射<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cryptsetup --key-file /root/keydir/f6244401-c848-<span class="number">42</span>d1-<span class="number">9096</span>-<span class="number">9</span>a3ee5a136e9.luks.key luksOpen /dev/sdd1 f6244401-c848-<span class="number">42</span>d1-<span class="number">9096</span>-<span class="number">9</span>a3ee5a136e9</span><br></pre></td></tr></table></figure></p>
-<p>2、进行osd的激活<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph-deploy osd activate /dev/mapper/f6244401-c848-<span class="number">42</span>d1-<span class="number">9096</span>-<span class="number">9</span>a3ee5a136e9</span><br></pre></td></tr></table></figure></p>
-<p>这样就可以了</p>
-<p>另外：<br>取消映射的操作是<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cryptsetup remove f6244401-c848-<span class="number">42</span>d1-<span class="number">9096</span>-<span class="number">9</span>a3ee5a136e9</span><br></pre></td></tr></table></figure></p>
-<h4 id="问题二：">问题二：</h4><p>ceph fuse closing stale session while still   operable （Oliver Dzombic）</p>
-<h5 id="问题原文：-1">问题原文：</h5><p>Hi,<br>i am testing on centos 6 x64 minimal install.<br>i am mounting successfully:<br>ceph-fuse -m 10.0.0.1:6789,10.0.0.2:6789,10.0.0.3:6789,10.0.0.4:6789<br>/ceph-storage/<br>……</p>
-<h5 id="分析：-1">分析：</h5><p>问题的提出者在使用ceph-fuse去挂载集群的时候，写入一个大文件的时候出现无法写入的问题，在mds的日志当中可以看到<br>closing stale session client.21176728 10.0.0.91:0/1635 after 301.302291 的日志信息</p>
-<p>从日志检查过程看<br>ceph -s 出现了  62 requests are blocked &gt; 32 sec<br>问题提出者在认证的时候，出现了语法错误 ceph auth list showed 可以检查，后经修改，还是问题一样</p>
-<p>查看客户端的请求：<br>ceph daemon /var/run/ceph/ceph-client.admin.asok objecter_requests<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="string">"ops"</span>: [</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="string">"tid"</span>: <span class="number">12</span>,</span><br><span class="line">            <span class="string">"pg"</span>: <span class="string">"6.7230bd94"</span>,</span><br><span class="line">            <span class="string">"osd"</span>: <span class="number">1</span>,</span><br><span class="line">            <span class="string">"object_id"</span>: <span class="string">"10000000017.00000004"</span>,</span><br><span class="line">            <span class="string">"object_locator"</span>: <span class="string">"@6"</span>,</span><br><span class="line">            <span class="string">"target_object_id"</span>: <span class="string">"10000000017.00000004"</span>,</span><br><span class="line">            <span class="string">"target_object_locator"</span>: <span class="string">"@6"</span>,</span><br><span class="line">            <span class="string">"paused"</span>: <span class="number">0</span>,</span><br><span class="line">            <span class="string">"used_replica"</span>: <span class="number">0</span>,</span><br><span class="line">            <span class="string">"precalc_pgid"</span>: <span class="number">0</span>,</span><br><span class="line">            <span class="string">"last_sent"</span>: <span class="string">"2016-01-22 23:11:28.788800"</span>,</span><br><span class="line">            <span class="string">"attempts"</span>: <span class="number">95</span>,</span><br><span class="line">            <span class="string">"snapid"</span>: <span class="string">"head"</span>,</span><br><span class="line">            <span class="string">"snap_context"</span>: <span class="string">"1=[]"</span>,</span><br><span class="line">            <span class="string">"mtime"</span>: <span class="string">"2016-01-21 23:41:18.001327"</span>,</span><br><span class="line">            <span class="string">"osd_ops"</span>: [</span><br><span class="line">                <span class="string">"write 0~4194304 [5@0]"</span></span><br><span class="line">            ]</span><br></pre></td></tr></table></figure></p>
-<p>其中<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="string">"attempts"</span>: <span class="number">95</span>,</span><br></pre></td></tr></table></figure></p>
-<p>这个可以说明请求了95次还没有回应，从这个分析，应该是问题提出者的环境中的某个osd出现了问题，阻塞了请求</p>
-<h5 id="总结：-1">总结：</h5><p>在无法写入的时候，可以查看下客户端的sock去查看哪个请求被阻塞了，然后去排查对应的osd即可</p>
-<h4 id="问题三：">问题三：</h4><p>CephFS（James Gallagher）</p>
-<h5 id="问题原文">问题原文</h5><p>Hi,<br>I’m looking to implement the CephFS on my Firefly release (v0.80) with an XFS native file system, but so far I’m having some difficulties. After following the ceph/qsg and creating a storage cluster, I have the following topology<br>……</p>
-<h5 id="分析：-2">分析：</h5><p>问题提出者在配置了 auth 后，在客户端进行cephfs 挂载的时候，报了文件系统的错误，这个原因是问题提出者没有弄清楚 auth 的格式，而用了主机名去替代了用户名称</p>
-<p>这个地方是在server端去创建用户<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph auth get-or-create client.zp mon <span class="string">'allow *'</span> mds <span class="string">'allow *'</span> osd <span class="string">'allow *'</span></span><br></pre></td></tr></table></figure></p>
-<p>找到认证的key<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph auth list</span><br></pre></td></tr></table></figure></p>
-<p>然后在客户端挂载的格式为<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mount -t ceph <span class="number">192.168</span>.<span class="number">8.106</span>:<span class="number">6789</span>:/ /mnt -o name=zp,secret=&#123;secretkey&#125;</span><br></pre></td></tr></table></figure></p>
-<p>这样就完成了认证模式下的挂载</p>
-<h5 id="总结:">总结:</h5><p>在ceph的一些操作中，需要弄清楚里面的操作的格式问题，不然会出现一些很奇怪的问题</p>
-<h4 id="问题四：">问题四：</h4><p>inkscope version 1.3.1 </p>
-<h5 id="问题原文-1">问题原文</h5><p>Hi,<br> We are  glad to announce the  version 1.3.1 of inkscope.<br> you have a  description of this version at <a href="http://inkscope.blogspot.fr/" target="_blank" rel="external">http://inkscope.blogspot.fr/</a>,<br> the github projet: <a href="https://github.com/inkscope/inkscope-packaging" target="_blank" rel="external">https://github.com/inkscope/inkscope-packaging</a><br>  This version has been tested with Firefly, Hammer et Infernalis.<br>……</p>
-<h5 id="分析：-3">分析：</h5><p>这个是inkscope的作者在发布了新版本后发送到了ceph的邮件列表，增加了一些新的功能，这个地方将单独用一篇文章介绍这个地方的安装<br>链接如下：</p>
-<h5 id="总结">总结</h5><p>邮件列表不光是提问题的地方，还有一些优秀的资源的发布的作者也可以发布上去</p>
-<h4 id="问题五：">问题五：</h4><p>Ceph monitors 100% full filesystem, refusing start</p>
-<h5 id="问题原文-2">问题原文</h5><p>I have an issue with a (not in production!) Ceph cluster which I’m<br>trying to resolve.</p>
-<h5 id="分析：-4">分析：</h5><p>这是作者在使用多个mon的时候，数据出现了磁盘满的情况，然后重启mon进行压缩的时候，发现这个到了mon的最小空间阀值无法启动，然后就无法压缩，这个问题，还是因为对硬件的不重视，对软件的要求不清楚造成的</p>
-<h5 id="解决办法：">解决办法：</h5><p>mon的磁盘空间加大，这个在PB级别的集群中更需要重视这个问题，特别是在集群频繁的读写，或者pg变化比较多，osd变化比较多的情况下，这个数据量将是很大的，因为里面是用了leveldb的数据库，并且多个mon之间是需要同步的数据的，然后各自再做compact的操作，所以建议如下：<br>1、mon的数据分区需要是ssd的，加快数据的读写速度<br>2、mon的数据分区要100G以上，建议是150G，mon数据大概在80G左右后不会再大量的增长<br>3、在mon的参数中加入启动压缩的参数 mon_compact_on_start = false 和 mon_compact_on_bootstrap = false<br>4、尽量不要做在线的compact，这个是一个锁死的过程，此时mon会停止响应，可以采取重启的方式<br>5、mon的分区中dd 一个4G 左右的大文件，防止真的出现写满的情况下，再去重启进程的时候，好有空间可以释放<br>如果能按上面的几个操作去配置集群，关于mon的磁盘满的问题基本可以避免或者解决</p>
-<h5 id="总结：-2">总结：</h5><p>关键的地方不要省配置，准备的越多，出问题的概率越小</p>
-<hr>
-<p>文档最后更新时间：<br>2016年01月28日 </p>
-<p>欢迎打赏 and tell me</p>
-<div style="text-align:center" markdown="1"><br><img src="http://7xo9we.com1.z0.glb.clouddn.com/payforzp.png" alt="pay"><br></div>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>关于归档方式本来开始准备采用邮件列表的vol和issue的方式，但是因为issue里面是以天为单位，而里面的问题可能是重复的，这个不好进行规整了，那么在我这里，准备以Thread的方式，每个Issue里面包含5个问题，每10个issue为一个vol，进行规整，以2016年开始为起点，前后去收集，会记录问题提问者和发起问题的时间</p>
-<h2 id="前言：">前言：</h2><p>一个技术的邮件列表其实是个大宝藏，看你怎么去挖掘它了，里面有太多的灵光一现，太多的大牛的引导，而我等也只能在某些出现问题的时候，去搜索的时候，才发现这些问题是很多人遇到过的，最近看到一个技术人说的一句话深有同感,意思是说，很多时候我们花精力重复解决问题</p>
-<ul>
-<li>一流的公司在从整体上去解决一批的问题</li>
-<li>二流的公司在一次又一次解决相同的问题</li>
-</ul>
-<p>与其等待别人去整理，还不如自己去做这个事情，没有压力，没有人催促，最后自己还能有所收获，何乐而不为，这个系列我会去将邮件列表的里面的内容进行整理，提出我个人的处理办法或者方式，或者总结一下里面别人的经验，这个系列将以现在的时间线往前和往后的方式进行整理，这个会是一个很长的过程，希望尽量的获取更多的东西，文档格式尽量保持一致</p>]]>
-    
-    </summary>
-    
-      <category term="momotan" scheme="http://www.zphj1987.com/tags/momotan/"/>
     
   </entry>
   

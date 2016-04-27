@@ -186,6 +186,117 @@ var _hmt = _hmt || [];
 </nav>
       <div class="body-wrap">
   
+    <article id="post-用rsync备份一台linux服务器上的数据" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/03/22/用rsync备份一台linux服务器上的数据/" class="article-date">
+  	<time datetime="2015-03-22T08:53:33.000Z" itemprop="datePublished">2015-03-22</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/03/22/用rsync备份一台linux服务器上的数据/">用rsync备份一台linux服务器上的数据</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>rsync是安装完linux后都会自带的,在机器上运行rsync命令看是否有安装即可</p>
+<h2 id="备份到远程服务器">备份到远程服务器</h2><p>这里介绍的rsync的用途是备份一台linux服务器上的数据到另外一台机器</p>
+<h3 id="环境">环境</h3><p>将需要备份机器叫做服务器端  (192.168.0.195)<br>将备份后数据存放机器叫做客户端 (192.168.0.196)</p>
+<h3 id="配置">配置</h3><h4 id="1-服务器端的配置:">1.服务器端的配置:</h4><p>这里是准备备份/chinfotech/kernel/zp/这个目录,修改配置文件</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">vim /etc/rsyncd.conf (没有就创建)</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2015/03/22/用rsync备份一台linux服务器上的数据/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-修改ssh的默认22端口，并使用scp的方法" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/03/22/修改ssh的默认22端口，并使用scp的方法/" class="article-date">
+  	<time datetime="2015-03-22T08:49:01.000Z" itemprop="datePublished">2015-03-22</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/03/22/修改ssh的默认22端口，并使用scp的方法/">修改ssh的默认22端口，并使用scp的方法</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>修改默认的22的ssh端口只需要修改 /etc/ssh/sshd_config 中的 port 字段为你想要的端口就可以了<br>以后用其他机器ssh登录这台机器只需要:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ssh -p (port)  (ip)</span><br></pre></td></tr></table></figure></p>
+<p>使用scp 就是:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">scp -P (port) /usr/myfile   IP:/tmp</span><br></pre></td></tr></table></figure></p>
+<p>写于: 2012年05月05日<br>更新于: 2015年03月02日</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-debian修改crontab默认编辑器为vim" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -632,122 +743,9 @@ var _hmt = _hmt || [];
 
 
   
-    <article id="post-系统运行后修改linux系统时区" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/03/22/系统运行后修改linux系统时区/" class="article-date">
-  	<time datetime="2015-03-22T07:43:22.000Z" itemprop="datePublished">2015-03-22</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/03/22/系统运行后修改linux系统时区/">系统运行后修改linux系统时区</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>在网上看了很多改时间的帖子,都没能最终解决问题。最后还是下面的博客最终解决的时间的问题,感谢原作者<br>安装系统过程时没有选对当前的时区,即CST,Asia/Shanghai,而是按默认的，EDT时区,这样跟我们的系统就都对不上,因此得改回CST,仔细琢磨一下,方法如下:</p>
-<p>更改/etc/timezone里面的内容为:Asia/Shanghai</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ mv /etc/localtime /etc/localtime-bk</span><br><span class="line">$ cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime</span><br></pre></td></tr></table></figure>
-<p>再用命令date看一下,就是我们要的CST。</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/03/22/系统运行后修改linux系统时区/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-更新租约和检测数据完整性脚本" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/03/22/更新租约和检测数据完整性脚本/" class="article-date">
-  	<time datetime="2015-03-22T07:37:55.000Z" itemprop="datePublished">2015-03-22</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/03/22/更新租约和检测数据完整性脚本/">更新租约和检测数据完整性脚本</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>这个是针对tahoe这个文件系统做的一个更新租约和检查数据完整性的脚本,并且把结果保存下来,先要把所有的caps保存到一个文本当中<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">#! /bin/sh&#10;   a=$(cat /home/cap-list.txt |wc -l)&#10;   c=`date`&#10;   echo $a&#10;   for((i=1;i&#60;=a;i++))&#10;   do&#10;       b=$( head -$i /home/cap-list.txt |tail -1)&#10;       echo $b &#62;&#62; /home/checktime.txt&#10;       echo &#34;start time:&#34; &#62;&#62; /home/checktime.txt&#10;       echo `date` &#62;&#62; /home/checktime.txt&#10;       tahoe deep-check --add-lease --repair --dir-cap=$b &#62;&#62; /home/checktime.txt&#10;       echo &#34;end time:&#34; &#62;&#62; /home/checktime.txt&#10;       echo `date` &#62;&#62; /home/checktime.txt&#10;   done&#10;   d=`date`&#10;   echo $c &#62;&#62; /home/checktime.txt&#10;   echo $d &#62;&#62; /home/checktime.txt</span><br></pre></td></tr></table></figure></p>
-<p>写于: 2012年4月14日<br>更新于: 2015年03月22日</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/脚本/">脚本</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/page/10/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="page-number" href="/page/10/">10</a><span class="page-number current">11</span><a class="page-number" href="/page/12/">12</a><a class="page-number" href="/page/13/">13</a><a class="extend next" rel="next" href="/page/12/">Next &raquo;</a>
+      <a class="extend prev" rel="prev" href="/page/10/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="page-number" href="/page/10/">10</a><span class="page-number current">11</span><a class="page-number" href="/page/12/">12</a><a class="page-number" href="/page/13/">13</a><a class="page-number" href="/page/14/">14</a><a class="extend next" rel="next" href="/page/12/">Next &raquo;</a>
     </nav>
   
 </div>

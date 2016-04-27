@@ -3,40 +3,27 @@
 <head>
   <meta charset="utf-8">
   
-  <title>mon的稳定性问题 | zphj1987&#39;Blog</title>
+  <title>性能数据的可视化 | zphj1987&#39;Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="MON的稳定性问题：
-mon的选举风暴影响客户端IO
-LevelDB的暴涨
-频繁的客户端请求的DDOS
+  <meta name="description" content="在工作当中，很多时候我们在去分析一个性能的时候，会产生大量的数据，面对数据的时候我们一般应该会有以下几个处理过程
 
-mon选举风暴：monmap会因为mon之间或者mon与客户端之间网络的影响或者消息传递的异常发生变化,从而触发选举会造成客户端的请求变慢或者锁住
-LevelDB的暴涨：LevelDB的大小会涨到几十GB然后影响了osd的请求会造成客户端的请求变慢或者锁住
-频繁的客户端请求的DDOS：mon的">
+直接肉眼看这个属于第一个级别，比如监控系统负载的时候去用top观察，这个方法是我最开始经常使用的一种方法，这个适合异常的时候使用，但是实际上获取的数据是有偏差的
+有监控系统使用数据监控系统对需要监控的数据进行监控，这个前提是有一个监控系统，并且方便的去增加数据，可以根据需求去设定数据">
 <meta property="og:type" content="article">
-<meta property="og:title" content="mon的稳定性问题">
-<meta property="og:url" content="http://www.zphj1987.com/2016/04/25/mon的稳定性问题/index.html">
+<meta property="og:title" content="性能数据的可视化">
+<meta property="og:url" content="http://www.zphj1987.com/2016/04/27/性能数据的可视化/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
-<meta property="og:description" content="MON的稳定性问题：
-mon的选举风暴影响客户端IO
-LevelDB的暴涨
-频繁的客户端请求的DDOS
+<meta property="og:description" content="在工作当中，很多时候我们在去分析一个性能的时候，会产生大量的数据，面对数据的时候我们一般应该会有以下几个处理过程
 
-mon选举风暴：monmap会因为mon之间或者mon与客户端之间网络的影响或者消息传递的异常发生变化,从而触发选举会造成客户端的请求变慢或者锁住
-LevelDB的暴涨：LevelDB的大小会涨到几十GB然后影响了osd的请求会造成客户端的请求变慢或者锁住
-频繁的客户端请求的DDOS：mon的">
-<meta property="og:image" content="http://static.zybuluo.com/zphj1987/yjdvldb3xyxl84bwlc3cjaxw/leveldb.png">
-<meta property="og:image" content="http://static.zybuluo.com/zphj1987/fi2557g55ucsdpyblopyfudl/newpay.png">
+直接肉眼看这个属于第一个级别，比如监控系统负载的时候去用top观察，这个方法是我最开始经常使用的一种方法，这个适合异常的时候使用，但是实际上获取的数据是有偏差的
+有监控系统使用数据监控系统对需要监控的数据进行监控，这个前提是有一个监控系统，并且方便的去增加数据，可以根据需求去设定数据">
+<meta property="og:image" content="http://static.zybuluo.com/zphj1987/ixyicn1b5ps5m3x380nsbpz1/chart.png">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="mon的稳定性问题">
-<meta name="twitter:description" content="MON的稳定性问题：
-mon的选举风暴影响客户端IO
-LevelDB的暴涨
-频繁的客户端请求的DDOS
+<meta name="twitter:title" content="性能数据的可视化">
+<meta name="twitter:description" content="在工作当中，很多时候我们在去分析一个性能的时候，会产生大量的数据，面对数据的时候我们一般应该会有以下几个处理过程
 
-mon选举风暴：monmap会因为mon之间或者mon与客户端之间网络的影响或者消息传递的异常发生变化,从而触发选举会造成客户端的请求变慢或者锁住
-LevelDB的暴涨：LevelDB的大小会涨到几十GB然后影响了osd的请求会造成客户端的请求变慢或者锁住
-频繁的客户端请求的DDOS：mon的">
+直接肉眼看这个属于第一个级别，比如监控系统负载的时候去用top观察，这个方法是我最开始经常使用的一种方法，这个适合异常的时候使用，但是实际上获取的数据是有偏差的
+有监控系统使用数据监控系统对需要监控的数据进行监控，这个前提是有一个监控系统，并且方便的去增加数据，可以根据需求去设定数据">
   
     <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
   
@@ -207,11 +194,11 @@ var _hmt = _hmt || [];
 		</header>				
 	</div>
 </nav>
-      <div class="body-wrap"><article id="post-mon的稳定性问题" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-性能数据的可视化" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2016/04/25/mon的稳定性问题/" class="article-date">
-  	<time datetime="2016-04-25T15:36:28.000Z" itemprop="datePublished">2016-04-25</time>
+      <a href="/2016/04/27/性能数据的可视化/" class="article-date">
+  	<time datetime="2016-04-27T15:25:03.000Z" itemprop="datePublished">2016-04-27</time>
 </a>
     </div>
   
@@ -224,7 +211,7 @@ var _hmt = _hmt || [];
         
   
     <h1 class="article-title" itemprop="name">
-      mon的稳定性问题
+      性能数据的可视化
     </h1>
   
 
@@ -244,25 +231,23 @@ var _hmt = _hmt || [];
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h3 id="MON的稳定性问题：">MON的稳定性问题：</h3><ul>
-<li>mon的选举风暴影响客户端IO</li>
-<li>LevelDB的暴涨</li>
-<li>频繁的客户端请求的DDOS</li>
+        <p>在工作当中，很多时候我们在去分析一个性能的时候，会产生大量的数据，面对数据的时候我们一般应该会有以下几个处理过程</p>
+<ul>
+<li>直接肉眼看<br>这个属于第一个级别，比如监控系统负载的时候去用top观察，这个方法是我最开始经常使用的一种方法，这个适合异常的时候使用，但是实际上获取的数据是有偏差的</li>
+<li>有监控系统<br>使用数据监控系统对需要监控的数据进行监控，这个前提是有一个监控系统，并且方便的去增加数据，可以根据需求去设定数据，这个监控系统有很多，能可视化的也很多，这篇文章就不做介绍</li>
+<li>使用监控脚本采集数据，采用excel进行可视化<br>使用脚本收集大量的数据，然后将数据导入到excel当中，然后显示出来，这个是我们公司测试人员采用的方法，也是比较容易实现的一个方式</li>
 </ul>
-<h4 id="mon选举风暴：">mon选举风暴：</h4><p>monmap会因为mon之间或者mon与客户端之间网络的影响或者消息传递的异常发生变化,从而触发选举<br>会造成客户端的请求变慢或者锁住</p>
-<h4 id="LevelDB的暴涨：">LevelDB的暴涨：</h4><p>LevelDB的大小会涨到几十GB然后影响了osd的请求<br>会造成客户端的请求变慢或者锁住</p>
-<h4 id="频繁的客户端请求的DDOS：">频繁的客户端请求的DDOS：</h4><p>mon的响应因为levelDB变慢或者选举风暴，都会造成客户端发出大量的消息流<br>让客户端操作失效，包括卷创建，rbd的连接</p>
 <a id="more"></a>
-<h3 id="解决办法：">解决办法：</h3><h4 id="LevelDB的暴涨的问题解决办法">LevelDB的暴涨的问题解决办法</h4><p>升级ceph的版本，这个在0.94.6版本解决了这个问题<br><img src="http://static.zybuluo.com/zphj1987/yjdvldb3xyxl84bwlc3cjaxw/leveldb.png" alt="leveldb.png-21.9kB"></p>
-<h4 id="选举风暴问题解决办法">选举风暴问题解决办法</h4><blockquote>
-<p>[mon]<br>mon_lease = 20 (default = 5)<br>mon_lease_renew_interval = 12 (default 3)<br>mon_lease_ack_timeout = 40 (default 10)<br>mon_accept_timeout = 40 (default 10)<br>[client]<br>mon_client_hunt_interval = 40 (defaiult 3)</p>
-</blockquote>
-<p>将mon的数据放置在ssd上，因为LevelDB存储了集群的 metadata,包括 osdmap, pgmap, monmap,clientID, authID etc 等等，很大的leveldb会有更长的查询时间，更长的IO等待，然后就是更慢的客户端请求</p>
-<p>这个地方是增长了mon之间判断需要切换的时间，降低客户端的请求的频率，使用ssd加快查询的速度</p>
-<hr>
-<p>这个问题是一个不太容易发觉的问题，有时候就是ceph -s反应的很慢，但是很多时候可能体现的就是客户端出现请求缓慢，然后还找不到原因，所以说硬件的隔离是非常有必要的，不要为了省成本然后影响了整个环境的稳定性和性能，对于很大的环境mon需要用三台独立的机器，这个机器需要一定的内存和cpu，磁盘使用ssd，1U服务器就可以了，上面可以运行一些其他类似管理平台，或者一些监控服务什么的，混合在osd的机器上的时候，一旦OSD出现大量的数据迁移的时候，或者大量的请求的时候，会阻塞了消息，这个就是做方案的时候需要考虑的问题，当然在性能要求不那么高的时候将mon混合在osd上使用也是可以的，这个时候尽量有更多的内存和更好的磁盘性能也能减少一些负担</p>
-<h3 id="打赏通道">打赏通道</h3><center><br><img src="http://static.zybuluo.com/zphj1987/fi2557g55ucsdpyblopyfudl/newpay.png" alt="打赏" title="打赏"><br></center>
-
+<p>也可能还有其他的方法，总之一图胜千言，通过图形来展示数据，会获取到更多的信息，我也一直在寻找一些方案来方便的展示数据，从目前的监控系统来看，一般的实现方法都是</p>
+<ul>
+<li>数据采集到数据库</li>
+<li>使用图形展示数据库中间的问题</li>
+</ul>
+<p>我现在需要的一个功能就是，使用一个采集工具将数据收集起来，然后直接将数据输出为图片，这个图片的渲染是可以根据我的需要进行定制的，最近在研究web自动化测试的发现可以有办法对html进行渲染成图片，想到这个地方可以跟这个地方进行结合</p>
+<p>这里的思路是使用html+highchart方式进行数据的渲染，然后将页面导出成图片，最终做成一个简单的数据展示工具，并且为其他地方的提供数据图片</p>
+<p>下面是这个工具渲染的图片效果：</p>
+<p><img src="http://static.zybuluo.com/zphj1987/ixyicn1b5ps5m3x380nsbpz1/chart.png" alt=""></p>
+<p>可以根据自己的需要去显示数据，后续会记录方法，这里暂时只记录一个思路</p>
 
       
     </div>
@@ -272,7 +257,7 @@ var _hmt = _hmt || [];
     
 <nav id="article-nav">
   
-    <a href="/2016/04/27/性能数据的可视化/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2016/04/27/测试数据的可视化/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption"><</strong>
       <div class="article-nav-title">
         
@@ -282,8 +267,8 @@ var _hmt = _hmt || [];
     </a>
   
   
-    <a href="/2016/04/24/backfill和recovery的最优值/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">backfill和recovery的最优值</div>
+    <a href="/2016/04/25/mon的稳定性问题/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">mon的稳定性问题</div>
       <strong class="article-nav-caption">></strong>
     </a>
   
@@ -312,7 +297,7 @@ var _hmt = _hmt || [];
 
 <div class="duoshuo">
 	<!-- 多说评论框 start -->
-	<div class="ds-thread" data-thread-key="mon的稳定性问题" data-title="mon的稳定性问题" data-url="http://www.zphj1987.com/2016/04/25/mon的稳定性问题/"></div>
+	<div class="ds-thread" data-thread-key="性能数据的可视化" data-title="性能数据的可视化" data-url="http://www.zphj1987.com/2016/04/27/性能数据的可视化/"></div>
 	<!-- 多说评论框 end -->
 	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 	<script type="text/javascript">
