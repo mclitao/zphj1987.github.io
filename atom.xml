@@ -4,7 +4,7 @@
   <subtitle><![CDATA[现在所学，终有所用]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2016-04-27T15:56:12.515Z</updated>
+  <updated>2016-04-27T16:04:32.585Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -13,36 +13,6 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
-  
-  <entry>
-    <title><![CDATA[性能数据的可视化]]></title>
-    <link href="http://www.zphj1987.com/2016/04/27/%E6%B5%8B%E8%AF%95%E6%95%B0%E6%8D%AE%E7%9A%84%E5%8F%AF%E8%A7%86%E5%8C%96/"/>
-    <id>http://www.zphj1987.com/2016/04/27/测试数据的可视化/</id>
-    <published>2016-04-27T15:25:03.000Z</published>
-    <updated>2016-04-27T15:56:12.515Z</updated>
-    <content type="html"><![CDATA[<p>在工作当中，很多时候我们在去分析一个性能的时候，会产生大量的数据，面对数据的时候我们一般应该会有以下几个处理过程</p>
-<ul>
-<li>直接肉眼看<br>这个属于第一个级别，比如监控系统负载的时候去用top观察，这个方法是我最开始经常使用的一种方法，这个适合异常的时候使用，但是实际上获取的数据是有偏差的</li>
-<li>有监控系统<br>使用数据监控系统对需要监控的数据进行监控，这个前提是有一个监控系统，并且方便的去增加数据，可以根据需求去设定数据，这个监控系统有很多，能可视化的也很多，这篇文章就不做介绍</li>
-<li>使用监控脚本采集数据，采用excel进行可视化<br>使用脚本收集大量的数据，然后将数据导入到excel当中，然后显示出来，这个是我们公司测试人员采用的方法，也是比较容易实现的一个方式</li>
-</ul>
-<p>也可能还有其他的方法，总之一图胜千言，通过图形来展示数据，会获取到更多的信息，我也一直在寻找一些方案来方便的展示数据，从目前的监控系统来看，一般的实现方法都是</p>
-<ul>
-<li>数据采集到数据库</li>
-<li>使用图形展示数据库中间的问题</li>
-</ul>
-<p>我现在需要的一个功能就是，使用一个采集工具将数据收集起来，然后直接将数据输出为图片，这个图片的渲染是可以根据我的需要进行定制的，最近在研究web自动化测试的发现可以有办法对html进行渲染成图片，想到这个地方可以跟这个地方进行结合</p>
-<p>这里的思路是使用html+highchart方式进行数据的渲染，然后将页面导出成图片，最终做成一个简单的数据展示工具，并且为其他地方的提供数据图片</p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>在工作当中，很多时候我们在去分析一个性能的时候，会产生大量的数据，面对数据的时候我们一般应该会有以下几个处理过程</p>
-<ul>
-<li>直接肉眼看<br>这个属于第一个级别，比如监控系统负载的时候去用top观察，这个方法是我最开始经常使用的一种方法，这个适合异常的时候使]]>
-    </summary>
-    
-      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
-    
-  </entry>
   
   <entry>
     <title><![CDATA[性能数据的可视化]]></title>
@@ -1074,6 +1044,34 @@ var sogou_ad_width=728;
     </summary>
     
       <category term="监控" scheme="http://www.zphj1987.com/tags/%E7%9B%91%E6%8E%A7/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[ubuntu安装软件自动交互]]></title>
+    <link href="http://www.zphj1987.com/2016/01/27/ubuntu%E5%AE%89%E8%A3%85%E8%BD%AF%E4%BB%B6%E8%87%AA%E5%8A%A8%E4%BA%A4%E4%BA%92/"/>
+    <id>http://www.zphj1987.com/2016/01/27/ubuntu安装软件自动交互/</id>
+    <published>2016-01-27T08:26:30.000Z</published>
+    <updated>2016-01-27T08:38:59.526Z</updated>
+    <content type="html"><![CDATA[<p>在ubuntu下安装软件过程中可能会出现需要你输入密码或者其他的一些交互类的操作，这样在脚本安装的时候就可能出现阻断，这个在ubuntu里面已经考虑到了这个情况，以前我在安装这个的时候，通过的是脚本传递参数的方式，这里介绍的是原生的控制方式，这个方式更好</p>
+<p>以安装mariadb-server-5.5为例</p>
+<h3 id="1、查询需要应答的问题">1、查询需要应答的问题</h3><p>首先通过命令查询这个软件需要问答什么问题<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@mytest:/var/cache/apt/archives<span class="comment"># debconf-show mariadb-server-5.5 </span></span><br><span class="line">* mysql-server/root_password: (password omitted)</span><br><span class="line">* mysql-server/root_password_again: (password omitted)</span><br><span class="line">  mysql-server/password_mismatch:</span><br><span class="line">  mysql-server/error_setting_password:</span><br><span class="line">* mariadb-server/oneway_migration: <span class="literal">true</span></span><br><span class="line">  mysql-server-<span class="number">5.5</span>/nis_warning:</span><br><span class="line">  mysql-server-<span class="number">5.5</span>/postrm_remove_databases: <span class="literal">false</span></span><br><span class="line">  mariadb-server-<span class="number">5.5</span>/really_downgrade: <span class="literal">false</span></span><br><span class="line">  mysql-server/no_upgrade_when_using_ndb:</span><br></pre></td></tr></table></figure></p>
+<a id="more"></a>
+<p>这里可以看到需要处理的是密码的问题</p>
+<h3 id="2、执行命令传递参数进去">2、执行命令传递参数进去</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">debconf-set-selections &lt;&lt;&lt; <span class="string">'mariadb-server-5.5 mysql-server/root_password password 123456'</span></span><br><span class="line">debconf-set-selections &lt;&lt;&lt; <span class="string">'mariadb-server-5.5 mysql-server/root_password_again password 123456'</span></span><br></pre></td></tr></table></figure>
+<p>这个地方实际是把这个值记录到了这个地方,如果要修改可以覆盖或者删除即可<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@mytest:/var/cache/apt/archives<span class="comment"># cat /var/cache/debconf/passwords.dat</span></span><br><span class="line">Name: mysql-server/root_password</span><br><span class="line">Template: mysql-server/root_password</span><br><span class="line">Value: <span class="number">123456</span></span><br><span class="line">Owners: mariadb-server-<span class="number">5.5</span></span><br><span class="line">Flags: seen</span><br><span class="line"></span><br><span class="line">Name: mysql-server/root_password_again</span><br><span class="line">Template: mysql-server/root_password_again</span><br><span class="line">Value: <span class="number">123456</span></span><br><span class="line">Owners: mariadb-server-<span class="number">5.5</span></span><br><span class="line">Flags: seen</span><br></pre></td></tr></table></figure></p>
+<p>然后执行安装的操作：<br>修改环境变量（这一步不做也没看到有问题）<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">export</span> DEBIAN_FRONTEND=noninteractive</span><br></pre></td></tr></table></figure></p>
+<h3 id="3、安装相应的包">3、安装相应的包</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">dpkg -i mariadb-server-<span class="number">5.5</span>_5.<span class="number">5.46</span>-<span class="number">1</span>ubuntu0.<span class="number">14.04</span>.<span class="number">2</span>_amd64.deb</span><br></pre></td></tr></table></figure>
+<p>以上即为ubuntu下的deb包的自动应答的处理</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>在ubuntu下安装软件过程中可能会出现需要你输入密码或者其他的一些交互类的操作，这样在脚本安装的时候就可能出现阻断，这个在ubuntu里面已经考虑到了这个情况，以前我在安装这个的时候，通过的是脚本传递参数的方式，这里介绍的是原生的控制方式，这个方式更好</p>
+<p>以安装mariadb-server-5.5为例</p>
+<h3 id="1、查询需要应答的问题">1、查询需要应答的问题</h3><p>首先通过命令查询这个软件需要问答什么问题<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@mytest:/var/cache/apt/archives<span class="comment"># debconf-show mariadb-server-5.5 </span></span><br><span class="line">* mysql-server/root_password: (password omitted)</span><br><span class="line">* mysql-server/root_password_again: (password omitted)</span><br><span class="line">  mysql-server/password_mismatch:</span><br><span class="line">  mysql-server/error_setting_password:</span><br><span class="line">* mariadb-server/oneway_migration: <span class="literal">true</span></span><br><span class="line">  mysql-server-<span class="number">5.5</span>/nis_warning:</span><br><span class="line">  mysql-server-<span class="number">5.5</span>/postrm_remove_databases: <span class="literal">false</span></span><br><span class="line">  mariadb-server-<span class="number">5.5</span>/really_downgrade: <span class="literal">false</span></span><br><span class="line">  mysql-server/no_upgrade_when_using_ndb:</span><br></pre></td></tr></table></figure></p>]]>
+    
+    </summary>
+    
+      <category term="ubuntu" scheme="http://www.zphj1987.com/tags/ubuntu/"/>
     
   </entry>
   
