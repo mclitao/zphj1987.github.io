@@ -4,7 +4,7 @@
   <subtitle><![CDATA[现在所学，终有所用]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2016-05-07T09:59:48.576Z</updated>
+  <updated>2016-05-07T10:03:52.278Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="http://www.zphj1987.com/2016/05/07/calamari%E4%B8%8D%E6%94%AF%E6%8C%81ceph%E7%9A%84jewel%E7%89%88%E6%9C%AC/"/>
     <id>http://www.zphj1987.com/2016/05/07/calamari不支持ceph的jewel版本/</id>
     <published>2016-05-07T09:51:07.000Z</published>
-    <updated>2016-05-07T09:59:48.576Z</updated>
+    <updated>2016-05-07T10:03:52.278Z</updated>
     <content type="html"><![CDATA[<p>之前已经在0.94.x系列下进行了calamari的相关的打包和测试，基本没有太多问题，最近看到ceph发布了jewel的版本，想尝试下是否兼容，测试的结果是不兼容的</p>
 <p>从调试的信息来看，ceph在jewel版本下对输出做了很大的改动，其中第一条，配置完成后，面板都无法显示，这个里面是因为ceph把原来的mdsmap这个字段在输出的时候改成了fsmap，造成里面的接口识别不到，这个改动以后，又发现restapi接口里面的osd地方又报错了</p>
 <a id="more"></a>
@@ -32,6 +32,8 @@
 <p>从调试的信息来看，ceph在jewel版本下对输出做了很大的改动，其中第一条，配置完成后，面板都无法显示，这个里面是因为ceph把原来的mdsmap这个字段在输出的时候改成了fsmap，造成里面的接口识别不到，这个改动以后，又发现restapi接口里面的osd地方又报错了</p>]]>
     
     </summary>
+    
+      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
     
   </entry>
   
