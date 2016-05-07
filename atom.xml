@@ -4,7 +4,7 @@
   <subtitle><![CDATA[现在所学，终有所用]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2016-04-27T16:04:32.585Z</updated>
+  <updated>2016-05-07T09:57:43.380Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -13,6 +13,27 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[calamari不支持ceph的jewel版本]]></title>
+    <link href="http://www.zphj1987.com/2016/05/07/calamari%E4%B8%8D%E6%94%AF%E6%8C%81ceph%E7%9A%84jewel%E7%89%88%E6%9C%AC/"/>
+    <id>http://www.zphj1987.com/2016/05/07/calamari不支持ceph的jewel版本/</id>
+    <published>2016-05-07T09:51:07.000Z</published>
+    <updated>2016-05-07T09:57:43.380Z</updated>
+    <content type="html"><![CDATA[<p>之前已经在0.94.x系列下进行了calamari的相关的打包和测试，基本没有太多问题，最近看到ceph发布了jewel的版本，想尝试下是否兼容，测试的结果是不兼容的</p>
+<p>从调试的信息来看，ceph在jewel版本下对输出做了很大的改动，其中第一条，配置完成后，面板都无法显示，这个里面是因为ceph把原来的mdsmap这个字段在输出的时候改成了fsmap，造成里面的接口识别不到，这个改动以后，又发现restapi接口里面的osd地方又报错了</p>
+<a id="more"></a>
+<p>这个是管理接口的一些错误，系统信息的收集的地方diamond的接口也有改变</p>
+<p>所以在目录环境下，要么自己对calamari做大量的改动去兼容新版本，要么就是等待发布以后的新版本，从版本的发布频率来看，红帽并不重视calamari这一块了，似乎是为后面出的统一平台做准备，之前calamari是作为红帽官方版本发布出去的</p>
+<p>calmari在hammer版本下的使用还是不错了</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>之前已经在0.94.x系列下进行了calamari的相关的打包和测试，基本没有太多问题，最近看到ceph发布了jewel的版本，想尝试下是否兼容，测试的结果是不兼容的</p>
+<p>从调试的信息来看，ceph在jewel版本下对输出做了很大的改动，其中第一条，配置完成后，面板都无法显示，这个里面是因为ceph把原来的mdsmap这个字段在输出的时候改成了fsmap，造成里面的接口识别不到，这个改动以后，又发现restapi接口里面的osd地方又报错了</p>]]>
+    
+    </summary>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[性能数据的可视化]]></title>
@@ -1044,34 +1065,6 @@ var sogou_ad_width=728;
     </summary>
     
       <category term="监控" scheme="http://www.zphj1987.com/tags/%E7%9B%91%E6%8E%A7/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[ubuntu安装软件自动交互]]></title>
-    <link href="http://www.zphj1987.com/2016/01/27/ubuntu%E5%AE%89%E8%A3%85%E8%BD%AF%E4%BB%B6%E8%87%AA%E5%8A%A8%E4%BA%A4%E4%BA%92/"/>
-    <id>http://www.zphj1987.com/2016/01/27/ubuntu安装软件自动交互/</id>
-    <published>2016-01-27T08:26:30.000Z</published>
-    <updated>2016-01-27T08:38:59.526Z</updated>
-    <content type="html"><![CDATA[<p>在ubuntu下安装软件过程中可能会出现需要你输入密码或者其他的一些交互类的操作，这样在脚本安装的时候就可能出现阻断，这个在ubuntu里面已经考虑到了这个情况，以前我在安装这个的时候，通过的是脚本传递参数的方式，这里介绍的是原生的控制方式，这个方式更好</p>
-<p>以安装mariadb-server-5.5为例</p>
-<h3 id="1、查询需要应答的问题">1、查询需要应答的问题</h3><p>首先通过命令查询这个软件需要问答什么问题<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@mytest:/var/cache/apt/archives<span class="comment"># debconf-show mariadb-server-5.5 </span></span><br><span class="line">* mysql-server/root_password: (password omitted)</span><br><span class="line">* mysql-server/root_password_again: (password omitted)</span><br><span class="line">  mysql-server/password_mismatch:</span><br><span class="line">  mysql-server/error_setting_password:</span><br><span class="line">* mariadb-server/oneway_migration: <span class="literal">true</span></span><br><span class="line">  mysql-server-<span class="number">5.5</span>/nis_warning:</span><br><span class="line">  mysql-server-<span class="number">5.5</span>/postrm_remove_databases: <span class="literal">false</span></span><br><span class="line">  mariadb-server-<span class="number">5.5</span>/really_downgrade: <span class="literal">false</span></span><br><span class="line">  mysql-server/no_upgrade_when_using_ndb:</span><br></pre></td></tr></table></figure></p>
-<a id="more"></a>
-<p>这里可以看到需要处理的是密码的问题</p>
-<h3 id="2、执行命令传递参数进去">2、执行命令传递参数进去</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">debconf-set-selections &lt;&lt;&lt; <span class="string">'mariadb-server-5.5 mysql-server/root_password password 123456'</span></span><br><span class="line">debconf-set-selections &lt;&lt;&lt; <span class="string">'mariadb-server-5.5 mysql-server/root_password_again password 123456'</span></span><br></pre></td></tr></table></figure>
-<p>这个地方实际是把这个值记录到了这个地方,如果要修改可以覆盖或者删除即可<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@mytest:/var/cache/apt/archives<span class="comment"># cat /var/cache/debconf/passwords.dat</span></span><br><span class="line">Name: mysql-server/root_password</span><br><span class="line">Template: mysql-server/root_password</span><br><span class="line">Value: <span class="number">123456</span></span><br><span class="line">Owners: mariadb-server-<span class="number">5.5</span></span><br><span class="line">Flags: seen</span><br><span class="line"></span><br><span class="line">Name: mysql-server/root_password_again</span><br><span class="line">Template: mysql-server/root_password_again</span><br><span class="line">Value: <span class="number">123456</span></span><br><span class="line">Owners: mariadb-server-<span class="number">5.5</span></span><br><span class="line">Flags: seen</span><br></pre></td></tr></table></figure></p>
-<p>然后执行安装的操作：<br>修改环境变量（这一步不做也没看到有问题）<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">export</span> DEBIAN_FRONTEND=noninteractive</span><br></pre></td></tr></table></figure></p>
-<h3 id="3、安装相应的包">3、安装相应的包</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">dpkg -i mariadb-server-<span class="number">5.5</span>_5.<span class="number">5.46</span>-<span class="number">1</span>ubuntu0.<span class="number">14.04</span>.<span class="number">2</span>_amd64.deb</span><br></pre></td></tr></table></figure>
-<p>以上即为ubuntu下的deb包的自动应答的处理</p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>在ubuntu下安装软件过程中可能会出现需要你输入密码或者其他的一些交互类的操作，这样在脚本安装的时候就可能出现阻断，这个在ubuntu里面已经考虑到了这个情况，以前我在安装这个的时候，通过的是脚本传递参数的方式，这里介绍的是原生的控制方式，这个方式更好</p>
-<p>以安装mariadb-server-5.5为例</p>
-<h3 id="1、查询需要应答的问题">1、查询需要应答的问题</h3><p>首先通过命令查询这个软件需要问答什么问题<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@mytest:/var/cache/apt/archives<span class="comment"># debconf-show mariadb-server-5.5 </span></span><br><span class="line">* mysql-server/root_password: (password omitted)</span><br><span class="line">* mysql-server/root_password_again: (password omitted)</span><br><span class="line">  mysql-server/password_mismatch:</span><br><span class="line">  mysql-server/error_setting_password:</span><br><span class="line">* mariadb-server/oneway_migration: <span class="literal">true</span></span><br><span class="line">  mysql-server-<span class="number">5.5</span>/nis_warning:</span><br><span class="line">  mysql-server-<span class="number">5.5</span>/postrm_remove_databases: <span class="literal">false</span></span><br><span class="line">  mariadb-server-<span class="number">5.5</span>/really_downgrade: <span class="literal">false</span></span><br><span class="line">  mysql-server/no_upgrade_when_using_ndb:</span><br></pre></td></tr></table></figure></p>]]>
-    
-    </summary>
-    
-      <category term="ubuntu" scheme="http://www.zphj1987.com/tags/ubuntu/"/>
     
   </entry>
   
