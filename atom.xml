@@ -4,7 +4,7 @@
   <subtitle><![CDATA[现在所学，终有所用]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2016-05-07T10:03:52.278Z</updated>
+  <updated>2016-05-09T14:50:02.196Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -13,6 +13,51 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[如何开启内网的外网访问]]></title>
+    <link href="http://www.zphj1987.com/2016/05/09/%E5%A6%82%E4%BD%95%E5%BC%80%E5%90%AF%E5%86%85%E7%BD%91%E7%9A%84%E5%A4%96%E7%BD%91%E8%AE%BF%E9%97%AE/"/>
+    <id>http://www.zphj1987.com/2016/05/09/如何开启内网的外网访问/</id>
+    <published>2016-05-09T14:27:28.000Z</published>
+    <updated>2016-05-09T14:50:02.196Z</updated>
+    <content type="html"><![CDATA[<h3 id="为什么不要用QQ远程">为什么不要用QQ远程</h3><p>很多人在涉及到需要ssh远程的时候，第一印象应该就是QQ远程，这个是一般的普通用户都知道的方式，这个方式我为什么不推荐呢</p>
+<ul>
+<li>QQ是图形界面的远程，远程的操作在网络不好的时候很容易卡顿</li>
+<li>窗口大小无法自适应</li>
+<li>无法传递一些案件，比如需要Esc退出vim，变成了退出远程的最大话</li>
+<li>QQ远程适合帮助家里人处理一些界面上的小问题</li>
+</ul>
+<a id="more"></a>
+<h3 id="为什么使用Teamviver">为什么使用Teamviver</h3><p>那么还有什么替代么，相信有几年上班经验的人或者有过远程运维经验的人，都知道Teamviver，这个软件的出现，减少了多少的路途奔波，为什么推荐这个</p>
+<ul>
+<li>远程画面自适应</li>
+<li>方便传递文件</li>
+<li>方便开启守护模式，随时可以连接无需对方有人</li>
+<li>画面延时非常小</li>
+</ul>
+<p><a href="http://www.teamviewer.com/zhCN/" target="_blank" rel="external">Teamviver</a>下载链接<br>界面如下：<br><img src="http://static.zybuluo.com/zphj1987/f2k1n6th65unbijxpfj5dyvx/teamviver.png" alt="Teamviver"><br>适合远程的windows机器上正好有需要调试的应用的情况</p>
+<h3 id="还有谁？">还有谁？</h3><p>其实对于这种远程的软件，需要的是连接数，需要的流量并不大，国内在这一刻唯一有所作为的也就是花生壳了，在提供免费的同时也提供更高级的企业级别服务，当然一般情况下免费的也能满足我们的需求</p>
+<h4 id="长啥样？">长啥样？</h4><p><img src="http://static.zybuluo.com/zphj1987/tj157zs3zyiek4i697btrnvr/haushengke.png" alt="花生壳"><br>这个是最新的3.0版本的，安装包非常小，操作非常简单，比起以前刚开始用的时候优化了太多<br>下载地址：<a href="http://www.oray.com/activity/160302/?ici=act_160302&amp;icn=hsk_home-banner" target="_blank" rel="external">花生壳</a><br>点击内网映射就可以开启内网的端口映射了，根据注册的账号提供的免费域名和一个随机端口，就可以ssh到内网的指定的机器了，非常方便远程linux服务器的调试</p>
+<p>上面介绍了3种远程的软件，一般情况下，需要操作界面的就推荐使用teamviver,需要调试服务器的就推荐使用花生壳做端口映射，或者有固定的IP的时候，也可以直接做端口映射，这个看具体的需求了</p>
+<h3 id="打赏通道">打赏通道</h3><center><br><img src="http://static.zybuluo.com/zphj1987/fi2557g55ucsdpyblopyfudl/newpay.png" alt="打赏" title="打赏"><br></center>
+
+
+
+]]></content>
+    <summary type="html">
+    <![CDATA[<h3 id="为什么不要用QQ远程">为什么不要用QQ远程</h3><p>很多人在涉及到需要ssh远程的时候，第一印象应该就是QQ远程，这个是一般的普通用户都知道的方式，这个方式我为什么不推荐呢</p>
+<ul>
+<li>QQ是图形界面的远程，远程的操作在网络不好的时候很容易卡顿</li>
+<li>窗口大小无法自适应</li>
+<li>无法传递一些案件，比如需要Esc退出vim，变成了退出远程的最大话</li>
+<li>QQ远程适合帮助家里人处理一些界面上的小问题</li>
+</ul>]]>
+    
+    </summary>
+    
+      <category term="linux" scheme="http://www.zphj1987.com/tags/linux/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[calamari不支持ceph的jewel版本]]></title>
@@ -1013,59 +1058,6 @@ var sogou_ad_width=728;
     </summary>
     
       <category term="nginx" scheme="http://www.zphj1987.com/tags/nginx/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[diamond收集插件的自定义]]></title>
-    <link href="http://www.zphj1987.com/2016/02/21/diamond%E6%94%B6%E9%9B%86%E6%8F%92%E4%BB%B6%E7%9A%84%E8%87%AA%E5%AE%9A%E4%B9%89/"/>
-    <id>http://www.zphj1987.com/2016/02/21/diamond收集插件的自定义/</id>
-    <published>2016-02-21T11:23:55.000Z</published>
-    <updated>2016-02-21T12:55:14.000Z</updated>
-    <content type="html"><![CDATA[<p>diamond是与graphite配合使用的一个数据收集的软件，关于这个配置的资料很多，使用起来也比较简单，详细的安装和配置会在后面的关于整套监控系统的文章里面写到，本篇是专门讲解怎么自定义这个数据收集的插件</p>
-<p>diamond的结构比较简单:</p>
-<ul>
-<li>Collector 数据采集的模块</li>
-<li>handlers 数据发送的模块</li>
-</ul>
-<p>这里主要讲解的是Collector部分的插件的编写，diamond自身带了非常丰富的插件，可以很方便的使用自带的插件进行监控，包括ceph和cephstats这两个可以用来监控ceph的插件，弄清楚怎么去写插件会方便很多，并且能扩展原来插件所没有的数据,calamari里面的数据的收集就是通过的diamond的</p>
-<p>本例将讲解怎么写一个监控ceph的健康状态的插件</p>
-<a id="more"></a>
-<h3 id="1、diamond软件的安装">1、diamond软件的安装</h3><p>通过github上下载代码然后安装在服务器上即可</p>
-<h3 id="2、收集数据的py的编写">2、收集数据的py的编写</h3><p>收集数据的collect的路径：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/usr/share/diamond/collectors/</span><br></pre></td></tr></table></figure></p>
-<h4 id="2-1_创建一个目录">2.1 创建一个目录</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkdir /usr/share/diamond/collectors/cephhealth/</span><br></pre></td></tr></table></figure>
-<h4 id="2-2_创建采集的py文件">2.2 创建采集的py文件</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">vim /usr/share/diamond/collectors/cephhealth/cephhealth.py</span><br></pre></td></tr></table></figure>
-<p>添加下面的内容：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># coding=utf-8</span></span><br><span class="line"><span class="string">""</span><span class="string">"</span><br><span class="line">本插件用于采集ceph的健康状态</span><br><span class="line">"</span><span class="string">""</span></span><br><span class="line">import diamond.collector</span><br><span class="line">import json</span><br><span class="line">import os</span><br><span class="line">class cephhealthCollector(diamond.collector.Collector):</span><br><span class="line"></span><br><span class="line">    def get_default_config_<span class="built_in">help</span>(self):</span><br><span class="line">        config_<span class="built_in">help</span> = super(cephhealthCollector, self).get_default_config_<span class="built_in">help</span>()</span><br><span class="line">        config_help.update(&#123;</span><br><span class="line">        &#125;)</span><br><span class="line">        <span class="built_in">return</span> config_<span class="built_in">help</span></span><br><span class="line"></span><br><span class="line">    def get_default_config(self):</span><br><span class="line">        <span class="string">""</span><span class="string">"</span><br><span class="line">        Returns the default collector settings</span><br><span class="line">        "</span><span class="string">""</span></span><br><span class="line">        config = super(cephhealth, self).get_default_config()</span><br><span class="line">        config.update(&#123;</span><br><span class="line">            <span class="string">'path'</span>:     <span class="string">'ceph'</span></span><br><span class="line">        &#125;)</span><br><span class="line">        <span class="built_in">return</span> config</span><br><span class="line"></span><br><span class="line">    def collect(self):</span><br><span class="line">        <span class="string">""</span><span class="string">"</span><br><span class="line">        Overrides the Collector.collect method</span><br><span class="line">        "</span><span class="string">""</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># Set Metric Name</span></span><br><span class="line">        metric_name = <span class="string">"my.cephhealth.metric"</span></span><br><span class="line">        data = os.popen(<span class="string">'ceph health -f json'</span>).read()</span><br><span class="line">        ddata = json.loads(data)</span><br><span class="line">        status = ddata[<span class="string">'overall_status'</span>]</span><br><span class="line">        <span class="keyword">if</span> status == <span class="string">'HEALTH_ERR'</span>:</span><br><span class="line">                statuscode = <span class="number">10</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">                statuscode = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># Set Metric Value</span></span><br><span class="line">        metric_value = statuscode</span><br><span class="line"></span><br><span class="line">        <span class="comment"># Publish Metric</span></span><br><span class="line">        self.publish(metric_name, metric_value)</span><br></pre></td></tr></table></figure></p>
-<p>以上插件注意：<br>cephhealthCollector 为这个插件的名称，也是diamond.conf里面设置的时候设置的值<br>‘path’:     ‘ceph’ 这个是在最后输出结果中会显示这个名称<br>其他部分就是注意输出一个名称 metric_name，和最后的 metric_value 即可<br>中间的部分可以自己去用python去获取数值即可</p>
-<h4 id="3、修改diamond配置文件">3、修改diamond配置文件</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">vim /etc/diamond/diamond.conf</span><br></pre></td></tr></table></figure>
-<p>在[collectors]下面插件配置的区域添加<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">[[cephhealthCollector]]&#10;enabled = true</span><br></pre></td></tr></table></figure></p>
-<h4 id="4、重启diamond进程">4、重启diamond进程</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/etc/init.d/diamond restart</span><br></pre></td></tr></table></figure>
-<h4 id="5、检查输出的数值">5、检查输出的数值</h4><p>可以把其他插件全部关闭，然后查看文件<br>/var/log/diamond/archive.log的内容</p>
-<p>上面的插件的输出为：<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">servers.grafana.ceph.my.cephhealth.metric 10 1456057146</span><br></pre></td></tr></table></figure></p>
-<p>这个结果的格式为:</p>
-<ul>
-<li>path_prefix = servers    （diamond.conf中配置）</li>
-<li>hostname = grafana        （diamond.conf中配置）</li>
-<li>get_default_config(self): path = ceph   (插件py中配置)</li>
-<li>metric_name = “my.cephhealth.metric”     （插件py中配置）</li>
-</ul>
-<p>到这来插件就完成了，写起来还是比较简单方便的，上面的地方因为ceph里面的输出的是字符串，而grafana里面的显示状态的地方使用的是数字的，所以在这里可以通过字符串转数字，然后在web界面上使用数字字符的匹配来显示这个状态</p>
-<hr>
-<p>diamond的性能是很牛的，1000 台服务器每分钟总共300万个监控数值的压力也能扛下来，对于我们普通级别的使用时绰绰有余的，关于这个规模的有人写了文章，优化的时候可以参考（<a href="https://answers.launchpad.net/graphite/+question/178969" title="1000台监控" target="_blank" rel="external">1000台监控</a>）</p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>diamond是与graphite配合使用的一个数据收集的软件，关于这个配置的资料很多，使用起来也比较简单，详细的安装和配置会在后面的关于整套监控系统的文章里面写到，本篇是专门讲解怎么自定义这个数据收集的插件</p>
-<p>diamond的结构比较简单:</p>
-<ul>
-<li>Collector 数据采集的模块</li>
-<li>handlers 数据发送的模块</li>
-</ul>
-<p>这里主要讲解的是Collector部分的插件的编写，diamond自身带了非常丰富的插件，可以很方便的使用自带的插件进行监控，包括ceph和cephstats这两个可以用来监控ceph的插件，弄清楚怎么去写插件会方便很多，并且能扩展原来插件所没有的数据,calamari里面的数据的收集就是通过的diamond的</p>
-<p>本例将讲解怎么写一个监控ceph的健康状态的插件</p>]]>
-    
-    </summary>
-    
-      <category term="监控" scheme="http://www.zphj1987.com/tags/%E7%9B%91%E6%8E%A7/"/>
     
   </entry>
   

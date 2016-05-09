@@ -3,20 +3,35 @@
 <head>
   <meta charset="utf-8">
   
-  <title>calamari不支持ceph的jewel版本 | zphj1987&#39;Blog</title>
+  <title>如何开启内网的外网访问 | zphj1987&#39;Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="之前已经在0.94.x系列下进行了calamari的相关的打包和测试，基本没有太多问题，最近看到ceph发布了jewel的版本，想尝试下是否兼容，测试的结果是不兼容的
-从调试的信息来看，ceph在jewel版本下对输出做了很大的改动，其中第一条，配置完成后，面板都无法显示，这个里面是因为ceph把原来的mdsmap这个字段在输出的时候改成了fsmap，造成里面的接口识别不到，这个改动以后，又发现r">
+  <meta name="description" content="为什么不要用QQ远程很多人在涉及到需要ssh远程的时候，第一印象应该就是QQ远程，这个是一般的普通用户都知道的方式，这个方式我为什么不推荐呢
+
+QQ是图形界面的远程，远程的操作在网络不好的时候很容易卡顿
+窗口大小无法自适应
+无法传递一些案件，比如需要Esc退出vim，变成了退出远程的最大话
+QQ远程适合帮助家里人处理一些界面上的小问题">
 <meta property="og:type" content="article">
-<meta property="og:title" content="calamari不支持ceph的jewel版本">
-<meta property="og:url" content="http://www.zphj1987.com/2016/05/07/calamari不支持ceph的jewel版本/index.html">
+<meta property="og:title" content="如何开启内网的外网访问">
+<meta property="og:url" content="http://www.zphj1987.com/2016/05/09/如何开启内网的外网访问/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
-<meta property="og:description" content="之前已经在0.94.x系列下进行了calamari的相关的打包和测试，基本没有太多问题，最近看到ceph发布了jewel的版本，想尝试下是否兼容，测试的结果是不兼容的
-从调试的信息来看，ceph在jewel版本下对输出做了很大的改动，其中第一条，配置完成后，面板都无法显示，这个里面是因为ceph把原来的mdsmap这个字段在输出的时候改成了fsmap，造成里面的接口识别不到，这个改动以后，又发现r">
+<meta property="og:description" content="为什么不要用QQ远程很多人在涉及到需要ssh远程的时候，第一印象应该就是QQ远程，这个是一般的普通用户都知道的方式，这个方式我为什么不推荐呢
+
+QQ是图形界面的远程，远程的操作在网络不好的时候很容易卡顿
+窗口大小无法自适应
+无法传递一些案件，比如需要Esc退出vim，变成了退出远程的最大话
+QQ远程适合帮助家里人处理一些界面上的小问题">
+<meta property="og:image" content="http://static.zybuluo.com/zphj1987/f2k1n6th65unbijxpfj5dyvx/teamviver.png">
+<meta property="og:image" content="http://static.zybuluo.com/zphj1987/tj157zs3zyiek4i697btrnvr/haushengke.png">
+<meta property="og:image" content="http://static.zybuluo.com/zphj1987/fi2557g55ucsdpyblopyfudl/newpay.png">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="calamari不支持ceph的jewel版本">
-<meta name="twitter:description" content="之前已经在0.94.x系列下进行了calamari的相关的打包和测试，基本没有太多问题，最近看到ceph发布了jewel的版本，想尝试下是否兼容，测试的结果是不兼容的
-从调试的信息来看，ceph在jewel版本下对输出做了很大的改动，其中第一条，配置完成后，面板都无法显示，这个里面是因为ceph把原来的mdsmap这个字段在输出的时候改成了fsmap，造成里面的接口识别不到，这个改动以后，又发现r">
+<meta name="twitter:title" content="如何开启内网的外网访问">
+<meta name="twitter:description" content="为什么不要用QQ远程很多人在涉及到需要ssh远程的时候，第一印象应该就是QQ远程，这个是一般的普通用户都知道的方式，这个方式我为什么不推荐呢
+
+QQ是图形界面的远程，远程的操作在网络不好的时候很容易卡顿
+窗口大小无法自适应
+无法传递一些案件，比如需要Esc退出vim，变成了退出远程的最大话
+QQ远程适合帮助家里人处理一些界面上的小问题">
   
     <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
   
@@ -187,11 +202,11 @@ var _hmt = _hmt || [];
 		</header>				
 	</div>
 </nav>
-      <div class="body-wrap"><article id="post-calamari不支持ceph的jewel版本" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-如何开启内网的外网访问" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2016/05/07/calamari不支持ceph的jewel版本/" class="article-date">
-  	<time datetime="2016-05-07T09:51:07.000Z" itemprop="datePublished">2016-05-07</time>
+      <a href="/2016/05/09/如何开启内网的外网访问/" class="article-date">
+  	<time datetime="2016-05-09T14:27:28.000Z" itemprop="datePublished">2016-05-09</time>
 </a>
     </div>
   
@@ -204,7 +219,7 @@ var _hmt = _hmt || [];
         
   
     <h1 class="article-title" itemprop="name">
-      calamari不支持ceph的jewel版本
+      如何开启内网的外网访问
     </h1>
   
 
@@ -213,7 +228,7 @@ var _hmt = _hmt || [];
       <div class="article-info article-info-post">
         
 	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
 	</div>
 
         
@@ -224,12 +239,29 @@ var _hmt = _hmt || [];
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>之前已经在0.94.x系列下进行了calamari的相关的打包和测试，基本没有太多问题，最近看到ceph发布了jewel的版本，想尝试下是否兼容，测试的结果是不兼容的</p>
-<p>从调试的信息来看，ceph在jewel版本下对输出做了很大的改动，其中第一条，配置完成后，面板都无法显示，这个里面是因为ceph把原来的mdsmap这个字段在输出的时候改成了fsmap，造成里面的接口识别不到，这个改动以后，又发现restapi接口里面的osd地方又报错了</p>
+        <h3 id="为什么不要用QQ远程">为什么不要用QQ远程</h3><p>很多人在涉及到需要ssh远程的时候，第一印象应该就是QQ远程，这个是一般的普通用户都知道的方式，这个方式我为什么不推荐呢</p>
+<ul>
+<li>QQ是图形界面的远程，远程的操作在网络不好的时候很容易卡顿</li>
+<li>窗口大小无法自适应</li>
+<li>无法传递一些案件，比如需要Esc退出vim，变成了退出远程的最大话</li>
+<li>QQ远程适合帮助家里人处理一些界面上的小问题</li>
+</ul>
 <a id="more"></a>
-<p>这个是管理接口的一些错误，系统信息的收集的地方diamond的接口也有改变</p>
-<p>所以在目前环境下，要么自己对calamari做大量的改动去兼容新版本，要么就是等待发布以后的新版本，从版本的发布频率来看，红帽并不重视calamari这一块了，似乎是为后面出的统一平台做准备，之前calamari是作为红帽官方版本发布出去的</p>
-<p>calmari在hammer版本下的使用还是不错了</p>
+<h3 id="为什么使用Teamviver">为什么使用Teamviver</h3><p>那么还有什么替代么，相信有几年上班经验的人或者有过远程运维经验的人，都知道Teamviver，这个软件的出现，减少了多少的路途奔波，为什么推荐这个</p>
+<ul>
+<li>远程画面自适应</li>
+<li>方便传递文件</li>
+<li>方便开启守护模式，随时可以连接无需对方有人</li>
+<li>画面延时非常小</li>
+</ul>
+<p><a href="http://www.teamviewer.com/zhCN/" target="_blank" rel="external">Teamviver</a>下载链接<br>界面如下：<br><img src="http://static.zybuluo.com/zphj1987/f2k1n6th65unbijxpfj5dyvx/teamviver.png" alt="Teamviver"><br>适合远程的windows机器上正好有需要调试的应用的情况</p>
+<h3 id="还有谁？">还有谁？</h3><p>其实对于这种远程的软件，需要的是连接数，需要的流量并不大，国内在这一刻唯一有所作为的也就是花生壳了，在提供免费的同时也提供更高级的企业级别服务，当然一般情况下免费的也能满足我们的需求</p>
+<h4 id="长啥样？">长啥样？</h4><p><img src="http://static.zybuluo.com/zphj1987/tj157zs3zyiek4i697btrnvr/haushengke.png" alt="花生壳"><br>这个是最新的3.0版本的，安装包非常小，操作非常简单，比起以前刚开始用的时候优化了太多<br>下载地址：<a href="http://www.oray.com/activity/160302/?ici=act_160302&amp;icn=hsk_home-banner" target="_blank" rel="external">花生壳</a><br>点击内网映射就可以开启内网的端口映射了，根据注册的账号提供的免费域名和一个随机端口，就可以ssh到内网的指定的机器了，非常方便远程linux服务器的调试</p>
+<p>上面介绍了3种远程的软件，一般情况下，需要操作界面的就推荐使用teamviver,需要调试服务器的就推荐使用花生壳做端口映射，或者有固定的IP的时候，也可以直接做端口映射，这个看具体的需求了</p>
+<h3 id="打赏通道">打赏通道</h3><center><br><img src="http://static.zybuluo.com/zphj1987/fi2557g55ucsdpyblopyfudl/newpay.png" alt="打赏" title="打赏"><br></center>
+
+
+
 
       
     </div>
@@ -239,18 +271,9 @@ var _hmt = _hmt || [];
     
 <nav id="article-nav">
   
-    <a href="/2016/05/09/如何开启内网的外网访问/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption"><</strong>
-      <div class="article-nav-title">
-        
-          如何开启内网的外网访问
-        
-      </div>
-    </a>
   
-  
-    <a href="/2016/04/27/性能数据的可视化/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">性能数据的可视化</div>
+    <a href="/2016/05/07/calamari不支持ceph的jewel版本/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">calamari不支持ceph的jewel版本</div>
       <strong class="article-nav-caption">></strong>
     </a>
   
@@ -279,7 +302,7 @@ var _hmt = _hmt || [];
 
 <div class="duoshuo">
 	<!-- 多说评论框 start -->
-	<div class="ds-thread" data-thread-key="calamari不支持ceph的jewel版本" data-title="calamari不支持ceph的jewel版本" data-url="http://www.zphj1987.com/2016/05/07/calamari不支持ceph的jewel版本/"></div>
+	<div class="ds-thread" data-thread-key="如何开启内网的外网访问" data-title="如何开启内网的外网访问" data-url="http://www.zphj1987.com/2016/05/09/如何开启内网的外网访问/"></div>
 	<!-- 多说评论框 end -->
 	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 	<script type="text/javascript">
