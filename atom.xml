@@ -4,7 +4,7 @@
   <subtitle><![CDATA[现在所学，终有所用]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2016-05-09T14:50:02.196Z</updated>
+  <updated>2016-05-09T14:52:45.469Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -19,20 +19,20 @@
     <link href="http://www.zphj1987.com/2016/05/09/%E5%A6%82%E4%BD%95%E5%BC%80%E5%90%AF%E5%86%85%E7%BD%91%E7%9A%84%E5%A4%96%E7%BD%91%E8%AE%BF%E9%97%AE/"/>
     <id>http://www.zphj1987.com/2016/05/09/如何开启内网的外网访问/</id>
     <published>2016-05-09T14:27:28.000Z</published>
-    <updated>2016-05-09T14:50:02.196Z</updated>
+    <updated>2016-05-09T14:52:45.469Z</updated>
     <content type="html"><![CDATA[<h3 id="为什么不要用QQ远程">为什么不要用QQ远程</h3><p>很多人在涉及到需要ssh远程的时候，第一印象应该就是QQ远程，这个是一般的普通用户都知道的方式，这个方式我为什么不推荐呢</p>
 <ul>
 <li>QQ是图形界面的远程，远程的操作在网络不好的时候很容易卡顿</li>
 <li>窗口大小无法自适应</li>
-<li>无法传递一些案件，比如需要Esc退出vim，变成了退出远程的最大话</li>
-<li>QQ远程适合帮助家里人处理一些界面上的小问题</li>
+<li>无法传递一些按键，比如需要Esc退出vim，变成了退出远程窗口的最大化</li>
+<li>QQ远程适合帮助家里人处理一些界面上或者操作上的小问题</li>
 </ul>
 <a id="more"></a>
 <h3 id="为什么使用Teamviver">为什么使用Teamviver</h3><p>那么还有什么替代么，相信有几年上班经验的人或者有过远程运维经验的人，都知道Teamviver，这个软件的出现，减少了多少的路途奔波，为什么推荐这个</p>
 <ul>
 <li>远程画面自适应</li>
 <li>方便传递文件</li>
-<li>方便开启守护模式，随时可以连接无需对方有人</li>
+<li>方便开启守护模式，随时可以连接，无需对方有人</li>
 <li>画面延时非常小</li>
 </ul>
 <p><a href="http://www.teamviewer.com/zhCN/" target="_blank" rel="external">Teamviver</a>下载链接<br>界面如下：<br><img src="http://static.zybuluo.com/zphj1987/f2k1n6th65unbijxpfj5dyvx/teamviver.png" alt="Teamviver"><br>适合远程的windows机器上正好有需要调试的应用的情况</p>
@@ -49,8 +49,8 @@
 <ul>
 <li>QQ是图形界面的远程，远程的操作在网络不好的时候很容易卡顿</li>
 <li>窗口大小无法自适应</li>
-<li>无法传递一些案件，比如需要Esc退出vim，变成了退出远程的最大话</li>
-<li>QQ远程适合帮助家里人处理一些界面上的小问题</li>
+<li>无法传递一些按键，比如需要Esc退出vim，变成了退出远程窗口的最大化</li>
+<li>QQ远程适合帮助家里人处理一些界面上或者操作上的小问题</li>
 </ul>]]>
     
     </summary>
