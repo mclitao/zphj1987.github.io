@@ -4,7 +4,7 @@
   <subtitle><![CDATA[现在所学，终有所用]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2016-05-09T14:52:45.469Z</updated>
+  <updated>2016-05-13T16:15:13.519Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -13,6 +13,42 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[ceph卡在active+remapped状态]]></title>
+    <link href="http://www.zphj1987.com/2016/05/14/ceph%E5%8D%A1%E5%9C%A8active-remapped%E7%8A%B6%E6%80%81/"/>
+    <id>http://www.zphj1987.com/2016/05/14/ceph卡在active-remapped状态/</id>
+    <published>2016-05-13T16:12:26.000Z</published>
+    <updated>2016-05-13T16:15:13.519Z</updated>
+    <content type="html"><![CDATA[<p>最近看到了有人的环境出现了出现了卡在active+remapped状态，并且卡住不动的状态，从pg的状态去看，这个pg值分配了主的pg，没有分配到副本的osd，集群的其他设置一切正常</p>
+<p>这个从网上搜寻到的资料来看，大多数都是由于不均衡的主机osd引起的，所谓不平衡的osd</p>
+<ul>
+<li>一台机器上面的磁盘的容量不一样，有的3T，有的1T</li>
+<li>两台主机上面的OSD个数不一样，有的5个，有的2个<a id="more"></a>
+</li>
+</ul>
+<p>这样会造成主机的crush 的weight的差别很大的问题，以及分布算法上的不平衡问题，建议对于一个存储池来说，它所映射的osd至少需要是磁盘大小一致和个数一致的</p>
+<p>这个问题我在我的环境下做了复现，确实有卡在remapped的问题</p>
+<h3 id="出现这个情况一般是什么操作引起的？">出现这个情况一般是什么操作引起的？</h3><p>做osd的reweight的操作引起的，这个因为一般在做reweight的操作的时候，根据算法，这个上面的pg是会尽量分布在这个主机上的，而crush reweight不变的情况下，去修改osd 的reweight的时候，可能算法上会出现无法映射的问题</p>
+<h3 id="怎么解决这个问题？">怎么解决这个问题？</h3><p>直接做osd crush reweigh的调整即可避免这个问题，这个straw算法里面还是有点小问题的，在调整某个因子的时候会引起整个因子的变动</p>
+<blockquote>
+<p>之前看到过sage在回复这种remapped问题的时候，都是不把这个归到bug里面去的，这个我也认为是配置问题引起的极端的问题，正常情况下都能避免的</p>
+</blockquote>
+<h3 id="打赏通道">打赏通道</h3><center><br><img src="http://static.zybuluo.com/zphj1987/fi2557g55ucsdpyblopyfudl/newpay.png" alt="打赏" title="打赏"><br></center>
+
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>最近看到了有人的环境出现了出现了卡在active+remapped状态，并且卡住不动的状态，从pg的状态去看，这个pg值分配了主的pg，没有分配到副本的osd，集群的其他设置一切正常</p>
+<p>这个从网上搜寻到的资料来看，大多数都是由于不均衡的主机osd引起的，所谓不平衡的osd</p>
+<ul>
+<li>一台机器上面的磁盘的容量不一样，有的3T，有的1T</li>
+<li>两台主机上面的OSD个数不一样，有的5个，有的2个]]>
+    
+    </summary>
+    
+      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[如何开启内网的外网访问]]></title>
@@ -1027,39 +1063,6 @@ var sogou_ad_width=728;
     </summary>
     
       <category term="linux" scheme="http://www.zphj1987.com/tags/linux/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[nginx状态监控统计]]></title>
-    <link href="http://www.zphj1987.com/2016/02/22/nginx%E7%8A%B6%E6%80%81%E7%9B%91%E6%8E%A7%E7%BB%9F%E8%AE%A1/"/>
-    <id>http://www.zphj1987.com/2016/02/22/nginx状态监控统计/</id>
-    <published>2016-02-22T15:58:02.000Z</published>
-    <updated>2016-02-22T16:42:14.000Z</updated>
-    <content type="html"><![CDATA[<p>nginx是一款很优秀的web服务器软件，很多地方都有接触和使用到他，大部分的场景压力还没达到需要调优的地步，而调优的难点其实不在于调，而在于各项状态的监控，能够很快的找到资源在什么时候出现问题，调整前后出现的变化，如果都不知道变化在哪里所做的调优只能是凭感觉的</p>
-<p>之前看到有技术人员用nginx作为rgw的前端的时候，通过优化去实现将nginx的并发提高到很大，而不出现4xx等问题，nginx的access.log里面是有记录访问的状态码的，而这个日志的分析如果是一次次的去看，这样的分析是无法用精确的数据去展示的</p>
-<p>最开始的想法是想根据时间点去统计时间点的状态码，后来发现这样做既复杂，又无法输出到一些数据展示软件当中，实际上我只需要统计一定时间的总的状态值，然后定期去取这个值，然后在数据展示的时候，就可以看到一个数值的曲线图，增量即为这个时间区间所产生的状态值</p>
-<p>下面就是我的实现，一个脚本就可以统计了，这个是最初的版本，纯统计状态码，还没有区分读写分离的情况，这个在后面会加入分离的情况</p>
-<a id="more"></a>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="shebang">#!/bin/sh</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">### BEGIN INIT INFO</span></span><br><span class="line"><span class="comment"># Provides:          nginxstatus</span></span><br><span class="line"><span class="comment"># Required-Start:    $nginx</span></span><br><span class="line"><span class="comment"># Short-Description: nginxstatus</span></span><br><span class="line"><span class="comment"># Description: collectstatus of nginx</span></span><br><span class="line"><span class="comment">### END INIT INFO</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># pidfile: /var/run/nginx/nginxstatus.pid</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Source function library.</span></span><br><span class="line"><span class="comment">##########################################</span></span><br><span class="line"><span class="comment">#状态码一般分为1xx,2xx,3xx,4xx,5xx,total</span></span><br><span class="line">statucode=<span class="string">"2 3 4 5"</span></span><br><span class="line"><span class="comment">##check intervel setting </span></span><br><span class="line">interval=<span class="number">2</span></span><br><span class="line"><span class="comment">########################################</span></span><br><span class="line"><span class="comment">#check the nginxstatus pid dir if exist</span></span><br><span class="line"><span class="keyword">if</span> [ ! <span class="operator">-d</span> /var/run/nginxstatus/ ];<span class="keyword">then</span></span><br><span class="line">mkdir  /var/run/nginxstatus/</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"><span class="comment">##check the status of nginx access </span></span><br><span class="line"><span class="function"><span class="title">check</span></span>()&#123;</span><br><span class="line"><span class="keyword">for</span> code <span class="keyword">in</span> <span class="variable">$statucode</span></span><br><span class="line"><span class="keyword">do</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"<span class="variable">$code</span>"</span>xx:`cat /var/<span class="built_in">log</span>/nginx/access.log |awk <span class="string">'&#123;if( substr($9,0,1) == '</span><span class="string">''</span><span class="variable">$code</span><span class="string">''</span><span class="string">' )  print $9&#125;'</span>  |wc <span class="operator">-l</span>` &gt; /var/<span class="built_in">log</span>/nginx/<span class="string">"<span class="variable">$code</span>"</span>xx.log</span><br><span class="line"><span class="keyword">done</span></span><br><span class="line">sleep <span class="variable">$interval</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">#start nginx status</span></span><br><span class="line"><span class="function"><span class="title">start</span></span>() &#123;</span><br><span class="line"><span class="built_in">echo</span> <span class="operator">-e</span> Starting nginxstatus:                              <span class="string">"\033[32m [  OK  ] \033[0m"</span></span><br><span class="line"><span class="keyword">while</span> [ <span class="number">2</span> &gt; <span class="number">1</span> ]</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">check</span><br><span class="line"></span><br><span class="line"><span class="keyword">done</span> &amp;</span><br><span class="line">pid=`ps ax | grep -i <span class="string">'nginxstatus'</span> | head -n <span class="number">1</span>|awk <span class="string">'&#123;print $1&#125;'</span>`</span><br><span class="line"><span class="built_in">echo</span> <span class="operator">-e</span>  pid is  <span class="string">"\033[33m  $! \033[0m"</span> </span><br><span class="line"><span class="built_in">echo</span> $! &gt;&gt; /var/run/nginxstatus/nginxstatus.pid</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">#stop nginx </span></span><br><span class="line"><span class="function"><span class="title">stop</span></span>() &#123;</span><br><span class="line"><span class="built_in">echo</span> <span class="operator">-e</span> stop nginxstatus collect  <span class="string">"\033[32m  [  OK  ] \033[0m"</span> </span><br><span class="line"></span><br><span class="line">pid=`cat /var/run/nginxstatus/nginxstatus.pid  <span class="number">2</span>&gt;/dev/null`</span><br><span class="line"><span class="built_in">kill</span> -<span class="number">10</span> <span class="variable">$pid</span>  <span class="number">2</span>&gt;/dev/null</span><br><span class="line"><span class="comment">#killall nginxstatus</span></span><br><span class="line">rm -rf /var/run/nginxstatus/nginxstatus.pid</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">status</span></span>() &#123;</span><br><span class="line"><span class="keyword">for</span> code <span class="keyword">in</span> <span class="variable">$statucode</span></span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">cat /var/<span class="built_in">log</span>/nginx/<span class="string">"<span class="variable">$code</span>"</span>xx.log</span><br><span class="line"><span class="keyword">done</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">clean</span></span> () &#123;</span><br><span class="line"><span class="keyword">for</span> code <span class="keyword">in</span> <span class="variable">$statucode</span></span><br><span class="line"><span class="keyword">do</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">""</span> &gt;  /var/<span class="built_in">log</span>/nginx/<span class="string">"<span class="variable">$code</span>"</span>xx.log</span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">""</span> &gt; /var/<span class="built_in">log</span>/nginx/access.log</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"clean /var/log/nginx/access.log"</span></span><br><span class="line"><span class="built_in">echo</span> <span class="operator">-e</span> <span class="string">"clean /var/log/nginx/access.log"</span> <span class="string">"\033[32m  [  OK  ] \033[0m"</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">case</span> <span class="string">"<span class="variable">$1</span>"</span> <span class="keyword">in</span></span><br><span class="line">        start)</span><br><span class="line">                start  &amp;&amp; <span class="built_in">exit</span> <span class="number">0</span></span><br><span class="line">                ;;</span><br><span class="line">        stop)</span><br><span class="line">                stop || <span class="built_in">exit</span> <span class="number">0</span></span><br><span class="line">                ;;</span><br><span class="line">        status)</span><br><span class="line">                status</span><br><span class="line">                ;;</span><br><span class="line">        clean)</span><br><span class="line">                clean</span><br><span class="line">                ;;</span><br><span class="line">        *)</span><br><span class="line">                <span class="built_in">echo</span> $<span class="string">"Usage: <span class="variable">$0</span> &#123;start|stop|status|clean&#125;"</span></span><br><span class="line">                <span class="built_in">exit</span> <span class="number">2</span></span><br><span class="line"><span class="keyword">esac</span></span><br><span class="line"><span class="built_in">exit</span> $?</span><br></pre></td></tr></table></figure>
-<p>使用方法：</p>
-<h3 id="1、启动进程">1、启动进程</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@zhongbo ~]<span class="comment"># /etc/init.d/nginxstatus start</span></span><br><span class="line">Starting nginxstatus:  [  OK  ] </span><br><span class="line">pid is   <span class="number">166534</span></span><br></pre></td></tr></table></figure>
-<p>会生成下面的状态文件，周期为2s一更新<br>[root@zhongbo ~]# ll /var/log/nginx/*xx.log<br>-rw-r—r— 1 root root 7 Feb 23 00:25 /var/log/nginx/2xx.log<br>-rw-r—r— 1 root root 6 Feb 23 00:25 /var/log/nginx/3xx.log<br>-rw-r—r— 1 root root 7 Feb 23 00:25 /var/log/nginx/4xx.log<br>-rw-r—r— 1 root root 6 Feb 23 00:25 /var/log/nginx/5xx.log</p>
-<h3 id="2、当前nginx的状态查询">2、当前nginx的状态查询</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@zhongbo ~]<span class="comment"># /etc/init.d/nginxstatus status</span></span><br><span class="line"><span class="number">2</span>xx:<span class="number">21</span></span><br><span class="line"><span class="number">3</span>xx:<span class="number">1</span></span><br><span class="line"><span class="number">4</span>xx:<span class="number">10</span></span><br><span class="line"><span class="number">5</span>xx:<span class="number">0</span></span><br></pre></td></tr></table></figure>
-<h3 id="3、停止nginxstatus进程">3、停止nginxstatus进程</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@zhongbo ~]<span class="comment"># /etc/init.d/nginxstatus stop</span></span><br><span class="line">stop nginxstatus collect   [  OK  ]</span><br></pre></td></tr></table></figure>
-<h3 id="4、清理历史数据">4、清理历史数据</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@zhongbo ~]<span class="comment"># /etc/init.d/nginxstatus clean</span></span><br><span class="line">clean /var/<span class="built_in">log</span>/nginx/access.log   [  OK  ]</span><br></pre></td></tr></table></figure>
-<p>这个操作会清空/var/log/nginx/access.log日志的内容重新统计</p>
-<p>这个会在后期根据需求进行优化</p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>nginx是一款很优秀的web服务器软件，很多地方都有接触和使用到他，大部分的场景压力还没达到需要调优的地步，而调优的难点其实不在于调，而在于各项状态的监控，能够很快的找到资源在什么时候出现问题，调整前后出现的变化，如果都不知道变化在哪里所做的调优只能是凭感觉的</p>
-<p>之前看到有技术人员用nginx作为rgw的前端的时候，通过优化去实现将nginx的并发提高到很大，而不出现4xx等问题，nginx的access.log里面是有记录访问的状态码的，而这个日志的分析如果是一次次的去看，这样的分析是无法用精确的数据去展示的</p>
-<p>最开始的想法是想根据时间点去统计时间点的状态码，后来发现这样做既复杂，又无法输出到一些数据展示软件当中，实际上我只需要统计一定时间的总的状态值，然后定期去取这个值，然后在数据展示的时候，就可以看到一个数值的曲线图，增量即为这个时间区间所产生的状态值</p>
-<p>下面就是我的实现，一个脚本就可以统计了，这个是最初的版本，纯统计状态码，还没有区分读写分离的情况，这个在后面会加入分离的情况</p>]]>
-    
-    </summary>
-    
-      <category term="nginx" scheme="http://www.zphj1987.com/tags/nginx/"/>
     
   </entry>
   

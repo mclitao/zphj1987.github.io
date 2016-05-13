@@ -3,17 +3,30 @@
 <head>
   <meta charset="utf-8">
   
-  <title>zphj1987&#39;Blog</title>
+  <title>ceph卡在active+remapped状态 | zphj1987&#39;Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description">
-<meta property="og:type" content="website">
-<meta property="og:title" content="zphj1987'Blog">
-<meta property="og:url" content="http://www.zphj1987.com/archives/2016/05/index.html">
+  <meta name="description" content="最近看到了有人的环境出现了出现了卡在active+remapped状态，并且卡住不动的状态，从pg的状态去看，这个pg值分配了主的pg，没有分配到副本的osd，集群的其他设置一切正常
+这个从网上搜寻到的资料来看，大多数都是由于不均衡的主机osd引起的，所谓不平衡的osd
+
+一台机器上面的磁盘的容量不一样，有的3T，有的1T
+两台主机上面的OSD个数不一样，有的5个，有的2个">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ceph卡在active+remapped状态">
+<meta property="og:url" content="http://www.zphj1987.com/2016/05/14/ceph卡在active-remapped状态/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
-<meta property="og:description">
+<meta property="og:description" content="最近看到了有人的环境出现了出现了卡在active+remapped状态，并且卡住不动的状态，从pg的状态去看，这个pg值分配了主的pg，没有分配到副本的osd，集群的其他设置一切正常
+这个从网上搜寻到的资料来看，大多数都是由于不均衡的主机osd引起的，所谓不平衡的osd
+
+一台机器上面的磁盘的容量不一样，有的3T，有的1T
+两台主机上面的OSD个数不一样，有的5个，有的2个">
+<meta property="og:image" content="http://static.zybuluo.com/zphj1987/fi2557g55ucsdpyblopyfudl/newpay.png">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="zphj1987'Blog">
-<meta name="twitter:description">
+<meta name="twitter:title" content="ceph卡在active+remapped状态">
+<meta name="twitter:description" content="最近看到了有人的环境出现了出现了卡在active+remapped状态，并且卡住不动的状态，从pg的状态去看，这个pg值分配了主的pg，没有分配到副本的osd，集群的其他设置一切正常
+这个从网上搜寻到的资料来看，大多数都是由于不均衡的主机osd引起的，所谓不平衡的osd
+
+一台机器上面的磁盘的容量不一样，有的3T，有的1T
+两台主机上面的OSD个数不一样，有的5个，有的2个">
   
     <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
   
@@ -184,115 +197,118 @@ var _hmt = _hmt || [];
 		</header>				
 	</div>
 </nav>
-      <div class="body-wrap">
+      <div class="body-wrap"><article id="post-ceph卡在active-remapped状态" class="article article-type-post" itemscope itemprop="blogPost">
   
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2016" class="archive-year">2016</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2016/05/14/ceph卡在active-remapped状态/" class="archive-article-date">
-  	<time datetime="2016-05-13T16:12:26.000Z" itemprop="datePublished">May 14</time>
+    <div class="article-meta">
+      <a href="/2016/05/14/ceph卡在active-remapped状态/" class="article-date">
+  	<time datetime="2016-05-13T16:12:26.000Z" itemprop="datePublished">2016-05-14</time>
 </a>
-        </div>
-    	 
+    </div>
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/05/14/ceph卡在active-remapped状态/">ceph卡在active+remapped状态</a>
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      ceph卡在active+remapped状态
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+      </header>
+      
+      <div class="article-info article-info-post">
+        
 	<div class="article-tag tagcloud">
 		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
 	</div>
 
-          
+        
 
-        </div>
         <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
+      </div>
+      
     
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2016/05/09/如何开启内网的外网访问/" class="archive-article-date">
-  	<time datetime="2016-05-09T14:27:28.000Z" itemprop="datePublished">May 9</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/05/09/如何开启内网的外网访问/">如何开启内网的外网访问</a>
-    </h1>
-  
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>最近看到了有人的环境出现了出现了卡在active+remapped状态，并且卡住不动的状态，从pg的状态去看，这个pg值分配了主的pg，没有分配到副本的osd，集群的其他设置一切正常</p>
+<p>这个从网上搜寻到的资料来看，大多数都是由于不均衡的主机osd引起的，所谓不平衡的osd</p>
+<ul>
+<li>一台机器上面的磁盘的容量不一样，有的3T，有的1T</li>
+<li>两台主机上面的OSD个数不一样，有的5个，有的2个<a id="more"></a>
+</li>
+</ul>
+<p>这样会造成主机的crush 的weight的差别很大的问题，以及分布算法上的不平衡问题，建议对于一个存储池来说，它所映射的osd至少需要是磁盘大小一致和个数一致的</p>
+<p>这个问题我在我的环境下做了复现，确实有卡在remapped的问题</p>
+<h3 id="出现这个情况一般是什么操作引起的？">出现这个情况一般是什么操作引起的？</h3><p>做osd的reweight的操作引起的，这个因为一般在做reweight的操作的时候，根据算法，这个上面的pg是会尽量分布在这个主机上的，而crush reweight不变的情况下，去修改osd 的reweight的时候，可能算法上会出现无法映射的问题</p>
+<h3 id="怎么解决这个问题？">怎么解决这个问题？</h3><p>直接做osd crush reweigh的调整即可避免这个问题，这个straw算法里面还是有点小问题的，在调整某个因子的时候会引起整个因子的变动</p>
+<blockquote>
+<p>之前看到过sage在回复这种remapped问题的时候，都是不把这个归到bug里面去的，这个我也认为是配置问题引起的极端的问题，正常情况下都能避免的</p>
+</blockquote>
+<h3 id="打赏通道">打赏通道</h3><center><br><img src="http://static.zybuluo.com/zphj1987/fi2557g55ucsdpyblopyfudl/newpay.png" alt="打赏" title="打赏"><br></center>
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2016/05/09/如何开启内网的外网访问/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">如何开启内网的外网访问</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到：</span>
+		<a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+		<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
 	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
 
-          
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2016/05/07/calamari不支持ceph的jewel版本/" class="archive-article-date">
-  	<time datetime="2016-05-07T09:51:07.000Z" itemprop="datePublished">May 7</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/05/07/calamari不支持ceph的jewel版本/">calamari不支持ceph的jewel版本</a>
-    </h1>
-  
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="ceph卡在active-remapped状态" data-title="ceph卡在active+remapped状态" data-url="http://www.zphj1987.com/2016/05/14/ceph卡在active-remapped状态/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"zphj1987"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
 
-          
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
 
-    
 
 </div>
       <footer id="footer">
@@ -318,7 +334,7 @@ var _hmt = _hmt || [];
 		mathjax: undefined,
 		animate: true,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,
