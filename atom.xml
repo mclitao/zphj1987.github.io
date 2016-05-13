@@ -274,7 +274,7 @@
     <link href="http://www.zphj1987.com/2016/04/19/inkscope%E5%AE%8C%E6%95%B4%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/"/>
     <id>http://www.zphj1987.com/2016/04/19/inkscope完整安装配置/</id>
     <published>2016-04-19T05:52:34.000Z</published>
-    <updated>2016-04-19T05:57:15.383Z</updated>
+    <updated>2016-05-13T09:16:15.485Z</updated>
     <content type="html"><![CDATA[<h3 id="准备centos7基础系统">准备centos7基础系统</h3><p>首先安装基础系统centos7 在安装选项那里选择base web server ，选择其他的也可以，选择mini安装会缺很多常用的软件包，后续需要一个个安装比较麻烦</p>
 <h3 id="关闭防火墙相关">关闭防火墙相关</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@inkscope ~]<span class="comment"># setenforce 0</span></span><br><span class="line">[root@inkscope ~]<span class="comment"># sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config</span></span><br><span class="line">[root@inkscope ~]<span class="comment"># systemctl stop firewalld</span></span><br><span class="line">[root@inkscope ~]<span class="comment"># systemctl disable firewalld</span></span><br></pre></td></tr></table></figure>
 <h3 id="更新源相关的">更新源相关的</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@inkscope ~]<span class="comment"># rm -rf /etc/yum.repos.d/*.repo</span></span><br><span class="line">[root@inkscope ~]<span class="comment"># wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo</span></span><br><span class="line">[root@inkscope ~]<span class="comment"># wget -O /etc/yum.repos.d/epel.repo http://mirrors.aliyun.com/repo/epel-7.repo</span></span><br></pre></td></tr></table></figure>
@@ -307,6 +307,8 @@
 <blockquote>
 <p>这个里面因为python-ceph在10.x已经更名了，所以在确保其他已经安装好的情况下使用忽略依赖进行安装，ceph0.94没有这个问题</p>
 </blockquote>
+<h4 id="配置权限">配置权限</h4><p>需要创建一个client.restapi的用户 拥有权限 [mds] allow, [mon] allow <em> , [osd] allow </em><br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph auth get-or-create client.restapi mds <span class="string">'allow'</span> osd <span class="string">'allow *'</span> mon <span class="string">'allow *'</span> &gt; /etc/ceph/ceph.client.restapi.keyring</span><br></pre></td></tr></table></figure></p>
+<p>在/etc/ceph/ceph.conf配置文件里面添加<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[client.restapi]</span><br><span class="line">    <span class="built_in">log</span>_file = /dev/null</span><br><span class="line">    keyring = /etc/ceph/ceph.client.restapi.keyring</span><br></pre></td></tr></table></figure></p>
 <h4 id="配置httpd">配置httpd</h4><p> /etc/httpd/conf/httpd.conf 中间添加一条</p>
 <blockquote>
 <p>Listen 8080</p>

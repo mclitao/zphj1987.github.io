@@ -261,6 +261,8 @@ var _hmt = _hmt || [];
 <blockquote>
 <p>这个里面因为python-ceph在10.x已经更名了，所以在确保其他已经安装好的情况下使用忽略依赖进行安装，ceph0.94没有这个问题</p>
 </blockquote>
+<h4 id="配置权限">配置权限</h4><p>需要创建一个client.restapi的用户 拥有权限 [mds] allow, [mon] allow <em> , [osd] allow </em><br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph auth get-or-create client.restapi mds <span class="string">'allow'</span> osd <span class="string">'allow *'</span> mon <span class="string">'allow *'</span> &gt; /etc/ceph/ceph.client.restapi.keyring</span><br></pre></td></tr></table></figure></p>
+<p>在/etc/ceph/ceph.conf配置文件里面添加<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[client.restapi]</span><br><span class="line">    <span class="built_in">log</span>_file = /dev/null</span><br><span class="line">    keyring = /etc/ceph/ceph.client.restapi.keyring</span><br></pre></td></tr></table></figure></p>
 <h4 id="配置httpd">配置httpd</h4><p> /etc/httpd/conf/httpd.conf 中间添加一条</p>
 <blockquote>
 <p>Listen 8080</p>
