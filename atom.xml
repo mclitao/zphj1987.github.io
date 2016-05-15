@@ -4,7 +4,7 @@
   <subtitle><![CDATA[现在所学，终有所用]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2016-05-13T16:15:13.519Z</updated>
+  <updated>2016-05-15T16:57:48.821Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -13,6 +13,33 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[支持jewel版本的calamari]]></title>
+    <link href="http://www.zphj1987.com/2016/05/16/%E6%94%AF%E6%8C%81jewel%E7%89%88%E6%9C%AC%E7%9A%84calamari/"/>
+    <id>http://www.zphj1987.com/2016/05/16/支持jewel版本的calamari/</id>
+    <published>2016-05-15T16:48:46.000Z</published>
+    <updated>2016-05-15T16:57:48.821Z</updated>
+    <content type="html"><![CDATA[<p>之前测试了下，发现calamari不支持jewel版本的，是因为接口了有了一些变化，在提出这个问题后，作者给出了回答，说肯定会支持的，并且做了一点小的改动，就可以支持了，这个作者merge了到了github的一些分支当中，但是还没有merge到最新的1.4的分支合master分支当中，这个可能是因为1.4还在做一些功能的开发</p>
+<p>我使用作者的修改好的分支打好了包，直接可以使用，测试了ubuntu14.04 和centos 7的版本都可以使用，下面是百度云的链接，欢迎使用和测试</p>
+<a id="more"></a>
+<h3 id="ubuntu版本下载地址：">ubuntu版本下载地址：</h3><p><a href="http://pan.baidu.com/s/1cmKVoi" target="_blank" rel="external">ubuntu-jewel-calamari</a><br>密码：jpra</p>
+<h3 id="centos7版本下载地址">centos7版本下载地址</h3><p><a href="http://pan.baidu.com/s/1eSa15B0" target="_blank" rel="external">centos-jewel-calamari</a><br>密码：5514</p>
+<blockquote>
+<p>如果您觉得本篇资源对您有用，欢迎通过下面的打赏通道进行打赏</p>
+</blockquote>
+<h3 id="打赏通道">打赏通道</h3><center><br><img src="http://static.zybuluo.com/zphj1987/fi2557g55ucsdpyblopyfudl/newpay.png" alt="打赏" title="打赏"><br></center>
+
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>之前测试了下，发现calamari不支持jewel版本的，是因为接口了有了一些变化，在提出这个问题后，作者给出了回答，说肯定会支持的，并且做了一点小的改动，就可以支持了，这个作者merge了到了github的一些分支当中，但是还没有merge到最新的1.4的分支合master分支当中，这个可能是因为1.4还在做一些功能的开发</p>
+<p>我使用作者的修改好的分支打好了包，直接可以使用，测试了ubuntu14.04 和centos 7的版本都可以使用，下面是百度云的链接，欢迎使用和测试</p>]]>
+    
+    </summary>
+    
+      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[ceph卡在active+remapped状态]]></title>
@@ -1040,29 +1067,6 @@
     </summary>
     
       <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[内核参数比较]]></title>
-    <link href="http://www.zphj1987.com/2016/02/23/%E5%86%85%E6%A0%B8%E5%8F%82%E6%95%B0%E6%AF%94%E8%BE%83/"/>
-    <id>http://www.zphj1987.com/2016/02/23/内核参数比较/</id>
-    <published>2016-02-23T05:14:19.000Z</published>
-    <updated>2016-02-29T06:02:28.455Z</updated>
-    <content type="html"><![CDATA[<p>使用sysctl -a &gt; file1.log<br>取出系统的内核参数，拷贝到同一个目录下面<br>然后用下面的脚本打印出不同的值<br>然后分析差异<br>diff只能按行比较，而这个文件有错行，所以用一个简单的办法实现<br><a id="more"></a></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="shebang">#! /bin/sh</span></span><br><span class="line"><span class="comment"># the output is the different from file1 to file2 ,so you must change the position of the file1name of file1 and file2 ;</span></span><br><span class="line">file1=centos.log</span><br><span class="line">file2=centos2.log</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> key <span class="keyword">in</span> `cat <span class="variable">$file1</span> |awk <span class="string">'&#123;print $1&#125;'</span>`</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">va1=`cat <span class="variable">$file1</span> |grep <span class="variable">$key</span>|cut <span class="operator">-f</span> <span class="number">2</span> <span class="operator">-d</span> <span class="string">"="</span>`</span><br><span class="line">va2=`cat <span class="variable">$file2</span> |grep <span class="variable">$key</span>|cut <span class="operator">-f</span> <span class="number">2</span> <span class="operator">-d</span> <span class="string">"="</span>`</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ <span class="string">"<span class="variable">$va1</span>"</span> != <span class="string">"<span class="variable">$va2</span>"</span> ];<span class="keyword">then</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$key</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"<span class="variable">$file1</span>"</span>:<span class="variable">$va1</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"<span class="variable">$file2</span>"</span>:<span class="variable">$va2</span></span><br><span class="line"><span class="built_in">echo</span> ======================</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>
-<script type="text/javascript">
-var sogou_ad_id=547108;
-var sogou_ad_height=90;
-var sogou_ad_width=728;
-</script>
-<script type="text/javascript" src="http://images.sohu.com/cs/jsfile/js/c.js"></script>]]></content>
-    <summary type="html">
-    <![CDATA[<p>使用sysctl -a &gt; file1.log<br>取出系统的内核参数，拷贝到同一个目录下面<br>然后用下面的脚本打印出不同的值<br>然后分析差异<br>diff只能按行比较，而这个文件有错行，所以用一个简单的办法实现<br>]]>
-    
-    </summary>
-    
-      <category term="linux" scheme="http://www.zphj1987.com/tags/linux/"/>
     
   </entry>
   

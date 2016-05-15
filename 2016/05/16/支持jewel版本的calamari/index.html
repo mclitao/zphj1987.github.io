@@ -3,30 +3,21 @@
 <head>
   <meta charset="utf-8">
   
-  <title>ceph卡在active+remapped状态 | zphj1987&#39;Blog</title>
+  <title>支持jewel版本的calamari | zphj1987&#39;Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="最近看到了有人的环境出现了出现了卡在active+remapped状态，并且卡住不动的状态，从pg的状态去看，这个pg值分配了主的pg，没有分配到副本的osd，集群的其他设置一切正常
-这个从网上搜寻到的资料来看，大多数都是由于不均衡的主机osd引起的，所谓不平衡的osd
-
-一台机器上面的磁盘的容量不一样，有的3T，有的1T
-两台主机上面的OSD个数不一样，有的5个，有的2个">
+  <meta name="description" content="之前测试了下，发现calamari不支持jewel版本的，是因为接口了有了一些变化，在提出这个问题后，作者给出了回答，说肯定会支持的，并且做了一点小的改动，就可以支持了，这个作者merge了到了github的一些分支当中，但是还没有merge到最新的1.4的分支合master分支当中，这个可能是因为1.4还在做一些功能的开发
+我使用作者的修改好的分支打好了包，直接可以使用，测试了ubuntu14.">
 <meta property="og:type" content="article">
-<meta property="og:title" content="ceph卡在active+remapped状态">
-<meta property="og:url" content="http://www.zphj1987.com/2016/05/14/ceph卡在active-remapped状态/index.html">
+<meta property="og:title" content="支持jewel版本的calamari">
+<meta property="og:url" content="http://www.zphj1987.com/2016/05/16/支持jewel版本的calamari/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
-<meta property="og:description" content="最近看到了有人的环境出现了出现了卡在active+remapped状态，并且卡住不动的状态，从pg的状态去看，这个pg值分配了主的pg，没有分配到副本的osd，集群的其他设置一切正常
-这个从网上搜寻到的资料来看，大多数都是由于不均衡的主机osd引起的，所谓不平衡的osd
-
-一台机器上面的磁盘的容量不一样，有的3T，有的1T
-两台主机上面的OSD个数不一样，有的5个，有的2个">
+<meta property="og:description" content="之前测试了下，发现calamari不支持jewel版本的，是因为接口了有了一些变化，在提出这个问题后，作者给出了回答，说肯定会支持的，并且做了一点小的改动，就可以支持了，这个作者merge了到了github的一些分支当中，但是还没有merge到最新的1.4的分支合master分支当中，这个可能是因为1.4还在做一些功能的开发
+我使用作者的修改好的分支打好了包，直接可以使用，测试了ubuntu14.">
 <meta property="og:image" content="http://static.zybuluo.com/zphj1987/fi2557g55ucsdpyblopyfudl/newpay.png">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="ceph卡在active+remapped状态">
-<meta name="twitter:description" content="最近看到了有人的环境出现了出现了卡在active+remapped状态，并且卡住不动的状态，从pg的状态去看，这个pg值分配了主的pg，没有分配到副本的osd，集群的其他设置一切正常
-这个从网上搜寻到的资料来看，大多数都是由于不均衡的主机osd引起的，所谓不平衡的osd
-
-一台机器上面的磁盘的容量不一样，有的3T，有的1T
-两台主机上面的OSD个数不一样，有的5个，有的2个">
+<meta name="twitter:title" content="支持jewel版本的calamari">
+<meta name="twitter:description" content="之前测试了下，发现calamari不支持jewel版本的，是因为接口了有了一些变化，在提出这个问题后，作者给出了回答，说肯定会支持的，并且做了一点小的改动，就可以支持了，这个作者merge了到了github的一些分支当中，但是还没有merge到最新的1.4的分支合master分支当中，这个可能是因为1.4还在做一些功能的开发
+我使用作者的修改好的分支打好了包，直接可以使用，测试了ubuntu14.">
   
     <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
   
@@ -197,11 +188,11 @@ var _hmt = _hmt || [];
 		</header>				
 	</div>
 </nav>
-      <div class="body-wrap"><article id="post-ceph卡在active-remapped状态" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-支持jewel版本的calamari" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2016/05/14/ceph卡在active-remapped状态/" class="article-date">
-  	<time datetime="2016-05-13T16:12:26.000Z" itemprop="datePublished">2016-05-14</time>
+      <a href="/2016/05/16/支持jewel版本的calamari/" class="article-date">
+  	<time datetime="2016-05-15T16:48:46.000Z" itemprop="datePublished">2016-05-16</time>
 </a>
     </div>
   
@@ -214,7 +205,7 @@ var _hmt = _hmt || [];
         
   
     <h1 class="article-title" itemprop="name">
-      ceph卡在active+remapped状态
+      支持jewel版本的calamari
     </h1>
   
 
@@ -234,19 +225,13 @@ var _hmt = _hmt || [];
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>最近看到了有人的环境出现了出现了卡在active+remapped状态，并且卡住不动的状态，从pg的状态去看，这个pg值分配了主的pg，没有分配到副本的osd，集群的其他设置一切正常</p>
-<p>这个从网上搜寻到的资料来看，大多数都是由于不均衡的主机osd引起的，所谓不平衡的osd</p>
-<ul>
-<li>一台机器上面的磁盘的容量不一样，有的3T，有的1T</li>
-<li>两台主机上面的OSD个数不一样，有的5个，有的2个<a id="more"></a>
-</li>
-</ul>
-<p>这样会造成主机的crush 的weight的差别很大的问题，以及分布算法上的不平衡问题，建议对于一个存储池来说，它所映射的osd至少需要是磁盘大小一致和个数一致的</p>
-<p>这个问题我在我的环境下做了复现，确实有卡在remapped的问题</p>
-<h3 id="出现这个情况一般是什么操作引起的？">出现这个情况一般是什么操作引起的？</h3><p>做osd的reweight的操作引起的，这个因为一般在做reweight的操作的时候，根据算法，这个上面的pg是会尽量分布在这个主机上的，而crush reweight不变的情况下，去修改osd 的reweight的时候，可能算法上会出现无法映射的问题</p>
-<h3 id="怎么解决这个问题？">怎么解决这个问题？</h3><p>直接做osd crush reweigh的调整即可避免这个问题，这个straw算法里面还是有点小问题的，在调整某个因子的时候会引起整个因子的变动</p>
+        <p>之前测试了下，发现calamari不支持jewel版本的，是因为接口了有了一些变化，在提出这个问题后，作者给出了回答，说肯定会支持的，并且做了一点小的改动，就可以支持了，这个作者merge了到了github的一些分支当中，但是还没有merge到最新的1.4的分支合master分支当中，这个可能是因为1.4还在做一些功能的开发</p>
+<p>我使用作者的修改好的分支打好了包，直接可以使用，测试了ubuntu14.04 和centos 7的版本都可以使用，下面是百度云的链接，欢迎使用和测试</p>
+<a id="more"></a>
+<h3 id="ubuntu版本下载地址：">ubuntu版本下载地址：</h3><p><a href="http://pan.baidu.com/s/1cmKVoi" target="_blank" rel="external">ubuntu-jewel-calamari</a><br>密码：jpra</p>
+<h3 id="centos7版本下载地址">centos7版本下载地址</h3><p><a href="http://pan.baidu.com/s/1eSa15B0" target="_blank" rel="external">centos-jewel-calamari</a><br>密码：5514</p>
 <blockquote>
-<p>之前看到过sage在回复这种remapped问题的时候，都是不把这个归到bug里面去的，这个我也认为是配置问题引起的极端的问题，正常情况下都能避免的</p>
+<p>如果您觉得本篇资源对您有用，欢迎通过下面的打赏通道进行打赏</p>
 </blockquote>
 <h3 id="打赏通道">打赏通道</h3><center><br><img src="http://static.zybuluo.com/zphj1987/fi2557g55ucsdpyblopyfudl/newpay.png" alt="打赏" title="打赏"><br></center>
 
@@ -259,18 +244,9 @@ var _hmt = _hmt || [];
     
 <nav id="article-nav">
   
-    <a href="/2016/05/16/支持jewel版本的calamari/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption"><</strong>
-      <div class="article-nav-title">
-        
-          支持jewel版本的calamari
-        
-      </div>
-    </a>
   
-  
-    <a href="/2016/05/09/如何开启内网的外网访问/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">如何开启内网的外网访问</div>
+    <a href="/2016/05/14/ceph卡在active-remapped状态/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">ceph卡在active+remapped状态</div>
       <strong class="article-nav-caption">></strong>
     </a>
   
@@ -299,7 +275,7 @@ var _hmt = _hmt || [];
 
 <div class="duoshuo">
 	<!-- 多说评论框 start -->
-	<div class="ds-thread" data-thread-key="ceph卡在active-remapped状态" data-title="ceph卡在active+remapped状态" data-url="http://www.zphj1987.com/2016/05/14/ceph卡在active-remapped状态/"></div>
+	<div class="ds-thread" data-thread-key="支持jewel版本的calamari" data-title="支持jewel版本的calamari" data-url="http://www.zphj1987.com/2016/05/16/支持jewel版本的calamari/"></div>
 	<!-- 多说评论框 end -->
 	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 	<script type="text/javascript">
