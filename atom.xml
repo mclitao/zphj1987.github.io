@@ -4,7 +4,7 @@
   <subtitle><![CDATA[现在所学，终有所用]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2016-05-17T17:37:29.900Z</updated>
+  <updated>2016-05-19T04:42:11.266Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -13,6 +13,57 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[ceph的jewel新支持的rbd-nbd]]></title>
+    <link href="http://www.zphj1987.com/2016/05/19/ceph%E7%9A%84jewel%E6%96%B0%E6%94%AF%E6%8C%81%E7%9A%84rbd-nbd/"/>
+    <id>http://www.zphj1987.com/2016/05/19/ceph的jewel新支持的rbd-nbd/</id>
+    <published>2016-05-19T04:41:11.000Z</published>
+    <updated>2016-05-19T04:42:11.266Z</updated>
+    <content type="html"><![CDATA[<p>jewel版本新增加了一个驱动NBD，允许librbd实现一个内核级别的rbd</p>
+<p>NBD相比较于kernel rbd：</p>
+<ul>
+<li>rbd-ko是根据内核主线走的，升级kernel</li>
+<li>rbd需要升级到相应的内核，改动太大</li>
+<li>rbd-ko的开发要慢于librbd，需要很多的时间才能追赶上librbd</li>
+</ul>
+<p>rbd-nbd是通过librbd这个用户空间通过nbd的内核模块实现了内核级别的驱动，稳定性和性能都有保障<br><a id="more"></a></p>
+<h3 id="怎么理解用户态和内核态？">怎么理解用户态和内核态？</h3><ul>
+<li>librbd就是用户态，一般的kvm对接的就是librbd的</li>
+<li>kernel rbd就是内核态，这个是一个内核模块，是内核直接与osd交互的，一般来说内核态的性能会优于用户态</li>
+</ul>
+<h2 id="下面来做下基本的操作：">下面来做下基本的操作：</h2><h3 id="1、创建一个image">1、创建一个image</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># rbd create testnbdrbd -s 10G</span></span><br></pre></td></tr></table></figure>
+<h3 id="2、映射这个image">2、映射这个image</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment">#  rbd-nbd map rbd/testnbdrbd</span></span><br><span class="line">/dev/nbd0</span><br></pre></td></tr></table></figure>
+<h3 id="3、查询已经映射的nbd">3、查询已经映射的nbd</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment">#  rbd-nbd list-mapped</span></span><br><span class="line">/dev/nbd0</span><br></pre></td></tr></table></figure>
+<p>上面说了这么多，那么来点直观的认识,nbd带来的好处<br>查询下image的信息<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># rbd info testnbdrbd</span></span><br><span class="line">rbd image <span class="string">'testnbdrbd'</span>:</span><br><span class="line">	size <span class="number">10240</span> MB <span class="keyword">in</span> <span class="number">2560</span> objects</span><br><span class="line">	order <span class="number">22</span> (<span class="number">4096</span> kB objects)</span><br><span class="line">	block_name_prefix: rbd_data.<span class="number">10</span>ad2ae8944a</span><br><span class="line">	format: <span class="number">2</span></span><br><span class="line">	features: layering, exclusive-lock, object-map, fast-diff, deep-flatten</span><br><span class="line">	flags:</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>jewel版本默认开启了features: layering, exclusive-lock, object-map, fast-diff, deep-flatten这么多的属性，而这些属性是kernel-rbd还不支持的</p>
+</blockquote>
+<p>所以做rbd map的时候就会出现下面的问题:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># rbd map  testnbdrbd</span></span><br><span class="line">rbd: sysfs write failed</span><br><span class="line">RBD image feature <span class="built_in">set</span> mismatch. You can <span class="built_in">disable</span> features unsupported by the kernel with <span class="string">"rbd feature disable"</span>.</span><br><span class="line">In some cases useful info is found <span class="keyword">in</span> syslog - try <span class="string">"dmesg | tail"</span> or so.</span><br><span class="line">rbd: map failed: (<span class="number">6</span>) No such device or address</span><br></pre></td></tr></table></figure></p>
+<p>那么现在想用块设备方式怎么用，就可以用nbd了<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment">#  rbd-nbd map rbd/testnbdrbd</span></span><br><span class="line">/dev/nbd0</span><br></pre></td></tr></table></figure></p>
+<p>这样就可以用了。不用担心接口的问题了,因为只要librbd支持的属性，nbd就默认支持了</p>
+<p>rbd几种常用的模式和新模式图：<br><img src="http://static.zybuluo.com/zphj1987/33s6u70sw4qhgqvfhvwe5d5b/nbd.png" alt="nbd.png-40.5kB"></p>
+<h3 id="本篇ceph版本">本篇ceph版本</h3><blockquote>
+<p>ceph version 10.2.1 (3a66dd4f30852819c1bdaa8ec23c795d4ad77269)</p>
+</blockquote>
+<h3 id="打赏通道">打赏通道</h3><center><br><img src="http://static.zybuluo.com/zphj1987/fi2557g55ucsdpyblopyfudl/newpay.png" alt="打赏" title="打赏"><br></center>
+
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>jewel版本新增加了一个驱动NBD，允许librbd实现一个内核级别的rbd</p>
+<p>NBD相比较于kernel rbd：</p>
+<ul>
+<li>rbd-ko是根据内核主线走的，升级kernel</li>
+<li>rbd需要升级到相应的内核，改动太大</li>
+<li>rbd-ko的开发要慢于librbd，需要很多的时间才能追赶上librbd</li>
+</ul>
+<p>rbd-nbd是通过librbd这个用户空间通过nbd的内核模块实现了内核级别的驱动，稳定性和性能都有保障<br>]]>
+    
+    </summary>
+    
+      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[我的分答-付费语音回答问题]]></title>
@@ -362,7 +413,7 @@
     <link href="http://www.zphj1987.com/2016/04/19/inkscope%E5%AE%8C%E6%95%B4%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/"/>
     <id>http://www.zphj1987.com/2016/04/19/inkscope完整安装配置/</id>
     <published>2016-04-19T05:52:34.000Z</published>
-    <updated>2016-05-13T09:16:15.485Z</updated>
+    <updated>2016-05-19T04:01:49.441Z</updated>
     <content type="html"><![CDATA[<h3 id="准备centos7基础系统">准备centos7基础系统</h3><p>首先安装基础系统centos7 在安装选项那里选择base web server ，选择其他的也可以，选择mini安装会缺很多常用的软件包，后续需要一个个安装比较麻烦</p>
 <h3 id="关闭防火墙相关">关闭防火墙相关</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@inkscope ~]<span class="comment"># setenforce 0</span></span><br><span class="line">[root@inkscope ~]<span class="comment"># sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config</span></span><br><span class="line">[root@inkscope ~]<span class="comment"># systemctl stop firewalld</span></span><br><span class="line">[root@inkscope ~]<span class="comment"># systemctl disable firewalld</span></span><br></pre></td></tr></table></figure>
 <h3 id="更新源相关的">更新源相关的</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@inkscope ~]<span class="comment"># rm -rf /etc/yum.repos.d/*.repo</span></span><br><span class="line">[root@inkscope ~]<span class="comment"># wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo</span></span><br><span class="line">[root@inkscope ~]<span class="comment"># wget -O /etc/yum.repos.d/epel.repo http://mirrors.aliyun.com/repo/epel-7.repo</span></span><br></pre></td></tr></table></figure>
@@ -395,7 +446,7 @@
 <blockquote>
 <p>这个里面因为python-ceph在10.x已经更名了，所以在确保其他已经安装好的情况下使用忽略依赖进行安装，ceph0.94没有这个问题</p>
 </blockquote>
-<h4 id="配置权限">配置权限</h4><p>需要创建一个client.restapi的用户 拥有权限 [mds] allow, [mon] allow <em> , [osd] allow </em><br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph auth get-or-create client.restapi mds <span class="string">'allow'</span> osd <span class="string">'allow *'</span> mon <span class="string">'allow *'</span> &gt; /etc/ceph/ceph.client.restapi.keyring</span><br></pre></td></tr></table></figure></p>
+<h4 id="配置权限">配置权限</h4><p>需要创建一个client.restapi的用户 拥有权限 [mds] allow, [mon] allow <em> , [osd] allow </em><br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph auth get-or-create client.restapi mds <span class="string">'allow'</span> osd <span class="string">'allow *'</span> mon <span class="string">'allow *'</span> &gt; /etc/ceph/ceph.client.restapi.keyring</span><br><span class="line"></span><br><span class="line">chmod <span class="number">644</span> /etc/ceph/ceph.client.admin.keyring</span><br><span class="line">chmod <span class="number">644</span> /etc/ceph/ceph.client.restapi.keyring</span><br></pre></td></tr></table></figure></p>
 <p>在/etc/ceph/ceph.conf配置文件里面添加<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[client.restapi]</span><br><span class="line">    <span class="built_in">log</span>_file = /dev/null</span><br><span class="line">    keyring = /etc/ceph/ceph.client.restapi.keyring</span><br></pre></td></tr></table></figure></p>
 <h4 id="配置httpd">配置httpd</h4><p> /etc/httpd/conf/httpd.conf 中间添加一条</p>
 <blockquote>
@@ -412,7 +463,7 @@
 <h4 id="启动httpd服务">启动httpd服务</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@inkscope ~]<span class="comment"># systemctl restart httpd</span></span><br></pre></td></tr></table></figure>
 <p>检查ceph-rest-api是否能访问，地址是 <a href="http://192.168.222.100:8080/ceph_rest_api/api/v0.1/" target="_blank" rel="external">http://192.168.222.100:8080/ceph_rest_api/api/v0.1/</a></p>
 <p><img src="http://static.zybuluo.com/zphj1987/4s2rmktfiwp1qahs0f1z7hf7/rest-api.png" alt="rest-api.png-22.5kB"></p>
-<p>修改/opt/inkscope/etc/inkscope.conf配置文件，<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="string">"ceph_rest_api"</span>: <span class="string">"192.168.222.100:8080"</span>,</span><br><span class="line"><span class="string">"ceph_rest_api_subfolder"</span>: <span class="string">"ceph_rest_api"</span>,</span><br></pre></td></tr></table></figure></p>
+<p>修改/opt/inkscope/etc/inkscope.conf配置文件，<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="string">"ceph_rest_api"</span>: <span class="string">"192.168.222.100:8080"</span>,</span><br><span class="line"><span class="string">"ceph_rest_api_subfolder"</span>: <span class="string">"ceph_rest_api"</span>,</span><br><span class="line"><span class="string">"mongodb_host"</span> : <span class="string">"192.168.222.100"</span>,</span><br></pre></td></tr></table></figure></p>
 <blockquote>
 <p>注意上面的地址不要在ip和地址前面加<a href="http://否则获取不到信息的，注意使用的是inkscope的web端口8080，也就是上面配置好的rest-api的端口" target="_blank" rel="external">http://否则获取不到信息的，注意使用的是inkscope的web端口8080，也就是上面配置好的rest-api的端口</a></p>
 </blockquote>
@@ -1002,41 +1053,6 @@
 <h3 id="查询osd的epoch编号">查询osd的epoch编号</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@lab8107:~<span class="comment"># ceph osd stat</span></span><br><span class="line">     osdmap e4686: <span class="number">8</span> osds: <span class="number">8</span> up, <span class="number">8</span> <span class="keyword">in</span></span><br></pre></td></tr></table></figure>
 <p>上面显示的 <code>e4686</code> 即为osdmap的epoch的编号</p>
 <h3 id="增加epoch">增加epoch</h3><p>现在需要增加1000<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph osd thrash <span class="number">1000</span></span><br></pre></td></tr></table></figure></p>]]>
-    
-    </summary>
-    
-      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[yum安装指定版本ceph包]]></title>
-    <link href="http://www.zphj1987.com/2016/03/01/yum%E5%AE%89%E8%A3%85%E6%8C%87%E5%AE%9A%E7%89%88%E6%9C%ACceph%E5%8C%85/"/>
-    <id>http://www.zphj1987.com/2016/03/01/yum安装指定版本ceph包/</id>
-    <published>2016-03-01T04:21:56.000Z</published>
-    <updated>2016-03-01T05:17:28.224Z</updated>
-    <content type="html"><![CDATA[<p>安装ceph包的方式有很多，这里讲的是从官网直接通过yum源的安装方式进行安装</p>
-<p>yum源对应的地址为<br><a href="http://download.ceph.com/rpm-hammer/el6/x86_64/" target="_blank" rel="external">http://download.ceph.com/rpm-hammer/el6/x86_64/</a></p>
-<p>怎么配置ceph源就不在这里赘述了</p>
-<p>下图为ceph官网的yum源里面的文件列表：</p>
-<a id="more"></a>
-<p><img src="http://7xo9we.com1.z0.glb.clouddn.com/16-3-1/80906036.jpg" alt=""></p>
-<p>可以看到有多个版本的，默认的会安装最新的版本的</p>
-<p>这样就会有个问题：<br>安装了一个老版本的包，需要安装一个附属的包，安装的版本就会是最新版本的，而不是已经安装的版本的附属的包，会引起版本错乱</p>
-<p>解决办法：</p>
-<h3 id="1、查询源里面的包有多少个版本">1、查询源里面的包有多少个版本</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@zhongbo ~]<span class="comment"># yum --showduplicates list ceph | expand</span></span><br><span class="line">Loaded plugins: security</span><br><span class="line">Available Packages</span><br><span class="line">ceph.x86_64                         <span class="number">1</span>:<span class="number">0.94</span>-<span class="number">0</span>.el6                            ceph</span><br><span class="line">ceph.x86_64                         <span class="number">1</span>:<span class="number">0.94</span>.<span class="number">1</span>-<span class="number">0</span>.el6                          ceph</span><br><span class="line">ceph.x86_64                         <span class="number">1</span>:<span class="number">0.94</span>.<span class="number">2</span>-<span class="number">0</span>.el6                          ceph</span><br><span class="line">ceph.x86_64                         <span class="number">1</span>:<span class="number">0.94</span>.<span class="number">3</span>-<span class="number">0</span>.el6                          ceph</span><br><span class="line">ceph.x86_64                         <span class="number">1</span>:<span class="number">0.94</span>.<span class="number">4</span>-<span class="number">0</span>.el6                          ceph</span><br><span class="line">ceph.x86_64                         <span class="number">1</span>:<span class="number">0.94</span>.<span class="number">5</span>-<span class="number">0</span>.el6                          ceph</span><br></pre></td></tr></table></figure>
-<h3 id="2、安装指定版本的包">2、安装指定版本的包</h3><p>假如现在需要安装的是1:0.94.4-0.el6这个版本<br>安装的格式为：</p>
-<pre><code>yum install &lt;package <span class="property">name</span>&gt;-&lt;<span class="property">version</span> info&gt;
-</code></pre><p>对应到这里<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum install ceph-<span class="number">0.94</span>.<span class="number">4</span>-<span class="number">0</span>.el6</span><br></pre></td></tr></table></figure></p>
-<p>注意名称规则是前面的名称，中间的版本去掉 1: 然后就可以安装指定版本的包了</p>
-<hr>
-<h3 id="My_daily">My daily</h3><p>今天的午饭不错<br>天气也很好<br><img src="http://7xo9we.com1.z0.glb.clouddn.com/16-3-1/67526735.jpg" alt=""></p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>安装ceph包的方式有很多，这里讲的是从官网直接通过yum源的安装方式进行安装</p>
-<p>yum源对应的地址为<br><a href="http://download.ceph.com/rpm-hammer/el6/x86_64/">http://download.ceph.com/rpm-hammer/el6/x86_64/</a></p>
-<p>怎么配置ceph源就不在这里赘述了</p>
-<p>下图为ceph官网的yum源里面的文件列表：</p>]]>
     
     </summary>
     

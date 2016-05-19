@@ -261,7 +261,7 @@ var _hmt = _hmt || [];
 <blockquote>
 <p>这个里面因为python-ceph在10.x已经更名了，所以在确保其他已经安装好的情况下使用忽略依赖进行安装，ceph0.94没有这个问题</p>
 </blockquote>
-<h4 id="配置权限">配置权限</h4><p>需要创建一个client.restapi的用户 拥有权限 [mds] allow, [mon] allow <em> , [osd] allow </em><br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph auth get-or-create client.restapi mds <span class="string">'allow'</span> osd <span class="string">'allow *'</span> mon <span class="string">'allow *'</span> &gt; /etc/ceph/ceph.client.restapi.keyring</span><br></pre></td></tr></table></figure></p>
+<h4 id="配置权限">配置权限</h4><p>需要创建一个client.restapi的用户 拥有权限 [mds] allow, [mon] allow <em> , [osd] allow </em><br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph auth get-or-create client.restapi mds <span class="string">'allow'</span> osd <span class="string">'allow *'</span> mon <span class="string">'allow *'</span> &gt; /etc/ceph/ceph.client.restapi.keyring</span><br><span class="line"></span><br><span class="line">chmod <span class="number">644</span> /etc/ceph/ceph.client.admin.keyring</span><br><span class="line">chmod <span class="number">644</span> /etc/ceph/ceph.client.restapi.keyring</span><br></pre></td></tr></table></figure></p>
 <p>在/etc/ceph/ceph.conf配置文件里面添加<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[client.restapi]</span><br><span class="line">    <span class="built_in">log</span>_file = /dev/null</span><br><span class="line">    keyring = /etc/ceph/ceph.client.restapi.keyring</span><br></pre></td></tr></table></figure></p>
 <h4 id="配置httpd">配置httpd</h4><p> /etc/httpd/conf/httpd.conf 中间添加一条</p>
 <blockquote>
@@ -278,7 +278,7 @@ var _hmt = _hmt || [];
 <h4 id="启动httpd服务">启动httpd服务</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@inkscope ~]<span class="comment"># systemctl restart httpd</span></span><br></pre></td></tr></table></figure>
 <p>检查ceph-rest-api是否能访问，地址是 <a href="http://192.168.222.100:8080/ceph_rest_api/api/v0.1/" target="_blank" rel="external">http://192.168.222.100:8080/ceph_rest_api/api/v0.1/</a></p>
 <p><img src="http://static.zybuluo.com/zphj1987/4s2rmktfiwp1qahs0f1z7hf7/rest-api.png" alt="rest-api.png-22.5kB"></p>
-<p>修改/opt/inkscope/etc/inkscope.conf配置文件，<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="string">"ceph_rest_api"</span>: <span class="string">"192.168.222.100:8080"</span>,</span><br><span class="line"><span class="string">"ceph_rest_api_subfolder"</span>: <span class="string">"ceph_rest_api"</span>,</span><br></pre></td></tr></table></figure></p>
+<p>修改/opt/inkscope/etc/inkscope.conf配置文件，<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="string">"ceph_rest_api"</span>: <span class="string">"192.168.222.100:8080"</span>,</span><br><span class="line"><span class="string">"ceph_rest_api_subfolder"</span>: <span class="string">"ceph_rest_api"</span>,</span><br><span class="line"><span class="string">"mongodb_host"</span> : <span class="string">"192.168.222.100"</span>,</span><br></pre></td></tr></table></figure></p>
 <blockquote>
 <p>注意上面的地址不要在ip和地址前面加<a href="http://否则获取不到信息的，注意使用的是inkscope的web端口8080，也就是上面配置好的rest-api的端口" target="_blank" rel="external">http://否则获取不到信息的，注意使用的是inkscope的web端口8080，也就是上面配置好的rest-api的端口</a></p>
 </blockquote>

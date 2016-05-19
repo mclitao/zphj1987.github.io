@@ -186,6 +186,71 @@ var _hmt = _hmt || [];
 </nav>
       <div class="body-wrap">
   
+    <article id="post-ceph的jewel新支持的rbd-nbd" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/05/19/ceph的jewel新支持的rbd-nbd/" class="article-date">
+  	<time datetime="2016-05-19T04:41:11.000Z" itemprop="datePublished">2016-05-19</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/05/19/ceph的jewel新支持的rbd-nbd/">ceph的jewel新支持的rbd-nbd</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>jewel版本新增加了一个驱动NBD，允许librbd实现一个内核级别的rbd</p>
+<p>NBD相比较于kernel rbd：</p>
+<ul>
+<li>rbd-ko是根据内核主线走的，升级kernel</li>
+<li>rbd需要升级到相应的内核，改动太大</li>
+<li>rbd-ko的开发要慢于librbd，需要很多的时间才能追赶上librbd</li>
+</ul>
+<p>rbd-nbd是通过librbd这个用户空间通过nbd的内核模块实现了内核级别的驱动，稳定性和性能都有保障<br>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2016/05/19/ceph的jewel新支持的rbd-nbd/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-我的分答-付费语音回答问题" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -730,66 +795,6 @@ var _hmt = _hmt || [];
       
         <p class="article-more-link">
           <a  href="/2016/04/23/福昕pdf加载慢崩溃的解决办法/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-inkscope完整安装配置" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/04/19/inkscope完整安装配置/" class="article-date">
-  	<time datetime="2016-04-19T05:52:34.000Z" itemprop="datePublished">2016-04-19</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/04/19/inkscope完整安装配置/">inkscope完整安装配置</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="准备centos7基础系统">准备centos7基础系统</h3><p>首先安装基础系统centos7 在安装选项那里选择base web server ，选择其他的也可以，选择mini安装会缺很多常用的软件包，后续需要一个个安装比较麻烦</p>
-<h3 id="关闭防火墙相关">关闭防火墙相关</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@inkscope ~]<span class="comment"># setenforce 0</span></span><br><span class="line">[root@inkscope ~]<span class="comment"># sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config</span></span><br><span class="line">[root@inkscope ~]<span class="comment"># systemctl stop firewalld</span></span><br><span class="line">[root@inkscope ~]<span class="comment"># systemctl disable firewalld</span></span><br></pre></td></tr></table></figure>
-<h3 id="更新源相关的">更新源相关的</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@inkscope ~]<span class="comment"># rm -rf /etc/yum.repos.d/*.repo</span></span><br><span class="line">[root@inkscope ~]<span class="comment"># wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo</span></span><br><span class="line">[root@inkscope ~]<span class="comment"># wget -O /etc/yum.repos.d/epel.repo http://mirrors.aliyun.com/repo/epel-7.repo</span></span><br></pre></td></tr></table></figure>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2016/04/19/inkscope完整安装配置/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>

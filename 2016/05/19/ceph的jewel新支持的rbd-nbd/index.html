@@ -3,21 +3,40 @@
 <head>
   <meta charset="utf-8">
   
-  <title>我的分答-付费语音回答问题 | zphj1987&#39;Blog</title>
+  <title>ceph的jewel新支持的rbd-nbd | zphj1987&#39;Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="在行推出的新产品，在行我也有注册，不过是线下的时间分享就暂时没使用了，现在推出了微信的付费的语音Q&amp;amp;A产品，是一个不错的产品
-目的是知识变现的一种模式，也是对等的一种模式，一是自愿，二来公平，获取知识的方式有很多种，只是时间和路径的差别，殊途同归，我会根据自己的经验回答您的提问，语音的方式也是不错的一种方式，依托微信也能很快推广，目前暂定为价格 10，欢迎来问，使用微信扫一扫下面的二维码向">
+  <meta name="description" content="jewel版本新增加了一个驱动NBD，允许librbd实现一个内核级别的rbd
+NBD相比较于kernel rbd：
+
+rbd-ko是根据内核主线走的，升级kernel
+rbd需要升级到相应的内核，改动太大
+rbd-ko的开发要慢于librbd，需要很多的时间才能追赶上librbd
+
+rbd-nbd是通过librbd这个用户空间通过nbd的内核模块实现了内核级别的驱动，稳定性和性能都有保障">
 <meta property="og:type" content="article">
-<meta property="og:title" content="我的分答-付费语音回答问题">
-<meta property="og:url" content="http://www.zphj1987.com/2016/05/18/我的分答-付费语音回答问题/index.html">
+<meta property="og:title" content="ceph的jewel新支持的rbd-nbd">
+<meta property="og:url" content="http://www.zphj1987.com/2016/05/19/ceph的jewel新支持的rbd-nbd/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
-<meta property="og:description" content="在行推出的新产品，在行我也有注册，不过是线下的时间分享就暂时没使用了，现在推出了微信的付费的语音Q&amp;amp;A产品，是一个不错的产品
-目的是知识变现的一种模式，也是对等的一种模式，一是自愿，二来公平，获取知识的方式有很多种，只是时间和路径的差别，殊途同归，我会根据自己的经验回答您的提问，语音的方式也是不错的一种方式，依托微信也能很快推广，目前暂定为价格 10，欢迎来问，使用微信扫一扫下面的二维码向">
-<meta property="og:image" content="http://static.zybuluo.com/zphj1987/qxfdnyf1c6o1hd4irdaz7xp4/liantu.png">
+<meta property="og:description" content="jewel版本新增加了一个驱动NBD，允许librbd实现一个内核级别的rbd
+NBD相比较于kernel rbd：
+
+rbd-ko是根据内核主线走的，升级kernel
+rbd需要升级到相应的内核，改动太大
+rbd-ko的开发要慢于librbd，需要很多的时间才能追赶上librbd
+
+rbd-nbd是通过librbd这个用户空间通过nbd的内核模块实现了内核级别的驱动，稳定性和性能都有保障">
+<meta property="og:image" content="http://static.zybuluo.com/zphj1987/33s6u70sw4qhgqvfhvwe5d5b/nbd.png">
+<meta property="og:image" content="http://static.zybuluo.com/zphj1987/fi2557g55ucsdpyblopyfudl/newpay.png">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="我的分答-付费语音回答问题">
-<meta name="twitter:description" content="在行推出的新产品，在行我也有注册，不过是线下的时间分享就暂时没使用了，现在推出了微信的付费的语音Q&amp;amp;A产品，是一个不错的产品
-目的是知识变现的一种模式，也是对等的一种模式，一是自愿，二来公平，获取知识的方式有很多种，只是时间和路径的差别，殊途同归，我会根据自己的经验回答您的提问，语音的方式也是不错的一种方式，依托微信也能很快推广，目前暂定为价格 10，欢迎来问，使用微信扫一扫下面的二维码向">
+<meta name="twitter:title" content="ceph的jewel新支持的rbd-nbd">
+<meta name="twitter:description" content="jewel版本新增加了一个驱动NBD，允许librbd实现一个内核级别的rbd
+NBD相比较于kernel rbd：
+
+rbd-ko是根据内核主线走的，升级kernel
+rbd需要升级到相应的内核，改动太大
+rbd-ko的开发要慢于librbd，需要很多的时间才能追赶上librbd
+
+rbd-nbd是通过librbd这个用户空间通过nbd的内核模块实现了内核级别的驱动，稳定性和性能都有保障">
   
     <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
   
@@ -188,11 +207,11 @@ var _hmt = _hmt || [];
 		</header>				
 	</div>
 </nav>
-      <div class="body-wrap"><article id="post-我的分答-付费语音回答问题" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-ceph的jewel新支持的rbd-nbd" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2016/05/18/我的分答-付费语音回答问题/" class="article-date">
-  	<time datetime="2016-05-17T17:34:06.000Z" itemprop="datePublished">2016-05-18</time>
+      <a href="/2016/05/19/ceph的jewel新支持的rbd-nbd/" class="article-date">
+  	<time datetime="2016-05-19T04:41:11.000Z" itemprop="datePublished">2016-05-19</time>
 </a>
     </div>
   
@@ -205,7 +224,7 @@ var _hmt = _hmt || [];
         
   
     <h1 class="article-title" itemprop="name">
-      我的分答-付费语音回答问题
+      ceph的jewel新支持的rbd-nbd
     </h1>
   
 
@@ -225,13 +244,33 @@ var _hmt = _hmt || [];
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>在行推出的新产品，在行我也有注册，不过是线下的时间分享就暂时没使用了，现在推出了微信的付费的语音Q&amp;A产品，是一个不错的产品</p>
-<p>目的是知识变现的一种模式，也是对等的一种模式，一是自愿，二来公平，获取知识的方式有很多种，只是时间和路径的差别，殊途同归，我会根据自己的经验回答您的提问，语音的方式也是不错的一种方式，依托微信也能很快推广，目前暂定为价格 10，欢迎来问，使用微信扫一扫下面的二维码向我提问</p>
-<a id="more"></a>
-<center><br><img src="http://static.zybuluo.com/zphj1987/qxfdnyf1c6o1hd4irdaz7xp4/liantu.png" alt="微信扫一扫"><br></center>
-
-
-
+        <p>jewel版本新增加了一个驱动NBD，允许librbd实现一个内核级别的rbd</p>
+<p>NBD相比较于kernel rbd：</p>
+<ul>
+<li>rbd-ko是根据内核主线走的，升级kernel</li>
+<li>rbd需要升级到相应的内核，改动太大</li>
+<li>rbd-ko的开发要慢于librbd，需要很多的时间才能追赶上librbd</li>
+</ul>
+<p>rbd-nbd是通过librbd这个用户空间通过nbd的内核模块实现了内核级别的驱动，稳定性和性能都有保障<br><a id="more"></a></p>
+<h3 id="怎么理解用户态和内核态？">怎么理解用户态和内核态？</h3><ul>
+<li>librbd就是用户态，一般的kvm对接的就是librbd的</li>
+<li>kernel rbd就是内核态，这个是一个内核模块，是内核直接与osd交互的，一般来说内核态的性能会优于用户态</li>
+</ul>
+<h2 id="下面来做下基本的操作：">下面来做下基本的操作：</h2><h3 id="1、创建一个image">1、创建一个image</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># rbd create testnbdrbd -s 10G</span></span><br></pre></td></tr></table></figure>
+<h3 id="2、映射这个image">2、映射这个image</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment">#  rbd-nbd map rbd/testnbdrbd</span></span><br><span class="line">/dev/nbd0</span><br></pre></td></tr></table></figure>
+<h3 id="3、查询已经映射的nbd">3、查询已经映射的nbd</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment">#  rbd-nbd list-mapped</span></span><br><span class="line">/dev/nbd0</span><br></pre></td></tr></table></figure>
+<p>上面说了这么多，那么来点直观的认识,nbd带来的好处<br>查询下image的信息<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># rbd info testnbdrbd</span></span><br><span class="line">rbd image <span class="string">'testnbdrbd'</span>:</span><br><span class="line">	size <span class="number">10240</span> MB <span class="keyword">in</span> <span class="number">2560</span> objects</span><br><span class="line">	order <span class="number">22</span> (<span class="number">4096</span> kB objects)</span><br><span class="line">	block_name_prefix: rbd_data.<span class="number">10</span>ad2ae8944a</span><br><span class="line">	format: <span class="number">2</span></span><br><span class="line">	features: layering, exclusive-lock, object-map, fast-diff, deep-flatten</span><br><span class="line">	flags:</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>jewel版本默认开启了features: layering, exclusive-lock, object-map, fast-diff, deep-flatten这么多的属性，而这些属性是kernel-rbd还不支持的</p>
+</blockquote>
+<p>所以做rbd map的时候就会出现下面的问题:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># rbd map  testnbdrbd</span></span><br><span class="line">rbd: sysfs write failed</span><br><span class="line">RBD image feature <span class="built_in">set</span> mismatch. You can <span class="built_in">disable</span> features unsupported by the kernel with <span class="string">"rbd feature disable"</span>.</span><br><span class="line">In some cases useful info is found <span class="keyword">in</span> syslog - try <span class="string">"dmesg | tail"</span> or so.</span><br><span class="line">rbd: map failed: (<span class="number">6</span>) No such device or address</span><br></pre></td></tr></table></figure></p>
+<p>那么现在想用块设备方式怎么用，就可以用nbd了<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment">#  rbd-nbd map rbd/testnbdrbd</span></span><br><span class="line">/dev/nbd0</span><br></pre></td></tr></table></figure></p>
+<p>这样就可以用了。不用担心接口的问题了,因为只要librbd支持的属性，nbd就默认支持了</p>
+<p>rbd几种常用的模式和新模式图：<br><img src="http://static.zybuluo.com/zphj1987/33s6u70sw4qhgqvfhvwe5d5b/nbd.png" alt="nbd.png-40.5kB"></p>
+<h3 id="本篇ceph版本">本篇ceph版本</h3><blockquote>
+<p>ceph version 10.2.1 (3a66dd4f30852819c1bdaa8ec23c795d4ad77269)</p>
+</blockquote>
+<h3 id="打赏通道">打赏通道</h3><center><br><img src="http://static.zybuluo.com/zphj1987/fi2557g55ucsdpyblopyfudl/newpay.png" alt="打赏" title="打赏"><br></center>
 
 
       
@@ -242,18 +281,9 @@ var _hmt = _hmt || [];
     
 <nav id="article-nav">
   
-    <a href="/2016/05/19/ceph的jewel新支持的rbd-nbd/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption"><</strong>
-      <div class="article-nav-title">
-        
-          ceph的jewel新支持的rbd-nbd
-        
-      </div>
-    </a>
   
-  
-    <a href="/2016/05/16/支持jewel版本的calamari/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">支持jewel版本的calamari</div>
+    <a href="/2016/05/18/我的分答-付费语音回答问题/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">我的分答-付费语音回答问题</div>
       <strong class="article-nav-caption">></strong>
     </a>
   
@@ -282,7 +312,7 @@ var _hmt = _hmt || [];
 
 <div class="duoshuo">
 	<!-- 多说评论框 start -->
-	<div class="ds-thread" data-thread-key="我的分答-付费语音回答问题" data-title="我的分答-付费语音回答问题" data-url="http://www.zphj1987.com/2016/05/18/我的分答-付费语音回答问题/"></div>
+	<div class="ds-thread" data-thread-key="ceph的jewel新支持的rbd-nbd" data-title="ceph的jewel新支持的rbd-nbd" data-url="http://www.zphj1987.com/2016/05/19/ceph的jewel新支持的rbd-nbd/"></div>
 	<!-- 多说评论框 end -->
 	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 	<script type="text/javascript">
