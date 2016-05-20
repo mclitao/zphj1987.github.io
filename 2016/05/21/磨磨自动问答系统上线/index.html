@@ -3,40 +3,24 @@
 <head>
   <meta charset="utf-8">
   
-  <title>ceph的jewel新支持的rbd-nbd | zphj1987&#39;Blog</title>
+  <title>磨磨自动问答系统上线 | zphj1987&#39;Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="jewel版本新增加了一个驱动NBD，允许librbd实现一个内核级别的rbd
-NBD相比较于kernel rbd：
-
-rbd-ko是根据内核主线走的，升级kernel
-rbd需要升级到相应的内核，改动太大
-rbd-ko的开发要慢于librbd，需要很多的时间才能追赶上librbd
-
-rbd-nbd是通过librbd这个用户空间通过nbd的内核模块实现了内核级别的驱动，稳定性和性能都有保障">
+  <meta name="description" content="新上线磨磨自动问答系统，系统也是在自我学习当中，欢迎大家踊跃提问，生命不息折腾不止
+本问答系统支持自动回答，有时会在线回答
+测试阶段，欢迎吐槽">
 <meta property="og:type" content="article">
-<meta property="og:title" content="ceph的jewel新支持的rbd-nbd">
-<meta property="og:url" content="http://www.zphj1987.com/2016/05/19/ceph的jewel新支持的rbd-nbd/index.html">
+<meta property="og:title" content="磨磨自动问答系统上线">
+<meta property="og:url" content="http://www.zphj1987.com/2016/05/21/磨磨自动问答系统上线/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
-<meta property="og:description" content="jewel版本新增加了一个驱动NBD，允许librbd实现一个内核级别的rbd
-NBD相比较于kernel rbd：
-
-rbd-ko是根据内核主线走的，升级kernel
-rbd需要升级到相应的内核，改动太大
-rbd-ko的开发要慢于librbd，需要很多的时间才能追赶上librbd
-
-rbd-nbd是通过librbd这个用户空间通过nbd的内核模块实现了内核级别的驱动，稳定性和性能都有保障">
-<meta property="og:image" content="http://static.zybuluo.com/zphj1987/33s6u70sw4qhgqvfhvwe5d5b/nbd.png">
-<meta property="og:image" content="http://static.zybuluo.com/zphj1987/fi2557g55ucsdpyblopyfudl/newpay.png">
+<meta property="og:description" content="新上线磨磨自动问答系统，系统也是在自我学习当中，欢迎大家踊跃提问，生命不息折腾不止
+本问答系统支持自动回答，有时会在线回答
+测试阶段，欢迎吐槽">
+<meta property="og:image" content="http://static.zybuluo.com/zphj1987/okhi56yk595mndvh24xf8922/help.png">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="ceph的jewel新支持的rbd-nbd">
-<meta name="twitter:description" content="jewel版本新增加了一个驱动NBD，允许librbd实现一个内核级别的rbd
-NBD相比较于kernel rbd：
-
-rbd-ko是根据内核主线走的，升级kernel
-rbd需要升级到相应的内核，改动太大
-rbd-ko的开发要慢于librbd，需要很多的时间才能追赶上librbd
-
-rbd-nbd是通过librbd这个用户空间通过nbd的内核模块实现了内核级别的驱动，稳定性和性能都有保障">
+<meta name="twitter:title" content="磨磨自动问答系统上线">
+<meta name="twitter:description" content="新上线磨磨自动问答系统，系统也是在自我学习当中，欢迎大家踊跃提问，生命不息折腾不止
+本问答系统支持自动回答，有时会在线回答
+测试阶段，欢迎吐槽">
   
     <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
   
@@ -207,11 +191,11 @@ var _hmt = _hmt || [];
 		</header>				
 	</div>
 </nav>
-      <div class="body-wrap"><article id="post-ceph的jewel新支持的rbd-nbd" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-磨磨自动问答系统上线" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2016/05/19/ceph的jewel新支持的rbd-nbd/" class="article-date">
-  	<time datetime="2016-05-19T04:41:11.000Z" itemprop="datePublished">2016-05-19</time>
+      <a href="/2016/05/21/磨磨自动问答系统上线/" class="article-date">
+  	<time datetime="2016-05-20T16:22:38.000Z" itemprop="datePublished">2016-05-21</time>
 </a>
     </div>
   
@@ -224,7 +208,7 @@ var _hmt = _hmt || [];
         
   
     <h1 class="article-title" itemprop="name">
-      ceph的jewel新支持的rbd-nbd
+      磨磨自动问答系统上线
     </h1>
   
 
@@ -233,7 +217,7 @@ var _hmt = _hmt || [];
       <div class="article-info article-info-post">
         
 	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
 	</div>
 
         
@@ -244,38 +228,15 @@ var _hmt = _hmt || [];
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>jewel版本新增加了一个驱动NBD，允许librbd实现一个内核级别的rbd</p>
-<p>NBD相比较于kernel rbd：</p>
-<ul>
-<li>rbd-ko是根据内核主线走的，升级kernel</li>
-<li>rbd需要升级到相应的内核，改动太大</li>
-<li>rbd-ko的开发要慢于librbd，需要很多的时间才能追赶上librbd</li>
-</ul>
-<p>rbd-nbd是通过librbd这个用户空间通过nbd的内核模块实现了内核级别的驱动，稳定性和性能都有保障<br><a id="more"></a></p>
-<h3 id="怎么理解用户态和内核态？">怎么理解用户态和内核态？</h3><ul>
-<li>librbd就是用户态，一般的kvm对接的就是librbd的</li>
-<li>kernel rbd就是内核态，这个是一个内核模块，是内核直接与osd交互的，一般来说内核态的性能会优于用户态</li>
-</ul>
-<h2 id="下面来做下基本的操作：">下面来做下基本的操作：</h2><h3 id="1、创建一个image">1、创建一个image</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># rbd create testnbdrbd -s 10G</span></span><br></pre></td></tr></table></figure>
-<h3 id="2、映射这个image">2、映射这个image</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment">#  rbd-nbd map rbd/testnbdrbd</span></span><br><span class="line">/dev/nbd0</span><br></pre></td></tr></table></figure>
-<h3 id="3、查询已经映射的nbd">3、查询已经映射的nbd</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment">#  rbd-nbd list-mapped</span></span><br><span class="line">/dev/nbd0</span><br></pre></td></tr></table></figure>
-<p>上面说了这么多，那么来点直观的认识,nbd带来的好处<br>查询下image的信息<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># rbd info testnbdrbd</span></span><br><span class="line">rbd image <span class="string">'testnbdrbd'</span>:</span><br><span class="line">	size <span class="number">10240</span> MB <span class="keyword">in</span> <span class="number">2560</span> objects</span><br><span class="line">	order <span class="number">22</span> (<span class="number">4096</span> kB objects)</span><br><span class="line">	block_name_prefix: rbd_data.<span class="number">10</span>ad2ae8944a</span><br><span class="line">	format: <span class="number">2</span></span><br><span class="line">	features: layering, exclusive-lock, object-map, fast-diff, deep-flatten</span><br><span class="line">	flags:</span><br></pre></td></tr></table></figure></p>
+        <p>新上线磨磨自动问答系统，系统也是在自我学习当中，欢迎大家踊跃提问，生命不息折腾不止</p>
+<p>本问答系统支持自动回答，有时会在线回答</p>
+<p>测试阶段，欢迎吐槽</p>
+<a id="more"></a>
+<p>使用方法：</p>
 <blockquote>
-<p>jewel版本默认开启了features: layering, exclusive-lock, object-map, fast-diff, deep-flatten这么多的属性，而这些属性是kernel-rbd还不支持的</p>
+<p>戳下面的help</p>
 </blockquote>
-<p>所以做rbd map的时候就会出现下面的问题:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># rbd map  testnbdrbd</span></span><br><span class="line">rbd: sysfs write failed</span><br><span class="line">RBD image feature <span class="built_in">set</span> mismatch. You can <span class="built_in">disable</span> features unsupported by the kernel with <span class="string">"rbd feature disable"</span>.</span><br><span class="line">In some cases useful info is found <span class="keyword">in</span> syslog - try <span class="string">"dmesg | tail"</span> or so.</span><br><span class="line">rbd: map failed: (<span class="number">6</span>) No such device or address</span><br></pre></td></tr></table></figure></p>
-<p>如果非要用，就默认禁用掉这些属性，在配置文件增加</p>
-<blockquote>
-<p>rbd_default_features = 3</p>
-</blockquote>
-<p>那么现在开启属性还行想用块设备方式怎么用，就可以用nbd了<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment">#  rbd-nbd map rbd/testnbdrbd</span></span><br><span class="line">/dev/nbd0</span><br></pre></td></tr></table></figure></p>
-<p>这样就可以用了。不用担心接口的问题了,因为只要librbd支持的属性，nbd就默认支持了</p>
-<p>rbd几种常用的模式和新模式图：<br><img src="http://static.zybuluo.com/zphj1987/33s6u70sw4qhgqvfhvwe5d5b/nbd.png" alt="nbd.png-40.5kB"></p>
-<h3 id="本篇ceph版本">本篇ceph版本</h3><blockquote>
-<p>ceph version 10.2.1 (3a66dd4f30852819c1bdaa8ec23c795d4ad77269)</p>
-</blockquote>
-<h3 id="打赏通道">打赏通道</h3><center><br><img src="http://static.zybuluo.com/zphj1987/fi2557g55ucsdpyblopyfudl/newpay.png" alt="打赏" title="打赏"><br></center>
-
+<p><a href="http://v3.faqrobot.org/robot/faqrobot.html?sysNum=146375952481212447" target="_blank" rel="external"><img src="http://static.zybuluo.com/zphj1987/okhi56yk595mndvh24xf8922/help.png" alt="alt text" title="点我点我！"></a></p>
 
       
     </div>
@@ -285,18 +246,9 @@ var _hmt = _hmt || [];
     
 <nav id="article-nav">
   
-    <a href="/2016/05/21/磨磨自动问答系统上线/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption"><</strong>
-      <div class="article-nav-title">
-        
-          磨磨自动问答系统上线
-        
-      </div>
-    </a>
   
-  
-    <a href="/2016/05/18/我的分答-付费语音回答问题/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">我的分答-付费语音回答问题</div>
+    <a href="/2016/05/19/ceph的jewel新支持的rbd-nbd/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">ceph的jewel新支持的rbd-nbd</div>
       <strong class="article-nav-caption">></strong>
     </a>
   
@@ -325,7 +277,7 @@ var _hmt = _hmt || [];
 
 <div class="duoshuo">
 	<!-- 多说评论框 start -->
-	<div class="ds-thread" data-thread-key="ceph的jewel新支持的rbd-nbd" data-title="ceph的jewel新支持的rbd-nbd" data-url="http://www.zphj1987.com/2016/05/19/ceph的jewel新支持的rbd-nbd/"></div>
+	<div class="ds-thread" data-thread-key="磨磨自动问答系统上线" data-title="磨磨自动问答系统上线" data-url="http://www.zphj1987.com/2016/05/21/磨磨自动问答系统上线/"></div>
 	<!-- 多说评论框 end -->
 	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 	<script type="text/javascript">
