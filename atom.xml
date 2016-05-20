@@ -4,7 +4,7 @@
   <subtitle><![CDATA[现在所学，终有所用]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2016-05-19T04:42:11.266Z</updated>
+  <updated>2016-05-20T12:56:25.438Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="http://www.zphj1987.com/2016/05/19/ceph%E7%9A%84jewel%E6%96%B0%E6%94%AF%E6%8C%81%E7%9A%84rbd-nbd/"/>
     <id>http://www.zphj1987.com/2016/05/19/ceph的jewel新支持的rbd-nbd/</id>
     <published>2016-05-19T04:41:11.000Z</published>
-    <updated>2016-05-19T04:42:11.266Z</updated>
+    <updated>2016-05-20T12:56:25.438Z</updated>
     <content type="html"><![CDATA[<p>jewel版本新增加了一个驱动NBD，允许librbd实现一个内核级别的rbd</p>
 <p>NBD相比较于kernel rbd：</p>
 <ul>
@@ -40,7 +40,11 @@
 <p>jewel版本默认开启了features: layering, exclusive-lock, object-map, fast-diff, deep-flatten这么多的属性，而这些属性是kernel-rbd还不支持的</p>
 </blockquote>
 <p>所以做rbd map的时候就会出现下面的问题:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># rbd map  testnbdrbd</span></span><br><span class="line">rbd: sysfs write failed</span><br><span class="line">RBD image feature <span class="built_in">set</span> mismatch. You can <span class="built_in">disable</span> features unsupported by the kernel with <span class="string">"rbd feature disable"</span>.</span><br><span class="line">In some cases useful info is found <span class="keyword">in</span> syslog - try <span class="string">"dmesg | tail"</span> or so.</span><br><span class="line">rbd: map failed: (<span class="number">6</span>) No such device or address</span><br></pre></td></tr></table></figure></p>
-<p>那么现在想用块设备方式怎么用，就可以用nbd了<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment">#  rbd-nbd map rbd/testnbdrbd</span></span><br><span class="line">/dev/nbd0</span><br></pre></td></tr></table></figure></p>
+<p>如果非要用，就默认禁用掉这些属性，在配置文件增加</p>
+<blockquote>
+<p>rbd_default_features = 3</p>
+</blockquote>
+<p>那么现在开启属性还行想用块设备方式怎么用，就可以用nbd了<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment">#  rbd-nbd map rbd/testnbdrbd</span></span><br><span class="line">/dev/nbd0</span><br></pre></td></tr></table></figure></p>
 <p>这样就可以用了。不用担心接口的问题了,因为只要librbd支持的属性，nbd就默认支持了</p>
 <p>rbd几种常用的模式和新模式图：<br><img src="http://static.zybuluo.com/zphj1987/33s6u70sw4qhgqvfhvwe5d5b/nbd.png" alt="nbd.png-40.5kB"></p>
 <h3 id="本篇ceph版本">本篇ceph版本</h3><blockquote>
