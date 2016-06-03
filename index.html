@@ -246,10 +246,10 @@ var _hmt = _hmt || [];
 
 
   
-    <article id="post-多mon的挂测试" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-mon到底能坏几个" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2016/05/26/多mon的挂测试/" class="article-date">
+      <a href="/2016/05/26/mon到底能坏几个/" class="article-date">
   	<time datetime="2016-05-25T16:28:21.000Z" itemprop="datePublished">2016-05-26</time>
 </a>
     </div>
@@ -263,7 +263,7 @@ var _hmt = _hmt || [];
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2016/05/26/多mon的挂测试/">多mon的挂测试(测试文档)</a>
+      <a class="article-title" href="/2016/05/26/mon到底能坏几个/">mon到底能坏几个</a>
     </h1>
   
 
@@ -272,8 +272,12 @@ var _hmt = _hmt || [];
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p><img src="http://7xi6lo.com1.z0.glb.clouddn.com/10mon.gif" alt=""></p>
-
+        <p>如果是在做ceph的配置，我们会经常遇到这几个问题</p>
+<ol>
+<li>问：ceph需要配置几个mon<br>答：配置一个可以，但是坏了一个就不行了，需要配置只是三个mon，并且需要是奇数个</li>
+<li>问：ceph的mon能跟osd放在一起么，需要配置很好么？<br>答：能跟放在一起，但是建议在环境允许的情况下一定独立机器，并且mon的配置能好尽量好，能上ssd就上ssd</li>
+</ol>
+<p>这两个问题的答案不能说是错的，但是为什么这么说，这么说有没有问题，这篇文章将根据实际的数据来告诉你，到底mon的极限在哪里，为什么都说要奇数，偶数难道就不行么</p>
       
     </div>
     
@@ -286,6 +290,10 @@ var _hmt = _hmt || [];
 
       
 
+      
+        <p class="article-more-link">
+          <a  href="/2016/05/26/mon到底能坏几个/#more">more >></a>
+        </p>
       
       <div class="clearfix"></div>
     </div>

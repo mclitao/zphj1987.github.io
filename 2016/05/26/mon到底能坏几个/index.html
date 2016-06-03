@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>mon到底能坏几个 | zphj1987&#39;Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="如果是在做ceph的配置，我们会经常遇到这几个问题
+
+问：ceph需要配置几个mon答：配置一个可以，但是坏了一个就不行了，需要配置只是三个mon，并且需要是奇数个
+问：ceph的mon能跟osd放在一起么，需要配置很好么？答：能跟放在一起，但是建议在环境允许的情况下一定独立机器，并且mon的配置能好尽量好，能上ssd就上ssd
+
+这两个问题的答案不能说是错的，但是为什么这么说，这么说有没有问题，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mon到底能坏几个">
+<meta property="og:url" content="http://www.zphj1987.com/2016/05/26/mon到底能坏几个/index.html">
+<meta property="og:site_name" content="zphj1987'Blog">
+<meta property="og:description" content="如果是在做ceph的配置，我们会经常遇到这几个问题
+
+问：ceph需要配置几个mon答：配置一个可以，但是坏了一个就不行了，需要配置只是三个mon，并且需要是奇数个
+问：ceph的mon能跟osd放在一起么，需要配置很好么？答：能跟放在一起，但是建议在环境允许的情况下一定独立机器，并且mon的配置能好尽量好，能上ssd就上ssd
+
+这两个问题的答案不能说是错的，但是为什么这么说，这么说有没有问题，">
+<meta property="og:image" content="http://static.zybuluo.com/zphj1987/jz15y76o7yytmxksk2ps4eyi/1.png">
+<meta property="og:image" content="http://7xi6lo.com1.z0.glb.clouddn.com/10mon.gif">
+<meta property="og:image" content="http://static.zybuluo.com/zphj1987/fi2557g55ucsdpyblopyfudl/newpay.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="mon到底能坏几个">
+<meta name="twitter:description" content="如果是在做ceph的配置，我们会经常遇到这几个问题
+
+问：ceph需要配置几个mon答：配置一个可以，但是坏了一个就不行了，需要配置只是三个mon，并且需要是奇数个
+问：ceph的mon能跟osd放在一起么，需要配置很好么？答：能跟放在一起，但是建议在环境允许的情况下一定独立机器，并且mon的配置能好尽量好，能上ssd就上ssd
+
+这两个问题的答案不能说是错的，但是为什么这么说，这么说有没有问题，">
+  
+    <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="http://7xi6lo.com1.z0.glb.clouddn.com/style.css" type="text/css">
+  
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?252ba55374ee0e63b03196973bb9b776";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="http://7xi6lo.com1.z0.glb.clouddn.com/assets/blogImg/mylogo.jpg" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">zphj1987</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">现在所学，终有所用</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						
+						<li>关于我</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+							<li><a href="/instagram">图片</a></li>
+				        
+							<li><a href="/shuoshuo">说说</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="https://github.com/zphj1987" title="github">github</a>
+					        
+								<a class="weibo" target="_blank" href=" http://weibo.com/zphj1987" title="weibo">weibo</a>
+					        
+								<a class="rss" target="_blank" href="http://www.zphj1987.com/atom.xml" title="rss">rss</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/ceph/" style="font-size: 20px;">ceph</a><a href="/tags/instagram/" style="font-size: 10px;">instagram</a><a href="/tags/iptables/" style="font-size: 10px;">iptables</a><a href="/tags/linux/" style="font-size: 18.33px;">linux</a><a href="/tags/momotan/" style="font-size: 10px;">momotan</a><a href="/tags/nginx/" style="font-size: 13.33px;">nginx</a><a href="/tags/samba/" style="font-size: 10px;">samba</a><a href="/tags/ubuntu/" style="font-size: 16.67px;">ubuntu</a><a href="/tags/windows/" style="font-size: 10px;">windows</a><a href="/tags/其他/" style="font-size: 10px;">其他</a><a href="/tags/内核/" style="font-size: 13.33px;">内核</a><a href="/tags/操作系统/" style="font-size: 11.67px;">操作系统</a><a href="/tags/杂七杂八/" style="font-size: 13.33px;">杂七杂八</a><a href="/tags/注册码/" style="font-size: 10px;">注册码</a><a href="/tags/测试工具/" style="font-size: 11.67px;">测试工具</a><a href="/tags/监控/" style="font-size: 10px;">监控</a><a href="/tags/网卡/" style="font-size: 13.33px;">网卡</a><a href="/tags/脚本/" style="font-size: 15px;">脚本</a><a href="/tags/高可用/" style="font-size: 10px;">高可用</a>
+					</div>
+				</section>
+				
+				
+				
+
+				
+				
+				<section class="switch-part switch-part3">
+				
+					<div id="js-aboutme">1987 武汉 存储行业 QQ:199383004</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">zphj1987</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="http://7xi6lo.com1.z0.glb.clouddn.com/assets/blogImg/mylogo.jpg" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">zphj1987</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">现在所学，终有所用</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+					<li><a href="/instagram">图片</a></li>
+		        
+					<li><a href="/shuoshuo">说说</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/zphj1987" title="github">github</a>
+			        
+						<a class="weibo" target="_blank" href=" http://weibo.com/zphj1987" title="weibo">weibo</a>
+			        
+						<a class="rss" target="_blank" href="http://www.zphj1987.com/atom.xml" title="rss">rss</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-mon到底能坏几个" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/05/26/mon到底能坏几个/" class="article-date">
+  	<time datetime="2016-05-25T16:28:21.000Z" itemprop="datePublished">2016-05-26</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      mon到底能坏几个
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+        
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>如果是在做ceph的配置，我们会经常遇到这几个问题</p>
+<ol>
+<li>问：ceph需要配置几个mon<br>答：配置一个可以，但是坏了一个就不行了，需要配置只是三个mon，并且需要是奇数个</li>
+<li>问：ceph的mon能跟osd放在一起么，需要配置很好么？<br>答：能跟放在一起，但是建议在环境允许的情况下一定独立机器，并且mon的配置能好尽量好，能上ssd就上ssd</li>
+</ol>
+<p>这两个问题的答案不能说是错的，但是为什么这么说，这么说有没有问题，这篇文章将根据实际的数据来告诉你，到底mon的极限在哪里，为什么都说要奇数，偶数难道就不行么</p>
+<a id="more"></a>
+<h3 id="前言">前言</h3><p>本篇将从真实的实践中，让你更能够理解mon的故障极限，本次测试的场景数据样本足够大，最大的一个测试使用了10个mon，我想目前就算PB基本的ceph集群里也没有人会超过10个mon，所以足够覆盖大部分的场景，先来一个数据图看下10个mon的集群长什么样<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cluster ace3c18f-b4a5-<span class="number">4342</span><span class="operator">-a</span>598-<span class="number">8104</span>a770d4a8</span><br><span class="line">     health HEALTH_OK</span><br><span class="line">     monmap e10: <span class="number">10</span> mons at &#123;<span class="number">10</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6800</span>/<span class="number">0</span>,<span class="number">2</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6792</span>/<span class="number">0</span>,<span class="number">3</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6793</span>/<span class="number">0</span>,<span class="number">4</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6794</span>/<span class="number">0</span>,<span class="number">5</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6795</span>/<span class="number">0</span>,<span class="number">6</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6796</span>/<span class="number">0</span>,<span class="number">7</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6797</span>/<span class="number">0</span>,<span class="number">8</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6798</span>/<span class="number">0</span>,<span class="number">9</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6799</span>/<span class="number">0</span>,lab8107=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6789</span>/<span class="number">0</span>&#125;</span><br><span class="line">            election epoch <span class="number">58</span>, quorum <span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span> lab8107,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>,<span class="number">10</span></span><br><span class="line">     osdmap e7: <span class="number">1</span> osds: <span class="number">1</span> up, <span class="number">1</span> <span class="keyword">in</span></span><br><span class="line">            flags sortbitwise</span><br><span class="line">      pgmap v13: <span class="number">64</span> pgs, <span class="number">1</span> pools, <span class="number">0</span> bytes data, <span class="number">0</span> objects</span><br><span class="line">            <span class="number">34268</span> kB used, <span class="number">274</span> GB / <span class="number">274</span> GB avail</span><br><span class="line">                  <span class="number">64</span> active+clean</span><br></pre></td></tr></table></figure></p>
+<p>mon的地方可以看到10个mon了</p>
+<h3 id="测试结论">测试结论</h3><p><img src="http://static.zybuluo.com/zphj1987/jz15y76o7yytmxksk2ps4eyi/1.png" alt="mondown"></p>
+<p>ceph的mon能够正常情况需要保证，当前剩余的mon的个数需要大于总mon个数的一半，例如10个mon，mon个数一半就是5个，那么大于5个就是6个，也就是最少需要6个，上面的测试结论也符合这个规则，为什么不去偶数个，是因为当mon的个数为偶数个的时候，允许down的mon的个数与少一个mon的情况下的mon的个数允许的个数是一样的，所以要么多两个，多一个增加不了可靠性，并不是不允许</p>
+<h3 id="测试过程的数据">测试过程的数据</h3><h4 id="10个mon集群">10个mon集群</h4><p>10个mon的极限<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cluster ace3c18f-b4a5-<span class="number">4342</span><span class="operator">-a</span>598-<span class="number">8104</span>a770d4a8</span><br><span class="line">   health HEALTH_WARN</span><br><span class="line">          <span class="number">4</span> mons down, quorum <span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span> lab8107,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span></span><br><span class="line">   monmap e10: <span class="number">10</span> mons at &#123;<span class="number">10</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6800</span>/<span class="number">0</span>,<span class="number">2</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6792</span>/<span class="number">0</span>,<span class="number">3</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6793</span>/<span class="number">0</span>,<span class="number">4</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6794</span>/<span class="number">0</span>,<span class="number">5</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6795</span>/<span class="number">0</span>,<span class="number">6</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6796</span>/<span class="number">0</span>,<span class="number">7</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6797</span>/<span class="number">0</span>,<span class="number">8</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6798</span>/<span class="number">0</span>,<span class="number">9</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6799</span>/<span class="number">0</span>,lab8107=<span class="number">192.168</span>.<span class="number">8.10</span></span><br></pre></td></tr></table></figure></p>
+<p>10个mon关闭4个没问题，关闭5个就卡死</p>
+<h4 id="9个mon集群">9个mon集群</h4><p>9个mon的极限<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">   cluster ace3c18f-b4a5-<span class="number">4342</span><span class="operator">-a</span>598-<span class="number">8104</span>a770d4a8</span><br><span class="line">     health HEALTH_WARN</span><br><span class="line">            <span class="number">4</span> mons down, quorum <span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span> lab8107,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span></span><br><span class="line">     monmap e11: <span class="number">9</span> mons at &#123;<span class="number">2</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6792</span>/<span class="number">0</span>,<span class="number">3</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6793</span>/<span class="number">0</span>,<span class="number">4</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">67</span></span><br><span class="line"><span class="number">94</span>/<span class="number">0</span>,<span class="number">5</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6795</span>/<span class="number">0</span>,<span class="number">6</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6796</span>/<span class="number">0</span>,<span class="number">7</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6797</span>/<span class="number">0</span>,<span class="number">8</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6798</span>/<span class="number">0</span>,<span class="number">9</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6799</span>/<span class="number">0</span>,lab8107=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6789</span>/<span class="number">0</span>&#125;            election epoch <span class="number">84</span>, quorum <span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span> lab8107,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span></span><br></pre></td></tr></table></figure></p>
+<p>9个mon关闭4个没问题，关闭5个就卡死</p>
+<h4 id="8个mon集群">8个mon集群</h4><p>8个mon的极限<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">   cluster ace3c18f-b4a5-<span class="number">4342</span><span class="operator">-a</span>598-<span class="number">8104</span>a770d4a8</span><br><span class="line">     health HEALTH_WARN</span><br><span class="line">            <span class="number">3</span> mons down, quorum <span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span> lab8107,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span></span><br><span class="line">     monmap e12: <span class="number">8</span> mons at &#123;<span class="number">2</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6792</span>/<span class="number">0</span>,<span class="number">3</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6793</span>/<span class="number">0</span>,<span class="number">4</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">67</span></span><br><span class="line"><span class="number">94</span>/<span class="number">0</span>,<span class="number">5</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6795</span>/<span class="number">0</span>,<span class="number">6</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6796</span>/<span class="number">0</span>,<span class="number">7</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6797</span>/<span class="number">0</span>,<span class="number">8</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6798</span>/<span class="number">0</span>,lab8107=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6789</span>/<span class="number">0</span>&#125;            election epoch <span class="number">98</span>, quo</span><br></pre></td></tr></table></figure></p>
+<p>8个mon关闭3个没问题，关闭4个就卡死</p>
+<h4 id="7个mon集群">7个mon集群</h4><p>7个mon的极限<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">  cluster ace3c18f-b4a5-<span class="number">4342</span><span class="operator">-a</span>598-<span class="number">8104</span>a770d4a8</span><br><span class="line">     health HEALTH_WARN</span><br><span class="line">            <span class="number">3</span> mons down, quorum <span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span> lab8107,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span></span><br><span class="line">     monmap e13: <span class="number">7</span> mons at &#123;<span class="number">2</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6792</span>/<span class="number">0</span>,<span class="number">3</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6793</span>/<span class="number">0</span>,<span class="number">4</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">67</span></span><br><span class="line"><span class="number">94</span>/<span class="number">0</span>,<span class="number">5</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6795</span>/<span class="number">0</span>,<span class="number">6</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6796</span>/<span class="number">0</span>,<span class="number">7</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6797</span>/<span class="number">0</span>,lab8107=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6789</span>/<span class="number">0</span>&#125;            election epoch <span class="number">112</span>, quorum</span><br></pre></td></tr></table></figure></p>
+<p>7个mon关闭3个没问题，关闭4个就卡死</p>
+<h4 id="6个mon集群">6个mon集群</h4><p>6个mon的极限<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">   cluster ace3c18f-b4a5-<span class="number">4342</span><span class="operator">-a</span>598-<span class="number">8104</span>a770d4a8</span><br><span class="line">     health HEALTH_WARN</span><br><span class="line">            <span class="number">2</span> mons down, quorum <span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span> lab8107,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span></span><br><span class="line">     monmap e14: <span class="number">6</span> mons at &#123;<span class="number">2</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6792</span>/<span class="number">0</span>,<span class="number">3</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6793</span>/<span class="number">0</span>,<span class="number">4</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">67</span></span><br><span class="line"><span class="number">94</span>/<span class="number">0</span>,<span class="number">5</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6795</span>/<span class="number">0</span>,<span class="number">6</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6796</span>/<span class="number">0</span>,lab8107=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6789</span>/<span class="number">0</span>&#125;            election epoch <span class="number">124</span>, quorum <span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span> la</span><br></pre></td></tr></table></figure></p>
+<p>6个mon关闭2个没问题，关闭3个就卡死</p>
+<h4 id="5个mon集群">5个mon集群</h4><p>5个mon的极限<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">   cluster ace3c18f-b4a5-<span class="number">4342</span><span class="operator">-a</span>598-<span class="number">8104</span>a770d4a8</span><br><span class="line">     health HEALTH_WARN</span><br><span class="line">            <span class="number">2</span> mons down, quorum <span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span> lab8107,<span class="number">2</span>,<span class="number">3</span></span><br><span class="line">     monmap e15: <span class="number">5</span> mons at &#123;<span class="number">2</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6792</span>/<span class="number">0</span>,<span class="number">3</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6793</span>/<span class="number">0</span>,<span class="number">4</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">67</span></span><br><span class="line"><span class="number">94</span>/<span class="number">0</span>,<span class="number">5</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6795</span>/<span class="number">0</span>,lab8107=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6789</span>/<span class="number">0</span>&#125;            election epoch <span class="number">132</span>, quorum <span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span> lab8107,<span class="number">2</span>,<span class="number">3</span></span><br></pre></td></tr></table></figure></p>
+<p>5个mon关闭2个没问题，关闭3个就卡死</p>
+<h4 id="4个mon集群">4个mon集群</h4><p>4个mon的极限<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">   cluster ace3c18f-b4a5-<span class="number">4342</span><span class="operator">-a</span>598-<span class="number">8104</span>a770d4a8</span><br><span class="line">     health HEALTH_WARN</span><br><span class="line">            <span class="number">1</span> mons down, quorum <span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span> lab8107,<span class="number">2</span>,<span class="number">3</span></span><br><span class="line">     monmap e16: <span class="number">4</span> mons at &#123;<span class="number">2</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6792</span>/<span class="number">0</span>,<span class="number">3</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6793</span>/<span class="number">0</span>,<span class="number">4</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">67</span></span><br><span class="line"><span class="number">94</span>/<span class="number">0</span>,lab8107=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6789</span>/<span class="number">0</span>&#125;            election epoch <span class="number">1</span></span><br></pre></td></tr></table></figure></p>
+<p>4个mon关闭1个没问题，关闭2个就卡死</p>
+<h4 id="3个mon集群">3个mon集群</h4><p>3个mon的极限<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">   cluster ace3c18f-b4a5-<span class="number">4342</span><span class="operator">-a</span>598-<span class="number">8104</span>a770d4a8</span><br><span class="line">     health HEALTH_WARN</span><br><span class="line">            <span class="number">1</span> mons down, quorum <span class="number">0</span>,<span class="number">1</span> lab8107,<span class="number">2</span></span><br><span class="line">     monmap e17: <span class="number">3</span> mons at &#123;<span class="number">2</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6792</span>/<span class="number">0</span>,<span class="number">3</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6793</span>/<span class="number">0</span>,lab8107=<span class="number">192.168</span>.<span class="number">8</span>.</span><br><span class="line"><span class="number">107</span>:<span class="number">6789</span>/<span class="number">0</span>&#125;            election epoch <span class="number">146</span>,</span><br></pre></td></tr></table></figure></p>
+<p>3个mon关闭1个没问题，关闭2个就卡死</p>
+<h3 id="测试结束">测试结束</h3><p>下面为自己玩的一个动态图，10个mon正常，down 4个还是好的，down 5个就无法使用了</p>
+<p><img src="http://7xi6lo.com1.z0.glb.clouddn.com/10mon.gif" alt=""></p>
+<h3 id="打赏通道">打赏通道</h3><center><br><img src="http://static.zybuluo.com/zphj1987/fi2557g55ucsdpyblopyfudl/newpay.png" alt="打赏" title="打赏"><br></center>
+
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/06/04/利用虚拟化环境虚拟nvme盘/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          利用虚拟化环境虚拟nvme盘
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/05/21/磨磨自动问答系统上线/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">磨磨自动问答系统上线</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到：</span>
+		<a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+		<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="mon到底能坏几个" data-title="mon到底能坏几个" data-url="http://www.zphj1987.com/2016/05/26/mon到底能坏几个/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"zphj1987"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2016 zphj1987
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="http://7xi6lo.com1.z0.glb.clouddn.com/fancybox/jquery.fancybox.css" type="text/css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: undefined,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: true
+	}
+</script>
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="/js/main.js" type="text/javascript"></script>
+
+
+  </div>
+</body>
+</html>
