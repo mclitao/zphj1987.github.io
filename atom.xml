@@ -4,7 +4,7 @@
   <subtitle><![CDATA[现在所学，终有所用]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2016-06-03T16:06:59.703Z</updated>
+  <updated>2016-06-03T16:21:05.955Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="http://www.zphj1987.com/2016/06/04/%E5%88%A9%E7%94%A8%E8%99%9A%E6%8B%9F%E5%8C%96%E7%8E%AF%E5%A2%83%E8%99%9A%E6%8B%9Fnvme%E7%9B%98/"/>
     <id>http://www.zphj1987.com/2016/06/04/利用虚拟化环境虚拟nvme盘/</id>
     <published>2016-06-03T16:02:50.000Z</published>
-    <updated>2016-06-03T16:06:59.703Z</updated>
+    <updated>2016-06-03T16:21:05.955Z</updated>
     <content type="html"><![CDATA[<h2 id="前情介绍">前情介绍</h2><h3 id="SPDK">SPDK</h3><p>SPDK的全称为Storage Performance Development Kit ，是Intel发起的一个开源驱动项目，这个是一个开发套件，可以让应用程序在用户态去访问存储资源，具体做能做什么可以去官网看一下 <a href="https://software.intel.com/en-us/articles/introduction-to-the-storage-performance-development-kit-spdk" target="_blank" rel="external">SPDK官网</a></p>
 <h3 id="NVME">NVME</h3><p>NVMe其实与AHCI一样都是逻辑设备接口标准，NVMe全称Non-Volatile Memory Express，非易失性存储器标准，是使用PCI-E通道的SSD一种规范，NVMe的设计之初就有充分利用到PCI-E SSD的低延时以及并行性，还有当代处理器、平台与应用的并行性。SSD的并行性可以充分被主机的硬件与软件充分利用，相比与现在的AHCI标准，NVMe标准可以带来多方面的性能提升。</p>
 <h3 id="Bluestore">Bluestore</h3><p>BlueStore 是用来存储ceph的数据的地方，提供了一种在块设备上直接写入方式的存储。这个是因为之前ceph社区尝试做了一个kvstore，但是性能达不到想要的效果，然后基于rocksdb的原型，重新开发了一套存储系统，BlueStore直接消耗原始分区。还有一个分区是存储元数据的，实际上就是一个RocksDB键/值数据库存储，这个比之前的filestore最大的优势就是去掉了journal，从而提供了更平滑的IO</p>
@@ -41,6 +41,9 @@
 <h3 id="检查虚拟机的磁盘是否生成">检查虚拟机的磁盘是否生成</h3><h4 id="启动测试的虚拟机">启动测试的虚拟机</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">virsh destroy nvmetest</span><br></pre></td></tr></table></figure>
 <p>使用vnc连接登陆刚刚的那个vnc的端口<br>登陆上机器后就可以fdisk -l,<br><img src="http://static.zybuluo.com/zphj1987/nc79igpyb1hgxny09d5w9nk0/nvmedisk.png" alt="nvme"><br>lspci看到的如下<br><img src="http://static.zybuluo.com/zphj1987/8klt54xfe4w05mdkr41rspwk/lspci.png" alt="lspci.png-1.5kB"></p>
 <h4 id="结束">结束</h4><p>本次实践当中还有一部分是对spdk的代码进行编译的，编译没有问题，并且可以根据测试脚本加载驱动，将nvme磁盘排它性的从内核态移出，但是无法找到如何使用这个用户态的磁盘，在ceph的代码分支中已经包含了spdk部分的代码，在ceph中应该默认可以直接使用这个驱动，使用的方式是 spdk：sdasdasdasd (disk SN) ，但是配置当中如何使用还是无从得知，这一块如果资料会第一时间分析，目前xsky应该能够配置出环境来，本篇涉及的几个东西都是比较新的一些东西，在未来将会极大的提高性能的，目前这个阶段还处于开发阶段</p>
+<h4 id="异常处理">异常处理</h4><p>执行virsh start nvmetest的时候会提示nvme.raw的磁盘没有访问权限，这个地方卡了很久，不清楚在ubuntu下面居然还有个apparmor的权限问题，是调看系统日志才发现的，下面是处理办法:<br>执行下面的命令为libvirt禁用 apparmor:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ln <span class="operator">-s</span> /etc/apparmor.d/usr.sbin.libvirtd  /etc/apparmor.d/<span class="built_in">disable</span>/</span><br><span class="line">ln <span class="operator">-s</span> /etc/apparmor.d/usr.lib.libvirt.virt-aa-helper  /etc/apparmor.d/<span class="built_in">disable</span>/</span><br><span class="line">apparmor_parser -R  /etc/apparmor.d/usr.sbin.libvirtd</span><br><span class="line">apparmor_parser -R  /etc/apparmor.d/usr.lib.libvirt.virt-aa-helper</span><br></pre></td></tr></table></figure></p>
+<p>/etc/libvirt/qemu.conf去掉认证的,修改为：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">security_driver = <span class="string">"none"</span></span><br></pre></td></tr></table></figure></p>
+<p>重启libvirt服务<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/etc/init.d/libvirt-bin restart</span><br></pre></td></tr></table></figure></p>
 <h3 id="打赏通道">打赏通道</h3><center><br><img src="http://static.zybuluo.com/zphj1987/fi2557g55ucsdpyblopyfudl/newpay.png" alt="打赏" title="打赏"><br></center>
 
 ]]></content>
