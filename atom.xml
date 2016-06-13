@@ -4,7 +4,7 @@
   <subtitle><![CDATA[现在所学，终有所用]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2016-06-07T15:03:50.697Z</updated>
+  <updated>2016-06-13T09:19:01.017Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -13,6 +13,34 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[推荐一本性能相关的书]]></title>
+    <link href="http://www.zphj1987.com/2016/06/13/%E6%8E%A8%E8%8D%90%E4%B8%80%E6%9C%AC%E6%80%A7%E8%83%BD%E7%9B%B8%E5%85%B3%E7%9A%84%E4%B9%A6/"/>
+    <id>http://www.zphj1987.com/2016/06/13/推荐一本性能相关的书/</id>
+    <published>2016-06-13T08:57:38.000Z</published>
+    <updated>2016-06-13T09:19:01.017Z</updated>
+    <content type="html"><![CDATA[<p>听说这本书从池建强老师的订阅号上看到的，然后一搜索发现是 <code>Brendan Gregg</code> 性能调优大神写的，关于大神的资料可以自己google下，然后搜索了一下发现只有英文版本的，对于这样接近800面的篇幅，即使比较喜欢看英文文档的我也是抗拒的，然后看了下实体书的，大概要100左右，这本书的价值肯定不只这个价格的，但是还是比较喜欢看电子书，所以买了电子版本的，如果你自己能找到也可以，本篇会提供免费的英文版本的下载地址，如果你希望得到中文电子版本的，可以联系我，很优惠两瓶可乐，书我也还没有看完，还在学习中，欢迎交流</p>
+<p>从书的目录来看这本书是非常系统的，并且原作者和翻译的作者的文章质量都非常的高，系统的学习一下还是很有必要的，毕竟真的没几个人会性能调优，我也只会皮毛，建议买一本纸质书，然后买一个电子书方便的时候看看</p>
+<center><br><img src="http://static.zybuluo.com/zphj1987/sw95fibeff214g1quf456etd/%E6%80%A7%E8%83%BD%E4%B9%8B%E5%B7%85.png" alt="性能之巅.png-878kB"><br></center>
+
+<a id="more"></a>
+<p>京东纸质书购买链接：<a href="http://item.jd.com/11755695.html" target="_blank" rel="external">性能之巅</a></p>
+<h3 id="英文版本下载地址：">英文版本下载地址：</h3><p>地址：<a href="http://pan.baidu.com/s/1i5LJTxN" target="_blank" rel="external">http://pan.baidu.com/s/1i5LJTxN</a><br>密码：nam5</p>
+<h3 id="中文电子版">中文电子版</h3><p>联系我<br>QQ:199383004</p>
+<h3 id="打赏通道">打赏通道</h3><center><br><img src="http://static.zybuluo.com/zphj1987/fi2557g55ucsdpyblopyfudl/newpay.png" alt="打赏" title="打赏"><br></center>
+
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>听说这本书从池建强老师的订阅号上看到的，然后一搜索发现是 <code>Brendan Gregg</code> 性能调优大神写的，关于大神的资料可以自己google下，然后搜索了一下发现只有英文版本的，对于这样接近800面的篇幅，即使比较喜欢看英文文档的我也是抗拒的，然后看了下实体书的，大概要100左右，这本书的价值肯定不只这个价格的，但是还是比较喜欢看电子书，所以买了电子版本的，如果你自己能找到也可以，本篇会提供免费的英文版本的下载地址，如果你希望得到中文电子版本的，可以联系我，很优惠两瓶可乐，书我也还没有看完，还在学习中，欢迎交流</p>
+<p>从书的目录来看这本书是非常系统的，并且原作者和翻译的作者的文章质量都非常的高，系统的学习一下还是很有必要的，毕竟真的没几个人会性能调优，我也只会皮毛，建议买一本纸质书，然后买一个电子书方便的时候看看</p>
+<center><br><img src="http://static.zybuluo.com/zphj1987/sw95fibeff214g1quf456etd/%E6%80%A7%E8%83%BD%E4%B9%8B%E5%B7%85.png" alt="性能之巅.png-878kB"><br></center>]]>
+    
+    </summary>
+    
+      <category term="linux" scheme="http://www.zphj1987.com/tags/linux/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[加速OSD的启动]]></title>
@@ -911,71 +939,6 @@
 <p>然后在centos7的版本的时候，发现居然不写配置文件也能够自动挂载启动，这个地方是什么地方发生了变化，在做了一些日志的查询以后，发现centos7下居然做了一个改变</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># systemctl list-unit-files |grep ceph-disk</span></span><br><span class="line">ceph-disk@.service                          static</span><br></pre></td></tr></table></figure>
 <p>可以看到有这个服务</p>]]>
-    
-    </summary>
-    
-      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[rbd-mirror新功能]]></title>
-    <link href="http://www.zphj1987.com/2016/03/30/rbd-mirror%E6%96%B0%E5%8A%9F%E8%83%BD/"/>
-    <id>http://www.zphj1987.com/2016/03/30/rbd-mirror新功能/</id>
-    <published>2016-03-30T15:55:31.000Z</published>
-    <updated>2016-05-08T03:14:10.299Z</updated>
-    <content type="html"><![CDATA[<p>RBD 的 mirroring 功能将会在下一个稳定版本Jewel中实现，这个Jewel版本已经发布了第一个版本10.1.0,这个功能已经在这个发布的版本中实现了</p>
-<p>一、基本原理<br>我们试图解决的或者至少需要克服的问题是，ceph在内部是强一致性的，这个对于跨区域的情况数据同步是无法接受的，一个请求需要异地返回再确认完成，这个在性能上肯定是无法接受的，这就是为什么基本上无法部署跨区域的ceph集群</p>
-<p>因此我们需要有一种机制能够让我们在不同区域的集群之间复制块设备。这个能够帮助我们实现两个功能：</p>
-<ul>
-<li>灾难恢复</li>
-<li>全球块设备分布（跨地理位置）</li>
-</ul>
-<p>二、内部的实现</p>
-<p><img src="http://static.zybuluo.com/zphj1987/owvwxjz172f2aokh699fd008/%E7%94%BB%E5%9B%BE.png" alt="画图.png-34.8kB"></p>
-<p>从上图所示是进行的主备模式的备份，其实这个只是看怎么应用了，在里面是自动实现的主主的模式，双向同步的，只是在应用中需要注意不要去同时操作同一个image，这个功能是作为主备去使用的，以备真正有问题的时候去实现故障恢复，这个同步是异步的</p>
-<a id="more"></a>
-<p>二、一个新的进程<br>一个新的守护程序：rbd-mirror 将会负责将一个镜像从一个集群同步到另一个，rbd-mirror需要在两个集群上都配置，它会同时连接本地和远程的集群。在jewel版本中还是一对一的方式，在以后的版本中会实现一对多的，所以在以后的版本可以配置一对多的备份</p>
-<p>作为起点，这个功能讲使用配置文件连接集群，使用用户和密钥。使用admin用户就可以了，使用的验证方式就是默认的cephx的方式</p>
-<p>为了相互识别，两个集群都需要相互注册使用 <code>rbd mirror pool peer add</code>命令， 这个在下面会实践</p>
-<p>二、镜像<br><img src="http://static.zybuluo.com/zphj1987/60ehzzmtrvrf8rhdl9yelyqw/ceph-rbd-mirror-inside.png" alt="ceph-rbd-mirror-inside.png-80.8kB"><br>The RBD mirroring 依赖两个新的rbd的属性</p>
-<ul>
-<li>journaling: 启动后会记录image的事件</li>
-<li>mirroring: 明确告诉rbd-mirror需要复制这个镜像</li>
-</ul>
-<p>也有命令可以禁用单独的某个镜像。journaling可以看做是另一个rbd的image（一些rados对象），一般情况下，先写日志，然后返回客户端，然后被写入底层的rbd的image，出于性能考虑，这个journal可以跟它的镜像不在一个存储池当中，目前是一个image一个journal，最近应该会沿用这个策略，直到ceph引入一致性组。关于一致性组的概念就是一组卷，然后用的是一个RBD image。可以在所有的组中执行快照操作，有了一致性的保证，所有的卷就都在一致的状态。当一致性组实现的时候，我们就可以用一个journal来管理所有的RBD的镜像</p>
-<p>可以给一个已经存在image开启journal么，可以的，ceph将会将你的镜像做一个快照，然后对快照做一个复制，然后开启journal，这都是后台执行的一个任务</p>
-<p>可以启用和关闭单个镜像或者存储池的mirror功能，如果启用了journal功能，那么每个镜像将会被复制</p>
-<p>可以使用 rbd mirror pool enable启用它</p>
-<p>三、灾难恢复<br>交叉同步复制是可以的，默认的就是这个方式，这意味着<strong>两个地方的存储池名称需要相同的</strong>这个会带来两个问题</p>
-<ul>
-<li>使用相同的存储做备份做使用会影响性能的</li>
-<li>相同的池名称在进行恢复的时候也更容易。openstack里面只需要记录卷ID即可</li>
-</ul>
-<p>每个image都有 mirroring_directory 记录当前active的地方。在本地镜像提示为 primary的时候，是可写的并且远程的站点上就会有锁，这个image就是不可写的。只有在primary镜像降级，备份的点升级就可以了，demoted 和 promoted来控制这里，这就是为什么引入了等级制度，一旦备份的地方升级了，那么主的就自动降级了，这就意味着同步的方向就会发生变化了</p>
-<p>如果出现脑裂的情况，那么rbd-mirror将会停止同步，你自己需要判断哪个是最新的image，然后手动强制去同步<code>rbd mirror image resync</code></p>
-<p>上面基本参照的是sebastien翻译的，原文只是做了简短的说明，下面是我的实践部分</p>
-<h2 id="下面在我的环境下进行实践">下面在我的环境下进行实践</h2><p>下面的环境是在两个集群上进行的，集群分别为：</p>
-<ul>
-<li>机器lab8106 </li>
-<li>机器lab8107</li>
-</ul>
-<p><a href="https://www.zybuluo.com/zphj1987/note/328708" target="_blank" rel="external">实践详细文档</a></p>
-<p>感谢一直在支持我的朋友，技术是无价的，也是免费的，天下没有免费的午餐，关键是你自己觉得划算不,鉴于本篇文章在收取费用后未达到用户的预期功能效果，可能引起读者的不快，现决定免费开发本篇实践文档，今后也不再进行收费文档的提供，会全部免费，至于协助，也一律不接受先付费后服务的方式，以先服务，后根据意愿打赏的方式</p>
-<center><br><img src="http://static.zybuluo.com/zphj1987/fi2557g55ucsdpyblopyfudl/newpay.png" alt="打赏" title="打赏"><br></center>
-
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>RBD 的 mirroring 功能将会在下一个稳定版本Jewel中实现，这个Jewel版本已经发布了第一个版本10.1.0,这个功能已经在这个发布的版本中实现了</p>
-<p>一、基本原理<br>我们试图解决的或者至少需要克服的问题是，ceph在内部是强一致性的，这个对于跨区域的情况数据同步是无法接受的，一个请求需要异地返回再确认完成，这个在性能上肯定是无法接受的，这就是为什么基本上无法部署跨区域的ceph集群</p>
-<p>因此我们需要有一种机制能够让我们在不同区域的集群之间复制块设备。这个能够帮助我们实现两个功能：</p>
-<ul>
-<li>灾难恢复</li>
-<li>全球块设备分布（跨地理位置）</li>
-</ul>
-<p>二、内部的实现</p>
-<p><img src="http://static.zybuluo.com/zphj1987/owvwxjz172f2aokh699fd008/%E7%94%BB%E5%9B%BE.png" alt="画图.png-34.8kB"></p>
-<p>从上图所示是进行的主备模式的备份，其实这个只是看怎么应用了，在里面是自动实现的主主的模式，双向同步的，只是在应用中需要注意不要去同时操作同一个image，这个功能是作为主备去使用的，以备真正有问题的时候去实现故障恢复，这个同步是异步的</p>]]>
     
     </summary>
     
