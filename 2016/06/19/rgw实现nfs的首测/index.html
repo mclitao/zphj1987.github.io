@@ -5,34 +5,34 @@
   
   <title>rgw实现nfs的首测 | zphj1987&#39;Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="一、功能介绍关于rgw实现nfs接口这个，刚接触的人可能并不清楚这个是个什么样的架构，rgw是ceph里面的对象存储接口，而nfs则是纯正的网络文件系统接口，这二者如何联系在一起,关于这个相关的提供几个链接供了解
+  <meta name="description" content="一、功能介绍关于rgw实现nfs接口这个，刚接触的人可能并不清楚这个是个什么样的服务架构，rgw是ceph里面的对象存储接口，而nfs则是纯正的网络文件系统接口，这二者如何结合在一起,关于这个,有几个相关的链接供大家了解
 
 ceph官方的RGW_NFS项目规划
 麦子迈关于RGW_NFS的文章
 
-之所以这个功能能实现这么快，原因是nfs-ganesha的开发者加入到了Redhat，而ceph目前的开发是Re">
+之所以这个功能能实现这么快，原因是nfs-ganesha的开发者Matt Benjamin加入到了Red">
 <meta property="og:type" content="article">
 <meta property="og:title" content="rgw实现nfs的首测">
 <meta property="og:url" content="http://www.zphj1987.com/2016/06/19/rgw实现nfs的首测/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
-<meta property="og:description" content="一、功能介绍关于rgw实现nfs接口这个，刚接触的人可能并不清楚这个是个什么样的架构，rgw是ceph里面的对象存储接口，而nfs则是纯正的网络文件系统接口，这二者如何联系在一起,关于这个相关的提供几个链接供了解
+<meta property="og:description" content="一、功能介绍关于rgw实现nfs接口这个，刚接触的人可能并不清楚这个是个什么样的服务架构，rgw是ceph里面的对象存储接口，而nfs则是纯正的网络文件系统接口，这二者如何结合在一起,关于这个,有几个相关的链接供大家了解
 
 ceph官方的RGW_NFS项目规划
 麦子迈关于RGW_NFS的文章
 
-之所以这个功能能实现这么快，原因是nfs-ganesha的开发者加入到了Redhat，而ceph目前的开发是Re">
+之所以这个功能能实现这么快，原因是nfs-ganesha的开发者Matt Benjamin加入到了Red">
 <meta property="og:image" content="http://static.zybuluo.com/zphj1987/o5ruvtr9f7nyegbv0ly7ekv5/image_1alibfc78g96dsa1c26crkgis1e.png">
 <meta property="og:image" content="http://static.zybuluo.com/zphj1987/00dbog7s6nzbze55qyjilzt9/libntir.png">
 <meta property="og:image" content="http://static.zybuluo.com/zphj1987/u3xku4jf3swljl0bub9zkwv0/image_1alian0db17e91gg1mhg866i1q11.png">
 <meta property="og:image" content="http://static.zybuluo.com/zphj1987/fi2557g55ucsdpyblopyfudl/newpay.png">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="rgw实现nfs的首测">
-<meta name="twitter:description" content="一、功能介绍关于rgw实现nfs接口这个，刚接触的人可能并不清楚这个是个什么样的架构，rgw是ceph里面的对象存储接口，而nfs则是纯正的网络文件系统接口，这二者如何联系在一起,关于这个相关的提供几个链接供了解
+<meta name="twitter:description" content="一、功能介绍关于rgw实现nfs接口这个，刚接触的人可能并不清楚这个是个什么样的服务架构，rgw是ceph里面的对象存储接口，而nfs则是纯正的网络文件系统接口，这二者如何结合在一起,关于这个,有几个相关的链接供大家了解
 
 ceph官方的RGW_NFS项目规划
 麦子迈关于RGW_NFS的文章
 
-之所以这个功能能实现这么快，原因是nfs-ganesha的开发者加入到了Redhat，而ceph目前的开发是Re">
+之所以这个功能能实现这么快，原因是nfs-ganesha的开发者Matt Benjamin加入到了Red">
   
     <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
   
@@ -240,12 +240,12 @@ var _hmt = _hmt || [];
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h3 id="一、功能介绍">一、功能介绍</h3><p>关于rgw实现nfs接口这个，刚接触的人可能并不清楚这个是个什么样的架构，rgw是ceph里面的对象存储接口，而nfs则是纯正的网络文件系统接口，这二者如何联系在一起,关于这个相关的提供几个链接供了解</p>
+        <h3 id="一、功能介绍">一、功能介绍</h3><p>关于rgw实现nfs接口这个，刚接触的人可能并不清楚这个是个什么样的服务架构，rgw是ceph里面的对象存储接口，而nfs则是纯正的网络文件系统接口，这二者如何结合在一起,关于这个,有几个相关的链接供大家了解</p>
 <ul>
 <li><a href="http://tracker.ceph.com/projects/ceph/wiki/RGW_-_NFS" target="_blank" rel="external">ceph官方的RGW_NFS项目规划</a></li>
 <li><a href="http://chuansong.me/n/2385718" target="_blank" rel="external">麦子迈关于RGW_NFS的文章</a></li>
 </ul>
-<p>之所以这个功能能实现这么快，原因是nfs-ganesha的开发者加入到了Redhat，而ceph目前的开发是Redhat在主导开发在，所以功能的实现是非常快的，但是目前官方并没有提供相关的文档，个人推测是功能并未完全开发完成，一旦未完全开发完成的功能放出来，邮件列表和Bug列表就会有很多相关问题，开发者应该还是希望安静的把功能做好，再提供相关的文档，而这个功能也是在ceph 的jewel版本里面才加入的</p>
+<p>之所以这个功能能实现这么快，原因是nfs-ganesha的开发者Matt Benjamin加入到了Redhat，而ceph目前的开发是Redhat在主导开发，所以功能的实现是非常快的，但是目前官方并没有提供相关的文档，个人推测是功能并未完全开发完成，一旦未完全开发完成的功能放出来，邮件列表和Bug列表就会有很多相关问题，开发者应该还是希望安静的把功能做好，再提供相关的文档，而这个功能也是在ceph 的jewel版本里面才加入的</p>
 <a id="more"></a>
 <h3 id="二、功能架构图">二、功能架构图</h3><p><img src="http://static.zybuluo.com/zphj1987/o5ruvtr9f7nyegbv0ly7ekv5/image_1alibfc78g96dsa1c26crkgis1e.png" alt="image_1alibfc78g96dsa1c26crkgis1e.png-78.3kB"><br>简单说明一下：<br>集群配置s3接口，nfs-genesha将s3接口转换成nfs，然后nfs客户端挂载后访问的就是s3的bucket里面的数据了</p>
 <h3 id="三、准备工作">三、准备工作</h3><p>准备代码，这个是需要从源码编译的，并且需要将模块编译进去才可以的，源码分支地址：</p>
