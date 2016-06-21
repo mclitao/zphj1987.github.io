@@ -229,7 +229,7 @@ var _hmt = _hmt || [];
       
         <h3 id="一、前言">一、前言</h3><p>快照的功能一般是基于时间点做一个标记，然后在某些需要的时候，将状态恢复到标记的那个点，这个有一个前提是底层的东西没用破坏，举个简单的例子，<strong>Vmware</strong> 里面对虚拟机做了一个快照，然后做了一些系统的操作，想恢复快照，前提是存储快照的存储系统没用破坏，一旦破坏了是无法恢复的</p>
 <p>ceph里面也有快照的功能，同样的，在这里的快照是用来保存存储系统上的状态的，数据的快照能成功恢复的前提是存储系统是好的，而一旦存储系统坏了，快照同时会失效的，本篇文章利用ceph的快照去实现一个增量的备份功能，网上也有很多这个脚本，这里主要是对里面细节做一个实践，具体集成到一套系统里面去，自己去做一个策略就行了，总之多备份一下，以备不时之需，并且也可以实现跨机房的增量备份，这个在某些云计算公司已经实现了，这样一旦发生故障的时候，能够把损失减到最小</p>
-<h3 id="二、快照的创建和数据的导出">二、快照的创建和数据的导出</h3><p><img src="http://static.zybuluo.com/zphj1987/gstkoh58vzil4rs44rb1k0r0/image_1alpu5h2e1rtt1bibg4c1cgr1eo5m.png" alt="image_1alpu5h2e1rtt1bibg4c1cgr1eo5m.png-70.5kB"></p>
+<h3 id="二、快照的创建和数据的导出">二、快照的创建和数据的导出</h3><p><img src="http://static.zybuluo.com/zphj1987/gstkoh58vzil4rs44rb1k0r0/image_1alpu5h2e1rtt1bibg4c1cgr1eo5m.png" alt=""></p>
 <p>上图是一个快照的创建和导出的过程，这里详细的描述下这些操作<br>创建快照<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rbd snap create testimage@v1</span><br><span class="line">rbd snap create testimage@v2</span><br></pre></td></tr></table></figure></p>
 <p>这两个命令是在时间点v1和时间点v2分别做了两个快照<br><a id="more"></a></p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rbd <span class="built_in">export</span>-diff rbd/testimage@v1 testimage_v1</span><br></pre></td></tr></table></figure>
@@ -242,7 +242,7 @@ var _hmt = _hmt || [];
 <p>v1时间点数据 + v1_v2之间数据 = v2 时间点数据<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rbd <span class="built_in">export</span>-diff rbd/testimage testimage_now</span><br></pre></td></tr></table></figure></p>
 </blockquote>
 <p>这个就是导出了从image创建到当前的时间点的差异数据</p>
-<h3 id="三、快照的数据恢复">三、快照的数据恢复</h3><p><img src="http://static.zybuluo.com/zphj1987/ue1feys17yiya6doa2audkbo/image_1alpuprird31dltilpro7kf52a.png" alt="image_1alpuprird31dltilpro7kf52a.png-51kB"></p>
+<h3 id="三、快照的数据恢复">三、快照的数据恢复</h3><p><img src="http://static.zybuluo.com/zphj1987/ue1feys17yiya6doa2audkbo/image_1alpuprird31dltilpro7kf52a.png" alt=""></p>
 <p>快照的恢复过程使用的是刚刚上面提到的备份到本地的那些文件<br>首先随便创建一个image,名称大小都不限制，因为后面恢复的时候会覆盖掉大小的信息<br><figure class="highlight livecodeserver"><table><tr><td class="code"><pre><span class="line">rbd <span class="built_in">create</span> testbacknew <span class="comment">--size 1</span></span><br></pre></td></tr></table></figure></p>
 <p>现在假如想恢复到v2那个快照的时间点，那么可以用两个方法</p>
 <p>1、直接基于v2的时间点的快照做恢复<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rbd import-diff testimage_v2 rbd/testbacknew</span><br></pre></td></tr></table></figure></p>
