@@ -239,8 +239,9 @@ var _hmt = _hmt || [];
 <p>这个命令是导出了从v1快照时间点到v2快照时间点的差异数据，导出成本地文件testimage_v1_v2</p>
 <p>这个地方上面的导出的数据：</p>
 <blockquote>
-<p>v1时间点数据 + v1_v2之间数据 = v2 时间点数据<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rbd <span class="built_in">export</span>-diff rbd/testimage testimage_now</span><br></pre></td></tr></table></figure></p>
+<p>v1时间点数据 + v1_v2之间数据 = v2 时间点数据</p>
 </blockquote>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rbd <span class="built_in">export</span>-diff rbd/testimage testimage_now</span><br></pre></td></tr></table></figure>
 <p>这个就是导出了从image创建到当前的时间点的差异数据</p>
 <h3 id="三、快照的数据恢复">三、快照的数据恢复</h3><p><img src="http://static.zybuluo.com/zphj1987/ue1feys17yiya6doa2audkbo/image_1alpuprird31dltilpro7kf52a.png" alt=""></p>
 <p>快照的恢复过程使用的是刚刚上面提到的备份到本地的那些文件<br>首先随便创建一个image,名称大小都不限制，因为后面恢复的时候会覆盖掉大小的信息<br><figure class="highlight livecodeserver"><table><tr><td class="code"><pre><span class="line">rbd <span class="built_in">create</span> testbacknew <span class="comment">--size 1</span></span><br></pre></td></tr></table></figure></p>
