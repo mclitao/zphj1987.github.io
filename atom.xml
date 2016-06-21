@@ -4,7 +4,7 @@
   <subtitle><![CDATA[现在所学，终有所用]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2016-06-18T18:56:51.676Z</updated>
+  <updated>2016-06-21T17:32:50.905Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -13,6 +13,67 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[rbd的增量备份和恢复]]></title>
+    <link href="http://www.zphj1987.com/2016/06/22/rbd%E7%9A%84%E5%A2%9E%E9%87%8F%E5%A4%87%E4%BB%BD%E5%92%8C%E6%81%A2%E5%A4%8D/"/>
+    <id>http://www.zphj1987.com/2016/06/22/rbd的增量备份和恢复/</id>
+    <published>2016-06-21T17:17:24.000Z</published>
+    <updated>2016-06-21T17:32:50.905Z</updated>
+    <content type="html"><![CDATA[<h3 id="一、前言">一、前言</h3><p>快照的功能一般是基于时间点做一个标记，然后在某些需要的时候，将状态恢复到标记的那个点，这个有一个前提是底层的东西没用破坏，举个简单的例子，<strong>Vmware</strong> 里面对虚拟机做了一个快照，然后做了一些系统的操作，想恢复快照，前提是存储快照的存储系统没用破坏，一旦破坏了是无法恢复的</p>
+<p>ceph里面也有快照的功能，同样的，在这里的快照是用来保存存储系统上的状态的，数据的快照能成功恢复的前提是存储系统是好的，而一旦存储系统坏了，快照同时会失效的，本篇文章利用ceph的快照去实现一个增量的备份功能，网上也有很多这个脚本，这里主要是对里面细节做一个实践，具体集成到一套系统里面去，自己去做一个策略就行了，总之多备份一下，以备不时之需，并且也可以实现跨机房的增量备份，这个在某些云计算公司已经实现了，这样一旦发生故障的时候，能够把损失减到最小</p>
+<h3 id="二、快照的创建和数据的导出">二、快照的创建和数据的导出</h3><p><img src="http://static.zybuluo.com/zphj1987/gstkoh58vzil4rs44rb1k0r0/image_1alpu5h2e1rtt1bibg4c1cgr1eo5m.png" alt="image_1alpu5h2e1rtt1bibg4c1cgr1eo5m.png-70.5kB"></p>
+<p>上图是一个快照的创建和导出的过程，这里详细的描述下这些操作<br>创建快照<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rbd snap create testimage@v1</span><br><span class="line">rbd snap create testimage@v2</span><br></pre></td></tr></table></figure></p>
+<p>这两个命令是在时间点v1和时间点v2分别做了两个快照<br><a id="more"></a></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rbd <span class="built_in">export</span>-diff rbd/testimage@v1 testimage_v1</span><br></pre></td></tr></table></figure>
+<p>这个命令是导出了从开始创建image到快照v1那个时间点的差异数据导出来了testimage_v1，导出成本地文件testimage_v1</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rbd <span class="built_in">export</span>-diff rbd/testimage@v1 testimage_v2</span><br></pre></td></tr></table></figure>
+<p>这个命令是导出了从开始创建image到快照v2那个时间点的差异数据导出来了，导出成本地文件testimage_v2<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rbd <span class="built_in">export</span>-diff rbd/testimage@v2 --from-snap v1 testimage_v1_v2</span><br></pre></td></tr></table></figure></p>
+<p>这个命令是导出了从v1快照时间点到v2快照时间点的差异数据，导出成本地文件testimage_v1_v2</p>
+<p>这个地方上面的导出的数据：</p>
+<blockquote>
+<p>v1时间点数据 + v1_v2之间数据 = v2 时间点数据<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rbd <span class="built_in">export</span>-diff rbd/testimage testimage_now</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<p>这个就是导出了从image创建到当前的时间点的差异数据</p>
+<h3 id="三、快照的数据恢复">三、快照的数据恢复</h3><p><img src="http://static.zybuluo.com/zphj1987/ue1feys17yiya6doa2audkbo/image_1alpuprird31dltilpro7kf52a.png" alt="image_1alpuprird31dltilpro7kf52a.png-51kB"></p>
+<p>快照的恢复过程使用的是刚刚上面提到的备份到本地的那些文件<br>首先随便创建一个image,名称大小都不限制，因为后面恢复的时候会覆盖掉大小的信息<br><figure class="highlight livecodeserver"><table><tr><td class="code"><pre><span class="line">rbd <span class="built_in">create</span> testbacknew <span class="comment">--size 1</span></span><br></pre></td></tr></table></figure></p>
+<p>现在假如想恢复到v2那个快照的时间点，那么可以用两个方法</p>
+<p>1、直接基于v2的时间点的快照做恢复<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rbd import-diff testimage_v2 rbd/testbacknew</span><br></pre></td></tr></table></figure></p>
+<p>2、直接基于v1的时间点的数据，和后面的增量的v1_v2数据(要按顺序导入)<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rbd impot-diff testimage_v1 rbd/testbacknew</span><br><span class="line">rbd impot-diff testimage_v1_v2 rbd/testbacknew</span><br></pre></td></tr></table></figure></p>
+<p>到这里数据就已经恢复了</p>
+<h3 id="四、如何利用这个">四、如何利用这个</h3><p>实际项目当中就是，定期做快照，然后导出某个时间点快照的数据，然后导出增量的快照的数据，就可以了，例如：<br>今天对所有的rbd的image做一个基础快照，然后导出这个快照的数据，然后从今天开始，每天晚上做一个快照，然后导出快照时间点之间的数据，这样每天导出来的就是一个增量的数据了，在做恢复的时候，就从第一个快照导入，然后按顺序导入增量的快照即可，也可以定期做一个快照，导出完整的快照数据，以防中间的增量快照漏了，然后就是要注意可以定期清理快照，如果是做备份的模式，在导入了快照数据后，也可以清理一些本地的数据，本地数据做异地机房复制的时候也可以做一下数据的压缩，来减少数据量的传输</p>
+<h3 id="五、相关文章">五、相关文章</h3><p><a href="https://github.com/skuicloud/openstack-hacker/tree/master/tsinghua-cluster/script/ceph/volume_backup" target="_blank" rel="external">rbd备份还原的脚本</a><br><a href="http://ceph.com/dev-notes/incremental-snapshots-with-rbd/" target="_blank" rel="external">INCREMENTAL SNAPSHOTS WITH RBD</a><br><a href="http://cephnotes.ksperis.com/blog/2014/08/12/rbd-replication" target="_blank" rel="external">RBD Replication</a><br><a href="http://www.evil0x.com/posts/14638.html" target="_blank" rel="external">云杉网络：基于Ceph RBD的快照技术实现异地灾备</a></p>
+<h3 id="六、变更记录">六、变更记录</h3><table>
+<thead>
+<tr>
+<th style="text-align:center">Why</th>
+<th style="text-align:center">Who</th>
+<th style="text-align:center">When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">创建</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2016-06-22</td>
+</tr>
+</tbody>
+</table>
+<h3 id="七、打赏通道">七、打赏通道</h3><center><br><img src="http://static.zybuluo.com/zphj1987/fi2557g55ucsdpyblopyfudl/newpay.png" alt="打赏" title="打赏"><br></center>
+
+]]></content>
+    <summary type="html">
+    <![CDATA[<h3 id="一、前言">一、前言</h3><p>快照的功能一般是基于时间点做一个标记，然后在某些需要的时候，将状态恢复到标记的那个点，这个有一个前提是底层的东西没用破坏，举个简单的例子，<strong>Vmware</strong> 里面对虚拟机做了一个快照，然后做了一些系统的操作，想恢复快照，前提是存储快照的存储系统没用破坏，一旦破坏了是无法恢复的</p>
+<p>ceph里面也有快照的功能，同样的，在这里的快照是用来保存存储系统上的状态的，数据的快照能成功恢复的前提是存储系统是好的，而一旦存储系统坏了，快照同时会失效的，本篇文章利用ceph的快照去实现一个增量的备份功能，网上也有很多这个脚本，这里主要是对里面细节做一个实践，具体集成到一套系统里面去，自己去做一个策略就行了，总之多备份一下，以备不时之需，并且也可以实现跨机房的增量备份，这个在某些云计算公司已经实现了，这样一旦发生故障的时候，能够把损失减到最小</p>
+<h3 id="二、快照的创建和数据的导出">二、快照的创建和数据的导出</h3><p><img src="http://static.zybuluo.com/zphj1987/gstkoh58vzil4rs44rb1k0r0/image_1alpu5h2e1rtt1bibg4c1cgr1eo5m.png" alt="image_1alpu5h2e1rtt1bibg4c1cgr1eo5m.png-70.5kB"></p>
+<p>上图是一个快照的创建和导出的过程，这里详细的描述下这些操作<br>创建快照<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rbd snap create testimage@v1</span><br><span class="line">rbd snap create testimage@v2</span><br></pre></td></tr></table></figure></p>
+<p>这两个命令是在时间点v1和时间点v2分别做了两个快照<br>]]>
+    
+    </summary>
+    
+      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[rgw实现nfs的首测]]></title>
@@ -1034,62 +1095,6 @@
     <![CDATA[<h3 id="准备centos7基础系统">准备centos7基础系统</h3><p>首先安装基础系统centos7 在安装选项那里选择base web server ，选择其他的也可以，选择mini安装会缺很多常用的软件包，后续需要一个个安装比较麻烦</p>
 <h3 id="关闭防火墙相关">关闭防火墙相关</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@inkscope ~]<span class="comment"># setenforce 0</span></span><br><span class="line">[root@inkscope ~]<span class="comment"># sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config</span></span><br><span class="line">[root@inkscope ~]<span class="comment"># systemctl stop firewalld</span></span><br><span class="line">[root@inkscope ~]<span class="comment"># systemctl disable firewalld</span></span><br></pre></td></tr></table></figure>
 <h3 id="更新源相关的">更新源相关的</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@inkscope ~]<span class="comment"># rm -rf /etc/yum.repos.d/*.repo</span></span><br><span class="line">[root@inkscope ~]<span class="comment"># wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo</span></span><br><span class="line">[root@inkscope ~]<span class="comment"># wget -O /etc/yum.repos.d/epel.repo http://mirrors.aliyun.com/repo/epel-7.repo</span></span><br></pre></td></tr></table></figure>]]>
-    
-    </summary>
-    
-      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[记一次不完全成功到成功的失效恢复(20160412)]]></title>
-    <link href="http://www.zphj1987.com/2016/04/13/%E8%AE%B0%E4%B8%80%E6%AC%A1%E4%B8%8D%E5%AE%8C%E5%85%A8%E6%88%90%E5%8A%9F%E5%88%B0%E6%88%90%E5%8A%9F%E7%9A%84%E5%A4%B1%E6%95%88%E6%81%A2%E5%A4%8D-20160412/"/>
-    <id>http://www.zphj1987.com/2016/04/13/记一次不完全成功到成功的失效恢复-20160412/</id>
-    <published>2016-04-12T16:04:56.000Z</published>
-    <updated>2016-04-17T14:58:54.474Z</updated>
-    <content type="html"><![CDATA[<h3 id="更新：">更新：</h3><p>在经历了好几天后，失效的环境最终变成了可用状态，只能说有的时候不放弃还真是有点用的</p>
-<hr>
-<p>在不久前处理了一个故障恢复以后，又碰上一个群友的集群出现了严重故障，本篇将记录这个中间大致处理的过程，一些细节在以后会补充</p>
-<p>首先看到给出的截图显示的是大量的pg处于异常的状态，从经验上判断，环境要么处于down机的边缘，或者是刚经历了一次大量的重启，这个时候集群可以说是前端的访问肯定全断的，这个故障的时候资源一般会比较紧张，所以在启动的过程中也要注意不要触发更大面积的down机，对于集群来说是会有连带效应的</p>
-<p>在启动了部分osd后，集群还是有大量的pg出现的是down+peering的状态，而发现down的osd实际全部在一台服务器上的，这个从ceph的架构来说是不应该出现这个状态的，这个可能是在down机过程中，频繁的pg的状态变化造成了pg的状态停留在之前的down的状态上，而pg出现锁死的状况，这个在之前的那位群友的环境中出现过一次，那个是多机有osd出现异常的情况，这次是单机出现的情况</p>
-<a id="more"></a>
-<p>尝试加大日志级别，从几个osd里面看日志出现两类的异常，从后面的处理的情况来看，实际这个是触发了两个bug，第一个问题出现是部分的数据丢失，这个在进行处理以后，再次启动的时候，几个osd出现了同样的错误，在询问了我们的研发大牛后，基本能判断这个是一个0.94.x的bug，并且在邮件列表里面已经解决</p>
-<p>然后尝试对其中的一台进行升级，这次升级直接升级到了10.1.1，然后启动osd，确实可以启动了，具体的怎么触发这个bug，就不是太清楚里面的过程，这个环境是经历了一个比较复杂的状态变化</p>
-<p>启动了部分osd后，发现还是osd无法启动，一检查，发现居然是这个机器的5个磁盘都有文件系统的错误，之前的部分数据丢失，也可能是文件系统错误引起的，很有可能是异常后造成了大面积的异常，这个地方只是推断，因为没有看到监控中间的过程，在修复了文件系统以后，osd都能起来了，只是又碰上另外的一个问题，<br>incomplete状态，就是事情没做完，在检查了里面的数据，发现数据没问题</p>
-<p>尝试做修复，使用cephobjecttool导出数据再导入另外的pg，状态还是无法变化，然后根据之前另外一个国外的处理经验，将pg导入到非pg映射的osd，然后让其自动backfiill，发现还是无法生效，pg仍然停留在imcomplete状态</p>
-<p>在询问了对方里面的数据情况后得知只有一个镜像比较重要，果断尝试后端的修复，大概思路就是将img镜像所对应的数据全部拷贝到一个目录，然后进行拼接的操作，这个在我之前的测试环境测试过没问题，这次在这个环境上进行了操作，因为环境的对象大小经过了修改，所以脚本也要对应修改，最后合成看了一个raw文件，在经过验证后，能够启动，数据基本是算是恢复了</p>
-<p>然后做了pg repair osd repair deep-scrub等操作都是无法改变状态</p>
-<p>环境还停留在不可用的状态，尝试做最后的修复，将pg数据进行备份后，强制创建pg，这个在我自己的测试环境下是可行的方案，但是这个环境在停留在creating状态比较久后，还是会进入imcomplete状态，尝试几次还是不行，开始怀疑是这两个osd问题，然后将osd out以后，在重新分布的osd上进行了创建pg操作，还是creating后进入imcomplete状态，到此，基本判断环境无法恢复了，数据算是保住了</p>
-<p>这个是国内一个比较牛的cepher也碰到的情况 <a href="http://m.oschina.net/blog/360274" target="_blank" rel="external">osd盘崩溃的总结</a>，他这个环境也是最终无法救回来<br>这是他查询到的国外的一个人写的情况：</p>
-<blockquote>
-<p>查了一圈无果。一个有同样遭遇的人的一段话：<br>I already tried “ceph pg repair 4.77”, stop/start OSDs, “ceph osd lost”, “ceph pg force_create_pg 4.77”.<br>Most scary thing is “force_create_pg” does not work. At least it should be a way to wipe out a incomplete PG without destroying a whole pool.</p>
-</blockquote>
-<p>这个地方出故障的环境做一个总结：</p>
-<ul>
-<li>环境做了比较极端的优化，这里就不说了，ceph的journal这一层就是防止down机出现数据不一致做replay的，做了极端的环境优化需要做多次整机down机测试，这个down机是无法完全避免的，所以要考虑</li>
-<li>磁盘出现了多个同时的损坏，这个没有办法，文件系统的损坏有可能是主机系统出现比较特殊的异常造成磁盘数据异常，这个单机多磁盘损坏的可能是有的，最怕就是部分损坏</li>
-<li>ceph有部分bug是在比较极端的情况下出现的，并不是没有，所以不能想着完全避免bug，多想想真出问题了，怎样把损失降低到最小，我的底线是数据回来</li>
-<li>ceph集群的副本只能保证系统内的高可用，系统级别的高可用，只能是双系统，能搭两套一定两套，哪怕非实时定期备份也好</li>
-<li>随着ceph使用者越多，出现问题的情况会越来越多的，特别是在使用的越久，概率就越大，磁盘也是有寿命的，集群呢？还是早做防范措施</li>
-</ul>
-<hr>
-<h3 id="后续：">后续：</h3><p>事情本以为就这么完结了，因为已经达到了最低的标准，数据的恢复，但实际上对于我自己来说，还是觉得有点遗憾的，毕竟环境是处于一个无法使用的状态，并且，环境中实际也只有部分数据的损坏，但是因为pg的状态不对，那些虚拟机实际是无法写入的，变相的这个环境就是一个僵住的状态了，虽然想了好几天，但是并没有更好的办法，有一个办法是将整个的数据导出再导入，这个时间周期会很长，如果里面数据很多都是重要的，这个是不得不走的一步了，正好这个环境重要数据只有一个，也就没去尝试了</p>
-<p>我有一个翻译的计划的，已经停滞了很久，但是说实话，我之前的想法是一章章的细细的研究，细细的翻译，然后写出自己的想法，但是迫于时间原因，以及最近事情比较多，暂时处于停滞状态，这个后期会跟进的，目前已经购买的书友，以及支持的朋友，我尽量的是对你提出的问题或者困惑给出我个人的见解，总之一个事情的处理方式有多种，我从来都是告诉你我会怎么做，然后告诉你，你可以根据你的想法来，正是因为想到自己最近没时间翻译，自己干脆把这本书过一遍，果然还是多读书好，根据书里面的一个提示，我就去尝试做另外一个操作</p>
-<p>在有想法以后，联系了群友，正好环境还在，没有做推倒重来的操作，这个也感谢ceph群友的信任和支持，在隔了几天再次登录环境以后，根据提示，我将这个pg的数据进行了删除，这次的删除不是之前的暴力的直接rm，而是使用ceph内部的工具进行的删除，主副本停止osd后同时做的操作，我怀疑是不是还有哪里的元数据被锁住了，在删除以后再次起来，再次创建pg的时候，环境还是处于一个异常的状态，因为书中描述了是我之前没见过的操作，当时想想是不是有其他的不清楚的操作方式，在一番查询以后，真的有我没用过的操作，然后直接尝试，果然整个集群正常了，然后把之前的pg数据进行导入操作，然后用rados直接get那个异常的pg里面的对象，果然能读取了，然后用rados ls也能够列出所有的对象了，环境终于能够正常了，环境是强制的改变状态变成可正常，数据也能够读写了，我个人的建议如果真是有很多重要数据，还是把数据倒出来再导入进去，集群正常情况下的导出导入操作逻辑和时间比后台的导出逻辑要简单非常多</p>
-<p>好了，到了这里终于将一个环境变成了正常的状态了，对于我自己来说，对ceph的控制又提高了一点，之前认为数据盘在，我就能把数据恢复，倒出来，但是原集群的恢复，没有太多的保证，现在基本上只要盘符不被格式化掉，环境我也能有很大的概率去恢复正常，总之保底恢复方式的越多，越有信心去恢复它</p>
-<p>这次的经历让我再一次感觉，不要放弃，不要放弃，有的时候真的会有转机，同时感谢群友能够提供环境给我，也欢迎有更多的朋友在出现问题的时候可以找我探讨一下</p>
-<blockquote>
-<p>by 运维-武汉-磨渣<br>2016年04月12日夜<br>更新于2016年04月17日夜</p>
-</blockquote>
-<h3 id="打赏通道">打赏通道</h3><center><br><img src="http://static.zybuluo.com/zphj1987/fi2557g55ucsdpyblopyfudl/newpay.png" alt="打赏" title="打赏"><br></center>
-
-]]></content>
-    <summary type="html">
-    <![CDATA[<h3 id="更新：">更新：</h3><p>在经历了好几天后，失效的环境最终变成了可用状态，只能说有的时候不放弃还真是有点用的</p>
-<hr>
-<p>在不久前处理了一个故障恢复以后，又碰上一个群友的集群出现了严重故障，本篇将记录这个中间大致处理的过程，一些细节在以后会补充</p>
-<p>首先看到给出的截图显示的是大量的pg处于异常的状态，从经验上判断，环境要么处于down机的边缘，或者是刚经历了一次大量的重启，这个时候集群可以说是前端的访问肯定全断的，这个故障的时候资源一般会比较紧张，所以在启动的过程中也要注意不要触发更大面积的down机，对于集群来说是会有连带效应的</p>
-<p>在启动了部分osd后，集群还是有大量的pg出现的是down+peering的状态，而发现down的osd实际全部在一台服务器上的，这个从ceph的架构来说是不应该出现这个状态的，这个可能是在down机过程中，频繁的pg的状态变化造成了pg的状态停留在之前的down的状态上，而pg出现锁死的状况，这个在之前的那位群友的环境中出现过一次，那个是多机有osd出现异常的情况，这次是单机出现的情况</p>]]>
     
     </summary>
     

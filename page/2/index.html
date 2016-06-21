@@ -186,6 +186,71 @@ var _hmt = _hmt || [];
 </nav>
       <div class="body-wrap">
   
+    <article id="post-ceph的jewel新支持的rbd-nbd" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/05/19/ceph的jewel新支持的rbd-nbd/" class="article-date">
+  	<time datetime="2016-05-19T04:41:11.000Z" itemprop="datePublished">2016-05-19</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/05/19/ceph的jewel新支持的rbd-nbd/">ceph的jewel新支持的rbd-nbd</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>jewel版本新增加了一个驱动NBD，允许librbd实现一个内核级别的rbd</p>
+<p>NBD相比较于kernel rbd：</p>
+<ul>
+<li>rbd-ko是根据内核主线走的，升级kernel</li>
+<li>rbd需要升级到相应的内核，改动太大</li>
+<li>rbd-ko的开发要慢于librbd，需要很多的时间才能追赶上librbd</li>
+</ul>
+<p>rbd-nbd是通过librbd这个用户空间通过nbd的内核模块实现了内核级别的驱动，稳定性和性能都有保障<br>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2016/05/19/ceph的jewel新支持的rbd-nbd/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-支持jewel版本的calamari" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -731,68 +796,6 @@ var _hmt = _hmt || [];
       
         <p class="article-more-link">
           <a  href="/2016/04/19/inkscope完整安装配置/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-记一次不完全成功到成功的失效恢复-20160412" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/04/13/记一次不完全成功到成功的失效恢复-20160412/" class="article-date">
-  	<time datetime="2016-04-12T16:04:56.000Z" itemprop="datePublished">2016-04-13</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/04/13/记一次不完全成功到成功的失效恢复-20160412/">记一次不完全成功到成功的失效恢复(20160412)</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="更新：">更新：</h3><p>在经历了好几天后，失效的环境最终变成了可用状态，只能说有的时候不放弃还真是有点用的</p>
-<hr>
-<p>在不久前处理了一个故障恢复以后，又碰上一个群友的集群出现了严重故障，本篇将记录这个中间大致处理的过程，一些细节在以后会补充</p>
-<p>首先看到给出的截图显示的是大量的pg处于异常的状态，从经验上判断，环境要么处于down机的边缘，或者是刚经历了一次大量的重启，这个时候集群可以说是前端的访问肯定全断的，这个故障的时候资源一般会比较紧张，所以在启动的过程中也要注意不要触发更大面积的down机，对于集群来说是会有连带效应的</p>
-<p>在启动了部分osd后，集群还是有大量的pg出现的是down+peering的状态，而发现down的osd实际全部在一台服务器上的，这个从ceph的架构来说是不应该出现这个状态的，这个可能是在down机过程中，频繁的pg的状态变化造成了pg的状态停留在之前的down的状态上，而pg出现锁死的状况，这个在之前的那位群友的环境中出现过一次，那个是多机有osd出现异常的情况，这次是单机出现的情况</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2016/04/13/记一次不完全成功到成功的失效恢复-20160412/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>
