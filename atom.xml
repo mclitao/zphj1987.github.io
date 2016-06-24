@@ -4,7 +4,7 @@
   <subtitle><![CDATA[现在所学，终有所用]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2016-06-22T01:40:00.378Z</updated>
+  <updated>2016-06-24T08:35:39.321Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -13,6 +13,59 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[parted分区对齐]]></title>
+    <link href="http://www.zphj1987.com/2016/06/24/parted%E5%88%86%E5%8C%BA%E5%AF%B9%E9%BD%90/"/>
+    <id>http://www.zphj1987.com/2016/06/24/parted分区对齐/</id>
+    <published>2016-06-24T08:32:43.000Z</published>
+    <updated>2016-06-24T08:35:39.321Z</updated>
+    <content type="html"><![CDATA[<h3 id="一、分区提示未对齐">一、分区提示未对齐</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># parted /dev/sdd </span></span><br><span class="line">GNU Parted <span class="number">3.1</span></span><br><span class="line">Using /dev/sdd</span><br><span class="line">Welcome to GNU Parted! Type <span class="string">'help'</span> to view a list of commands.</span><br><span class="line">(parted) p                                                                </span><br><span class="line">Model: SEAGATE ST3300657SS (scsi)</span><br><span class="line">Disk /dev/sdd: <span class="number">300</span>GB</span><br><span class="line">Sector size (logical/physical): <span class="number">512</span>B/<span class="number">512</span>B</span><br><span class="line">Partition Table: gpt</span><br><span class="line">Disk Flags: </span><br><span class="line"></span><br><span class="line">Number  Start  End  Size  File system  Name  Flags</span><br><span class="line"></span><br><span class="line">(parted) mkpart primary <span class="number">0</span> <span class="number">100</span>%                                            </span><br><span class="line">Warning: The resulting partition is not properly aligned <span class="keyword">for</span> best performance.</span><br><span class="line">Ignore/Cancel?</span><br></pre></td></tr></table></figure>
+<p>Warning: The resulting partition is not properly aligned for best performance.<br>分区的时候提示不是最好的模式，这个是因为没有对齐的原因，在默认情况下我都是<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkpart primary <span class="number">1</span> <span class="number">100</span>%</span><br></pre></td></tr></table></figure></p>
+<p>这个一般都是对齐的，但是最近遇到一个做了raid5的怎么都提示不行，然后搜索了下资料，这个地方是要计算下比较好的</p>
+<a id="more"></a>
+<h3 id="二、通过计算分区">二、通过计算分区</h3><h4 id="获取磁盘的几个参数（这里是软raid）">获取磁盘的几个参数（这里是软raid）</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># cat /sys/block/md127/queue/optimal_io_size</span></span><br><span class="line"><span class="number">3670016</span></span><br><span class="line"><span class="comment"># cat /sys/block/md127/queue/minimum_io_size</span></span><br><span class="line"><span class="number">524288</span></span><br><span class="line"><span class="comment"># cat /sys/block/md127/alignment_offset</span></span><br><span class="line"><span class="number">0</span></span><br><span class="line"><span class="comment"># cat /sys/block/md127/queue/physical_block_size</span></span><br><span class="line"><span class="number">512</span></span><br></pre></td></tr></table></figure>
+<p>optimal_io_size 加上 alignment_offset 的和 然后除以  physical_block_size<br>在这个环境下是：<br>(3670016 + 0) / 512 = 7168</p>
+<p>那么分区的时候命令就应该是<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkpart primary <span class="number">7168</span>s <span class="number">100</span>%</span><br></pre></td></tr></table></figure></p>
+<p>如果上面的顺利的完成检查一下  (‘1’是分区的编号):</p>
+<blockquote>
+<p>(parted) align-check optimal 1<br>1 aligned</p>
+</blockquote>
+<p>这个是正常的结果，如果没对齐就会是</p>
+<blockquote>
+<p>(parted) align-check optimal 1<br>1 not aligned</p>
+</blockquote>
+<h3 id="三、其他情况">三、其他情况</h3><p>默认情况下直接用下列的分区参数就可以，出现提示再用上面的计算，总之最后align-check 验证下<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkpart primary <span class="number">1</span> <span class="number">100</span>%</span><br></pre></td></tr></table></figure></p>
+<h3 id="四、相关文章">四、相关文章</h3><p><a href="http://rainbow.chard.org/2013/01/30/how-to-align-partitions-for-best-performance-using-parted/" target="_blank" rel="external">How to align partitions for best performance using parted</a></p>
+<h3 id="六、变更记录">六、变更记录</h3><table>
+<thead>
+<tr>
+<th style="text-align:center">Why</th>
+<th style="text-align:center">Who</th>
+<th style="text-align:center">When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">创建</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2016-06-24</td>
+</tr>
+</tbody>
+</table>
+<h3 id="七、打赏通道">七、打赏通道</h3><center><br><img src="http://static.zybuluo.com/zphj1987/fi2557g55ucsdpyblopyfudl/newpay.png" alt="打赏" title="打赏"><br></center>
+
+]]></content>
+    <summary type="html">
+    <![CDATA[<h3 id="一、分区提示未对齐">一、分区提示未对齐</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># parted /dev/sdd </span></span><br><span class="line">GNU Parted <span class="number">3.1</span></span><br><span class="line">Using /dev/sdd</span><br><span class="line">Welcome to GNU Parted! Type <span class="string">'help'</span> to view a list of commands.</span><br><span class="line">(parted) p                                                                </span><br><span class="line">Model: SEAGATE ST3300657SS (scsi)</span><br><span class="line">Disk /dev/sdd: <span class="number">300</span>GB</span><br><span class="line">Sector size (logical/physical): <span class="number">512</span>B/<span class="number">512</span>B</span><br><span class="line">Partition Table: gpt</span><br><span class="line">Disk Flags: </span><br><span class="line"></span><br><span class="line">Number  Start  End  Size  File system  Name  Flags</span><br><span class="line"></span><br><span class="line">(parted) mkpart primary <span class="number">0</span> <span class="number">100</span>%                                            </span><br><span class="line">Warning: The resulting partition is not properly aligned <span class="keyword">for</span> best performance.</span><br><span class="line">Ignore/Cancel?</span><br></pre></td></tr></table></figure>
+<p>Warning: The resulting partition is not properly aligned for best performance.<br>分区的时候提示不是最好的模式，这个是因为没有对齐的原因，在默认情况下我都是<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkpart primary <span class="number">1</span> <span class="number">100</span>%</span><br></pre></td></tr></table></figure></p>
+<p>这个一般都是对齐的，但是最近遇到一个做了raid5的怎么都提示不行，然后搜索了下资料，这个地方是要计算下比较好的</p>]]>
+    
+    </summary>
+    
+      <category term="linux" scheme="http://www.zphj1987.com/tags/linux/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[rbd的增量备份和恢复]]></title>
@@ -995,116 +1048,6 @@
     </summary>
     
       <category term="其他" scheme="http://www.zphj1987.com/tags/%E5%85%B6%E4%BB%96/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[inkscope完整安装配置]]></title>
-    <link href="http://www.zphj1987.com/2016/04/19/inkscope%E5%AE%8C%E6%95%B4%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/"/>
-    <id>http://www.zphj1987.com/2016/04/19/inkscope完整安装配置/</id>
-    <published>2016-04-19T05:52:34.000Z</published>
-    <updated>2016-05-19T04:01:49.441Z</updated>
-    <content type="html"><![CDATA[<h3 id="准备centos7基础系统">准备centos7基础系统</h3><p>首先安装基础系统centos7 在安装选项那里选择base web server ，选择其他的也可以，选择mini安装会缺很多常用的软件包，后续需要一个个安装比较麻烦</p>
-<h3 id="关闭防火墙相关">关闭防火墙相关</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@inkscope ~]<span class="comment"># setenforce 0</span></span><br><span class="line">[root@inkscope ~]<span class="comment"># sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config</span></span><br><span class="line">[root@inkscope ~]<span class="comment"># systemctl stop firewalld</span></span><br><span class="line">[root@inkscope ~]<span class="comment"># systemctl disable firewalld</span></span><br></pre></td></tr></table></figure>
-<h3 id="更新源相关的">更新源相关的</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@inkscope ~]<span class="comment"># rm -rf /etc/yum.repos.d/*.repo</span></span><br><span class="line">[root@inkscope ~]<span class="comment"># wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo</span></span><br><span class="line">[root@inkscope ~]<span class="comment"># wget -O /etc/yum.repos.d/epel.repo http://mirrors.aliyun.com/repo/epel-7.repo</span></span><br></pre></td></tr></table></figure>
-<a id="more"></a>
-<p>修改里面的系统版本为7.2.1511,当前用的centos的版本的的yum源可能已经清空了<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@inkscope ~]<span class="comment"># sed -i 's/$releasever/7.2.1511/g' /etc/yum.repos.d/CentOS-Base.repo</span></span><br></pre></td></tr></table></figure></p>
-<p>添加ceph源<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@inkscope ~]<span class="comment"># vim /etc/yum.repos.d/ceph.repo</span></span><br></pre></td></tr></table></figure></p>
-<p>添加<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[ceph]</span><br><span class="line">name=ceph</span><br><span class="line">baseurl=http://mirrors.aliyun.com/ceph/rpm-hammer/el7/x86_64/</span><br><span class="line">gpgcheck=<span class="number">0</span></span><br><span class="line">[ceph-noarch]</span><br><span class="line">name=cephnoarch</span><br><span class="line">baseurl=http://mirrors.aliyun.com/ceph/rpm-hammer/el7/noarch/</span><br><span class="line">gpgcheck=<span class="number">0</span></span><br></pre></td></tr></table></figure></p>
-<h3 id="准备inkscope的相关安装包">准备inkscope的相关安装包</h3><p>下载相关软件包的脚本：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="shebang">#! /bin/sh</span></span><br><span class="line">wget https://raw.githubusercontent.com/inkscope/inkscope-packaging/master/RPMS/flake8-<span class="number">2.3</span>.<span class="number">0</span>-<span class="number">1</span>.noarch.rpm</span><br><span class="line">wget https://raw.githubusercontent.com/inkscope/inkscope-packaging/master/RPMS/inkscope-admviz-<span class="number">1.3</span>.<span class="number">1</span>-<span class="number">2</span>.noarch.rpm</span><br><span class="line">wget https://raw.githubusercontent.com/inkscope/inkscope-packaging/master/RPMS/inkscope-cephprobe-<span class="number">1.3</span>.<span class="number">1</span>-<span class="number">2</span>.noarch.rpm</span><br><span class="line">wget https://raw.githubusercontent.com/inkscope/inkscope-packaging/master/RPMS/inkscope-cephrestapi-<span class="number">1.3</span>.<span class="number">1</span>-<span class="number">2</span>.noarch.rpm</span><br><span class="line">wget https://raw.githubusercontent.com/inkscope/inkscope-packaging/master/RPMS/inkscope-common-<span class="number">1.3</span>.<span class="number">1</span>-<span class="number">2</span>.noarch.rpm</span><br><span class="line">wget https://raw.githubusercontent.com/inkscope/inkscope-packaging/master/RPMS/inkscope-monitoring-<span class="number">1.3</span>.<span class="number">1</span>-<span class="number">2</span>.noarch.rpm</span><br><span class="line">wget https://raw.githubusercontent.com/inkscope/inkscope-packaging/master/RPMS/inkscope-sysprobe-<span class="number">1.3</span>.<span class="number">1</span>-<span class="number">2</span>.noarch.rpm</span><br><span class="line">wget https://raw.githubusercontent.com/inkscope/inkscope-packaging/master/RPMS/pep8-<span class="number">1.5</span>.<span class="number">7</span>-<span class="number">1</span>.noarch.rpm</span><br><span class="line">wget https://raw.githubusercontent.com/inkscope/inkscope-packaging/master/RPMS/pyflakes-<span class="number">0.8</span>.<span class="number">1</span>-<span class="number">1</span>.noarch.rpm</span><br><span class="line">wget https://raw.githubusercontent.com/inkscope/inkscope-packaging/master/RPMS/python-babel-<span class="number">0.9</span>.<span class="number">6</span>-<span class="number">8</span>.el7.noarch.rpm</span><br><span class="line">wget https://raw.githubusercontent.com/inkscope/inkscope-packaging/master/RPMS/python-boto-<span class="number">2.34</span>.<span class="number">0</span>-<span class="number">4</span>.el7.noarch.rpm</span><br><span class="line">wget https://raw.githubusercontent.com/inkscope/inkscope-packaging/master/RPMS/python-bson-<span class="number">2.5</span>.<span class="number">2</span>-<span class="number">2</span>.el7.x86_64.rpm</span><br><span class="line">wget https://raw.githubusercontent.com/inkscope/inkscope-packaging/master/RPMS/python-flask-<span class="number">0.10</span>.<span class="number">1</span>-<span class="number">4</span>.el7.noarch.rpm</span><br><span class="line">wget https://raw.githubusercontent.com/inkscope/inkscope-packaging/master/RPMS/python-flask-doc-<span class="number">0.10</span>.<span class="number">1</span>-<span class="number">4</span>.el7.noarch.rpm</span><br><span class="line">wget https://raw.githubusercontent.com/inkscope/inkscope-packaging/master/RPMS/python-itsdangerous-<span class="number">0.23</span>-<span class="number">2</span>.el7.noarch.rpm</span><br><span class="line">wget https://raw.githubusercontent.com/inkscope/inkscope-packaging/master/RPMS/python-jinja2-<span class="number">2.7</span>.<span class="number">2</span>-<span class="number">2</span>.el7.noarch.rpm</span><br><span class="line">wget https://raw.githubusercontent.com/inkscope/inkscope-packaging/master/RPMS/python-markupsafe-<span class="number">0.11</span>-<span class="number">10</span>.el7.x86_64.rpm</span><br><span class="line">wget https://raw.githubusercontent.com/inkscope/inkscope-packaging/master/RPMS/python-pip-<span class="number">1.3</span>.<span class="number">1</span>-<span class="number">4</span>.el7.noarch.rpm</span><br><span class="line">wget https://raw.githubusercontent.com/inkscope/inkscope-packaging/master/RPMS/python-psutil-<span class="number">2.2</span>.<span class="number">0</span>-<span class="number">1</span>.x86_64.rpm</span><br><span class="line">wget https://raw.githubusercontent.com/inkscope/inkscope-packaging/master/RPMS/python-pymongo-<span class="number">2.5</span>.<span class="number">2</span>-<span class="number">2</span>.el7.x86_64.rpm</span><br><span class="line">wget https://raw.githubusercontent.com/inkscope/inkscope-packaging/master/RPMS/python-rsa-<span class="number">3.1</span>.<span class="number">1</span>-<span class="number">5</span>.el7.noarch.rpm</span><br><span class="line">wget https://raw.githubusercontent.com/inkscope/inkscope-packaging/master/RPMS/python-simplejson-<span class="number">3.3</span>.<span class="number">3</span>-<span class="number">1</span>.el7.x86_64.rpm</span><br><span class="line">wget https://raw.githubusercontent.com/inkscope/inkscope-packaging/master/RPMS/python-werkzeug-<span class="number">0.9</span>.<span class="number">1</span>-<span class="number">2</span>.el7.noarch.rpm</span><br><span class="line">wget https://raw.githubusercontent.com/inkscope/inkscope-packaging/master/RPMS/python-werkzeug-doc-<span class="number">0.9</span>.<span class="number">1</span>-<span class="number">2</span>.el7.noarch.rpm</span><br><span class="line">wget http://copr-be.cloud.fedoraproject.org/results/merlinthp/el7-mypa/epel-<span class="number">7</span>-x86_64/python-flask-login-<span class="number">0.2</span>.<span class="number">11</span>-<span class="number">1</span>.el7.centos/python-flask-login-<span class="number">0.2</span>.<span class="number">11</span>-<span class="number">1</span>.el7.centos.noarch.rpm</span><br></pre></td></tr></table></figure></p>
-<p>已经离线下载好了，可以直接用下面的百度云里面的安装包<br>链接：<a href="http://pan.baidu.com/s/1czANCi" target="_blank" rel="external">http://pan.baidu.com/s/1czANCi</a> 密码：qw3k</p>
-<h3 id="软件包安装的位置">软件包安装的位置</h3><ul>
-<li>集群的mon节点 cephprobe ceph-rest-api </li>
-<li>集群的osd节点 sysprobe inkscope-common</li>
-<li>inkscope管理控制台    inkscope-admviz inkscope-monitor mongodb</li>
-</ul>
-<h3 id="开始安装inkscope管理节点">开始安装inkscope管理节点</h3><h4 id="安装下ceph(非必选建议安装下)">安装下ceph(非必选建议安装下)</h4><p>这个地方可以选择安装也可以选择不安装，这个方便查看，也有可能管理节点就在ceph的某个节点上，这个自己随意<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@inkscope ~]<span class="comment"># yum install ceph ceph-radosgw</span></span><br><span class="line">[root@inkscope ~]<span class="comment"># yum install python-ceph</span></span><br></pre></td></tr></table></figure></p>
-<p>我的环境是想单独一台机器做管理平台控制节点</p>
-<p>那么把ceph集群中的这两个文件拷贝到这个管理节点的/etc/ceph/下面</p>
-<ul>
-<li>ceph.client.admin.keyring </li>
-<li>ceph.conf</li>
-</ul>
-<p>如果你管理节点本身就在ceph集群当中就不需要做了<br>检查ceph -s是否有输出，有集群输出就是正常的</p>
-<h4 id="安装依赖包">安装依赖包</h4><p>安装apache2和其它几个包(用于配置web服务器)<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@inkscope ~]<span class="comment"># yum install httpd -y</span></span><br><span class="line">[root@inkscope ~]<span class="comment"># yum install python-setuptools</span></span><br><span class="line">[root@inkscope ~]<span class="comment"># yum install lshw</span></span><br><span class="line">[root@inkscope ~]<span class="comment"># yum install mod_wsgi</span></span><br></pre></td></tr></table></figure></p>
-<h4 id="安装MongoDb(用于存储收集到的数据的)">安装MongoDb(用于存储收集到的数据的)</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@inkscope ~]<span class="comment"># yum install mongodb -y</span></span><br><span class="line">[root@inkscope ~]<span class="comment"># yum install mongodb-server -y</span></span><br></pre></td></tr></table></figure>
-<p>修改配置文件，让mongdb可以远程访问<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@inkscope ~]<span class="comment"># vim /etc/mongod.conf</span></span><br></pre></td></tr></table></figure></p>
-<p>bind_ip = 127.0.0.1修改为 bind_ip = 0.0.0.0</p>
-<h4 id="启动mongodb服务">启动mongodb服务</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@inkscope ~]<span class="comment"># systemctl start mongod.service</span></span><br></pre></td></tr></table></figure>
-<h4 id="检查服务">检查服务</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@inkscope bao]<span class="comment"># netstat -tunlp|grep mongod</span></span><br><span class="line">tcp        <span class="number">0</span>      <span class="number">0</span> <span class="number">0.0</span>.<span class="number">0.0</span>:<span class="number">27017</span>           <span class="number">0.0</span>.<span class="number">0.0</span>:*               LISTEN      <span class="number">11836</span>/mongod</span><br></pre></td></tr></table></figure>
-<h4 id="安装inkscope相关的包">安装inkscope相关的包</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">安装（有些安装ceph的时候已经安装了）</span><br><span class="line">rpm -ivh flake8-<span class="number">2.3</span>.<span class="number">0</span>-<span class="number">1</span>.noarch.rpm</span><br><span class="line">rpm -ivh pep8-<span class="number">1.5</span>.<span class="number">7</span>-<span class="number">1</span>.noarch.rpm</span><br><span class="line">rpm -ivh pyflakes-<span class="number">0.8</span>.<span class="number">1</span>-<span class="number">1</span>.noarch.rpm</span><br><span class="line">rpm -ivh python-rsa-<span class="number">3.1</span>.<span class="number">1</span>-<span class="number">5</span>.el7.noarch.rpm</span><br><span class="line">rpm -ivh python-boto-<span class="number">2.34</span>.<span class="number">0</span>-<span class="number">4</span>.el7.noarch.rpm</span><br><span class="line">rpm -ivh python-bson-<span class="number">2.5</span>.<span class="number">2</span>-<span class="number">2</span>.el7.x86_64.rpm</span><br><span class="line">rpm -ivh python-flask-doc-<span class="number">0.10</span>.<span class="number">1</span>-<span class="number">4</span>.el7.noarch.rpm</span><br><span class="line">rpm -ivh python-pip-<span class="number">1.3</span>.<span class="number">1</span>-<span class="number">4</span>.el7.noarch.rpm</span><br><span class="line">rpm -ivh python-psutil-<span class="number">2.2</span>.<span class="number">0</span>-<span class="number">1</span>.x86_64.rpm</span><br><span class="line">rpm -ivh python-pymongo-<span class="number">2.5</span>.<span class="number">2</span>-<span class="number">2</span>.el7.x86_64.rpm</span><br><span class="line">rpm -ivh python-simplejson-<span class="number">3.3</span>.<span class="number">3</span>-<span class="number">1</span>.el7.x86_64.rpm</span><br><span class="line">rpm -ivh python-werkzeug-doc-<span class="number">0.9</span>.<span class="number">1</span>-<span class="number">2</span>.el7.noarch.rpm </span><br><span class="line">rpm -ivh inkscope-common-<span class="number">1.3</span>.<span class="number">1</span>-<span class="number">2</span>.noarch.rpm</span><br><span class="line">rpm -ivh inkscope-sysprobe-<span class="number">1.3</span>.<span class="number">1</span>-<span class="number">2</span>.noarch.rpm</span><br><span class="line">rpm -ivh inkscope-monitoring-<span class="number">1.3</span>.<span class="number">1</span>-<span class="number">2</span>.noarch.rpm</span><br><span class="line">rpm -ivh inkscope-cephrestapi-<span class="number">1.3</span>.<span class="number">1</span>-<span class="number">2</span>.noarch.rpm</span><br><span class="line">rpm -ivh inkscope-cephprobe-<span class="number">1.3</span>.<span class="number">1</span>-<span class="number">2</span>.noarch.rpm </span><br><span class="line">rpm -ivh inkscope-admviz-<span class="number">1.3</span>.<span class="number">1</span>-<span class="number">2</span>.noarch.rpm </span><br><span class="line"><span class="comment">##rpm -ivh --nodeps inkscope-admviz-1.3.1-2.noarch.rpm</span></span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>这个里面因为python-ceph在10.x已经更名了，所以在确保其他已经安装好的情况下使用忽略依赖进行安装，ceph0.94没有这个问题</p>
-</blockquote>
-<h4 id="配置权限">配置权限</h4><p>需要创建一个client.restapi的用户 拥有权限 [mds] allow, [mon] allow <em> , [osd] allow </em><br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph auth get-or-create client.restapi mds <span class="string">'allow'</span> osd <span class="string">'allow *'</span> mon <span class="string">'allow *'</span> &gt; /etc/ceph/ceph.client.restapi.keyring</span><br><span class="line"></span><br><span class="line">chmod <span class="number">644</span> /etc/ceph/ceph.client.admin.keyring</span><br><span class="line">chmod <span class="number">644</span> /etc/ceph/ceph.client.restapi.keyring</span><br></pre></td></tr></table></figure></p>
-<p>在/etc/ceph/ceph.conf配置文件里面添加<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[client.restapi]</span><br><span class="line">    <span class="built_in">log</span>_file = /dev/null</span><br><span class="line">    keyring = /etc/ceph/ceph.client.restapi.keyring</span><br></pre></td></tr></table></figure></p>
-<h4 id="配置httpd">配置httpd</h4><p> /etc/httpd/conf/httpd.conf 中间添加一条</p>
-<blockquote>
-<p>Listen 8080</p>
-</blockquote>
-<p>因为inkscope的web 默认采用虚拟主机的方式使用了8080端口</p>
-<h3 id="给目录访问权限(存储日志使用)">给目录访问权限(存储日志使用)</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@inkscope ~]<span class="comment"># chmod 777 -R /var/log/ceph/</span></span><br></pre></td></tr></table></figure>
-<p>修改ceph-rest-api的地址<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">vim /etc/httpd/conf.d/inkScope.conf</span><br></pre></td></tr></table></figure></p>
-<p>修改为：</p>
-<blockquote>
-<p>ProxyPass /ceph-rest-api/ <a href="http://192.168.222.100:8080/ceph_rest_api/api/v0.1/" target="_blank" rel="external">http://192.168.222.100:8080/ceph_rest_api/api/v0.1/</a></p>
-</blockquote>
-<p>这个地方是写的这台管理节点的地址和端口，因为本机实现了wsgi的方式的rest-api的接口，不是用的集群的5000的端口，而是直接使用web配置的8080的端口</p>
-<h4 id="启动httpd服务">启动httpd服务</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@inkscope ~]<span class="comment"># systemctl restart httpd</span></span><br></pre></td></tr></table></figure>
-<p>检查ceph-rest-api是否能访问，地址是 <a href="http://192.168.222.100:8080/ceph_rest_api/api/v0.1/" target="_blank" rel="external">http://192.168.222.100:8080/ceph_rest_api/api/v0.1/</a></p>
-<p><img src="http://static.zybuluo.com/zphj1987/4s2rmktfiwp1qahs0f1z7hf7/rest-api.png" alt="rest-api.png-22.5kB"></p>
-<p>修改/opt/inkscope/etc/inkscope.conf配置文件，<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="string">"ceph_rest_api"</span>: <span class="string">"192.168.222.100:8080"</span>,</span><br><span class="line"><span class="string">"ceph_rest_api_subfolder"</span>: <span class="string">"ceph_rest_api"</span>,</span><br><span class="line"><span class="string">"mongodb_host"</span> : <span class="string">"192.168.222.100"</span>,</span><br></pre></td></tr></table></figure></p>
-<blockquote>
-<p>注意上面的地址不要在ip和地址前面加<a href="http://否则获取不到信息的，注意使用的是inkscope的web端口8080，也就是上面配置好的rest-api的端口" target="_blank" rel="external">http://否则获取不到信息的，注意使用的是inkscope的web端口8080，也就是上面配置好的rest-api的端口</a></p>
-</blockquote>
-<h4 id="启动cephprobe_服务">启动cephprobe 服务</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@inkscope ~]<span class="comment"># /etc/init.d/cephprobe restart</span></span><br></pre></td></tr></table></figure>
-<p>现在就可以访问<br><a href="http://192.168.222.100:8080/inkscopeViz/index.html" target="_blank" rel="external">http://192.168.222.100:8080/inkscopeViz/index.html</a></p>
-<p>这个是没有用户名密码的，我们为了安全采用以下用户名密码的方式,需要安装flask-login<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@inkscope ~]<span class="comment"># rpm -ivh python-flask-login-0.2.11-1.el7.centos.noarch.rpm</span></span><br></pre></td></tr></table></figure></p>
-<h4 id="重启httpd服务">重启httpd服务</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@inkscope ~]<span class="comment"># systemctl restart httpd</span></span><br></pre></td></tr></table></figure>
-<p> <img src="http://static.zybuluo.com/zphj1987/hasskxlkvn11atsgz5gbcym3/denglu.png" alt="denglu.png-35.5kB"></p>
-<p>再次访问就需要用户名密码了</p>
-<ul>
-<li>默认用户名:admin  </li>
-<li>默认密码:admin</li>
-</ul>
-<p>到这里最基本的管理平台配置就完成了</p>
-<h3 id="配置sysprobe">配置sysprobe</h3><p>sysprobe是获取集群节点的主机的信息的</p>
-<h4 id="安装">安装</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@inkscope ~]<span class="comment"># rpm -ivh inkscope-common-1.3.1-2.noarch.rpm</span></span><br><span class="line">[root@inkscope ~]<span class="comment"># rpm -ivh inkscope-sysprobe-1.3.1-2.noarch.rpm</span></span><br></pre></td></tr></table></figure>
-<p>将主监控节点的inkscope配置文件拷贝到节点上<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@inkscope ~]<span class="comment"># scp /opt/inkscope/etc/inkscope.conf 192.168.8.106:/opt/inkscope/etc/</span></span><br></pre></td></tr></table></figure></p>
-<p>在osd节点启动sysprobe服务<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># /etc/init.d/sysprobe restart</span></span><br></pre></td></tr></table></figure></p>
-<p><img src="http://static.zybuluo.com/zphj1987/wjjk9wy4krx7i6elpoxucjpu/probe.png" alt="probe.png-49.6kB"><br>正常情况就用上面这个页面检查配置的状况</p>
-<p>cephprobe是用来或者集群的相关信息和操作的<br>sysprobe是获取节点的磁盘分区等相关信息的</p>
-<p>基本节点的软件包配置完毕了，一些扩展功能也配置一下</p>
-<h3 id="创建rgw相关的">创建rgw相关的</h3><h4 id="配置rgw网关">配置rgw网关</h4><p>在/etc/ceph/ceph.conf<br>添加<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[client.radosgw.gateway]</span><br><span class="line">host = inkscope</span><br><span class="line">rgw <span class="built_in">print</span> <span class="built_in">continue</span> = <span class="literal">false</span></span><br><span class="line">debug_rgw = <span class="number">0</span></span><br><span class="line">user = root</span><br></pre></td></tr></table></figure></p>
-<h4 id="启动radosgw服务">启动radosgw服务</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@inkscope ~]<span class="comment"># /etc/init.d/ceph-radosgw restart</span></span><br></pre></td></tr></table></figure>
-<p>检查端口是否启动，默认是7480<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@inkscope ~]<span class="comment"># netstat -tunlp|grep radosgw</span></span><br><span class="line">tcp        <span class="number">0</span>      <span class="number">0</span> <span class="number">0.0</span>.<span class="number">0.0</span>:<span class="number">7480</span>            <span class="number">0.0</span>.<span class="number">0.0</span>:*               LISTEN      <span class="number">113493</span>/radosgw</span><br></pre></td></tr></table></figure></p>
-<h4 id="创建rgw使用的存储池并且添加到rgw">创建rgw使用的存储池并且添加到rgw</h4><p>rados mkpool .rgw.buckets 1024 1024<br>radosgw-admin pool add —pool .rgw.buckets</p>
-<p>执行完后检查存储池情况,自动会创建了一些存储池<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@inkscope ~]<span class="comment"># ceph df</span></span><br><span class="line">GLOBAL:</span><br><span class="line">    SIZE     AVAIL     RAW USED     %RAW USED </span><br><span class="line">    <span class="number">548</span>G      <span class="number">548</span>G       <span class="number">70080</span>k          <span class="number">0.01</span> </span><br><span class="line">POOLS:</span><br><span class="line">    NAME             ID     USED     %USED     MAX AVAIL     OBJECTS </span><br><span class="line">    rbd              <span class="number">0</span>         <span class="number">0</span>         <span class="number">0</span>          <span class="number">274</span>G           <span class="number">0</span> </span><br><span class="line">    zp               <span class="number">1</span>         <span class="number">0</span>         <span class="number">0</span>          <span class="number">274</span>G           <span class="number">0</span> </span><br><span class="line">    .rgw.root        <span class="number">2</span>       <span class="number">848</span>         <span class="number">0</span>          <span class="number">274</span>G           <span class="number">3</span> </span><br><span class="line">    .rgw.control     <span class="number">3</span>         <span class="number">0</span>         <span class="number">0</span>          <span class="number">274</span>G           <span class="number">8</span> </span><br><span class="line">    .rgw             <span class="number">4</span>        <span class="number">24</span>         <span class="number">0</span>          <span class="number">274</span>G           <span class="number">1</span> </span><br><span class="line">    .rgw.gc          <span class="number">5</span>         <span class="number">0</span>         <span class="number">0</span>          <span class="number">274</span>G          <span class="number">32</span> </span><br><span class="line">    .users.uid       <span class="number">6</span>         <span class="number">0</span>         <span class="number">0</span>          <span class="number">274</span>G           <span class="number">0</span> </span><br><span class="line">    .rgw.buckets     <span class="number">7</span>         <span class="number">0</span>         <span class="number">0</span>          <span class="number">274</span>G           <span class="number">0</span></span><br></pre></td></tr></table></figure></p>
-<h3 id="创建rgw的用户">创建rgw的用户</h3><p>这个用户是管理员用户，需要给很多权限<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@inkscope ~]<span class="comment"># radosgw-admin user create --uid=inkscope --display-name="inkscope" --access-key=inkscope --secret=inkscope --access=full --caps="metadata=*;users=*;buckets=*"</span></span><br></pre></td></tr></table></figure></p>
-<h3 id="修改配置文件">修改配置文件</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@inkscope ~]<span class="comment"># vim /opt/inkscope/etc/inkscope.conf</span></span><br></pre></td></tr></table></figure>
-<p>修改下面的几项</p>
-<pre><code class="bash"><span class="string">"radosgw_url"</span>: <span class="string">"http://192.168.222.100:7480"</span>,
-<span class="string">"radosgw_admin"</span>: <span class="string">"admin"</span>,
-<span class="string">"radosgw_key"</span>: <span class="string">"inkscope"</span>,
-<span class="string">"radosgw_secret"</span>: <span class="string">"inkscope"</span>
-</code></pre>
-<p>radosgw_url为rgw的访问地址<br>radosgw_admin字段不更改就是admin<br>radosgw_key，radosgw_secret就是上面创建的那个密钥</p>
-<h3 id="配置结束">配置结束</h3><p>基本按照上面的做法就可以配置完毕了，并且可以正常使用，之前搞错了一个地方就是那个restapi，这个地方可能是最开始的时候，这个地方是需要调用的原始的那个5000端口的api，然后基本操作都是可以做的，一些新开发的功能需要用到新的接口，就按照新的配置即可，inkscope从我开始关注到现在已经改进了很多，添加了sanky chart来显示pg的分布，里面的api接口也更加的丰富。并且提供了友好的安装方式，应该是目前最成熟的一种管理平台了</p>
-<h3 id="展示">展示</h3><p>sanky chart显示pg<br><img src="http://static.zybuluo.com/zphj1987/xlcu9uj1syk40tgbug07e0dp/sankey.png" alt="sankey.png-500.1kB"></p>
-<h4 id="视频展示">视频展示</h4><div class="video-container"> <object><br><param name="allowFullScreen" value="true"><param name="flashVars" value="id=23750026 "><param name="movie" value="http://i7.imgs.letv.com/player/swfPlayer.swf?autoplay=0"><embed src="http://i7.imgs.letv.com/player/swfPlayer.swf?autoplay=0" flashvars="id=23750026" allowfullscreen="true" type="application/x-shockwave-flash"></object><br></div>
-
-
-<h3 id="打赏通道">打赏通道</h3><center><br><img src="http://static.zybuluo.com/zphj1987/fi2557g55ucsdpyblopyfudl/newpay.png" alt="打赏" title="打赏"><br></center>
-
-]]></content>
-    <summary type="html">
-    <![CDATA[<h3 id="准备centos7基础系统">准备centos7基础系统</h3><p>首先安装基础系统centos7 在安装选项那里选择base web server ，选择其他的也可以，选择mini安装会缺很多常用的软件包，后续需要一个个安装比较麻烦</p>
-<h3 id="关闭防火墙相关">关闭防火墙相关</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@inkscope ~]<span class="comment"># setenforce 0</span></span><br><span class="line">[root@inkscope ~]<span class="comment"># sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config</span></span><br><span class="line">[root@inkscope ~]<span class="comment"># systemctl stop firewalld</span></span><br><span class="line">[root@inkscope ~]<span class="comment"># systemctl disable firewalld</span></span><br></pre></td></tr></table></figure>
-<h3 id="更新源相关的">更新源相关的</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@inkscope ~]<span class="comment"># rm -rf /etc/yum.repos.d/*.repo</span></span><br><span class="line">[root@inkscope ~]<span class="comment"># wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo</span></span><br><span class="line">[root@inkscope ~]<span class="comment"># wget -O /etc/yum.repos.d/epel.repo http://mirrors.aliyun.com/repo/epel-7.repo</span></span><br></pre></td></tr></table></figure>]]>
-    
-    </summary>
-    
-      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
     
   </entry>
   
