@@ -811,12 +811,33 @@
     <link href="http://www.zphj1987.com/2016/05/16/%E6%94%AF%E6%8C%81jewel%E7%89%88%E6%9C%AC%E7%9A%84calamari/"/>
     <id>http://www.zphj1987.com/2016/05/16/支持jewel版本的calamari/</id>
     <published>2016-05-15T16:48:46.000Z</published>
-    <updated>2016-05-15T16:57:48.821Z</updated>
+    <updated>2016-07-12T06:26:32.981Z</updated>
     <content type="html"><![CDATA[<p>之前测试了下，发现calamari不支持jewel版本的，是因为接口了有了一些变化，在提出这个问题后，作者给出了回答，说肯定会支持的，并且做了一点小的改动，就可以支持了，这个作者merge了到了github的一些分支当中，但是还没有merge到最新的1.4的分支合master分支当中，这个可能是因为1.4还在做一些功能的开发</p>
 <p>我使用作者的修改好的分支打好了包，直接可以使用，测试了ubuntu14.04 和centos 7的版本都可以使用，下面是百度云的链接，欢迎使用和测试</p>
 <a id="more"></a>
-<h3 id="ubuntu版本下载地址：">ubuntu版本下载地址：</h3><p><a href="http://pan.baidu.com/s/1cmKVoi" target="_blank" rel="external">ubuntu-jewel-calamari</a><br>密码：jpra</p>
-<h3 id="centos7版本下载地址">centos7版本下载地址</h3><p><a href="http://pan.baidu.com/s/1eSa15B0" target="_blank" rel="external">centos-jewel-calamari</a><br>密码：5514</p>
+<h3 id="ubuntu版本下载地址：">ubuntu版本下载地址：</h3><p><a href="http://pan.baidu.com/s/1i44Am25" target="_blank" rel="external">ubuntu-jewel-calamari</a><br>密码：w2dt</p>
+<h3 id="centos7版本下载地址">centos7版本下载地址</h3><p><a href="http://pan.baidu.com/s/1nuMdbU5" target="_blank" rel="external">centos-jewel-calamari</a><br>密码：u9nl</p>
+<h3 id="六、变更记录">六、变更记录</h3><table>
+<thead>
+<tr>
+<th style="text-align:center">Why</th>
+<th style="text-align:center">Who</th>
+<th style="text-align:center">When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">创建</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2016-05-16</td>
+</tr>
+<tr>
+<td style="text-align:center">修改资源，解决无法获取iops和容量的bug</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2016-07-12</td>
+</tr>
+</tbody>
+</table>
 <blockquote>
 <p>如果您觉得本篇资源对您有用，欢迎通过下面的打赏通道进行打赏</p>
 </blockquote>
