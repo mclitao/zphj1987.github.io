@@ -4,7 +4,7 @@
   <subtitle><![CDATA[现在所学，终有所用]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2016-07-14T15:38:51.328Z</updated>
+  <updated>2016-07-14T15:42:47.782Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -19,12 +19,12 @@
     <link href="http://www.zphj1987.com/2016/07/14/%E9%80%9A%E8%BF%87ceph-deploy%E5%AE%89%E8%A3%85%E4%B8%8D%E5%90%8C%E7%89%88%E6%9C%ACceph/"/>
     <id>http://www.zphj1987.com/2016/07/14/通过ceph-deploy安装不同版本ceph/</id>
     <published>2016-07-14T15:28:33.000Z</published>
-    <updated>2016-07-14T15:38:51.328Z</updated>
-    <content type="html"><![CDATA[<p>之前有在论坛写了怎么用yum安装ceph，但是看到ceph社区的群里还是有人经常用ceph-deploy进行安装，然后会出现各种不可控的情况，虽然不建议用ceph-deploy安装，但是既然想用，那就研究下怎么用好</p>
+    <updated>2016-07-14T15:42:47.782Z</updated>
+    <content type="html"><![CDATA[<p>之前有在论坛写了怎么用 yum 安装 ceph，但是看到ceph社区的群里还是有人经常用 ceph-deploy 进行安装，然后会出现各种不可控的情况，虽然不建议用ceph-deploy安装，但是既然想用，那就研究下怎么用好</p>
 <p>先给一个连接： <a href="http://bbs.ceph.org.cn/article/49" target="_blank" rel="external">centos7通过yum安装ceph</a></p>
-<p>首先机器需要安装ceph-deploy这个工具，机器上应该安装好epel源和base源，这个可以参考上面的那个连接，也可以自己准备好</p>
+<p>首先机器需要安装 ceph-deploy 这个工具，机器上应该安装好 epel 源和 base 源，这个可以参考上面的那个连接，也可以自己准备好</p>
 <h3 id="一、安装ceph-deploy">一、安装ceph-deploy</h3><p>使用yum直接安装<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 yum.repos.d]<span class="comment"># yum install ceph-deploy</span></span><br><span class="line">Loaded plugins: fastestmirror, langpacks, priorities</span><br><span class="line">Loading mirror speeds from cached hostfile</span><br><span class="line">Resolving Dependencies</span><br><span class="line">--&gt; Running transaction check</span><br><span class="line">---&gt; Package ceph-deploy.noarch <span class="number">0</span>:<span class="number">1.5</span>.<span class="number">25</span>-<span class="number">1</span>.el7 will be installed</span><br><span class="line">···</span><br><span class="line">===================================================================================================</span><br><span class="line"> Package            Arch            Version             Repository                    Size</span><br><span class="line">===================================================================================================</span><br><span class="line">Installing:</span><br><span class="line"> ceph-deploy        noarch          <span class="number">1.5</span>.<span class="number">25</span>-<span class="number">1</span>.el7         epel                         <span class="number">156</span> k</span><br><span class="line">···</span><br><span class="line">Installed:</span><br><span class="line">  ceph-deploy.noarch <span class="number">0</span>:<span class="number">1.5</span>.<span class="number">25</span>-<span class="number">1</span>.el7</span><br><span class="line">Complete!</span><br></pre></td></tr></table></figure></p>
-<p>可以看到是从epel的repo里面下载的版本为1.5.25，如果从ceph源里面下载的这个版本可能会更高一点，这个没什么问题</p>
+<p>可以看到是从 epel 的 repo 里面下载的版本为1.5.25，如果从ceph源里面下载的这个版本可能会更高一点，这个没什么问题</p>
 <a id="more"></a>
 <p>现在什么都不修改，看下默认的安装会什么样的</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ceph-deploy install lab8106</span></span><br><span class="line">[ceph_deploy.conf][DEBUG ] found configuration file at: /root/.cephdeploy.conf</span><br><span class="line">[ceph_deploy.cli][INFO  ] Invoked (<span class="number">1.5</span>.<span class="number">25</span>): /usr/bin/ceph-deploy install lab8106</span><br><span class="line">[ceph_deploy.install][DEBUG ] Installing stable version hammer on cluster ceph hosts lab8106</span><br><span class="line">···</span><br><span class="line">[lab8106][INFO  ] Running <span class="built_in">command</span>: rpm --import https://ceph.com/git/?p=ceph.git;a=blob_plain;f=keys/release.asc</span><br><span class="line">[lab8106][INFO  ] Running <span class="built_in">command</span>: rpm -Uvh --replacepkgs http://ceph.com/rpm-hammer/el7/noarch/ceph-release-<span class="number">1</span>-<span class="number">0</span>.el7.noarch.rpm</span><br><span class="line">[lab8106][INFO  ] Running <span class="built_in">command</span>: yum -y install ceph ceph-radosgw</span><br><span class="line">[lab8106][WARNIN] http://ceph.com/rpm-hammer/rhel7/x86_64/repodata/repomd.xml: [Errno <span class="number">14</span>] HTTP Error <span class="number">404</span> - Not Found</span><br></pre></td></tr></table></figure>
@@ -36,9 +36,9 @@
 <blockquote>
 <p>不同的 ceph-deploy 去 install 的时候会安装不同的版本，这个因为代码里面会写上当时的版本，这样默认安装的就是当时的版本了</p>
 </blockquote>
-<p>到了这里在准备开始本篇的主题了，主要的目的有两个</p>
+<p>到了这里要开始本篇的主题了，主要的目的有两个:</p>
 <ul>
-<li>自己选择想安装的版本</li>
+<li>自己选择想安装的 ceph 版本</li>
 <li>自己选择通过什么地址安装</li>
 </ul>
 <p>第一个是解决了安装自己的版本，第二个是避免ceph.com无法访问的时候无法安装，通过国内的源进行加速</p>
@@ -69,11 +69,11 @@
 <p><center><br><img src="http://7xi6lo.com1.z0.glb.clouddn.com/qqqun2.png" alt=""><br></center><br>欢迎咨询入群事宜（收费入群）</p>
 ]]></content>
     <summary type="html">
-    <![CDATA[<p>之前有在论坛写了怎么用yum安装ceph，但是看到ceph社区的群里还是有人经常用ceph-deploy进行安装，然后会出现各种不可控的情况，虽然不建议用ceph-deploy安装，但是既然想用，那就研究下怎么用好</p>
+    <![CDATA[<p>之前有在论坛写了怎么用 yum 安装 ceph，但是看到ceph社区的群里还是有人经常用 ceph-deploy 进行安装，然后会出现各种不可控的情况，虽然不建议用ceph-deploy安装，但是既然想用，那就研究下怎么用好</p>
 <p>先给一个连接： <a href="http://bbs.ceph.org.cn/article/49">centos7通过yum安装ceph</a></p>
-<p>首先机器需要安装ceph-deploy这个工具，机器上应该安装好epel源和base源，这个可以参考上面的那个连接，也可以自己准备好</p>
+<p>首先机器需要安装 ceph-deploy 这个工具，机器上应该安装好 epel 源和 base 源，这个可以参考上面的那个连接，也可以自己准备好</p>
 <h3 id="一、安装ceph-deploy">一、安装ceph-deploy</h3><p>使用yum直接安装<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 yum.repos.d]<span class="comment"># yum install ceph-deploy</span></span><br><span class="line">Loaded plugins: fastestmirror, langpacks, priorities</span><br><span class="line">Loading mirror speeds from cached hostfile</span><br><span class="line">Resolving Dependencies</span><br><span class="line">--&gt; Running transaction check</span><br><span class="line">---&gt; Package ceph-deploy.noarch <span class="number">0</span>:<span class="number">1.5</span>.<span class="number">25</span>-<span class="number">1</span>.el7 will be installed</span><br><span class="line">···</span><br><span class="line">===================================================================================================</span><br><span class="line"> Package            Arch            Version             Repository                    Size</span><br><span class="line">===================================================================================================</span><br><span class="line">Installing:</span><br><span class="line"> ceph-deploy        noarch          <span class="number">1.5</span>.<span class="number">25</span>-<span class="number">1</span>.el7         epel                         <span class="number">156</span> k</span><br><span class="line">···</span><br><span class="line">Installed:</span><br><span class="line">  ceph-deploy.noarch <span class="number">0</span>:<span class="number">1.5</span>.<span class="number">25</span>-<span class="number">1</span>.el7</span><br><span class="line">Complete!</span><br></pre></td></tr></table></figure></p>
-<p>可以看到是从epel的repo里面下载的版本为1.5.25，如果从ceph源里面下载的这个版本可能会更高一点，这个没什么问题</p>]]>
+<p>可以看到是从 epel 的 repo 里面下载的版本为1.5.25，如果从ceph源里面下载的这个版本可能会更高一点，这个没什么问题</p>]]>
     
     </summary>
     
