@@ -4,7 +4,7 @@
   <subtitle><![CDATA[现在所学，终有所用]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2016-07-14T15:42:47.782Z</updated>
+  <updated>2016-07-15T10:28:06.373Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="http://www.zphj1987.com/2016/07/14/%E9%80%9A%E8%BF%87ceph-deploy%E5%AE%89%E8%A3%85%E4%B8%8D%E5%90%8C%E7%89%88%E6%9C%ACceph/"/>
     <id>http://www.zphj1987.com/2016/07/14/通过ceph-deploy安装不同版本ceph/</id>
     <published>2016-07-14T15:28:33.000Z</published>
-    <updated>2016-07-14T15:42:47.782Z</updated>
+    <updated>2016-07-15T10:28:06.373Z</updated>
     <content type="html"><![CDATA[<p>之前有在论坛写了怎么用 yum 安装 ceph，但是看到ceph社区的群里还是有人经常用 ceph-deploy 进行安装，然后会出现各种不可控的情况，虽然不建议用ceph-deploy安装，但是既然想用，那就研究下怎么用好</p>
 <p>先给一个连接： <a href="http://bbs.ceph.org.cn/article/49" target="_blank" rel="external">centos7通过yum安装ceph</a></p>
 <p>首先机器需要安装 ceph-deploy 这个工具，机器上应该安装好 epel 源和 base 源，这个可以参考上面的那个连接，也可以自己准备好</p>
