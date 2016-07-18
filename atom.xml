@@ -4,7 +4,7 @@
   <subtitle><![CDATA[现在所学，终有所用]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2016-07-15T10:28:06.373Z</updated>
+  <updated>2016-07-18T17:01:09.692Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -13,6 +13,49 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[解决自动安装Freebsd系统盘符无法确定问题]]></title>
+    <link href="http://www.zphj1987.com/2016/07/19/%E8%A7%A3%E5%86%B3%E8%87%AA%E5%8A%A8%E5%AE%89%E8%A3%85Freebsd%E7%B3%BB%E7%BB%9F%E7%9B%98%E7%AC%A6%E6%97%A0%E6%B3%95%E7%A1%AE%E5%AE%9A%E9%97%AE%E9%A2%98/"/>
+    <id>http://www.zphj1987.com/2016/07/19/解决自动安装Freebsd系统盘符无法确定问题/</id>
+    <published>2016-07-18T16:35:37.000Z</published>
+    <updated>2016-07-18T17:01:09.692Z</updated>
+    <content type="html"><![CDATA[<p>最近因为需要用到Freebsd，所以研究了打包的一些方法，这个没什么太大问题，通过网上的一些资料可以解决，但是由于确实不太熟悉这套系统，还是碰上了一些比较麻烦的地方，目前也没看到有人写如何处理，那就自己总结一下，以免以后再用忘记如何处理</p>
+<h3 id="一、问题来源">一、问题来源</h3><p>在linux下的iso自动安装的时候，在无法确定盘符的情况下，可以不写盘符，从而在遇到任何奇怪的磁盘的时候也是能安装的，比如 sda,xvda，vda,这些都可以通过不精确盘符的方式解决</p>
+<p>而在freebsd当中处理就不一样了<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cat ./etc/installerconfig</span><br><span class="line">PARTITIONS=<span class="string">"da0 &#123; 512K freebsd-boot, auto freebsd-ufs / &#125;"</span></span><br><span class="line">DISTRIBUTIONS=<span class="string">"custom_kernel.txz base.txz lib32.txz custom_files.txz"</span></span><br><span class="line"><span class="shebang">#!/bin/sh</span></span><br><span class="line">···</span><br></pre></td></tr></table></figure></p>
+<p>这个地方写配置文件的第一句就要告诉安装环境需要安装到哪里，这个地方是写死的一个数据，而碰上ada为系统盘就没法解决了，得不断的适配这个盘符</p>
+<h3 id="二、解决问题">二、解决问题</h3><p>最开始的时候写 etc/installerconfig这个配置文件我也不知道为什么要写这里就可以，根据网上的资料是写这个就可以了，在查阅更多的资料后，可以发现是在光盘的etc/rc.local里面会去调用这个脚本，然后去安装</p>
+<p>最开始的思路是直接修改这个脚本，后来发现在安装过程中，这个文件实际是只读的，无法去修改的，所以这个地方需要做一个折中的修改</p>
+<p>先准备好etc/installerconfig，写死几个值<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">PARTITIONS=<span class="string">"da0 &#123; 512K freebsd-boot, auto freebsd-ufs / &#125;"</span></span><br><span class="line">···</span><br><span class="line"><span class="comment">#changge fstab to gpt id</span></span><br><span class="line">systemuuid=`gpart list | grep -A <span class="number">11</span> <span class="string">'da0p2'</span> | grep <span class="string">'rawuuid'</span> | awk <span class="string">'&#123;print $2&#125;'</span>`</span><br><span class="line">sed -i <span class="operator">-e</span> <span class="string">"s/da0p2/gptid\/<span class="variable">$systemuuid</span>/g"</span> /etc/fstab</span><br></pre></td></tr></table></figure></p>
+<p>下面的那个部分是解决盘符变动，在安装过程中就处理好盘符的uuid挂载，这个在linux下面，是操作系统默认就处理好了，这个地方写定一个da0,等下后面处理的时候可以去匹配这个da0</p>
+<p>处理默认的./etc/rc.local<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">export</span> TERM</span><br><span class="line"></span><br><span class="line">cp /etc/installerconfig /tmp/installerconfig</span><br><span class="line">sh -c <span class="string">'. /usr/share/bsdconfig/device.subr;f_device_menu "" "" "" DISK'</span></span><br><span class="line"><span class="built_in">echo</span> -n  <span class="string">"Which disk your what install :"</span></span><br><span class="line"><span class="built_in">read</span> mydisk</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"<span class="variable">$mydisk</span>"</span></span><br><span class="line">sed -i <span class="operator">-e</span> <span class="string">"s/da0/<span class="variable">$mydisk</span>/g"</span> /tmp/installerconfig</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ <span class="operator">-f</span> /tmp/installerconfig ]; <span class="keyword">then</span></span><br><span class="line">        <span class="keyword">if</span> bsdinstall script /tmp/installerconfig; <span class="keyword">then</span></span><br><span class="line">                dialog --backtitle <span class="string">"FreeBSD Installer"</span> --title <span class="string">"Complete"</span> --no-cancel --ok-label <span class="string">"Reboot"</span> --pause <span class="string">"Inst</span><br><span class="line">allation of FreeBSD complete! Rebooting in 10 seconds"</span> <span class="number">10</span> <span class="number">30</span> <span class="number">10</span></span><br><span class="line">                reboot</span><br></pre></td></tr></table></figure></p>
+<p>处理思路就是先拷贝到一个临时的环境下面，然后去修改它，利用系统接口去获取可以安装的磁盘，这个地方只是起一个告诉有哪些盘可以安装，然后输入想安装的磁盘的盘符名称，这个地方是什么名称就输入什么名称就可以安装了，然后系统就会根据改好的脚本去安装操作系统了</p>
+<h3 id="三、总结">三、总结</h3><p>这是一个遗留问题，之前一直没解决，造成了越来越多的问题，在花了一个晚上的时间后，终于能够解决了，对系统越熟悉越能够知道怎么去处理问题，未知的东西太多，只能一点点花时间解决</p>
+<h3 id="四、变更记录">四、变更记录</h3><table>
+<thead>
+<tr>
+<th style="text-align:center">Why</th>
+<th style="text-align:center">Who</th>
+<th style="text-align:center">When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">创建</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2016-07-19</td>
+</tr>
+</tbody>
+</table>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>最近因为需要用到Freebsd，所以研究了打包的一些方法，这个没什么太大问题，通过网上的一些资料可以解决，但是由于确实不太熟悉这套系统，还是碰上了一些比较麻烦的地方，目前也没看到有人写如何处理，那就自己总结一下，以免以后再用忘记如何处理</p>
+<h3 id="一、问题来源]]>
+    </summary>
+    
+      <category term="linux" scheme="http://www.zphj1987.com/tags/linux/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[通过ceph-deploy安装不同版本ceph]]></title>
@@ -1056,48 +1099,6 @@
 <li>有监控系统<br>使用数据监控系统对需要监控的数据进行监控，这个前提是有一个监控系统，并且方便的去增加数据，可以根据需求去设定数据，这个监控系统有很多，能可视化的也很多，这篇文章就不做介绍</li>
 <li>使用监控脚本采集数据，采用excel进行可视化<br>使用脚本收集大量的数据，然后将数据导入到excel当中，然后显示出来，这个是我们公司测试人员采用的方法，也是比较容易实现的一个方式</li>
 </ul>]]>
-    
-    </summary>
-    
-      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[mon的稳定性问题]]></title>
-    <link href="http://www.zphj1987.com/2016/04/25/mon%E7%9A%84%E7%A8%B3%E5%AE%9A%E6%80%A7%E9%97%AE%E9%A2%98/"/>
-    <id>http://www.zphj1987.com/2016/04/25/mon的稳定性问题/</id>
-    <published>2016-04-25T15:36:28.000Z</published>
-    <updated>2016-04-25T15:51:59.949Z</updated>
-    <content type="html"><![CDATA[<h3 id="MON的稳定性问题：">MON的稳定性问题：</h3><ul>
-<li>mon的选举风暴影响客户端IO</li>
-<li>LevelDB的暴涨</li>
-<li>频繁的客户端请求的DDOS</li>
-</ul>
-<h4 id="mon选举风暴：">mon选举风暴：</h4><p>monmap会因为mon之间或者mon与客户端之间网络的影响或者消息传递的异常发生变化,从而触发选举<br>会造成客户端的请求变慢或者锁住</p>
-<h4 id="LevelDB的暴涨：">LevelDB的暴涨：</h4><p>LevelDB的大小会涨到几十GB然后影响了osd的请求<br>会造成客户端的请求变慢或者锁住</p>
-<h4 id="频繁的客户端请求的DDOS：">频繁的客户端请求的DDOS：</h4><p>mon的响应因为levelDB变慢或者选举风暴，都会造成客户端发出大量的消息流<br>让客户端操作失效，包括卷创建，rbd的连接</p>
-<a id="more"></a>
-<h3 id="解决办法：">解决办法：</h3><h4 id="LevelDB的暴涨的问题解决办法">LevelDB的暴涨的问题解决办法</h4><p>升级ceph的版本，这个在0.94.6版本解决了这个问题<br><img src="http://static.zybuluo.com/zphj1987/yjdvldb3xyxl84bwlc3cjaxw/leveldb.png" alt="leveldb.png-21.9kB"></p>
-<h4 id="选举风暴问题解决办法">选举风暴问题解决办法</h4><blockquote>
-<p>[mon]<br>mon_lease = 20 (default = 5)<br>mon_lease_renew_interval = 12 (default 3)<br>mon_lease_ack_timeout = 40 (default 10)<br>mon_accept_timeout = 40 (default 10)<br>[client]<br>mon_client_hunt_interval = 40 (defaiult 3)</p>
-</blockquote>
-<p>将mon的数据放置在ssd上，因为LevelDB存储了集群的 metadata,包括 osdmap, pgmap, monmap,clientID, authID etc 等等，很大的leveldb会有更长的查询时间，更长的IO等待，然后就是更慢的客户端请求</p>
-<p>这个地方是增长了mon之间判断需要切换的时间，降低客户端的请求的频率，使用ssd加快查询的速度</p>
-<hr>
-<p>这个问题是一个不太容易发觉的问题，有时候就是ceph -s反应的很慢，但是很多时候可能体现的就是客户端出现请求缓慢，然后还找不到原因，所以说硬件的隔离是非常有必要的，不要为了省成本然后影响了整个环境的稳定性和性能，对于很大的环境mon需要用三台独立的机器，这个机器需要一定的内存和cpu，磁盘使用ssd，1U服务器就可以了，上面可以运行一些其他类似管理平台，或者一些监控服务什么的，混合在osd的机器上的时候，一旦OSD出现大量的数据迁移的时候，或者大量的请求的时候，会阻塞了消息，这个就是做方案的时候需要考虑的问题，当然在性能要求不那么高的时候将mon混合在osd上使用也是可以的，这个时候尽量有更多的内存和更好的磁盘性能也能减少一些负担</p>
-<h3 id="打赏通道">打赏通道</h3><center><br><img src="http://static.zybuluo.com/zphj1987/fi2557g55ucsdpyblopyfudl/newpay.png" alt="打赏" title="打赏"><br></center>
-
-]]></content>
-    <summary type="html">
-    <![CDATA[<h3 id="MON的稳定性问题：">MON的稳定性问题：</h3><ul>
-<li>mon的选举风暴影响客户端IO</li>
-<li>LevelDB的暴涨</li>
-<li>频繁的客户端请求的DDOS</li>
-</ul>
-<h4 id="mon选举风暴：">mon选举风暴：</h4><p>monmap会因为mon之间或者mon与客户端之间网络的影响或者消息传递的异常发生变化,从而触发选举<br>会造成客户端的请求变慢或者锁住</p>
-<h4 id="LevelDB的暴涨：">LevelDB的暴涨：</h4><p>LevelDB的大小会涨到几十GB然后影响了osd的请求<br>会造成客户端的请求变慢或者锁住</p>
-<h4 id="频繁的客户端请求的DDOS：">频繁的客户端请求的DDOS：</h4><p>mon的响应因为levelDB变慢或者选举风暴，都会造成客户端发出大量的消息流<br>让客户端操作失效，包括卷创建，rbd的连接</p>]]>
     
     </summary>
     
