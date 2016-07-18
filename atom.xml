@@ -4,7 +4,7 @@
   <subtitle><![CDATA[现在所学，终有所用]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2016-07-18T17:01:09.692Z</updated>
+  <updated>2016-07-18T17:03:50.442Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -19,11 +19,12 @@
     <link href="http://www.zphj1987.com/2016/07/19/%E8%A7%A3%E5%86%B3%E8%87%AA%E5%8A%A8%E5%AE%89%E8%A3%85Freebsd%E7%B3%BB%E7%BB%9F%E7%9B%98%E7%AC%A6%E6%97%A0%E6%B3%95%E7%A1%AE%E5%AE%9A%E9%97%AE%E9%A2%98/"/>
     <id>http://www.zphj1987.com/2016/07/19/解决自动安装Freebsd系统盘符无法确定问题/</id>
     <published>2016-07-18T16:35:37.000Z</published>
-    <updated>2016-07-18T17:01:09.692Z</updated>
+    <updated>2016-07-18T17:03:50.442Z</updated>
     <content type="html"><![CDATA[<p>最近因为需要用到Freebsd，所以研究了打包的一些方法，这个没什么太大问题，通过网上的一些资料可以解决，但是由于确实不太熟悉这套系统，还是碰上了一些比较麻烦的地方，目前也没看到有人写如何处理，那就自己总结一下，以免以后再用忘记如何处理</p>
 <h3 id="一、问题来源">一、问题来源</h3><p>在linux下的iso自动安装的时候，在无法确定盘符的情况下，可以不写盘符，从而在遇到任何奇怪的磁盘的时候也是能安装的，比如 sda,xvda，vda,这些都可以通过不精确盘符的方式解决</p>
 <p>而在freebsd当中处理就不一样了<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cat ./etc/installerconfig</span><br><span class="line">PARTITIONS=<span class="string">"da0 &#123; 512K freebsd-boot, auto freebsd-ufs / &#125;"</span></span><br><span class="line">DISTRIBUTIONS=<span class="string">"custom_kernel.txz base.txz lib32.txz custom_files.txz"</span></span><br><span class="line"><span class="shebang">#!/bin/sh</span></span><br><span class="line">···</span><br></pre></td></tr></table></figure></p>
 <p>这个地方写配置文件的第一句就要告诉安装环境需要安装到哪里，这个地方是写死的一个数据，而碰上ada为系统盘就没法解决了，得不断的适配这个盘符</p>
+<a id="more"></a>
 <h3 id="二、解决问题">二、解决问题</h3><p>最开始的时候写 etc/installerconfig这个配置文件我也不知道为什么要写这里就可以，根据网上的资料是写这个就可以了，在查阅更多的资料后，可以发现是在光盘的etc/rc.local里面会去调用这个脚本，然后去安装</p>
 <p>最开始的思路是直接修改这个脚本，后来发现在安装过程中，这个文件实际是只读的，无法去修改的，所以这个地方需要做一个折中的修改</p>
 <p>先准备好etc/installerconfig，写死几个值<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">PARTITIONS=<span class="string">"da0 &#123; 512K freebsd-boot, auto freebsd-ufs / &#125;"</span></span><br><span class="line">···</span><br><span class="line"><span class="comment">#changge fstab to gpt id</span></span><br><span class="line">systemuuid=`gpart list | grep -A <span class="number">11</span> <span class="string">'da0p2'</span> | grep <span class="string">'rawuuid'</span> | awk <span class="string">'&#123;print $2&#125;'</span>`</span><br><span class="line">sed -i <span class="operator">-e</span> <span class="string">"s/da0p2/gptid\/<span class="variable">$systemuuid</span>/g"</span> /etc/fstab</span><br></pre></td></tr></table></figure></p>
@@ -50,7 +51,10 @@
 ]]></content>
     <summary type="html">
     <![CDATA[<p>最近因为需要用到Freebsd，所以研究了打包的一些方法，这个没什么太大问题，通过网上的一些资料可以解决，但是由于确实不太熟悉这套系统，还是碰上了一些比较麻烦的地方，目前也没看到有人写如何处理，那就自己总结一下，以免以后再用忘记如何处理</p>
-<h3 id="一、问题来源]]>
+<h3 id="一、问题来源">一、问题来源</h3><p>在linux下的iso自动安装的时候，在无法确定盘符的情况下，可以不写盘符，从而在遇到任何奇怪的磁盘的时候也是能安装的，比如 sda,xvda，vda,这些都可以通过不精确盘符的方式解决</p>
+<p>而在freebsd当中处理就不一样了<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cat ./etc/installerconfig</span><br><span class="line">PARTITIONS=<span class="string">"da0 &#123; 512K freebsd-boot, auto freebsd-ufs / &#125;"</span></span><br><span class="line">DISTRIBUTIONS=<span class="string">"custom_kernel.txz base.txz lib32.txz custom_files.txz"</span></span><br><span class="line"><span class="shebang">#!/bin/sh</span></span><br><span class="line">···</span><br></pre></td></tr></table></figure></p>
+<p>这个地方写配置文件的第一句就要告诉安装环境需要安装到哪里，这个地方是写死的一个数据，而碰上ada为系统盘就没法解决了，得不断的适配这个盘符</p>]]>
+    
     </summary>
     
       <category term="linux" scheme="http://www.zphj1987.com/tags/linux/"/>
