@@ -293,7 +293,7 @@ var _hmt = _hmt || [];
 <hr>
 <h2 id="第二种方法">第二种方法</h2><p>这个属于备份和转移分区表的方法<br>首先进行上面方法的停进程，下刷journal</p>
 <p>备份需要替换journal的分区表<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># sgdisk --backup=/tmp/backup_journal_sdd /dev/sdd</span></span><br></pre></td></tr></table></figure></p>
-<p>还原分区表<br><figure class="highlight groovy"><table><tr><td class="code"><pre><span class="line">[root<span class="annotation">@lab</span>8106 ~]#sgdisk --load-backup=<span class="regexp">/tmp/</span>backup_journal_sde <span class="regexp">/dev/</span>sde</span><br><span class="line">[root<span class="annotation">@lab</span>8106 ~]#parted -s <span class="regexp">/dev/</span>sde print</span><br></pre></td></tr></table></figure></p>
+<p>还原分区表<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># sgdisk --load-backup=/tmp/backup_journal_sde /dev/sde</span></span><br><span class="line">[root@lab8106 ~]<span class="comment"># parted -s /dev/sde print</span></span><br></pre></td></tr></table></figure></p>
 <p>新的journal磁盘现在跟老的journal的磁盘的分区表一样的了。这意味着新的分区的UUID和老的相同的。如果选择的是这种备份还原分布的方法，那么journal的那个软连接是不需要进行修改的，因为两个磁盘的uuid是一样的，所以需要注意将老的磁盘拔掉或者清理掉分区，以免冲突</p>
 <p>在做完这个以后同样跟上面的方法一样需要重建journal</p>
 <p>创建journal<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># chown ceph:ceph /var/lib/ceph/osd/ceph-1/journal</span></span><br><span class="line">[root@lab8106 ~]<span class="comment"># ceph-osd -i 1 --mkjournal</span></span><br></pre></td></tr></table></figure></p>
