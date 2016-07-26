@@ -4,7 +4,7 @@
   <subtitle><![CDATA[现在所学，终有所用]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2016-07-26T16:59:41.746Z</updated>
+  <updated>2016-07-26T17:02:35.514Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="http://www.zphj1987.com/2016/07/26/%E5%A6%82%E4%BD%95%E6%9B%BF%E6%8D%A2Ceph%E7%9A%84Journal/"/>
     <id>http://www.zphj1987.com/2016/07/26/如何替换Ceph的Journal/</id>
     <published>2016-07-26T14:32:18.000Z</published>
-    <updated>2016-07-26T16:59:41.746Z</updated>
+    <updated>2016-07-26T17:02:35.514Z</updated>
     <content type="html"><![CDATA[<p>很多人会提出这样的问题：</p>
 <ul>
 <li>能不能够将 Ceph journal 分区从一个磁盘替换到另一个磁盘？</li>
@@ -63,7 +63,7 @@
 <p>启动进程<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># systemctl restart ceph-osd@1</span></span><br></pre></td></tr></table></figure></p>
 <p>去除<code>noout</code>的标记<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ceph osd unset noout</span></span><br></pre></td></tr></table></figure></p>
 <h2 id="第一种方法是实践记录">第一种方法是实践记录</h2><p>这样你可以看到完整的操作过程，而不是枯燥的文档了，虽然命令行看上去也是那么的枯燥</p>
-<iframe src="http://7xweck.com1.z0.glb.clouddn.com/movejournal/%E5%A6%82%E4%BD%95%E6%9B%BF%E6%8D%A2journal.html" height="500px" width="90%" align="center"></iframe>
+<iframe src="http://7xweck.com1.z0.glb.clouddn.com/movejournal/%E5%A6%82%E4%BD%95%E6%9B%BF%E6%8D%A2journal.html" height="530px" width="90%" align="center"></iframe>
 
 <p>支持暂停复制，是不是很屌？</p>
 <h2 id="变更记录">变更记录</h2><table>
