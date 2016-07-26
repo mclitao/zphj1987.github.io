@@ -187,11 +187,11 @@ var _hmt = _hmt || [];
 </nav>
       <div class="body-wrap">
   
-    <article id="post-关于RBD内核客户端支持新的属性的问题" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-如何替换Ceph的Journal" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2016/07/25/关于RBD内核客户端支持新的属性的问题/" class="article-date">
-  	<time datetime="2016-07-25T01:36:32.000Z" itemprop="datePublished">2016-07-25</time>
+      <a href="/2016/07/26/如何替换Ceph的Journal/" class="article-date">
+  	<time datetime="2016-07-26T14:32:18.000Z" itemprop="datePublished">2016-07-26</time>
 </a>
     </div>
   
@@ -204,7 +204,7 @@ var _hmt = _hmt || [];
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2016/07/25/关于RBD内核客户端支持新的属性的问题/">关于RBD内核客户端支持新的属性的问题</a>
+      <a class="article-title" href="/2016/07/26/如何替换Ceph的Journal/">如何替换Ceph的Journal</a>
     </h1>
   
 
@@ -213,8 +213,19 @@ var _hmt = _hmt || [];
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>之前已经有一个讲如何在 jewel 版本下挂载内核的rbd，<a href="http://www.zphj1987.com/2016/06/07/rbd%E6%97%A0%E6%B3%95map(rbd-feature-disable" target="_blank" rel="external">rbd无法map(rbd feature disable)</a>/)</p>
-<iframe src="http://7xweck.com1.z0.glb.clouddn.com/a.html" height="500px" width="90%" align="center"></iframe>
+        <p>很多人会提出这样的问题：</p>
+<ul>
+<li>能不能够将 Ceph journal 分区从一个磁盘替换到另一个磁盘？</li>
+<li>怎样替换 Ceph 的 journal 分区？</li>
+</ul>
+<p>有两种方法来修改Ceph的journal：</p>
+<ul>
+<li>创建一个journal分区，在上面创建一个新的journal</li>
+<li>转移已经存在的journal分区到新的分区上，这个适合整盘替换</li>
+</ul>
+<blockquote>
+<p>Ceph 的journal是基于事务的日志，所以正确的下刷journal数据，然后重新创建journal并不会引起数据丢失，因为在下刷journal的数据的时候，osd是停止的，一旦数据下刷后，这个journal是不会再有新的脏数据进来的</p>
+</blockquote>
       
     </div>
     
@@ -227,6 +238,10 @@ var _hmt = _hmt || [];
 
       
 
+      
+        <p class="article-more-link">
+          <a  href="/2016/07/26/如何替换Ceph的Journal/#more">more >></a>
+        </p>
       
       <div class="clearfix"></div>
     </div>
