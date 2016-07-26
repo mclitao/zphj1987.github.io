@@ -4,7 +4,7 @@
   <subtitle><![CDATA[现在所学，终有所用]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2016-07-26T17:30:06.594Z</updated>
+  <updated>2016-07-26T17:31:44.315Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -19,8 +19,9 @@
     <link href="http://www.zphj1987.com/2016/07/26/%E5%A6%82%E4%BD%95%E6%9B%BF%E6%8D%A2Ceph%E7%9A%84Journal/"/>
     <id>http://www.zphj1987.com/2016/07/26/如何替换Ceph的Journal/</id>
     <published>2016-07-26T14:32:18.000Z</published>
-    <updated>2016-07-26T17:30:06.594Z</updated>
-    <content type="html"><![CDATA[<p><img src="http://7xweck.com1.z0.glb.clouddn.com/movejournal/fixjournal.png" alt=""></p>
+    <updated>2016-07-26T17:31:44.315Z</updated>
+    <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/movejournal/fixjournal.png" alt=""><br></center>
+
 <p>很多人会提出这样的问题：</p>
 <ul>
 <li>能不能够将 Ceph journal 分区从一个磁盘替换到另一个磁盘？</li>
@@ -92,7 +93,8 @@
 
 ]]></content>
     <summary type="html">
-    <![CDATA[<p><img src="http://7xweck.com1.z0.glb.clouddn.com/movejournal/fixjournal.png" alt=""></p>
+    <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/movejournal/fixjournal.png" alt=""><br></center>
+
 <p>很多人会提出这样的问题：</p>
 <ul>
 <li>能不能够将 Ceph journal 分区从一个磁盘替换到另一个磁盘？</li>
