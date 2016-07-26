@@ -299,7 +299,7 @@ var _hmt = _hmt || [];
 <p>创建journal<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># chown ceph:ceph /var/lib/ceph/osd/ceph-1/journal</span></span><br><span class="line">[root@lab8106 ~]<span class="comment"># ceph-osd -i 1 --mkjournal</span></span><br></pre></td></tr></table></figure></p>
 <p>启动进程<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># systemctl restart ceph-osd@1</span></span><br></pre></td></tr></table></figure></p>
 <p>去除<code>noout</code>的标记<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ceph osd unset noout</span></span><br></pre></td></tr></table></figure></p>
-<h2 id="第一种方法是实践记录">第一种方法是实践记录</h2><p>这样你可以看到完整的操作过程，而不是枯燥的文档了，虽然命令行看上去也是那么的枯燥</p>
+<h2 id="第一种方法的实践记录">第一种方法的实践记录</h2><p>这样你可以看到完整的操作过程，而不是枯燥的文档了，虽然命令行看上去也是那么的枯燥</p>
 <iframe src="http://7xweck.com1.z0.glb.clouddn.com/movejournal/%E5%A6%82%E4%BD%95%E6%9B%BF%E6%8D%A2journal.html" height="530px" width="90%" align="center"></iframe>
 
 <p>支持暂停复制，是不是很屌？</p>
