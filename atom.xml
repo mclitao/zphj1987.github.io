@@ -4,7 +4,7 @@
   <subtitle><![CDATA[现在所学，终有所用]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2016-07-24T15:10:25.730Z</updated>
+  <updated>2016-07-25T01:41:42.890Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -13,6 +13,22 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[关于RBD内核客户端支持新的属性的问题]]></title>
+    <link href="http://www.zphj1987.com/2016/07/25/%E5%85%B3%E4%BA%8ERBD%E5%86%85%E6%A0%B8%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%94%AF%E6%8C%81%E6%96%B0%E7%9A%84%E5%B1%9E%E6%80%A7%E7%9A%84%E9%97%AE%E9%A2%98/"/>
+    <id>http://www.zphj1987.com/2016/07/25/关于RBD内核客户端支持新的属性的问题/</id>
+    <published>2016-07-25T01:36:32.000Z</published>
+    <updated>2016-07-25T01:41:42.890Z</updated>
+    <content type="html"><![CDATA[<p>之前已经有一个讲如何在 jewel 版本下挂载内核的rbd，<a href="http://www.zphj1987.com/2016/06/07/rbd%E6%97%A0%E6%B3%95map(rbd-feature-disable" target="_blank" rel="external">rbd无法map(rbd feature disable)</a>/)</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>之前已经有一个讲如何在 jewel 版本下挂载内核的rbd，<a href="http://www.zphj1987.com/2016/06/07/rbd%E6%97%A0%E6%B3%95map(rbd-feature-disable" target="_blank" r]]>
+    </summary>
+    
+      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[modprobe: FATAL: Module ceph not found解决办法]]></title>
@@ -1118,29 +1134,6 @@ sig_hashalgo:   sha256
     </summary>
     
       <category term="linux" scheme="http://www.zphj1987.com/tags/linux/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[calamari不支持ceph的jewel版本]]></title>
-    <link href="http://www.zphj1987.com/2016/05/07/calamari%E4%B8%8D%E6%94%AF%E6%8C%81ceph%E7%9A%84jewel%E7%89%88%E6%9C%AC/"/>
-    <id>http://www.zphj1987.com/2016/05/07/calamari不支持ceph的jewel版本/</id>
-    <published>2016-05-07T09:51:07.000Z</published>
-    <updated>2016-05-07T10:03:52.278Z</updated>
-    <content type="html"><![CDATA[<p>之前已经在0.94.x系列下进行了calamari的相关的打包和测试，基本没有太多问题，最近看到ceph发布了jewel的版本，想尝试下是否兼容，测试的结果是不兼容的</p>
-<p>从调试的信息来看，ceph在jewel版本下对输出做了很大的改动，其中第一条，配置完成后，面板都无法显示，这个里面是因为ceph把原来的mdsmap这个字段在输出的时候改成了fsmap，造成里面的接口识别不到，这个改动以后，又发现restapi接口里面的osd地方又报错了</p>
-<a id="more"></a>
-<p>这个是管理接口的一些错误，系统信息的收集的地方diamond的接口也有改变</p>
-<p>所以在目前环境下，要么自己对calamari做大量的改动去兼容新版本，要么就是等待发布以后的新版本，从版本的发布频率来看，红帽并不重视calamari这一块了，似乎是为后面出的统一平台做准备，之前calamari是作为红帽官方版本发布出去的</p>
-<p>calmari在hammer版本下的使用还是不错了</p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>之前已经在0.94.x系列下进行了calamari的相关的打包和测试，基本没有太多问题，最近看到ceph发布了jewel的版本，想尝试下是否兼容，测试的结果是不兼容的</p>
-<p>从调试的信息来看，ceph在jewel版本下对输出做了很大的改动，其中第一条，配置完成后，面板都无法显示，这个里面是因为ceph把原来的mdsmap这个字段在输出的时候改成了fsmap，造成里面的接口识别不到，这个改动以后，又发现restapi接口里面的osd地方又报错了</p>]]>
-    
-    </summary>
-    
-      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
     
   </entry>
   
