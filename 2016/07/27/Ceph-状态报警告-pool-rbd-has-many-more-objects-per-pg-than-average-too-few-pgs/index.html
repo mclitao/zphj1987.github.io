@@ -227,7 +227,8 @@ var _hmt = _hmt || [];
       
         <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/ceph%E7%8A%B6%E6%80%81%E8%AD%A6%E5%91%8A/d-a.gif" alt=""><br></center>
 
-<h3 id="定位问题">定位问题</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ceph -s</span></span><br><span class="line">    cluster fa7ec1a1-<span class="number">662</span>a-<span class="number">4</span>ba3-b478-<span class="number">7</span>cb570482b62</span><br><span class="line">     health HEALTH_WARN</span><br><span class="line">            pool rbd has many more objects per pg than average (too few pgs?)</span><br><span class="line">     monmap e1: <span class="number">1</span> mons at &#123;lab8106=<span class="number">192.168</span>.<span class="number">8.106</span>:<span class="number">6789</span>/<span class="number">0</span>&#125;</span><br><span class="line">            election epoch <span class="number">30</span>, quorum <span class="number">0</span> lab8106</span><br><span class="line">     osdmap e157: <span class="number">2</span> osds: <span class="number">2</span> up, <span class="number">2</span> <span class="keyword">in</span></span><br><span class="line">            flags sortbitwise</span><br><span class="line">      pgmap v1023: <span class="number">417</span> pgs, <span class="number">13</span> pools, <span class="number">18519</span> MB data, <span class="number">15920</span> objects</span><br><span class="line">            <span class="number">18668</span> MB used, <span class="number">538</span> GB / <span class="number">556</span> GB avail</span><br><span class="line">                 <span class="number">417</span> active+clean</span><br></pre></td></tr></table></figure>
+
+<h2 id="定位问题">定位问题</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ceph -s</span></span><br><span class="line">    cluster fa7ec1a1-<span class="number">662</span>a-<span class="number">4</span>ba3-b478-<span class="number">7</span>cb570482b62</span><br><span class="line">     health HEALTH_WARN</span><br><span class="line">            pool rbd has many more objects per pg than average (too few pgs?)</span><br><span class="line">     monmap e1: <span class="number">1</span> mons at &#123;lab8106=<span class="number">192.168</span>.<span class="number">8.106</span>:<span class="number">6789</span>/<span class="number">0</span>&#125;</span><br><span class="line">            election epoch <span class="number">30</span>, quorum <span class="number">0</span> lab8106</span><br><span class="line">     osdmap e157: <span class="number">2</span> osds: <span class="number">2</span> up, <span class="number">2</span> <span class="keyword">in</span></span><br><span class="line">            flags sortbitwise</span><br><span class="line">      pgmap v1023: <span class="number">417</span> pgs, <span class="number">13</span> pools, <span class="number">18519</span> MB data, <span class="number">15920</span> objects</span><br><span class="line">            <span class="number">18668</span> MB used, <span class="number">538</span> GB / <span class="number">556</span> GB avail</span><br><span class="line">                 <span class="number">417</span> active+clean</span><br></pre></td></tr></table></figure>
 <p>集群出现了这个警告，<code>pool rbd has many more objects per pg than average (too few pgs?)</code> 这个警告在hammer版本里面的提示是<code>pool rbd has too few pgs</code></p>
 <a id="more"></a>
 <p>这个地方查看集群详细信息：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ceph health detail</span></span><br><span class="line">HEALTH_WARN pool rbd has many more objects per pg than average (too few pgs?); mon.lab8106 low disk space</span><br><span class="line">pool rbd objects per pg (<span class="number">1912</span>) is more than <span class="number">50.3158</span> <span class="built_in">times</span> cluster average (<span class="number">38</span>)</span><br></pre></td></tr></table></figure></p>
@@ -245,7 +246,7 @@ var _hmt = _hmt || [];
 <blockquote>
 <p>mon_pg_warn_min_objects = 10000   //总的对象超过10000<br>mon_pg_warn_min_pool_objects = 1000     //存储池对象超过1000<br>mon_pg_warn_max_object_skew = 10        //就是上面的存储池的平均对象与所有pg的平均值的倍数关系</p>
 </blockquote>
-<h3 id="解决问题">解决问题</h3><p>有三个方法解决这个警告的提示：</p>
+<h2 id="解决问题">解决问题</h2><p>有三个方法解决这个警告的提示：</p>
 <ul>
 <li><p>删除无用的存储池<br>如果集群中有一些不用的存储池，并且相对的pg数目还比较高，那么可以删除一些这样的存储池，从而降低<code>mon_pg_warn_max_object_skew</code>这个值，警告就会没有了</p>
 </li>
@@ -253,13 +254,13 @@ var _hmt = _hmt || [];
 </li>
 <li>增加<code>mon_pg_warn_max_object_skew</code>的参数值<br>如果集群里面已经有足够多的pg了，再增加pg会不稳定，如果想去掉这个警告，就可以增加这个参数值，默认为10</li>
 </ul>
-<h3 id="总结">总结</h3><p>这个警告是比较的是存储池中的对象数目与整个集群的pg的平均对象数目的偏差，如果偏差太大就会发出警告</p>
+<h2 id="总结">总结</h2><p>这个警告是比较的是存储池中的对象数目与整个集群的pg的平均对象数目的偏差，如果偏差太大就会发出警告</p>
 <p>检查的步骤：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph health detail</span><br><span class="line">ceph df</span><br><span class="line">ceph osd dump | grep pool</span><br></pre></td></tr></table></figure></p>
 <blockquote>
 <p>mon_pg_warn_max_object_skew = 10.0</p>
 </blockquote>
 <p>((objects/pg_num) in the affected pool)/(objects/pg_num in the entire system) &gt;= 10.0 警告就会出现</p>
-<h3 id="变更记录">变更记录</h3><table>
+<h2 id="变更记录">变更记录</h2><table>
 <thead>
 <tr>
 <th style="text-align:center">Why</th>
@@ -275,10 +276,10 @@ var _hmt = _hmt || [];
 </tr>
 </tbody>
 </table>
-<h3 id="打赏通道">打赏通道</h3><center><br><img src="http://static.zybuluo.com/zphj1987/fi2557g55ucsdpyblopyfudl/newpay.png" alt="打赏" title="打赏"><br></center>
+<h2 id="打赏通道">打赏通道</h2><center><br><img src="http://static.zybuluo.com/zphj1987/fi2557g55ucsdpyblopyfudl/newpay.png" alt="打赏" title="打赏"><br></center>
 
 
-<h3 id="广告">广告</h3><p>收费小群（适合新手，大牛忽略）：</p>
+<h2 id="广告">广告</h2><p>收费小群（适合新手，大牛忽略）：</p>
 <center><br><img src="http://7xi6lo.com1.z0.glb.clouddn.com/qqqun2.png" alt=""><br></center>
 
 
