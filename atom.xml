@@ -4,7 +4,7 @@
   <subtitle><![CDATA[现在所学，终有所用]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2016-07-26T17:31:44.315Z</updated>
+  <updated>2016-07-27T14:17:21.237Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -13,6 +13,82 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[Ceph 状态报警告 pool rbd has many more objects per pg than average (too few pgs?)]]></title>
+    <link href="http://www.zphj1987.com/2016/07/27/Ceph-%E7%8A%B6%E6%80%81%E6%8A%A5%E8%AD%A6%E5%91%8A-pool-rbd-has-many-more-objects-per-pg-than-average-too-few-pgs/"/>
+    <id>http://www.zphj1987.com/2016/07/27/Ceph-状态报警告-pool-rbd-has-many-more-objects-per-pg-than-average-too-few-pgs/</id>
+    <published>2016-07-27T13:42:05.000Z</published>
+    <updated>2016-07-27T14:17:21.237Z</updated>
+    <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/ceph%E7%8A%B6%E6%80%81%E8%AD%A6%E5%91%8A/d-a.gif" alt=""><br></center>
+
+<h3 id="定位问题">定位问题</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ceph -s</span></span><br><span class="line">    cluster fa7ec1a1-<span class="number">662</span>a-<span class="number">4</span>ba3-b478-<span class="number">7</span>cb570482b62</span><br><span class="line">     health HEALTH_WARN</span><br><span class="line">            pool rbd has many more objects per pg than average (too few pgs?)</span><br><span class="line">     monmap e1: <span class="number">1</span> mons at &#123;lab8106=<span class="number">192.168</span>.<span class="number">8.106</span>:<span class="number">6789</span>/<span class="number">0</span>&#125;</span><br><span class="line">            election epoch <span class="number">30</span>, quorum <span class="number">0</span> lab8106</span><br><span class="line">     osdmap e157: <span class="number">2</span> osds: <span class="number">2</span> up, <span class="number">2</span> <span class="keyword">in</span></span><br><span class="line">            flags sortbitwise</span><br><span class="line">      pgmap v1023: <span class="number">417</span> pgs, <span class="number">13</span> pools, <span class="number">18519</span> MB data, <span class="number">15920</span> objects</span><br><span class="line">            <span class="number">18668</span> MB used, <span class="number">538</span> GB / <span class="number">556</span> GB avail</span><br><span class="line">                 <span class="number">417</span> active+clean</span><br></pre></td></tr></table></figure>
+<p>集群出现了这个警告，<code>pool rbd has many more objects per pg than average (too few pgs?)</code> 这个警告在hammer版本里面的提示是<code>pool rbd has too few pgs</code></p>
+<a id="more"></a>
+<p>这个地方查看集群详细信息：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ceph health detail</span></span><br><span class="line">HEALTH_WARN pool rbd has many more objects per pg than average (too few pgs?); mon.lab8106 low disk space</span><br><span class="line">pool rbd objects per pg (<span class="number">1912</span>) is more than <span class="number">50.3158</span> <span class="built_in">times</span> cluster average (<span class="number">38</span>)</span><br></pre></td></tr></table></figure></p>
+<p>看下集群的pool的对象状态<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ceph df</span></span><br><span class="line">GLOBAL:</span><br><span class="line">    SIZE     AVAIL     RAW USED     %RAW USED </span><br><span class="line">    <span class="number">556</span>G      <span class="number">538</span>G       <span class="number">18668</span>M          <span class="number">3.28</span> </span><br><span class="line">POOLS:</span><br><span class="line">    NAME       ID     USED       %USED     MAX AVAIL     OBJECTS </span><br><span class="line">    rbd        <span class="number">6</span>      <span class="number">16071</span>M      <span class="number">2.82</span>          <span class="number">536</span>G       <span class="number">15296</span> </span><br><span class="line">    pool1      <span class="number">7</span>        <span class="number">204</span>M      <span class="number">0.04</span>          <span class="number">536</span>G          <span class="number">52</span> </span><br><span class="line">    pool2      <span class="number">8</span>        <span class="number">184</span>M      <span class="number">0.03</span>          <span class="number">536</span>G          <span class="number">47</span> </span><br><span class="line">    pool3      <span class="number">9</span>        <span class="number">188</span>M      <span class="number">0.03</span>          <span class="number">536</span>G          <span class="number">48</span> </span><br><span class="line">    pool4      <span class="number">10</span>       <span class="number">192</span>M      <span class="number">0.03</span>          <span class="number">536</span>G          <span class="number">49</span> </span><br><span class="line">    pool5      <span class="number">11</span>       <span class="number">204</span>M      <span class="number">0.04</span>          <span class="number">536</span>G          <span class="number">52</span> </span><br><span class="line">    pool6      <span class="number">12</span>       <span class="number">148</span>M      <span class="number">0.03</span>          <span class="number">536</span>G          <span class="number">38</span> </span><br><span class="line">    pool7      <span class="number">13</span>       <span class="number">184</span>M      <span class="number">0.03</span>          <span class="number">536</span>G          <span class="number">47</span> </span><br><span class="line">    pool8      <span class="number">14</span>       <span class="number">200</span>M      <span class="number">0.04</span>          <span class="number">536</span>G          <span class="number">51</span> </span><br><span class="line">    pool9      <span class="number">15</span>       <span class="number">200</span>M      <span class="number">0.04</span>          <span class="number">536</span>G          <span class="number">51</span> </span><br><span class="line">    pool10     <span class="number">16</span>       <span class="number">248</span>M      <span class="number">0.04</span>          <span class="number">536</span>G          <span class="number">63</span> </span><br><span class="line">    pool11     <span class="number">17</span>       <span class="number">232</span>M      <span class="number">0.04</span>          <span class="number">536</span>G          <span class="number">59</span> </span><br><span class="line">    pool12     <span class="number">18</span>       <span class="number">264</span>M      <span class="number">0.05</span>          <span class="number">536</span>G          <span class="number">67</span></span><br></pre></td></tr></table></figure></p>
+<p>查看存储池的pg个数<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ceph osd dump|grep pool</span></span><br><span class="line">pool <span class="number">6</span> <span class="string">'rbd'</span> replicated size <span class="number">1</span> min_size <span class="number">1</span> crush_ruleset <span class="number">0</span> object_<span class="built_in">hash</span> rjenkins pg_num <span class="number">8</span> pgp_num <span class="number">8</span> last_change <span class="number">132</span> flags hashpspool stripe_width <span class="number">0</span></span><br><span class="line">pool <span class="number">7</span> <span class="string">'pool1'</span> replicated size <span class="number">1</span> min_size <span class="number">1</span> crush_ruleset <span class="number">0</span> object_<span class="built_in">hash</span> rjenkins pg_num <span class="number">1</span> pgp_num <span class="number">1</span> last_change <span class="number">134</span> flags hashpspool stripe_width <span class="number">0</span></span><br><span class="line">pool <span class="number">8</span> <span class="string">'pool2'</span> replicated size <span class="number">1</span> min_size <span class="number">1</span> crush_ruleset <span class="number">0</span> object_<span class="built_in">hash</span> rjenkins pg_num <span class="number">1</span> pgp_num <span class="number">1</span> last_change <span class="number">136</span> flags hashpspool stripe_width <span class="number">0</span></span><br><span class="line">pool <span class="number">9</span> <span class="string">'pool3'</span> replicated size <span class="number">1</span> min_size <span class="number">1</span> crush_ruleset <span class="number">0</span> object_<span class="built_in">hash</span> rjenkins pg_num <span class="number">1</span> pgp_num <span class="number">1</span> last_change <span class="number">138</span> flags hashpspool stripe_width <span class="number">0</span></span><br><span class="line">pool <span class="number">10</span> <span class="string">'pool4'</span> replicated size <span class="number">1</span> min_size <span class="number">1</span> crush_ruleset <span class="number">0</span> object_<span class="built_in">hash</span> rjenkins pg_num <span class="number">1</span> pgp_num <span class="number">1</span> last_change <span class="number">140</span> flags hashpspool stripe_width <span class="number">0</span></span><br><span class="line">pool <span class="number">11</span> <span class="string">'pool5'</span> replicated size <span class="number">1</span> min_size <span class="number">1</span> crush_ruleset <span class="number">0</span> object_<span class="built_in">hash</span> rjenkins pg_num <span class="number">1</span> pgp_num <span class="number">1</span> last_change <span class="number">142</span> flags hashpspool stripe_width <span class="number">0</span></span><br><span class="line">pool <span class="number">12</span> <span class="string">'pool6'</span> replicated size <span class="number">1</span> min_size <span class="number">1</span> crush_ruleset <span class="number">0</span> object_<span class="built_in">hash</span> rjenkins pg_num <span class="number">1</span> pgp_num <span class="number">1</span> last_change <span class="number">144</span> flags hashpspool stripe_width <span class="number">0</span></span><br><span class="line">pool <span class="number">13</span> <span class="string">'pool7'</span> replicated size <span class="number">1</span> min_size <span class="number">1</span> crush_ruleset <span class="number">0</span> object_<span class="built_in">hash</span> rjenkins pg_num <span class="number">1</span> pgp_num <span class="number">1</span> last_change <span class="number">146</span> flags hashpspool stripe_width <span class="number">0</span></span><br><span class="line">pool <span class="number">14</span> <span class="string">'pool8'</span> replicated size <span class="number">1</span> min_size <span class="number">1</span> crush_ruleset <span class="number">0</span> object_<span class="built_in">hash</span> rjenkins pg_num <span class="number">1</span> pgp_num <span class="number">1</span> last_change <span class="number">148</span> flags hashpspool stripe_width <span class="number">0</span></span><br><span class="line">pool <span class="number">15</span> <span class="string">'pool9'</span> replicated size <span class="number">1</span> min_size <span class="number">1</span> crush_ruleset <span class="number">0</span> object_<span class="built_in">hash</span> rjenkins pg_num <span class="number">1</span> pgp_num <span class="number">1</span> last_change <span class="number">150</span> flags hashpspool stripe_width <span class="number">0</span></span><br><span class="line">pool <span class="number">16</span> <span class="string">'pool10'</span> replicated size <span class="number">1</span> min_size <span class="number">1</span> crush_ruleset <span class="number">0</span> object_<span class="built_in">hash</span> rjenkins pg_num <span class="number">100</span> pgp_num <span class="number">100</span> last_change <span class="number">152</span> flags hashpspool stripe_width <span class="number">0</span></span><br><span class="line">pool <span class="number">17</span> <span class="string">'pool11'</span> replicated size <span class="number">1</span> min_size <span class="number">1</span> crush_ruleset <span class="number">0</span> object_<span class="built_in">hash</span> rjenkins pg_num <span class="number">100</span> pgp_num <span class="number">100</span> last_change <span class="number">154</span> flags hashpspool stripe_width <span class="number">0</span></span><br><span class="line">pool <span class="number">18</span> <span class="string">'pool12'</span> replicated size <span class="number">1</span> min_size <span class="number">1</span> crush_ruleset <span class="number">0</span> object_<span class="built_in">hash</span> rjenkins pg_num <span class="number">200</span> pgp_num <span class="number">200</span> last_change <span class="number">156</span> flags hashpspool stripe_width <span class="number">0</span></span><br></pre></td></tr></table></figure></p>
+<p>我们看下这个是怎么得到的</p>
+<blockquote>
+<p>pool rbd objects per pg (1912) is more than 50.3158 times cluster average (38)</p>
+</blockquote>
+<p>rbd objects_per_pg = 15296 / 8 = 1912<br>objects_per_pg = 15920 /417  ≈ 38<br>50.3158 =  rbd objects_per_pg / objects_per_pg =  1912 / 38 </p>
+<p>也就是出现其他pool的对象太少，而这个pg少，对象多，就会提示这个了，我们看下代码里面的判断</p>
+<p><a href="https://github.com/ceph/ceph/blob/master/src/mon/PGMonitor.cc" target="_blank" rel="external">https://github.com/ceph/ceph/blob/master/src/mon/PGMonitor.cc</a></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">int average_objects_per_pg = pg_map.pg_sum.stats.sum.num_objects / pg_map.pg_stat.size();</span><br><span class="line">     <span class="keyword">if</span> (average_objects_per_pg &gt; <span class="number">0</span> &amp;&amp;</span><br><span class="line">         pg_map.pg_sum.stats.sum.num_objects &gt;= g_conf-&gt;mon_pg_warn_min_objects &amp;&amp;</span><br><span class="line">         p-&gt;second.stats.sum.num_objects &gt;= g_conf-&gt;mon_pg_warn_min_pool_objects) &#123;</span><br><span class="line">int objects_per_pg = p-&gt;second.stats.sum.num_objects / pi-&gt;get_pg_num();</span><br><span class="line"><span class="built_in">float</span> ratio = (<span class="built_in">float</span>)objects_per_pg / (<span class="built_in">float</span>)average_objects_per_pg;</span><br><span class="line"><span class="keyword">if</span> (g_conf-&gt;mon_pg_warn_max_object_skew &gt; <span class="number">0</span> &amp;&amp;</span><br><span class="line">    ratio &gt; g_conf-&gt;mon_pg_warn_max_object_skew) &#123;</span><br><span class="line">  ostringstream ss;</span><br><span class="line">  ss &lt;&lt; <span class="string">"pool "</span> &lt;&lt; name &lt;&lt; <span class="string">" has many more objects per pg than average (too few pgs?)"</span>;</span><br><span class="line">  summary.push_back(make_pair(HEALTH_WARN, ss.str()));</span><br><span class="line">  <span class="keyword">if</span> (detail) &#123;</span><br><span class="line">    ostringstream ss;</span><br><span class="line">    ss &lt;&lt; <span class="string">"pool "</span> &lt;&lt; name &lt;&lt; <span class="string">" objects per pg ("</span></span><br><span class="line">       &lt;&lt; objects_per_pg &lt;&lt; <span class="string">") is more than "</span> &lt;&lt; ratio &lt;&lt; <span class="string">" times cluster average ("</span></span><br><span class="line">       &lt;&lt; average_objects_per_pg &lt;&lt; <span class="string">")"</span>;</span><br><span class="line">    detail-&gt;push_back(make_pair(HEALTH_WARN, ss.str()));</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>主要下面的几个限制条件</p>
+<blockquote>
+<p>mon_pg_warn_min_objects = 10000   //总的对象超过10000<br>mon_pg_warn_min_pool_objects = 1000     //存储池对象超过1000<br>mon_pg_warn_max_object_skew = 10        //就是上面的存储池的平均对象与所有pg的平均值的倍数关系</p>
+</blockquote>
+<h3 id="解决问题">解决问题</h3><p>有三个方法解决这个警告的提示：</p>
+<ul>
+<li><p>删除无用的存储池<br>如果集群中有一些不用的存储池，并且相对的pg数目还比较高，那么可以删除一些这样的存储池，从而降低<code>mon_pg_warn_max_object_skew</code>这个值，警告就会没有了</p>
+</li>
+<li><p>增加提示的pool的pg数目<br>有可能的情况就是，这个存储池的pg数目从一开始就不够，增加pg和pgp数目，同样降低了<code>mon_pg_warn_max_object_skew</code>这个值了</p>
+</li>
+<li>增加<code>mon_pg_warn_max_object_skew</code>的参数值<br>如果集群里面已经有足够多的pg了，再增加pg会不稳定，如果想去掉这个警告，就可以增加这个参数值，默认为10</li>
+</ul>
+<h3 id="总结">总结</h3><p>这个警告是比较的是存储池中的对象数目与整个集群的pg的平均对象数目的偏差，如果偏差太大就会发出警告</p>
+<p>检查的步骤：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph health detail</span><br><span class="line">ceph df</span><br><span class="line">ceph osd dump | grep pool</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>mon_pg_warn_max_object_skew = 10.0</p>
+</blockquote>
+<p>((objects/pg_num) in the affected pool)/(objects/pg_num in the entire system) &gt;= 10.0 警告就会出现</p>
+<h3 id="变更记录">变更记录</h3><table>
+<thead>
+<tr>
+<th style="text-align:center">Why</th>
+<th style="text-align:center">Who</th>
+<th style="text-align:center">When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">创建</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2016-07-27</td>
+</tr>
+</tbody>
+</table>
+<h3 id="打赏通道">打赏通道</h3><center><br><img src="http://static.zybuluo.com/zphj1987/fi2557g55ucsdpyblopyfudl/newpay.png" alt="打赏" title="打赏"><br></center>
+
+
+<h3 id="广告">广告</h3><p>收费小群（适合新手，大牛忽略）：</p>
+<center><br><img src="http://7xi6lo.com1.z0.glb.clouddn.com/qqqun2.png" alt=""><br></center>
+
+
+]]></content>
+    <summary type="html">
+    <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/ceph%E7%8A%B6%E6%80%81%E8%AD%A6%E5%91%8A/d-a.gif" alt=""><br></center>
+
+<h3 id="定位问题">定位问题</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ceph -s</span></span><br><span class="line">    cluster fa7ec1a1-<span class="number">662</span>a-<span class="number">4</span>ba3-b478-<span class="number">7</span>cb570482b62</span><br><span class="line">     health HEALTH_WARN</span><br><span class="line">            pool rbd has many more objects per pg than average (too few pgs?)</span><br><span class="line">     monmap e1: <span class="number">1</span> mons at &#123;lab8106=<span class="number">192.168</span>.<span class="number">8.106</span>:<span class="number">6789</span>/<span class="number">0</span>&#125;</span><br><span class="line">            election epoch <span class="number">30</span>, quorum <span class="number">0</span> lab8106</span><br><span class="line">     osdmap e157: <span class="number">2</span> osds: <span class="number">2</span> up, <span class="number">2</span> <span class="keyword">in</span></span><br><span class="line">            flags sortbitwise</span><br><span class="line">      pgmap v1023: <span class="number">417</span> pgs, <span class="number">13</span> pools, <span class="number">18519</span> MB data, <span class="number">15920</span> objects</span><br><span class="line">            <span class="number">18668</span> MB used, <span class="number">538</span> GB / <span class="number">556</span> GB avail</span><br><span class="line">                 <span class="number">417</span> active+clean</span><br></pre></td></tr></table></figure>
+<p>集群出现了这个警告，<code>pool rbd has many more objects per pg than average (too few pgs?)</code> 这个警告在hammer版本里面的提示是<code>pool rbd has too few pgs</code></p>]]>
+    
+    </summary>
+    
+      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[如何替换Ceph的Journal]]></title>
@@ -1174,51 +1250,6 @@ sig_hashalgo:   sha256
     </summary>
     
       <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[如何开启内网的外网访问]]></title>
-    <link href="http://www.zphj1987.com/2016/05/09/%E5%A6%82%E4%BD%95%E5%BC%80%E5%90%AF%E5%86%85%E7%BD%91%E7%9A%84%E5%A4%96%E7%BD%91%E8%AE%BF%E9%97%AE/"/>
-    <id>http://www.zphj1987.com/2016/05/09/如何开启内网的外网访问/</id>
-    <published>2016-05-09T14:27:28.000Z</published>
-    <updated>2016-05-09T14:52:45.469Z</updated>
-    <content type="html"><![CDATA[<h3 id="为什么不要用QQ远程">为什么不要用QQ远程</h3><p>很多人在涉及到需要ssh远程的时候，第一印象应该就是QQ远程，这个是一般的普通用户都知道的方式，这个方式我为什么不推荐呢</p>
-<ul>
-<li>QQ是图形界面的远程，远程的操作在网络不好的时候很容易卡顿</li>
-<li>窗口大小无法自适应</li>
-<li>无法传递一些按键，比如需要Esc退出vim，变成了退出远程窗口的最大化</li>
-<li>QQ远程适合帮助家里人处理一些界面上或者操作上的小问题</li>
-</ul>
-<a id="more"></a>
-<h3 id="为什么使用Teamviver">为什么使用Teamviver</h3><p>那么还有什么替代么，相信有几年上班经验的人或者有过远程运维经验的人，都知道Teamviver，这个软件的出现，减少了多少的路途奔波，为什么推荐这个</p>
-<ul>
-<li>远程画面自适应</li>
-<li>方便传递文件</li>
-<li>方便开启守护模式，随时可以连接，无需对方有人</li>
-<li>画面延时非常小</li>
-</ul>
-<p><a href="http://www.teamviewer.com/zhCN/" target="_blank" rel="external">Teamviver</a>下载链接<br>界面如下：<br><img src="http://static.zybuluo.com/zphj1987/f2k1n6th65unbijxpfj5dyvx/teamviver.png" alt="Teamviver"><br>适合远程的windows机器上正好有需要调试的应用的情况</p>
-<h3 id="还有谁？">还有谁？</h3><p>其实对于这种远程的软件，需要的是连接数，需要的流量并不大，国内在这一刻唯一有所作为的也就是花生壳了，在提供免费的同时也提供更高级的企业级别服务，当然一般情况下免费的也能满足我们的需求</p>
-<h4 id="长啥样？">长啥样？</h4><p><img src="http://static.zybuluo.com/zphj1987/tj157zs3zyiek4i697btrnvr/haushengke.png" alt="花生壳"><br>这个是最新的3.0版本的，安装包非常小，操作非常简单，比起以前刚开始用的时候优化了太多<br>下载地址：<a href="http://www.oray.com/activity/160302/?ici=act_160302&amp;icn=hsk_home-banner" target="_blank" rel="external">花生壳</a><br>点击内网映射就可以开启内网的端口映射了，根据注册的账号提供的免费域名和一个随机端口，就可以ssh到内网的指定的机器了，非常方便远程linux服务器的调试</p>
-<p>上面介绍了3种远程的软件，一般情况下，需要操作界面的就推荐使用teamviver,需要调试服务器的就推荐使用花生壳做端口映射，或者有固定的IP的时候，也可以直接做端口映射，这个看具体的需求了</p>
-<h3 id="打赏通道">打赏通道</h3><center><br><img src="http://static.zybuluo.com/zphj1987/fi2557g55ucsdpyblopyfudl/newpay.png" alt="打赏" title="打赏"><br></center>
-
-
-
-]]></content>
-    <summary type="html">
-    <![CDATA[<h3 id="为什么不要用QQ远程">为什么不要用QQ远程</h3><p>很多人在涉及到需要ssh远程的时候，第一印象应该就是QQ远程，这个是一般的普通用户都知道的方式，这个方式我为什么不推荐呢</p>
-<ul>
-<li>QQ是图形界面的远程，远程的操作在网络不好的时候很容易卡顿</li>
-<li>窗口大小无法自适应</li>
-<li>无法传递一些按键，比如需要Esc退出vim，变成了退出远程窗口的最大化</li>
-<li>QQ远程适合帮助家里人处理一些界面上或者操作上的小问题</li>
-</ul>]]>
-    
-    </summary>
-    
-      <category term="linux" scheme="http://www.zphj1987.com/tags/linux/"/>
     
   </entry>
   
