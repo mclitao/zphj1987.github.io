@@ -3,23 +3,18 @@
 <head>
   <meta charset="utf-8">
   
-  <title>删除ceph集群mds | zphj1987&#39;Blog</title>
+  <title>付费问答 | zphj1987&#39;Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="ceph集群新搭建以后是只有一个默认的存储池rbd的池
-创建文件接口集群1.创建一个元数据池[root@mytest ~]# ceph osd pool create metadata  20 20pool &apos;metadata&apos; created
-2.创建一个数据池[root@mytest ~]# ceph osd pool create data   20 20pool &apos;data&apos; create">
-<meta property="og:type" content="article">
-<meta property="og:title" content="删除ceph集群mds">
-<meta property="og:url" content="http://www.zphj1987.com/2015/09/24/删除ceph集群mds/index.html">
+  <meta name="description" content="我的值乎知乎出品的付费问答服务，问题一元一个，欢迎尝试">
+<meta property="og:type" content="website">
+<meta property="og:title" content="付费问答">
+<meta property="og:url" content="http://www.zphj1987.com/payforask/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
-<meta property="og:description" content="ceph集群新搭建以后是只有一个默认的存储池rbd的池
-创建文件接口集群1.创建一个元数据池[root@mytest ~]# ceph osd pool create metadata  20 20pool &apos;metadata&apos; created
-2.创建一个数据池[root@mytest ~]# ceph osd pool create data   20 20pool &apos;data&apos; create">
+<meta property="og:description" content="我的值乎知乎出品的付费问答服务，问题一元一个，欢迎尝试">
+<meta property="og:image" content="http://7xweck.com1.z0.glb.clouddn.com/payforask/zhihu.png?imageView2/1/w/500/h/654">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="删除ceph集群mds">
-<meta name="twitter:description" content="ceph集群新搭建以后是只有一个默认的存储池rbd的池
-创建文件接口集群1.创建一个元数据池[root@mytest ~]# ceph osd pool create metadata  20 20pool &apos;metadata&apos; created
-2.创建一个数据池[root@mytest ~]# ceph osd pool create data   20 20pool &apos;data&apos; create">
+<meta name="twitter:title" content="付费问答">
+<meta name="twitter:description" content="我的值乎知乎出品的付费问答服务，问题一元一个，欢迎尝试">
   
     <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
   
@@ -195,11 +190,11 @@ var _hmt = _hmt || [];
 		</header>				
 	</div>
 </nav>
-      <div class="body-wrap"><article id="post-删除ceph集群mds" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="page-undefined" class="article article-type-page" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2015/09/24/删除ceph集群mds/" class="article-date">
-  	<time datetime="2015-09-24T03:10:49.000Z" itemprop="datePublished">2015-09-24</time>
+      <a href="/payforask/index.html" class="article-date">
+  	<time datetime="2016-07-29T04:00:00.000Z" itemprop="datePublished">2016-07-29</time>
 </a>
     </div>
   
@@ -212,7 +207,7 @@ var _hmt = _hmt || [];
         
   
     <h1 class="article-title" itemprop="name">
-      删除ceph集群mds
+      付费问答
     </h1>
   
 
@@ -220,10 +215,6 @@ var _hmt = _hmt || [];
       
       <div class="article-info article-info-post">
         
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
         
 
         <div class="clearfix"></div>
@@ -232,18 +223,10 @@ var _hmt = _hmt || [];
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>ceph集群新搭建以后是只有一个默认的存储池rbd的池</p>
-<h2 id="创建文件接口集群">创建文件接口集群</h2><h3 id="1-创建一个元数据池">1.创建一个元数据池</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@mytest ~]<span class="comment"># ceph osd pool create metadata  20 20</span></span><br><span class="line">pool <span class="string">'metadata'</span> created</span><br></pre></td></tr></table></figure>
-<h3 id="2-创建一个数据池">2.创建一个数据池</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@mytest ~]<span class="comment"># ceph osd pool create data   20 20</span></span><br><span class="line">pool <span class="string">'data'</span> created</span><br></pre></td></tr></table></figure>
-<h3 id="3-创建一个文件系统">3.创建一个文件系统</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@mytest ~]<span class="comment"># ceph fs new ceph  metadata data</span></span><br><span class="line">new fs with metadata pool <span class="number">4</span> and data pool <span class="number">5</span></span><br></pre></td></tr></table></figure>
-<h3 id="4-创建一个mds">4.创建一个mds</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@mytest ~]<span class="comment"># ceph-deploy mds create mytest</span></span><br></pre></td></tr></table></figure>
-<a id="more"></a>
-<h3 id="5-部署完检查状态">5.部署完检查状态</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@mytest ceph]<span class="comment"># ceph -s</span></span><br><span class="line">    cluster <span class="number">7</span>e5469ac-ae1f-<span class="number">494</span>f-<span class="number">9913</span>-<span class="number">901</span>f60c0a76b</span><br><span class="line">     health HEALTH_OK</span><br><span class="line">     monmap e1: <span class="number">1</span> mons at &#123;mytest=<span class="number">192.168</span>.<span class="number">0.76</span>:<span class="number">6789</span>/<span class="number">0</span>&#125;</span><br><span class="line">            election epoch <span class="number">1</span>, quorum <span class="number">0</span> mytest</span><br><span class="line">     mdsmap e60: <span class="number">1</span>/<span class="number">1</span>/<span class="number">1</span> up &#123;<span class="number">0</span>=mytest=up:active&#125;</span><br><span class="line">     osdmap e70: <span class="number">2</span> osds: <span class="number">2</span> up, <span class="number">2</span> <span class="keyword">in</span></span><br><span class="line">      pgmap v252: <span class="number">104</span> pgs, <span class="number">3</span> pools, <span class="number">1962</span> bytes data, <span class="number">20</span> objects</span><br><span class="line">            <span class="number">75144</span> kB used, <span class="number">30624</span> MB / <span class="number">30697</span> MB avail</span><br><span class="line">                 <span class="number">104</span> active+clean</span><br><span class="line">  client io <span class="number">108</span> B/s wr, <span class="number">0</span> op/s</span><br></pre></td></tr></table></figure>
-<h2 id="删除文件接口集群（删除mds）">删除文件接口集群（删除mds）</h2><h3 id="1-停止mds进程">1.停止mds进程</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@mytest ceph]<span class="comment"># /etc/init.d/ceph stop mds</span></span><br><span class="line">=== mds.mytest === </span><br><span class="line">Stopping Ceph mds.mytest on mytest...kill <span class="number">9638</span>...done</span><br></pre></td></tr></table></figure>
-<h3 id="2-将mds状态标记为失效">2.将mds状态标记为失效</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@mytest ceph]<span class="comment"># ceph mds fail 0</span></span><br><span class="line">failed mds.<span class="number">0</span></span><br></pre></td></tr></table></figure>
-<h3 id="3-删除ceph文件系统">3.删除ceph文件系统</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@mytest ceph]<span class="comment"># ceph fs rm ceph --yes-i-really-mean-it</span></span><br></pre></td></tr></table></figure>
-<h3 id="4-删除完了检查状态">4.删除完了检查状态</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@mytest ceph]<span class="comment"># ceph -s</span></span><br><span class="line">    cluster <span class="number">7</span>e5469ac-ae1f-<span class="number">494</span>f-<span class="number">9913</span>-<span class="number">901</span>f60c0a76b</span><br><span class="line">     health HEALTH_OK</span><br><span class="line">     monmap e1: <span class="number">1</span> mons at &#123;mytest=<span class="number">192.168</span>.<span class="number">0.76</span>:<span class="number">6789</span>/<span class="number">0</span>&#125;</span><br><span class="line">            election epoch <span class="number">1</span>, quorum <span class="number">0</span> mytest</span><br><span class="line">     osdmap e71: <span class="number">2</span> osds: <span class="number">2</span> up, <span class="number">2</span> <span class="keyword">in</span></span><br><span class="line">      pgmap v253: <span class="number">104</span> pgs, <span class="number">3</span> pools, <span class="number">1962</span> bytes data, <span class="number">20</span> objects</span><br><span class="line">            <span class="number">75144</span> kB used, <span class="number">30624</span> MB / <span class="number">30697</span> MB avail</span><br><span class="line">                 <span class="number">104</span> active+clean</span><br></pre></td></tr></table></figure>
-<p>可以看到已经没有了mds的那一条了</p>
+        <h3 id="我的值乎">我的值乎</h3><p>知乎出品的付费问答服务，问题一元一个，欢迎尝试</p>
+<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/payforask/zhihu.png?imageView2/1/w/500/h/654" alt="打赏" title="值乎"><br></center>
+
+
 
       
     </div>
@@ -251,25 +234,6 @@ var _hmt = _hmt || [];
   </div>
   
     
-<nav id="article-nav">
-  
-    <a href="/2015/09/28/批量下载instagram图片/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption"><</strong>
-      <div class="article-nav-title">
-        
-          批量下载instagram图片
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2015/09/18/ceph客户端服务端属性匹配关系/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">ceph客户端服务端属性匹配关系</div>
-      <strong class="article-nav-caption">></strong>
-    </a>
-  
-</nav>
-
   
 </article>
 
@@ -293,7 +257,7 @@ var _hmt = _hmt || [];
 
 <div class="duoshuo">
 	<!-- 多说评论框 start -->
-	<div class="ds-thread" data-thread-key="删除ceph集群mds" data-title="删除ceph集群mds" data-url="http://www.zphj1987.com/2015/09/24/删除ceph集群mds/"></div>
+	<div class="ds-thread" data-thread-key="undefined" data-title="付费问答" data-url="http://www.zphj1987.com/payforask/index.html"></div>
 	<!-- 多说评论框 end -->
 	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 	<script type="text/javascript">
@@ -337,7 +301,7 @@ var _hmt = _hmt || [];
 		mathjax: undefined,
 		animate: true,
 		isHome: false,
-		isPost: true,
+		isPost: false,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,
