@@ -4,7 +4,7 @@
   <subtitle><![CDATA[现在所学，终有所用]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2016-08-18T17:03:18.405Z</updated>
+  <updated>2016-08-18T17:08:43.033Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -19,9 +19,9 @@
     <link href="http://www.zphj1987.com/2016/08/19/Linux%E9%85%8D%E7%BD%AE%E9%82%AE%E4%BB%B6%E5%8F%91%E9%80%81%E4%BF%A1%E6%81%AF/"/>
     <id>http://www.zphj1987.com/2016/08/19/Linux配置邮件发送信息/</id>
     <published>2016-08-18T16:48:17.000Z</published>
-    <updated>2016-08-18T17:03:18.405Z</updated>
+    <updated>2016-08-18T17:08:43.033Z</updated>
     <content type="html"><![CDATA[<p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/email/email.png" alt=""><br></center></p>
-<h2 id="背景">背景</h2><p>一般情况下，我们的IT系统都会有相关的告警的处理，有的是邮件，有的是短线，这些都能很方便的获得一些有用的信息<br>在某些时候我们没有这样的系统，而自己又需要定期的获取一些信息的时候，配置一个邮件发送是很有用的</p>
+<h2 id="背景">背景</h2><p>一般情况下，我们的IT系统都会有相关的告警的处理，有的是邮件，有的是短信，这些都能很方便的获得一些有用的信息<br>在某些时候我们没有这样的系统，而自己又需要定期的获取一些信息的时候，配置一个邮件发送是很有用的</p>
 <h2 id="配置方法">配置方法</h2><p>网上的大部分的方法使用的是sendmail的发送方法，这个地方我们只需要简单的发送邮件的需求，可以直接配置SMTP发送的模式</p>
 <h3 id="修改配置文件，填写发送的相关信息">修改配置文件，填写发送的相关信息</h3><p>修改配置文件 <code>/etc/mail.rc</code><br>在最下面添加发送邮箱的信息<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">set</span> from=<span class="built_in">test</span>@sina.com smtp=smtp.sina.com</span><br><span class="line"><span class="built_in">set</span> smtp-auth-user=<span class="built_in">test</span>@sina.com smtp-auth-password=<span class="built_in">test</span>123456 smtp-auth=login</span><br></pre></td></tr></table></figure></p>
 <a id="more"></a>
@@ -32,7 +32,7 @@
 ]]></content>
     <summary type="html">
     <![CDATA[<p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/email/email.png" alt=""><br></center></p>
-<h2 id="背景">背景</h2><p>一般情况下，我们的IT系统都会有相关的告警的处理，有的是邮件，有的是短线，这些都能很方便的获得一些有用的信息<br>在某些时候我们没有这样的系统，而自己又需要定期的获取一些信息的时候，配置一个邮件发送是很有用的</p>
+<h2 id="背景">背景</h2><p>一般情况下，我们的IT系统都会有相关的告警的处理，有的是邮件，有的是短信，这些都能很方便的获得一些有用的信息<br>在某些时候我们没有这样的系统，而自己又需要定期的获取一些信息的时候，配置一个邮件发送是很有用的</p>
 <h2 id="配置方法">配置方法</h2><p>网上的大部分的方法使用的是sendmail的发送方法，这个地方我们只需要简单的发送邮件的需求，可以直接配置SMTP发送的模式</p>
 <h3 id="修改配置文件，填写发送的相关信息">修改配置文件，填写发送的相关信息</h3><p>修改配置文件 <code>/etc/mail.rc</code><br>在最下面添加发送邮箱的信息<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">set</span> from=<span class="built_in">test</span>@sina.com smtp=smtp.sina.com</span><br><span class="line"><span class="built_in">set</span> smtp-auth-user=<span class="built_in">test</span>@sina.com smtp-auth-password=<span class="built_in">test</span>123456 smtp-auth=login</span><br></pre></td></tr></table></figure></p>]]>
     

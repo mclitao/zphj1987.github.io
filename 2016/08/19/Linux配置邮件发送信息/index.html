@@ -5,20 +5,20 @@
   
   <title>Linux配置邮件发送信息 | zphj1987&#39;Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="背景一般情况下，我们的IT系统都会有相关的告警的处理，有的是邮件，有的是短线，这些都能很方便的获得一些有用的信息在某些时候我们没有这样的系统，而自己又需要定期的获取一些信息的时候，配置一个邮件发送是很有用的
+  <meta name="description" content="背景一般情况下，我们的IT系统都会有相关的告警的处理，有的是邮件，有的是短信，这些都能很方便的获得一些有用的信息在某些时候我们没有这样的系统，而自己又需要定期的获取一些信息的时候，配置一个邮件发送是很有用的
 配置方法网上的大部分的方法使用的是sendmail的发送方法，这个地方我们只需要简单的发送邮件的需求，可以直接配置SMTP发送的模式
 修改配置文件，填写发送的相关信息修改配置文件 /etc/m">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Linux配置邮件发送信息">
 <meta property="og:url" content="http://www.zphj1987.com/2016/08/19/Linux配置邮件发送信息/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
-<meta property="og:description" content="背景一般情况下，我们的IT系统都会有相关的告警的处理，有的是邮件，有的是短线，这些都能很方便的获得一些有用的信息在某些时候我们没有这样的系统，而自己又需要定期的获取一些信息的时候，配置一个邮件发送是很有用的
+<meta property="og:description" content="背景一般情况下，我们的IT系统都会有相关的告警的处理，有的是邮件，有的是短信，这些都能很方便的获得一些有用的信息在某些时候我们没有这样的系统，而自己又需要定期的获取一些信息的时候，配置一个邮件发送是很有用的
 配置方法网上的大部分的方法使用的是sendmail的发送方法，这个地方我们只需要简单的发送邮件的需求，可以直接配置SMTP发送的模式
 修改配置文件，填写发送的相关信息修改配置文件 /etc/m">
 <meta property="og:image" content="http://7xweck.com1.z0.glb.clouddn.com/email/email.png">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Linux配置邮件发送信息">
-<meta name="twitter:description" content="背景一般情况下，我们的IT系统都会有相关的告警的处理，有的是邮件，有的是短线，这些都能很方便的获得一些有用的信息在某些时候我们没有这样的系统，而自己又需要定期的获取一些信息的时候，配置一个邮件发送是很有用的
+<meta name="twitter:description" content="背景一般情况下，我们的IT系统都会有相关的告警的处理，有的是邮件，有的是短信，这些都能很方便的获得一些有用的信息在某些时候我们没有这样的系统，而自己又需要定期的获取一些信息的时候，配置一个邮件发送是很有用的
 配置方法网上的大部分的方法使用的是sendmail的发送方法，这个地方我们只需要简单的发送邮件的需求，可以直接配置SMTP发送的模式
 修改配置文件，填写发送的相关信息修改配置文件 /etc/m">
   
@@ -234,7 +234,7 @@ var _hmt = _hmt || [];
     <div class="article-entry" itemprop="articleBody">
       
         <p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/email/email.png" alt=""><br></center></p>
-<h2 id="背景">背景</h2><p>一般情况下，我们的IT系统都会有相关的告警的处理，有的是邮件，有的是短线，这些都能很方便的获得一些有用的信息<br>在某些时候我们没有这样的系统，而自己又需要定期的获取一些信息的时候，配置一个邮件发送是很有用的</p>
+<h2 id="背景">背景</h2><p>一般情况下，我们的IT系统都会有相关的告警的处理，有的是邮件，有的是短信，这些都能很方便的获得一些有用的信息<br>在某些时候我们没有这样的系统，而自己又需要定期的获取一些信息的时候，配置一个邮件发送是很有用的</p>
 <h2 id="配置方法">配置方法</h2><p>网上的大部分的方法使用的是sendmail的发送方法，这个地方我们只需要简单的发送邮件的需求，可以直接配置SMTP发送的模式</p>
 <h3 id="修改配置文件，填写发送的相关信息">修改配置文件，填写发送的相关信息</h3><p>修改配置文件 <code>/etc/mail.rc</code><br>在最下面添加发送邮箱的信息<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">set</span> from=<span class="built_in">test</span>@sina.com smtp=smtp.sina.com</span><br><span class="line"><span class="built_in">set</span> smtp-auth-user=<span class="built_in">test</span>@sina.com smtp-auth-password=<span class="built_in">test</span>123456 smtp-auth=login</span><br></pre></td></tr></table></figure></p>
 <a id="more"></a>
