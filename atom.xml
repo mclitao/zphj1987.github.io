@@ -4,7 +4,7 @@
   <subtitle><![CDATA[现在所学，终有所用]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2016-08-18T17:08:43.033Z</updated>
+  <updated>2016-08-28T16:11:25.027Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -15,11 +15,82 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title><![CDATA[重写ceph-lazy]]></title>
+    <link href="http://www.zphj1987.com/2016/08/28/%E9%87%8D%E5%86%99ceph-lazy/"/>
+    <id>http://www.zphj1987.com/2016/08/28/重写ceph-lazy/</id>
+    <published>2016-08-28T15:58:04.000Z</published>
+    <updated>2016-08-28T16:11:25.027Z</updated>
+    <content type="html"><![CDATA[<p><img src="http://7xweck.com1.z0.glb.clouddn.com/ceph-lazy/lazy.jpg" alt="ceph-lzy"></p>
+<h2 id="前言">前言</h2><p>这个工具最开始是从sebastien的blog里面看到的，这个是 <a href="https://github.com/gcharot/" target="_blank" rel="external">Gregory Charot</a>（工具的作者），通常我们在获取一个ceph的信息的时候，需要敲一连串的命令去获得自己需要的信息，可能需要一大堆的解析才能完成，而经常出现的是，使用了后，下次使用的时候，又要重来一遍，所以作者把这些常用的操作做了一些归纳，形成了一个查询的工具，很多人有个相同的观点就是，越懒，就会想办法提高效率，当然，首先得有提高效率的意识，否则只剩下懒了</p>
+<p>我做的事情就是把作者用shell的逻辑转换成了python的版本，这样也方便自己以后的扩展，这里感谢作者做的一些工作，让我很快就能完成了，这里并不是重复造车轮，本来自己就不会python，权当练手了</p>
+<p>在linux下面我是不建议用中文的，但是这个工具里面还是改成用中文提示，因为中文可能看上去更清楚需要做的是一个什么事情，这个仅仅是一个查询工具</p>
+<p>有一段时间没有更新blog了，主要是最近比较忙，没有时间去看太多的资料，没有时间来写下更多的东西，有时间还是会坚持写下去</p>
+<a id="more"></a>
+<h2 id="项目地址">项目地址</h2><p>原作者项目地址：<a href="https://github.com/gcharot/ceph-lazy" target="_blank" rel="external">https://github.com/gcharot/ceph-lazy</a><br>我重写的地址：<a href="https://github.com/zphj1987/ceph-lazy/tree/lazy-python" target="_blank" rel="external">https://github.com/zphj1987/ceph-lazy/tree/lazy-python</a></p>
+<h3 id="安装方法">安装方法</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget -O /sbin/ceph-lazy https://raw.githubusercontent.com/zphj1987/ceph-lazy/lazy-python/ceph-lazy.py</span><br><span class="line">chmod <span class="number">777</span> /sbin/ceph-lazy</span><br></pre></td></tr></table></figure>
+<h3 id="详细使用说明">详细使用说明</h3><h4 id="列出节点上的所有的OSD">列出节点上的所有的OSD</h4><p>命令：ceph-lazy host-get-osd {hostname}<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ceph-lazy host-get-osd lab8106</span></span><br><span class="line">osd.<span class="number">0</span> </span><br><span class="line">osd.<span class="number">1</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="列出所有的存储主机节点">列出所有的存储主机节点</h4><p>命令：ceph-lazy host-get-nodes<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ceph-lazy host-get-nodes </span></span><br><span class="line">lab8106</span><br><span class="line">lab8107</span><br></pre></td></tr></table></figure></p>
+<h4 id="列出存储节点上的存储使用的情况(detail看详细信息)">列出存储节点上的存储使用的情况(detail看详细信息)</h4><p>命令：ceph-lazy host-osd-usage {hostname} {detail}<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph-lazy]<span class="comment"># ceph-lazy  host-osd-usage lab8106</span></span><br><span class="line">Host:lab8106 | OSDs:<span class="number">2</span> | Total_Size:<span class="number">556.5</span>GB | Total_Used:<span class="number">13.0</span>GB | Total_Available:<span class="number">543.5</span>GB</span><br><span class="line">[root@lab8106 ceph-lazy]<span class="comment"># ceph-lazy  host-osd-usage lab8106 detail</span></span><br><span class="line">OSD:<span class="number">0</span> | Size:<span class="number">278.3</span>GB | Used:<span class="number">4.6</span>GB | Available:<span class="number">273.6</span>GB</span><br><span class="line">OSD:<span class="number">1</span> | Size:<span class="number">278.3</span>GB | Used:<span class="number">8.4</span>GB | Available:<span class="number">269.8</span>GB</span><br><span class="line">Host:lab8106 | OSDs:<span class="number">2</span> | Total_Size:<span class="number">556.5</span>GB | Total_Used:<span class="number">13.0</span>GB | Total_Available:<span class="number">543.5</span>GB</span><br></pre></td></tr></table></figure></p>
+<h4 id="列出所有存储节点上的存储使用的情况(detail看详细信息)">列出所有存储节点上的存储使用的情况(detail看详细信息)</h4><p>命令：ceph-lazy host-all-usage {detail}<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph-lazy]<span class="comment"># ceph-lazy host-all-usage</span></span><br><span class="line">----------------------------------------------</span><br><span class="line">Host:lab8106 | OSDs:<span class="number">2</span> | Total_Size:<span class="number">556.5</span>GB | Total_Used:<span class="number">13.0</span>GB | Total_Available:<span class="number">543.5</span>GB</span><br><span class="line">----------------------------------------------</span><br><span class="line">Host:lab8107 | OSDs:<span class="number">1</span> | Total_Size:<span class="number">278.3</span>GB | Total_Used:<span class="number">3.8</span>GB | Total_Available:<span class="number">274.4</span>GB</span><br><span class="line"></span><br><span class="line">[root@lab8106 ceph-lazy]<span class="comment"># ceph-lazy host-all-usage detail</span></span><br><span class="line">----------------------------------------------</span><br><span class="line">OSD:<span class="number">0</span> | Size:<span class="number">278.3</span>GB | Used:<span class="number">4.6</span>GB | Available:<span class="number">273.6</span>GB</span><br><span class="line">OSD:<span class="number">1</span> | Size:<span class="number">278.3</span>GB | Used:<span class="number">8.4</span>GB | Available:<span class="number">269.8</span>GB</span><br><span class="line">Host:lab8106 | OSDs:<span class="number">2</span> | Total_Size:<span class="number">556.5</span>GB | Total_Used:<span class="number">13.0</span>GB | Total_Available:<span class="number">543.5</span>GB</span><br><span class="line">----------------------------------------------</span><br><span class="line">OSD:<span class="number">2</span> | Size:<span class="number">278.3</span>GB | Used:<span class="number">3.8</span>GB | Available:<span class="number">274.4</span>GB</span><br><span class="line">Host:lab8107 | OSDs:<span class="number">1</span> | Total_Size:<span class="number">278.3</span>GB | Total_Used:<span class="number">3.8</span>GB | Total_Available:<span class="number">274.4</span>GB</span><br></pre></td></tr></table></figure></p>
+<h4 id="列出PG所在的节点(first_is_primary)">列出PG所在的节点(first is primary)</h4><p>命令： ceph-lazy pg-get-host {pg_id}<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph-lazy]<span class="comment"># ceph-lazy pg-get-host   10.2</span></span><br><span class="line">OSD:osd.<span class="number">2</span> | Host :lab8107</span><br><span class="line">OSD:osd.<span class="number">1</span> | Host :lab8106</span><br></pre></td></tr></table></figure></p>
+<h4 id="列出写操作最多的PG_(_operations_number)">列出写操作最多的PG ( operations number)</h4><p>命令：ceph-lazy pg-most-write<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph-lazy]<span class="comment"># ceph-lazy pg-most-write</span></span><br><span class="line">PG:<span class="number">10.3</span> | OSD:osd.<span class="number">1</span> | Host:lab8106</span><br></pre></td></tr></table></figure></p>
+<h4 id="列出写操作最少的PG_(_operations_number)">列出写操作最少的PG ( operations number)</h4><p>命令：ceph-lazy pg-less-write<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph-lazy]<span class="comment"># ceph-lazy pg-less-write</span></span><br><span class="line">PG:<span class="number">11.3</span> | OSD:osd.<span class="number">1</span> | Host:lab8106</span><br></pre></td></tr></table></figure></p>
+<h4 id="列出写操作最多的PG_(data_written)">列出写操作最多的PG (data written)</h4><p>命令：ceph-lazy pg-most-write-kb<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ceph-lazy pg-most-write-kb</span></span><br><span class="line">PG:<span class="number">10.0</span> | OSD:osd.<span class="number">1</span> | Host:lab8106</span><br></pre></td></tr></table></figure></p>
+<h4 id="列出写操作最少的PG_(data_written)">列出写操作最少的PG (data written)</h4><p>命令：ceph-lazy pg-less-write-kb<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ceph-lazy pg-less-write-kb</span></span><br><span class="line">PG:<span class="number">11.3</span> | OSD:osd.<span class="number">1</span> | Host:lab8106</span><br></pre></td></tr></table></figure></p>
+<h4 id="列出读操作最多的PG_(operations_number)">列出读操作最多的PG (operations number)</h4><p>命令：ceph-lazy pg-most-read<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ceph-lazy pg-most-read</span></span><br><span class="line">PG:<span class="number">10.1</span> | OSD:osd.<span class="number">0</span> | Host:lab8106</span><br></pre></td></tr></table></figure></p>
+<h4 id="列出读操作最少的PG_(operations_number)">列出读操作最少的PG (operations number)</h4><p>命令：ceph-lazy pg-less-read<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ceph-lazy pg-less-read</span></span><br><span class="line">PG:<span class="number">11.3</span> | OSD:osd.<span class="number">1</span> | Host:lab8106</span><br></pre></td></tr></table></figure></p>
+<h4 id="列出读操作最多的PG_(data_read)">列出读操作最多的PG (data read)</h4><p>命令：ceph-lazy pg-most-read-kb<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ceph-lazy pg-most-read-kb</span></span><br><span class="line">PG:<span class="number">10.4</span> | OSD:osd.<span class="number">0</span> | Host:lab8106</span><br></pre></td></tr></table></figure></p>
+<h4 id="列出读操作最少的PG_(data_read)">列出读操作最少的PG (data read)</h4><p>命令：ceph-lazy pg-less-read-kb<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ceph-lazy pg-less-read-kb</span></span><br><span class="line">PG:<span class="number">11.3</span> | OSD:osd.<span class="number">1</span> | Host:lab8106</span><br></pre></td></tr></table></figure></p>
+<h4 id="列出空的PG_(没有存储对象)">列出空的PG (没有存储对象)</h4><p>命令：ceph-lazy pg-empty<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ceph-lazy pg-empty</span></span><br><span class="line"><span class="number">11.3</span></span><br><span class="line"><span class="number">11.2</span></span><br><span class="line"><span class="number">11.1</span></span><br><span class="line"><span class="number">11.0</span></span><br><span class="line"><span class="number">11.7</span></span><br><span class="line"><span class="number">11.6</span></span><br><span class="line"><span class="number">11.5</span></span><br><span class="line"><span class="number">11.4</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="列出RBD的prefix">列出RBD的prefix</h4><p>命令：ceph-lazy rbd-prefix {poolname} {imgname}<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ceph-lazy rbd-prefix rbd zp</span></span><br><span class="line">rbd_data.<span class="number">1</span>b93a6b8b4567</span><br></pre></td></tr></table></figure></p>
+<h4 id="列出RBD的对象数目">列出RBD的对象数目</h4><p>命令：ceph-lazy rbd-count {poolname} {imgname}<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ceph-lazy rbd-count rbd zp</span></span><br><span class="line"></span><br><span class="line">    RBD image rbd/zp has prefix rbd_data.<span class="number">1</span>b93a6b8b4567; now couning objects...</span><br><span class="line">    count: <span class="number">27</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="列出RBD的Primary所在的存储主机">列出RBD的Primary所在的存储主机</h4><p>命令：ceph-lazy rbd-host {poolname} {imgname}<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ceph-lazy rbd-host rbd zp</span></span><br><span class="line">Primary Host: lab8107</span><br><span class="line">Primary Host: lab8106</span><br></pre></td></tr></table></figure></p>
+<h4 id="列出RBD的Primary所在的OSD节点">列出RBD的Primary所在的OSD节点</h4><p>命令：ceph-lazy rbd-osd {poolname} {imgname}<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ceph-lazy rbd-osd rbd zp</span></span><br><span class="line">Primary Osd: <span class="number">0</span></span><br><span class="line">Primary Osd: <span class="number">1</span></span><br><span class="line">Primary Osd: <span class="number">2</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="列出RBD的Image的真实大小">列出RBD的Image的真实大小</h4><p>命令：ceph-lazy rbd-size rbd zp<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ceph-lazy rbd-size rbd zp</span></span><br><span class="line">Pool: rbd | Image:zp | Real_size:<span class="number">71.5586</span> MB</span><br></pre></td></tr></table></figure></p>
+<h4 id="列出容量使用最多的OSD">列出容量使用最多的OSD</h4><p>命令：ceph-lazy osd-most-used<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ceph-lazy osd-most-used</span></span><br><span class="line">OSD:osd.<span class="number">1</span> | Host: lab8106 | Used: <span class="number">8</span> GB</span><br></pre></td></tr></table></figure></p>
+<h4 id="列出容量使用最少的OSD">列出容量使用最少的OSD</h4><p>命令：ceph-lazy osd-less-used<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ceph-lazy osd-less-used</span></span><br><span class="line">OSD:osd.<span class="number">2</span> | Host: lab8107 | Used: <span class="number">3</span> GB</span><br></pre></td></tr></table></figure></p>
+<h4 id="列出指定OSD上所有的primary_PG">列出指定OSD上所有的primary PG</h4><p>命令： ceph-lazy osd-get-ppg {osd_id}<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ceph-lazy osd-get-ppg 1</span></span><br><span class="line"><span class="number">11.3</span></span><br><span class="line"><span class="number">10.3</span></span><br><span class="line"><span class="number">10.0</span></span><br><span class="line"><span class="number">11.7</span></span><br><span class="line"><span class="number">10.6</span></span><br><span class="line"><span class="number">11.6</span></span><br><span class="line"><span class="number">10.7</span></span><br><span class="line"><span class="number">11.5</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="列出指定OSD上的所有PG">列出指定OSD上的所有PG</h4><p>命令：ceph-lazy osd-get-pg {osd_id}<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ceph-lazy osd-get-pg 1</span></span><br><span class="line"><span class="number">11.3</span></span><br><span class="line"><span class="number">10.2</span></span><br><span class="line"><span class="number">10.3</span></span><br><span class="line"><span class="number">10.0</span></span><br><span class="line"><span class="number">10.1</span></span><br><span class="line"><span class="number">11.7</span></span><br><span class="line"><span class="number">10.6</span></span><br><span class="line"><span class="number">11.6</span></span><br><span class="line"><span class="number">10.7</span></span><br><span class="line"><span class="number">11.5</span></span><br><span class="line"><span class="number">10.4</span></span><br><span class="line"><span class="number">10.5</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="列出指定对象所在的主机（第一个是主）">列出指定对象所在的主机（第一个是主）</h4><p>命令：ceph-lazy object-get-host   {poolname} {obj_name}<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ceph-lazy object-get-host   rbd rbd_data.1b93a6b8b4567.00000000000000a0</span></span><br><span class="line">Pg: <span class="number">10.4</span></span><br><span class="line">OSD:osd.<span class="number">0</span> | Host :lab8106</span><br><span class="line">OSD:osd.<span class="number">1</span> | Host :lab8106</span><br></pre></td></tr></table></figure></p>
+<h3 id="总结">总结</h3><p>本篇只是暂时结束了，目前完成了原作者的一些想法，等有空再写点自己比较注重的数据</p>
+<p>最近一直在关注冯大辉的事情，看完后还是原来的感觉，在利益面前，公司总是会追求最大化，当出现分离的时候，总会显得无情，还是自己让自己强大一点，拿到属于自己的那一部分就好</p>
+<h3 id="变更记录">变更记录</h3><table>
+<thead>
+<tr>
+<th style="text-align:center">Why</th>
+<th style="text-align:center">Who</th>
+<th style="text-align:center">When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">创建</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2016-08-19</td>
+</tr>
+</tbody>
+</table>
+<h3 id="For_me">For me</h3><p>愿意打赏欢迎联系，另有私人ceph小群，可以联系我</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p><img src="http://7xweck.com1.z0.glb.clouddn.com/ceph-lazy/lazy.jpg" alt="ceph-lzy"></p>
+<h2 id="前言">前言</h2><p>这个工具最开始是从sebastien的blog里面看到的，这个是 <a href="https://github.com/gcharot/">Gregory Charot</a>（工具的作者），通常我们在获取一个ceph的信息的时候，需要敲一连串的命令去获得自己需要的信息，可能需要一大堆的解析才能完成，而经常出现的是，使用了后，下次使用的时候，又要重来一遍，所以作者把这些常用的操作做了一些归纳，形成了一个查询的工具，很多人有个相同的观点就是，越懒，就会想办法提高效率，当然，首先得有提高效率的意识，否则只剩下懒了</p>
+<p>我做的事情就是把作者用shell的逻辑转换成了python的版本，这样也方便自己以后的扩展，这里感谢作者做的一些工作，让我很快就能完成了，这里并不是重复造车轮，本来自己就不会python，权当练手了</p>
+<p>在linux下面我是不建议用中文的，但是这个工具里面还是改成用中文提示，因为中文可能看上去更清楚需要做的是一个什么事情，这个仅仅是一个查询工具</p>
+<p>有一段时间没有更新blog了，主要是最近比较忙，没有时间去看太多的资料，没有时间来写下更多的东西，有时间还是会坚持写下去</p>]]>
+    
+    </summary>
+    
+      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
+    
+  </entry>
+  
+  <entry>
     <title><![CDATA[Linux配置邮件发送信息]]></title>
     <link href="http://www.zphj1987.com/2016/08/19/Linux%E9%85%8D%E7%BD%AE%E9%82%AE%E4%BB%B6%E5%8F%91%E9%80%81%E4%BF%A1%E6%81%AF/"/>
     <id>http://www.zphj1987.com/2016/08/19/Linux配置邮件发送信息/</id>
     <published>2016-08-18T16:48:17.000Z</published>
-    <updated>2016-08-18T17:08:43.033Z</updated>
+    <updated>2016-08-28T16:08:27.386Z</updated>
     <content type="html"><![CDATA[<p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/email/email.png" alt=""><br></center></p>
 <h2 id="背景">背景</h2><p>一般情况下，我们的IT系统都会有相关的告警的处理，有的是邮件，有的是短信，这些都能很方便的获得一些有用的信息<br>在某些时候我们没有这样的系统，而自己又需要定期的获取一些信息的时候，配置一个邮件发送是很有用的</p>
 <h2 id="配置方法">配置方法</h2><p>网上的大部分的方法使用的是sendmail的发送方法，这个地方我们只需要简单的发送邮件的需求，可以直接配置SMTP发送的模式</p>
@@ -29,6 +100,22 @@
 <h3 id="在crontab中添加定期执行">在crontab中添加定期执行</h3><p>修改crontab配置文件<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">vim crontab</span><br><span class="line">*/<span class="number">5</span> * * * *  root  sh /root/sendmail.sh  <span class="number">2</span>&gt;&amp;<span class="number">1</span>  &gt; /dev/null</span><br></pre></td></tr></table></figure></p>
 <p>让crontab服务生效<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">crontab crontab</span><br><span class="line">/etc/init.d/crontab restart</span><br></pre></td></tr></table></figure></p>
 <h2 id="总结">总结</h2><p>这个东西很简单，不过自己真去配置的时候，还是找半天资料，还是自己写好文档，方便以后使用，最快最简单的实现需求</p>
+<h2 id="变更记录">变更记录</h2><table>
+<thead>
+<tr>
+<th style="text-align:center">Why</th>
+<th style="text-align:center">Who</th>
+<th style="text-align:center">When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">创建</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2016-08-19</td>
+</tr>
+</tbody>
+</table>
 ]]></content>
     <summary type="html">
     <![CDATA[<p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/email/email.png" alt=""><br></center></p>
@@ -1192,54 +1279,6 @@ sig_hashalgo:   sha256
 <li>rbd-ko的开发要慢于librbd，需要很多的时间才能追赶上librbd</li>
 </ul>
 <p>rbd-nbd是通过librbd这个用户空间通过nbd的内核模块实现了内核级别的驱动，稳定性和性能都有保障<br>]]>
-    
-    </summary>
-    
-      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[支持jewel版本的calamari]]></title>
-    <link href="http://www.zphj1987.com/2016/05/16/%E6%94%AF%E6%8C%81jewel%E7%89%88%E6%9C%AC%E7%9A%84calamari/"/>
-    <id>http://www.zphj1987.com/2016/05/16/支持jewel版本的calamari/</id>
-    <published>2016-05-15T16:48:46.000Z</published>
-    <updated>2016-07-12T06:26:32.981Z</updated>
-    <content type="html"><![CDATA[<p>之前测试了下，发现calamari不支持jewel版本的，是因为接口了有了一些变化，在提出这个问题后，作者给出了回答，说肯定会支持的，并且做了一点小的改动，就可以支持了，这个作者merge了到了github的一些分支当中，但是还没有merge到最新的1.4的分支合master分支当中，这个可能是因为1.4还在做一些功能的开发</p>
-<p>我使用作者的修改好的分支打好了包，直接可以使用，测试了ubuntu14.04 和centos 7的版本都可以使用，下面是百度云的链接，欢迎使用和测试</p>
-<a id="more"></a>
-<h3 id="ubuntu版本下载地址：">ubuntu版本下载地址：</h3><p><a href="http://pan.baidu.com/s/1i44Am25" target="_blank" rel="external">ubuntu-jewel-calamari</a><br>密码：w2dt</p>
-<h3 id="centos7版本下载地址">centos7版本下载地址</h3><p><a href="http://pan.baidu.com/s/1nuMdbU5" target="_blank" rel="external">centos-jewel-calamari</a><br>密码：u9nl</p>
-<h3 id="六、变更记录">六、变更记录</h3><table>
-<thead>
-<tr>
-<th style="text-align:center">Why</th>
-<th style="text-align:center">Who</th>
-<th style="text-align:center">When</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">创建</td>
-<td style="text-align:center">武汉-运维-磨渣</td>
-<td style="text-align:center">2016-05-16</td>
-</tr>
-<tr>
-<td style="text-align:center">修改资源，解决无法获取iops和容量的bug</td>
-<td style="text-align:center">武汉-运维-磨渣</td>
-<td style="text-align:center">2016-07-12</td>
-</tr>
-</tbody>
-</table>
-<blockquote>
-<p>如果您觉得本篇资源对您有用，欢迎通过下面的打赏通道进行打赏</p>
-</blockquote>
-<h3 id="打赏通道">打赏通道</h3><center><br><img src="http://static.zybuluo.com/zphj1987/fi2557g55ucsdpyblopyfudl/newpay.png" alt="打赏" title="打赏"><br></center>
-
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>之前测试了下，发现calamari不支持jewel版本的，是因为接口了有了一些变化，在提出这个问题后，作者给出了回答，说肯定会支持的，并且做了一点小的改动，就可以支持了，这个作者merge了到了github的一些分支当中，但是还没有merge到最新的1.4的分支合master分支当中，这个可能是因为1.4还在做一些功能的开发</p>
-<p>我使用作者的修改好的分支打好了包，直接可以使用，测试了ubuntu14.04 和centos 7的版本都可以使用，下面是百度云的链接，欢迎使用和测试</p>]]>
     
     </summary>
     

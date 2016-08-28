@@ -191,6 +191,65 @@ var _hmt = _hmt || [];
 </nav>
       <div class="body-wrap">
   
+    <article id="post-支持jewel版本的calamari" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/05/16/支持jewel版本的calamari/" class="article-date">
+  	<time datetime="2016-05-15T16:48:46.000Z" itemprop="datePublished">2016-05-16</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/05/16/支持jewel版本的calamari/">支持jewel版本的calamari</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>之前测试了下，发现calamari不支持jewel版本的，是因为接口了有了一些变化，在提出这个问题后，作者给出了回答，说肯定会支持的，并且做了一点小的改动，就可以支持了，这个作者merge了到了github的一些分支当中，但是还没有merge到最新的1.4的分支合master分支当中，这个可能是因为1.4还在做一些功能的开发</p>
+<p>我使用作者的修改好的分支打好了包，直接可以使用，测试了ubuntu14.04 和centos 7的版本都可以使用，下面是百度云的链接，欢迎使用和测试</p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2016/05/16/支持jewel版本的calamari/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-ceph卡在active-remapped状态" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -739,74 +798,6 @@ var _hmt = _hmt || [];
       
         <p class="article-more-link">
           <a  href="/2016/04/13/记一次不完全成功到成功的失效恢复-20160412/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-记一次ceph的故障修复-20160408" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/04/11/记一次ceph的故障修复-20160408/" class="article-date">
-  	<time datetime="2016-04-10T17:24:35.000Z" itemprop="datePublished">2016-04-11</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/04/11/记一次ceph的故障修复-20160408/">记一次ceph的故障修复(20160408)</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>ceph的在正常运行的时候基本不会出现故障，出现故障一般在变动的时候，具体有下面几种可能出现的情形</p>
-<ul>
-<li>软件升级</li>
-<li>增加存储节点</li>
-<li>减少存储节点</li>
-<li>调整副本数目</li>
-<li>调整pg数目</li>
-<li>磁盘出现损坏</li>
-<li>节点网络出现异常</li>
-</ul>
-<p>以上这些操作过程中是最可能出现异常的情形，并不是一定会出问题，以上问题除了网络和磁盘问题出现的异常是基本无法避免外，其他出现的时候，一般是非正常操作引起的，也就是我通常认为的人为事故，这个一般出现在操作的不谨慎上</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2016/04/11/记一次ceph的故障修复-20160408/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>

@@ -242,6 +242,22 @@ var _hmt = _hmt || [];
 <h3 id="在crontab中添加定期执行">在crontab中添加定期执行</h3><p>修改crontab配置文件<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">vim crontab</span><br><span class="line">*/<span class="number">5</span> * * * *  root  sh /root/sendmail.sh  <span class="number">2</span>&gt;&amp;<span class="number">1</span>  &gt; /dev/null</span><br></pre></td></tr></table></figure></p>
 <p>让crontab服务生效<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">crontab crontab</span><br><span class="line">/etc/init.d/crontab restart</span><br></pre></td></tr></table></figure></p>
 <h2 id="总结">总结</h2><p>这个东西很简单，不过自己真去配置的时候，还是找半天资料，还是自己写好文档，方便以后使用，最快最简单的实现需求</p>
+<h2 id="变更记录">变更记录</h2><table>
+<thead>
+<tr>
+<th style="text-align:center">Why</th>
+<th style="text-align:center">Who</th>
+<th style="text-align:center">When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">创建</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2016-08-19</td>
+</tr>
+</tbody>
+</table>
 
       
     </div>
@@ -250,6 +266,15 @@ var _hmt = _hmt || [];
   
     
 <nav id="article-nav">
+  
+    <a href="/2016/08/28/重写ceph-lazy/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          重写ceph-lazy
+        
+      </div>
+    </a>
   
   
     <a href="/2016/07/27/Ceph-状态报警告-pool-rbd-has-many-more-objects-per-pg-than-average-too-few-pgs/" id="article-nav-older" class="article-nav-link-wrap">
