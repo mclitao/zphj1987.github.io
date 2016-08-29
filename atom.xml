@@ -4,7 +4,7 @@
   <subtitle><![CDATA[现在所学，终有所用]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2016-08-28T16:18:17.782Z</updated>
+  <updated>2016-08-29T01:05:09.111Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -19,9 +19,9 @@
     <link href="http://www.zphj1987.com/2016/08/28/%E9%87%8D%E5%86%99ceph-lazy/"/>
     <id>http://www.zphj1987.com/2016/08/28/重写ceph-lazy/</id>
     <published>2016-08-28T15:58:04.000Z</published>
-    <updated>2016-08-28T16:18:17.782Z</updated>
+    <updated>2016-08-29T01:05:09.111Z</updated>
     <content type="html"><![CDATA[<p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/ceph-lazy/lazy.jpg" alt="ceph-lzy"><br></center></p>
-<h2 id="前言">前言</h2><p>这个工具最开始是从sebastien的blog里面看到的，这个是 <a href="https://github.com/gcharot/" target="_blank" rel="external">Gregory Charot</a>（工具的作者），通常我们在获取一个ceph的信息的时候，需要敲一连串的命令去获得自己需要的信息，可能需要一大堆的解析才能完成，而经常出现的是，使用了后，下次使用的时候，又要重来一遍，所以作者把这些常用的操作做了一些归纳，形成了一个查询的工具，很多人有个相同的观点就是，越懒，就会想办法提高效率，当然，首先得有提高效率的意识，否则只剩下懒了</p>
+<h2 id="前言">前言</h2><p>这个工具最开始是从sebastien的blog里面看到的，这个是 <a href="https://github.com/gcharot/" target="_blank" rel="external">Gregory Charot</a>（工具的作者）写的，通常我们在获取一个ceph的信息的时候，需要敲一连串的命令去获得自己需要的信息，可能需要一大堆的解析才能完成，而经常出现的是，使用了后，下次使用的时候，又要重来一遍，所以作者把这些常用的操作做了一些归纳，形成了一个查询的工具，很多人有个相同的观点就是，越懒，就会想办法提高效率，当然，首先得有提高效率的意识，否则只剩下懒了</p>
 <p>我做的事情就是把作者用shell的逻辑转换成了python的版本，这样也方便自己以后的扩展，这里感谢作者做的一些工作，让我很快就能完成了，这里并不是重复造车轮，本来自己就不会python，权当练手了</p>
 <p>在linux下面我是不建议用中文的，但是这个工具里面还是改成用中文提示，因为中文可能看上去更清楚需要做的是一个什么事情，这个仅仅是一个查询工具</p>
 <p>有一段时间没有更新blog了，主要是最近比较忙，没有时间去看太多的资料，没有时间来写下更多的东西，有时间还是会坚持写下去</p>
@@ -74,7 +74,7 @@
 ]]></content>
     <summary type="html">
     <![CDATA[<p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/ceph-lazy/lazy.jpg" alt="ceph-lzy"><br></center></p>
-<h2 id="前言">前言</h2><p>这个工具最开始是从sebastien的blog里面看到的，这个是 <a href="https://github.com/gcharot/">Gregory Charot</a>（工具的作者），通常我们在获取一个ceph的信息的时候，需要敲一连串的命令去获得自己需要的信息，可能需要一大堆的解析才能完成，而经常出现的是，使用了后，下次使用的时候，又要重来一遍，所以作者把这些常用的操作做了一些归纳，形成了一个查询的工具，很多人有个相同的观点就是，越懒，就会想办法提高效率，当然，首先得有提高效率的意识，否则只剩下懒了</p>
+<h2 id="前言">前言</h2><p>这个工具最开始是从sebastien的blog里面看到的，这个是 <a href="https://github.com/gcharot/">Gregory Charot</a>（工具的作者）写的，通常我们在获取一个ceph的信息的时候，需要敲一连串的命令去获得自己需要的信息，可能需要一大堆的解析才能完成，而经常出现的是，使用了后，下次使用的时候，又要重来一遍，所以作者把这些常用的操作做了一些归纳，形成了一个查询的工具，很多人有个相同的观点就是，越懒，就会想办法提高效率，当然，首先得有提高效率的意识，否则只剩下懒了</p>
 <p>我做的事情就是把作者用shell的逻辑转换成了python的版本，这样也方便自己以后的扩展，这里感谢作者做的一些工作，让我很快就能完成了，这里并不是重复造车轮，本来自己就不会python，权当练手了</p>
 <p>在linux下面我是不建议用中文的，但是这个工具里面还是改成用中文提示，因为中文可能看上去更清楚需要做的是一个什么事情，这个仅仅是一个查询工具</p>
 <p>有一段时间没有更新blog了，主要是最近比较忙，没有时间去看太多的资料，没有时间来写下更多的东西，有时间还是会坚持写下去</p>]]>
