@@ -4,7 +4,7 @@
   <subtitle><![CDATA[现在所学，终有所用]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2016-08-29T15:58:37.819Z</updated>
+  <updated>2016-08-29T16:06:56.225Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -19,33 +19,35 @@
     <link href="http://www.zphj1987.com/2016/08/29/Cephday%E5%8C%97%E4%BA%AC%E6%80%BB%E7%BB%93-August-20-2016%EF%BC%88%E6%9C%AA%E5%AE%8C%E5%BE%85%E7%BB%AD%EF%BC%89/"/>
     <id>http://www.zphj1987.com/2016/08/29/Cephday北京总结-August-20-2016（未完待续）/</id>
     <published>2016-08-29T15:57:52.000Z</published>
-    <updated>2016-08-29T15:58:37.819Z</updated>
+    <updated>2016-08-29T16:06:56.225Z</updated>
     <content type="html"><![CDATA[<h2 id="前言">前言</h2><p>这次的ceph day 在北京举办的，随着中国IT业的发展，中国的程序员在一些开源项目中做出了自己的贡献，同样的，国外的大厂也越来越关注中国的市场，这就促成了越来越多的交流活动，这次的北京站应该是CEPH DAY APAC ROADSHOW – BEIJING，这个是ceph的亚洲行的其中的一站，来中国，当然就有更多的中国的开发者进行的分享，作为一个长期关注ceph的爱好者，本篇将从我自己的角度来看下这次北京站讲了哪些东西</p>
 <p>由于工作的地方在武汉，没有那么多的机会去参加分享活动，就从分享的PPT当中进行解读了，所有的知识都是需要去根据环境进行实践的，也就是别人的经验只有适配好你的环境，对你才是有用的，废话不多说开始了</p>
 <a id="more"></a>
 <h2 id="分享的PPT">分享的PPT</h2><h3 id="00-开幕致辞-张建">00-开幕致辞-张建</h3><center><embed src="http://7xweck.com1.z0.glb.clouddn.com/cephdaybeijing201608/00-%E5%BC%80%E5%B9%95%E8%87%B4%E8%BE%9E-%E5%BC%A0%E5%BB%BA.pdf" width="850" height="700"></center>
 
 <p>首先说下这位分享者，之前在2015的Ceph Hackathon上，就是他最先发现的老版本的ceph与 TCMalloc结合的一个bug，然后提出了用jemalloc获取了随机IO的提升，并且降低了资源占用， 这对于老版本的环境提升还是比较大的，在新的环境下，差别没有那么大了，不过分享者还是非常无私的分享了他们的发现<br>本篇主要讲了下面几点：ceph在中国很火，intel投入很多，并且参与了很多的功能的开发，这只是一个致辞，发出的信号就是Intel 很关注ceph</p>
-<center><embed src="http://7xweck.com1.z0.glb.clouddn.com/cephdaybeijing201608/01-Ceph%E7%A4%BE%E5%8C%BA%E8%BF%9B%E5%B1%95-Patrick.pdf" width="850" height="700"></center>
+<h3 id="Ceph社区进展-Patrick">Ceph社区进展-Patrick</h3><center><embed src="http://7xweck.com1.z0.glb.clouddn.com/cephdaybeijing201608/01-Ceph%E7%A4%BE%E5%8C%BA%E8%BF%9B%E5%B1%95-Patrick.pdf" width="850" height="700"></center>
 
 <p>Patrick是红帽的ceph社区的总监，负责推进ceph各方面的发展，<br>本篇主要讲了：ceph当前的发展情况，各大厂对ceph的关注，ceph的固定的活动，cephfs在jewel版本会稳定下来</p>
-<center><embed src="http://7xweck.com1.z0.glb.clouddn.com/cephdaybeijing201608/02-Ceph%E4%B8%AD%E5%9B%BD%E7%A4%BE%E5%8C%BA-%E5%AD%99%E7%90%A6.pdf" width="850" height="700"></center><br>这篇是由孙琦进行的演讲，他对推动ceph在中国的发展做了很多工作<br>本篇主要讲了：ceph中国社区在中国做了哪些推广方面的活动，主要是建立圈子，关注的人很多，发布了一本翻译的技术书籍，未来会做的事情，需要关注的是社区自己写的书会在10月份出来<br><br><br><center><embed src="http://7xweck.com1.z0.glb.clouddn.com/cephdaybeijing201608/03-SSD%20Ceph%E5%9C%A8360%E6%B8%B8%E6%88%8F%E4%BA%91%E7%9A%84%E5%BA%94%E7%94%A8-%E8%B0%B7%E5%BF%A0%E8%A8%80.pdf" width="850" height="700"></center>
+<h3 id="Ceph中国社区-孙琦">Ceph中国社区-孙琦</h3><center><embed src="http://7xweck.com1.z0.glb.clouddn.com/cephdaybeijing201608/02-Ceph%E4%B8%AD%E5%9B%BD%E7%A4%BE%E5%8C%BA-%E5%AD%99%E7%90%A6.pdf" width="850" height="700"></center><br>这篇是由孙琦进行的演讲，他对推动ceph在中国的发展做了很多工作<br>本篇主要讲了：ceph中国社区在中国做了哪些推广方面的活动，主要是建立圈子，关注的人很多，发布了一本翻译的技术书籍，未来会做的事情，需要关注的是社区自己写的书会在10月份出来<br><br>###SSD Ceph在360游戏云的应用-谷忠言<br><center><embed src="http://7xweck.com1.z0.glb.clouddn.com/cephdaybeijing201608/03-SSD%20Ceph%E5%9C%A8360%E6%B8%B8%E6%88%8F%E4%BA%91%E7%9A%84%E5%BA%94%E7%94%A8-%E8%B0%B7%E5%BF%A0%E8%A8%80.pdf" width="850" height="700"></center>
 
-<center><embed src="http://7xweck.com1.z0.glb.clouddn.com/cephdaybeijing201608/04-SPDK%E5%8A%A0%E9%80%9FCeph-XSKY%20Bluestore%E6%A1%88%E4%BE%8B%E5%88%86%E4%BA%AB-%E6%89%AC%E5%AD%90%E5%A4%9C-%E7%8E%8B%E8%B1%AA%E8%BF%88.pdf" width="850" height="700"></center>
+<h3 id="SPDK加速Ceph-XSKY_Bluestore案例分享-扬子夜-王豪迈">SPDK加速Ceph-XSKY Bluestore案例分享-扬子夜-王豪迈</h3><center><embed src="http://7xweck.com1.z0.glb.clouddn.com/cephdaybeijing201608/04-SPDK%E5%8A%A0%E9%80%9FCeph-XSKY%20Bluestore%E6%A1%88%E4%BE%8B%E5%88%86%E4%BA%AB-%E6%89%AC%E5%AD%90%E5%A4%9C-%E7%8E%8B%E8%B1%AA%E8%BF%88.pdf" width="850" height="700"></center>
 
-<center><embed src="http://7xweck.com1.z0.glb.clouddn.com/cephdaybeijing201608/05-Ceph%20Tiering%E9%AB%98%E6%80%A7%E8%83%BD%E6%9E%B6%E6%9E%84-Thor%20Chin.pdf" width="850" height="700"></center>
+<h3 id="Ceph_Tiering高性能架构-Thor_Chin">Ceph Tiering高性能架构-Thor Chin</h3><center><embed src="http://7xweck.com1.z0.glb.clouddn.com/cephdaybeijing201608/05-Ceph%20Tiering%E9%AB%98%E6%80%A7%E8%83%BD%E6%9E%B6%E6%9E%84-Thor%20Chin.pdf" width="850" height="700"></center>
 
-<center><embed src="http://7xweck.com1.z0.glb.clouddn.com/cephdaybeijing201608/06-Ceph%E5%9C%A8%E8%A7%86%E9%A2%91%E5%BA%94%E7%94%A8%E4%B8%8A%E7%9A%84%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96-%E4%BD%95%E8%90%A5.pdf" width="850" height="700"></center>
 
-<center><embed src="http://7xweck.com1.z0.glb.clouddn.com/cephdaybeijing201608/07-%E5%80%9F%E5%8A%A9%E5%BD%93%E4%BB%8A%E7%9A%84NVM%20Express%E5%9B%BA%E6%80%81%E7%9B%98%E5%92%8C%E6%9C%AA%E6%9D%A5%E7%9A%84%E8%8B%B1%E7%89%B9%E5%B0%94Optane%E6%8A%80%E6%9C%AF%E6%89%93%E9%80%A0%E7%BB%8F%E6%B5%8E%E9%AB%98%E6%95%88%E7%9A%84%E9%AB%98%E6%80%A7%E8%83%BD%E5%AD%98%E5%82%A8%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88-%E5%91%A8%E6%B8%8A-%E5%BC%A0%E7%BC%98.pdf" width="850" height="700"></center>
+<h3 id="Ceph在视频应用上的性能优化-何营">Ceph在视频应用上的性能优化-何营</h3><center><embed src="http://7xweck.com1.z0.glb.clouddn.com/cephdaybeijing201608/06-Ceph%E5%9C%A8%E8%A7%86%E9%A2%91%E5%BA%94%E7%94%A8%E4%B8%8A%E7%9A%84%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96-%E4%BD%95%E8%90%A5.pdf" width="850" height="700"></center>
 
-<center><embed src="http://7xweck.com1.z0.glb.clouddn.com/cephdaybeijing201608/08-%E5%9F%BA%E4%BA%8EARM%E7%9A%84Ceph%E5%8F%AF%E6%89%A9%E5%B1%95%E9%AB%98%E6%95%88%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88-%E7%BD%97%E6%97%AD.pdf " width="850" height="700"></center>
+<h3 id="借助当今的NVM_Express固态盘和未来的英特尔Optane技术打造经济高效的高性能存储解决方案-周渊-张缘">借助当今的NVM Express固态盘和未来的英特尔Optane技术打造经济高效的高性能存储解决方案-周渊-张缘</h3><center><embed src="http://7xweck.com1.z0.glb.clouddn.com/cephdaybeijing201608/07-%E5%80%9F%E5%8A%A9%E5%BD%93%E4%BB%8A%E7%9A%84NVM%20Express%E5%9B%BA%E6%80%81%E7%9B%98%E5%92%8C%E6%9C%AA%E6%9D%A5%E7%9A%84%E8%8B%B1%E7%89%B9%E5%B0%94Optane%E6%8A%80%E6%9C%AF%E6%89%93%E9%80%A0%E7%BB%8F%E6%B5%8E%E9%AB%98%E6%95%88%E7%9A%84%E9%AB%98%E6%80%A7%E8%83%BD%E5%AD%98%E5%82%A8%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88-%E5%91%A8%E6%B8%8A-%E5%BC%A0%E7%BC%98.pdf" width="850" height="700"></center>
 
-<center><embed src="http://7xweck.com1.z0.glb.clouddn.com/cephdaybeijing201608/09-Ceph%E5%AD%98%E5%82%A8%E8%AE%BE%E5%A4%87%E6%A1%88%E4%BE%8B%E7%A0%94%E7%A9%B6%E4%B8%8ES3%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96-%E5%88%98%E5%BF%97%E5%88%9A.pdf " width="850" height="700"></center>
+<h3 id="基于ARM的Ceph可扩展高效解决方案-罗旭">基于ARM的Ceph可扩展高效解决方案-罗旭</h3><center><embed src="http://7xweck.com1.z0.glb.clouddn.com/cephdaybeijing201608/08-%E5%9F%BA%E4%BA%8EARM%E7%9A%84Ceph%E5%8F%AF%E6%89%A9%E5%B1%95%E9%AB%98%E6%95%88%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88-%E7%BD%97%E6%97%AD.pdf " width="850" height="700"></center>
 
-<center><embed src="http://7xweck.com1.z0.glb.clouddn.com/cephdaybeijing201608/10-Ceph%E5%85%A8%E9%97%AA%E5%AD%98%E5%AD%98%E5%82%A8-%E5%91%A8%E7%9A%93.pdf" width="850" height="700"></center>
+<h3 id="Ceph存储设备案例研究与S3对象存储性能优化-刘志刚">Ceph存储设备案例研究与S3对象存储性能优化-刘志刚</h3><center><embed src="http://7xweck.com1.z0.glb.clouddn.com/cephdaybeijing201608/09-Ceph%E5%AD%98%E5%82%A8%E8%AE%BE%E5%A4%87%E6%A1%88%E4%BE%8B%E7%A0%94%E7%A9%B6%E4%B8%8ES3%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96-%E5%88%98%E5%BF%97%E5%88%9A.pdf " width="850" height="700"></center>
 
-<center><embed src="http://7xweck.com1.z0.glb.clouddn.com/cephdaybeijing201608/11-%E5%B0%86Ceph%E5%BC%95%E5%85%A5%E4%BC%81%E4%B8%9A-%E5%9C%A830%E5%88%86%E9%92%9F%E5%AE%89%E8%A3%85%E4%B8%80%E4%B8%AA50T%E7%A7%BB%E5%8A%A8%E9%9B%86%E7%BE%A4-Alex%20Lau.pdf" width="850" height="700"></center>
+<h3 id="Ceph全闪存存储-周皓">Ceph全闪存存储-周皓</h3><center><embed src="http://7xweck.com1.z0.glb.clouddn.com/cephdaybeijing201608/10-Ceph%E5%85%A8%E9%97%AA%E5%AD%98%E5%AD%98%E5%82%A8-%E5%91%A8%E7%9A%93.pdf" width="850" height="700"></center>
+
+
+<h3 id="将Ceph引入企业-在30分钟安装一个50T移动集群">将Ceph引入企业-在30分钟安装一个50T移动集群</h3><center><embed src="http://7xweck.com1.z0.glb.clouddn.com/cephdaybeijing201608/11-%E5%B0%86Ceph%E5%BC%95%E5%85%A5%E4%BC%81%E4%B8%9A-%E5%9C%A830%E5%88%86%E9%92%9F%E5%AE%89%E8%A3%85%E4%B8%80%E4%B8%AA50T%E7%A7%BB%E5%8A%A8%E9%9B%86%E7%BE%A4-Alex%20Lau.pdf" width="850" height="700"></center>
 ]]></content>
     <summary type="html">
     <![CDATA[<h2 id="前言">前言</h2><p>这次的ceph day 在北京举办的，随着中国IT业的发展，中国的程序员在一些开源项目中做出了自己的贡献，同样的，国外的大厂也越来越关注中国的市场，这就促成了越来越多的交流活动，这次的北京站应该是CEPH DAY APAC ROADSHOW – BEIJING，这个是ceph的亚洲行的其中的一站，来中国，当然就有更多的中国的开发者进行的分享，作为一个长期关注ceph的爱好者，本篇将从我自己的角度来看下这次北京站讲了哪些东西</p>
