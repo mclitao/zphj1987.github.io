@@ -4,7 +4,7 @@
   <subtitle><![CDATA[现在所学，终有所用]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2016-08-29T01:05:09.111Z</updated>
+  <updated>2016-08-29T15:58:37.819Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -13,6 +13,49 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[Cephday北京总结-August 20, 2016（未完待续）]]></title>
+    <link href="http://www.zphj1987.com/2016/08/29/Cephday%E5%8C%97%E4%BA%AC%E6%80%BB%E7%BB%93-August-20-2016%EF%BC%88%E6%9C%AA%E5%AE%8C%E5%BE%85%E7%BB%AD%EF%BC%89/"/>
+    <id>http://www.zphj1987.com/2016/08/29/Cephday北京总结-August-20-2016（未完待续）/</id>
+    <published>2016-08-29T15:57:52.000Z</published>
+    <updated>2016-08-29T15:58:37.819Z</updated>
+    <content type="html"><![CDATA[<h2 id="前言">前言</h2><p>这次的ceph day 在北京举办的，随着中国IT业的发展，中国的程序员在一些开源项目中做出了自己的贡献，同样的，国外的大厂也越来越关注中国的市场，这就促成了越来越多的交流活动，这次的北京站应该是CEPH DAY APAC ROADSHOW – BEIJING，这个是ceph的亚洲行的其中的一站，来中国，当然就有更多的中国的开发者进行的分享，作为一个长期关注ceph的爱好者，本篇将从我自己的角度来看下这次北京站讲了哪些东西</p>
+<p>由于工作的地方在武汉，没有那么多的机会去参加分享活动，就从分享的PPT当中进行解读了，所有的知识都是需要去根据环境进行实践的，也就是别人的经验只有适配好你的环境，对你才是有用的，废话不多说开始了</p>
+<a id="more"></a>
+<h2 id="分享的PPT">分享的PPT</h2><h3 id="00-开幕致辞-张建">00-开幕致辞-张建</h3><center><embed src="http://7xweck.com1.z0.glb.clouddn.com/cephdaybeijing201608/00-%E5%BC%80%E5%B9%95%E8%87%B4%E8%BE%9E-%E5%BC%A0%E5%BB%BA.pdf" width="850" height="700"></center>
+
+<p>首先说下这位分享者，之前在2015的Ceph Hackathon上，就是他最先发现的老版本的ceph与 TCMalloc结合的一个bug，然后提出了用jemalloc获取了随机IO的提升，并且降低了资源占用， 这对于老版本的环境提升还是比较大的，在新的环境下，差别没有那么大了，不过分享者还是非常无私的分享了他们的发现<br>本篇主要讲了下面几点：ceph在中国很火，intel投入很多，并且参与了很多的功能的开发，这只是一个致辞，发出的信号就是Intel 很关注ceph</p>
+<center><embed src="http://7xweck.com1.z0.glb.clouddn.com/cephdaybeijing201608/01-Ceph%E7%A4%BE%E5%8C%BA%E8%BF%9B%E5%B1%95-Patrick.pdf" width="850" height="700"></center>
+
+<p>Patrick是红帽的ceph社区的总监，负责推进ceph各方面的发展，<br>本篇主要讲了：ceph当前的发展情况，各大厂对ceph的关注，ceph的固定的活动，cephfs在jewel版本会稳定下来</p>
+<center><embed src="http://7xweck.com1.z0.glb.clouddn.com/cephdaybeijing201608/02-Ceph%E4%B8%AD%E5%9B%BD%E7%A4%BE%E5%8C%BA-%E5%AD%99%E7%90%A6.pdf" width="850" height="700"></center><br>这篇是由孙琦进行的演讲，他对推动ceph在中国的发展做了很多工作<br>本篇主要讲了：ceph中国社区在中国做了哪些推广方面的活动，主要是建立圈子，关注的人很多，发布了一本翻译的技术书籍，未来会做的事情，需要关注的是社区自己写的书会在10月份出来<br><br><br><center><embed src="http://7xweck.com1.z0.glb.clouddn.com/cephdaybeijing201608/03-SSD%20Ceph%E5%9C%A8360%E6%B8%B8%E6%88%8F%E4%BA%91%E7%9A%84%E5%BA%94%E7%94%A8-%E8%B0%B7%E5%BF%A0%E8%A8%80.pdf" width="850" height="700"></center>
+
+<center><embed src="http://7xweck.com1.z0.glb.clouddn.com/cephdaybeijing201608/04-SPDK%E5%8A%A0%E9%80%9FCeph-XSKY%20Bluestore%E6%A1%88%E4%BE%8B%E5%88%86%E4%BA%AB-%E6%89%AC%E5%AD%90%E5%A4%9C-%E7%8E%8B%E8%B1%AA%E8%BF%88.pdf" width="850" height="700"></center>
+
+<center><embed src="http://7xweck.com1.z0.glb.clouddn.com/cephdaybeijing201608/05-Ceph%20Tiering%E9%AB%98%E6%80%A7%E8%83%BD%E6%9E%B6%E6%9E%84-Thor%20Chin.pdf" width="850" height="700"></center>
+
+<center><embed src="http://7xweck.com1.z0.glb.clouddn.com/cephdaybeijing201608/06-Ceph%E5%9C%A8%E8%A7%86%E9%A2%91%E5%BA%94%E7%94%A8%E4%B8%8A%E7%9A%84%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96-%E4%BD%95%E8%90%A5.pdf" width="850" height="700"></center>
+
+<center><embed src="http://7xweck.com1.z0.glb.clouddn.com/cephdaybeijing201608/07-%E5%80%9F%E5%8A%A9%E5%BD%93%E4%BB%8A%E7%9A%84NVM%20Express%E5%9B%BA%E6%80%81%E7%9B%98%E5%92%8C%E6%9C%AA%E6%9D%A5%E7%9A%84%E8%8B%B1%E7%89%B9%E5%B0%94Optane%E6%8A%80%E6%9C%AF%E6%89%93%E9%80%A0%E7%BB%8F%E6%B5%8E%E9%AB%98%E6%95%88%E7%9A%84%E9%AB%98%E6%80%A7%E8%83%BD%E5%AD%98%E5%82%A8%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88-%E5%91%A8%E6%B8%8A-%E5%BC%A0%E7%BC%98.pdf" width="850" height="700"></center>
+
+<center><embed src="http://7xweck.com1.z0.glb.clouddn.com/cephdaybeijing201608/08-%E5%9F%BA%E4%BA%8EARM%E7%9A%84Ceph%E5%8F%AF%E6%89%A9%E5%B1%95%E9%AB%98%E6%95%88%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88-%E7%BD%97%E6%97%AD.pdf " width="850" height="700"></center>
+
+<center><embed src="http://7xweck.com1.z0.glb.clouddn.com/cephdaybeijing201608/09-Ceph%E5%AD%98%E5%82%A8%E8%AE%BE%E5%A4%87%E6%A1%88%E4%BE%8B%E7%A0%94%E7%A9%B6%E4%B8%8ES3%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96-%E5%88%98%E5%BF%97%E5%88%9A.pdf " width="850" height="700"></center>
+
+<center><embed src="http://7xweck.com1.z0.glb.clouddn.com/cephdaybeijing201608/10-Ceph%E5%85%A8%E9%97%AA%E5%AD%98%E5%AD%98%E5%82%A8-%E5%91%A8%E7%9A%93.pdf" width="850" height="700"></center>
+
+<center><embed src="http://7xweck.com1.z0.glb.clouddn.com/cephdaybeijing201608/11-%E5%B0%86Ceph%E5%BC%95%E5%85%A5%E4%BC%81%E4%B8%9A-%E5%9C%A830%E5%88%86%E9%92%9F%E5%AE%89%E8%A3%85%E4%B8%80%E4%B8%AA50T%E7%A7%BB%E5%8A%A8%E9%9B%86%E7%BE%A4-Alex%20Lau.pdf" width="850" height="700"></center>
+]]></content>
+    <summary type="html">
+    <![CDATA[<h2 id="前言">前言</h2><p>这次的ceph day 在北京举办的，随着中国IT业的发展，中国的程序员在一些开源项目中做出了自己的贡献，同样的，国外的大厂也越来越关注中国的市场，这就促成了越来越多的交流活动，这次的北京站应该是CEPH DAY APAC ROADSHOW – BEIJING，这个是ceph的亚洲行的其中的一站，来中国，当然就有更多的中国的开发者进行的分享，作为一个长期关注ceph的爱好者，本篇将从我自己的角度来看下这次北京站讲了哪些东西</p>
+<p>由于工作的地方在武汉，没有那么多的机会去参加分享活动，就从分享的PPT当中进行解读了，所有的知识都是需要去根据环境进行实践的，也就是别人的经验只有适配好你的环境，对你才是有用的，废话不多说开始了</p>]]>
+    
+    </summary>
+    
+      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[重写ceph-lazy]]></title>
@@ -1228,61 +1271,6 @@ sig_hashalgo:   sha256
     </summary>
     
       <category term="linux" scheme="http://www.zphj1987.com/tags/linux/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[ceph的jewel新支持的rbd-nbd]]></title>
-    <link href="http://www.zphj1987.com/2016/05/19/ceph%E7%9A%84jewel%E6%96%B0%E6%94%AF%E6%8C%81%E7%9A%84rbd-nbd/"/>
-    <id>http://www.zphj1987.com/2016/05/19/ceph的jewel新支持的rbd-nbd/</id>
-    <published>2016-05-19T04:41:11.000Z</published>
-    <updated>2016-05-20T12:56:25.438Z</updated>
-    <content type="html"><![CDATA[<p>jewel版本新增加了一个驱动NBD，允许librbd实现一个内核级别的rbd</p>
-<p>NBD相比较于kernel rbd：</p>
-<ul>
-<li>rbd-ko是根据内核主线走的，升级kernel</li>
-<li>rbd需要升级到相应的内核，改动太大</li>
-<li>rbd-ko的开发要慢于librbd，需要很多的时间才能追赶上librbd</li>
-</ul>
-<p>rbd-nbd是通过librbd这个用户空间通过nbd的内核模块实现了内核级别的驱动，稳定性和性能都有保障<br><a id="more"></a></p>
-<h3 id="怎么理解用户态和内核态？">怎么理解用户态和内核态？</h3><ul>
-<li>librbd就是用户态，一般的kvm对接的就是librbd的</li>
-<li>kernel rbd就是内核态，这个是一个内核模块，是内核直接与osd交互的，一般来说内核态的性能会优于用户态</li>
-</ul>
-<h2 id="下面来做下基本的操作：">下面来做下基本的操作：</h2><h3 id="1、创建一个image">1、创建一个image</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># rbd create testnbdrbd -s 10G</span></span><br></pre></td></tr></table></figure>
-<h3 id="2、映射这个image">2、映射这个image</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment">#  rbd-nbd map rbd/testnbdrbd</span></span><br><span class="line">/dev/nbd0</span><br></pre></td></tr></table></figure>
-<h3 id="3、查询已经映射的nbd">3、查询已经映射的nbd</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment">#  rbd-nbd list-mapped</span></span><br><span class="line">/dev/nbd0</span><br></pre></td></tr></table></figure>
-<p>上面说了这么多，那么来点直观的认识,nbd带来的好处<br>查询下image的信息<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># rbd info testnbdrbd</span></span><br><span class="line">rbd image <span class="string">'testnbdrbd'</span>:</span><br><span class="line">	size <span class="number">10240</span> MB <span class="keyword">in</span> <span class="number">2560</span> objects</span><br><span class="line">	order <span class="number">22</span> (<span class="number">4096</span> kB objects)</span><br><span class="line">	block_name_prefix: rbd_data.<span class="number">10</span>ad2ae8944a</span><br><span class="line">	format: <span class="number">2</span></span><br><span class="line">	features: layering, exclusive-lock, object-map, fast-diff, deep-flatten</span><br><span class="line">	flags:</span><br></pre></td></tr></table></figure></p>
-<blockquote>
-<p>jewel版本默认开启了features: layering, exclusive-lock, object-map, fast-diff, deep-flatten这么多的属性，而这些属性是kernel-rbd还不支持的</p>
-</blockquote>
-<p>所以做rbd map的时候就会出现下面的问题:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># rbd map  testnbdrbd</span></span><br><span class="line">rbd: sysfs write failed</span><br><span class="line">RBD image feature <span class="built_in">set</span> mismatch. You can <span class="built_in">disable</span> features unsupported by the kernel with <span class="string">"rbd feature disable"</span>.</span><br><span class="line">In some cases useful info is found <span class="keyword">in</span> syslog - try <span class="string">"dmesg | tail"</span> or so.</span><br><span class="line">rbd: map failed: (<span class="number">6</span>) No such device or address</span><br></pre></td></tr></table></figure></p>
-<p>如果非要用，就默认禁用掉这些属性，在配置文件增加</p>
-<blockquote>
-<p>rbd_default_features = 3</p>
-</blockquote>
-<p>那么现在开启属性还行想用块设备方式怎么用，就可以用nbd了<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment">#  rbd-nbd map rbd/testnbdrbd</span></span><br><span class="line">/dev/nbd0</span><br></pre></td></tr></table></figure></p>
-<p>这样就可以用了。不用担心接口的问题了,因为只要librbd支持的属性，nbd就默认支持了</p>
-<p>rbd几种常用的模式和新模式图：<br><img src="http://static.zybuluo.com/zphj1987/33s6u70sw4qhgqvfhvwe5d5b/nbd.png" alt="nbd.png-40.5kB"></p>
-<h3 id="本篇ceph版本">本篇ceph版本</h3><blockquote>
-<p>ceph version 10.2.1 (3a66dd4f30852819c1bdaa8ec23c795d4ad77269)</p>
-</blockquote>
-<h3 id="打赏通道">打赏通道</h3><center><br><img src="http://static.zybuluo.com/zphj1987/fi2557g55ucsdpyblopyfudl/newpay.png" alt="打赏" title="打赏"><br></center>
-
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>jewel版本新增加了一个驱动NBD，允许librbd实现一个内核级别的rbd</p>
-<p>NBD相比较于kernel rbd：</p>
-<ul>
-<li>rbd-ko是根据内核主线走的，升级kernel</li>
-<li>rbd需要升级到相应的内核，改动太大</li>
-<li>rbd-ko的开发要慢于librbd，需要很多的时间才能追赶上librbd</li>
-</ul>
-<p>rbd-nbd是通过librbd这个用户空间通过nbd的内核模块实现了内核级别的驱动，稳定性和性能都有保障<br>]]>
-    
-    </summary>
-    
-      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
     
   </entry>
   
