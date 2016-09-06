@@ -8,11 +8,7 @@
   <meta name="description" content="前言copyset运用好能带来什么好处
 
 降低故障情况下的数据丢失概率（增加可用性）
-降低资源占用，从而降低负载
-
-copyset的概念首先我们要理解copyset的概念，用通俗的话说就是，包含一个数据的所有副本的节点，也就是一个copyset损坏的情况下，数据就是全丢的
-如上图所示，这里的copyset就是：{1,5,6}，{2,6,8} 两组
-如果不做特殊的设置，那么基本上就是会随机的去分布">
+降低资源占用，从而降低负载">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Ceph中的Copyset概念和使用方法">
 <meta property="og:url" content="http://www.zphj1987.com/2016/09/06/Ceph中的Copyset概念和使用方法/index.html">
@@ -20,11 +16,7 @@ copyset的概念首先我们要理解copyset的概念，用通俗的话说就是
 <meta property="og:description" content="前言copyset运用好能带来什么好处
 
 降低故障情况下的数据丢失概率（增加可用性）
-降低资源占用，从而降低负载
-
-copyset的概念首先我们要理解copyset的概念，用通俗的话说就是，包含一个数据的所有副本的节点，也就是一个copyset损坏的情况下，数据就是全丢的
-如上图所示，这里的copyset就是：{1,5,6}，{2,6,8} 两组
-如果不做特殊的设置，那么基本上就是会随机的去分布">
+降低资源占用，从而降低负载">
 <meta property="og:image" content="http://7xweck.com1.z0.glb.clouddn.com/copyset/octo-guitar.gif">
 <meta property="og:image" content="http://7xweck.com1.z0.glb.clouddn.com/copyset/radomcopy.png">
 <meta property="og:image" content="http://7xweck.com1.z0.glb.clouddn.com/copyset/radomall.png">
@@ -39,11 +31,7 @@ copyset的概念首先我们要理解copyset的概念，用通俗的话说就是
 <meta name="twitter:description" content="前言copyset运用好能带来什么好处
 
 降低故障情况下的数据丢失概率（增加可用性）
-降低资源占用，从而降低负载
-
-copyset的概念首先我们要理解copyset的概念，用通俗的话说就是，包含一个数据的所有副本的节点，也就是一个copyset损坏的情况下，数据就是全丢的
-如上图所示，这里的copyset就是：{1,5,6}，{2,6,8} 两组
-如果不做特殊的设置，那么基本上就是会随机的去分布">
+降低资源占用，从而降低负载">
   
     <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
   
@@ -262,6 +250,7 @@ var _hmt = _hmt || [];
 <li>降低故障情况下的数据丢失概率（增加可用性）</li>
 <li>降低资源占用，从而降低负载</li>
 </ul>
+<a id="more"></a>
 <h3 id="copyset的概念">copyset的概念</h3><p>首先我们要理解copyset的概念，用通俗的话说就是，包含一个数据的所有副本的节点，也就是一个copyset损坏的情况下，数据就是全丢的</p>
 <p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/copyset/radomcopy.png" alt="radomcopy"><br></center><br>如上图所示，这里的copyset就是：<br>{1,5,6}，{2,6,8} 两组</p>
 <p>如果不做特殊的设置，那么基本上就是会随机的去分布</p>

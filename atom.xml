@@ -4,7 +4,7 @@
   <subtitle><![CDATA[现在所学，终有所用]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2016-09-06T09:40:00.539Z</updated>
+  <updated>2016-09-06T09:41:24.102Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -19,13 +19,14 @@
     <link href="http://www.zphj1987.com/2016/09/06/Ceph%E4%B8%AD%E7%9A%84Copyset%E6%A6%82%E5%BF%B5%E5%92%8C%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/"/>
     <id>http://www.zphj1987.com/2016/09/06/Ceph中的Copyset概念和使用方法/</id>
     <published>2016-09-06T09:39:15.000Z</published>
-    <updated>2016-09-06T09:40:00.539Z</updated>
+    <updated>2016-09-06T09:41:24.102Z</updated>
     <content type="html"><![CDATA[<p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/copyset/octo-guitar.gif" alt="ceph"><br></center></p>
 <h2 id="前言">前言</h2><p>copyset运用好能带来什么好处</p>
 <ul>
 <li>降低故障情况下的数据丢失概率（增加可用性）</li>
 <li>降低资源占用，从而降低负载</li>
 </ul>
+<a id="more"></a>
 <h3 id="copyset的概念">copyset的概念</h3><p>首先我们要理解copyset的概念，用通俗的话说就是，包含一个数据的所有副本的节点，也就是一个copyset损坏的情况下，数据就是全丢的</p>
 <p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/copyset/radomcopy.png" alt="radomcopy"><br></center><br>如上图所示，这里的copyset就是：<br>{1,5,6}，{2,6,8} 两组</p>
 <p>如果不做特殊的设置，那么基本上就是会随机的去分布</p>
@@ -76,7 +77,12 @@
 ]]></content>
     <summary type="html">
     <![CDATA[<p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/copyset/octo-guitar.gif" alt="ceph"><br></center></p>
-<h2 id="前言">前言</h2><p>c]]>
+<h2 id="前言">前言</h2><p>copyset运用好能带来什么好处</p>
+<ul>
+<li>降低故障情况下的数据丢失概率（增加可用性）</li>
+<li>降低资源占用，从而降低负载</li>
+</ul>]]>
+    
     </summary>
     
       <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
