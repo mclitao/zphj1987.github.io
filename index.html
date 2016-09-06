@@ -191,6 +191,113 @@ var _hmt = _hmt || [];
 </nav>
       <div class="body-wrap">
   
+    <article id="post-Ceph中的Copyset概念和使用方法" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/09/06/Ceph中的Copyset概念和使用方法/" class="article-date">
+  	<time datetime="2016-09-06T09:39:15.000Z" itemprop="datePublished">2016-09-06</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/09/06/Ceph中的Copyset概念和使用方法/">Ceph中的Copyset概念和使用方法</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/copyset/octo-guitar.gif" alt="ceph"><br></center></p>
+<h2 id="前言">前言</h2><p>copyset运用好能带来什么好处</p>
+<ul>
+<li>降低故障情况下的数据丢失概率（增加可用性）</li>
+<li>降低资源占用，从而降低负载</li>
+</ul>
+<h3 id="copyset的概念">copyset的概念</h3><p>首先我们要理解copyset的概念，用通俗的话说就是，包含一个数据的所有副本的节点，也就是一个copyset损坏的情况下，数据就是全丢的</p>
+<p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/copyset/radomcopy.png" alt="radomcopy"><br></center><br>如上图所示，这里的copyset就是：<br>{1,5,6}，{2,6,8} 两组</p>
+<p>如果不做特殊的设置，那么基本上就是会随机的去分布</p>
+<p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/copyset/radomall.png" alt="allcopy"><br></center></p>
+<h4 id="最大copyset">最大copyset</h4><p>如上图的所示，一般来说，最终组合将是一个最大的随机组合，比如这样的一个9个node随机组合3个的，这样的组合数有：<br>从 n个元素中取出  k个元素， k个元素的组合数量为：</p>
+<p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/copyset/gongshi.png" alt="计算公式"><br></center><br>9个随机3个的组合为84<br>如果3个节点down掉，那么有数据丢失概率就是100%</p>
+<h4 id="最小copyset">最小copyset</h4><p>如果存在一种情况，分布是这样的</p>
+<p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/copyset/mincopy.png" alt="mincopy"><br></center><br>那么copyset为<br>{1,5,7},{2,4,9},{3,6,8}}<br>如果3个节点down掉,只有正好是上面的3种组合中的一种出现的时候，才会出现数据丢失<br>那么数据丢失的概率为 3/84</p>
+<p>最小copyset可能带来的不好的地方</p>
+<ul>
+<li>真出现丢失的时候（概率极低），丢失的数据量将是最大化的，这个是因为出现丢的时候，那么三个上面的组合配对为100%，其他情况不是100%</li>
+<li>失效恢复时间将会增大一些，100GB的39节点的HDFS 最近分布恢复时间在60s,最小分布为700s，这个是因为可用于恢复的点相对减少了，自然恢复就时间长了</li>
+</ul>
+<h4 id="比较好的处理方式">比较好的处理方式</h4><p>比较好的方式就是介于纯随机和最小之间的，那么失效的概率计算方式就是：</p>
+<blockquote>
+<p>当前的copyset数目/最大copeset</p>
+</blockquote>
+<h2 id="这个概念在ceph当中的实现">这个概念在ceph当中的实现</h2><p>其实这个概念在ceph当中就是bucket的概念，PG为最小故障单元，PG就可以理解为上图当中的node上的元素，默认的分组方式为host，这个copyset就是全随机的在这些主机当中进行组合，我们在提升故障域为rack的时候，实际上就是将copyset进行了减少，一个rack之内的主机是形成不了copyset，这样down掉rack的时候，就不会数据丢失了，这个地方的实际可以做的控制方式有三种，下面将详细的介绍三种模式</p>
+<h3 id="1、缩小最小主机单位">1、缩小最小主机单位</h3><p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/copyset/hostzu.png" alt="最小主机组"><br></center><br>默认的为主机组，这样的主机间的copyset为<br>{1,2}，{1,3}，{1,4}，{2,3}，{2,4}，{3,4}<br>这样的有六组</p>
+<p>现在我们对host进行一个合并看下</p>
+<p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/copyset/hebing.png" alt="此处输入图片的描述"><br></center><br>注意这个地方并不是往上加了一层bucket，而是把最底层的host给拆掉了，加入一台机器有24个osd，那么这里的vhost1里面的osd个数实际是48个osd，那么当前的copyset为<br>{vhost1,vhost2}<br>copyset已经为上面默认情况的1/6<br>这样会带来两个好处</p>
+<ul>
+<li>减少了copyset，减少的好处就见上面的分析</li>
+<li>增加可接收恢复的osd数目，之前坏了一个osd的时候，能接收数据的osd为n-1,那么现在坏一个osd，可接收的osd为2n-1(n为单node上的osd个数)</li>
+</ul>
+<h3 id="2、增加分组">2、增加分组</h3><p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/copyset/rackfenzu.png" alt="rack分组"><br></center><br>这个地方是增加了rack分组的，同一个rack里面不会出现copyset，那么当前的模式的copyset就是<br>{1,3}，{1,4}，{2,3}，{2,4}</p>
+<p>同没有处理相比copyset为4/6</p>
+<h3 id="3、增加分组的情况进行PG分流">3、增加分组的情况进行PG分流</h3><p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/copyset/zone.png" alt="zone"><br></center><br>这里看上去跟上面的分组很像，但是在做crush的时候是有区别的，上面的分组以后，会让PG分布在两个rack当中，这里的crush写的时候会让PG只在一个zone当中，在进入zone的下层再去进行分离主副PG，那么这种方式的copyset为<br>{1,2} {3,4}<br>为上面默认情况的2/6</p>
+<h2 id="总结">总结</h2><p>关于ceph中的ceph的copyset的三种模式已经总结完了，需要补充的是，上面的node都是一个虚拟的概念，你可以扩充为row，或者rack都行，这里只是说明了不同的处理方式，针对每个集群都可以有很多种组合，这个关键看自己怎么处理，减少copyset会明显的减低机器上的线程数目和资源的占用，这一点可以自行研制，从原理上来说少了很多配对的通信，crush的是非常灵活的一个分布控制，可以做很精细的控制，当然也会增加了维护的难度</p>
+<h2 id="参考资料：">参考资料：</h2><p><a href="https://www.ustack.com/blog/build-block-storage-service/" target="_blank" rel="external">打造高性能高可靠块存储系统</a><br><a href="https://www.usenix.org/conference/atc13/technical-sessions/presentation/cidon" target="_blank" rel="external">Copysets: Reducing the Frequency of Data Loss in Cloud Storage</a></p>
+<h3 id="变更记录">变更记录</h3><table>
+<thead>
+<tr>
+<th style="text-align:center">Why</th>
+<th style="text-align:center">Who</th>
+<th style="text-align:center">When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">创建</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2016-09-06</td>
+</tr>
+</tbody>
+</table>
+<h3 id="For_me">For me</h3><p>愿意打赏欢迎联系，另有私人ceph小群，可以联系我</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-Proftp最简匿名访问配置" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -741,68 +848,6 @@ var _hmt = _hmt || [];
       
         <p class="article-more-link">
           <a  href="/2016/07/14/通过ceph-deploy安装不同版本ceph/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-重构rbd镜像的元数据" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/07/02/重构rbd镜像的元数据/" class="article-date">
-  	<time datetime="2016-07-01T18:52:33.000Z" itemprop="datePublished">2016-07-02</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/07/02/重构rbd镜像的元数据/">重构rbd镜像的元数据</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>这个已经很久之前已经实践成功了，现在正好有时间就来写一写，目前并没有在其他地方有类似的分享，虽然我们自己的业务并没有涉及到云计算的场景，之前还是对rbd镜像这一块做了一些基本的了解，因为一直比较关注故障恢复这一块，东西并不难，总之一切不要等到出了问题再去想办法，提前准备总是好的，如果你有集群的问题，生产环境需要恢复的欢迎找我</p>
-<h3 id="一、前言">一、前言</h3><p>rbd的镜像的元数据，这个是什么？这里所提到的元数据信息，是指跟这个image信息有关的元数据信息，就是image的大小名称等等一系列的信息，本篇将讲述怎么去重构这些信息，重构的前提就是做好了信息的记录，然后做重构</p>
-<h3 id="二、记录元数据信息">二、记录元数据信息</h3><h4 id="1、创建一个image">1、创建一个image</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># rbd -p rbd create zp --size 40000</span></span><br></pre></td></tr></table></figure>
-<p>这里是在rbd存储池当中创建的一个名称为zp的，大小为40G的image文件</p>
-<p>如果没有其他的image的情况下，我们来查看下对象信息<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># rados -p rbd ls</span></span><br><span class="line">rbd_header.<span class="number">60276</span>b8b4567</span><br><span class="line">rbd_directory</span><br><span class="line">rbd_id.zp</span><br></pre></td></tr></table></figure></p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2016/07/02/重构rbd镜像的元数据/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>

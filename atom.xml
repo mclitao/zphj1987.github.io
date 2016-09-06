@@ -4,7 +4,7 @@
   <subtitle><![CDATA[现在所学，终有所用]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2016-09-01T06:24:34.153Z</updated>
+  <updated>2016-09-06T09:40:00.539Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -13,6 +13,75 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[Ceph中的Copyset概念和使用方法]]></title>
+    <link href="http://www.zphj1987.com/2016/09/06/Ceph%E4%B8%AD%E7%9A%84Copyset%E6%A6%82%E5%BF%B5%E5%92%8C%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/"/>
+    <id>http://www.zphj1987.com/2016/09/06/Ceph中的Copyset概念和使用方法/</id>
+    <published>2016-09-06T09:39:15.000Z</published>
+    <updated>2016-09-06T09:40:00.539Z</updated>
+    <content type="html"><![CDATA[<p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/copyset/octo-guitar.gif" alt="ceph"><br></center></p>
+<h2 id="前言">前言</h2><p>copyset运用好能带来什么好处</p>
+<ul>
+<li>降低故障情况下的数据丢失概率（增加可用性）</li>
+<li>降低资源占用，从而降低负载</li>
+</ul>
+<h3 id="copyset的概念">copyset的概念</h3><p>首先我们要理解copyset的概念，用通俗的话说就是，包含一个数据的所有副本的节点，也就是一个copyset损坏的情况下，数据就是全丢的</p>
+<p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/copyset/radomcopy.png" alt="radomcopy"><br></center><br>如上图所示，这里的copyset就是：<br>{1,5,6}，{2,6,8} 两组</p>
+<p>如果不做特殊的设置，那么基本上就是会随机的去分布</p>
+<p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/copyset/radomall.png" alt="allcopy"><br></center></p>
+<h4 id="最大copyset">最大copyset</h4><p>如上图的所示，一般来说，最终组合将是一个最大的随机组合，比如这样的一个9个node随机组合3个的，这样的组合数有：<br>从 n个元素中取出  k个元素， k个元素的组合数量为：</p>
+<p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/copyset/gongshi.png" alt="计算公式"><br></center><br>9个随机3个的组合为84<br>如果3个节点down掉，那么有数据丢失概率就是100%</p>
+<h4 id="最小copyset">最小copyset</h4><p>如果存在一种情况，分布是这样的</p>
+<p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/copyset/mincopy.png" alt="mincopy"><br></center><br>那么copyset为<br>{1,5,7},{2,4,9},{3,6,8}}<br>如果3个节点down掉,只有正好是上面的3种组合中的一种出现的时候，才会出现数据丢失<br>那么数据丢失的概率为 3/84</p>
+<p>最小copyset可能带来的不好的地方</p>
+<ul>
+<li>真出现丢失的时候（概率极低），丢失的数据量将是最大化的，这个是因为出现丢的时候，那么三个上面的组合配对为100%，其他情况不是100%</li>
+<li>失效恢复时间将会增大一些，100GB的39节点的HDFS 最近分布恢复时间在60s,最小分布为700s，这个是因为可用于恢复的点相对减少了，自然恢复就时间长了</li>
+</ul>
+<h4 id="比较好的处理方式">比较好的处理方式</h4><p>比较好的方式就是介于纯随机和最小之间的，那么失效的概率计算方式就是：</p>
+<blockquote>
+<p>当前的copyset数目/最大copeset</p>
+</blockquote>
+<h2 id="这个概念在ceph当中的实现">这个概念在ceph当中的实现</h2><p>其实这个概念在ceph当中就是bucket的概念，PG为最小故障单元，PG就可以理解为上图当中的node上的元素，默认的分组方式为host，这个copyset就是全随机的在这些主机当中进行组合，我们在提升故障域为rack的时候，实际上就是将copyset进行了减少，一个rack之内的主机是形成不了copyset，这样down掉rack的时候，就不会数据丢失了，这个地方的实际可以做的控制方式有三种，下面将详细的介绍三种模式</p>
+<h3 id="1、缩小最小主机单位">1、缩小最小主机单位</h3><p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/copyset/hostzu.png" alt="最小主机组"><br></center><br>默认的为主机组，这样的主机间的copyset为<br>{1,2}，{1,3}，{1,4}，{2,3}，{2,4}，{3,4}<br>这样的有六组</p>
+<p>现在我们对host进行一个合并看下</p>
+<p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/copyset/hebing.png" alt="此处输入图片的描述"><br></center><br>注意这个地方并不是往上加了一层bucket，而是把最底层的host给拆掉了，加入一台机器有24个osd，那么这里的vhost1里面的osd个数实际是48个osd，那么当前的copyset为<br>{vhost1,vhost2}<br>copyset已经为上面默认情况的1/6<br>这样会带来两个好处</p>
+<ul>
+<li>减少了copyset，减少的好处就见上面的分析</li>
+<li>增加可接收恢复的osd数目，之前坏了一个osd的时候，能接收数据的osd为n-1,那么现在坏一个osd，可接收的osd为2n-1(n为单node上的osd个数)</li>
+</ul>
+<h3 id="2、增加分组">2、增加分组</h3><p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/copyset/rackfenzu.png" alt="rack分组"><br></center><br>这个地方是增加了rack分组的，同一个rack里面不会出现copyset，那么当前的模式的copyset就是<br>{1,3}，{1,4}，{2,3}，{2,4}</p>
+<p>同没有处理相比copyset为4/6</p>
+<h3 id="3、增加分组的情况进行PG分流">3、增加分组的情况进行PG分流</h3><p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/copyset/zone.png" alt="zone"><br></center><br>这里看上去跟上面的分组很像，但是在做crush的时候是有区别的，上面的分组以后，会让PG分布在两个rack当中，这里的crush写的时候会让PG只在一个zone当中，在进入zone的下层再去进行分离主副PG，那么这种方式的copyset为<br>{1,2} {3,4}<br>为上面默认情况的2/6</p>
+<h2 id="总结">总结</h2><p>关于ceph中的ceph的copyset的三种模式已经总结完了，需要补充的是，上面的node都是一个虚拟的概念，你可以扩充为row，或者rack都行，这里只是说明了不同的处理方式，针对每个集群都可以有很多种组合，这个关键看自己怎么处理，减少copyset会明显的减低机器上的线程数目和资源的占用，这一点可以自行研制，从原理上来说少了很多配对的通信，crush的是非常灵活的一个分布控制，可以做很精细的控制，当然也会增加了维护的难度</p>
+<h2 id="参考资料：">参考资料：</h2><p><a href="https://www.ustack.com/blog/build-block-storage-service/" target="_blank" rel="external">打造高性能高可靠块存储系统</a><br><a href="https://www.usenix.org/conference/atc13/technical-sessions/presentation/cidon" target="_blank" rel="external">Copysets: Reducing the Frequency of Data Loss in Cloud Storage</a></p>
+<h3 id="变更记录">变更记录</h3><table>
+<thead>
+<tr>
+<th style="text-align:center">Why</th>
+<th style="text-align:center">Who</th>
+<th style="text-align:center">When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">创建</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2016-09-06</td>
+</tr>
+</tbody>
+</table>
+<h3 id="For_me">For me</h3><p>愿意打赏欢迎联系，另有私人ceph小群，可以联系我</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/copyset/octo-guitar.gif" alt="ceph"><br></center></p>
+<h2 id="前言">前言</h2><p>c]]>
+    </summary>
+    
+      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[Proftp最简匿名访问配置]]></title>
@@ -1273,58 +1342,6 @@ sig_hashalgo:   sha256
     </summary>
     
       <category term="linux" scheme="http://www.zphj1987.com/tags/linux/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[mon到底能坏几个]]></title>
-    <link href="http://www.zphj1987.com/2016/05/26/mon%E5%88%B0%E5%BA%95%E8%83%BD%E5%9D%8F%E5%87%A0%E4%B8%AA/"/>
-    <id>http://www.zphj1987.com/2016/05/26/mon到底能坏几个/</id>
-    <published>2016-05-25T16:28:21.000Z</published>
-    <updated>2016-06-03T17:29:11.446Z</updated>
-    <content type="html"><![CDATA[<p>如果是在做ceph的配置，我们会经常遇到这几个问题</p>
-<ol>
-<li>问：ceph需要配置几个mon<br>答：配置一个可以，但是坏了一个就不行了，需要配置只是三个mon，并且需要是奇数个</li>
-<li>问：ceph的mon能跟osd放在一起么，需要配置很好么？<br>答：能跟放在一起，但是建议在环境允许的情况下一定独立机器，并且mon的配置能好尽量好，能上ssd就上ssd</li>
-</ol>
-<p>这两个问题的答案不能说是错的，但是为什么这么说，这么说有没有问题，这篇文章将根据实际的数据来告诉你，到底mon的极限在哪里，为什么都说要奇数，偶数难道就不行么</p>
-<a id="more"></a>
-<h3 id="前言">前言</h3><p>本篇将从真实的实践中，让你更能够理解mon的故障极限，本次测试的场景数据样本足够大，最大的一个测试使用了10个mon，我想目前就算PB基本的ceph集群里也没有人会超过10个mon，所以足够覆盖大部分的场景，先来一个数据图看下10个mon的集群长什么样<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cluster ace3c18f-b4a5-<span class="number">4342</span><span class="operator">-a</span>598-<span class="number">8104</span>a770d4a8</span><br><span class="line">     health HEALTH_OK</span><br><span class="line">     monmap e10: <span class="number">10</span> mons at &#123;<span class="number">10</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6800</span>/<span class="number">0</span>,<span class="number">2</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6792</span>/<span class="number">0</span>,<span class="number">3</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6793</span>/<span class="number">0</span>,<span class="number">4</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6794</span>/<span class="number">0</span>,<span class="number">5</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6795</span>/<span class="number">0</span>,<span class="number">6</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6796</span>/<span class="number">0</span>,<span class="number">7</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6797</span>/<span class="number">0</span>,<span class="number">8</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6798</span>/<span class="number">0</span>,<span class="number">9</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6799</span>/<span class="number">0</span>,lab8107=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6789</span>/<span class="number">0</span>&#125;</span><br><span class="line">            election epoch <span class="number">58</span>, quorum <span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span> lab8107,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>,<span class="number">10</span></span><br><span class="line">     osdmap e7: <span class="number">1</span> osds: <span class="number">1</span> up, <span class="number">1</span> <span class="keyword">in</span></span><br><span class="line">            flags sortbitwise</span><br><span class="line">      pgmap v13: <span class="number">64</span> pgs, <span class="number">1</span> pools, <span class="number">0</span> bytes data, <span class="number">0</span> objects</span><br><span class="line">            <span class="number">34268</span> kB used, <span class="number">274</span> GB / <span class="number">274</span> GB avail</span><br><span class="line">                  <span class="number">64</span> active+clean</span><br></pre></td></tr></table></figure></p>
-<p>mon的地方可以看到10个mon了</p>
-<h3 id="测试结论">测试结论</h3><p><img src="http://static.zybuluo.com/zphj1987/jz15y76o7yytmxksk2ps4eyi/1.png" alt="mondown"></p>
-<p>ceph的mon能够正常情况需要保证，当前剩余的mon的个数需要大于总mon个数的一半，例如10个mon，mon个数一半就是5个，那么大于5个就是6个，也就是最少需要6个，上面的测试结论也符合这个规则，为什么不去偶数个，是因为当mon的个数为偶数个的时候，允许down的mon的个数与少一个mon的情况下的mon的个数允许的个数是一样的，所以要么多两个，多一个增加不了可靠性，并不是不允许</p>
-<h3 id="测试过程的数据">测试过程的数据</h3><h4 id="10个mon集群">10个mon集群</h4><p>10个mon的极限<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cluster ace3c18f-b4a5-<span class="number">4342</span><span class="operator">-a</span>598-<span class="number">8104</span>a770d4a8</span><br><span class="line">   health HEALTH_WARN</span><br><span class="line">          <span class="number">4</span> mons down, quorum <span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span> lab8107,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span></span><br><span class="line">   monmap e10: <span class="number">10</span> mons at &#123;<span class="number">10</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6800</span>/<span class="number">0</span>,<span class="number">2</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6792</span>/<span class="number">0</span>,<span class="number">3</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6793</span>/<span class="number">0</span>,<span class="number">4</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6794</span>/<span class="number">0</span>,<span class="number">5</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6795</span>/<span class="number">0</span>,<span class="number">6</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6796</span>/<span class="number">0</span>,<span class="number">7</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6797</span>/<span class="number">0</span>,<span class="number">8</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6798</span>/<span class="number">0</span>,<span class="number">9</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6799</span>/<span class="number">0</span>,lab8107=<span class="number">192.168</span>.<span class="number">8.10</span></span><br></pre></td></tr></table></figure></p>
-<p>10个mon关闭4个没问题，关闭5个就卡死</p>
-<h4 id="9个mon集群">9个mon集群</h4><p>9个mon的极限<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cluster ace3c18f-b4a5-<span class="number">4342</span><span class="operator">-a</span>598-<span class="number">8104</span>a770d4a8</span><br><span class="line">  health HEALTH_WARN</span><br><span class="line">         <span class="number">4</span> mons down, quorum <span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span> lab8107,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span></span><br><span class="line">  monmap e11: <span class="number">9</span> mons at &#123;<span class="number">2</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6792</span>/<span class="number">0</span>,<span class="number">3</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6793</span>/<span class="number">0</span>,<span class="number">4</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6794</span>/<span class="number">0</span>,<span class="number">5</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6795</span>/<span class="number">0</span>,<span class="number">6</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6796</span>/<span class="number">0</span>,<span class="number">7</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6797</span>/<span class="number">0</span>,<span class="number">8</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6798</span>/<span class="number">0</span>,<span class="number">9</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6799</span>/<span class="number">0</span>,lab8107=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6789</span>/<span class="number">0</span>&#125;</span><br></pre></td></tr></table></figure></p>
-<p>9个mon关闭4个没问题，关闭5个就卡死</p>
-<h4 id="8个mon集群">8个mon集群</h4><p>8个mon的极限<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cluster ace3c18f-b4a5-<span class="number">4342</span><span class="operator">-a</span>598-<span class="number">8104</span>a770d4a8</span><br><span class="line">  health HEALTH_WARN</span><br><span class="line">         <span class="number">3</span> mons down, quorum <span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span> lab8107,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span></span><br><span class="line">  monmap e12: <span class="number">8</span> mons at &#123;<span class="number">2</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6792</span>/<span class="number">0</span>,<span class="number">3</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6793</span>/<span class="number">0</span>,<span class="number">4</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6794</span>/<span class="number">0</span>,<span class="number">5</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6795</span>/<span class="number">0</span>,<span class="number">6</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6796</span>/<span class="number">0</span>,<span class="number">7</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6797</span>/<span class="number">0</span>,<span class="number">8</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6798</span>/<span class="number">0</span>,lab8107=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6789</span>/<span class="number">0</span>&#125;</span><br></pre></td></tr></table></figure></p>
-<p>8个mon关闭3个没问题，关闭4个就卡死</p>
-<h4 id="7个mon集群">7个mon集群</h4><p>7个mon的极限<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cluster ace3c18f-b4a5-<span class="number">4342</span><span class="operator">-a</span>598-<span class="number">8104</span>a770d4a8</span><br><span class="line">   health HEALTH_WARN</span><br><span class="line">          <span class="number">3</span> mons down, quorum <span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span> lab8107,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span></span><br><span class="line">   monmap e13: <span class="number">7</span> mons at &#123;<span class="number">2</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6792</span>/<span class="number">0</span>,<span class="number">3</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6793</span>/<span class="number">0</span>,<span class="number">4</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6794</span>/<span class="number">0</span>,<span class="number">5</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6795</span>/<span class="number">0</span>,<span class="number">6</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6796</span>/<span class="number">0</span>,<span class="number">7</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6797</span>/<span class="number">0</span>,lab8107=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6789</span>/<span class="number">0</span>&#125;</span><br></pre></td></tr></table></figure></p>
-<p>7个mon关闭3个没问题，关闭4个就卡死</p>
-<h4 id="6个mon集群">6个mon集群</h4><p>6个mon的极限<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cluster ace3c18f-b4a5-<span class="number">4342</span><span class="operator">-a</span>598-<span class="number">8104</span>a770d4a8</span><br><span class="line">  health HEALTH_WARN</span><br><span class="line">         <span class="number">2</span> mons down, quorum <span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span> lab8107,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span></span><br><span class="line">  monmap e14: <span class="number">6</span> mons at &#123;<span class="number">2</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6792</span>/<span class="number">0</span>,<span class="number">3</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6793</span>/<span class="number">0</span>,<span class="number">4</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6794</span>/<span class="number">0</span>,<span class="number">5</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6795</span>/<span class="number">0</span>,<span class="number">6</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6796</span>/<span class="number">0</span>,lab8107=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6789</span>/<span class="number">0</span>&#125;</span><br></pre></td></tr></table></figure></p>
-<p>6个mon关闭2个没问题，关闭3个就卡死</p>
-<h4 id="5个mon集群">5个mon集群</h4><p>5个mon的极限<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cluster ace3c18f-b4a5-<span class="number">4342</span><span class="operator">-a</span>598-<span class="number">8104</span>a770d4a8</span><br><span class="line">  health HEALTH_WARN</span><br><span class="line">         <span class="number">2</span> mons down, quorum <span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span> lab8107,<span class="number">2</span>,<span class="number">3</span></span><br><span class="line">  monmap e15: <span class="number">5</span> mons at &#123;<span class="number">2</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6792</span>/<span class="number">0</span>,<span class="number">3</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6793</span>/<span class="number">0</span>,<span class="number">4</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6794</span>/<span class="number">0</span>,<span class="number">5</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6795</span>/<span class="number">0</span>,lab8107=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6789</span>/<span class="number">0</span>&#125;</span><br></pre></td></tr></table></figure></p>
-<p>5个mon关闭2个没问题，关闭3个就卡死</p>
-<h4 id="4个mon集群">4个mon集群</h4><p>4个mon的极限<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cluster ace3c18f-b4a5-<span class="number">4342</span><span class="operator">-a</span>598-<span class="number">8104</span>a770d4a8</span><br><span class="line">  health HEALTH_WARN</span><br><span class="line">         <span class="number">1</span> mons down, quorum <span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span> lab8107,<span class="number">2</span>,<span class="number">3</span></span><br><span class="line">  monmap e16: <span class="number">4</span> mons at &#123;<span class="number">2</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6792</span>/<span class="number">0</span>,<span class="number">3</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6793</span>/<span class="number">0</span>,<span class="number">4</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6794</span>/<span class="number">0</span>,lab8107=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6789</span>/<span class="number">0</span>&#125;</span><br></pre></td></tr></table></figure></p>
-<p>4个mon关闭1个没问题，关闭2个就卡死</p>
-<h4 id="3个mon集群">3个mon集群</h4><p>3个mon的极限<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cluster ace3c18f-b4a5-<span class="number">4342</span><span class="operator">-a</span>598-<span class="number">8104</span>a770d4a8</span><br><span class="line">  health HEALTH_WARN</span><br><span class="line">         <span class="number">1</span> mons down, quorum <span class="number">0</span>,<span class="number">1</span> lab8107,<span class="number">2</span></span><br><span class="line">  monmap e17: <span class="number">3</span> mons at &#123;<span class="number">2</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6792</span>/<span class="number">0</span>,<span class="number">3</span>=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6793</span>/<span class="number">0</span>,lab8107=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6789</span>/<span class="number">0</span>&#125;</span><br></pre></td></tr></table></figure></p>
-<p>3个mon关闭1个没问题，关闭2个就卡死</p>
-<h3 id="测试结束">测试结束</h3><p>下面为自己玩的一个动态图，10个mon正常，down 4个还是好的，down 5个就无法使用了</p>
-<p><img src="http://7xi6lo.com1.z0.glb.clouddn.com/10mon.gif" alt=""></p>
-<h3 id="打赏通道">打赏通道</h3><center><br><img src="http://static.zybuluo.com/zphj1987/fi2557g55ucsdpyblopyfudl/newpay.png" alt="打赏" title="打赏"><br></center>
-
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>如果是在做ceph的配置，我们会经常遇到这几个问题</p>
-<ol>
-<li>问：ceph需要配置几个mon<br>答：配置一个可以，但是坏了一个就不行了，需要配置只是三个mon，并且需要是奇数个</li>
-<li>问：ceph的mon能跟osd放在一起么，需要配置很好么？<br>答：能跟放在一起，但是建议在环境允许的情况下一定独立机器，并且mon的配置能好尽量好，能上ssd就上ssd</li>
-</ol>
-<p>这两个问题的答案不能说是错的，但是为什么这么说，这么说有没有问题，这篇文章将根据实际的数据来告诉你，到底mon的极限在哪里，为什么都说要奇数，偶数难道就不行么</p>]]>
-    
-    </summary>
-    
-      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
     
   </entry>
   
