@@ -947,7 +947,7 @@ sig_hashalgo:   sha256
     <link href="http://www.zphj1987.com/2016/06/19/rgw%E5%AE%9E%E7%8E%B0nfs%E7%9A%84%E9%A6%96%E6%B5%8B/"/>
     <id>http://www.zphj1987.com/2016/06/19/rgw实现nfs的首测/</id>
     <published>2016-06-18T18:47:56.000Z</published>
-    <updated>2016-06-18T18:56:51.676Z</updated>
+    <updated>2016-09-08T14:59:54.954Z</updated>
     <content type="html"><![CDATA[<h3 id="一、功能介绍">一、功能介绍</h3><p>关于rgw实现nfs接口这个，刚接触的人可能并不清楚这个是个什么样的服务架构，rgw是ceph里面的对象存储接口，而nfs则是纯正的网络文件系统接口，这二者如何结合在一起,关于这个,有几个相关的链接供大家了解</p>
 <ul>
 <li><a href="http://tracker.ceph.com/projects/ceph/wiki/RGW_-_NFS" target="_blank" rel="external">ceph官方的RGW_NFS项目规划</a></li>
@@ -960,12 +960,12 @@ sig_hashalgo:   sha256
 <blockquote>
 <p><a href="https://github.com/nfs-ganesha/nfs-ganesha/tree/next" target="_blank" rel="external">https://github.com/nfs-ganesha/nfs-ganesha/tree/next</a></p>
 </blockquote>
-<p>这个地方要注意下，需要使用next分支<br>使用git 进行clone分支到本地<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> -b next https://github.com/nfs-ganesha/nfs-ganesha.git</span><br></pre></td></tr></table></figure></p>
+<p>这个地方要注意下，需要使用next分支(此分支开发中有编译BUG)，换分支V2.3-stable<br>使用git 进行clone分支到本地<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> -b V2.<span class="number">3</span>-stable https://github.com/nfs-ganesha/nfs-ganesha.git</span><br></pre></td></tr></table></figure></p>
 <p>检查是否有这个RGW模块目录</p>
 <blockquote>
 <p>nfs-ganesha/src/FSAL/FSAL_RGW/</p>
 </blockquote>
-<p>默认clone下来后  <code>nfs-ganesha/src/libntirpc/</code> 这个目录是空的，而这个是因为如果在git里面某个目录嵌套的用了其他项目的代码，并且也是有git的分支的话，clone下来就会是空的，这个在ceph的源码里面也会这样，具体的看看下图：<br><img src="http://static.zybuluo.com/zphj1987/00dbog7s6nzbze55qyjilzt9/libntir.png" alt="libntir.png-38.4kB"><br>下载下面的链接的这个版本，然后把代码解压到nfs-ganesha/src/libntirpc/这个目录当中去<br><a href="https://codeload.github.com/nfs-ganesha/ntirpc/zip/7e61a9b23e078ce922a5697669d46f9eaf16ccd4" target="_blank" rel="external">https://codeload.github.com/nfs-ganesha/ntirpc/zip/7e61a9b23e078ce922a5697669d46f9eaf16ccd4</a></p>
+<p>默认clone下来后  <code>nfs-ganesha/src/libntirpc/</code> 这个目录是空的，而这个是因为如果在git里面某个目录嵌套的用了其他项目的代码，并且也是有git的分支的话，clone下来就会是空的，这个在ceph的源码里面也会这样，具体的看看下图：<br><img src="http://static.zybuluo.com/zphj1987/00dbog7s6nzbze55qyjilzt9/libntir.png" alt="libntir.png-38.4kB"><br>下载下面的链接的这个版本，然后把代码解压到nfs-ganesha/src/libntirpc/这个目录当中去<br><a href="https://github.com/nfs-ganesha/ntirpc/archive/e9cefd2ebfa0a5fc25932cc1088663d39c27e549.zip" target="_blank" rel="external">https://github.com/nfs-ganesha/ntirpc/archive/e9cefd2ebfa0a5fc25932cc1088663d39c27e549.zip</a></p>
 <p>代码的编译采用的是cmake的模式(cmake目录后面接的是nfs-ganesha代码的src目录)</p>
 <blockquote>
 <p>注意在执行cmake之前编译环境需要安装librgw2-devel这个包，才能编译成功，执行cmake的时候检查下是否真的开启了</p>
@@ -1005,6 +1005,11 @@ sig_hashalgo:   sha256
 <td style="text-align:center">创建</td>
 <td style="text-align:center">武汉-运维-磨渣</td>
 <td style="text-align:center">2016-06-19</td>
+</tr>
+<tr>
+<td style="text-align:center">修改无法编译的BUG</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2016-09-08</td>
 </tr>
 </tbody>
 </table>
