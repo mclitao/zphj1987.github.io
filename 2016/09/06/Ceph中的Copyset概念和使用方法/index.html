@@ -266,7 +266,7 @@ var _hmt = _hmt || [];
 </ul>
 <h3 id="2-3_比较好的处理方式">2.3 比较好的处理方式</h3><p>比较好的方式就是取copyset值为介于纯随机和最小之间的数，那么失效的概率计算方式就是：</p>
 <blockquote>
-<p>当前的copyset数目/最大copeset</p>
+<p>当前的copyset数目/最大copyset</p>
 </blockquote>
 <h2 id="三、这个概念在ceph当中的实现">三、这个概念在ceph当中的实现</h2><p>其实这个概念在ceph当中就是bucket的概念，PG为最小故障单元，PG就可以理解为上图当中的node上的元素，默认的分组方式为host，这个copyset就是全随机的在这些主机当中进行组合，我们在提升故障域为rack的时候，实际上就是将copyset进行了减少，一个rack之内的主机是形成不了copyset，这样down掉rack的时候，就不会数据丢失了，这个地方的实际可以做的控制方式有三种，下面将详细的介绍三种模式</p>
 <h3 id="3-1、缩小最小主机单位">3.1、缩小最小主机单位</h3><p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/copyset/hostzu.png" alt="最小主机组"><br></center><br>默认的为主机组，这样的主机间的copyset为<br>{1,2}，{1,3}，{1,4}，{2,3}，{2,4}，{3,4}<br>这样的有六组</p>
