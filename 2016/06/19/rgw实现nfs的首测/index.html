@@ -255,7 +255,7 @@ var _hmt = _hmt || [];
 <h3 id="二、功能架构图">二、功能架构图</h3><p><img src="http://static.zybuluo.com/zphj1987/o5ruvtr9f7nyegbv0ly7ekv5/image_1alibfc78g96dsa1c26crkgis1e.png" alt="image_1alibfc78g96dsa1c26crkgis1e.png-78.3kB"><br>简单说明一下：<br>集群配置s3接口，nfs-genesha将s3接口转换成nfs，然后nfs客户端挂载后访问的就是s3的bucket里面的数据了</p>
 <h3 id="三、准备工作">三、准备工作</h3><p>准备代码，这个是需要从源码编译的，并且需要将模块编译进去才可以的，源码分支地址：</p>
 <blockquote>
-<p><a href="https://github.com/nfs-ganesha/nfs-ganesha/tree/next" target="_blank" rel="external">https://github.com/nfs-ganesha/nfs-ganesha/tree/next</a></p>
+<p><a href="https://github.com/nfs-ganesha/nfs-ganesha/tree/V2.3-stable" target="_blank" rel="external">https://github.com/nfs-ganesha/nfs-ganesha/tree/V2.3-stable</a></p>
 </blockquote>
 <p>这个地方要注意下，需要使用next分支(此分支开发中有编译BUG)，换分支V2.3-stable<br>使用git 进行clone分支到本地<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> -b V2.<span class="number">3</span>-stable https://github.com/nfs-ganesha/nfs-ganesha.git</span><br></pre></td></tr></table></figure></p>
 <p>检查是否有这个RGW模块目录</p>
