@@ -4,7 +4,7 @@
   <subtitle><![CDATA[现在所学，终有所用]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2016-09-07T03:31:05.791Z</updated>
+  <updated>2016-09-08T09:17:38.695Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -13,6 +13,61 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[如何统计Ceph的RBD真实使用容量]]></title>
+    <link href="http://www.zphj1987.com/2016/09/08/%E5%A6%82%E4%BD%95%E7%BB%9F%E8%AE%A1Ceph%E7%9A%84RBD%E7%9C%9F%E5%AE%9E%E4%BD%BF%E7%94%A8%E5%AE%B9%E9%87%8F/"/>
+    <id>http://www.zphj1987.com/2016/09/08/如何统计Ceph的RBD真实使用容量/</id>
+    <published>2016-09-08T09:17:08.000Z</published>
+    <updated>2016-09-08T09:17:38.695Z</updated>
+    <content type="html"><![CDATA[<p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/rbdtongji/storage.png" alt="storage"><br></center></p>
+<h2 id="一、前言">一、前言</h2><p>ceph的rbd一直有个问题就是无法清楚的知道这个分配的空间里面到底使用了多少，这个在Jewel里面提供了一个新的接口去查询，对于老版本来说可能同样有这个需求，本篇将详细介绍如何解决这个问题</p>
+<h2 id="二、查询的各种方法">二、查询的各种方法</h2><p>目前已知的有三种方法<br>1、使用rbd du查询（Jewel才支持）<br>2、使用rbd diff<br>3、根据对象统计的方法进行统计</p>
+<a id="more"></a>
+<p>详细介绍</p>
+<h3 id="2-1_方法一：使用rbd_du查询">2.1 方法一：使用rbd du查询</h3><p>这个参考我之前的文章：<a href="http://www.zphj1987.com/2016/03/24/ceph%E6%9F%A5%E8%AF%A2rbd%E7%9A%84%E4%BD%BF%E7%94%A8%E5%AE%B9%E9%87%8F%EF%BC%88%E5%BF%AB%E9%80%9F%EF%BC%89/" target="_blank" rel="external">查询rbd的使用容量</a></p>
+<h3 id="2-2_方法二：使用rbd_diff">2.2 方法二：使用rbd diff</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># rbd diff rbd/zp | awk '&#123; SUM += $2 &#125; END &#123; print SUM/1024/1024 " MB" &#125;'</span></span><br><span class="line"><span class="number">828.844</span> MB</span><br></pre></td></tr></table></figure>
+<h3 id="2-3_方法三：根据对象统计的方法进行统计">2.3 方法三：根据对象统计的方法进行统计</h3><p>这个是本篇着重介绍的一点，在集群非常大的时候，再去按上面的一个个的查询，需要花很长的时间，并且需要时不时的跟集群进行交互，这里采用的方法是把统计数据一次获取下来，然后进行数据的统计分析，从而获取结果，获取的粒度是以存储池为基准的</p>
+<h4 id="拿到所有对象的信息">拿到所有对象的信息</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> obj <span class="keyword">in</span> `rados -p rbd ls`;<span class="keyword">do</span> rados -p rbd <span class="built_in">stat</span> <span class="variable">$obj</span> &gt;&gt; obj.txt;<span class="keyword">done</span>;</span><br></pre></td></tr></table></figure>
+<p>这个获取的时间长短是根据对象的多少来的，如果担心出问题，可以换个终端查看进度<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tail <span class="operator">-f</span>  obj.txt</span><br></pre></td></tr></table></figure></p>
+<h4 id="获取RBD的镜像列表">获取RBD的镜像列表</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># rbd -p rbd ls</span></span><br><span class="line"><span class="built_in">test</span>1</span><br><span class="line">zp</span><br></pre></td></tr></table></figure>
+<h3 id="获取RBD的镜像的prefix">获取RBD的镜像的prefix</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> a <span class="keyword">in</span> `rbd -p rbd ls`;<span class="keyword">do</span> <span class="built_in">echo</span> <span class="variable">$a</span> ;rbd -p rbd info <span class="variable">$a</span>|grep prefix |awk <span class="string">'&#123;print $2&#125;'</span> ;<span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+<h3 id="获取指定RBD镜像的大小">获取指定RBD镜像的大小</h3><p>查询 test1 的镜像大小<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># cat obj.txt |grep rbd_data.3ac16b8b4567|awk  '&#123; SUM += $6 &#125; END &#123; print SUM/1024/1024 " MB" &#125;'</span></span><br><span class="line"><span class="number">4014.27</span> MB</span><br></pre></td></tr></table></figure></p>
+<h3 id="将上面的汇总，使用脚本一次查询出所有的">将上面的汇总，使用脚本一次查询出所有的</h3><h4 id="第一步获取：">第一步获取：</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> obj <span class="keyword">in</span> `rados -p rbd ls`;<span class="keyword">do</span> rados -p rbd <span class="built_in">stat</span> <span class="variable">$obj</span> &gt;&gt; obj.txt;<span class="keyword">done</span>;</span><br></pre></td></tr></table></figure>
+<h4 id="第二步计算：">第二步计算：</h4><p>创建一个获取的脚本getused.sh<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="shebang">#! /bin/sh</span></span><br><span class="line"><span class="comment">##default pool name use rbd,you can change it </span></span><br><span class="line"><span class="comment">##default objfile is obj.txt,you can change it</span></span><br><span class="line">objfile=obj.txt</span><br><span class="line">Poolname=rbd</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> image <span class="keyword">in</span> `rbd -p <span class="variable">$Poolname</span> ls`</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">Imagename=<span class="variable">$image</span></span><br><span class="line">Prefix=`rbd  -p <span class="variable">$Poolname</span> info <span class="variable">$image</span>|grep prefix |awk <span class="string">'&#123;print $2&#125;'</span>`</span><br><span class="line">Used=`cat <span class="variable">$objfile</span> |grep <span class="variable">$Prefix</span>|awk <span class="string">'&#123; SUM += $6 &#125; END &#123; print SUM/1024/1024 " MB" &#125;'</span>`</span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$Imagename</span> <span class="variable">$Prefix</span></span><br><span class="line"><span class="built_in">echo</span> Used: <span class="variable">$Used</span></span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="我的输出如下：">我的输出如下：</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># sh getused.sh </span></span><br><span class="line"><span class="built_in">test</span>1 rbd_data.<span class="number">3</span>ac16b8b4567</span><br><span class="line">Used: <span class="number">4014.27</span> MB</span><br><span class="line">zp rbd_data.<span class="number">11</span>f66b8b4567</span><br><span class="line">Used: <span class="number">828.844</span> MB</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注意这里只统计了image里面的真实容量，如果是用了快速clone的,存在容量复用的问题，需要自己看是否需要统计那一部分的对象，方法同上</p>
+</blockquote>
+<h2 id="三、总结">三、总结</h2><p>对于已存在的系统，并且数据量很大的系统，不要频繁的去做请求，最好把统计请求，集中起来，并且就单线程的处理，慢一点不要紧，然后拉取到数据后，慢慢处理，这样能把影响降低到最少，可以在最不忙的时候去进行相关的操作</p>
+<h2 id="四、变更记录">四、变更记录</h2><table>
+<thead>
+<tr>
+<th style="text-align:center">Why</th>
+<th style="text-align:center">Who</th>
+<th style="text-align:center">When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">创建</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2016-09-08</td>
+</tr>
+</tbody>
+</table>
+<h2 id="五、For_me">五、For me</h2><p>愿意打赏欢迎联系，另有私人ceph小群，可以联系我</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/rbdtongji/storage.png" alt="storage"><br></center></p>
+<h2 id="一、前言">一、前言</h2><p>ceph的rbd一直有个问题就是无法清楚的知道这个分配的空间里面到底使用了多少，这个在Jewel里面提供了一个新的接口去查询，对于老版本来说可能同样有这个需求，本篇将详细介绍如何解决这个问题</p>
+<h2 id="二、查询的各种方法">二、查询的各种方法</h2><p>目前已知的有三种方法<br>1、使用rbd du查询（Jewel才支持）<br>2、使用rbd diff<br>3、根据对象统计的方法进行统计</p>]]>
+    
+    </summary>
+    
+      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[Ceph中的Copyset概念和使用方法]]></title>
@@ -1304,50 +1359,6 @@ sig_hashalgo:   sha256
     </summary>
     
       <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[利用虚拟化环境虚拟nvme盘]]></title>
-    <link href="http://www.zphj1987.com/2016/06/04/%E5%88%A9%E7%94%A8%E8%99%9A%E6%8B%9F%E5%8C%96%E7%8E%AF%E5%A2%83%E8%99%9A%E6%8B%9Fnvme%E7%9B%98/"/>
-    <id>http://www.zphj1987.com/2016/06/04/利用虚拟化环境虚拟nvme盘/</id>
-    <published>2016-06-03T16:02:50.000Z</published>
-    <updated>2016-06-03T16:21:05.955Z</updated>
-    <content type="html"><![CDATA[<h2 id="前情介绍">前情介绍</h2><h3 id="SPDK">SPDK</h3><p>SPDK的全称为Storage Performance Development Kit ，是Intel发起的一个开源驱动项目，这个是一个开发套件，可以让应用程序在用户态去访问存储资源，具体做能做什么可以去官网看一下 <a href="https://software.intel.com/en-us/articles/introduction-to-the-storage-performance-development-kit-spdk" target="_blank" rel="external">SPDK官网</a></p>
-<h3 id="NVME">NVME</h3><p>NVMe其实与AHCI一样都是逻辑设备接口标准，NVMe全称Non-Volatile Memory Express，非易失性存储器标准，是使用PCI-E通道的SSD一种规范，NVMe的设计之初就有充分利用到PCI-E SSD的低延时以及并行性，还有当代处理器、平台与应用的并行性。SSD的并行性可以充分被主机的硬件与软件充分利用，相比与现在的AHCI标准，NVMe标准可以带来多方面的性能提升。</p>
-<h3 id="Bluestore">Bluestore</h3><p>BlueStore 是用来存储ceph的数据的地方，提供了一种在块设备上直接写入方式的存储。这个是因为之前ceph社区尝试做了一个kvstore，但是性能达不到想要的效果，然后基于rocksdb的原型，重新开发了一套存储系统，BlueStore直接消耗原始分区。还有一个分区是存储元数据的，实际上就是一个RocksDB键/值数据库存储，这个比之前的filestore最大的优势就是去掉了journal，从而提供了更平滑的IO</p>
-<a id="more"></a>
-<h3 id="SPDK+NVME+Bluestore能产生什么化学反应">SPDK+NVME+Bluestore能产生什么化学反应</h3><p>目前这一块走的比较前沿的就是xsky了，这块的最初的推动力量是Intel，NVME的硬件的推出，需要一个很好的催化剂，传统的内核中断式的访问磁盘的方式，已经不能最大化发挥NVME的性能了，因此推出了SPDK的套件，可以在用户态的去访问磁盘数据，Bluestore按照这个标准就可以去以最大化的跑出磁盘的性能了，从而给上层提供一个非常强悍的IO性能，目前来说这几项都是很新的东西，如果没有特别强的技术，或者找Intel做技术支持话，用好还是需要再等一段时间</p>
-<h2 id="开篇">开篇</h2><h3 id="本篇文章做什么">本篇文章做什么</h3><p>之前有篇文章已经实现了bluestore的配置，这个配置并不难，并且用普通的硬盘就能实现，这里是讲怎么弄出来NVME磁盘，因为NVME的磁盘很贵，并不是每个人都能有环境的，这里是用虚拟化的方式虚拟出nvme，以供以后进行相关的功能验证</p>
-<h3 id="准备工作">准备工作</h3><p>准备好kvm虚拟化的环境，这个地方就不在这里赘述了，本环境采用的是ubuntu的宿主机，如果是centos需要另做改动，如果有需要欢迎留言</p>
-<h3 id="安装操作系统">安装操作系统</h3><h4 id="创建两个磁盘">创建两个磁盘</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">qemu-img create <span class="operator">-f</span> raw /mnt/localdisk.raw  <span class="number">40</span>G</span><br><span class="line">qemu-img create <span class="operator">-f</span> raw  /mnt/nvme.raw <span class="number">50</span>G</span><br></pre></td></tr></table></figure>
-<h4 id="执行安装操作系统">执行安装操作系统</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">virt-install --name nvmetest --ram <span class="number">4096</span> --vcpus=<span class="number">2</span> --disk path=/mnt/localdisk.raw --network bridge=br0 --cdrom /mnt/CentOS-<span class="number">7</span>-x86_64-DVD-<span class="number">1503</span>-<span class="number">01</span>.iso --vnclisten=<span class="number">192.168</span>.<span class="number">8.107</span> --vncport=<span class="number">7000</span> --vnc --autostart</span><br></pre></td></tr></table></figure>
-<p>上面的iso文件需要提前准备，vnclisten就用宿主机的IP即可</p>
-<p>都安装好了以后，先停止虚拟机，需要对配置文件做一些改动，因为virsh管理的时候有一些参数是不支持的，这个需要自己做一个  qemu:commandline 的改动</p>
-<h4 id="停止掉虚拟机">停止掉虚拟机</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">virsh destroy nvmetest</span><br></pre></td></tr></table></figure>
-<h4 id="编辑配置文件">编辑配置文件</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">virsh edit nvmetest</span><br></pre></td></tr></table></figure>
-<p>内容如下：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&lt;domain <span class="built_in">type</span>=<span class="string">'kvm'</span>&gt;</span><br><span class="line">····</span><br><span class="line">&lt;/domain&gt;</span><br></pre></td></tr></table></figure></p>
-<p>修改为：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&lt;domain <span class="built_in">type</span>=<span class="string">'kvm'</span> xmlns:qemu=<span class="string">'http://libvirt.org/schemas/domain/qemu/1.0'</span>&gt;</span><br><span class="line">····</span><br><span class="line">  &lt;qemu:commandline&gt;</span><br><span class="line">    &lt;qemu:arg value=<span class="string">'-drive'</span>/&gt;</span><br><span class="line">    &lt;qemu:arg value=<span class="string">'file=/mnt/nvme.raw,if=none,id=D22,format=raw'</span>/&gt;</span><br><span class="line">    &lt;qemu:arg value=<span class="string">'-device'</span>/&gt;</span><br><span class="line">    &lt;qemu:arg value=<span class="string">'nvme,drive=D22,serial=1235'</span>/&gt;</span><br><span class="line">  &lt;/qemu:commandline&gt;</span><br><span class="line">&lt;/domain&gt;</span><br></pre></td></tr></table></figure></p>
-<blockquote>
-<p>这个地方一定要注意加入的这个固定格式一定要写到最后的位置，否则不生效</p>
-</blockquote>
-<h3 id="检查虚拟机的磁盘是否生成">检查虚拟机的磁盘是否生成</h3><h4 id="启动测试的虚拟机">启动测试的虚拟机</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">virsh destroy nvmetest</span><br></pre></td></tr></table></figure>
-<p>使用vnc连接登陆刚刚的那个vnc的端口<br>登陆上机器后就可以fdisk -l,<br><img src="http://static.zybuluo.com/zphj1987/nc79igpyb1hgxny09d5w9nk0/nvmedisk.png" alt="nvme"><br>lspci看到的如下<br><img src="http://static.zybuluo.com/zphj1987/8klt54xfe4w05mdkr41rspwk/lspci.png" alt="lspci.png-1.5kB"></p>
-<h4 id="结束">结束</h4><p>本次实践当中还有一部分是对spdk的代码进行编译的，编译没有问题，并且可以根据测试脚本加载驱动，将nvme磁盘排它性的从内核态移出，但是无法找到如何使用这个用户态的磁盘，在ceph的代码分支中已经包含了spdk部分的代码，在ceph中应该默认可以直接使用这个驱动，使用的方式是 spdk：sdasdasdasd (disk SN) ，但是配置当中如何使用还是无从得知，这一块如果资料会第一时间分析，目前xsky应该能够配置出环境来，本篇涉及的几个东西都是比较新的一些东西，在未来将会极大的提高性能的，目前这个阶段还处于开发阶段</p>
-<h4 id="异常处理">异常处理</h4><p>执行virsh start nvmetest的时候会提示nvme.raw的磁盘没有访问权限，这个地方卡了很久，不清楚在ubuntu下面居然还有个apparmor的权限问题，是调看系统日志才发现的，下面是处理办法:<br>执行下面的命令为libvirt禁用 apparmor:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ln <span class="operator">-s</span> /etc/apparmor.d/usr.sbin.libvirtd  /etc/apparmor.d/<span class="built_in">disable</span>/</span><br><span class="line">ln <span class="operator">-s</span> /etc/apparmor.d/usr.lib.libvirt.virt-aa-helper  /etc/apparmor.d/<span class="built_in">disable</span>/</span><br><span class="line">apparmor_parser -R  /etc/apparmor.d/usr.sbin.libvirtd</span><br><span class="line">apparmor_parser -R  /etc/apparmor.d/usr.lib.libvirt.virt-aa-helper</span><br></pre></td></tr></table></figure></p>
-<p>/etc/libvirt/qemu.conf去掉认证的,修改为：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">security_driver = <span class="string">"none"</span></span><br></pre></td></tr></table></figure></p>
-<p>重启libvirt服务<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/etc/init.d/libvirt-bin restart</span><br></pre></td></tr></table></figure></p>
-<h3 id="打赏通道">打赏通道</h3><center><br><img src="http://static.zybuluo.com/zphj1987/fi2557g55ucsdpyblopyfudl/newpay.png" alt="打赏" title="打赏"><br></center>
-
-]]></content>
-    <summary type="html">
-    <![CDATA[<h2 id="前情介绍">前情介绍</h2><h3 id="SPDK">SPDK</h3><p>SPDK的全称为Storage Performance Development Kit ，是Intel发起的一个开源驱动项目，这个是一个开发套件，可以让应用程序在用户态去访问存储资源，具体做能做什么可以去官网看一下 <a href="https://software.intel.com/en-us/articles/introduction-to-the-storage-performance-development-kit-spdk">SPDK官网</a></p>
-<h3 id="NVME">NVME</h3><p>NVMe其实与AHCI一样都是逻辑设备接口标准，NVMe全称Non-Volatile Memory Express，非易失性存储器标准，是使用PCI-E通道的SSD一种规范，NVMe的设计之初就有充分利用到PCI-E SSD的低延时以及并行性，还有当代处理器、平台与应用的并行性。SSD的并行性可以充分被主机的硬件与软件充分利用，相比与现在的AHCI标准，NVMe标准可以带来多方面的性能提升。</p>
-<h3 id="Bluestore">Bluestore</h3><p>BlueStore 是用来存储ceph的数据的地方，提供了一种在块设备上直接写入方式的存储。这个是因为之前ceph社区尝试做了一个kvstore，但是性能达不到想要的效果，然后基于rocksdb的原型，重新开发了一套存储系统，BlueStore直接消耗原始分区。还有一个分区是存储元数据的，实际上就是一个RocksDB键/值数据库存储，这个比之前的filestore最大的优势就是去掉了journal，从而提供了更平滑的IO</p>]]>
-    
-    </summary>
-    
-      <category term="linux" scheme="http://www.zphj1987.com/tags/linux/"/>
     
   </entry>
   
