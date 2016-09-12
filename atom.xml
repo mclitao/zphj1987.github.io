@@ -4,7 +4,7 @@
   <subtitle><![CDATA[现在所学，终有所用]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2016-09-08T09:17:38.695Z</updated>
+  <updated>2016-09-12T05:54:56.885Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -15,11 +15,63 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title><![CDATA[Centos7下Jewel版本radosgw服务启动]]></title>
+    <link href="http://www.zphj1987.com/2016/09/12/Centos7%E4%B8%8BJewel%E7%89%88%E6%9C%ACradosgw%E6%9C%8D%E5%8A%A1%E5%90%AF%E5%8A%A8/"/>
+    <id>http://www.zphj1987.com/2016/09/12/Centos7下Jewel版本radosgw服务启动/</id>
+    <published>2016-09-12T05:47:47.000Z</published>
+    <updated>2016-09-12T05:54:56.885Z</updated>
+    <content type="html"><![CDATA[<p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/radosgw/gateway.png" alt="rgw"><br></center></p>
+<h2 id="一、前言">一、前言</h2><p>本篇介绍了centos7下jewel版本的radosgw配置，这里的配置是指将服务能够正常起来，不涉及到S3的配置，以及其他的更多的配置,radosgw后面的gw就是gateway的意思，也就是我们说的网关的意思，本篇中所提及的实例也就是网关的意思，说实例是将每个单独的网关更细化一点的说法</p>
+<p>很多人不清楚在centos7下面怎么去控制这个radosgw网关的服务的控制，这个地方是会去读取配置文件的，所以配置文件得写正确</p>
+<a id="more"></a>
+<h2 id="二、预备环境">二、预备环境</h2><h3 id="一个完整的集群">一个完整的集群</h3><p>拥有一个正常的集群是需要提前准备好的，ceph -s检查正确的输出</p>
+<h3 id="关闭各种auth">关闭各种auth</h3><p>这个地方也可以不关闭，注意配置好用户认证就可以了，这里关闭了，配置起来方便，我是从来不开的,也避免了新手不会配置用户造成认证的各种异常<br>关闭认证就是在ceph.conf里面添加下面字段<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">auth_cluster_required = none</span><br><span class="line">auth_service_required = none</span><br><span class="line">auth_client_required = none</span><br></pre></td></tr></table></figure></p>
+<h3 id="安装ceph-radosgw的包">安装ceph-radosgw的包</h3><p>这个因为默认不会安装，所以要安装好<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum install ceph-radosgw</span><br></pre></td></tr></table></figure></p>
+<h2 id="三、默认启动过程">三、默认启动过程</h2><p>我们先什么都不配置，看下一般的会怎么处理</p>
+<h3 id="3-1_启动服务">3.1 启动服务</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">systemctl restart ceph-radosgw.target</span><br></pre></td></tr></table></figure>
+<h3 id="3-2_检查服务的状态">3.2 检查服务的状态</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># systemctl status ceph-radosgw.target </span></span><br><span class="line">● ceph-radosgw.target - ceph target allowing to start/stop all ceph-radosgw@.service instances at once</span><br><span class="line">   Loaded: loaded (/usr/lib/systemd/system/ceph-radosgw.target; enabled; vendor preset: enabled)</span><br><span class="line">   Active: active since Mon <span class="number">2016</span>-<span class="number">09</span>-<span class="number">12</span> <span class="number">13</span>:<span class="number">13</span>:<span class="number">03</span> CST; <span class="number">51</span>s ago</span><br><span class="line"></span><br><span class="line">Sep <span class="number">12</span> <span class="number">13</span>:<span class="number">13</span>:<span class="number">03</span> lab8106 systemd[<span class="number">1</span>]: Stopping ceph target allowing to start/stop all ceph-radosgw@.service instances at once.</span><br><span class="line">Sep <span class="number">12</span> <span class="number">13</span>:<span class="number">13</span>:<span class="number">03</span> lab8106 systemd[<span class="number">1</span>]: Reached target ceph target allowing to start/stop all ceph-radosgw@.service instances at once.</span><br><span class="line">Sep <span class="number">12</span> <span class="number">13</span>:<span class="number">13</span>:<span class="number">03</span> lab8106 systemd[<span class="number">1</span>]: Starting ceph target allowing to start/stop all ceph-radosgw@.service instances at once.</span><br><span class="line">Sep <span class="number">12</span> <span class="number">13</span>:<span class="number">13</span>:<span class="number">51</span> lab8106 systemd[<span class="number">1</span>]: Reached target ceph target allowing to start/stop all ceph-radosgw@.service instances at once.</span><br></pre></td></tr></table></figure>
+<p>可以看到进程是启动的，没有任何异常</p>
+<h3 id="3-3_检查端口是否启动">3.3 检查端口是否启动</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># netstat -tunlp|grep radosgw</span></span><br></pre></td></tr></table></figure>
+<p>但是并没有生成任何端口，这个是因为还没有配置实例,这个地方就是新手经常卡住的地方</p>
+<h2 id="四、下面开始配置默认单实例">四、下面开始配置默认单实例</h2><h3 id="4-1_写配置文件">4.1 写配置文件</h3><p>在配置文件 /etc/ceph/ceph.conf的最下面写一个最简配置文件<br>注意下面的client.radosgw1这个包起来的，这个是固定写法，在 <code>systemctl</code> 启动服务的时候 <code>@</code> 取后面的radosgw1<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[client.radosgw1]</span><br><span class="line">host = lab8106</span><br><span class="line">rgw_content_length_compat = <span class="literal">true</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="4-2_启动服务">4.2 启动服务</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># systemctl restart ceph-radosgw@radosgw1</span></span><br></pre></td></tr></table></figure>
+<h3 id="4-3_检查服务状态">4.3 检查服务状态</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># systemctl status ceph-radosgw@radosgw1</span></span><br><span class="line">● ceph-radosgw@radosgw1.service - Ceph rados gateway</span><br><span class="line">   Loaded: loaded (/usr/lib/systemd/system/ceph-radosgw@.service; disabled; vendor preset: disabled)</span><br><span class="line">   Active: active (running) since Mon <span class="number">2016</span>-<span class="number">09</span>-<span class="number">12</span> <span class="number">13</span>:<span class="number">17</span>:<span class="number">34</span> CST; <span class="number">17</span>s ago</span><br><span class="line"> Main PID: <span class="number">19996</span> (radosgw)</span><br><span class="line">   CGroup: /system.slice/system-ceph\x2dradosgw.slice/ceph-radosgw@radosgw1.service</span><br><span class="line">           └─<span class="number">19996</span> /usr/bin/radosgw <span class="operator">-f</span> --cluster ceph --name client.radosgw1 --setuser ceph --setgroup ceph</span><br><span class="line"></span><br><span class="line">Sep <span class="number">12</span> <span class="number">13</span>:<span class="number">17</span>:<span class="number">34</span> lab8106 systemd[<span class="number">1</span>]: Started Ceph rados gateway.</span><br><span class="line">Sep <span class="number">12</span> <span class="number">13</span>:<span class="number">17</span>:<span class="number">34</span> lab8106 systemd[<span class="number">1</span>]: Starting Ceph rados gateway...</span><br></pre></td></tr></table></figure>
+<h3 id="4-4_检查端口是否启动">4.4 检查端口是否启动</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># netstat -tunlp|grep radosgw</span></span><br><span class="line">tcp        <span class="number">0</span>      <span class="number">0</span> <span class="number">0.0</span>.<span class="number">0.0</span>:<span class="number">7480</span>            <span class="number">0.0</span>.<span class="number">0.0</span>:*               LISTEN      <span class="number">19996</span>/radosgw</span><br></pre></td></tr></table></figure>
+<p>可以看到默认的端口是7480</p>
+<h2 id="五、配置多个自定义端口实例">五、配置多个自定义端口实例</h2><h3 id="5-1_写配置文件">5.1 写配置文件</h3><p>在配置文件 /etc/ceph/ceph.conf的最下面写下配置文件<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[client.radosgw1]</span><br><span class="line">host = lab8106</span><br><span class="line">rgw_frontends = civetweb port=<span class="number">7481</span></span><br><span class="line">rgw_content_length_compat = <span class="literal">true</span></span><br><span class="line"></span><br><span class="line">[client.radosgw2]</span><br><span class="line">host = lab8106</span><br><span class="line">rgw_frontends = civetweb port=<span class="number">7482</span></span><br><span class="line">rgw_content_length_compat = <span class="literal">true</span></span><br></pre></td></tr></table></figure></p>
+<p>这个地方配置两个实例，用了不同的名称，用了不同的端口</p>
+<h3 id="5-2_启动服务">5.2 启动服务</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># systemctl restart ceph-radosgw@radosgw1</span></span><br><span class="line">[root@lab8106 ~]<span class="comment"># systemctl restart ceph-radosgw@radosgw2</span></span><br></pre></td></tr></table></figure>
+<h3 id="5-3_检查服务状态">5.3 检查服务状态</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># systemctl status ceph-radosgw@radosgw1</span></span><br><span class="line">● ceph-radosgw@radosgw1.service - Ceph rados gateway</span><br><span class="line">   Loaded: loaded (/usr/lib/systemd/system/ceph-radosgw@.service; disabled; vendor preset: disabled)</span><br><span class="line">   Active: active (running) since Mon <span class="number">2016</span>-<span class="number">09</span>-<span class="number">12</span> <span class="number">13</span>:<span class="number">20</span>:<span class="number">06</span> CST; <span class="number">1</span>min <span class="number">4</span>s ago</span><br><span class="line"> Main PID: <span class="number">20509</span> (radosgw)</span><br><span class="line">   CGroup: /system.slice/system-ceph\x2dradosgw.slice/ceph-radosgw@radosgw1.service</span><br><span class="line">           └─<span class="number">20509</span> /usr/bin/radosgw <span class="operator">-f</span> --cluster ceph --name client.radosgw1 --setuser ceph --setgroup ceph</span><br><span class="line"></span><br><span class="line">Sep <span class="number">12</span> <span class="number">13</span>:<span class="number">20</span>:<span class="number">06</span> lab8106 systemd[<span class="number">1</span>]: Started Ceph rados gateway.</span><br><span class="line">Sep <span class="number">12</span> <span class="number">13</span>:<span class="number">20</span>:<span class="number">06</span> lab8106 systemd[<span class="number">1</span>]: Starting Ceph rados gateway...</span><br><span class="line">[root@lab8106 ~]<span class="comment"># systemctl status ceph-radosgw@radosgw2</span></span><br><span class="line">● ceph-radosgw@radosgw2.service - Ceph rados gateway</span><br><span class="line">   Loaded: loaded (/usr/lib/systemd/system/ceph-radosgw@.service; disabled; vendor preset: disabled)</span><br><span class="line">   Active: active (running) since Mon <span class="number">2016</span>-<span class="number">09</span>-<span class="number">12</span> <span class="number">13</span>:<span class="number">20</span>:<span class="number">09</span> CST; <span class="number">1</span>min <span class="number">3</span>s ago</span><br><span class="line"> Main PID: <span class="number">20696</span> (radosgw)</span><br><span class="line">   CGroup: /system.slice/system-ceph\x2dradosgw.slice/ceph-radosgw@radosgw2.service</span><br><span class="line">           └─<span class="number">20696</span> /usr/bin/radosgw <span class="operator">-f</span> --cluster ceph --name client.radosgw2 --setuser ceph --setgroup ceph</span><br><span class="line"></span><br><span class="line">Sep <span class="number">12</span> <span class="number">13</span>:<span class="number">20</span>:<span class="number">09</span> lab8106 systemd[<span class="number">1</span>]: Started Ceph rados gateway.</span><br><span class="line">Sep <span class="number">12</span> <span class="number">13</span>:<span class="number">20</span>:<span class="number">09</span> lab8106 systemd[<span class="number">1</span>]: Starting Ceph rados gateway...</span><br></pre></td></tr></table></figure>
+<h3 id="5-4_检查端口是否启动">5.4 检查端口是否启动</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># netstat -tunlp|grep radosgw</span></span><br><span class="line">tcp        <span class="number">0</span>      <span class="number">0</span> <span class="number">0.0</span>.<span class="number">0.0</span>:<span class="number">7481</span>            <span class="number">0.0</span>.<span class="number">0.0</span>:*               LISTEN      <span class="number">20509</span>/radosgw       </span><br><span class="line">tcp        <span class="number">0</span>      <span class="number">0</span> <span class="number">0.0</span>.<span class="number">0.0</span>:<span class="number">7482</span>            <span class="number">0.0</span>.<span class="number">0.0</span>:*               LISTEN      <span class="number">20696</span>/radosgw</span><br></pre></td></tr></table></figure>
+<p>可以看到服务和端口都能正常的启动了</p>
+<p>好了，关于centos7下jewel版本的radosgw配置的启动已经介绍完了，这里不涉及更多深入的东西，其他的东西可以参照其他文档配置即可，这个地方只是对启动服务这里专门的介绍一下</p>
+<h2 id="六、总结">六、总结</h2><p>从上面的过程可以看出大致的流程如下</p>
+<ul>
+<li>安装软件</li>
+<li>启动服务</li>
+<li>检查服务状态</li>
+<li>检查服务端口</li>
+</ul>
+<p>这些很多都是基础的做法，在centos7下面虽然比6做了一些改变，但是掌握了一些通用的排查方法后，是很容易举一反三的，因为看到有新手不熟悉启动，所以写下这篇文章，自己因为也没经常用，所以也写下当个笔记了</p>
+<h2 id="七、For_me">七、For me</h2><p>如果本文有帮助到你，愿意欢迎进入<a href="http://www.zphj1987.com/payforask" target="_blank" rel="external">打赏</a></p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/radosgw/gateway.png" alt="rgw"><br></center></p>
+<h2 id="一、前言">一、前言</h2><p>本篇介绍了centos7下jewel版本的radosgw配置，这里的配置是指将服务能够正常起来，不涉及到S3的配置，以及其他的更多的配置,radosgw后面的gw就是gateway的意思，也就是我们说的网关的意思，本篇中所提及的实例也就是网关的意思，说实例是将每个单独的网关更细化一点的说法</p>
+<p>很多人不清楚在centos7下面怎么去控制这个radosgw网关的服务的控制，这个地方是会去读取配置文件的，所以配置文件得写正确</p>]]>
+    
+    </summary>
+    
+      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
+    
+  </entry>
+  
+  <entry>
     <title><![CDATA[如何统计Ceph的RBD真实使用容量]]></title>
     <link href="http://www.zphj1987.com/2016/09/08/%E5%A6%82%E4%BD%95%E7%BB%9F%E8%AE%A1Ceph%E7%9A%84RBD%E7%9C%9F%E5%AE%9E%E4%BD%BF%E7%94%A8%E5%AE%B9%E9%87%8F/"/>
     <id>http://www.zphj1987.com/2016/09/08/如何统计Ceph的RBD真实使用容量/</id>
     <published>2016-09-08T09:17:08.000Z</published>
-    <updated>2016-09-08T09:17:38.695Z</updated>
+    <updated>2016-09-12T05:54:30.809Z</updated>
     <content type="html"><![CDATA[<p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/rbdtongji/storage.png" alt="storage"><br></center></p>
 <h2 id="一、前言">一、前言</h2><p>ceph的rbd一直有个问题就是无法清楚的知道这个分配的空间里面到底使用了多少，这个在Jewel里面提供了一个新的接口去查询，对于老版本来说可能同样有这个需求，本篇将详细介绍如何解决这个问题</p>
 <h2 id="二、查询的各种方法">二、查询的各种方法</h2><p>目前已知的有三种方法<br>1、使用rbd du查询（Jewel才支持）<br>2、使用rbd diff<br>3、根据对象统计的方法进行统计</p>
@@ -1318,48 +1370,6 @@ sig_hashalgo:   sha256
     <![CDATA[<p>ceph是目前开源分布式存储里面最好的一个，但是在高负载下会有很多异常的情况会发生，有些问题无法完全避免，但是可以进行一定的控制，比如：在虚拟化场景下，重启osd会让虚拟机挂起的情况</p>
 <p>重新启动osd会给这个osd进程所在的磁盘带来额外的负载，随着前面业务的需求的增长，会增加对存储的I/O的需求，虽然这个对于整个业务系统来说是好事，但是在某些情况下，会越来越接近存储吞吐量的极限，通常情况下没有异常发生的时候，都是正常的，一旦发生异常，集群超过了临界值，性能会变得剧烈的抖动</p>
 <p>对于这种情况，一般会升级硬件来避免集群从一个高负载的集群变成一个过载的集群。本章节的重点在重启osd进程这个问题<br>]]>
-    
-    </summary>
-    
-      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[rbd无法map(rbd feature disable)]]></title>
-    <link href="http://www.zphj1987.com/2016/06/07/rbd%E6%97%A0%E6%B3%95map(rbd-feature-disable)/"/>
-    <id>http://www.zphj1987.com/2016/06/07/rbd无法map(rbd-feature-disable)/</id>
-    <published>2016-06-07T05:02:44.000Z</published>
-    <updated>2016-06-07T05:03:53.613Z</updated>
-    <content type="html"><![CDATA[<p>在jewel版本下默认开启了rbd的一些属性<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ceph --show-config|grep rbd|grep features </span></span><br><span class="line">rbd_default_features = <span class="number">61</span></span><br></pre></td></tr></table></figure></p>
-<p>RBD属性表：<br><img src="http://static.zybuluo.com/zphj1987/1amw9dopkoohq90dfwme7z6p/%E5%B1%9E%E6%80%A7.png" alt="此处输入图片的描述"><br>61的意思是上面图中的bit码相加得到的值<br><a id="more"></a><br>对rbd进行内核的map操作<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># rbd map mytest</span></span><br><span class="line">rbd: sysfs write failed</span><br><span class="line">RBD image feature <span class="built_in">set</span> mismatch. You can <span class="built_in">disable</span> features unsupported by the kernel with <span class="string">"rbd feature disable"</span>.</span><br><span class="line">In some cases useful info is found <span class="keyword">in</span> syslog - try <span class="string">"dmesg | tail"</span> or so.</span><br><span class="line">rbd: map failed: (<span class="number">6</span>) No such device or address</span><br></pre></td></tr></table></figure></p>
-<p>根据提示查询打印的信息<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># dmesg | tail</span></span><br><span class="line">[<span class="number">10440.462708</span>] rbd: image mytest: image uses unsupported features: <span class="number">0</span>x3c</span><br></pre></td></tr></table></figure></p>
-<p>这个地方提示的很清楚了，不支持的属性0x3c，0x3c是16进制的数值，换算成10进制是3*16+12=60<br>60的意思是不支持：</p>
-<blockquote>
-<p>32+16+8+4 = exclusive-lock, object-map, fast-diff, deep-flatten<br>也就是不支持这些属性，现在动态关闭这些属性</p>
-</blockquote>
-<p>查看当前使用的image属性<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># rbd info mytest</span></span><br><span class="line">rbd image <span class="string">'mytest'</span>:</span><br><span class="line">	size <span class="number">2000</span> MB <span class="keyword">in</span> <span class="number">500</span> objects</span><br><span class="line">	order <span class="number">22</span> (<span class="number">4096</span> kB objects)</span><br><span class="line">	block_name_prefix: rbd_data.<span class="number">10276</span>b8b4567</span><br><span class="line">	format: <span class="number">2</span></span><br><span class="line">	features: layering, exclusive-lock, object-map, fast-diff, deep-flatten</span><br><span class="line">	flags:</span><br></pre></td></tr></table></figure></p>
-<p>开启的属性有4个是不支持的，关闭这些属性<br>语法是：</p>
-<blockquote>
-<p>rbd feature disable {poolname}/{imagename} {feature}<br>具体到这个测试的命令<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># rbd feature disable rbd/mytest deep-flatten</span></span><br><span class="line">[root@lab8106 ~]<span class="comment"># rbd feature disable rbd/mytest fast-diff</span></span><br><span class="line">[root@lab8106 ~]<span class="comment"># rbd feature disable rbd/mytest object-map</span></span><br><span class="line">[root@lab8106 ~]<span class="comment"># rbd feature disable rbd/mytest exclusive-lock</span></span><br></pre></td></tr></table></figure></p>
-</blockquote>
-<p>再次查询image的info信息<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># rbd info mytest</span></span><br><span class="line">rbd image <span class="string">'mytest'</span>:</span><br><span class="line">	size <span class="number">2000</span> MB <span class="keyword">in</span> <span class="number">500</span> objects</span><br><span class="line">	order <span class="number">22</span> (<span class="number">4096</span> kB objects)</span><br><span class="line">	block_name_prefix: rbd_data.<span class="number">10276</span>b8b4567</span><br><span class="line">	format: <span class="number">2</span></span><br><span class="line">	features: layering</span><br><span class="line">	flags:</span><br></pre></td></tr></table></figure></p>
-<p>可以看到已经关闭了不支持的属性<br>进行kernel rbd 的map的操作<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># rbd map mytest</span></span><br><span class="line">/dev/rbd1</span><br></pre></td></tr></table></figure></p>
-<p>如果不想动态的关闭，那么在创建rbd之前，在配置文件中设置这个参数即可</p>
-<blockquote>
-<p>rbd_default_features = 3</p>
-</blockquote>
-<p>关于属性支持的，目前到内核4.6仍然只支持</p>
-<blockquote>
-<p>layering,striping = 1 + 2</p>
-</blockquote>
-<p>这两个属性</p>
-<h3 id="打赏通道">打赏通道</h3><center><br><img src="http://static.zybuluo.com/zphj1987/fi2557g55ucsdpyblopyfudl/newpay.png" alt="打赏" title="打赏"><br></center>
-
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>在jewel版本下默认开启了rbd的一些属性<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ceph --show-config|grep rbd|grep features </span></span><br><span class="line">rbd_default_features = <span class="number">61</span></span><br></pre></td></tr></table></figure></p>
-<p>RBD属性表：<br><img src="http://static.zybuluo.com/zphj1987/1amw9dopkoohq90dfwme7z6p/%E5%B1%9E%E6%80%A7.png" alt="此处输入图片的描述"><br>61的意思是上面图中的bit码相加得到的值<br>]]>
     
     </summary>
     

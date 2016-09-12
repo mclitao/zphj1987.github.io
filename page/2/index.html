@@ -99,7 +99,7 @@ var _hmt = _hmt || [];
 				        
 							<li><a href="/archives">所有文章</a></li>
 				        
-							<li><a href="/payforask">问答</a></li>
+							<li><a href="/payforask">打赏</a></li>
 				        
 							<li><a href="/instagram">图片</a></li>
 				        
@@ -166,7 +166,7 @@ var _hmt = _hmt || [];
 		        
 					<li><a href="/archives">所有文章</a></li>
 		        
-					<li><a href="/payforask">问答</a></li>
+					<li><a href="/payforask">打赏</a></li>
 		        
 					<li><a href="/instagram">图片</a></li>
 		        
@@ -190,6 +190,67 @@ var _hmt = _hmt || [];
 	</div>
 </nav>
       <div class="body-wrap">
+  
+    <article id="post-解决自动安装Freebsd系统盘符无法确定问题" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/07/19/解决自动安装Freebsd系统盘符无法确定问题/" class="article-date">
+  	<time datetime="2016-07-18T16:35:37.000Z" itemprop="datePublished">2016-07-19</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/07/19/解决自动安装Freebsd系统盘符无法确定问题/">解决自动安装Freebsd系统盘符无法确定问题</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>最近因为需要用到Freebsd，所以研究了打包的一些方法，这个没什么太大问题，通过网上的一些资料可以解决，但是由于确实不太熟悉这套系统，还是碰上了一些比较麻烦的地方，目前也没看到有人写如何处理，那就自己总结一下，以免以后再用忘记如何处理</p>
+<h3 id="一、问题来源">一、问题来源</h3><p>在linux下的iso自动安装的时候，在无法确定盘符的情况下，可以不写盘符，从而在遇到任何奇怪的磁盘的时候也是能安装的，比如 sda,xvda，vda,这些都可以通过不精确盘符的方式解决</p>
+<p>而在freebsd当中处理就不一样了<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cat ./etc/installerconfig</span><br><span class="line">PARTITIONS=<span class="string">"da0 &#123; 512K freebsd-boot, auto freebsd-ufs / &#125;"</span></span><br><span class="line">DISTRIBUTIONS=<span class="string">"custom_kernel.txz base.txz lib32.txz custom_files.txz"</span></span><br><span class="line"><span class="shebang">#!/bin/sh</span></span><br><span class="line">···</span><br></pre></td></tr></table></figure></p>
+<p>这个地方写配置文件的第一句就要告诉安装环境需要安装到哪里，这个地方是写死的一个数据，而碰上ada为系统盘就没法解决了，得不断的适配这个盘符</p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2016/07/19/解决自动安装Freebsd系统盘符无法确定问题/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
   
     <article id="post-通过ceph-deploy安装不同版本ceph" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -725,65 +786,6 @@ var _hmt = _hmt || [];
       
         <p class="article-more-link">
           <a  href="/2016/06/07/加速OSD的启动/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-rbd无法map(rbd-feature-disable)" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/06/07/rbd无法map(rbd-feature-disable)/" class="article-date">
-  	<time datetime="2016-06-07T05:02:44.000Z" itemprop="datePublished">2016-06-07</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/06/07/rbd无法map(rbd-feature-disable)/">rbd无法map(rbd feature disable)</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>在jewel版本下默认开启了rbd的一些属性<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ceph --show-config|grep rbd|grep features </span></span><br><span class="line">rbd_default_features = <span class="number">61</span></span><br></pre></td></tr></table></figure></p>
-<p>RBD属性表：<br><img src="http://static.zybuluo.com/zphj1987/1amw9dopkoohq90dfwme7z6p/%E5%B1%9E%E6%80%A7.png" alt="此处输入图片的描述"><br>61的意思是上面图中的bit码相加得到的值<br>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2016/06/07/rbd无法map(rbd-feature-disable)/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>
