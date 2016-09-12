@@ -4,7 +4,7 @@
   <subtitle><![CDATA[现在所学，终有所用]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2016-09-12T05:54:56.885Z</updated>
+  <updated>2016-09-12T06:00:17.703Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -19,8 +19,8 @@
     <link href="http://www.zphj1987.com/2016/09/12/Centos7%E4%B8%8BJewel%E7%89%88%E6%9C%ACradosgw%E6%9C%8D%E5%8A%A1%E5%90%AF%E5%8A%A8/"/>
     <id>http://www.zphj1987.com/2016/09/12/Centos7下Jewel版本radosgw服务启动/</id>
     <published>2016-09-12T05:47:47.000Z</published>
-    <updated>2016-09-12T05:54:56.885Z</updated>
-    <content type="html"><![CDATA[<p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/radosgw/gateway.png" alt="rgw"><br></center></p>
+    <updated>2016-09-12T06:00:17.703Z</updated>
+    <content type="html"><![CDATA[<p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/radosgw/gateway1.png" alt="rgw"><br></center></p>
 <h2 id="一、前言">一、前言</h2><p>本篇介绍了centos7下jewel版本的radosgw配置，这里的配置是指将服务能够正常起来，不涉及到S3的配置，以及其他的更多的配置,radosgw后面的gw就是gateway的意思，也就是我们说的网关的意思，本篇中所提及的实例也就是网关的意思，说实例是将每个单独的网关更细化一点的说法</p>
 <p>很多人不清楚在centos7下面怎么去控制这个radosgw网关的服务的控制，这个地方是会去读取配置文件的，所以配置文件得写正确</p>
 <a id="more"></a>
@@ -56,7 +56,7 @@
 <h2 id="七、For_me">七、For me</h2><p>如果本文有帮助到你，愿意欢迎进入<a href="http://www.zphj1987.com/payforask" target="_blank" rel="external">打赏</a></p>
 ]]></content>
     <summary type="html">
-    <![CDATA[<p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/radosgw/gateway.png" alt="rgw"><br></center></p>
+    <![CDATA[<p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/radosgw/gateway1.png" alt="rgw"><br></center></p>
 <h2 id="一、前言">一、前言</h2><p>本篇介绍了centos7下jewel版本的radosgw配置，这里的配置是指将服务能够正常起来，不涉及到S3的配置，以及其他的更多的配置,radosgw后面的gw就是gateway的意思，也就是我们说的网关的意思，本篇中所提及的实例也就是网关的意思，说实例是将每个单独的网关更细化一点的说法</p>
 <p>很多人不清楚在centos7下面怎么去控制这个radosgw网关的服务的控制，这个地方是会去读取配置文件的，所以配置文件得写正确</p>]]>
     
