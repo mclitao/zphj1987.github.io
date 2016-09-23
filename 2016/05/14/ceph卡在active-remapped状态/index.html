@@ -253,6 +253,44 @@ var _hmt = _hmt || [];
 <blockquote>
 <p>之前看到过sage在回复这种remapped问题的时候，都是不把这个归到bug里面去的，这个我也认为是配置问题引起的极端的问题，正常情况下都能避免的</p>
 </blockquote>
+<h3 id="更新">更新</h3><p>从FIREFLY (CRUSH_TUNABLES3)开始crush里面增加了一个参数：</p>
+<blockquote>
+<p>chooseleaf_vary_r</p>
+</blockquote>
+<p>是否进行递归的进行chooseleaf，如果非0，就递归的进行，这个基于parent已经做了多少次尝试，默认是0，但是常常找不到合适的mapping.在计算成本和正确性上来看最佳的值是1</p>
+<p>对迁移的影响,对于已经有大量数据的集群来说，从0调整为1将会有大量的数值的迁移，调整为4或者5的话，将会找到一个更有效的映射，可以减少数据的移动</p>
+<p>查看当前的值<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ceph osd crush show-tunables |grep chooseleaf_vary_r</span></span><br><span class="line">    <span class="string">"chooseleaf_vary_r"</span>: <span class="number">0</span>,</span><br></pre></td></tr></table></figure></p>
+<p>修改crushmap内容<br>修改chooseleaf_vary_r的值</p>
+<p>hammer版本下这个参数默认为：</p>
+<blockquote>
+<p>tunable chooseleaf_vary_r 0</p>
+</blockquote>
+<p>jewel版本下这个参数默认为：</p>
+<blockquote>
+<p>tunable chooseleaf_vary_r 1</p>
+</blockquote>
+<h3 id="参考资料">参考资料</h3><p><a href="http://docs.ceph.com/docs/master/rados/operations/crush-map/" target="_blank" rel="external">官网文档crushmap</a></p>
+<h3 id="变更记录">变更记录</h3><table>
+<thead>
+<tr>
+<th style="text-align:center">Why</th>
+<th style="text-align:center">Who</th>
+<th style="text-align:center">When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">创建</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2016-05-14</td>
+</tr>
+<tr>
+<td style="text-align:center">修改</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2016-09-23</td>
+</tr>
+</tbody>
+</table>
 <h3 id="打赏通道">打赏通道</h3><center><br><img src="http://static.zybuluo.com/zphj1987/fi2557g55ucsdpyblopyfudl/newpay.png" alt="打赏" title="打赏"><br></center>
 
 
