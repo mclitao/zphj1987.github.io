@@ -191,6 +191,75 @@ var _hmt = _hmt || [];
 </nav>
       <div class="body-wrap">
   
+    <article id="post-用grub4dos来实现移动硬盘安装linux系统" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/03/22/用grub4dos来实现移动硬盘安装linux系统/" class="article-date">
+  	<time datetime="2015-03-22T14:27:07.000Z" itemprop="datePublished">2015-03-22</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/03/22/用grub4dos来实现移动硬盘安装linux系统/">用grub4dos来实现移动硬盘安装linux系统(图重弄)</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>网上看了一些grub4dos相关教程,虽然相关资料很多,但是一步步做下来还是会出现一些问题,并且有些地方也没有说清楚,现在写下来供自己以后查看</p>
+<p>由于使用utraliso软件做centos6.4系统盘的时候,由于centos系统盘超过4G,而utraliso软件做系统盘的时候默认文件系统ext格式,而ext格式不支持超过4G的文件,所以就无法启动,所以研究了下用grub4dos这个软件来实现移动硬盘安装linux系统</p>
+<p>首先需要准备两个文件<br>grub4dos-0.4.4.zip<br>grubinst-1.1-bin-w32-2008-01-01.zip</p>
+<p>解压grub4dos-0.4.4.zip</p>
+<p><img src="http://fmn.rrimg.com/fmn061/20130605/2150/b_large_LQAI_39a3000004ac1262.jpg" alt=""></p>
+<p>&lt;这里需要注意下，如果用移动硬盘想实现的是只装一种系统话，那么就不需要对硬盘分区，如果想装多个系统的话就可以对移动硬盘分几个区，每个分区可以放一种操作系统&gt;</p>
+<p>在win7的开始菜单中搜索 计算机管理&gt;磁盘管理<br>然后选择你的移动硬盘,然后将第一个盘符标记为活动分区,这样移动硬盘这个区才能被识别,从而作为启动分区</p>
+<p><img src="http://fmn.rrimg.com/fmn063/20130605/2200/b_large_VXDK_39a3000004d91262.jpg" alt=""></p>
+<p>解压grubinst-1.1-bin-w32-2008-01-01.zip 运行<br>grubinst_gui.exe<br>磁盘选择你的移动硬盘<br>然后点分区列表右边的刷新<br>然后选择整个磁盘(MBR),然后点击安装</p>
+<p><img src="http://fmn.rrfmn.com/fmn058/20130605/2215/b_large_1Zyp_5715000001f51263.jpg" alt=""></p>
+<p>将刚刚解压得到的grub4dos-0.4.4这个目录下的chinese目录下的三个文件拷贝到你准备用来做安装系统移动硬盘,也就是刚刚设置为活动主分区那个盘还有grub4dos-0.4.4目录下menu.lst也拷贝到移动硬盘活动分区那个盘的根目录下，这个移动硬盘目录下最后看到的文件如下截图</p>
+<p><img src="http://fmn.rrimg.com/fmn065/20130605/2210/b_large_qb9c_30620000080c1263.jpg" alt=""></p>
+<p>如果这个时候你移动硬盘没分区的话，就将你的系统盘的iso全部解压到你的这个目录,系统iso解压可以用360压缩工具<br>然后修改menu.lst  ,如果比较熟悉,可以进行自定义,如果不熟悉,这里直接在下面加几行:<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">title centos6.4 install&#10;kernel (hd0,0)/isolinux/vmlinuz&#10;initrd (hd0,0)/isolinux/initrd.img</span><br></pre></td></tr></table></figure></p>
+<p>上面的title后面写的字段会在系统安装的时候显示，然后安装的时候选择这个centos6.4 install就行,其中(hd0,0)的前面的0是代表第一个盘,也就是你的移动盘,后面的0代表分区,代表第一个分区,如果你把系统iso解压到移动硬盘的第二个分区,那么就把这个改为1<br>isolinux/vmlinuz 就是你解压的iso里面的文件<br>到这里,系统盘已经做好了,在电脑的启动项里面选择centos6.4 install 就可以安装这个linux系统了</p>
+<p>此方法对于centos6.4还是有问题 所以需要多做些工作<br>思路是把第二个分区做成linux的ext2格式就能放4G以上的iso,但是win7又无法识别ext2的盘符,所以需要做两步,第一步将第二分区格式化为ext2<br>使用这个工具:<br>ParagonPartitionManager.rar<br>使用这个工具把盘格式化为ext2<br>使用这个工具是win7下能查看ext2格式的盘符<br>Ext2Fsd-0.51.zip</p>
+<p><img src="http://fmn.xnpic.com/fmn057/20130606/2145/b_large_jgCI_5038000002631263.jpg" alt=""></p>
+<p><img src="http://fmn.rrimg.com/fmn060/20130606/2145/b_large_uSUd_588c000003ba1262.jpg" alt=""></p>
+<p><img src="http://fmn.rrimg.com/fmn061/20130606/2155/b_large_LzJv_2a51000012851262.jpg" alt=""></p>
+<p>写于: 2013年06月05日<br>更新于: 2015年03月22日</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-手机中没有该应用所需的共享库（解决手机无法安装Google-plus）" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -696,62 +765,6 @@ var _hmt = _hmt || [];
       
         <p class="article-more-link">
           <a  href="/2015/03/22/linux利用screen进行shell下的屏幕协作/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-使用Ganglia监控系统监控集群-debian" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/03/22/使用Ganglia监控系统监控集群-debian/" class="article-date">
-  	<time datetime="2015-03-22T09:20:06.000Z" itemprop="datePublished">2015-03-22</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/03/22/使用Ganglia监控系统监控集群-debian/">使用Ganglia监控系统监控集群(debian)</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>anglia是一个集群监控软件,底层使用RRDTool获得数据。<br>Ganglia分为ganglia-monitor和gmetad两部分,前者运行在集群每个节点上(被监控机器)收集RRDTool产生的数据,后者运行在监控服务器上,收集每个ganglia-monitor的数据,通过Web UI可以看到直观的各种图表。</p>
-<p>在debian上安装Ganglia非常简单,首先安装下面三个包。因为要使用Web服务器才能看到图表,所以如果没有安装apache的话,会自动安装apache服务器。<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">&#9;apt-get installganglia-monitor  #&#36825;&#20010;&#21253;&#23433;&#35013;&#22312;&#34987;&#30417;&#25511;&#26426;&#22120;&#21363;&#21487;&#10;&#9;apt-get install ganglia-webfront gmetad  #&#36825;&#20004;&#20010;&#21253;&#23433;&#35013;&#22312;&#30417;&#25511;&#26381;&#21153;&#22120;&#65292;&#21069;&#32773;&#25552;&#20379;web&#39029;&#38754;&#65292;&#21518;&#32773;&#25910;&#38598;&#20854;&#20182;&#26426;&#22120;&#30340;&#30417;&#25511;&#25968;&#25454;&#10;```   &#10;     &#10;&#34987;&#30417;&#25511;&#23433;&#35013;&#23436;&#25104;&#20043;&#21518;&#65292;gmond&#26381;&#21153;&#20250;&#36816;&#34892;&#36215;&#26469;&#65292;&#20351;&#29992;&#19979;&#38754;&#30340;&#21629;&#20196;&#21487;&#20197;&#21551;&#21160;&#36825;&#20010;&#26381;&#21153;&#12290;&#10;```raw&#10;&#9;/etc/init.d/ganglia-monitor restart</span><br></pre></td></tr></table></figure></p>
-<p>(配置文件的路径在/etc/ganglia/gmond.conf)基本不用配置就可以启用</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/03/22/使用Ganglia监控系统监控集群-debian/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>
