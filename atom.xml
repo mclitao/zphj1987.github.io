@@ -4,7 +4,7 @@
   <subtitle><![CDATA[现在所学，终有所用]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2016-09-28T06:39:34.698Z</updated>
+  <updated>2016-09-28T10:17:48.586Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -13,6 +13,43 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[fio测试数据的可视化]]></title>
+    <link href="http://www.zphj1987.com/2016/09/28/fio%E6%B5%8B%E8%AF%95%E6%95%B0%E6%8D%AE%E7%9A%84%E5%8F%AF%E8%A7%86%E5%8C%96/"/>
+    <id>http://www.zphj1987.com/2016/09/28/fio测试数据的可视化/</id>
+    <published>2016-09-28T10:13:04.000Z</published>
+    <updated>2016-09-28T10:17:48.586Z</updated>
+    <content type="html"><![CDATA[<h2 id="前言">前言</h2><p>近期会做一个事情，把fio的数据可视化，目前有gfio可以动态的获取状态，希望能够对已经产生的数据进行分析</p>
+<p>目前处于起步数据分析阶段，通过python获取需要的数据输出到csv，然后对csv进行综合的输出，从而能够清楚的从大量数据当中得到想要的效果<br><a id="more"></a></p>
+<h2 id="图例">图例</h2><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/fio/fiokeshuhua.png" alt=""><br></center>
+
+<h2 id="变更记录">变更记录</h2><table>
+<thead>
+<tr>
+<th style="text-align:center">Why</th>
+<th style="text-align:center">Who</th>
+<th style="text-align:center">When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">创建</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2016-09-28</td>
+</tr>
+</tbody>
+</table>
+]]></content>
+    <summary type="html">
+    <![CDATA[<h2 id="前言">前言</h2><p>近期会做一个事情，把fio的数据可视化，目前有gfio可以动态的获取状态，希望能够对已经产生的数据进行分析</p>
+<p>目前处于起步数据分析阶段，通过python获取需要的数据输出到csv，然后对csv进行综合的输出，从而能够清楚的从大量数据当中得到想要的效果<br>]]>
+    
+    </summary>
+    
+      <category term="linux" scheme="http://www.zphj1987.com/tags/linux/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[Python生成csv中文乱码解决办法]]></title>
@@ -1274,94 +1311,6 @@ sig_hashalgo:   sha256
 <h3 id="二、快照的创建和数据的导出">二、快照的创建和数据的导出</h3><p><img src="http://static.zybuluo.com/zphj1987/t933vz49n801mowt0gj3mbts/image_1alqs3lm81ss11n1vg7k1mle1eq39.png" alt=""></p>
 <p>上图是一个快照的创建和导出的过程，这里详细的描述下这些操作<br>创建快照<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rbd snap create testimage@v1</span><br><span class="line">rbd snap create testimage@v2</span><br></pre></td></tr></table></figure></p>
 <p>这两个命令是在时间点v1和时间点v2分别做了两个快照<br>]]>
-    
-    </summary>
-    
-      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[rgw实现nfs的首测]]></title>
-    <link href="http://www.zphj1987.com/2016/06/19/rgw%E5%AE%9E%E7%8E%B0nfs%E7%9A%84%E9%A6%96%E6%B5%8B/"/>
-    <id>http://www.zphj1987.com/2016/06/19/rgw实现nfs的首测/</id>
-    <published>2016-06-18T18:47:56.000Z</published>
-    <updated>2016-09-08T15:04:06.109Z</updated>
-    <content type="html"><![CDATA[<h3 id="一、功能介绍">一、功能介绍</h3><p>关于rgw实现nfs接口这个，刚接触的人可能并不清楚这个是个什么样的服务架构，rgw是ceph里面的对象存储接口，而nfs则是纯正的网络文件系统接口，这二者如何结合在一起,关于这个,有几个相关的链接供大家了解</p>
-<ul>
-<li><a href="http://tracker.ceph.com/projects/ceph/wiki/RGW_-_NFS" target="_blank" rel="external">ceph官方的RGW_NFS项目规划</a></li>
-<li><a href="http://chuansong.me/n/2385718" target="_blank" rel="external">麦子迈关于RGW_NFS的文章</a></li>
-</ul>
-<p>之所以这个功能能实现这么快，原因是nfs-ganesha的开发者Matt Benjamin加入到了Redhat，而ceph目前的开发是Redhat在主导开发，所以功能的实现是非常快的，但是目前官方并没有提供相关的文档，个人推测是功能并未完全开发完成，一旦未完全开发完成的功能放出来，邮件列表和Bug列表就会有很多相关问题，开发者应该还是希望安静的把功能做好，再提供相关的文档，而这个功能也是在ceph 的jewel版本里面才加入的</p>
-<a id="more"></a>
-<h3 id="二、功能架构图">二、功能架构图</h3><p><img src="http://static.zybuluo.com/zphj1987/o5ruvtr9f7nyegbv0ly7ekv5/image_1alibfc78g96dsa1c26crkgis1e.png" alt="image_1alibfc78g96dsa1c26crkgis1e.png-78.3kB"><br>简单说明一下：<br>集群配置s3接口，nfs-genesha将s3接口转换成nfs，然后nfs客户端挂载后访问的就是s3的bucket里面的数据了</p>
-<h3 id="三、准备工作">三、准备工作</h3><p>准备代码，这个是需要从源码编译的，并且需要将模块编译进去才可以的，源码分支地址：</p>
-<blockquote>
-<p><a href="https://github.com/nfs-ganesha/nfs-ganesha/tree/V2.3-stable" target="_blank" rel="external">https://github.com/nfs-ganesha/nfs-ganesha/tree/V2.3-stable</a></p>
-</blockquote>
-<p>这个地方要注意下，需要使用next分支(此分支开发中有编译BUG)，换分支V2.3-stable<br>使用git 进行clone分支到本地<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> -b V2.<span class="number">3</span>-stable https://github.com/nfs-ganesha/nfs-ganesha.git</span><br></pre></td></tr></table></figure></p>
-<p>检查是否有这个RGW模块目录</p>
-<blockquote>
-<p>nfs-ganesha/src/FSAL/FSAL_RGW/</p>
-</blockquote>
-<p>默认clone下来后  <code>nfs-ganesha/src/libntirpc/</code> 这个目录是空的，而这个是因为如果在git里面某个目录嵌套的用了其他项目的代码，并且也是有git的分支的话，clone下来就会是空的，这个在ceph的源码里面也会这样，具体的看看下图：<br><img src="http://static.zybuluo.com/zphj1987/00dbog7s6nzbze55qyjilzt9/libntir.png" alt="libntir.png-38.4kB"><br>下载下面的链接的这个版本，然后把代码解压到nfs-ganesha/src/libntirpc/这个目录当中去<br><a href="https://github.com/nfs-ganesha/ntirpc/archive/e9cefd2ebfa0a5fc25932cc1088663d39c27e549.zip" target="_blank" rel="external">https://github.com/nfs-ganesha/ntirpc/archive/e9cefd2ebfa0a5fc25932cc1088663d39c27e549.zip</a></p>
-<p>代码的编译采用的是cmake的模式(cmake目录后面接的是nfs-ganesha代码的src目录)</p>
-<blockquote>
-<p>注意在执行cmake之前编译环境需要安装librgw2-devel这个包，才能编译成功，执行cmake的时候检查下是否真的开启了</p>
-</blockquote>
-<p><img src="http://static.zybuluo.com/zphj1987/u3xku4jf3swljl0bub9zkwv0/image_1alian0db17e91gg1mhg866i1q11.png" alt="image_1alian0db17e91gg1mhg866i1q11.png-11.1kB"></p>
-<p>开始编译安装过程，创建一个用于编译的目录<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 newbian]<span class="comment">#mkdir mybuild</span></span><br><span class="line">[root@lab8106 newbian]<span class="comment">#cd mybuild</span></span><br><span class="line">[root@lab8106 mybuild]<span class="comment">#cmake -DUSE_FSAL_RGW=ON ../nfs-ganesha/src/</span></span><br><span class="line">[root@lab8106 mybuild]<span class="comment"># ll FSAL/FSAL_RGW/</span></span><br><span class="line">total <span class="number">16</span></span><br><span class="line">drwxr-xr-x <span class="number">3</span> root root    <span class="number">83</span> Jun <span class="number">19</span> <span class="number">01</span>:<span class="number">59</span> CMakeFiles</span><br><span class="line">-rw-r--r-- <span class="number">1</span> root root  <span class="number">2979</span> Jun <span class="number">19</span> <span class="number">01</span>:<span class="number">59</span> cmake_install.cmake</span><br><span class="line">-rw-r--r-- <span class="number">1</span> root root <span class="number">10164</span> Jun <span class="number">19</span> <span class="number">01</span>:<span class="number">59</span> Makefile</span><br><span class="line">[root@lab8106 mybuild]<span class="comment">#make</span></span><br><span class="line">[root@lab8106 mybuild]<span class="comment">#make install</span></span><br></pre></td></tr></table></figure></p>
-<p>编译安装工作就到此完成了，还是比较简单的</p>
-<h3 id="四、配置服务">四、配置服务</h3><h4 id="1、准备一个s3的环境，我的如下：">1、准备一个s3的环境，我的如下：</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">radosgw-admin user create --uid=admin --display-name=<span class="string">"admin"</span>   --access-key=admin  --secret=admin</span><br></pre></td></tr></table></figure>
-<p>用户信息如下：</p>
-<ul>
-<li>s3的User_Id：admin </li>
-<li>s3的Access_Key:admin </li>
-<li>s3的Secret_Access_Key:admin</li>
-</ul>
-<p>注意，配置ganesha-nfs服务的机器需要安装librgw</p>
-<h4 id="2、修改ganesha-nfs的配置文件">2、修改ganesha-nfs的配置文件</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">vim /etc/ganesha/ganesha.conf</span><br></pre></td></tr></table></figure>
-<p>修改如下：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">EXPORT</span><br><span class="line">&#123;</span><br><span class="line">        Export_ID=<span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">        Path = <span class="string">"/"</span>;</span><br><span class="line"></span><br><span class="line">        Pseudo = <span class="string">"/"</span>;</span><br><span class="line"></span><br><span class="line">        Access_Type = RW;</span><br><span class="line"></span><br><span class="line">        NFS_Protocols = <span class="number">4</span>;</span><br><span class="line"></span><br><span class="line">        Transport_Protocols = TCP;</span><br><span class="line"></span><br><span class="line">        FSAL &#123;</span><br><span class="line">                Name = RGW;</span><br><span class="line">                User_Id = <span class="string">"admin"</span>;</span><br><span class="line">                Access_Key_Id =<span class="string">"admin"</span>;</span><br><span class="line">                Secret_Access_Key = <span class="string">"admin"</span>;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">RGW &#123;</span><br><span class="line">    ceph_conf = <span class="string">"/etc/ceph/ceph.conf"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>RGW-NFS配置文件的模板路径在：</p>
-<blockquote>
-<p>/usr/share/doc/ganesha/config_samples/rgw.conf</p>
-</blockquote>
-<h4 id="4、启动ganesha-nfs服务">4、启动ganesha-nfs服务</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">systemctl restart  nfs-ganesha.service</span><br></pre></td></tr></table></figure>
-<h4 id="5、NFS客户端挂载ganesha-nfs服务">5、NFS客户端挂载ganesha-nfs服务</h4><p>找一台其它的客户端机器<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mount -t nfs <span class="number">192.168</span>.<span class="number">8.106</span>:/ /mnt</span><br></pre></td></tr></table></figure></p>
-<p>直接挂载即可，这里注意因为rgw是没有文件系统的容量概念的，这里df是看不到的，所以用mount命令检测<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@lab8107:~<span class="comment"># mount|grep mnt</span></span><br><span class="line"><span class="number">192.168</span>.<span class="number">8.106</span>:/ on /mnt <span class="built_in">type</span> nfs4 (rw,relatime,vers=<span class="number">4.0</span>,rsize=<span class="number">1048576</span>,wsize=<span class="number">1048576</span>,namlen=<span class="number">255</span>,hard,proto=tcp,timeo=<span class="number">600</span>,retrans=<span class="number">2</span>,sec=sys,clientaddr=<span class="number">192.168</span>.<span class="number">8.107</span>,<span class="built_in">local</span>_lock=none,addr=<span class="number">192.168</span>.<span class="number">8.106</span>)</span><br><span class="line"><span class="number">192.168</span>.<span class="number">8.106</span>:/testnfsrgw on /mnt/testnfsrgw <span class="built_in">type</span> nfs4 (rw,relatime,vers=<span class="number">4.0</span>,rsize=<span class="number">1048576</span>,wsize=<span class="number">1048576</span>,namlen=<span class="number">255</span>,hard,proto=tcp,port=<span class="number">0</span>,timeo=<span class="number">600</span>,retrans=<span class="number">2</span>,sec=sys,clientaddr=<span class="number">192.168</span>.<span class="number">8.107</span>,<span class="built_in">local</span>_lock=none,addr=<span class="number">192.168</span>.<span class="number">8.106</span>)</span><br></pre></td></tr></table></figure></p>
-<p>可以查看挂载的目录里面的子目录对应的就是bucket<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@lab8107:~<span class="comment"># ll /mnt/</span></span><br><span class="line">total <span class="number">4</span></span><br><span class="line">drwxrwxrwx  <span class="number">3</span> root root    <span class="number">0</span> Jan  <span class="number">1</span>  <span class="number">1970</span> ./</span><br><span class="line">drwxr-xr-x <span class="number">25</span> root root <span class="number">4096</span> Apr <span class="number">13</span> <span class="number">03</span>:<span class="number">04</span> ../</span><br><span class="line">drwxrwxrwx  <span class="number">3</span> root root    <span class="number">0</span> Jan  <span class="number">1</span>  <span class="number">1970</span> testnfsrgw/</span><br></pre></td></tr></table></figure></p>
-<h3 id="五、总结">五、总结</h3><p>在实现这个功能以后，实际上为文件接口和对象接口打通了一个通道，能够方便的实现传统的文件接口的数据到对象接口的转移，在性能方面，本篇并没有做测试，这个交给实际项目中去检测了，如果有问题欢迎探讨</p>
-<h3 id="六、变更记录">六、变更记录</h3><table>
-<thead>
-<tr>
-<th style="text-align:center">Why</th>
-<th style="text-align:center">Who</th>
-<th style="text-align:center">When</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">创建</td>
-<td style="text-align:center">武汉-运维-磨渣</td>
-<td style="text-align:center">2016-06-19</td>
-</tr>
-<tr>
-<td style="text-align:center">修改无法编译的BUG</td>
-<td style="text-align:center">武汉-运维-磨渣</td>
-<td style="text-align:center">2016-09-08</td>
-</tr>
-</tbody>
-</table>
-<h3 id="打赏通道">打赏通道</h3><center><br><img src="http://static.zybuluo.com/zphj1987/fi2557g55ucsdpyblopyfudl/newpay.png" alt="打赏" title="打赏"><br></center>
-
-]]></content>
-    <summary type="html">
-    <![CDATA[<h3 id="一、功能介绍">一、功能介绍</h3><p>关于rgw实现nfs接口这个，刚接触的人可能并不清楚这个是个什么样的服务架构，rgw是ceph里面的对象存储接口，而nfs则是纯正的网络文件系统接口，这二者如何结合在一起,关于这个,有几个相关的链接供大家了解</p>
-<ul>
-<li><a href="http://tracker.ceph.com/projects/ceph/wiki/RGW_-_NFS">ceph官方的RGW_NFS项目规划</a></li>
-<li><a href="http://chuansong.me/n/2385718">麦子迈关于RGW_NFS的文章</a></li>
-</ul>
-<p>之所以这个功能能实现这么快，原因是nfs-ganesha的开发者Matt Benjamin加入到了Redhat，而ceph目前的开发是Redhat在主导开发，所以功能的实现是非常快的，但是目前官方并没有提供相关的文档，个人推测是功能并未完全开发完成，一旦未完全开发完成的功能放出来，邮件列表和Bug列表就会有很多相关问题，开发者应该还是希望安静的把功能做好，再提供相关的文档，而这个功能也是在ceph 的jewel版本里面才加入的</p>]]>
     
     </summary>
     
