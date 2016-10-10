@@ -4,7 +4,7 @@
   <subtitle><![CDATA[现在所学，终有所用]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2016-09-28T10:17:48.586Z</updated>
+  <updated>2016-10-10T04:42:56.476Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -13,6 +13,56 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[编译一个支持多线程的php安装包]]></title>
+    <link href="http://www.zphj1987.com/2016/10/10/%E7%BC%96%E8%AF%91%E4%B8%80%E4%B8%AA%E6%94%AF%E6%8C%81%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%9A%84php%E5%AE%89%E8%A3%85%E5%8C%85/"/>
+    <id>http://www.zphj1987.com/2016/10/10/编译一个支持多线程的php安装包/</id>
+    <published>2016-10-10T04:27:18.000Z</published>
+    <updated>2016-10-10T04:42:56.476Z</updated>
+    <content type="html"><![CDATA[<p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/php/php-elephant-01.png" alt=""><br></center></p>
+<h2 id="一、前言">一、前言</h2><p>因为项目上的需要，需要用到php，一般来说，用默认的版本和配置就可以满足大多数的场景，因为需要加入多线程，所以需要自己编译一个包</p>
+<p>一般来说，发行的包的版本的配置选项和代码都是最稳定的，所以在大多数情况下，我都不会直接去拿原始的源码做编译，这里我的经验是用别人发布版本的源码包，然后根据自己的需要，做修改，然后打包，这次的处理方法还是一样</p>
+<h2 id="二、获取源码">二、获取源码</h2><p>地址：<br><figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="symbol">https:</span>/<span class="regexp">/uk.repo.webtatic.com/yum</span><span class="regexp">/el7/</span><span class="constant">SRPMS/RPMS/</span></span><br></pre></td></tr></table></figure></p>
+<p>这个是webtatic发行的php版本，做了一些修改和优化</p>
+<p>选择需要的版本<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 myphp]<span class="comment"># wget https://uk.repo.webtatic.com/yum/el7/SRPMS/RPMS/php56w-5.6.26-1.w7.src.rpm</span></span><br></pre></td></tr></table></figure></p>
+<p>解压安装包<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 myphp]<span class="comment"># rpm2cpio php56w-5.6.26-1.w7.src.rpm |cpio -div</span></span><br></pre></td></tr></table></figure></p>
+<p>解压完成了后，当前目录下面会有很多文件<br>修改当前目录下面的php56.spec<br>在编译相关的configure后面增加</p>
+<blockquote>
+<p>—enable-maintainer-zts</p>
+</blockquote>
+<p>拷贝解压和修改的文件到源码编译目录<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 myphp]<span class="comment"># cp -ra * /root/rpmbuild/SOURCES/</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="三、编译rpm包">三、编译rpm包</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 myphp]<span class="comment"># rpmbuild -bb php56.spec</span></span><br></pre></td></tr></table></figure>
+<p>如果提示缺依赖，就把相关的依赖包安装好就可以了，编译环境最好跟最终使用环境是一样的环境，执行完成了以后，会生成rpm安装包</p>
+<h2 id="四、增加多线程支持">四、增加多线程支持</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pecl install pthreads-<span class="number">2.0</span>.<span class="number">9</span></span><br></pre></td></tr></table></figure>
+<p>这个会下载源码，然后自动编译成可用的内核模块，将这个内核模块的配置文件和模块文件拷贝到最终使用环境即可</p>
+<p>检查是否安装成功<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># php -m|grep pth</span></span><br><span class="line">pthreads</span><br></pre></td></tr></table></figure></p>
+<p>可用看到已经支持了</p>
+<h2 id="五、变更记录">五、变更记录</h2><table>
+<thead>
+<tr>
+<th style="text-align:center">Why</th>
+<th style="text-align:center">Who</th>
+<th style="text-align:center">When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">创建</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2016-10-10</td>
+</tr>
+</tbody>
+</table>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/php/php-elephant-01.png" alt=""><br></center></p>
+<h2 id="一、前言">一、前言</h2><p>因]]>
+    </summary>
+    
+      <category term="linux" scheme="http://www.zphj1987.com/tags/linux/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[fio测试数据的可视化]]></title>
@@ -1248,73 +1298,6 @@ sig_hashalgo:   sha256
     </summary>
     
       <category term="linux" scheme="http://www.zphj1987.com/tags/linux/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[rbd的增量备份和恢复]]></title>
-    <link href="http://www.zphj1987.com/2016/06/22/rbd%E7%9A%84%E5%A2%9E%E9%87%8F%E5%A4%87%E4%BB%BD%E5%92%8C%E6%81%A2%E5%A4%8D/"/>
-    <id>http://www.zphj1987.com/2016/06/22/rbd的增量备份和恢复/</id>
-    <published>2016-06-21T17:17:24.000Z</published>
-    <updated>2016-06-22T01:40:00.378Z</updated>
-    <content type="html"><![CDATA[<h3 id="一、前言">一、前言</h3><p>快照的功能一般是基于时间点做一个标记，然后在某些需要的时候，将状态恢复到标记的那个点，这个有一个前提是底层的东西没用破坏，举个简单的例子，<strong>Vmware</strong> 里面对虚拟机做了一个快照，然后做了一些系统的操作，想恢复快照，前提是存储快照的存储系统没用破坏，一旦破坏了是无法恢复的</p>
-<p>ceph里面也有快照的功能，同样的，在这里的快照是用来保存存储系统上的状态的，数据的快照能成功恢复的前提是存储系统是好的，而一旦存储系统坏了，快照同时会失效的，本篇文章利用ceph的快照去实现一个增量的备份功能，网上也有很多这个脚本，这里主要是对里面细节做一个实践，具体集成到一套系统里面去，自己去做一个策略就行了，总之多备份一下，以备不时之需，并且也可以实现跨机房的增量备份，这个在某些云计算公司已经实现了，这样一旦发生故障的时候，能够把损失减到最小</p>
-<h3 id="二、快照的创建和数据的导出">二、快照的创建和数据的导出</h3><p><img src="http://static.zybuluo.com/zphj1987/t933vz49n801mowt0gj3mbts/image_1alqs3lm81ss11n1vg7k1mle1eq39.png" alt=""></p>
-<p>上图是一个快照的创建和导出的过程，这里详细的描述下这些操作<br>创建快照<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rbd snap create testimage@v1</span><br><span class="line">rbd snap create testimage@v2</span><br></pre></td></tr></table></figure></p>
-<p>这两个命令是在时间点v1和时间点v2分别做了两个快照<br><a id="more"></a></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rbd <span class="built_in">export</span>-diff rbd/testimage@v1 testimage_v1</span><br></pre></td></tr></table></figure>
-<p>这个命令是导出了从开始创建image到快照v1那个时间点的差异数据导出来了testimage_v1，导出成本地文件testimage_v1</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rbd <span class="built_in">export</span>-diff rbd/testimage@v2 testimage_v2</span><br></pre></td></tr></table></figure>
-<p>这个命令是导出了从开始创建image到快照v2那个时间点的差异数据导出来了，导出成本地文件testimage_v2<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rbd <span class="built_in">export</span>-diff rbd/testimage@v2 --from-snap v1 testimage_v1_v2</span><br></pre></td></tr></table></figure></p>
-<p>这个命令是导出了从v1快照时间点到v2快照时间点的差异数据，导出成本地文件testimage_v1_v2</p>
-<p>这个地方上面的导出的数据：</p>
-<blockquote>
-<p>v1时间点数据 + v1_v2之间数据 = v2 时间点数据</p>
-</blockquote>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rbd <span class="built_in">export</span>-diff rbd/testimage testimage_now</span><br></pre></td></tr></table></figure>
-<p>这个就是导出了从image创建到当前的时间点的差异数据</p>
-<h3 id="三、快照的数据恢复">三、快照的数据恢复</h3><p><img src="http://static.zybuluo.com/zphj1987/ue1feys17yiya6doa2audkbo/image_1alpuprird31dltilpro7kf52a.png" alt=""></p>
-<p>快照的恢复过程使用的是刚刚上面提到的备份到本地的那些文件<br>首先随便创建一个image,名称大小都不限制，因为后面恢复的时候会覆盖掉大小的信息<br><figure class="highlight livecodeserver"><table><tr><td class="code"><pre><span class="line">rbd <span class="built_in">create</span> testbacknew <span class="comment">--size 1</span></span><br></pre></td></tr></table></figure></p>
-<p>现在假如想恢复到v2那个快照的时间点，那么可以用两个方法</p>
-<p>1、直接基于v2的时间点的快照做恢复<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rbd import-diff testimage_v2 rbd/testbacknew</span><br></pre></td></tr></table></figure></p>
-<p>2、直接基于v1的时间点的数据，和后面的增量的v1_v2数据(要按顺序导入)<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rbd impot-diff testimage_v1 rbd/testbacknew</span><br><span class="line">rbd impot-diff testimage_v1_v2 rbd/testbacknew</span><br></pre></td></tr></table></figure></p>
-<p>到这里数据就已经恢复了</p>
-<h3 id="四、如何利用这个">四、如何利用这个</h3><p>实际项目当中就是，定期做快照，然后导出某个时间点快照的数据，然后导出增量的快照的数据，就可以了，例如：<br>今天对所有的rbd的image做一个基础快照，然后导出这个快照的数据，然后从今天开始，每天晚上做一个快照，然后导出快照时间点之间的数据，这样每天导出来的就是一个增量的数据了，在做恢复的时候，就从第一个快照导入，然后按顺序导入增量的快照即可，也可以定期做一个快照，导出完整的快照数据，以防中间的增量快照漏了，然后就是要注意可以定期清理快照，如果是做备份的模式，在导入了快照数据后，也可以清理一些本地的数据，本地数据做异地机房复制的时候也可以做一下数据的压缩，来减少数据量的传输</p>
-<h3 id="五、相关文章">五、相关文章</h3><p><a href="https://github.com/skuicloud/openstack-hacker/tree/master/tsinghua-cluster/script/ceph/volume_backup" target="_blank" rel="external">rbd备份还原的脚本</a><br><a href="http://ceph.com/dev-notes/incremental-snapshots-with-rbd/" target="_blank" rel="external">INCREMENTAL SNAPSHOTS WITH RBD</a><br><a href="http://cephnotes.ksperis.com/blog/2014/08/12/rbd-replication" target="_blank" rel="external">RBD Replication</a><br><a href="http://www.evil0x.com/posts/14638.html" target="_blank" rel="external">云杉网络：基于Ceph RBD的快照技术实现异地灾备</a></p>
-<h3 id="六、变更记录">六、变更记录</h3><table>
-<thead>
-<tr>
-<th style="text-align:center">Why</th>
-<th style="text-align:center">Who</th>
-<th style="text-align:center">When</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">创建</td>
-<td style="text-align:center">武汉-运维-磨渣</td>
-<td style="text-align:center">2016-06-22</td>
-</tr>
-<tr>
-<td style="text-align:center">修改错别字</td>
-<td style="text-align:center">武汉-运维-磨渣 -from- 运维-北京-小白</td>
-<td style="text-align:center">2016-06-22</td>
-</tr>
-</tbody>
-</table>
-<h3 id="七、打赏通道">七、打赏通道</h3><center><br><img src="http://static.zybuluo.com/zphj1987/fi2557g55ucsdpyblopyfudl/newpay.png" alt="打赏" title="打赏"><br></center>
-
-]]></content>
-    <summary type="html">
-    <![CDATA[<h3 id="一、前言">一、前言</h3><p>快照的功能一般是基于时间点做一个标记，然后在某些需要的时候，将状态恢复到标记的那个点，这个有一个前提是底层的东西没用破坏，举个简单的例子，<strong>Vmware</strong> 里面对虚拟机做了一个快照，然后做了一些系统的操作，想恢复快照，前提是存储快照的存储系统没用破坏，一旦破坏了是无法恢复的</p>
-<p>ceph里面也有快照的功能，同样的，在这里的快照是用来保存存储系统上的状态的，数据的快照能成功恢复的前提是存储系统是好的，而一旦存储系统坏了，快照同时会失效的，本篇文章利用ceph的快照去实现一个增量的备份功能，网上也有很多这个脚本，这里主要是对里面细节做一个实践，具体集成到一套系统里面去，自己去做一个策略就行了，总之多备份一下，以备不时之需，并且也可以实现跨机房的增量备份，这个在某些云计算公司已经实现了，这样一旦发生故障的时候，能够把损失减到最小</p>
-<h3 id="二、快照的创建和数据的导出">二、快照的创建和数据的导出</h3><p><img src="http://static.zybuluo.com/zphj1987/t933vz49n801mowt0gj3mbts/image_1alqs3lm81ss11n1vg7k1mle1eq39.png" alt=""></p>
-<p>上图是一个快照的创建和导出的过程，这里详细的描述下这些操作<br>创建快照<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rbd snap create testimage@v1</span><br><span class="line">rbd snap create testimage@v2</span><br></pre></td></tr></table></figure></p>
-<p>这两个命令是在时间点v1和时间点v2分别做了两个快照<br>]]>
-    
-    </summary>
-    
-      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
     
   </entry>
   

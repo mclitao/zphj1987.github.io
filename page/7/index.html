@@ -191,6 +191,89 @@ var _hmt = _hmt || [];
 </nav>
       <div class="body-wrap">
   
+    <article id="post-删除osd的正确方式" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/01/12/删除osd的正确方式/" class="article-date">
+  	<time datetime="2016-01-12T02:14:39.000Z" itemprop="datePublished">2016-01-12</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/01/12/删除osd的正确方式/">删除osd的正确方式</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在ceph的集群当中关于节点的替换的问题，一直按照以前的方式进行的处理，处理的步骤如下：</p>
+<ol>
+<li>停止osd进程<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/etc/init.d/ceph stop osd.<span class="number">0</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>这一步是停止osd的进程，让其他的osd知道这个节点不提供服务了</p>
+<ol>
+<li>将节点状态标记为out<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph osd out osd.<span class="number">0</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>这个一步是告诉mon，这个节点已经不能服务了，需要在其他的osd上进行数据的恢复了</p>
+<ol>
+<li>从crush中移除节点<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph osd crush remove osd.<span class="number">0</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>从crush中删除是告诉集群这个点回不来了，完全从集群的分布当中剔除掉，让集群的crush进行一次重新计算，之前节点还占着这个crush weight，会影响到当前主机的host crush weight </p>
+<ol>
+<li>删除节点<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph osd rm osd.<span class="number">0</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>这个是从集群里面删除这个节点的记录</p>
+<ol>
+<li>删除节点认证（不删除编号会占住）<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph auth del osd.<span class="number">0</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>这个是从认证当中去删除这个节点的信息<br>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2016/01/12/删除osd的正确方式/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-ceph写osd的配置文件-etc-ceph-ceph-conf" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -738,68 +821,6 @@ var _hmt = _hmt || [];
       
         <p class="article-more-link">
           <a  href="/2015/11/12/如何删除一台OSD主机/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Mon失效处理方法" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/11/01/Mon失效处理方法/" class="article-date">
-  	<time datetime="2015-11-01T15:34:26.000Z" itemprop="datePublished">2015-11-01</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/11/01/Mon失效处理方法/">Mon失效处理方法</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>假设环境为三个mon，主机名为mon1、mon2、mon3，现在mon3上面的系统盘损坏，mon的数据完全丢失，现在需要对mon3进行恢复处理</p>
-<p>1、停止所有mon进程，可以不停其他进程，需要停止内核客户端以及对外的服务，防止卡死<br>在mon1机器上执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/etc/init.d/ceph stop mon</span><br></pre></td></tr></table></figure></p>
-<p>在mon2机器上执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/etc/init.d/ceph stop mon</span><br></pre></td></tr></table></figure></p>
-<p>2、分别在mon主机上获取当前的monmap<br>在mon1机器上执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph-mon -i mon1 --extract-monmap /tmp/monmap</span><br></pre></td></tr></table></figure></p>
-<p>备份原始monmap<br>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/11/01/Mon失效处理方法/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>
