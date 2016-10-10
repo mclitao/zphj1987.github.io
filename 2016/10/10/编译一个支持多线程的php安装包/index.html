@@ -6,21 +6,18 @@
   <title>编译一个支持多线程的php安装包 | zphj1987&#39;Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="一、前言因为项目上的需要，需要用到php，一般来说，用默认的版本和配置就可以满足大多数的场景，因为需要加入多线程，所以需要自己编译一个包
-一般来说，发行的包的版本的配置选项和代码都是最稳定的，所以在大多数情况下，我都不会直接去拿原始的源码做编译，这里我的经验是用别人发布版本的源码包，然后根据自己的需要，做修改，然后打包，这次的处理方法还是一样
-二、获取源码地址：https://uk.repo.we">
+一般来说，发行的包的版本的配置选项和代码都是最稳定的，所以在大多数情况下，我都不会直接去拿原始的源码做编译，这里我的经验是用别人发布版本的源码包，然后根据自己的需要，做修改，然后打包，这次的处理方法还是一样">
 <meta property="og:type" content="article">
 <meta property="og:title" content="编译一个支持多线程的php安装包">
 <meta property="og:url" content="http://www.zphj1987.com/2016/10/10/编译一个支持多线程的php安装包/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
 <meta property="og:description" content="一、前言因为项目上的需要，需要用到php，一般来说，用默认的版本和配置就可以满足大多数的场景，因为需要加入多线程，所以需要自己编译一个包
-一般来说，发行的包的版本的配置选项和代码都是最稳定的，所以在大多数情况下，我都不会直接去拿原始的源码做编译，这里我的经验是用别人发布版本的源码包，然后根据自己的需要，做修改，然后打包，这次的处理方法还是一样
-二、获取源码地址：https://uk.repo.we">
+一般来说，发行的包的版本的配置选项和代码都是最稳定的，所以在大多数情况下，我都不会直接去拿原始的源码做编译，这里我的经验是用别人发布版本的源码包，然后根据自己的需要，做修改，然后打包，这次的处理方法还是一样">
 <meta property="og:image" content="http://7xweck.com1.z0.glb.clouddn.com/php/php-elephant-01.png">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="编译一个支持多线程的php安装包">
 <meta name="twitter:description" content="一、前言因为项目上的需要，需要用到php，一般来说，用默认的版本和配置就可以满足大多数的场景，因为需要加入多线程，所以需要自己编译一个包
-一般来说，发行的包的版本的配置选项和代码都是最稳定的，所以在大多数情况下，我都不会直接去拿原始的源码做编译，这里我的经验是用别人发布版本的源码包，然后根据自己的需要，做修改，然后打包，这次的处理方法还是一样
-二、获取源码地址：https://uk.repo.we">
+一般来说，发行的包的版本的配置选项和代码都是最稳定的，所以在大多数情况下，我都不会直接去拿原始的源码做编译，这里我的经验是用别人发布版本的源码包，然后根据自己的需要，做修改，然后打包，这次的处理方法还是一样">
   
     <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
   
@@ -235,7 +232,7 @@ var _hmt = _hmt || [];
       
         <p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/php/php-elephant-01.png" alt=""><br></center></p>
 <h2 id="一、前言">一、前言</h2><p>因为项目上的需要，需要用到php，一般来说，用默认的版本和配置就可以满足大多数的场景，因为需要加入多线程，所以需要自己编译一个包</p>
-<p>一般来说，发行的包的版本的配置选项和代码都是最稳定的，所以在大多数情况下，我都不会直接去拿原始的源码做编译，这里我的经验是用别人发布版本的源码包，然后根据自己的需要，做修改，然后打包，这次的处理方法还是一样</p>
+<p>一般来说，发行的包的版本的配置选项和代码都是最稳定的，所以在大多数情况下，我都不会直接去拿原始的源码做编译，这里我的经验是用别人发布版本的源码包，然后根据自己的需要，做修改，然后打包，这次的处理方法还是一样<br><a id="more"></a></p>
 <h2 id="二、获取源码">二、获取源码</h2><p>地址：<br><figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="symbol">https:</span>/<span class="regexp">/uk.repo.webtatic.com/yum</span><span class="regexp">/el7/</span><span class="constant">SRPMS/RPMS/</span></span><br></pre></td></tr></table></figure></p>
 <p>这个是webtatic发行的php版本，做了一些修改和优化</p>
 <p>选择需要的版本<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 myphp]<span class="comment"># wget https://uk.repo.webtatic.com/yum/el7/SRPMS/RPMS/php56w-5.6.26-1.w7.src.rpm</span></span><br></pre></td></tr></table></figure></p>

@@ -219,39 +219,7 @@ var _hmt = _hmt || [];
       
         <p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/php/php-elephant-01.png" alt=""><br></center></p>
 <h2 id="一、前言">一、前言</h2><p>因为项目上的需要，需要用到php，一般来说，用默认的版本和配置就可以满足大多数的场景，因为需要加入多线程，所以需要自己编译一个包</p>
-<p>一般来说，发行的包的版本的配置选项和代码都是最稳定的，所以在大多数情况下，我都不会直接去拿原始的源码做编译，这里我的经验是用别人发布版本的源码包，然后根据自己的需要，做修改，然后打包，这次的处理方法还是一样</p>
-<h2 id="二、获取源码">二、获取源码</h2><p>地址：<br><figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="symbol">https:</span>/<span class="regexp">/uk.repo.webtatic.com/yum</span><span class="regexp">/el7/</span><span class="constant">SRPMS/RPMS/</span></span><br></pre></td></tr></table></figure></p>
-<p>这个是webtatic发行的php版本，做了一些修改和优化</p>
-<p>选择需要的版本<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 myphp]<span class="comment"># wget https://uk.repo.webtatic.com/yum/el7/SRPMS/RPMS/php56w-5.6.26-1.w7.src.rpm</span></span><br></pre></td></tr></table></figure></p>
-<p>解压安装包<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 myphp]<span class="comment"># rpm2cpio php56w-5.6.26-1.w7.src.rpm |cpio -div</span></span><br></pre></td></tr></table></figure></p>
-<p>解压完成了后，当前目录下面会有很多文件<br>修改当前目录下面的php56.spec<br>在编译相关的configure后面增加</p>
-<blockquote>
-<p>—enable-maintainer-zts</p>
-</blockquote>
-<p>拷贝解压和修改的文件到源码编译目录<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 myphp]<span class="comment"># cp -ra * /root/rpmbuild/SOURCES/</span></span><br></pre></td></tr></table></figure></p>
-<h2 id="三、编译rpm包">三、编译rpm包</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 myphp]<span class="comment"># rpmbuild -bb php56.spec</span></span><br></pre></td></tr></table></figure>
-<p>如果提示缺依赖，就把相关的依赖包安装好就可以了，编译环境最好跟最终使用环境是一样的环境，执行完成了以后，会生成rpm安装包</p>
-<h2 id="四、增加多线程支持">四、增加多线程支持</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pecl install pthreads-<span class="number">2.0</span>.<span class="number">9</span></span><br></pre></td></tr></table></figure>
-<p>这个会下载源码，然后自动编译成可用的内核模块，将这个内核模块的配置文件和模块文件拷贝到最终使用环境即可</p>
-<p>检查是否安装成功<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># php -m|grep pth</span></span><br><span class="line">pthreads</span><br></pre></td></tr></table></figure></p>
-<p>可用看到已经支持了</p>
-<h2 id="五、变更记录">五、变更记录</h2><table>
-<thead>
-<tr>
-<th style="text-align:center">Why</th>
-<th style="text-align:center">Who</th>
-<th style="text-align:center">When</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">创建</td>
-<td style="text-align:center">武汉-运维-磨渣</td>
-<td style="text-align:center">2016-10-10</td>
-</tr>
-</tbody>
-</table>
-
+<p>一般来说，发行的包的版本的配置选项和代码都是最稳定的，所以在大多数情况下，我都不会直接去拿原始的源码做编译，这里我的经验是用别人发布版本的源码包，然后根据自己的需要，做修改，然后打包，这次的处理方法还是一样<br>
       
     </div>
     
@@ -264,6 +232,10 @@ var _hmt = _hmt || [];
 
       
 
+      
+        <p class="article-more-link">
+          <a  href="/2016/10/10/编译一个支持多线程的php安装包/#more">more >></a>
+        </p>
       
       <div class="clearfix"></div>
     </div>
