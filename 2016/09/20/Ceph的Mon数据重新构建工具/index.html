@@ -253,6 +253,8 @@ var _hmt = _hmt || [];
 <li>MDS Maps: the MDS maps are lost.</li>
 </ul>
 <h2 id="总结">总结</h2><p>因为工具才出来，可能难免有些bug，这个是为未来提供一种恢复数据的方式，使得 Ceph 变得更加的健壮</p>
+<h2 id="附加知识">附加知识</h2><p>如果指定ceph版本进行编译<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/ceph/ceph.git</span><br><span class="line">git checkout -b myceph v10.<span class="number">2.3</span></span><br><span class="line">git submodule update --init --recursive</span><br></pre></td></tr></table></figure></p>
+<p>v10.2.3为发行版本的tag，也就是release的版本号码，这个操作是切换到指定的tag，并且下载依赖的一些模块</p>
 <h2 id="变更记录">变更记录</h2><table>
 <thead>
 <tr>
@@ -266,6 +268,11 @@ var _hmt = _hmt || [];
 <td style="text-align:center">创建</td>
 <td style="text-align:center">武汉-运维-磨渣</td>
 <td style="text-align:center">2016-09-20</td>
+</tr>
+<tr>
+<td style="text-align:center">增加git版本选择</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2016-10-12</td>
 </tr>
 </tbody>
 </table>

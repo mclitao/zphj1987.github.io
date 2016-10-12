@@ -254,7 +254,7 @@
     <link href="http://www.zphj1987.com/2016/09/20/Ceph%E7%9A%84Mon%E6%95%B0%E6%8D%AE%E9%87%8D%E6%96%B0%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/"/>
     <id>http://www.zphj1987.com/2016/09/20/Ceph的Mon数据重新构建工具/</id>
     <published>2016-09-20T08:09:53.000Z</published>
-    <updated>2016-09-20T08:41:57.382Z</updated>
+    <updated>2016-10-12T09:11:02.645Z</updated>
     <content type="html"><![CDATA[<p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/rebuild/rebuild-shot.png" alt="rebuild"><br></center><br>关于mon的数据的问题，一般正常情况下都是配置的3个mon的，但是还是有人会担心 Mon 万一三个同时都挂掉了怎么办，那么集群所有的数据是不是都丢了，关于后台真实数据恢复，有去后台取对象，然后一个个拼接起来的方案，这个是确定可以成功的，但是这个方法对于生产的集群耗时巨大，并且需要导出数据，然后又配置新的集群，工程比较耗大，考虑到这个问题，Ceph 的中国（Redhat）的一位开发者 <a href="https://github.com/tchaikov" target="_blank" rel="external">tchaikov</a> 就写了一个新的工具，来对损坏的MON的数据进行原集群的重构，这个比起其他方案要好很多，本篇将讲述怎么使用这个工具，代码已经合并到 Ceph 的master分支当中去了</p>
 <p>关于这个工具相关的<a href="http://tracker.ceph.com/issues/17292" target="_blank" rel="external">issue</a></p>
 <a id="more"></a>
@@ -281,6 +281,8 @@
 <li>MDS Maps: the MDS maps are lost.</li>
 </ul>
 <h2 id="总结">总结</h2><p>因为工具才出来，可能难免有些bug，这个是为未来提供一种恢复数据的方式，使得 Ceph 变得更加的健壮</p>
+<h2 id="附加知识">附加知识</h2><p>如果指定ceph版本进行编译<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/ceph/ceph.git</span><br><span class="line">git checkout -b myceph v10.<span class="number">2.3</span></span><br><span class="line">git submodule update --init --recursive</span><br></pre></td></tr></table></figure></p>
+<p>v10.2.3为发行版本的tag，也就是release的版本号码，这个操作是切换到指定的tag，并且下载依赖的一些模块</p>
 <h2 id="变更记录">变更记录</h2><table>
 <thead>
 <tr>
@@ -294,6 +296,11 @@
 <td style="text-align:center">创建</td>
 <td style="text-align:center">武汉-运维-磨渣</td>
 <td style="text-align:center">2016-09-20</td>
+</tr>
+<tr>
+<td style="text-align:center">增加git版本选择</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2016-10-12</td>
 </tr>
 </tbody>
 </table>
