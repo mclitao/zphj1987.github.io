@@ -191,6 +191,67 @@ var _hmt = _hmt || [];
 </nav>
       <div class="body-wrap">
   
+    <article id="post-yum安装指定版本ceph包" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/03/01/yum安装指定版本ceph包/" class="article-date">
+  	<time datetime="2016-03-01T04:21:56.000Z" itemprop="datePublished">2016-03-01</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/03/01/yum安装指定版本ceph包/">yum安装指定版本ceph包</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>安装ceph包的方式有很多，这里讲的是从官网直接通过yum源的安装方式进行安装</p>
+<p>yum源对应的地址为<br><a href="http://download.ceph.com/rpm-hammer/el6/x86_64/">http://download.ceph.com/rpm-hammer/el6/x86_64/</a></p>
+<p>怎么配置ceph源就不在这里赘述了</p>
+<p>下图为ceph官网的yum源里面的文件列表：</p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2016/03/01/yum安装指定版本ceph包/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-一步一步打造集群监控系统" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -726,74 +787,6 @@ var _hmt = _hmt || [];
       
         <p class="article-more-link">
           <a  href="/2016/01/14/ceph使用memdisk做journal/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-centos7下做内存盘的方法" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/01/14/centos7下做内存盘的方法/" class="article-date">
-  	<time datetime="2016-01-14T01:07:28.000Z" itemprop="datePublished">2016-01-14</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/01/14/centos7下做内存盘的方法/">centos7下做内存盘的方法</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>在找这个资料的时候，基本没几个能用的或者过时了的，或者是换了概念，做的不是需要的那种盘，只有少数文章有提到关键部分应该怎么去操作，现在还是自己总结一下</p>
-<h3 id="内存盘tmpfs和ramdisk的区别">内存盘tmpfs和ramdisk的区别</h3><p>这个在网上的很多资料里面都有提到，很多文章去写怎么做ramdisk的时候，都是去做的tmpfs，两者虽然都是使用的内存来存储东西，但是是完全有区别的</p>
-<ul>
-<li>tmpfs这个只需要mount挂载就可以分配一个目录使用内存了，只是一个目录</li>
-<li>ramdisk这个是真的分配一个空间，这个分区是可以格式化的（这个格式化是关键）</li>
-<li>tmpfs卸载再挂载数据会消失，randisk卸载再挂载数据还在</li>
-<li>二者共同点是，系统重启后，里面的东西会消失</li>
-</ul>
-<blockquote>
-<p>本文章主要是讲怎么去做ramdisk</p>
-</blockquote>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2016/01/14/centos7下做内存盘的方法/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>

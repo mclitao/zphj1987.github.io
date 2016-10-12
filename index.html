@@ -191,6 +191,66 @@ var _hmt = _hmt || [];
 </nav>
       <div class="body-wrap">
   
+    <article id="post-创建一个自定义名称的Ceph集群" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/10/12/创建一个自定义名称的Ceph集群/" class="article-date">
+  	<time datetime="2016-10-12T02:44:17.000Z" itemprop="datePublished">2016-10-12</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/10/12/创建一个自定义名称的Ceph集群/">创建一个自定义名称的Ceph集群</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="一、前言">一、前言</h2><p>这里有个条件，系统环境是Centos 7 ,Ceph 的版本为Jewel版本，因为这个组合下是由systemctl来进行服务控制的，所以需要做稍微的改动即可实现</p>
+<h2 id="二、准备工作">二、准备工作</h2><p>部署mon的时候需要修改这个几个文件<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">/usr/lib/systemd/system/ceph-mon@.service&#10;/usr/lib/systemd/system/ceph-create-keys@.service&#10;/usr/lib/systemd/system/ceph-osd@.service&#10;/usr/lib/systemd/system/ceph-mds@.service</span><br></pre></td></tr></table></figure></p>
+<p>将 <code>Environment=CLUSTER=ceph</code> 改成 <code>Environment=CLUSTER=myceph</code> 后面的myceph可以为你自定义的名称</p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2016/10/12/创建一个自定义名称的Ceph集群/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-编译一个支持多线程的php安装包" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -711,68 +771,6 @@ var _hmt = _hmt || [];
       
         <p class="article-more-link">
           <a  href="/2016/09/06/Ceph中的Copyset概念和使用方法/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Proftp最简匿名访问配置" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/09/01/Proftp最简匿名访问配置/" class="article-date">
-  	<time datetime="2016-09-01T06:04:24.000Z" itemprop="datePublished">2016-09-01</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/09/01/Proftp最简匿名访问配置/">Proftp最简匿名访问配置</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/ftpfile.png" alt="ftpfile"><br></center></p>
-<h2 id="前言">前言</h2><p>每一次做ftp的配置都要弄半天，找文档，各种权限控制的坑，折腾半天，这次还是准备记录下来，以备不时之需，这里不配置什么高级的功能，就去实现一个最简单的配置</p>
-<blockquote>
-<p>匿名用户的上传和下载</p>
-</blockquote>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2016/09/01/Proftp最简匿名访问配置/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>
