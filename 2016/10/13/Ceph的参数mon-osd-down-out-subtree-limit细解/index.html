@@ -238,8 +238,7 @@ var _hmt = _hmt || [];
 <h2 id="一、前言">一、前言</h2><p>之前跟一个朋友沟通一个其他的问题的时候，发现了有一个参数 <code>mon osd down out subtree limit</code> 一直没有接触到，看了一下这个参数还是很有作用的，本篇将讲述这个参数的作用和使用的场景</p>
 <h2 id="二、测试环境准备">二、测试环境准备</h2><p>首先配置一个集群环境，配置基本参数<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">mon_osd_down_out_interval = 20</span><br></pre></td></tr></table></figure></p>
 <p>调整这个参数为20s,默认为300s,默认一个osd,down超过300s就会标记为out，然后触发迁移,这个是为了方便尽快看到测试的效果，很多测试都是可以这样缩短测试周期的</p>
-<p>本次测试关心的是这个参数<code>mon osd down out subtree limit</code></p>
-<p>参数，那么这个参数做什么用的，我们来看看<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># ceph --show-config|grep mon_osd_down_out_subtree_limit</span></span><br><span class="line">mon_osd_down_out_subtree_<span class="built_in">limit</span> = rack</span><br></pre></td></tr></table></figure></p>
+<p>本次测试关心的是这个参数<code>mon osd down out subtree limit</code><br><a id="more"></a><br>参数，那么这个参数做什么用的，我们来看看<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># ceph --show-config|grep mon_osd_down_out_subtree_limit</span></span><br><span class="line">mon_osd_down_out_subtree_<span class="built_in">limit</span> = rack</span><br></pre></td></tr></table></figure></p>
 <p>首先解释下这个参数是做什么的，这个是控制标记为out的最小子树(bucket)，默认的这个为rack，这个可能我们平时感知不到这个有什么作用，大部分情况下，我们一般都为主机分组或者做了故障域，也很少做到测试去触发它，本篇文章将告诉你这个参数在什么情况下生效，对我们又有什么作用</p>
 <p>准备两个物理节点，每个节点上3个osd，一共六个osd，上面的down out的时间已经修改为20s，那么会在20s后出现out的情况</p>
 <h2 id="三、测试过程">三、测试过程</h2><h3 id="3-1_测试默认参数停止一台主机单个OSD">3.1 测试默认参数停止一台主机单个OSD</h3><p>首先用默认的<code>mon_osd_down_out_subtree_limit = rack</code>去做测试<br>开启几个监控终端方便观察<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph -w</span><br><span class="line">watch ceph osd tree</span><br></pre></td></tr></table></figure></p>
