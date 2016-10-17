@@ -4,7 +4,7 @@
   <subtitle><![CDATA[现在所学，终有所用]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2016-10-17T08:20:47.120Z</updated>
+  <updated>2016-10-17T08:23:44.243Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -19,8 +19,8 @@
     <link href="http://www.zphj1987.com/2016/10/17/%E9%85%8D%E7%BD%AECeph%E7%9A%84IPV6%E9%9B%86%E7%BE%A4/"/>
     <id>http://www.zphj1987.com/2016/10/17/配置Ceph的IPV6集群/</id>
     <published>2016-10-17T08:19:22.000Z</published>
-    <updated>2016-10-17T08:20:47.120Z</updated>
-    <content type="html"><![CDATA[<p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/ceph/ipv6.jpeg" alt="ipv6"><br></center><br>一、前言<br>对于IPV6实在是非常的陌生，所以本篇开始会讲一下最基本的网络配置，首先让网络能通起来，最开始就是因为不熟悉IPV6</p>
+    <updated>2016-10-17T08:23:44.243Z</updated>
+    <content type="html"><![CDATA[<p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/ceph/ipv6.jpeg" alt="ipv6"><br></center><br>一、前言<br>对于IPV6实在是非常的陌生，所以本篇开始会讲一下最基本的网络配置，首先让网络能通起来，最开始就是因为不熟悉IPV6,而直接使用了link local地址，造成了mon部署的时候进程无法绑定到IP，从而端口没有启动，这个是在ceph社区群友 <code>ceph-长沙-柠檬</code> 同学的帮助下才发现问题的</p>
 <p>IPV6是会有个link local地址的，在一个接口可以配置很多IPv6地址，所以学习路由就有可能出现很多下一跳。所以出现Link Local地址唯一标识一个节点。在本地链路看到下一跳都是对端的Link Local地址。这个地址一般是以fe80开头的，子网掩码为64，这个地方需要给机器配置一个唯一的全局单播地址</p>
 <blockquote>
 <p>However, with IPv6, all (IPv6) interfaces will have a link local address. This address is intended to allow communications over the attached links and so is defined to be usable only on that link.</p>
@@ -68,7 +68,7 @@
 </table>
 ]]></content>
     <summary type="html">
-    <![CDATA[<p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/ceph/ipv6.jpeg" alt="ipv6"><br></center><br>一、前言<br>对于IPV6实在是非常的陌生，所以本篇开始会讲一下最基本的网络配置，首先让网络能通起来，最开始就是因为不熟悉IPV6</p>
+    <![CDATA[<p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/ceph/ipv6.jpeg" alt="ipv6"><br></center><br>一、前言<br>对于IPV6实在是非常的陌生，所以本篇开始会讲一下最基本的网络配置，首先让网络能通起来，最开始就是因为不熟悉IPV6,而直接使用了link local地址，造成了mon部署的时候进程无法绑定到IP，从而端口没有启动，这个是在ceph社区群友 <code>ceph-长沙-柠檬</code> 同学的帮助下才发现问题的</p>
 <p>IPV6是会有个link local地址的，在一个接口可以配置很多IPv6地址，所以学习路由就有可能出现很多下一跳。所以出现Link Local地址唯一标识一个节点。在本地链路看到下一跳都是对端的Link Local地址。这个地址一般是以fe80开头的，子网掩码为64，这个地方需要给机器配置一个唯一的全局单播地址</p>
 <blockquote>
 <p>However, with IPv6, all (IPv6) interfaces will have a link local address. This address is intended to allow communications over the attached links and so is defined to be usable only on that link.</p>
