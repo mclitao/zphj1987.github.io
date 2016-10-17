@@ -4,7 +4,7 @@
   <subtitle><![CDATA[现在所学，终有所用]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2016-10-17T06:57:06.333Z</updated>
+  <updated>2016-10-17T07:11:44.969Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -19,11 +19,12 @@
     <link href="http://www.zphj1987.com/2016/10/17/Ceph%E6%8A%80%E8%83%BD%E6%A0%91/"/>
     <id>http://www.zphj1987.com/2016/10/17/Ceph技能树/</id>
     <published>2016-10-17T06:32:50.000Z</published>
-    <updated>2016-10-17T06:57:06.333Z</updated>
-    <content type="html"><![CDATA[<h2 id="一、前言">一、前言</h2><p>之前在ceph中国社区看到有一个ceph的技能树，因为是一个图片，所以没法编辑，修改，所以完全copy了一份，方便查看，如果有侵犯到原作者的版权，欢迎沟通，从内容来看，感觉出自有云的一位工程师</p>
+    <updated>2016-10-17T07:11:44.969Z</updated>
+    <content type="html"><![CDATA[<p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/cephskill/cephskill.png" alt="cephskill"><br></center></p>
+<h2 id="一、前言">一、前言</h2><p>之前在ceph中国社区看到有一个ceph的技能树，因为是一个图片，所以没法编辑，修改，所以完全copy了一份，方便查看，如果有侵犯到原作者的版权，欢迎沟通，从内容来看，感觉出自有云的一位工程师</p>
 <a id="more"></a>
 <h2 id="二、技能图">二、技能图</h2><p><center></center></p>
-<p><iframe width="1050" height="720" src="https://embed.coggle.it/diagram/WAR1HK8sAvMFM_kd/df9def510ac0a39bdb5af46f375c1638dd06eb3aee74e0d042a55f204398358d" frameborder="0" allowfullscreen></iframe><br><br>本图支持下载为pdf,PNG，或者mm文件，支持缩放</p>
+<p><iframe width="1050" height="720" src="https://embed.coggle.it/diagram/WAR1HK8sAvMFM_kd/df9def510ac0a39bdb5af46f375c1638dd06eb3aee74e0d042a55f204398358d" frameborder="0" allowfullscreen></iframe><br><br>本图支持下载为pdf,PNG，或者mm文件，Chrome支持滚轮缩放，下载PDF效果还不错</p>
 <h2 id="三、变更记录">三、变更记录</h2><table>
 <thead>
 <tr>
@@ -42,7 +43,8 @@
 </table>
 ]]></content>
     <summary type="html">
-    <![CDATA[<h2 id="一、前言">一、前言</h2><p>之前在ceph中国社区看到有一个ceph的技能树，因为是一个图片，所以没法编辑，修改，所以完全copy了一份，方便查看，如果有侵犯到原作者的版权，欢迎沟通，从内容来看，感觉出自有云的一位工程师</p>]]>
+    <![CDATA[<p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/cephskill/cephskill.png" alt="cephskill"><br></center></p>
+<h2 id="一、前言">一、前言</h2><p>之前在ceph中国社区看到有一个ceph的技能树，因为是一个图片，所以没法编辑，修改，所以完全copy了一份，方便查看，如果有侵犯到原作者的版权，欢迎沟通，从内容来看，感觉出自有云的一位工程师</p>]]>
     
     </summary>
     
