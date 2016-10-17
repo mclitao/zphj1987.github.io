@@ -191,6 +191,61 @@ var _hmt = _hmt || [];
 </nav>
       <div class="body-wrap">
   
+    <article id="post-压缩css与js" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/03/25/压缩css与js/" class="article-date">
+  	<time datetime="2015-03-25T04:52:01.000Z" itemprop="datePublished">2015-03-25</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/03/25/压缩css与js/">压缩css与js</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>使用yuicompressor 进行css和js的压缩</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="shebang">#! /bin/sh	</span></span><br><span class="line">yasuocss=<span class="string">"java -jar /root/yuicompressor-2.4.8.jar --type css  --charset utf-8"</span></span><br><span class="line">yasuojs=<span class="string">"java -jar /root/yuicompressor-2.4.8.jar --type js  --charset utf-8"</span></span><br><span class="line"><span class="comment">######################css</span></span><br><span class="line"><span class="keyword">for</span> file <span class="keyword">in</span>  ./SGMag/sites/media/css/sgmag/*.css ./SGMag/sites/media/css/*.css</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"<span class="variable">$file</span>"</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"<span class="variable">$file</span>"</span>bk</span><br><span class="line">mv <span class="variable">$file</span>  <span class="string">"<span class="variable">$file</span>"</span>bk</span><br><span class="line"><span class="variable">$yasuocss</span>  <span class="variable">$file</span><span class="string">"bk"</span> &gt;  <span class="variable">$file</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"<span class="variable">$file</span>"</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"><span class="comment">#######################js</span></span><br><span class="line"><span class="keyword">for</span> file <span class="keyword">in</span>  ./SGMag/sites/media/component/*.js ./SGMag/sites/media/*.js  ./SGMag/sites/media/pagejs/*.js  </span><br><span class="line"><span class="keyword">do</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"<span class="variable">$file</span>"</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"<span class="variable">$file</span>"</span>bk</span><br><span class="line">mv <span class="variable">$file</span>  <span class="string">"<span class="variable">$file</span>"</span>bk</span><br><span class="line"><span class="variable">$yasuojs</span>  <span class="variable">$file</span><span class="string">"bk"</span> &gt;  <span class="variable">$file</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"<span class="variable">$file</span>"</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"><span class="comment">########################报错处理</span></span><br><span class="line">cp -rf  ./SGMag/sites/media/pagejs/cluster/hosttools.jsbk  ./SGMag/sites/media/pagejs/cluster/hosttools.js</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/杂七杂八/">杂七杂八</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-ubuntu配置简单的DNS服务器" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -708,68 +763,6 @@ var _hmt = _hmt || [];
       
         <p class="article-more-link">
           <a  href="/2015/03/24/ubuntu使用iso作为本地源/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-custom-ubuntu-server-iso" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/03/24/custom-ubuntu-server-iso/" class="article-date">
-  	<time datetime="2015-03-24T00:58:38.000Z" itemprop="datePublished">2015-03-24</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/03/24/custom-ubuntu-server-iso/">custom-ubuntu-server-iso</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Remastering the Ubuntu Desktop ISO is easy considering the existing graphical tools but did you ever wanted to build your custom Ubuntu Server Edition ISO ?</p>
-<p>Preparing the Environment<br>You’ll need a clean copy of the Ubuntu Server ISO that you want to customize. Since 10.04 is the latest Ubuntu version I will write down my examples using it but everything should work pretty much unchanged for older or newer versions.</p>
-<p>After you have you have the original iso image downloaded, make a copy it’s contents so we can later apply our patching there.</p>
-<p>cd /home/rgavril/Work</p>
-<p>mkdir original-iso custom-iso<br>mount -o loop ./ubuntu-10.04-server-i386.iso ./original-iso</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ubuntu/">ubuntu</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/03/24/custom-ubuntu-server-iso/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>
