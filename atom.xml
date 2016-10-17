@@ -4,7 +4,7 @@
   <subtitle><![CDATA[现在所学，终有所用]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2016-10-17T07:29:44.528Z</updated>
+  <updated>2016-10-17T08:20:47.120Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -13,6 +13,70 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[配置Ceph的IPV6集群]]></title>
+    <link href="http://www.zphj1987.com/2016/10/17/%E9%85%8D%E7%BD%AECeph%E7%9A%84IPV6%E9%9B%86%E7%BE%A4/"/>
+    <id>http://www.zphj1987.com/2016/10/17/配置Ceph的IPV6集群/</id>
+    <published>2016-10-17T08:19:22.000Z</published>
+    <updated>2016-10-17T08:20:47.120Z</updated>
+    <content type="html"><![CDATA[<p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/ceph/ipv6.jpeg" alt="ipv6"><br></center><br>一、前言<br>对于IPV6实在是非常的陌生，所以本篇开始会讲一下最基本的网络配置，首先让网络能通起来，最开始就是因为不熟悉IPV6</p>
+<p>IPV6是会有个link local地址的，在一个接口可以配置很多IPv6地址，所以学习路由就有可能出现很多下一跳。所以出现Link Local地址唯一标识一个节点。在本地链路看到下一跳都是对端的Link Local地址。这个地址一般是以fe80开头的，子网掩码为64，这个地方需要给机器配置一个唯一的全局单播地址</p>
+<blockquote>
+<p>However, with IPv6, all (IPv6) interfaces will have a link local address. This address is intended to allow communications over the attached links and so is defined to be usable only on that link.</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="二、网络配置">二、网络配置</h2><p>linux下用默认的网卡配置文件<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@node1 ceph]<span class="comment"># ifconfig </span></span><br><span class="line">eno16777736: flags=<span class="number">4163</span>&lt;UP,BROADCAST,RUNNING,MULTICAST&gt;  mtu <span class="number">1500</span></span><br><span class="line">        inet <span class="number">192.168</span>.<span class="number">0.46</span>  netmask <span class="number">255.255</span>.<span class="number">0.0</span>  broadcast <span class="number">192.168</span>.<span class="number">255.255</span></span><br><span class="line">        inet6 fe80::<span class="number">20</span>c:<span class="number">29</span>ff:fec5:<span class="number">5</span>a4b  prefixlen <span class="number">64</span>  scopeid <span class="number">0</span>x20&lt;link&gt;</span><br><span class="line">        ether <span class="number">00</span>:<span class="number">0</span>c:<span class="number">29</span>:c5:<span class="number">5</span>a:<span class="number">4</span>b  txqueuelen <span class="number">1000</span>  (Ethernet)</span><br><span class="line">        RX packets <span class="number">18422</span>  bytes <span class="number">1254119</span> (<span class="number">1.1</span> MiB)</span><br><span class="line">        RX errors <span class="number">0</span>  dropped <span class="number">6</span>  overruns <span class="number">0</span>  frame <span class="number">0</span></span><br><span class="line">        TX packets <span class="number">1938</span>  bytes <span class="number">890164</span> (<span class="number">869.3</span> KiB)</span><br><span class="line">        TX errors <span class="number">0</span>  dropped <span class="number">0</span> overruns <span class="number">0</span>  carrier <span class="number">0</span>  collisions <span class="number">0</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="取消NetworkManager管理">取消NetworkManager管理</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">systemctl stop NetworkManager</span><br><span class="line">systemctl <span class="built_in">disable</span> NetworkManager</span><br><span class="line">systemctl restart network</span><br></pre></td></tr></table></figure>
+<p>以免NetworkManager的干扰</p>
+<p>这个地方我没有做自定义的IPV6的设置，让其默认的生成的地方，可以看到上面的node1的link local地址地址为 fe80::20c:29ff:fec5:5a4b<br>我的另外一台的地址为 fe80::20c:29ff:feda:6849</p>
+<blockquote>
+<p>node1 fe80::20c:29ff:fec5:5a4b  prefixlen 64<br>node2 fe80::20c:29ff:feda:6849 prefixlen 64</p>
+</blockquote>
+<p>这个地方都是没有单播地址的，需要配置一个</p>
+<p>配置的时候关闭掉ipv4的IP，防止影响，确认配置的就是ipv6环境，去掉IPv4的配置即可，我的网卡配置文件<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">TYPE=<span class="string">"Ethernet"</span></span><br><span class="line">BOOTPROTO=<span class="string">"static"</span></span><br><span class="line">DEFROUTE=<span class="string">"yes"</span></span><br><span class="line">PEERDNS=<span class="string">"yes"</span></span><br><span class="line">PEERROUTES=<span class="string">"yes"</span></span><br><span class="line">NM_CONTROLLED=no</span><br><span class="line">IPV4_FAILURE_FATAL=<span class="string">"no"</span></span><br><span class="line">IPV6INIT=<span class="string">"yes"</span></span><br><span class="line">IPV6ADDR=<span class="number">2008</span>:<span class="number">20</span>c:<span class="number">20</span>c:<span class="number">20</span>c:<span class="number">20</span>c:<span class="number">29</span>ff:fec5:<span class="number">5</span>a4b/<span class="number">64</span></span><br><span class="line">IPV6_AUTOCONF=no</span><br><span class="line">IPV6_DEFROUTE=<span class="string">"yes"</span></span><br><span class="line">IPV6_PEERDNS=<span class="string">"yes"</span></span><br><span class="line">IPV6_PEERROUTES=<span class="string">"yes"</span></span><br><span class="line">IPV6_FAILURE_FATAL=<span class="string">"no"</span></span><br><span class="line">NAME=<span class="string">"eno16777736"</span></span><br><span class="line">UUID=<span class="string">"0146f40c-6f4d-4c63-a9cd-7f89264613f3"</span></span><br><span class="line">DEVICE=<span class="string">"eno16777736"</span></span><br><span class="line">ONBOOT=<span class="string">"yes"</span></span><br></pre></td></tr></table></figure></p>
+<p>检查配置情况<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@node1 ceph]<span class="comment"># ifconfig </span></span><br><span class="line">eno16777736: flags=<span class="number">4163</span>&lt;UP,BROADCAST,RUNNING,MULTICAST&gt;  mtu <span class="number">1500</span></span><br><span class="line">        inet6 fe80::<span class="number">20</span>c:<span class="number">29</span>ff:fec5:<span class="number">5</span>a4b  prefixlen <span class="number">64</span>  scopeid <span class="number">0</span>x20&lt;link&gt;</span><br><span class="line">        inet6 <span class="number">2008</span>:<span class="number">20</span>c:<span class="number">20</span>c:<span class="number">20</span>c:<span class="number">20</span>c:<span class="number">29</span>ff:fec5:<span class="number">5</span>a4b  prefixlen <span class="number">64</span>  scopeid <span class="number">0</span>x0&lt;global&gt;</span><br><span class="line">        ether <span class="number">00</span>:<span class="number">0</span>c:<span class="number">29</span>:c5:<span class="number">5</span>a:<span class="number">4</span>b  txqueuelen <span class="number">1000</span>  (Ethernet)</span><br><span class="line">        RX packets <span class="number">9133</span>  bytes <span class="number">597664</span> (<span class="number">583.6</span> KiB)</span><br><span class="line">        RX errors <span class="number">0</span>  dropped <span class="number">1</span>  overruns <span class="number">0</span>  frame <span class="number">0</span></span><br><span class="line">        TX packets <span class="number">466</span>  bytes <span class="number">137983</span> (<span class="number">134.7</span> KiB)</span><br><span class="line">        TX errors <span class="number">0</span>  dropped <span class="number">0</span> overruns <span class="number">0</span>  carrier <span class="number">0</span>  collisions <span class="number">0</span></span><br></pre></td></tr></table></figure></p>
+<p>可以看到有两个inet6这样就是对的了</p>
+<blockquote>
+<p>windows远程ssh连接的方式:ssh 2008:20c:20c:20c:20c:29ff:fec5:5a4b</p>
+</blockquote>
+<h3 id="配置hosts">配置hosts</h3><p>在配置文件/etc/hosts中添加如下内容<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">2008:20c:20c:20c:20c:29ff:fec5:5a4b node1&#10;2008:20c:20c:20c:20c:29ff:feda:6849 node2</span><br></pre></td></tr></table></figure></p>
+<p>检测是否连通<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@node1 ~]<span class="comment"># ping6 -I eno16777736 2008:20c:20c:20c:20c:29ff:feda:6849</span></span><br></pre></td></tr></table></figure></p>
+<p>ping主机名称<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@node1 ~]<span class="comment"># ping6 -I eno16777736 node2</span></span><br></pre></td></tr></table></figure></p>
+<p>注意ping6需要加上网卡名称</p>
+<p>同样的操作在node2上也配置好，网络到这里就配置好了</p>
+<h2 id="三、集群配置">三、集群配置</h2><h3 id="创建初始配置文件">创建初始配置文件</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@node1 ceph]<span class="comment"># ceph-deploy new node1</span></span><br><span class="line">[root@node1 ceph]<span class="comment"># cat ceph.conf </span></span><br><span class="line">[global]</span><br><span class="line">fsid = f0bf4130<span class="operator">-f</span>4f0-<span class="number">4214</span>-<span class="number">8</span>b98-<span class="number">67103</span>ad55d65</span><br><span class="line">ms_<span class="built_in">bind</span>_ipv6 = <span class="literal">true</span></span><br><span class="line">mon_initial_members = node1</span><br><span class="line">mon_host = [<span class="number">2008</span>:<span class="number">20</span>c:<span class="number">20</span>c:<span class="number">20</span>c:<span class="number">20</span>c:<span class="number">29</span>ff:fec5:<span class="number">5</span>a4b]</span><br><span class="line">auth_cluster_required =cephx</span><br><span class="line">auth_service_required = cephx</span><br><span class="line">auth_client_required = cephx</span><br></pre></td></tr></table></figure>
+<h3 id="创建mon">创建mon</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@node1 ceph]<span class="comment"># ceph-deploy mon create node1</span></span><br></pre></td></tr></table></figure>
+<h3 id="检查状态">检查状态</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@node1 ceph]<span class="comment"># ceph -s</span></span><br><span class="line">    cluster d2882f75-<span class="number">1209</span>-<span class="number">4667</span>-bef8-<span class="number">3051</span>c84cb83c</span><br><span class="line">     health HEALTH_ERR</span><br><span class="line">            no osds</span><br><span class="line">     monmap e1: <span class="number">1</span> mons at &#123;node1=[<span class="number">2008</span>:<span class="number">20</span>c:<span class="number">20</span>c:<span class="number">20</span>c:<span class="number">20</span>c:<span class="number">29</span>ff:fec5:<span class="number">5</span>a4b]:<span class="number">6789</span>/<span class="number">0</span>&#125;</span><br><span class="line">            election epoch <span class="number">3</span>, quorum <span class="number">0</span> node1</span><br><span class="line">     osdmap e8: <span class="number">0</span> osds: <span class="number">0</span> up, <span class="number">0</span> <span class="keyword">in</span></span><br><span class="line">            flags sortbitwise</span><br><span class="line">      pgmap v2664: <span class="number">0</span> pgs, <span class="number">0</span> pools, <span class="number">0</span> bytes data, <span class="number">0</span> objects</span><br><span class="line">            <span class="number">0</span> kB used, <span class="number">0</span> kB / <span class="number">0</span> kB avail</span><br></pre></td></tr></table></figure>
+<h3 id="检查端口">检查端口</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@node1 ceph]<span class="comment"># netstat -tunlp|grep tcp6</span></span><br><span class="line">tcp6       <span class="number">0</span>      <span class="number">0</span> :::<span class="number">22</span>                   :::*                    LISTEN      <span class="number">1155</span>/sshd           </span><br><span class="line">tcp6       <span class="number">0</span>      <span class="number">0</span> ::<span class="number">1</span>:<span class="number">25</span>                  :::*                    LISTEN      <span class="number">1294</span>/master         </span><br><span class="line">tcp6       <span class="number">0</span>      <span class="number">0</span> <span class="number">2008</span>:<span class="number">20</span>c:<span class="number">20</span>c:<span class="number">20</span>c:<span class="number">2</span>:<span class="number">6789</span> :::*                    LISTEN      <span class="number">8997</span>/ceph-mon</span><br></pre></td></tr></table></figure>
+<p>可以看到集群已经正确的监听在了ipv6上了，后续的操作跟普通的IPV4集群一样的</p>
+<h2 id="四、变更记录">四、变更记录</h2><table>
+<thead>
+<tr>
+<th style="text-align:center">Why</th>
+<th style="text-align:center">Who</th>
+<th style="text-align:center">When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">创建</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2016-10-17</td>
+</tr>
+</tbody>
+</table>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/ceph/ipv6.jpeg" alt="ipv6"><br></center><br>一、前言<br>对于IPV6实在是非常的陌生，所以本篇开始会讲一下最基本的网络配置，首先让网络能通起来，最开始就是因为不熟悉IPV6</p>
+<p>IPV6是会有个link local地址的，在一个接口可以配置很多IPv6地址，所以学习路由就有可能出现很多下一跳。所以出现Link Local地址唯一标识一个节点。在本地链路看到下一跳都是对端的Link Local地址。这个地址一般是以fe80开头的，子网掩码为64，这个地方需要给机器配置一个唯一的全局单播地址</p>
+<blockquote>
+<p>However, with IPv6, all (IPv6) interfaces will have a link local address. This address is intended to allow communications over the attached links and so is defined to be usable only on that link.</p>
+</blockquote>]]>
+    
+    </summary>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[Ceph技能树]]></title>
@@ -1197,78 +1261,6 @@
 <blockquote>
 <p>Ceph 的journal是基于事务的日志，所以正确的下刷journal数据，然后重新创建journal并不会引起数据丢失，因为在下刷journal的数据的时候，osd是停止的，一旦数据下刷后，这个journal是不会再有新的脏数据进来的</p>
 </blockquote>]]>
-    
-    </summary>
-    
-      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[modprobe: FATAL: Module ceph not found解决办法]]></title>
-    <link href="http://www.zphj1987.com/2016/07/24/modprobe-FATAL-Module-ceph-not-found%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95/"/>
-    <id>http://www.zphj1987.com/2016/07/24/modprobe-FATAL-Module-ceph-not-found解决办法/</id>
-    <published>2016-07-24T14:48:23.000Z</published>
-    <updated>2016-07-24T15:10:25.730Z</updated>
-    <content type="html"><![CDATA[<h3 id="一、问题">一、问题</h3><p>有可能你在进行 Ceph 文件系统挂载的时候出现下面的提示：</p>
-<blockquote>
-<p>modprobe: FATAL: Module ceph not found.<br>mount.ceph: modprobe failed, exit status 1<br>mount error: ceph filesystem not supported by the system</p>
-</blockquote>
-<p>这个是因为你的内核当中没有cephfs的相关模块，这个 centos6 下面比较常见，因为 centos6 的内核是 2.6.32,这个版本的内核中还没有集成cephfs的内核模块，而在 centos7 默认内核 3.10中已经默认集成了这个模块，我们看下集成的模块是怎样的显示</p>
-<a id="more"></a>
-<pre><code class="bash">[root@lab8106 ~]<span class="comment"># uname -a</span>
-Linux ciserver <span class="number">3.10</span>.<span class="number">0</span>-<span class="number">229</span>.el7.x86_64 <span class="comment">#1 SMP Fri Mar 6 11:36:42 UTC 2015 x86_64 x86_64 x86_64 GNU/Linux</span>
-[root@lab8106 ~]<span class="comment"># modinfo ceph</span>
-filename:       /lib/modules/<span class="number">3.10</span>.<span class="number">0</span>-<span class="number">229</span>.el7.x86_64/kernel/fs/ceph/ceph.ko
-license:        GPL
-description:    Ceph filesystem <span class="keyword">for</span> Linux
-author:         Patience Warnick &lt;patience@newdream.net&gt;
-author:         Yehuda Sadeh &lt;yehuda@hq.newdream.net&gt;
-author:         Sage Weil &lt;sage@newdream.net&gt;
-<span class="built_in">alias</span>:          fs-ceph
-rhelversion:    <span class="number">7.1</span>
-srcversion:     <span class="number">2086</span>D500AFAF47B7260E08A
-depends:        libceph
-intree:         Y
-vermagic:       <span class="number">3.10</span>.<span class="number">0</span>-<span class="number">229</span>.el7.x86_64 SMP mod_unload modversions 
-signer:         CentOS Linux kernel signing key
-sig_key:        A6:<span class="number">2</span>A:<span class="number">0</span>E:<span class="number">1</span>D:<span class="number">6</span>A:<span class="number">6</span>E:<span class="number">48</span>:<span class="number">4</span>E:<span class="number">9</span>B:FD:<span class="number">73</span>:<span class="number">68</span>:AF:<span class="number">34</span>:<span class="number">08</span>:<span class="number">10</span>:<span class="number">48</span>:E5:<span class="number">35</span>:E5
-sig_hashalgo:   sha256
-</code></pre>
-<p>可以从上面的输出可以看到有个路径为 <code>/lib/modules/3.10.0-229.el7.x86_64/kernel/fs/ceph/ceph.ko</code> 的内核模块，这个就是 cephfs 客户端需要使用到的模块</p>
-<h3 id="二、解决办法">二、解决办法</h3><p>解决这个缺失的模块的办法就是升级内核，并且在编译内核的时候需要选上这个模块，在某些商用的 Ceph 里面都是默认把这个模块给屏蔽了，这是因为 Cephfs 并没有达到稳定的标准，而这个在后端版本升级到 10.2 版本（jewel）版本，才正式宣布为第一个稳定版本，当然这个还是慎用为好，除非有比较强大的技术力量支撑，否则也不会出现那么多的大的商用厂家也不开放 Cephfs。</p>
-<h3 id="三、总结">三、总结</h3><p>Cephfs这块是比rbd和radosgw这两个部分都复杂的部分，而真正能控制住这个开发的目前主要是 Intel 的<code>zhengyan</code>，从邮件列表里面可以看到主要都是他在修bug，这一块未知的可能性太多，任何小的故障抖动都可能是致命的</p>
-<p>Bug不会自己消失，都是在那里的，只是看你有没有碰到</p>
-<h3 id="四、变更记录">四、变更记录</h3><table>
-<thead>
-<tr>
-<th style="text-align:center">Why</th>
-<th style="text-align:center">Who</th>
-<th style="text-align:center">When</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">创建</td>
-<td style="text-align:center">武汉-运维-磨渣</td>
-<td style="text-align:center">2016-07-24</td>
-</tr>
-</tbody>
-</table>
-<h3 id="六、打赏通道">六、打赏通道</h3><center><br><img src="http://static.zybuluo.com/zphj1987/fi2557g55ucsdpyblopyfudl/newpay.png" alt="打赏" title="打赏"><br></center>
-
-
-<h3 id="八、广告">八、广告</h3><p>收费小群（适合新手，大牛忽略）：</p>
-<center><br><img src="http://7xi6lo.com1.z0.glb.clouddn.com/qqqun2.png" alt=""><br></center>
-
-
-]]></content>
-    <summary type="html">
-    <![CDATA[<h3 id="一、问题">一、问题</h3><p>有可能你在进行 Ceph 文件系统挂载的时候出现下面的提示：</p>
-<blockquote>
-<p>modprobe: FATAL: Module ceph not found.<br>mount.ceph: modprobe failed, exit status 1<br>mount error: ceph filesystem not supported by the system</p>
-</blockquote>
-<p>这个是因为你的内核当中没有cephfs的相关模块，这个 centos6 下面比较常见，因为 centos6 的内核是 2.6.32,这个版本的内核中还没有集成cephfs的内核模块，而在 centos7 默认内核 3.10中已经默认集成了这个模块，我们看下集成的模块是怎样的显示</p>]]>
     
     </summary>
     
