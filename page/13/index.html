@@ -123,7 +123,7 @@ var _hmt = _hmt || [];
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/ceph/" style="font-size: 20px;">ceph</a><a href="/tags/instagram/" style="font-size: 10px;">instagram</a><a href="/tags/iptables/" style="font-size: 10px;">iptables</a><a href="/tags/linux/" style="font-size: 18.33px;">linux</a><a href="/tags/momotan/" style="font-size: 10px;">momotan</a><a href="/tags/nginx/" style="font-size: 13.33px;">nginx</a><a href="/tags/samba/" style="font-size: 10px;">samba</a><a href="/tags/ubuntu/" style="font-size: 16.67px;">ubuntu</a><a href="/tags/windows/" style="font-size: 10px;">windows</a><a href="/tags/其他/" style="font-size: 10px;">其他</a><a href="/tags/内核/" style="font-size: 13.33px;">内核</a><a href="/tags/操作系统/" style="font-size: 11.67px;">操作系统</a><a href="/tags/杂七杂八/" style="font-size: 13.33px;">杂七杂八</a><a href="/tags/注册码/" style="font-size: 10px;">注册码</a><a href="/tags/测试工具/" style="font-size: 11.67px;">测试工具</a><a href="/tags/监控/" style="font-size: 10px;">监控</a><a href="/tags/网卡/" style="font-size: 13.33px;">网卡</a><a href="/tags/脚本/" style="font-size: 15px;">脚本</a><a href="/tags/高可用/" style="font-size: 10px;">高可用</a>
+						<a href="/tags/ceph/" style="font-size: 20px;">ceph</a><a href="/tags/instagram/" style="font-size: 10px;">instagram</a><a href="/tags/iptables/" style="font-size: 10px;">iptables</a><a href="/tags/linux/" style="font-size: 18.33px;">linux</a><a href="/tags/momotan/" style="font-size: 10px;">momotan</a><a href="/tags/nginx/" style="font-size: 13.33px;">nginx</a><a href="/tags/samba/" style="font-size: 10px;">samba</a><a href="/tags/ubuntu/" style="font-size: 16.67px;">ubuntu</a><a href="/tags/windows/" style="font-size: 10px;">windows</a><a href="/tags/zabbix/" style="font-size: 10px;">zabbix</a><a href="/tags/其他/" style="font-size: 10px;">其他</a><a href="/tags/内核/" style="font-size: 13.33px;">内核</a><a href="/tags/操作系统/" style="font-size: 11.67px;">操作系统</a><a href="/tags/杂七杂八/" style="font-size: 13.33px;">杂七杂八</a><a href="/tags/注册码/" style="font-size: 10px;">注册码</a><a href="/tags/测试工具/" style="font-size: 11.67px;">测试工具</a><a href="/tags/监控/" style="font-size: 10px;">监控</a><a href="/tags/网卡/" style="font-size: 13.33px;">网卡</a><a href="/tags/脚本/" style="font-size: 15px;">脚本</a><a href="/tags/高可用/" style="font-size: 10px;">高可用</a>
 					</div>
 				</section>
 				
@@ -190,6 +190,302 @@ var _hmt = _hmt || [];
 	</div>
 </nav>
       <div class="body-wrap">
+  
+    <article id="post-linux中KVM桥接网卡br0" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/03/23/linux中KVM桥接网卡br0/" class="article-date">
+  	<time datetime="2015-03-23T14:05:59.000Z" itemprop="datePublished">2015-03-23</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/03/23/linux中KVM桥接网卡br0/">linux中KVM桥接网卡br0</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在centos虚拟化当中需要增加一个桥接网卡,然后将虚拟化当中的机器的网卡桥接到桥接网卡,下面将描述设置方法:</p>
+<p>查看现有网卡<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">[root@zb ~]# vim /etc/sysconfig/network-scripts/ifcfg-eth0&#10;DEVICE=eth0&#10;HWADDR=70:71:BC:1F:E4:86&#10;TYPE=Ethernet&#10;UUID=0213211a-d451-4944-881c-e7475b8bee34&#10;ONBOOT=yes&#10;NM_CONTROLLED=yes&#10;BOOTPROTO=static&#10;IPADDR=192.168.7.107&#10;NETMASK=255.255.0.0&#10;GATEWAY=192.168.1.1</span><br></pre></td></tr></table></figure></p>
+<p>将网卡信息copy一份到br0再进行修改</p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2015/03/23/linux中KVM桥接网卡br0/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-ubuntu掉电出现检查文件系统的问题" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/03/23/ubuntu掉电出现检查文件系统的问题/" class="article-date">
+  	<time datetime="2015-03-23T14:04:00.000Z" itemprop="datePublished">2015-03-23</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/03/23/ubuntu掉电出现检查文件系统的问题/">ubuntu掉电出现检查文件系统的问题</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>修改:<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">/etc/default/rcS &#10;FSCKFIX=no &#20026; FSCKFIX=yes</span><br></pre></td></tr></table></figure></p>
+<p>出现这个情况的原因是硬件时钟偏移了<br>显示上次挂载根目录在未来时间。</p>
+<p>写于: 2013年11月28日<br>更新于: 2015年03月23日</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ubuntu/">ubuntu</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-ssh配好无密码登录（RSA公钥）后，还要密码登录的问题的解决办法" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/03/23/ssh配好无密码登录（RSA公钥）后，还要密码登录的问题的解决办法/" class="article-date">
+  	<time datetime="2015-03-23T05:01:44.000Z" itemprop="datePublished">2015-03-23</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/03/23/ssh配好无密码登录（RSA公钥）后，还要密码登录的问题的解决办法/">ssh配好无密码登录（RSA公钥）后，还要密码登录的问题的解决办法</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>首先删除 /root/.ssh目录<br>然后ssh-keygen 生成新的认证目录<br>然后检查能否免密码登陆<br>如果还不能可能是/root/目录的权限不对了 可能被异常改到777了<br>做操作<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">chmod <span class="number">650</span> /root/</span><br></pre></td></tr></table></figure></p>
+<p>然后再尝试看能不能免登陆访问</p>
+<p>写于: 2013年11月28日<br>更新于: 2015年03日23日</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-ubuntu服务器dns重启失效问题" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/03/23/ubuntu服务器dns重启失效问题/" class="article-date">
+  	<time datetime="2015-03-23T00:05:19.000Z" itemprop="datePublished">2015-03-23</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/03/23/ubuntu服务器dns重启失效问题/">ubuntu服务器dns重启失效问题</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="方法一_通过/etc/network/interfaces,在它的最后增加一句:">方法一 通过/etc/network/interfaces,在它的最后增加一句:</h3><figure class="highlight"><table><tr><td class="code"><pre><span class="line">dns-nameservers 8.8.8.8</span><br></pre></td></tr></table></figure>
+<p>8.8.8.8是Google提供的DNS服务，这里只是举一个例子,你也可以改成电信运营商的DNS。重启后DNS就生效了，这时候再看/etc/resolv.conf,最下面就多了一行:<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line"># Dynamic resolv.conf(5) file for glibc resolver(3) generated by resolvconf(8)&#10;#     DO NOT EDIT THIS FILE BY HAND -- YOUR CHANGES WILL BE OVERWRITTEN&#10;nameserver 8.8.8.8</span><br></pre></td></tr></table></figure></p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ubuntu/">ubuntu</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2015/03/23/ubuntu服务器dns重启失效问题/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-编译一个Centos6-4下可用的内核rpm升级包-3-8-13内核rpm包" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/03/23/编译一个Centos6-4下可用的内核rpm升级包-3-8-13内核rpm包/" class="article-date">
+  	<time datetime="2015-03-22T23:59:15.000Z" itemprop="datePublished">2015-03-23</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/03/23/编译一个Centos6-4下可用的内核rpm升级包-3-8-13内核rpm包/">编译一个Centos6.4下可用的内核rpm升级包-3.8.13内核rpm包</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在Centos6.4下进行内核升级,采用内核源码的升级方式比较简单，但是需要升级的机器多的情况下进行内核升级就比较麻烦,并且编译内核的速度依赖于机器的性能,一般需要20分钟,而通过rpm内核包的方式进行安装,就比较快,一般在几分钟之内就可以完成内核的安装,本文档以3.8.13内核源码为例子进行的操作。<br>  根据网上的指导教程编译的rpm包，编译完成后只会生成如下两个rpm包:</p>
+<ul>
+<li>kernel-3.8.13-1.x86_64.rpm</li>
+<li>kernel-headers-3.8.13-1.x86_64.rpm</li>
+</ul>
+<p>而实际进行内核升级的时候还需要kernel-firmwsare-3.8.13-1.x86_64.rpm这个包,这个包是包含内核固件相关文件的,而在进行rpm打包的时候,这个包会内嵌到kernel-3.8.13-1.x86_64.rpm这个包当中去,而安装的时候系统没有找到这个包，进行升级的时候就会报错。<br>所以需要对内核源码编译文件进行一定的修改，这个地方需要修改的文件为linux-3.8.13/scripts/package/mkspec路径下的这个文件,具体修改如下(新版内核解决了这个问题,可以不需要修改,根据生成包的情况来看是否修改):</p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/内核/">内核</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2015/03/23/编译一个Centos6-4下可用的内核rpm升级包-3-8-13内核rpm包/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
   
     <article id="post-expect循环的写法" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -475,308 +771,9 @@ var _hmt = _hmt || [];
 
 
   
-    <article id="post-Bad-magic-number-ImportError-in-python" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/03/22/Bad-magic-number-ImportError-in-python/" class="article-date">
-  	<time datetime="2015-03-22T14:50:44.000Z" itemprop="datePublished">2015-03-22</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/03/22/Bad-magic-number-ImportError-in-python/"> Bad magic number ImportError in python</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>是源码编译里面版本不对，删除掉源码pyc然后重新编译就可以了</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find .-name <span class="string">'*.pyc'</span>-delete</span><br><span class="line">python -m compileall .</span><br></pre></td></tr></table></figure>
-<p>写于: 2013年08月01日<br>更新于: 2015年03月22日</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/杂七杂八/">杂七杂八</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-修改centos6启动动画（plymouth方式）" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/03/22/修改centos6启动动画（plymouth方式）/" class="article-date">
-  	<time datetime="2015-03-22T14:38:36.000Z" itemprop="datePublished">2015-03-22</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/03/22/修改centos6启动动画（plymouth方式）/">修改centos6启动动画（plymouth方式）</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>centos6默认的启动动画是一个白蓝色的进度条,背景全黑色,现在需要对centos的启动动画进行定制<br>在查询了一些资料以后,发现有一个软件是可以对启动动画进行定制的，名字叫plymouth<br>这<br>个在centos6操作系统安装完成以后默认就带了的,主要涉及的是如下的几个操作<br>列出当前所有主题:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">plymouth-set-default-theme --list</span><br></pre></td></tr></table></figure></p>
-<p>主题存放目录:<br>/usr/share/plymouth/themes/</p>
-<p>不重启查看主题运行效果 Ctrl + Alt + F2(一定不要在F1操作)<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">plymouthd</span><br><span class="line">plymouth --show-splash</span><br><span class="line">plymouth --quit</span><br></pre></td></tr></table></figure></p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/03/22/修改centos6启动动画（plymouth方式）/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-用grub4dos来实现移动硬盘安装linux系统" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/03/22/用grub4dos来实现移动硬盘安装linux系统/" class="article-date">
-  	<time datetime="2015-03-22T14:27:07.000Z" itemprop="datePublished">2015-03-22</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/03/22/用grub4dos来实现移动硬盘安装linux系统/">用grub4dos来实现移动硬盘安装linux系统(图重弄)</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>网上看了一些grub4dos相关教程,虽然相关资料很多,但是一步步做下来还是会出现一些问题,并且有些地方也没有说清楚,现在写下来供自己以后查看</p>
-<p>由于使用utraliso软件做centos6.4系统盘的时候,由于centos系统盘超过4G,而utraliso软件做系统盘的时候默认文件系统ext格式,而ext格式不支持超过4G的文件,所以就无法启动,所以研究了下用grub4dos这个软件来实现移动硬盘安装linux系统</p>
-<p>首先需要准备两个文件<br>grub4dos-0.4.4.zip<br>grubinst-1.1-bin-w32-2008-01-01.zip</p>
-<p>解压grub4dos-0.4.4.zip</p>
-<p><img src="http://fmn.rrimg.com/fmn061/20130605/2150/b_large_LQAI_39a3000004ac1262.jpg" alt=""></p>
-<p>&lt;这里需要注意下，如果用移动硬盘想实现的是只装一种系统话，那么就不需要对硬盘分区，如果想装多个系统的话就可以对移动硬盘分几个区，每个分区可以放一种操作系统&gt;</p>
-<p>在win7的开始菜单中搜索 计算机管理&gt;磁盘管理<br>然后选择你的移动硬盘,然后将第一个盘符标记为活动分区,这样移动硬盘这个区才能被识别,从而作为启动分区</p>
-<p><img src="http://fmn.rrimg.com/fmn063/20130605/2200/b_large_VXDK_39a3000004d91262.jpg" alt=""></p>
-<p>解压grubinst-1.1-bin-w32-2008-01-01.zip 运行<br>grubinst_gui.exe<br>磁盘选择你的移动硬盘<br>然后点分区列表右边的刷新<br>然后选择整个磁盘(MBR),然后点击安装</p>
-<p><img src="http://fmn.rrfmn.com/fmn058/20130605/2215/b_large_1Zyp_5715000001f51263.jpg" alt=""></p>
-<p>将刚刚解压得到的grub4dos-0.4.4这个目录下的chinese目录下的三个文件拷贝到你准备用来做安装系统移动硬盘,也就是刚刚设置为活动主分区那个盘还有grub4dos-0.4.4目录下menu.lst也拷贝到移动硬盘活动分区那个盘的根目录下，这个移动硬盘目录下最后看到的文件如下截图</p>
-<p><img src="http://fmn.rrimg.com/fmn065/20130605/2210/b_large_qb9c_30620000080c1263.jpg" alt=""></p>
-<p>如果这个时候你移动硬盘没分区的话，就将你的系统盘的iso全部解压到你的这个目录,系统iso解压可以用360压缩工具<br>然后修改menu.lst  ,如果比较熟悉,可以进行自定义,如果不熟悉,这里直接在下面加几行:<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">title centos6.4 install&#10;kernel (hd0,0)/isolinux/vmlinuz&#10;initrd (hd0,0)/isolinux/initrd.img</span><br></pre></td></tr></table></figure></p>
-<p>上面的title后面写的字段会在系统安装的时候显示，然后安装的时候选择这个centos6.4 install就行,其中(hd0,0)的前面的0是代表第一个盘,也就是你的移动盘,后面的0代表分区,代表第一个分区,如果你把系统iso解压到移动硬盘的第二个分区,那么就把这个改为1<br>isolinux/vmlinuz 就是你解压的iso里面的文件<br>到这里,系统盘已经做好了,在电脑的启动项里面选择centos6.4 install 就可以安装这个linux系统了</p>
-<p>此方法对于centos6.4还是有问题 所以需要多做些工作<br>思路是把第二个分区做成linux的ext2格式就能放4G以上的iso,但是win7又无法识别ext2的盘符,所以需要做两步,第一步将第二分区格式化为ext2<br>使用这个工具:<br>ParagonPartitionManager.rar<br>使用这个工具把盘格式化为ext2<br>使用这个工具是win7下能查看ext2格式的盘符<br>Ext2Fsd-0.51.zip</p>
-<p><img src="http://fmn.xnpic.com/fmn057/20130606/2145/b_large_jgCI_5038000002631263.jpg" alt=""></p>
-<p><img src="http://fmn.rrimg.com/fmn060/20130606/2145/b_large_uSUd_588c000003ba1262.jpg" alt=""></p>
-<p><img src="http://fmn.rrimg.com/fmn061/20130606/2155/b_large_LzJv_2a51000012851262.jpg" alt=""></p>
-<p>写于: 2013年06月05日<br>更新于: 2015年03月22日</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-手机中没有该应用所需的共享库（解决手机无法安装Google-plus）" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/03/22/手机中没有该应用所需的共享库（解决手机无法安装Google-plus）/" class="article-date">
-  	<time datetime="2015-03-22T14:24:09.000Z" itemprop="datePublished">2015-03-22</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/03/22/手机中没有该应用所需的共享库（解决手机无法安装Google-plus）/">手机中没有该应用所需的共享库（解决手机无法安装Google plus）</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>国行安卓手机阉割了一些google服务，需要加这三个文件:</p>
-<p>com.google.android.maps.jar<br>com.google.android.maps.xml<br>NetworkLocation.apk</p>
-<p>你只需将上述文件放到手机中的相应位置,重启手机就好了。<br>方法:<br>首先机器要ROOT,然后用RE管理器，把要复制的文件复制到相应的位置,修改三个文件的权限,就是竖着3行,左边全选,中间最上面选上,右边全空。<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">com.google.android.maps.jar   &#23433;&#35013;&#21040;  /system/framework&#10;google.android.maps.xml       &#23433;&#35013;&#21040;  /system/etc/permissions&#10;NetworkLocation.apk           &#23433;&#35013;&#21040;  /data/app_s</span><br></pre></td></tr></table></figure></p>
-<p>app_s目录需要自己建立</p>
-<p>上述三个文件在下面这个地址可以下载到:<br><a href="http://vdisk.weibo.com/s/BFtBO" target="_blank" rel="external">http://vdisk.weibo.com/s/BFtBO</a> </p>
-<p>写于: 2013年05月16日<br>更新于: 2015年03月22日</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-如何配置谷歌框架与市场（解决google-play-闪退）" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/03/22/如何配置谷歌框架与市场（解决google-play-闪退）/" class="article-date">
-  	<time datetime="2015-03-22T14:18:20.000Z" itemprop="datePublished">2015-03-22</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/03/22/如何配置谷歌框架与市场（解决google-play-闪退）/">如何配置谷歌框架与市场（解决google play 闪退）</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>没有谷歌电子市场。好多游戏都不能玩。像狂野之血,超凡蜘蛛侠。。。等等大型游戏。</p>
-<p>大家都知道国产机的ROM包把谷歌的GMS和谐掉了,所以直接装谷歌电子市场肯定会出现闪退,这样就又牵扯到另一个基础服务——谷歌框架,估计想玩大型游戏的机友对这个词都不陌生,但是可能大家按照许多热心机友说的最终还是没能把这个电子市场搞定,接下来大家按这个步骤,可以成功,亲测。</p>
-<p>步骤如下:<br>第一步:需要有root权限和RE管理器</p>
-<p>第二步:下载GoogleServiesFramework.apk(谷歌<br>服务框架,必需),将GoogleServiesFramework.apk复制到文件夹/system/app 下,然后点击安装,但是貌似不点安装也行,但是权限一定得改,然后修改权限——第一行,第一个、第二个打勾,第二行,第一个打勾,第三行,第一个打勾。(这个权限一定要搞好,有可能大家都是少了这步) </p>
-<p>第三步:下载谷歌电子市场，无论下载过来的电子市场文件名叫什么,都把它重命名为Vending.apk,像GoogleServiesFramework.apk一样移动到文件夹 /system/app 下,安装(这个必须安装)。然后修改权限,与GoogleServiesFramework.apk一样.</p>
-<p>第四步:重启手机<br>ok,联网,打开谷歌电子市场,就可以登录了。</p>
-<p>写于: 2013年05月16日<br>更新于: 2015年03月22日</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/page/12/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="page-number" href="/page/12/">12</a><span class="page-number current">13</span><a class="page-number" href="/page/14/">14</a><a class="page-number" href="/page/15/">15</a><span class="space">&hellip;</span><a class="page-number" href="/page/17/">17</a><a class="extend next" rel="next" href="/page/14/">Next &raquo;</a>
+      <a class="extend prev" rel="prev" href="/page/12/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="page-number" href="/page/12/">12</a><span class="page-number current">13</span><a class="page-number" href="/page/14/">14</a><a class="page-number" href="/page/15/">15</a><span class="space">&hellip;</span><a class="page-number" href="/page/18/">18</a><a class="extend next" rel="next" href="/page/14/">Next &raquo;</a>
     </nav>
   
 </div>

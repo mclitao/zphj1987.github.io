@@ -123,7 +123,7 @@ var _hmt = _hmt || [];
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/ceph/" style="font-size: 20px;">ceph</a><a href="/tags/instagram/" style="font-size: 10px;">instagram</a><a href="/tags/iptables/" style="font-size: 10px;">iptables</a><a href="/tags/linux/" style="font-size: 18.33px;">linux</a><a href="/tags/momotan/" style="font-size: 10px;">momotan</a><a href="/tags/nginx/" style="font-size: 13.33px;">nginx</a><a href="/tags/samba/" style="font-size: 10px;">samba</a><a href="/tags/ubuntu/" style="font-size: 16.67px;">ubuntu</a><a href="/tags/windows/" style="font-size: 10px;">windows</a><a href="/tags/其他/" style="font-size: 10px;">其他</a><a href="/tags/内核/" style="font-size: 13.33px;">内核</a><a href="/tags/操作系统/" style="font-size: 11.67px;">操作系统</a><a href="/tags/杂七杂八/" style="font-size: 13.33px;">杂七杂八</a><a href="/tags/注册码/" style="font-size: 10px;">注册码</a><a href="/tags/测试工具/" style="font-size: 11.67px;">测试工具</a><a href="/tags/监控/" style="font-size: 10px;">监控</a><a href="/tags/网卡/" style="font-size: 13.33px;">网卡</a><a href="/tags/脚本/" style="font-size: 15px;">脚本</a><a href="/tags/高可用/" style="font-size: 10px;">高可用</a>
+						<a href="/tags/ceph/" style="font-size: 20px;">ceph</a><a href="/tags/instagram/" style="font-size: 10px;">instagram</a><a href="/tags/iptables/" style="font-size: 10px;">iptables</a><a href="/tags/linux/" style="font-size: 18.33px;">linux</a><a href="/tags/momotan/" style="font-size: 10px;">momotan</a><a href="/tags/nginx/" style="font-size: 13.33px;">nginx</a><a href="/tags/samba/" style="font-size: 10px;">samba</a><a href="/tags/ubuntu/" style="font-size: 16.67px;">ubuntu</a><a href="/tags/windows/" style="font-size: 10px;">windows</a><a href="/tags/zabbix/" style="font-size: 10px;">zabbix</a><a href="/tags/其他/" style="font-size: 10px;">其他</a><a href="/tags/内核/" style="font-size: 13.33px;">内核</a><a href="/tags/操作系统/" style="font-size: 11.67px;">操作系统</a><a href="/tags/杂七杂八/" style="font-size: 13.33px;">杂七杂八</a><a href="/tags/注册码/" style="font-size: 10px;">注册码</a><a href="/tags/测试工具/" style="font-size: 11.67px;">测试工具</a><a href="/tags/监控/" style="font-size: 10px;">监控</a><a href="/tags/网卡/" style="font-size: 13.33px;">网卡</a><a href="/tags/脚本/" style="font-size: 15px;">脚本</a><a href="/tags/高可用/" style="font-size: 10px;">高可用</a>
 					</div>
 				</section>
 				
@@ -190,6 +190,339 @@ var _hmt = _hmt || [];
 	</div>
 </nav>
       <div class="body-wrap">
+  
+    <article id="post-删除osd的正确方式" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/01/12/删除osd的正确方式/" class="article-date">
+  	<time datetime="2016-01-12T02:14:39.000Z" itemprop="datePublished">2016-01-12</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/01/12/删除osd的正确方式/">删除osd的正确方式</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在ceph的集群当中关于节点的替换的问题，一直按照以前的方式进行的处理，处理的步骤如下：</p>
+<ol>
+<li>停止osd进程<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/etc/init.d/ceph stop osd.<span class="number">0</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>这一步是停止osd的进程，让其他的osd知道这个节点不提供服务了</p>
+<ol>
+<li>将节点状态标记为out<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph osd out osd.<span class="number">0</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>这个一步是告诉mon，这个节点已经不能服务了，需要在其他的osd上进行数据的恢复了</p>
+<ol>
+<li>从crush中移除节点<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph osd crush remove osd.<span class="number">0</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>从crush中删除是告诉集群这个点回不来了，完全从集群的分布当中剔除掉，让集群的crush进行一次重新计算，之前节点还占着这个crush weight，会影响到当前主机的host crush weight </p>
+<ol>
+<li>删除节点<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph osd rm osd.<span class="number">0</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>这个是从集群里面删除这个节点的记录</p>
+<ol>
+<li>删除节点认证（不删除编号会占住）<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph auth del osd.<span class="number">0</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>这个是从认证当中去删除这个节点的信息<br>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2016/01/12/删除osd的正确方式/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-ceph写osd的配置文件-etc-ceph-ceph-conf" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/01/11/ceph写osd的配置文件-etc-ceph-ceph-conf/" class="article-date">
+  	<time datetime="2016-01-11T08:38:25.000Z" itemprop="datePublished">2016-01-11</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/01/11/ceph写osd的配置文件-etc-ceph-ceph-conf/">ceph写osd的配置文件/etc/ceph/ceph.conf</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>ceph在部署过程中是先进行部署，再去写配置文件的，而一些新手在部署完了后，并没有写配置文件，在重启服务器后，因为挂载点没有挂载，所以服务无法启动，所以需要写好配置文件<br>还有一种情况是集群有几百个osd，在新加入或者修改的时候，再去进行变更配置文件就是一个很麻烦的事情，所以写配置文件这个如果脚本来处理，就可以节约很多时间，所以写了一个脚本如下，这个地方如果熟悉python的可以用python写，我这个是自己使用，并且使用的频率不会太高，因此，怎么方便怎么来</p>
+<p>脚本里面用了一个二进制文件是解析json用的，这个拷贝到运行的机器上就可以了</p>
+<p>解析的二进制文件在这里下载：<br><a href="http://stedolan.github.io/jq/">http://stedolan.github.io/jq/</a></p>
+<p>备用下载地址：<br><a href="http://pan.baidu.com/s/1pKgefmr">http://pan.baidu.com/s/1pKgefmr</a></p>
+<p>下载后拷贝到linux机器的/sbin/下面，为了方便重命名为 /sbin/jq</p>
+<p>后面的输出可以方便的修改，原理是获取当前的osd状态，然后去osd上获取信息</p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2016/01/11/ceph写osd的配置文件-etc-ceph-ceph-conf/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-centos6安装calamari" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/12/19/centos6安装calamari/" class="article-date">
+  	<time datetime="2015-12-19T14:07:01.000Z" itemprop="datePublished">2015-12-19</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/12/19/centos6安装calamari/">centos6安装calamari</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="一、安装操作系统">一、安装操作系统</h3><p>首先安装操作系统centos6,安装过程选择的是base server，这个不相同不要紧，出现缺少包的时候去iso找出来安装就可以了</p>
+<h3 id="二、calamari的简单介绍">二、calamari的简单介绍</h3><p>首先简单的介绍下calamari的这个软件系统的组成，主要是calamari-server,romana，salt-minion，salt-server，diamond，</p>
+<p>这些模块各自的作用：</p>
+<ul>
+<li>calamari-server这个是提供一个与集群进行交互，并且自己封装了一个自己的API，做集中管理的地方，这个只需要在集群当中的某一台机器上安装，也可以独立安装</li>
+<li>romana就是原来的calamari-client，这个叫client,其实是一个web的界面，这个叫calamari-web更好，现在已经更名为romana，这个也是只需要在集群当中的某一台机器上安装，也可以独立安装，这个需要跟calamari-server安装在一台机器上</li>
+<li>salt-server是一个管理的工具，可以批量的管理其他的机器，可以对安装了salt-minion的机器进行管理，在集群当中，这个也是跟calamari-server安装在一起的</li>
+<li>salt-minion是安装在集群的所有节点上的，这个是接收salt-server的指令对集群的机器进行操作，并且反馈一些信息到salt-server上</li>
+<li>diamond这个是系统的监控信息的收集控件，提供集群的硬件信息的监控和集群的信息的监控，数据是发送到romana的机器上的，是由romana上的carbon来收取数据并存储到机器当中的数据库当中的</li>
+</ul>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2015/12/19/centos6安装calamari/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-xenserver使用ceph的rbd的方法" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/12/16/xenserver使用ceph的rbd的方法/" class="article-date">
+  	<time datetime="2015-12-16T06:08:00.000Z" itemprop="datePublished">2015-12-16</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/12/16/xenserver使用ceph的rbd的方法/">xenserver使用ceph的rbd的方法</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>首先安装的xenserver6.5的环境，看到有地方有提到这个上面可以安装rbd的支持，网上有一种方式是libvirt+kvm方式，因为ceph对libviet是原生支持的，但是xenserver底层是xen的，这个就不去研究太多，这个用最简单的方式最好</p>
+<p><a href="https://github.com/mstarikov/rbdsr">https://github.com/mstarikov/rbdsr</a><br>这个是个第三方的插件，最近才出来的</p>
+<p>实现原理是ssh到ceph的机器上获取到可以使用的rbd信息，然后在xenserver的图形界面上通过配置iscsi的方式去配置rbd，里面套用了iscsi的界面，实际去xenserver机器后台同样做的是map的操作<br>这个试了下，界面的操作都可以实现，都可以获取到rbd的信息，但是在最后提交的一下的时候，后台会报错误的信息，这个有可能才出来，还有点问题<br>这个地方可以用其他的方式实现，xenserver在添加硬盘的时候本来就支持的命令行模式，下面为实现方式</p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2015/12/16/xenserver使用ceph的rbd的方法/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-如何在所有的mon的损坏情况下将数据恢复如初" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/12/13/如何在所有的mon的损坏情况下将数据恢复如初/" class="article-date">
+  	<time datetime="2015-12-13T11:26:43.000Z" itemprop="datePublished">2015-12-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/12/13/如何在所有的mon的损坏情况下将数据恢复如初/">如何在所有的mon的损坏情况下将数据恢复如初</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="本篇主题：">本篇主题：</h3><p>在mon无法启动，或者所有的mon的数据盘都损坏的情况下，如何把所有的数据恢复如初</p>
+<h3 id="写本章的缘由">写本章的缘由</h3><p>在ceph中国的群里有看到一个技术人员有提到，在一次意外机房掉电后，三台mon的系统盘同时损坏了，这个对于熟悉ceph的人都知道这意味着什么，所有的集群数据将无法访问，关于这个的解决办法目前没有在哪里有看到，这个对于大多数人是用不上的，但是一旦出现了，这个损失将是无法估量的，当然谁都不希望这个情况的发生<br>所以在研究了下ceph的一些操作后，自己尝试去找了一些关于集群的故障修复的，目前看到了一个是关于单个rbd镜像的恢复的文章，那个需要将数据映射本地的loop设备后重新读取，这个我曾经验证过一遍，确实可以实现，在周末的时候我尝试了另外一个办法，实现了在mon完全失效的情况下全集群的完整数据的恢复，并且保留了原来的数据结构和数据信息，当然这中间需要进行一定的操作去完成它，这个我准备写成一个标准的操作流程，并用视频的方式来记录这个恢复的流程</p>
+<h3 id="本篇资源:">本篇资源:</h3><p>包括了视频，操作文档</p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2015/12/13/如何在所有的mon的损坏情况下将数据恢复如初/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
   
     <article id="post-关于开始写教程的事" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -504,316 +837,9 @@ var _hmt = _hmt || [];
 
 
   
-    <article id="post-Mon失效处理方法" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/11/01/Mon失效处理方法/" class="article-date">
-  	<time datetime="2015-11-01T15:34:26.000Z" itemprop="datePublished">2015-11-01</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/11/01/Mon失效处理方法/">Mon失效处理方法</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>假设环境为三个mon，主机名为mon1、mon2、mon3，现在mon3上面的系统盘损坏，mon的数据完全丢失，现在需要对mon3进行恢复处理</p>
-<p>1、停止所有mon进程，可以不停其他进程，需要停止内核客户端以及对外的服务，防止卡死<br>在mon1机器上执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/etc/init.d/ceph stop mon</span><br></pre></td></tr></table></figure></p>
-<p>在mon2机器上执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/etc/init.d/ceph stop mon</span><br></pre></td></tr></table></figure></p>
-<p>2、分别在mon主机上获取当前的monmap<br>在mon1机器上执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph-mon -i mon1 --extract-monmap /tmp/monmap</span><br></pre></td></tr></table></figure></p>
-<p>备份原始monmap<br>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/11/01/Mon失效处理方法/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-在页面中嵌入自适应视频的方法" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/10/13/在页面中嵌入自适应视频的方法/" class="article-date">
-  	<time datetime="2015-10-13T13:50:23.000Z" itemprop="datePublished">2015-10-13</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/10/13/在页面中嵌入自适应视频的方法/">在页面中嵌入自适应视频的方法</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>准备在博客中嵌入视频，从视频网站获取的embed代码是指定宽度和高度的，这样在一些窗口或者移动端进行访问的时候，就可能视频溢出屏幕了，体验不好，实际上这几年响应式网站比较流行，也就是能让内容自动的适应窗口的大小</p>
-<p>屏幕的宽度可以用 <code>width：100%</code> 进行设置，高度看到有个 <code>height:100%</code> 设置后height实际取的是上一层的高度的百分比，如果没设置的话，这个就为0，看到嵌入的视频就没有高度了，网上关于这个的资料很多，可以搜索下</p>
-<p>关于视频的自适应看到  <a href="https://developers.google.com/web/fundamentals/media/video/size-videos-correctly?hl=zh-cn#section" title="google 自适应设置建议">google 自适应设置建议</a> 这个介绍的很好<br>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/杂七杂八/">杂七杂八</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/10/13/在页面中嵌入自适应视频的方法/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-inkscope管理平台试用" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/10/12/inkscope管理平台试用/" class="article-date">
-  	<time datetime="2015-10-12T13:28:22.000Z" itemprop="datePublished">2015-10-12</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/10/12/inkscope管理平台试用/">inkscope管理平台试用</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>下面为inkscope的管理平台的操作记录，一直听说过这个管理平台，但一直没有真正的去配置过，花了一点时间进行了配置</p>
-<p>inkscope的管理平台总结下有下面几个：</p>
-<ul>
-<li>使用sysprobe获取节点的操作系统监控信息</li>
-<li>使用cephprobe去跟ceph集群进行交互，调用了ceph-rest-api进行集群的数据和操作交互</li>
-<li>使用mongodb进行监控信息的存储</li>
-</ul>
-<p>总体来说架构简单，很容易配置，并且官方提供了包，是比较成熟的管理平台了，具体的可以看下面的这个视频<br>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/10/12/inkscope管理平台试用/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-查询osd上的pg数" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/10/04/查询osd上的pg数/" class="article-date">
-  	<time datetime="2015-10-03T16:02:06.000Z" itemprop="datePublished">2015-10-04</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/10/04/查询osd上的pg数/">查询osd上的pg数</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>本文中的命令的第一版来源于国外的一个博客，后面的版本为我自己修改的版本</p>
-<p>查询的命令如下：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph pg dump | awk <span class="string">'</span><br><span class="line"> /^pg_stat/ &#123; col=1; while($col!="up") &#123;col++&#125;; col++ &#125;</span><br><span class="line"> /^[0-9a-f]+\.[0-9a-f]+/ &#123; match($0,/^[0-9a-f]+/); pool=substr($0, RSTART, RLENGTH); poollist[pool]=0;</span><br><span class="line"> up=$col; i=0; RSTART=0; RLENGTH=0; delete osds; while(match(up,/[0-9]+/)&gt;0) &#123; osds[++i]=substr(up,RSTART,RLENGTH); up = substr(up, RSTART+RLENGTH) &#125;</span><br><span class="line"> for(i in osds) &#123;array[osds[i],pool]++; osdlist[osds[i]];&#125;</span><br><span class="line">&#125;</span><br><span class="line">END &#123;</span><br><span class="line"> printf("\n");</span><br><span class="line"> printf("pool :\t"); for (i in poollist) printf("%s\t",i); printf("| SUM \n");</span><br><span class="line"> for (i in poollist) printf("--------"); printf("----------------\n");</span><br><span class="line"> for (i in osdlist) &#123; printf("osd.%i\t", i); sum=0;</span><br><span class="line"> for (j in poollist) &#123; printf("%i\t", array[i,j]); sum+=array[i,j]; poollist[j]+=array[i,j] &#125;; printf("| %i\n",sum) &#125;</span><br><span class="line"> for (i in poollist) printf("--------"); printf("----------------\n");</span><br><span class="line"> printf("SUM :\t"); for (i in poollist) printf("%s\t",poollist[i]); printf("|\n");</span><br><span class="line">&#125;'</span></span><br></pre></td></tr></table></figure></p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/10/04/查询osd上的pg数/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-rbd的数据在哪里" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/09/28/rbd的数据在哪里/" class="article-date">
-  	<time datetime="2015-09-28T08:06:29.000Z" itemprop="datePublished">2015-09-28</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/09/28/rbd的数据在哪里/">rbd的数据在哪里</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="创建一个rbd">创建一个rbd</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@mytest ~]<span class="comment"># rbd create test1 --size 4000</span></span><br></pre></td></tr></table></figure>
-<h3 id="查看rbd信息">查看rbd信息</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@mytest ~]<span class="comment"># rbd info test1</span></span><br><span class="line">rbd image <span class="string">'test1'</span>:</span><br><span class="line">	size <span class="number">4000</span> MB <span class="keyword">in</span> <span class="number">1000</span> objects</span><br><span class="line">	order <span class="number">22</span> (<span class="number">4096</span> kB objects)</span><br><span class="line">	block_name_prefix: rb.<span class="number">0</span>.fa6c.<span class="number">6</span>b8b4567</span><br><span class="line">	format: <span class="number">1</span></span><br></pre></td></tr></table></figure>
-<p>可以看出是没写入真实数据的<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@mytest ~]<span class="comment"># ceph df|grep rbd</span></span><br><span class="line">    rbd          <span class="number">0</span>       <span class="number">133</span>         <span class="number">0</span>        <span class="number">30627</span>M           <span class="number">2</span></span><br></pre></td></tr></table></figure></p>
-<h3 id="查询rbd池里面的对象信息">查询rbd池里面的对象信息</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@mytest ~]<span class="comment"># rados ls -p rbd</span></span><br><span class="line"><span class="built_in">test</span>1.rbd</span><br><span class="line">rbd_directory</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/09/28/rbd的数据在哪里/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/page/7/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><a class="page-number" href="/page/10/">10</a><span class="space">&hellip;</span><a class="page-number" href="/page/17/">17</a><a class="extend next" rel="next" href="/page/9/">Next &raquo;</a>
+      <a class="extend prev" rel="prev" href="/page/7/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><a class="page-number" href="/page/10/">10</a><span class="space">&hellip;</span><a class="page-number" href="/page/18/">18</a><a class="extend next" rel="next" href="/page/9/">Next &raquo;</a>
     </nav>
   
 </div>
