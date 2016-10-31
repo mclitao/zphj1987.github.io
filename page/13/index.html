@@ -51,7 +51,7 @@ var _hmt = _hmt || [];
 		</hgroup>
 
 		
-		<p class="header-subtitle">现在所学，终有所用</p>
+		<p class="header-subtitle">但行好事，莫问前程</p>
 		
 
 		
@@ -99,11 +99,11 @@ var _hmt = _hmt || [];
 				        
 							<li><a href="/archives">所有文章</a></li>
 				        
-							<li><a href="/payforask">打赏</a></li>
+							<li><a href="/askme">自动问答</a></li>
 				        
 							<li><a href="/instagram">图片</a></li>
 				        
-							<li><a href="/shuoshuo">说说</a></li>
+							<li><a href="/payforask">打赏</a></li>
 				        
 						</ul>
 					</nav>
@@ -157,7 +157,7 @@ var _hmt = _hmt || [];
 			  <h1 class="header-author">zphj1987</h1>
 			</hgroup>
 			
-			<p class="header-subtitle">现在所学，终有所用</p>
+			<p class="header-subtitle">但行好事，莫问前程</p>
 			
 			<nav class="header-menu">
 				<ul>
@@ -166,11 +166,11 @@ var _hmt = _hmt || [];
 		        
 					<li><a href="/archives">所有文章</a></li>
 		        
-					<li><a href="/payforask">打赏</a></li>
+					<li><a href="/askme">自动问答</a></li>
 		        
 					<li><a href="/instagram">图片</a></li>
 		        
-					<li><a href="/shuoshuo">说说</a></li>
+					<li><a href="/payforask">打赏</a></li>
 		        
 		        <div class="clearfix"></div>
 				</ul>
@@ -190,66 +190,6 @@ var _hmt = _hmt || [];
 	</div>
 </nav>
       <div class="body-wrap">
-  
-    <article id="post-linux中KVM桥接网卡br0" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/03/23/linux中KVM桥接网卡br0/" class="article-date">
-  	<time datetime="2015-03-23T14:05:59.000Z" itemprop="datePublished">2015-03-23</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/03/23/linux中KVM桥接网卡br0/">linux中KVM桥接网卡br0</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>在centos虚拟化当中需要增加一个桥接网卡,然后将虚拟化当中的机器的网卡桥接到桥接网卡,下面将描述设置方法:</p>
-<p>查看现有网卡<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">[root@zb ~]# vim /etc/sysconfig/network-scripts/ifcfg-eth0&#10;DEVICE=eth0&#10;HWADDR=70:71:BC:1F:E4:86&#10;TYPE=Ethernet&#10;UUID=0213211a-d451-4944-881c-e7475b8bee34&#10;ONBOOT=yes&#10;NM_CONTROLLED=yes&#10;BOOTPROTO=static&#10;IPADDR=192.168.7.107&#10;NETMASK=255.255.0.0&#10;GATEWAY=192.168.1.1</span><br></pre></td></tr></table></figure></p>
-<p>将网卡信息copy一份到br0再进行修改</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/03/23/linux中KVM桥接网卡br0/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
   
     <article id="post-ubuntu掉电出现检查文件系统的问题" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -752,6 +692,63 @@ var _hmt = _hmt || [];
       
 	<div class="article-tag tagcloud">
 		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ubuntu/">ubuntu</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-Bad-magic-number-ImportError-in-python" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/03/22/Bad-magic-number-ImportError-in-python/" class="article-date">
+  	<time datetime="2015-03-22T14:50:44.000Z" itemprop="datePublished">2015-03-22</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/03/22/Bad-magic-number-ImportError-in-python/"> Bad magic number ImportError in python</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>是源码编译里面版本不对，删除掉源码pyc然后重新编译就可以了</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find .-name <span class="string">'*.pyc'</span>-delete</span><br><span class="line">python -m compileall .</span><br></pre></td></tr></table></figure>
+<p>写于: 2013年08月01日<br>更新于: 2015年03月22日</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/杂七杂八/">杂七杂八</a></li></ul>
 	</div>
 
       

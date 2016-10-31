@@ -51,7 +51,7 @@ var _hmt = _hmt || [];
 		</hgroup>
 
 		
-		<p class="header-subtitle">现在所学，终有所用</p>
+		<p class="header-subtitle">但行好事，莫问前程</p>
 		
 
 		
@@ -99,11 +99,11 @@ var _hmt = _hmt || [];
 				        
 							<li><a href="/archives">所有文章</a></li>
 				        
-							<li><a href="/payforask">打赏</a></li>
+							<li><a href="/askme">自动问答</a></li>
 				        
 							<li><a href="/instagram">图片</a></li>
 				        
-							<li><a href="/shuoshuo">说说</a></li>
+							<li><a href="/payforask">打赏</a></li>
 				        
 						</ul>
 					</nav>
@@ -157,7 +157,7 @@ var _hmt = _hmt || [];
 			  <h1 class="header-author">zphj1987</h1>
 			</hgroup>
 			
-			<p class="header-subtitle">现在所学，终有所用</p>
+			<p class="header-subtitle">但行好事，莫问前程</p>
 			
 			<nav class="header-menu">
 				<ul>
@@ -166,11 +166,11 @@ var _hmt = _hmt || [];
 		        
 					<li><a href="/archives">所有文章</a></li>
 		        
-					<li><a href="/payforask">打赏</a></li>
+					<li><a href="/askme">自动问答</a></li>
 		        
 					<li><a href="/instagram">图片</a></li>
 		        
-					<li><a href="/shuoshuo">说说</a></li>
+					<li><a href="/payforask">打赏</a></li>
 		        
 		        <div class="clearfix"></div>
 				</ul>
@@ -190,63 +190,6 @@ var _hmt = _hmt || [];
 	</div>
 </nav>
       <div class="body-wrap">
-  
-    <article id="post-遍历指定目录并且从子目录开始将目录输出到指定文件" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/03/22/遍历指定目录并且从子目录开始将目录输出到指定文件/" class="article-date">
-  	<time datetime="2015-03-22T06:18:05.000Z" itemprop="datePublished">2015-03-22</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/03/22/遍历指定目录并且从子目录开始将目录输出到指定文件/">遍历指定目录并且从子目录开始将目录输出到指定文件</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>shell脚本:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="shebang">#! /bin/sh</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"type a backup directory name:"</span></span><br><span class="line"><span class="built_in">read</span> <span class="operator">-e</span> r</span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$r</span>   </span><br><span class="line">python /zp/bianli.py <span class="variable">$r</span>                 <span class="comment">#传递参数到python脚本文件中</span></span><br><span class="line"><span class="keyword">for</span> dir <span class="keyword">in</span> `cat /zp/mulu.txt`</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$dir</span></span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure></p>
-<p>python脚本:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#! /usr/bin/env python</span></span><br><span class="line">import os,sys</span><br><span class="line">r=sys.argv[<span class="number">1</span>]                <span class="comment">#将第一个参数值传入到r当中</span></span><br><span class="line"><span class="keyword">for</span> root,<span class="built_in">dirs</span>,files <span class="keyword">in</span> os.walk(r,topdown=False):</span><br><span class="line">        <span class="keyword">for</span> dir <span class="keyword">in</span> <span class="built_in">dirs</span>:</span><br><span class="line">                <span class="built_in">print</span> os.path.join(root,dir)            <span class="comment">#输出路径</span></span><br></pre></td></tr></table></figure></p>
-<p>写于: 2012年3月13日<br>更新于: 2015年03月22日</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/脚本/">脚本</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
   
     <article id="post-利用现有的网络产品实现内网linux服务器文件的公网同步" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -755,6 +698,63 @@ var _hmt = _hmt || [];
 		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/操作系统/">操作系统</a></li></ul>
 	</div>
 
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-alias重启终端失效的问题" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/03/21/alias重启终端失效的问题/" class="article-date">
+  	<time datetime="2015-03-21T10:26:09.000Z" itemprop="datePublished">2015-03-21</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/03/21/alias重启终端失效的问题/">alias重启终端失效的问题</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>如果使用命令:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">alias</span> xx=<span class="string">'xxxx'</span></span><br></pre></td></tr></table></figure></p>
+<p>那么登出以后,别名就会失效。下次登入的时候就不能用了。<br>为了保持别名可以把它写入 /root/.bashrc<br>在.bashrc的最后写入想要的别名,比如:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">alias</span> zp=<span class="string">'ll -al'</span></span><br></pre></td></tr></table></figure>
+<p>然后退出,重新登入的时候就可以用了。<br>或者直接运行命令</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">source</span> ~/.bashrc</span><br></pre></td></tr></table></figure>
+<p>这样不用重新登入就可以使用了。</p>
+<p>写于: 2011年12月22日<br>更新于: 2015年03月21日</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
       
 
       
