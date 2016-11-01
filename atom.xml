@@ -70,7 +70,7 @@
     <link href="http://www.zphj1987.com/2016/10/28/zabbix%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%AE%9A%E4%B9%89%E8%87%AA%E5%8A%A8%E5%8F%91%E7%8E%B0%E7%9A%84%E6%B5%81%E7%A8%8B/"/>
     <id>http://www.zphj1987.com/2016/10/28/zabbix实现自定义自动发现的流程/</id>
     <published>2016-10-28T05:56:24.000Z</published>
-    <updated>2016-11-01T03:54:34.874Z</updated>
+    <updated>2016-11-01T03:56:27.977Z</updated>
     <content type="html"><![CDATA[<h2 id="一、前言">一、前言</h2><p>本章介绍如何去自定义一个zabbix自动发现的整个流程</p>
 <h2 id="二、过程">二、过程</h2><p>首先需要在模板当中创建一个自动发现的规则，这个地方只需要一个名称和一个键值，例如</p>
 <ul>
@@ -79,6 +79,7 @@
 </ul>
 <p>过滤器中间要添加你需要的用到的值宏<br>我的数据是：</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># zabbix_get -s 127.0.0.1 -k ceph.pools</span></span><br><span class="line">&#123;<span class="string">"data"</span>:[&#123;<span class="string">"&#123;#POOLNAME&#125;"</span>:<span class="string">"rbd"</span>&#125;,&#123;<span class="string">"&#123;#POOLNAME&#125;"</span>:<span class="string">"metedata"</span>&#125;,&#123;<span class="string">"&#123;#POOLNAME&#125;"</span>:<span class="string">"data"</span>&#125;]&#125;</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
 <p>这里我的宏就是<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&#123;<span class="comment">#POOLNAME&#125;</span></span><br></pre></td></tr></table></figure></p>
 <p>然后要创建一个监控项原型：<br>也是一个名称和一个键值：</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">- 名称：<span class="built_in">test</span> on <span class="variable">$1</span></span><br><span class="line">- 键值：ceph.pools.used[&#123;<span class="comment">#POOLNAME&#125;]</span></span><br></pre></td></tr></table></figure>
@@ -108,7 +109,12 @@
     <![CDATA[<h2 id="一、前言">一、前言</h2><p>本章介绍如何去自定义一个zabbix自动发现的整个流程</p>
 <h2 id="二、过程">二、过程</h2><p>首先需要在模板当中创建一个自动发现的规则，这个地方只需要一个名称和一个键值，例如</p>
 <ul>
-<li>名称]]>
+<li>名称：Ceph Cluster Pool Discovery</li>
+<li>键值：ceph.pools</li>
+</ul>
+<p>过滤器中间要添加你需要的用到的值宏<br>我的数据是：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># zabbix_get -s 127.0.0.1 -k ceph.pools</span></span><br><span class="line">&#123;<span class="string">"data"</span>:[&#123;<span class="string">"&#123;#POOLNAME&#125;"</span>:<span class="string">"rbd"</span>&#125;,&#123;<span class="string">"&#123;#POOLNAME&#125;"</span>:<span class="string">"metedata"</span>&#125;,&#123;<span class="string">"&#123;#POOLNAME&#125;"</span>:<span class="string">"data"</span>&#125;]&#125;</span><br></pre></td></tr></table></figure>]]>
+    
     </summary>
     
       <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>

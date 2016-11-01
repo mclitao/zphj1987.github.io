@@ -255,6 +255,7 @@ var _hmt = _hmt || [];
 </ul>
 <p>过滤器中间要添加你需要的用到的值宏<br>我的数据是：</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># zabbix_get -s 127.0.0.1 -k ceph.pools</span></span><br><span class="line">&#123;<span class="string">"data"</span>:[&#123;<span class="string">"&#123;#POOLNAME&#125;"</span>:<span class="string">"rbd"</span>&#125;,&#123;<span class="string">"&#123;#POOLNAME&#125;"</span>:<span class="string">"metedata"</span>&#125;,&#123;<span class="string">"&#123;#POOLNAME&#125;"</span>:<span class="string">"data"</span>&#125;]&#125;</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
 <p>这里我的宏就是<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&#123;<span class="comment">#POOLNAME&#125;</span></span><br></pre></td></tr></table></figure></p>
 <p>然后要创建一个监控项原型：<br>也是一个名称和一个键值：</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">- 名称：<span class="built_in">test</span> on <span class="variable">$1</span></span><br><span class="line">- 键值：ceph.pools.used[&#123;<span class="comment">#POOLNAME&#125;]</span></span><br></pre></td></tr></table></figure>
