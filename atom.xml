@@ -4,7 +4,7 @@
   <subtitle><![CDATA[但行好事，莫问前程]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2016-11-02T09:44:51.776Z</updated>
+  <updated>2016-11-02T09:49:40.801Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -19,10 +19,12 @@
     <link href="http://www.zphj1987.com/2016/11/02/Ceph%E9%83%A8%E7%BD%B2%E7%9A%84%E6%97%B6%E5%80%99%E4%BF%AE%E6%94%B9%E9%BB%98%E8%AE%A4%E6%9D%83%E9%87%8D/"/>
     <id>http://www.zphj1987.com/2016/11/02/Ceph部署的时候修改默认权重/</id>
     <published>2016-11-02T07:46:07.000Z</published>
-    <updated>2016-11-02T09:44:51.776Z</updated>
+    <updated>2016-11-02T09:49:40.801Z</updated>
     <content type="html"><![CDATA[<p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/weight.jpg" alt=""><br></center></p>
 <h2 id="一、前言">一、前言</h2><p>部署集群的时候权重是默认生成的，这个是根据磁盘大小分配的，我们有的时候需要去修改一下这个默认权重<br><a id="more"></a></p>
-<h2 id="二、修改">二、修改</h2><h3 id="2-1_centos+jewel">2.1 centos+jewel</h3><p>修改：<br>/usr/lib/ceph/ceph-osd-prestart.sh<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">defaultweight=`df -P -k <span class="variable">$data</span>/ | tail -<span class="number">1</span> | awk <span class="string">'&#123; d= $2/107374182 ; r = sprintf("%.4f", d); print r &#125;'</span>`</span><br></pre></td></tr></table></figure></p>
+<h2 id="二、修改">二、修改</h2><p>如果统一的初始值，那么直接添加参数即可<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">osd_crush_initial_weight</span><br></pre></td></tr></table></figure></p>
+<p>如果想自己添加算法，那么就根据下面的去做就可以了</p>
+<h3 id="2-1_centos+jewel">2.1 centos+jewel</h3><p>修改：<br>/usr/lib/ceph/ceph-osd-prestart.sh<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">defaultweight=`df -P -k <span class="variable">$data</span>/ | tail -<span class="number">1</span> | awk <span class="string">'&#123; d= $2/107374182 ; r = sprintf("%.4f", d); print r &#125;'</span>`</span><br></pre></td></tr></table></figure></p>
 <p>修改这个地方的值就可以了<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">defaultweight=`<span class="built_in">echo</span> <span class="number">2</span>`</span><br></pre></td></tr></table></figure></p>
 <h3 id="2-2_centos+hammer">2.2 centos+hammer</h3><p>修改 /etc/init.d/ceph<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">defaultweight=<span class="string">"<span class="variable">$(df -P -k $osd_data/. | tail -1 | awk '&#123; print sprintf("%.2f",$2/1073741824)</span> &#125;')"</span></span><br></pre></td></tr></table></figure></p>
 <p>修改成<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">defaultweight=<span class="string">"<span class="variable">$(echo 5)</span>"</span></span><br></pre></td></tr></table></figure></p>
