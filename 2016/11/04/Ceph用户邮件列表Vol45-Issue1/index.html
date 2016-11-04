@@ -3,18 +3,23 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Ceph部署的时候修改默认权重 | zphj1987&#39;Blog</title>
+  <title>Ceph用户邮件列表Vol45-Issue1 | zphj1987&#39;Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="一、前言部署集群的时候权重是默认生成的，这个是根据磁盘大小分配的，我们有的时候需要去修改一下这个默认权重">
+  <meta name="description" content="ceph Vol 45 Issue 11.unfound objects blocking cluster, need help!(原文)
+Hi,
+I have a production cluster on which 1 OSD on a failing disk was slowingthe whole cluster down. I removed the OSD (osd.87) lik">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Ceph部署的时候修改默认权重">
-<meta property="og:url" content="http://www.zphj1987.com/2016/11/02/Ceph部署的时候修改默认权重/index.html">
+<meta property="og:title" content="Ceph用户邮件列表Vol45-Issue1">
+<meta property="og:url" content="http://www.zphj1987.com/2016/11/04/Ceph用户邮件列表Vol45-Issue1/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
-<meta property="og:description" content="一、前言部署集群的时候权重是默认生成的，这个是根据磁盘大小分配的，我们有的时候需要去修改一下这个默认权重">
-<meta property="og:image" content="http://7xweck.com1.z0.glb.clouddn.com/weight.jpg">
+<meta property="og:description" content="ceph Vol 45 Issue 11.unfound objects blocking cluster, need help!(原文)
+Hi,
+I have a production cluster on which 1 OSD on a failing disk was slowingthe whole cluster down. I removed the OSD (osd.87) lik">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Ceph部署的时候修改默认权重">
-<meta name="twitter:description" content="一、前言部署集群的时候权重是默认生成的，这个是根据磁盘大小分配的，我们有的时候需要去修改一下这个默认权重">
+<meta name="twitter:title" content="Ceph用户邮件列表Vol45-Issue1">
+<meta name="twitter:description" content="ceph Vol 45 Issue 11.unfound objects blocking cluster, need help!(原文)
+Hi,
+I have a production cluster on which 1 OSD on a failing disk was slowingthe whole cluster down. I removed the OSD (osd.87) lik">
   
     <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
   
@@ -190,11 +195,11 @@ var _hmt = _hmt || [];
 		</header>				
 	</div>
 </nav>
-      <div class="body-wrap"><article id="post-Ceph部署的时候修改默认权重" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-Ceph用户邮件列表Vol45-Issue1" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2016/11/02/Ceph部署的时候修改默认权重/" class="article-date">
-  	<time datetime="2016-11-02T07:46:07.000Z" itemprop="datePublished">2016-11-02</time>
+      <a href="/2016/11/04/Ceph用户邮件列表Vol45-Issue1/" class="article-date">
+  	<time datetime="2016-11-04T03:57:25.000Z" itemprop="datePublished">2016-11-04</time>
 </a>
     </div>
   
@@ -207,7 +212,7 @@ var _hmt = _hmt || [];
         
   
     <h1 class="article-title" itemprop="name">
-      Ceph部署的时候修改默认权重
+      Ceph用户邮件列表Vol45-Issue1
     </h1>
   
 
@@ -227,18 +232,30 @@ var _hmt = _hmt || [];
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/weight.jpg" alt=""><br></center></p>
-<h2 id="一、前言">一、前言</h2><p>部署集群的时候权重是默认生成的，这个是根据磁盘大小分配的，我们有的时候需要去修改一下这个默认权重<br><a id="more"></a></p>
-<h2 id="二、修改">二、修改</h2><p>如果统一的初始值，那么直接添加参数即可<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">osd_crush_initial_weight</span><br></pre></td></tr></table></figure></p>
-<p>如果想自己添加算法，那么就根据下面的去做就可以了</p>
-<h3 id="2-1_centos+jewel">2.1 centos+jewel</h3><p>修改：<br>/usr/lib/ceph/ceph-osd-prestart.sh<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">defaultweight=`df -P -k <span class="variable">$data</span>/ | tail -<span class="number">1</span> | awk <span class="string">'&#123; d= $2/107374182 ; r = sprintf("%.4f", d); print r &#125;'</span>`</span><br></pre></td></tr></table></figure></p>
-<p>修改这个地方的值就可以了<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">defaultweight=`<span class="built_in">echo</span> <span class="number">2</span>`</span><br></pre></td></tr></table></figure></p>
-<h3 id="2-2_centos+hammer">2.2 centos+hammer</h3><p>修改 /etc/init.d/ceph<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">defaultweight=<span class="string">"<span class="variable">$(df -P -k $osd_data/. | tail -1 | awk '&#123; print sprintf("%.2f",$2/1073741824)</span> &#125;')"</span></span><br></pre></td></tr></table></figure></p>
-<p>修改成<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">defaultweight=<span class="string">"<span class="variable">$(echo 5)</span>"</span></span><br></pre></td></tr></table></figure></p>
-<h3 id="2-3_ubuntu+hammer">2.3 ubuntu+hammer</h3><p>由于ubuntu用initctl控制服务，不是用的/etc/init.d/ceph/,所以要修改另外的一个路径<br>修改/usr/libexec/ceph/ceph-osd-prestart.sh<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">defaultweight=`df -P -k /var/lib/ceph/osd/<span class="variable">$&#123;cluster:-ceph&#125;</span>-<span class="variable">$id</span>/ | tail -<span class="number">1</span> | awk <span class="string">'&#123; d= $2/1073741824 ; r = sprintf("%.2f", d); print r &#125;'</span>`</span><br></pre></td></tr></table></figure></p>
-<p>修改为：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">defaultweight=`<span class="built_in">echo</span> <span class="number">8</span>`</span><br></pre></td></tr></table></figure></p>
-<h2 id="三、总结">三、总结</h2><p>这个比较简单，通过修改取值就可以改变默认配置了,上面的可以根据自己的需求加入算法即可</p>
-<h2 id="四、变更记录">四、变更记录</h2><table>
+        <h2 id="ceph_Vol_45_Issue_1">ceph Vol 45 Issue 1</h2><h3 id="1-unfound_objects_blocking_cluster,_need_help!(原文)">1.unfound objects blocking cluster, need help!(<a href="https://www.mail-archive.com/ceph-users@lists.ceph.com/msg32804.html" target="_blank" rel="external">原文</a>)</h3><blockquote>
+<p>Hi,</p>
+<p>I have a production cluster on which 1 OSD on a failing disk was slowing<br>the whole cluster down. I removed the OSD (osd.87) like usual in such case<br>but this time it resulted in 17 unfound objects. I no longer have the files<br>from osd.87. I was able to call “ceph pg PGID mark_unfound_lost delete” on<br>10 of those objects.</p>
+<p>On the remaining objects 7 the command blocks. When I try to do “ceph pg<br>PGID query” on this PG it also blocks. I suspect this is same reason why<br>mark_unfound blocks.</p>
+<p>Other client IO to PGs that have unfound objects are also blocked. When<br>trying to query the OSDs which has the PG with unfound objects, “ceph tell”<br>blocks.</p>
+<p>I tried to mark the PG as complete using ceph-objectstore-tool but it did<br>not help as the PG is in fact complete but for some reason blocks.</p>
+<p>I tried recreating an empty osd.87 and importing the PG exported from other<br>replica but it did not help.</p>
+<p>Can someone help me please? This is really important.</p>
+</blockquote>
+<p>这个问题是作者一个集群中(ceph 0.94.5)出现了一个磁盘损坏以后造成了一些对象的丢失，然后在做了一定的处理以后，集群状态已经正常了，但是还是新的请求会出现block的状态，这个情况下如何处理才能让集群正常，作者贴出了pg dump，ceph -s,ceph osd dump相关信息，当出现异常的时候，需要人协助的时候，应该提供这些信息方便其他人定位问题，最后这个问题作者自己给出了自己的解决办法，出现的时候影响是当时的流量只有正常情况下的10%了，影响还是很大的<br><a id="more"></a></p>
+<h3 id="复现问题过程">复现问题过程</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># rados -p rbd put testremove testremove</span></span><br><span class="line">[root@lab8106 ceph]<span class="comment"># ceph osd map rbd testremove</span></span><br><span class="line">osdmap e85 pool <span class="string">'rbd'</span> (<span class="number">0</span>) object <span class="string">'testremove'</span> -&gt; pg <span class="number">0</span>.eaf226a7 (<span class="number">0.27</span>) -&gt; up ([<span class="number">1</span>,<span class="number">0</span>], p1) acting</span><br></pre></td></tr></table></figure>
+<p>写入文件,找到文件，然后去后台删除对象<br>然后停止掉其中一个OSD，这里选择停掉主OSD<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">systemctl stop ceph-osd@<span class="number">1</span></span><br><span class="line">ceph osd out <span class="number">1</span></span><br></pre></td></tr></table></figure></p>
+<p>查看状态pg被锁住状态active+degrade，不会迁移完整,并且会检测到了有数据unfound了</p>
+<p>然后向这个对象发起get请求<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># rados -p rbd get testremove testfile</span></span><br></pre></td></tr></table></figure></p>
+<p>前端rados请求会卡住，后端出现 requests are blocked</p>
+<p>看下如何处理<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph pg <span class="number">0.27</span> mark_unfound_lost delete</span><br></pre></td></tr></table></figure></p>
+<p>邮件列表作者的环境，这个命令也无法执行，直接卡死，后来发现有个执行窗口，就是这个对象所在的PG的OSD在启动过程中还是可以接受命令的，就在这个执行窗口执行这个命令就可以解决了</p>
+<p>执行了以后可以执行命令<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># rados  -p rbd  get testremove  a</span></span><br><span class="line">error getting rbd/testremove: (<span class="number">2</span>) No such file or directory</span><br></pre></td></tr></table></figure></p>
+<p>这个时候查询集群的状态可以看到，集群已经正常的恢复了，不会因为一个对象的丢失造成集群的PG状态卡在待迁移状态</p>
+<p>可以看到请求是失败的但是不会像之前一样卡死的状态，卡死是比失败更严重的一种状态</p>
+<p>如果不想看到老的 slow request ,那么就重启这个卡住的PG所在的osd，如果本来就正常了，那么这个异常状态就会消失</p>
+<p>这个是一个需要人工干预的状态，实际上模拟的就是对象丢失的场景，什么情况下会对象丢失，一般来说，底层磁盘的故障，写下去的对象当时记录着有，正好写入完成又准备写副本的时候，磁盘坏了，这个就有比较高的概率出现，所以出现了坏盘要尽早更换</p>
+<p>本系列是只会对列表的当天的非re进行一个汇总，这样保持了一个问题的追踪都在一篇里面，所以这一天只有这一个问题</p>
+<h3 id="变更记录">变更记录</h3><table>
 <thead>
 <tr>
 <th style="text-align:center">Why</th>
@@ -250,7 +267,7 @@ var _hmt = _hmt || [];
 <tr>
 <td style="text-align:center">创建</td>
 <td style="text-align:center">武汉-运维-磨渣</td>
-<td style="text-align:center">2016-11-02</td>
+<td style="text-align:center">2016-11-04</td>
 </tr>
 </tbody>
 </table>
@@ -263,18 +280,9 @@ var _hmt = _hmt || [];
     
 <nav id="article-nav">
   
-    <a href="/2016/11/03/Ceph日历格子之2016年10月-Vol45/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption"><</strong>
-      <div class="article-nav-title">
-        
-          Ceph日历格子之2016年10月(Vol45)
-        
-      </div>
-    </a>
   
-  
-    <a href="/2016/10/31/Cephday深圳20161029总结/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">Cephday深圳20161029总结</div>
+    <a href="/2016/11/03/Ceph日历格子之2016年10月-Vol45/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Ceph日历格子之2016年10月(Vol45)</div>
       <strong class="article-nav-caption">></strong>
     </a>
   
@@ -303,7 +311,7 @@ var _hmt = _hmt || [];
 
 <div class="duoshuo">
 	<!-- 多说评论框 start -->
-	<div class="ds-thread" data-thread-key="Ceph部署的时候修改默认权重" data-title="Ceph部署的时候修改默认权重" data-url="http://www.zphj1987.com/2016/11/02/Ceph部署的时候修改默认权重/"></div>
+	<div class="ds-thread" data-thread-key="Ceph用户邮件列表Vol45-Issue1" data-title="Ceph用户邮件列表Vol45-Issue1" data-url="http://www.zphj1987.com/2016/11/04/Ceph用户邮件列表Vol45-Issue1/"></div>
 	<!-- 多说评论框 end -->
 	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 	<script type="text/javascript">

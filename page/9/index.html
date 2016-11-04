@@ -191,6 +191,128 @@ var _hmt = _hmt || [];
 </nav>
       <div class="body-wrap">
   
+    <article id="post-在线调整ceph的参数" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/11/18/在线调整ceph的参数/" class="article-date">
+  	<time datetime="2015-11-18T15:11:44.000Z" itemprop="datePublished">2015-11-18</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/11/18/在线调整ceph的参数/">在线调整ceph的参数</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>能够动态的进行系统参数的调整是一个很重要并且有用的属性<br>ceph的集群提供两种方式的调整，使用tell的方式和daemon设置的方式</p>
+<h3 id="一、tell方式设置">一、tell方式设置</h3><p>调整配置使用命令：</p>
+<h4 id="调整mon的参数">调整mon的参数</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#ceph tell mon.* injectargs '--&#123;tunable value_to_be_set&#125;'</span></span><br></pre></td></tr></table></figure>
+<h4 id="调整osd的参数">调整osd的参数</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#ceph tell osd.* injectargs '--&#123;tunable value_to_be_set&#125;'</span></span><br></pre></td></tr></table></figure>
+<h3 id="调整mds的参数">调整mds的参数</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#ceph tell mds.* injectargs '--&#123;tunable value_to_be_set&#125;'</span></span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2015/11/18/在线调整ceph的参数/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-验证rbd的缓存是否开启" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/11/16/验证rbd的缓存是否开启/" class="article-date">
+  	<time datetime="2015-11-16T08:49:16.000Z" itemprop="datePublished">2015-11-16</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/11/16/验证rbd的缓存是否开启/">验证rbd的缓存是否开启</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>简单快速的在客户端验证rbd的cache是否开启<br>首先修改配置文件<br>在ceph.conf中添加：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[client]</span><br><span class="line">rbd cache = <span class="literal">true</span></span><br><span class="line">rbd cache writethrough until flush = <span class="literal">true</span></span><br></pre></td></tr></table></figure></p>
+<p>开启以后，在这台机器上进行测试<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@node8109 ~]<span class="comment"># rbd -p rbd bench-write zp  --io-size 4096 --io-threads 256  --io-total 102400000   --io-pattern seq</span></span><br><span class="line">bench-write  io_size <span class="number">4096</span> io_threads <span class="number">256</span> bytes <span class="number">102400000</span> pattern seq</span><br><span class="line">  SEC       OPS   OPS/SEC   BYTES/SEC</span><br><span class="line">elapsed:     <span class="number">0</span>  ops:    <span class="number">25000</span>  ops/sec: <span class="number">26830.05</span>  bytes/sec: <span class="number">109895890.09</span></span><br></pre></td></tr></table></figure></p>
+<p>可以看到io达到了26830每秒<br>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2015/11/16/验证rbd的缓存是否开启/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-如何删除一台OSD主机" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -665,130 +787,6 @@ var _hmt = _hmt || [];
       
         <p class="article-more-link">
           <a  href="/2015/09/24/删除ceph集群mds/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-ceph客户端服务端属性匹配关系" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/09/18/ceph客户端服务端属性匹配关系/" class="article-date">
-  	<time datetime="2015-09-18T03:24:08.000Z" itemprop="datePublished">2015-09-18</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/09/18/ceph客户端服务端属性匹配关系/">ceph客户端服务端属性匹配关系</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>ceph的server是定期会发布版本，而它的客户端是放到linux 内核当中的，一些属性的支持是依赖于内核版本的，这样就存在一些问题，一些功能后端支持，而客户端旧了；还有可能是客户端用的很新的内核，而后端比较旧不支持，所以查看了下内核中的 <code>features</code> 文件，可以看到这个对应关系，总结了下就是下面的列表</p>
-<p>注意表中：</p>
-<ul>
-<li><strong>S</strong>=SUPPORTED_DEFAULT     代表客户端支持这个属性</li>
-<li><strong>R</strong>=REQUIRED_DEFAULT      代表需要服务端支持这个属性</li>
-</ul>
-<p><img src="http://7xi6lo.com1.z0.glb.clouddn.com/属性匹配的问题.png" alt=""></p>
-<p><code>missing 2040000</code> 意思是 <code>CEPH_FEATURE_CRUSH_TUNABLES (40000)</code> 和 <code>CEPH_FEATURE_CRUSH_TUNABLES2 (2000000)</code> 不被当前客户端支持，一般要么关闭新的server端的这个属性，或者升级到支持的版本的内核.</p>
-<p>内核代码查看地址：<a href="http://lxr.free-electrons.com/source/include/linux/ceph/ceph_features.h" target="_blank" rel="external">http://lxr.free-electrons.com/source/include/linux/ceph/ceph_features.h</a></p>
-<p>写于：2015年09月18日夜</p>
-<p><strong>Power by zphj1987</strong></p>
-<p><strong>QQ:199383004</strong></p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-nginx配置代理缓存" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/07/14/nginx配置代理缓存/" class="article-date">
-  	<time datetime="2015-07-14T01:57:21.000Z" itemprop="datePublished">2015-07-14</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/07/14/nginx配置代理缓存/">nginx配置代理缓存</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>nginx可以实现反向代理的配置，并且可以使用缓存来加速，本文是简单的实现功能的配置，暂时没有做其他的优化的部分的配置，从网上的资料来看，很多配置都是没有讲哪些是必须配置的，我自己在配置过程中就发现没有生成缓存文件，下面来记录下配置的内容<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">upstream test&#123;&#10;            server 127.0.0.1:8080;&#10;        &#125;&#10;&#10;proxy_cache_path /var/cache/nginx/proxy_cache keys_zone=cache_zone:2000m max_size=1000m;&#10;&#10;server &#123;&#10;    listen       80;&#10;    server_name  localhost;&#10;    location / &#123;&#10;        proxy_pass http://127.0.0.1:8080;&#10;        proxy_cache cache_zone;&#10;        proxy_cache_valid  200 304 302 24h;&#10;    &#125;&#10;&#10;    error_page   500 502 503 504  /50x.html;&#10;&#10;    location = /50x.html &#123;&#10;        root   /usr/share/nginx/html;&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure></p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nginx/">nginx</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/07/14/nginx配置代理缓存/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>

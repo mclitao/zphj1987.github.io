@@ -4,7 +4,7 @@
   <subtitle><![CDATA[但行好事，莫问前程]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2016-11-02T09:49:40.801Z</updated>
+  <updated>2016-11-04T04:01:04.135Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -13,6 +13,166 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[Ceph用户邮件列表Vol45-Issue1]]></title>
+    <link href="http://www.zphj1987.com/2016/11/04/Ceph%E7%94%A8%E6%88%B7%E9%82%AE%E4%BB%B6%E5%88%97%E8%A1%A8Vol45-Issue1/"/>
+    <id>http://www.zphj1987.com/2016/11/04/Ceph用户邮件列表Vol45-Issue1/</id>
+    <published>2016-11-04T03:57:25.000Z</published>
+    <updated>2016-11-04T04:01:04.135Z</updated>
+    <content type="html"><![CDATA[<h2 id="ceph_Vol_45_Issue_1">ceph Vol 45 Issue 1</h2><h3 id="1-unfound_objects_blocking_cluster,_need_help!(原文)">1.unfound objects blocking cluster, need help!(<a href="https://www.mail-archive.com/ceph-users@lists.ceph.com/msg32804.html" target="_blank" rel="external">原文</a>)</h3><blockquote>
+<p>Hi,</p>
+<p>I have a production cluster on which 1 OSD on a failing disk was slowing<br>the whole cluster down. I removed the OSD (osd.87) like usual in such case<br>but this time it resulted in 17 unfound objects. I no longer have the files<br>from osd.87. I was able to call “ceph pg PGID mark_unfound_lost delete” on<br>10 of those objects.</p>
+<p>On the remaining objects 7 the command blocks. When I try to do “ceph pg<br>PGID query” on this PG it also blocks. I suspect this is same reason why<br>mark_unfound blocks.</p>
+<p>Other client IO to PGs that have unfound objects are also blocked. When<br>trying to query the OSDs which has the PG with unfound objects, “ceph tell”<br>blocks.</p>
+<p>I tried to mark the PG as complete using ceph-objectstore-tool but it did<br>not help as the PG is in fact complete but for some reason blocks.</p>
+<p>I tried recreating an empty osd.87 and importing the PG exported from other<br>replica but it did not help.</p>
+<p>Can someone help me please? This is really important.</p>
+</blockquote>
+<p>这个问题是作者一个集群中(ceph 0.94.5)出现了一个磁盘损坏以后造成了一些对象的丢失，然后在做了一定的处理以后，集群状态已经正常了，但是还是新的请求会出现block的状态，这个情况下如何处理才能让集群正常，作者贴出了pg dump，ceph -s,ceph osd dump相关信息，当出现异常的时候，需要人协助的时候，应该提供这些信息方便其他人定位问题，最后这个问题作者自己给出了自己的解决办法，出现的时候影响是当时的流量只有正常情况下的10%了，影响还是很大的<br><a id="more"></a></p>
+<h3 id="复现问题过程">复现问题过程</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># rados -p rbd put testremove testremove</span></span><br><span class="line">[root@lab8106 ceph]<span class="comment"># ceph osd map rbd testremove</span></span><br><span class="line">osdmap e85 pool <span class="string">'rbd'</span> (<span class="number">0</span>) object <span class="string">'testremove'</span> -&gt; pg <span class="number">0</span>.eaf226a7 (<span class="number">0.27</span>) -&gt; up ([<span class="number">1</span>,<span class="number">0</span>], p1) acting</span><br></pre></td></tr></table></figure>
+<p>写入文件,找到文件，然后去后台删除对象<br>然后停止掉其中一个OSD，这里选择停掉主OSD<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">systemctl stop ceph-osd@<span class="number">1</span></span><br><span class="line">ceph osd out <span class="number">1</span></span><br></pre></td></tr></table></figure></p>
+<p>查看状态pg被锁住状态active+degrade，不会迁移完整,并且会检测到了有数据unfound了</p>
+<p>然后向这个对象发起get请求<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># rados -p rbd get testremove testfile</span></span><br></pre></td></tr></table></figure></p>
+<p>前端rados请求会卡住，后端出现 requests are blocked</p>
+<p>看下如何处理<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph pg <span class="number">0.27</span> mark_unfound_lost delete</span><br></pre></td></tr></table></figure></p>
+<p>邮件列表作者的环境，这个命令也无法执行，直接卡死，后来发现有个执行窗口，就是这个对象所在的PG的OSD在启动过程中还是可以接受命令的，就在这个执行窗口执行这个命令就可以解决了</p>
+<p>执行了以后可以执行命令<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># rados  -p rbd  get testremove  a</span></span><br><span class="line">error getting rbd/testremove: (<span class="number">2</span>) No such file or directory</span><br></pre></td></tr></table></figure></p>
+<p>这个时候查询集群的状态可以看到，集群已经正常的恢复了，不会因为一个对象的丢失造成集群的PG状态卡在待迁移状态</p>
+<p>可以看到请求是失败的但是不会像之前一样卡死的状态，卡死是比失败更严重的一种状态</p>
+<p>如果不想看到老的 slow request ,那么就重启这个卡住的PG所在的osd，如果本来就正常了，那么这个异常状态就会消失</p>
+<p>这个是一个需要人工干预的状态，实际上模拟的就是对象丢失的场景，什么情况下会对象丢失，一般来说，底层磁盘的故障，写下去的对象当时记录着有，正好写入完成又准备写副本的时候，磁盘坏了，这个就有比较高的概率出现，所以出现了坏盘要尽早更换</p>
+<p>本系列是只会对列表的当天的非re进行一个汇总，这样保持了一个问题的追踪都在一篇里面，所以这一天只有这一个问题</p>
+<h3 id="变更记录">变更记录</h3><table>
+<thead>
+<tr>
+<th style="text-align:center">Why</th>
+<th style="text-align:center">Who</th>
+<th style="text-align:center">When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">创建</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2016-11-04</td>
+</tr>
+</tbody>
+</table>
+]]></content>
+    <summary type="html">
+    <![CDATA[<h2 id="ceph_Vol_45_Issue_1">ceph Vol 45 Issue 1</h2><h3 id="1-unfound_objects_blocking_cluster,_need_help!(原文)">1.unfound objects blocking cluster, need help!(<a href="https://www.mail-archive.com/ceph-users@lists.ceph.com/msg32804.html">原文</a>)</h3><blockquote>
+<p>Hi,</p>
+<p>I have a production cluster on which 1 OSD on a failing disk was slowing<br>the whole cluster down. I removed the OSD (osd.87) like usual in such case<br>but this time it resulted in 17 unfound objects. I no longer have the files<br>from osd.87. I was able to call “ceph pg PGID mark_unfound_lost delete” on<br>10 of those objects.</p>
+<p>On the remaining objects 7 the command blocks. When I try to do “ceph pg<br>PGID query” on this PG it also blocks. I suspect this is same reason why<br>mark_unfound blocks.</p>
+<p>Other client IO to PGs that have unfound objects are also blocked. When<br>trying to query the OSDs which has the PG with unfound objects, “ceph tell”<br>blocks.</p>
+<p>I tried to mark the PG as complete using ceph-objectstore-tool but it did<br>not help as the PG is in fact complete but for some reason blocks.</p>
+<p>I tried recreating an empty osd.87 and importing the PG exported from other<br>replica but it did not help.</p>
+<p>Can someone help me please? This is really important.</p>
+</blockquote>
+<p>这个问题是作者一个集群中(ceph 0.94.5)出现了一个磁盘损坏以后造成了一些对象的丢失，然后在做了一定的处理以后，集群状态已经正常了，但是还是新的请求会出现block的状态，这个情况下如何处理才能让集群正常，作者贴出了pg dump，ceph -s,ceph osd dump相关信息，当出现异常的时候，需要人协助的时候，应该提供这些信息方便其他人定位问题，最后这个问题作者自己给出了自己的解决办法，出现的时候影响是当时的流量只有正常情况下的10%了，影响还是很大的<br>]]>
+    
+    </summary>
+    
+      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Ceph日历格子之2016年10月(Vol45)]]></title>
+    <link href="http://www.zphj1987.com/2016/11/03/Ceph%E6%97%A5%E5%8E%86%E6%A0%BC%E5%AD%90%E4%B9%8B2016%E5%B9%B410%E6%9C%88-Vol45/"/>
+    <id>http://www.zphj1987.com/2016/11/03/Ceph日历格子之2016年10月-Vol45/</id>
+    <published>2016-11-03T09:51:33.000Z</published>
+    <updated>2016-11-04T04:01:55.863Z</updated>
+    <content type="html"><![CDATA[<p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/rili/rili.png" alt=""><br></center></p>
+<h2 id="一、前言">一、前言</h2><p>准备策划一个系列，之前也做了一次尝试，中断了，现在准备续起来，能做就尽量坚持做下去，准备根据日历的形式梳理出来，如同打怪一样，一个个去干掉这些问题，每个issue里面会有每天邮件列表里面提出的问题，一般为8到9个问题，如果完成一个Issue，就会在这里给出对应的Issue的链接，相当于一个目录和进度的功能，所以本篇会是一个持续更新的过程<br><a id="more"></a></p>
+<h2 id="二、内容">二、内容</h2><p>Ceph邮件列表2016年10月Issue格子   </p>
+<h3 id="Vol_45">Vol 45</h3><table>
+<thead>
+<tr>
+<th style="text-align:center">一</th>
+<th style="text-align:center">二</th>
+<th style="text-align:center">三</th>
+<th style="text-align:center">四</th>
+<th style="text-align:center">五</th>
+<th style="text-align:center">六</th>
+<th style="text-align:center">日</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"></td>
+<td style="text-align:center">Issue 1</td>
+<td style="text-align:center">Issue2</td>
+<td style="text-align:center">Issue3</td>
+<td style="text-align:center">Issue4</td>
+<td style="text-align:center">Issue5</td>
+<td style="text-align:center">Issue6</td>
+</tr>
+<tr>
+<td style="text-align:center">Issue 7</td>
+<td style="text-align:center">Issue 8</td>
+<td style="text-align:center">Issue9</td>
+<td style="text-align:center">Issue 10</td>
+<td style="text-align:center">Issue 11</td>
+<td style="text-align:center">Issue 12</td>
+<td style="text-align:center">Issue 13</td>
+</tr>
+<tr>
+<td style="text-align:center">Issue 14</td>
+<td style="text-align:center">Issue 15</td>
+<td style="text-align:center">Issue16</td>
+<td style="text-align:center">Issue 17</td>
+<td style="text-align:center">Issue 18</td>
+<td style="text-align:center">Issue 19</td>
+<td style="text-align:center">Issue 20</td>
+</tr>
+<tr>
+<td style="text-align:center">Issue 21</td>
+<td style="text-align:center">Issue 22</td>
+<td style="text-align:center">Issue 23</td>
+<td style="text-align:center">Issue 24</td>
+<td style="text-align:center">Issue 25</td>
+<td style="text-align:center">Issue 26</td>
+<td style="text-align:center">Issue 27</td>
+</tr>
+<tr>
+<td style="text-align:center">Issue 28</td>
+<td style="text-align:center">Issue 29</td>
+<td style="text-align:center">Issue 30</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+</tbody>
+</table>
+<h2 id="三、本月主要问题如下：">三、本月主要问题如下：</h2><p>如何处理对象丢失引起的PG状态不对的问题(Issue1)</p>
+<h2 id="四、变更记录">四、变更记录</h2><table>
+<thead>
+<tr>
+<th style="text-align:center">Why</th>
+<th style="text-align:center">Who</th>
+<th style="text-align:center">When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">创建</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2016-11-03</td>
+</tr>
+</tbody>
+</table>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/rili/rili.png" alt=""><br></center></p>
+<h2 id="一、前言">一、前言</h2><p>准备策划一个系列，之前也做了一次尝试，中断了，现在准备续起来，能做就尽量坚持做下去，准备根据日历的形式梳理出来，如同打怪一样，一个个去干掉这些问题，每个issue里面会有每天邮件列表里面提出的问题，一般为8到9个问题，如果完成一个Issue，就会在这里给出对应的Issue的链接，相当于一个目录和进度的功能，所以本篇会是一个持续更新的过程<br>]]>
+    
+    </summary>
+    
+      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[Ceph部署的时候修改默认权重]]></title>
@@ -1057,136 +1217,6 @@
     <![CDATA[<p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/radosgw/gateway1.png" alt="rgw"><br></center></p>
 <h2 id="一、前言">一、前言</h2><p>本篇介绍了centos7下jewel版本的radosgw配置，这里的配置是指将服务能够正常起来，不涉及到S3的配置，以及其他的更多的配置,radosgw后面的gw就是gateway的意思，也就是我们说的网关的意思，本篇中所提及的实例也就是网关的意思，说实例是将每个单独的网关更细化一点的说法</p>
 <p>很多人不清楚在centos7下面怎么去控制这个radosgw网关的服务的控制，这个地方是会去读取配置文件的，所以配置文件得写正确</p>]]>
-    
-    </summary>
-    
-      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[如何统计Ceph的RBD真实使用容量]]></title>
-    <link href="http://www.zphj1987.com/2016/09/08/%E5%A6%82%E4%BD%95%E7%BB%9F%E8%AE%A1Ceph%E7%9A%84RBD%E7%9C%9F%E5%AE%9E%E4%BD%BF%E7%94%A8%E5%AE%B9%E9%87%8F/"/>
-    <id>http://www.zphj1987.com/2016/09/08/如何统计Ceph的RBD真实使用容量/</id>
-    <published>2016-09-08T09:17:08.000Z</published>
-    <updated>2016-09-12T05:54:30.809Z</updated>
-    <content type="html"><![CDATA[<p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/rbdtongji/storage.png" alt="storage"><br></center></p>
-<h2 id="一、前言">一、前言</h2><p>ceph的rbd一直有个问题就是无法清楚的知道这个分配的空间里面到底使用了多少，这个在Jewel里面提供了一个新的接口去查询，对于老版本来说可能同样有这个需求，本篇将详细介绍如何解决这个问题</p>
-<h2 id="二、查询的各种方法">二、查询的各种方法</h2><p>目前已知的有三种方法<br>1、使用rbd du查询（Jewel才支持）<br>2、使用rbd diff<br>3、根据对象统计的方法进行统计</p>
-<a id="more"></a>
-<p>详细介绍</p>
-<h3 id="2-1_方法一：使用rbd_du查询">2.1 方法一：使用rbd du查询</h3><p>这个参考我之前的文章：<a href="http://www.zphj1987.com/2016/03/24/ceph%E6%9F%A5%E8%AF%A2rbd%E7%9A%84%E4%BD%BF%E7%94%A8%E5%AE%B9%E9%87%8F%EF%BC%88%E5%BF%AB%E9%80%9F%EF%BC%89/" target="_blank" rel="external">查询rbd的使用容量</a></p>
-<h3 id="2-2_方法二：使用rbd_diff">2.2 方法二：使用rbd diff</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># rbd diff rbd/zp | awk '&#123; SUM += $2 &#125; END &#123; print SUM/1024/1024 " MB" &#125;'</span></span><br><span class="line"><span class="number">828.844</span> MB</span><br></pre></td></tr></table></figure>
-<h3 id="2-3_方法三：根据对象统计的方法进行统计">2.3 方法三：根据对象统计的方法进行统计</h3><p>这个是本篇着重介绍的一点，在集群非常大的时候，再去按上面的一个个的查询，需要花很长的时间，并且需要时不时的跟集群进行交互，这里采用的方法是把统计数据一次获取下来，然后进行数据的统计分析，从而获取结果，获取的粒度是以存储池为基准的</p>
-<h4 id="拿到所有对象的信息">拿到所有对象的信息</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> obj <span class="keyword">in</span> `rados -p rbd ls`;<span class="keyword">do</span> rados -p rbd <span class="built_in">stat</span> <span class="variable">$obj</span> &gt;&gt; obj.txt;<span class="keyword">done</span>;</span><br></pre></td></tr></table></figure>
-<p>这个获取的时间长短是根据对象的多少来的，如果担心出问题，可以换个终端查看进度<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tail <span class="operator">-f</span>  obj.txt</span><br></pre></td></tr></table></figure></p>
-<h4 id="获取RBD的镜像列表">获取RBD的镜像列表</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># rbd -p rbd ls</span></span><br><span class="line"><span class="built_in">test</span>1</span><br><span class="line">zp</span><br></pre></td></tr></table></figure>
-<h3 id="获取RBD的镜像的prefix">获取RBD的镜像的prefix</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> a <span class="keyword">in</span> `rbd -p rbd ls`;<span class="keyword">do</span> <span class="built_in">echo</span> <span class="variable">$a</span> ;rbd -p rbd info <span class="variable">$a</span>|grep prefix |awk <span class="string">'&#123;print $2&#125;'</span> ;<span class="keyword">done</span></span><br></pre></td></tr></table></figure>
-<h3 id="获取指定RBD镜像的大小">获取指定RBD镜像的大小</h3><p>查询 test1 的镜像大小<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># cat obj.txt |grep rbd_data.3ac16b8b4567|awk  '&#123; SUM += $6 &#125; END &#123; print SUM/1024/1024 " MB" &#125;'</span></span><br><span class="line"><span class="number">4014.27</span> MB</span><br></pre></td></tr></table></figure></p>
-<h3 id="将上面的汇总，使用脚本一次查询出所有的">将上面的汇总，使用脚本一次查询出所有的</h3><h4 id="第一步获取：">第一步获取：</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> obj <span class="keyword">in</span> `rados -p rbd ls`;<span class="keyword">do</span> rados -p rbd <span class="built_in">stat</span> <span class="variable">$obj</span> &gt;&gt; obj.txt;<span class="keyword">done</span>;</span><br></pre></td></tr></table></figure>
-<h4 id="第二步计算：">第二步计算：</h4><p>创建一个获取的脚本getused.sh<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="shebang">#! /bin/sh</span></span><br><span class="line"><span class="comment">##default pool name use rbd,you can change it </span></span><br><span class="line"><span class="comment">##default objfile is obj.txt,you can change it</span></span><br><span class="line">objfile=obj.txt</span><br><span class="line">Poolname=rbd</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> image <span class="keyword">in</span> `rbd -p <span class="variable">$Poolname</span> ls`</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">Imagename=<span class="variable">$image</span></span><br><span class="line">Prefix=`rbd  -p <span class="variable">$Poolname</span> info <span class="variable">$image</span>|grep prefix |awk <span class="string">'&#123;print $2&#125;'</span>`</span><br><span class="line">Used=`cat <span class="variable">$objfile</span> |grep <span class="variable">$Prefix</span>|awk <span class="string">'&#123; SUM += $6 &#125; END &#123; print SUM/1024/1024 " MB" &#125;'</span>`</span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$Imagename</span> <span class="variable">$Prefix</span></span><br><span class="line"><span class="built_in">echo</span> Used: <span class="variable">$Used</span></span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure></p>
-<h4 id="我的输出如下：">我的输出如下：</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># sh getused.sh </span></span><br><span class="line"><span class="built_in">test</span>1 rbd_data.<span class="number">3</span>ac16b8b4567</span><br><span class="line">Used: <span class="number">4014.27</span> MB</span><br><span class="line">zp rbd_data.<span class="number">11</span>f66b8b4567</span><br><span class="line">Used: <span class="number">828.844</span> MB</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>注意这里只统计了image里面的真实容量，如果是用了快速clone的,存在容量复用的问题，需要自己看是否需要统计那一部分的对象，方法同上</p>
-</blockquote>
-<h2 id="三、总结">三、总结</h2><p>对于已存在的系统，并且数据量很大的系统，不要频繁的去做请求，最好把统计请求，集中起来，并且就单线程的处理，慢一点不要紧，然后拉取到数据后，慢慢处理，这样能把影响降低到最少，可以在最不忙的时候去进行相关的操作</p>
-<h2 id="四、变更记录">四、变更记录</h2><table>
-<thead>
-<tr>
-<th style="text-align:center">Why</th>
-<th style="text-align:center">Who</th>
-<th style="text-align:center">When</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">创建</td>
-<td style="text-align:center">武汉-运维-磨渣</td>
-<td style="text-align:center">2016-09-08</td>
-</tr>
-</tbody>
-</table>
-<h2 id="五、For_me">五、For me</h2><p>愿意打赏欢迎联系，另有私人ceph小群，可以联系我</p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/rbdtongji/storage.png" alt="storage"><br></center></p>
-<h2 id="一、前言">一、前言</h2><p>ceph的rbd一直有个问题就是无法清楚的知道这个分配的空间里面到底使用了多少，这个在Jewel里面提供了一个新的接口去查询，对于老版本来说可能同样有这个需求，本篇将详细介绍如何解决这个问题</p>
-<h2 id="二、查询的各种方法">二、查询的各种方法</h2><p>目前已知的有三种方法<br>1、使用rbd du查询（Jewel才支持）<br>2、使用rbd diff<br>3、根据对象统计的方法进行统计</p>]]>
-    
-    </summary>
-    
-      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[Ceph中的Copyset概念和使用方法]]></title>
-    <link href="http://www.zphj1987.com/2016/09/06/Ceph%E4%B8%AD%E7%9A%84Copyset%E6%A6%82%E5%BF%B5%E5%92%8C%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/"/>
-    <id>http://www.zphj1987.com/2016/09/06/Ceph中的Copyset概念和使用方法/</id>
-    <published>2016-09-06T09:39:15.000Z</published>
-    <updated>2016-09-07T03:31:05.791Z</updated>
-    <content type="html"><![CDATA[<p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/copyset/octo-guitar.gif" alt="ceph"><br></center></p>
-<h2 id="一、前言">一、前言</h2><p>copyset运用好能带来什么好处</p>
-<ul>
-<li>降低故障情况下的数据丢失概率（增加可用性）</li>
-<li>降低资源占用，从而降低负载</li>
-</ul>
-<a id="more"></a>
-<h2 id="二、copyset的概念">二、copyset的概念</h2><p>首先我们要理解copyset的概念，用通俗的话说就是，包含一个数据的所有副本的节点，也就是一个copyset损坏的情况下，数据就是全丢的</p>
-<p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/copyset/radomcopy.png" alt="radomcopy"><br></center><br>如上图所示，这里的copyset就是：<br>{1,5,6}，{2,6,8} 两组</p>
-<p>如果不做特殊的设置，那么基本上就是会随机的去分布</p>
-<p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/copyset/radomall.png" alt="allcopy"><br></center></p>
-<h3 id="2-1_最大copyset">2.1 最大copyset</h3><p>如上图的所示，一般来说，最终组合将是一个最大的随机组合，比如这样的一个9个node随机组合3个的，这样的组合数有：<br>从 n个元素中取出  k个元素， k个元素的组合数量为：</p>
-<p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/copyset/gongshi.png" alt="计算公式"><br></center><br>9个随机3个的组合为84<br>如果3个节点down掉，那么有数据丢失概率就是100%</p>
-<h3 id="2-2_最小copyset">2.2 最小copyset</h3><p>如果存在一种情况，分布是这样的</p>
-<p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/copyset/mincopy.png" alt="mincopy"><br></center><br>那么copyset为<br>{1,5,7},{2,4,9},{3,6,8}<br>如果3个节点down掉,只有正好是上面的3种组合中的一种出现的时候，才会出现数据丢失<br>那么数据丢失的概率为 3/84</p>
-<p>最小copyset可能带来的不好的地方</p>
-<ul>
-<li>真出现丢失的时候（概率极低），丢失的数据量将是最大化的，这个是因为出现丢的时候，那么三个上面的组合配对为100%，其他情况不是100%</li>
-<li>失效恢复时间将会增大一些，根据facebook的报告100GB的39节点的HDFS随机分布恢复时间在60s,最小分布为700s，这个是因为可用于恢复的点相对减少了，恢复时间自然长了</li>
-</ul>
-<h3 id="2-3_比较好的处理方式">2.3 比较好的处理方式</h3><p>比较好的方式就是取copyset值为介于纯随机和最小之间的数，那么失效的概率计算方式就是：</p>
-<blockquote>
-<p>当前的copyset数目/最大copyset</p>
-</blockquote>
-<h2 id="三、这个概念在ceph当中的实现">三、这个概念在ceph当中的实现</h2><p>其实这个概念在ceph当中就是bucket的概念，PG为最小故障单元，PG就可以理解为上图当中的node上的元素，默认的分组方式为host，这个copyset就是全随机的在这些主机当中进行组合，我们在提升故障域为rack的时候，实际上就是将copyset进行了减少，一个rack之内的主机是形成不了copyset，这样down掉rack的时候，就不会数据丢失了，这个地方的实际可以做的控制方式有三种，下面将详细的介绍三种模式</p>
-<h3 id="3-1、缩小最小主机单位">3.1、缩小最小主机单位</h3><p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/copyset/hostzu.png" alt="最小主机组"><br></center><br>默认的为主机组，这样的主机间的copyset为<br>{1,2}，{1,3}，{1,4}，{2,3}，{2,4}，{3,4}<br>这样的有六组</p>
-<p>现在我们对host进行一个合并看下</p>
-<p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/copyset/hebing.png" alt="此处输入图片的描述"><br></center><br>注意这个地方并不是往上加了一层bucket，而是把最底层的host给拆掉了，加入一台机器有24个osd，那么这里的vhost1里面的osd个数实际是48个osd，那么当前的copyset为<br>{vhost1,vhost2}<br>copyset已经为上面默认情况的1/6<br>这样会带来两个好处</p>
-<ul>
-<li>减少了copyset，减少的好处就见上面的分析</li>
-<li>增加可接收恢复的osd数目，之前坏了一个osd的时候，能接收数据的osd为n-1,那么现在坏一个osd，可接收的osd为2n-1(n为单node上的osd个数)</li>
-</ul>
-<h3 id="3-2、增加分组">3.2、增加分组</h3><p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/copyset/rackfenzu.png" alt="rack分组"><br></center><br>这个地方是增加了rack分组的，同一个rack里面不会出现copyset，那么当前的模式的copyset就是<br>{1,3}，{1,4}，{2,3}，{2,4}</p>
-<p>同没有处理相比copyset为4/6</p>
-<h3 id="3-3、增加分组的情况进行PG分流">3.3、增加分组的情况进行PG分流</h3><p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/copyset/zone.png" alt="zone"><br></center><br>这里看上去跟上面的分组很像，但是在做crush的时候是有区别的，上面的分组以后，会让PG分布在两个rack当中，这里的crush写的时候会让PG只在一个zone当中，在进入zone的下层再去进行分离主副PG，那么这种方式的copyset为<br>{1,2} {3,4}<br>为上面默认情况的2/6</p>
-<h2 id="四、总结">四、总结</h2><p>关于ceph中的ceph的copyset的三种模式已经总结完了，需要补充的是，上面的node都是一个虚拟的概念，你可以扩充为row，或者rack都行，这里只是说明了不同的处理方式，针对每个集群都可以有很多种组合，这个关键看自己怎么处理，减少copyset会明显的减低机器上的线程数目和资源的占用，这一点可以自行研制，从原理上来说少了很多配对的通信，crush的是非常灵活的一个分布控制，可以做很精细的控制，当然也会增加了维护的难度</p>
-<h2 id="五、参考资料：">五、参考资料：</h2><p><a href="https://www.ustack.com/blog/build-block-storage-service/" target="_blank" rel="external">打造高性能高可靠块存储系统</a><br><a href="https://www.usenix.org/conference/atc13/technical-sessions/presentation/cidon" target="_blank" rel="external">Copysets: Reducing the Frequency of Data Loss in Cloud Storage</a></p>
-<h2 id="六、变更记录">六、变更记录</h2><table>
-<thead>
-<tr>
-<th style="text-align:center">Why</th>
-<th style="text-align:center">Who</th>
-<th style="text-align:center">When</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">创建</td>
-<td style="text-align:center">武汉-运维-磨渣</td>
-<td style="text-align:center">2016-09-06</td>
-</tr>
-</tbody>
-</table>
-<h2 id="七、For_me">七、For me</h2><p>愿意打赏欢迎联系，另有私人ceph小群，可以联系我</p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/copyset/octo-guitar.gif" alt="ceph"><br></center></p>
-<h2 id="一、前言">一、前言</h2><p>copyset运用好能带来什么好处</p>
-<ul>
-<li>降低故障情况下的数据丢失概率（增加可用性）</li>
-<li>降低资源占用，从而降低负载</li>
-</ul>]]>
     
     </summary>
     

@@ -191,6 +191,132 @@ var _hmt = _hmt || [];
 </nav>
       <div class="body-wrap">
   
+    <article id="post-Ceph用户邮件列表Vol45-Issue1" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/11/04/Ceph用户邮件列表Vol45-Issue1/" class="article-date">
+  	<time datetime="2016-11-04T03:57:25.000Z" itemprop="datePublished">2016-11-04</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/11/04/Ceph用户邮件列表Vol45-Issue1/">Ceph用户邮件列表Vol45-Issue1</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="ceph_Vol_45_Issue_1">ceph Vol 45 Issue 1</h2><h3 id="1-unfound_objects_blocking_cluster,_need_help!(原文)">1.unfound objects blocking cluster, need help!(<a href="https://www.mail-archive.com/ceph-users@lists.ceph.com/msg32804.html">原文</a>)</h3><blockquote>
+<p>Hi,</p>
+<p>I have a production cluster on which 1 OSD on a failing disk was slowing<br>the whole cluster down. I removed the OSD (osd.87) like usual in such case<br>but this time it resulted in 17 unfound objects. I no longer have the files<br>from osd.87. I was able to call “ceph pg PGID mark_unfound_lost delete” on<br>10 of those objects.</p>
+<p>On the remaining objects 7 the command blocks. When I try to do “ceph pg<br>PGID query” on this PG it also blocks. I suspect this is same reason why<br>mark_unfound blocks.</p>
+<p>Other client IO to PGs that have unfound objects are also blocked. When<br>trying to query the OSDs which has the PG with unfound objects, “ceph tell”<br>blocks.</p>
+<p>I tried to mark the PG as complete using ceph-objectstore-tool but it did<br>not help as the PG is in fact complete but for some reason blocks.</p>
+<p>I tried recreating an empty osd.87 and importing the PG exported from other<br>replica but it did not help.</p>
+<p>Can someone help me please? This is really important.</p>
+</blockquote>
+<p>这个问题是作者一个集群中(ceph 0.94.5)出现了一个磁盘损坏以后造成了一些对象的丢失，然后在做了一定的处理以后，集群状态已经正常了，但是还是新的请求会出现block的状态，这个情况下如何处理才能让集群正常，作者贴出了pg dump，ceph -s,ceph osd dump相关信息，当出现异常的时候，需要人协助的时候，应该提供这些信息方便其他人定位问题，最后这个问题作者自己给出了自己的解决办法，出现的时候影响是当时的流量只有正常情况下的10%了，影响还是很大的<br>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2016/11/04/Ceph用户邮件列表Vol45-Issue1/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-Ceph日历格子之2016年10月-Vol45" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/11/03/Ceph日历格子之2016年10月-Vol45/" class="article-date">
+  	<time datetime="2016-11-03T09:51:33.000Z" itemprop="datePublished">2016-11-03</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/11/03/Ceph日历格子之2016年10月-Vol45/">Ceph日历格子之2016年10月(Vol45)</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/rili/rili.png" alt=""><br></center></p>
+<h2 id="一、前言">一、前言</h2><p>准备策划一个系列，之前也做了一次尝试，中断了，现在准备续起来，能做就尽量坚持做下去，准备根据日历的形式梳理出来，如同打怪一样，一个个去干掉这些问题，每个issue里面会有每天邮件列表里面提出的问题，一般为8到9个问题，如果完成一个Issue，就会在这里给出对应的Issue的链接，相当于一个目录和进度的功能，所以本篇会是一个持续更新的过程<br>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2016/11/03/Ceph日历格子之2016年10月-Vol45/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-Ceph部署的时候修改默认权重" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -667,135 +793,6 @@ var _hmt = _hmt || [];
       
         <p class="article-more-link">
           <a  href="/2016/10/17/Ceph技能树/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Ceph中国社区QQ群数据分析" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/10/13/Ceph中国社区QQ群数据分析/" class="article-date">
-  	<time datetime="2016-10-13T15:59:58.000Z" itemprop="datePublished">2016-10-13</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/10/13/Ceph中国社区QQ群数据分析/">Ceph中国社区QQ群数据分析</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="一、前言">一、前言</h2><p>最近对数据比较感兴趣，正好想练下手，看下从给定的数据当中能提取到多少信息，数据分析主要借助的是可视化的工具，这个在一般进行性能测试当中是很有用的，当然数据的采集，数据的提取，数据的展现，都是非常细的活</p>
-<blockquote>
-<p>状态：本篇未完成，进行中</p>
-</blockquote>
-<h2 id="二、数据来源">二、数据来源</h2><p>本次数据来源来自Ceph中国社区QQ群，是基于群成员填写的信息来进行分析，这中间就不对填写的信息进行真伪的辨别，基于能提取到的数据进行数据处理</p>
-<p>目前实现下面的数据</p>
-<ul>
-<li>性别分布</li>
-<li>Q龄分布</li>
-<li><p>年龄分布</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2016/10/13/Ceph中国社区QQ群数据分析/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Ceph的参数mon-osd-down-out-subtree-limit细解" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/10/13/Ceph的参数mon-osd-down-out-subtree-limit细解/" class="article-date">
-  	<time datetime="2016-10-13T03:34:29.000Z" itemprop="datePublished">2016-10-13</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/10/13/Ceph的参数mon-osd-down-out-subtree-limit细解/">Ceph的参数mon_osd_down_out_subtree_limit细解</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><center><br><img src="http://7xopdu.com1.z0.glb.clouddn.com/screen/roadmap.png" alt="参数"><br></center></p>
-<h2 id="一、前言">一、前言</h2><p>之前跟一个朋友沟通一个其他的问题的时候，发现了有一个参数 <code>mon osd down out subtree limit</code> 一直没有接触到，看了一下这个参数还是很有作用的，本篇将讲述这个参数的作用和使用的场景</p>
-<h2 id="二、测试环境准备">二、测试环境准备</h2><p>首先配置一个集群环境，配置基本参数<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">mon_osd_down_out_interval = 20</span><br></pre></td></tr></table></figure></p>
-<p>调整这个参数为20s,默认为300s,默认一个osd,down超过300s就会标记为out，然后触发迁移,这个是为了方便尽快看到测试的效果，很多测试都是可以这样缩短测试周期的</p>
-<p>本次测试关心的是这个参数<code>mon osd down out subtree limit</code><br>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2016/10/13/Ceph的参数mon-osd-down-out-subtree-limit细解/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>

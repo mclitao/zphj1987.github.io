@@ -3,18 +3,18 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Ceph部署的时候修改默认权重 | zphj1987&#39;Blog</title>
+  <title>Ceph日历格子之2016年10月(Vol45) | zphj1987&#39;Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="一、前言部署集群的时候权重是默认生成的，这个是根据磁盘大小分配的，我们有的时候需要去修改一下这个默认权重">
+  <meta name="description" content="一、前言准备策划一个系列，之前也做了一次尝试，中断了，现在准备续起来，能做就尽量坚持做下去，准备根据日历的形式梳理出来，如同打怪一样，一个个去干掉这些问题，每个issue里面会有每天邮件列表里面提出的问题，一般为8到9个问题，如果完成一个Issue，就会在这里给出对应的Issue的链接，相当于一个目录和进度的功能，所以本篇会是一个持续更新的过程">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Ceph部署的时候修改默认权重">
-<meta property="og:url" content="http://www.zphj1987.com/2016/11/02/Ceph部署的时候修改默认权重/index.html">
+<meta property="og:title" content="Ceph日历格子之2016年10月(Vol45)">
+<meta property="og:url" content="http://www.zphj1987.com/2016/11/03/Ceph日历格子之2016年10月-Vol45/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
-<meta property="og:description" content="一、前言部署集群的时候权重是默认生成的，这个是根据磁盘大小分配的，我们有的时候需要去修改一下这个默认权重">
-<meta property="og:image" content="http://7xweck.com1.z0.glb.clouddn.com/weight.jpg">
+<meta property="og:description" content="一、前言准备策划一个系列，之前也做了一次尝试，中断了，现在准备续起来，能做就尽量坚持做下去，准备根据日历的形式梳理出来，如同打怪一样，一个个去干掉这些问题，每个issue里面会有每天邮件列表里面提出的问题，一般为8到9个问题，如果完成一个Issue，就会在这里给出对应的Issue的链接，相当于一个目录和进度的功能，所以本篇会是一个持续更新的过程">
+<meta property="og:image" content="http://7xweck.com1.z0.glb.clouddn.com/rili/rili.png">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Ceph部署的时候修改默认权重">
-<meta name="twitter:description" content="一、前言部署集群的时候权重是默认生成的，这个是根据磁盘大小分配的，我们有的时候需要去修改一下这个默认权重">
+<meta name="twitter:title" content="Ceph日历格子之2016年10月(Vol45)">
+<meta name="twitter:description" content="一、前言准备策划一个系列，之前也做了一次尝试，中断了，现在准备续起来，能做就尽量坚持做下去，准备根据日历的形式梳理出来，如同打怪一样，一个个去干掉这些问题，每个issue里面会有每天邮件列表里面提出的问题，一般为8到9个问题，如果完成一个Issue，就会在这里给出对应的Issue的链接，相当于一个目录和进度的功能，所以本篇会是一个持续更新的过程">
   
     <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
   
@@ -190,11 +190,11 @@ var _hmt = _hmt || [];
 		</header>				
 	</div>
 </nav>
-      <div class="body-wrap"><article id="post-Ceph部署的时候修改默认权重" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-Ceph日历格子之2016年10月-Vol45" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2016/11/02/Ceph部署的时候修改默认权重/" class="article-date">
-  	<time datetime="2016-11-02T07:46:07.000Z" itemprop="datePublished">2016-11-02</time>
+      <a href="/2016/11/03/Ceph日历格子之2016年10月-Vol45/" class="article-date">
+  	<time datetime="2016-11-03T09:51:33.000Z" itemprop="datePublished">2016-11-03</time>
 </a>
     </div>
   
@@ -207,7 +207,7 @@ var _hmt = _hmt || [];
         
   
     <h1 class="article-title" itemprop="name">
-      Ceph部署的时候修改默认权重
+      Ceph日历格子之2016年10月(Vol45)
     </h1>
   
 
@@ -227,17 +227,69 @@ var _hmt = _hmt || [];
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/weight.jpg" alt=""><br></center></p>
-<h2 id="一、前言">一、前言</h2><p>部署集群的时候权重是默认生成的，这个是根据磁盘大小分配的，我们有的时候需要去修改一下这个默认权重<br><a id="more"></a></p>
-<h2 id="二、修改">二、修改</h2><p>如果统一的初始值，那么直接添加参数即可<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">osd_crush_initial_weight</span><br></pre></td></tr></table></figure></p>
-<p>如果想自己添加算法，那么就根据下面的去做就可以了</p>
-<h3 id="2-1_centos+jewel">2.1 centos+jewel</h3><p>修改：<br>/usr/lib/ceph/ceph-osd-prestart.sh<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">defaultweight=`df -P -k <span class="variable">$data</span>/ | tail -<span class="number">1</span> | awk <span class="string">'&#123; d= $2/107374182 ; r = sprintf("%.4f", d); print r &#125;'</span>`</span><br></pre></td></tr></table></figure></p>
-<p>修改这个地方的值就可以了<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">defaultweight=`<span class="built_in">echo</span> <span class="number">2</span>`</span><br></pre></td></tr></table></figure></p>
-<h3 id="2-2_centos+hammer">2.2 centos+hammer</h3><p>修改 /etc/init.d/ceph<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">defaultweight=<span class="string">"<span class="variable">$(df -P -k $osd_data/. | tail -1 | awk '&#123; print sprintf("%.2f",$2/1073741824)</span> &#125;')"</span></span><br></pre></td></tr></table></figure></p>
-<p>修改成<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">defaultweight=<span class="string">"<span class="variable">$(echo 5)</span>"</span></span><br></pre></td></tr></table></figure></p>
-<h3 id="2-3_ubuntu+hammer">2.3 ubuntu+hammer</h3><p>由于ubuntu用initctl控制服务，不是用的/etc/init.d/ceph/,所以要修改另外的一个路径<br>修改/usr/libexec/ceph/ceph-osd-prestart.sh<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">defaultweight=`df -P -k /var/lib/ceph/osd/<span class="variable">$&#123;cluster:-ceph&#125;</span>-<span class="variable">$id</span>/ | tail -<span class="number">1</span> | awk <span class="string">'&#123; d= $2/1073741824 ; r = sprintf("%.2f", d); print r &#125;'</span>`</span><br></pre></td></tr></table></figure></p>
-<p>修改为：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">defaultweight=`<span class="built_in">echo</span> <span class="number">8</span>`</span><br></pre></td></tr></table></figure></p>
-<h2 id="三、总结">三、总结</h2><p>这个比较简单，通过修改取值就可以改变默认配置了,上面的可以根据自己的需求加入算法即可</p>
+        <p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/rili/rili.png" alt=""><br></center></p>
+<h2 id="一、前言">一、前言</h2><p>准备策划一个系列，之前也做了一次尝试，中断了，现在准备续起来，能做就尽量坚持做下去，准备根据日历的形式梳理出来，如同打怪一样，一个个去干掉这些问题，每个issue里面会有每天邮件列表里面提出的问题，一般为8到9个问题，如果完成一个Issue，就会在这里给出对应的Issue的链接，相当于一个目录和进度的功能，所以本篇会是一个持续更新的过程<br><a id="more"></a></p>
+<h2 id="二、内容">二、内容</h2><p>Ceph邮件列表2016年10月Issue格子   </p>
+<h3 id="Vol_45">Vol 45</h3><table>
+<thead>
+<tr>
+<th style="text-align:center">一</th>
+<th style="text-align:center">二</th>
+<th style="text-align:center">三</th>
+<th style="text-align:center">四</th>
+<th style="text-align:center">五</th>
+<th style="text-align:center">六</th>
+<th style="text-align:center">日</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"></td>
+<td style="text-align:center">Issue 1</td>
+<td style="text-align:center">Issue2</td>
+<td style="text-align:center">Issue3</td>
+<td style="text-align:center">Issue4</td>
+<td style="text-align:center">Issue5</td>
+<td style="text-align:center">Issue6</td>
+</tr>
+<tr>
+<td style="text-align:center">Issue 7</td>
+<td style="text-align:center">Issue 8</td>
+<td style="text-align:center">Issue9</td>
+<td style="text-align:center">Issue 10</td>
+<td style="text-align:center">Issue 11</td>
+<td style="text-align:center">Issue 12</td>
+<td style="text-align:center">Issue 13</td>
+</tr>
+<tr>
+<td style="text-align:center">Issue 14</td>
+<td style="text-align:center">Issue 15</td>
+<td style="text-align:center">Issue16</td>
+<td style="text-align:center">Issue 17</td>
+<td style="text-align:center">Issue 18</td>
+<td style="text-align:center">Issue 19</td>
+<td style="text-align:center">Issue 20</td>
+</tr>
+<tr>
+<td style="text-align:center">Issue 21</td>
+<td style="text-align:center">Issue 22</td>
+<td style="text-align:center">Issue 23</td>
+<td style="text-align:center">Issue 24</td>
+<td style="text-align:center">Issue 25</td>
+<td style="text-align:center">Issue 26</td>
+<td style="text-align:center">Issue 27</td>
+</tr>
+<tr>
+<td style="text-align:center">Issue 28</td>
+<td style="text-align:center">Issue 29</td>
+<td style="text-align:center">Issue 30</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+</tbody>
+</table>
+<h2 id="三、本月主要问题如下：">三、本月主要问题如下：</h2><p>如何处理对象丢失引起的PG状态不对的问题(Issue1)</p>
 <h2 id="四、变更记录">四、变更记录</h2><table>
 <thead>
 <tr>
@@ -250,7 +302,7 @@ var _hmt = _hmt || [];
 <tr>
 <td style="text-align:center">创建</td>
 <td style="text-align:center">武汉-运维-磨渣</td>
-<td style="text-align:center">2016-11-02</td>
+<td style="text-align:center">2016-11-03</td>
 </tr>
 </tbody>
 </table>
@@ -263,18 +315,18 @@ var _hmt = _hmt || [];
     
 <nav id="article-nav">
   
-    <a href="/2016/11/03/Ceph日历格子之2016年10月-Vol45/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2016/11/04/Ceph用户邮件列表Vol45-Issue1/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption"><</strong>
       <div class="article-nav-title">
         
-          Ceph日历格子之2016年10月(Vol45)
+          Ceph用户邮件列表Vol45-Issue1
         
       </div>
     </a>
   
   
-    <a href="/2016/10/31/Cephday深圳20161029总结/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">Cephday深圳20161029总结</div>
+    <a href="/2016/11/02/Ceph部署的时候修改默认权重/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Ceph部署的时候修改默认权重</div>
       <strong class="article-nav-caption">></strong>
     </a>
   
@@ -303,7 +355,7 @@ var _hmt = _hmt || [];
 
 <div class="duoshuo">
 	<!-- 多说评论框 start -->
-	<div class="ds-thread" data-thread-key="Ceph部署的时候修改默认权重" data-title="Ceph部署的时候修改默认权重" data-url="http://www.zphj1987.com/2016/11/02/Ceph部署的时候修改默认权重/"></div>
+	<div class="ds-thread" data-thread-key="Ceph日历格子之2016年10月-Vol45" data-title="Ceph日历格子之2016年10月(Vol45)" data-url="http://www.zphj1987.com/2016/11/03/Ceph日历格子之2016年10月-Vol45/"></div>
 	<!-- 多说评论框 end -->
 	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 	<script type="text/javascript">
