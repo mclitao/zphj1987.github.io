@@ -7,19 +7,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="ceph Vol 45 Issue 11.unfound objects blocking cluster, need help!(原文)
 Hi,
-I have a production cluster on which 1 OSD on a failing disk was slowingthe whole cluster down. I removed the OSD (osd.87) lik">
+I have a production cluster on which 1 OSD on a failing disk was slowing the whole cluster down. I removed the OSD (osd.87) li">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Ceph用户邮件列表Vol45-Issue1">
 <meta property="og:url" content="http://www.zphj1987.com/2016/11/04/Ceph用户邮件列表Vol45-Issue1/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
 <meta property="og:description" content="ceph Vol 45 Issue 11.unfound objects blocking cluster, need help!(原文)
 Hi,
-I have a production cluster on which 1 OSD on a failing disk was slowingthe whole cluster down. I removed the OSD (osd.87) lik">
+I have a production cluster on which 1 OSD on a failing disk was slowing the whole cluster down. I removed the OSD (osd.87) li">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Ceph用户邮件列表Vol45-Issue1">
 <meta name="twitter:description" content="ceph Vol 45 Issue 11.unfound objects blocking cluster, need help!(原文)
 Hi,
-I have a production cluster on which 1 OSD on a failing disk was slowingthe whole cluster down. I removed the OSD (osd.87) lik">
+I have a production cluster on which 1 OSD on a failing disk was slowing the whole cluster down. I removed the OSD (osd.87) li">
   
     <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
   
@@ -234,14 +234,13 @@ var _hmt = _hmt || [];
       
         <h2 id="ceph_Vol_45_Issue_1">ceph Vol 45 Issue 1</h2><h3 id="1-unfound_objects_blocking_cluster,_need_help!(原文)">1.unfound objects blocking cluster, need help!(<a href="https://www.mail-archive.com/ceph-users@lists.ceph.com/msg32804.html" target="_blank" rel="external">原文</a>)</h3><blockquote>
 <p>Hi,</p>
-<p>I have a production cluster on which 1 OSD on a failing disk was slowing<br>the whole cluster down. I removed the OSD (osd.87) like usual in such case<br>but this time it resulted in 17 unfound objects. I no longer have the files<br>from osd.87. I was able to call “ceph pg PGID mark_unfound_lost delete” on<br>10 of those objects.</p>
-<p>On the remaining objects 7 the command blocks. When I try to do “ceph pg<br>PGID query” on this PG it also blocks. I suspect this is same reason why<br>mark_unfound blocks.</p>
-<p>Other client IO to PGs that have unfound objects are also blocked. When<br>trying to query the OSDs which has the PG with unfound objects, “ceph tell”<br>blocks.</p>
-<p>I tried to mark the PG as complete using ceph-objectstore-tool but it did<br>not help as the PG is in fact complete but for some reason blocks.</p>
-<p>I tried recreating an empty osd.87 and importing the PG exported from other<br>replica but it did not help.</p>
+<p>I have a production cluster on which 1 OSD on a failing disk was slowing the whole cluster down. I removed the OSD (osd.87) like usual in such case but this time it resulted in 17 unfound objects. I no longer have the files from osd.87. I was able to call “ceph pg PGID mark_unfound_lost delete” on 10 of those objects.</p>
+<p>On the remaining objects 7 the command blocks. When I try to do “ceph pg PGID query” on this PG it also blocks. I suspect this is same reason why mark_unfound blocks.</p>
+<p>Other client IO to PGs that have unfound objects are also blocked. When trying to query the OSDs which has the PG with unfound objects, “ceph tell” blocks.<br><a id="more"></a><br>I tried to mark the PG as complete using ceph-objectstore-tool but it did not help as the PG is in fact complete but for some reason blocks.</p>
+<p>I tried recreating an empty osd.87 and importing the PG exported from other replica but it did not help.</p>
 <p>Can someone help me please? This is really important.</p>
 </blockquote>
-<p>这个问题是作者一个集群中(ceph 0.94.5)出现了一个磁盘损坏以后造成了一些对象的丢失，然后在做了一定的处理以后，集群状态已经正常了，但是还是新的请求会出现block的状态，这个情况下如何处理才能让集群正常，作者贴出了pg dump，ceph -s,ceph osd dump相关信息，当出现异常的时候，需要人协助的时候，应该提供这些信息方便其他人定位问题，最后这个问题作者自己给出了自己的解决办法，出现的时候影响是当时的流量只有正常情况下的10%了，影响还是很大的<br><a id="more"></a></p>
+<p>这个问题是作者一个集群中(ceph 0.94.5)出现了一个磁盘损坏以后造成了一些对象的丢失，然后在做了一定的处理以后，集群状态已经正常了，但是还是新的请求会出现block的状态，这个情况下如何处理才能让集群正常，作者贴出了pg dump，ceph -s,ceph osd dump相关信息，当出现异常的时候，需要人协助的时候，应该提供这些信息方便其他人定位问题，最后这个问题作者自己给出了自己的解决办法，出现的时候影响是当时的流量只有正常情况下的10%了，影响还是很大的</p>
 <h3 id="复现问题过程">复现问题过程</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># rados -p rbd put testremove testremove</span></span><br><span class="line">[root@lab8106 ceph]<span class="comment"># ceph osd map rbd testremove</span></span><br><span class="line">osdmap e85 pool <span class="string">'rbd'</span> (<span class="number">0</span>) object <span class="string">'testremove'</span> -&gt; pg <span class="number">0</span>.eaf226a7 (<span class="number">0.27</span>) -&gt; up ([<span class="number">1</span>,<span class="number">0</span>], p1) acting</span><br></pre></td></tr></table></figure>
 <p>写入文件,找到文件，然后去后台删除对象<br>然后停止掉其中一个OSD，这里选择停掉主OSD<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">systemctl stop ceph-osd@<span class="number">1</span></span><br><span class="line">ceph osd out <span class="number">1</span></span><br></pre></td></tr></table></figure></p>
 <p>查看状态pg被锁住状态active+degrade，不会迁移完整,并且会检测到了有数据unfound了</p>
