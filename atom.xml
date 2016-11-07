@@ -137,7 +137,7 @@
     <link href="http://www.zphj1987.com/2016/11/03/Ceph%E6%97%A5%E5%8E%86%E6%A0%BC%E5%AD%90%E4%B9%8B2016%E5%B9%B410%E6%9C%88-Vol45/"/>
     <id>http://www.zphj1987.com/2016/11/03/Ceph日历格子之2016年10月-Vol45/</id>
     <published>2016-11-03T09:51:33.000Z</published>
-    <updated>2016-11-07T15:58:52.990Z</updated>
+    <updated>2016-11-07T16:06:16.468Z</updated>
     <content type="html"><![CDATA[<p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/rili/rili.png" alt=""><br></center></p>
 <h2 id="一、前言">一、前言</h2><p>准备策划一个系列，之前也做了一次尝试，中断了，现在准备续起来，能做就尽量坚持做下去，准备根据日历的形式梳理出来，如同打怪一样，一个个去干掉这些问题，每个issue里面会有每天邮件列表里面提出的问题，一般为8到9个问题，如果完成一个Issue，就会在这里给出对应的Issue的链接，相当于一个目录和进度的功能，所以本篇会是一个持续更新的过程<br><a id="more"></a></p>
 <h2 id="二、内容">二、内容</h2><p>Ceph邮件列表2016年10月Issue格子   </p>
@@ -155,48 +155,52 @@
 </thead>
 <tbody>
 <tr>
-<td style="text-align:center"></td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
 <td style="text-align:center"><a href="http://www.zphj1987.com/2016/11/04/Ceph%E7%94%A8%E6%88%B7%E9%82%AE%E4%BB%B6%E5%88%97%E8%A1%A8Vol45-Issue1/" target="_blank" rel="external">Issue 1</a></td>
-<td style="text-align:center">Issue2</td>
-<td style="text-align:center">Issue3</td>
-<td style="text-align:center">Issue4</td>
-<td style="text-align:center">Issue5</td>
-<td style="text-align:center">Issue6</td>
+<td style="text-align:center"><a href="http://www.zphj1987.com/2016/11/07/Ceph%E7%94%A8%E6%88%B7%E9%82%AE%E4%BB%B6%E5%88%97%E8%A1%A8Vol45-Issue2/" target="_blank" rel="external">Issue2</a></td>
 </tr>
 <tr>
+<td style="text-align:center">Issue 3</td>
+<td style="text-align:center">Issue 4</td>
+<td style="text-align:center">Issue 5</td>
+<td style="text-align:center">Issue 6</td>
 <td style="text-align:center">Issue 7</td>
 <td style="text-align:center">Issue 8</td>
-<td style="text-align:center">Issue9</td>
-<td style="text-align:center">Issue 10</td>
-<td style="text-align:center">Issue 11</td>
-<td style="text-align:center">Issue 12</td>
-<td style="text-align:center">Issue 13</td>
+<td style="text-align:center">Issue 9</td>
 </tr>
 <tr>
+<td style="text-align:center">Issue 10</td>
+<td style="text-align:center">Issue 11</td>
+<td style="text-align:center">Issue12</td>
+<td style="text-align:center">Issue 13</td>
 <td style="text-align:center">Issue 14</td>
 <td style="text-align:center">Issue 15</td>
-<td style="text-align:center">Issue16</td>
+<td style="text-align:center">Issue 16</td>
+</tr>
+<tr>
 <td style="text-align:center">Issue 17</td>
 <td style="text-align:center">Issue 18</td>
 <td style="text-align:center">Issue 19</td>
 <td style="text-align:center">Issue 20</td>
-</tr>
-<tr>
 <td style="text-align:center">Issue 21</td>
 <td style="text-align:center">Issue 22</td>
 <td style="text-align:center">Issue 23</td>
+</tr>
+<tr>
 <td style="text-align:center">Issue 24</td>
 <td style="text-align:center">Issue 25</td>
 <td style="text-align:center">Issue 26</td>
 <td style="text-align:center">Issue 27</td>
-</tr>
-<tr>
 <td style="text-align:center">Issue 28</td>
 <td style="text-align:center">Issue 29</td>
 <td style="text-align:center">Issue 30</td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">Issue 31</td>
 </tr>
 </tbody>
 </table>
