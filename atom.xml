@@ -4,7 +4,7 @@
   <subtitle><![CDATA[但行好事，莫问前程]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2016-11-04T04:06:32.362Z</updated>
+  <updated>2016-11-07T15:55:39.251Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -13,6 +13,66 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[Ceph用户邮件列表Vol45-Issue2]]></title>
+    <link href="http://www.zphj1987.com/2016/11/07/Ceph%E7%94%A8%E6%88%B7%E9%82%AE%E4%BB%B6%E5%88%97%E8%A1%A8Vol45-Issue2/"/>
+    <id>http://www.zphj1987.com/2016/11/07/Ceph用户邮件列表Vol45-Issue2/</id>
+    <published>2016-11-07T05:26:01.000Z</published>
+    <updated>2016-11-07T15:55:39.251Z</updated>
+    <content type="html"><![CDATA[<h2 id="ceph_Vol_45_Issue_2">ceph Vol 45 Issue 2</h2><h3 id="1-CephFS:_No_space_left_on_device">1.CephFS: No space left on device</h3><blockquote>
+<p>After upgrading to 10.2.3 we frequently see messages like</p>
+<p>‘rm: cannot remove ‘…’: No space left on device</p>
+<p>The folders we are trying to delete contain approx. 50K files 193 KB each.</p>
+<p>The cluster state and storage available are both OK:</p>
+<p>   cluster 98d72518-6619-4b5c-b148-9a781ef13bcb<br>     health HEALTH_WARN<br>            mds0: Client XXX.XXX.XXX.XXX failing to respond to cache pressure<br>            mds0: Client XXX.XXX.XXX.XXX failing to respond to cache pressure<br>            mds0: Client XXX.XXX.XXX.XXX failing to respond to cache pressure<br>            mds0: Client XXX.XXX.XXX.XXX failing to respond to cache pressure<br>            mds0: Client XXX.XXX.XXX.XXX failing to respond to cache pressure<br>     monmap e1: 1 mons at {000-s-ragnarok=XXX.XXX.XXX.XXX:6789/0}<br>            election epoch 11, quorum 0 000-s-ragnarok<br>      fsmap e62643: 1/1/1 up {0=000-s-ragnarok=up:active}<br>     osdmap e20203: 16 osds: 16 up, 16 in<br>            flags sortbitwise<br>      pgmap v15284654: 1088 pgs, 2 pools, 11263 GB data, 40801 kobjects<br>            23048 GB used, 6745 GB / 29793 GB avail<br>                1085 active+clean<br>                   2 active+clean+scrubbing<br>                   1 active+clean+scrubbing+deep</p>
+</blockquote>
+<a id="more"></a>
+<blockquote>
+<p>Has anybody experienced this issue so far?</p>
+</blockquote>
+<p>这个问题是作者在升级了一个集群以后（jewel 10.2.3），做删除的时候，发现提示了 No space left on device，按正常的理解做删除不会出现提示空间不足</p>
+<p>这个地方的原因是，有一个参数会对目录的entry做一个最大值的控制<code>mds_bal_fragment_size_max</code>,而这个参数实际上在做删除操作的时候，当文件被unlink的时候，被放入待删除区的时候，这个也是被限制住的，随意需要调整这个参数，如果有上百万的文件被等待删除的时候，可能就会出现这个情况,并且出现 <code>failing to respond to cache pressure</code> 我们根据自己的需要去设置这个值</p>
+<p>这个地方可以用命令来监控mds的当前状态<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 mnt]<span class="comment"># ceph daemonperf mds.lab8106</span></span><br><span class="line">-----mds------ --mds_server-- ---objecter--- -----mds_cache----- ---mds_<span class="built_in">log</span>---- </span><br><span class="line">rlat inos caps|hsr  hcs  hcr |writ <span class="built_in">read</span> actv|recd recy stry purg|segs evts subm|</span><br><span class="line">  <span class="number">0</span>  <span class="number">163</span>k   <span class="number">5</span> |  <span class="number">0</span>    <span class="number">0</span>    <span class="number">0</span> |  <span class="number">0</span>    <span class="number">0</span>   <span class="number">36</span> |  <span class="number">0</span>    <span class="number">0</span>  <span class="number">145</span>k   <span class="number">0</span> | <span class="number">33</span>   <span class="number">29</span>k   <span class="number">0</span> </span><br><span class="line">  <span class="number">0</span>  <span class="number">163</span>k   <span class="number">5</span> |  <span class="number">0</span>    <span class="number">0</span>    <span class="number">0</span> |  <span class="number">6</span>    <span class="number">0</span>   <span class="number">34</span> |  <span class="number">0</span>    <span class="number">0</span>  <span class="number">145</span>k   <span class="number">6</span> | <span class="number">33</span>   <span class="number">29</span>k   <span class="number">6</span> </span><br><span class="line">  <span class="number">0</span>  <span class="number">163</span>k   <span class="number">5</span> |  <span class="number">0</span>    <span class="number">0</span>    <span class="number">0</span> | <span class="number">24</span>    <span class="number">0</span>   <span class="number">32</span> |  <span class="number">0</span>    <span class="number">0</span>  <span class="number">145</span>k  <span class="number">24</span> | <span class="number">32</span>   <span class="number">29</span>k  <span class="number">24</span> </span><br><span class="line">  <span class="number">0</span>  <span class="number">163</span>k   <span class="number">5</span> |  <span class="number">0</span>    <span class="number">0</span>    <span class="number">0</span> | <span class="number">42</span>    <span class="number">0</span>   <span class="number">32</span> |  <span class="number">0</span>    <span class="number">0</span>  <span class="number">145</span>k  <span class="number">42</span> | <span class="number">32</span>   <span class="number">29</span>k  <span class="number">42</span> </span><br><span class="line">  <span class="number">0</span>  <span class="number">159</span>k   <span class="number">5</span> |  <span class="number">0</span>    <span class="number">0</span>    <span class="number">0</span> |<span class="number">972</span>    <span class="number">0</span>   <span class="number">32</span> |  <span class="number">0</span>    <span class="number">0</span>  <span class="number">144</span>k <span class="number">970</span> | <span class="number">33</span>   <span class="number">27</span>k <span class="number">971</span> </span><br><span class="line">  <span class="number">0</span>  <span class="number">159</span>k   <span class="number">5</span> |  <span class="number">0</span>    <span class="number">0</span>    <span class="number">0</span> |<span class="number">905</span>    <span class="number">0</span>   <span class="number">32</span> |  <span class="number">0</span>    <span class="number">0</span>  <span class="number">143</span>k <span class="number">905</span> | <span class="number">31</span>   <span class="number">28</span>k <span class="number">906</span> </span><br><span class="line">  <span class="number">0</span>  <span class="number">159</span>k   <span class="number">5</span> |  <span class="number">0</span>    <span class="number">0</span>    <span class="number">0</span> |<span class="number">969</span>    <span class="number">0</span>   <span class="number">32</span> |  <span class="number">0</span>    <span class="number">0</span>  <span class="number">142</span>k <span class="number">969</span> | <span class="number">32</span>   <span class="number">29</span>k <span class="number">970</span> </span><br><span class="line">  <span class="number">0</span>  <span class="number">159</span>k   <span class="number">5</span> |  <span class="number">0</span>    <span class="number">0</span>    <span class="number">0</span> |<span class="number">601</span>    <span class="number">0</span>   <span class="number">31</span> |  <span class="number">0</span>    <span class="number">0</span>  <span class="number">141</span>k <span class="number">601</span> | <span class="number">33</span>   <span class="number">29</span>k <span class="number">602</span></span><br></pre></td></tr></table></figure></p>
+<p>这个地方还有一个硬链接删除以后没有释放stry的问题，最新版的master里面已经合进去了代码（<a href="https://github.com/ukernel/ceph/commit/edc84d905a1f0e3c504f427cc4693c7a98561e7c" target="_blank" rel="external">scan_link</a>）</p>
+<p>修复过程如下<br>执行flush MDS journal<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph daemon mds.xxx flush journal</span><br></pre></td></tr></table></figure></p>
+<p>停止掉所有mds<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">stop all mds</span><br></pre></td></tr></table></figure></p>
+<p>执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cephfs-data-scan scan_links<span class="string">'</span></span><br></pre></td></tr></table></figure></p>
+<p>重启mds<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">restart mds</span><br></pre></td></tr></table></figure></p>
+<p>执行命令<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">run <span class="string">'ceph daemon mds.x scrub_path / recursive repair'</span></span><br></pre></td></tr></table></figure></p>
+<p>执行完了以后去对目录进行一次ll，可以看到mds_cache的stry的就会被清理干净了</p>
+<p>这个问题就可以解决了,实际测试中在换了新版本以后，重启后然后进行目录的ll，也能清空stry</p>
+<h3 id="变更记录">变更记录</h3><table>
+<thead>
+<tr>
+<th style="text-align:center">Why</th>
+<th style="text-align:center">Who</th>
+<th style="text-align:center">When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">创建</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2016-11-07</td>
+</tr>
+</tbody>
+</table>
+]]></content>
+    <summary type="html">
+    <![CDATA[<h2 id="ceph_Vol_45_Issue_2">ceph Vol 45 Issue 2</h2><h3 id="1-CephFS:_No_space_left_on_device">1.CephFS: No space left on device</h3><blockquote>
+<p>After upgrading to 10.2.3 we frequently see messages like</p>
+<p>‘rm: cannot remove ‘…’: No space left on device</p>
+<p>The folders we are trying to delete contain approx. 50K files 193 KB each.</p>
+<p>The cluster state and storage available are both OK:</p>
+<p>   cluster 98d72518-6619-4b5c-b148-9a781ef13bcb<br>     health HEALTH_WARN<br>            mds0: Client XXX.XXX.XXX.XXX failing to respond to cache pressure<br>            mds0: Client XXX.XXX.XXX.XXX failing to respond to cache pressure<br>            mds0: Client XXX.XXX.XXX.XXX failing to respond to cache pressure<br>            mds0: Client XXX.XXX.XXX.XXX failing to respond to cache pressure<br>            mds0: Client XXX.XXX.XXX.XXX failing to respond to cache pressure<br>     monmap e1: 1 mons at {000-s-ragnarok=XXX.XXX.XXX.XXX:6789/0}<br>            election epoch 11, quorum 0 000-s-ragnarok<br>      fsmap e62643: 1/1/1 up {0=000-s-ragnarok=up:active}<br>     osdmap e20203: 16 osds: 16 up, 16 in<br>            flags sortbitwise<br>      pgmap v15284654: 1088 pgs, 2 pools, 11263 GB data, 40801 kobjects<br>            23048 GB used, 6745 GB / 29793 GB avail<br>                1085 active+clean<br>                   2 active+clean+scrubbing<br>                   1 active+clean+scrubbing+deep</p>
+</blockquote>]]>
+    
+    </summary>
+    
+      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[Ceph用户邮件列表Vol45-Issue1]]></title>
@@ -77,7 +137,7 @@
     <link href="http://www.zphj1987.com/2016/11/03/Ceph%E6%97%A5%E5%8E%86%E6%A0%BC%E5%AD%90%E4%B9%8B2016%E5%B9%B410%E6%9C%88-Vol45/"/>
     <id>http://www.zphj1987.com/2016/11/03/Ceph日历格子之2016年10月-Vol45/</id>
     <published>2016-11-03T09:51:33.000Z</published>
-    <updated>2016-11-04T04:05:19.603Z</updated>
+    <updated>2016-11-07T15:58:52.990Z</updated>
     <content type="html"><![CDATA[<p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/rili/rili.png" alt=""><br></center></p>
 <h2 id="一、前言">一、前言</h2><p>准备策划一个系列，之前也做了一次尝试，中断了，现在准备续起来，能做就尽量坚持做下去，准备根据日历的形式梳理出来，如同打怪一样，一个个去干掉这些问题，每个issue里面会有每天邮件列表里面提出的问题，一般为8到9个问题，如果完成一个Issue，就会在这里给出对应的Issue的链接，相当于一个目录和进度的功能，所以本篇会是一个持续更新的过程<br><a id="more"></a></p>
 <h2 id="二、内容">二、内容</h2><p>Ceph邮件列表2016年10月Issue格子   </p>
@@ -140,7 +200,7 @@
 </tr>
 </tbody>
 </table>
-<h2 id="三、本月主要问题如下：">三、本月主要问题如下：</h2><p>如何处理对象丢失引起的PG状态不对的问题(Issue1)</p>
+<h2 id="三、本月主要问题如下：">三、本月主要问题如下：</h2><p>如何处理对象丢失引起的PG状态不对的问题(Issue1)<br>处理Cephfs的No space left on device(Issue2)<br>处理mds0: Client XXX.XXX.XXX.XXX failing to respond to cache pressure(Issue2)<br>处理stry not clean(Issue2)</p>
 <h2 id="四、变更记录">四、变更记录</h2><table>
 <thead>
 <tr>
@@ -154,6 +214,11 @@
 <td style="text-align:center">创建</td>
 <td style="text-align:center">武汉-运维-磨渣</td>
 <td style="text-align:center">2016-11-03</td>
+</tr>
+<tr>
+<td style="text-align:center">增加Issue2</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2016-11-07</td>
 </tr>
 </tbody>
 </table>
@@ -1159,58 +1224,6 @@
 <h2 id="一、前言">一、前言</h2><p>之前有写过一篇<a href="http://www.zphj1987.com/2016/01/12/%E5%88%A0%E9%99%A4osd%E7%9A%84%E6%AD%A3%E7%A1%AE%E6%96%B9%E5%BC%8F/">删除OSD的正确方式</a>，里面只是简单的讲了下删除的方式怎样能减少迁移量，本篇属于一个扩展，讲述了 Ceph 运维当中经常出现的坏盘提换盘的步骤的优化</p>
 <p>基础环境两台主机每台主机8个 OSD，一共 16 个 OSD，副本设置为2，PG 数设置为800，计算下来平均每个 OSD 上的 P G数目为100个，本篇将通过数据来分析不同的处理方法的差别</p>
 <p>开始测试前先把环境设置为 <code>noout</code>，然后通过停止 OSD 来模拟 OSD 出现了异常，之后进行不同处理方法<br>]]>
-    
-    </summary>
-    
-      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[Centos7下Jewel版本radosgw服务启动]]></title>
-    <link href="http://www.zphj1987.com/2016/09/12/Centos7%E4%B8%8BJewel%E7%89%88%E6%9C%ACradosgw%E6%9C%8D%E5%8A%A1%E5%90%AF%E5%8A%A8/"/>
-    <id>http://www.zphj1987.com/2016/09/12/Centos7下Jewel版本radosgw服务启动/</id>
-    <published>2016-09-12T05:47:47.000Z</published>
-    <updated>2016-09-12T06:00:17.703Z</updated>
-    <content type="html"><![CDATA[<p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/radosgw/gateway1.png" alt="rgw"><br></center></p>
-<h2 id="一、前言">一、前言</h2><p>本篇介绍了centos7下jewel版本的radosgw配置，这里的配置是指将服务能够正常起来，不涉及到S3的配置，以及其他的更多的配置,radosgw后面的gw就是gateway的意思，也就是我们说的网关的意思，本篇中所提及的实例也就是网关的意思，说实例是将每个单独的网关更细化一点的说法</p>
-<p>很多人不清楚在centos7下面怎么去控制这个radosgw网关的服务的控制，这个地方是会去读取配置文件的，所以配置文件得写正确</p>
-<a id="more"></a>
-<h2 id="二、预备环境">二、预备环境</h2><h3 id="一个完整的集群">一个完整的集群</h3><p>拥有一个正常的集群是需要提前准备好的，ceph -s检查正确的输出</p>
-<h3 id="关闭各种auth">关闭各种auth</h3><p>这个地方也可以不关闭，注意配置好用户认证就可以了，这里关闭了，配置起来方便，我是从来不开的,也避免了新手不会配置用户造成认证的各种异常<br>关闭认证就是在ceph.conf里面添加下面字段<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">auth_cluster_required = none</span><br><span class="line">auth_service_required = none</span><br><span class="line">auth_client_required = none</span><br></pre></td></tr></table></figure></p>
-<h3 id="安装ceph-radosgw的包">安装ceph-radosgw的包</h3><p>这个因为默认不会安装，所以要安装好<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum install ceph-radosgw</span><br></pre></td></tr></table></figure></p>
-<h2 id="三、默认启动过程">三、默认启动过程</h2><p>我们先什么都不配置，看下一般的会怎么处理</p>
-<h3 id="3-1_启动服务">3.1 启动服务</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">systemctl restart ceph-radosgw.target</span><br></pre></td></tr></table></figure>
-<h3 id="3-2_检查服务的状态">3.2 检查服务的状态</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># systemctl status ceph-radosgw.target </span></span><br><span class="line">● ceph-radosgw.target - ceph target allowing to start/stop all ceph-radosgw@.service instances at once</span><br><span class="line">   Loaded: loaded (/usr/lib/systemd/system/ceph-radosgw.target; enabled; vendor preset: enabled)</span><br><span class="line">   Active: active since Mon <span class="number">2016</span>-<span class="number">09</span>-<span class="number">12</span> <span class="number">13</span>:<span class="number">13</span>:<span class="number">03</span> CST; <span class="number">51</span>s ago</span><br><span class="line"></span><br><span class="line">Sep <span class="number">12</span> <span class="number">13</span>:<span class="number">13</span>:<span class="number">03</span> lab8106 systemd[<span class="number">1</span>]: Stopping ceph target allowing to start/stop all ceph-radosgw@.service instances at once.</span><br><span class="line">Sep <span class="number">12</span> <span class="number">13</span>:<span class="number">13</span>:<span class="number">03</span> lab8106 systemd[<span class="number">1</span>]: Reached target ceph target allowing to start/stop all ceph-radosgw@.service instances at once.</span><br><span class="line">Sep <span class="number">12</span> <span class="number">13</span>:<span class="number">13</span>:<span class="number">03</span> lab8106 systemd[<span class="number">1</span>]: Starting ceph target allowing to start/stop all ceph-radosgw@.service instances at once.</span><br><span class="line">Sep <span class="number">12</span> <span class="number">13</span>:<span class="number">13</span>:<span class="number">51</span> lab8106 systemd[<span class="number">1</span>]: Reached target ceph target allowing to start/stop all ceph-radosgw@.service instances at once.</span><br></pre></td></tr></table></figure>
-<p>可以看到进程是启动的，没有任何异常</p>
-<h3 id="3-3_检查端口是否启动">3.3 检查端口是否启动</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># netstat -tunlp|grep radosgw</span></span><br></pre></td></tr></table></figure>
-<p>但是并没有生成任何端口，这个是因为还没有配置实例,这个地方就是新手经常卡住的地方</p>
-<h2 id="四、下面开始配置默认单实例">四、下面开始配置默认单实例</h2><h3 id="4-1_写配置文件">4.1 写配置文件</h3><p>在配置文件 /etc/ceph/ceph.conf的最下面写一个最简配置文件<br>注意下面的client.radosgw1这个包起来的，这个是固定写法，在 <code>systemctl</code> 启动服务的时候 <code>@</code> 取后面的radosgw1<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[client.radosgw1]</span><br><span class="line">host = lab8106</span><br><span class="line">rgw_content_length_compat = <span class="literal">true</span></span><br></pre></td></tr></table></figure></p>
-<h3 id="4-2_启动服务">4.2 启动服务</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># systemctl restart ceph-radosgw@radosgw1</span></span><br></pre></td></tr></table></figure>
-<h3 id="4-3_检查服务状态">4.3 检查服务状态</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># systemctl status ceph-radosgw@radosgw1</span></span><br><span class="line">● ceph-radosgw@radosgw1.service - Ceph rados gateway</span><br><span class="line">   Loaded: loaded (/usr/lib/systemd/system/ceph-radosgw@.service; disabled; vendor preset: disabled)</span><br><span class="line">   Active: active (running) since Mon <span class="number">2016</span>-<span class="number">09</span>-<span class="number">12</span> <span class="number">13</span>:<span class="number">17</span>:<span class="number">34</span> CST; <span class="number">17</span>s ago</span><br><span class="line"> Main PID: <span class="number">19996</span> (radosgw)</span><br><span class="line">   CGroup: /system.slice/system-ceph\x2dradosgw.slice/ceph-radosgw@radosgw1.service</span><br><span class="line">           └─<span class="number">19996</span> /usr/bin/radosgw <span class="operator">-f</span> --cluster ceph --name client.radosgw1 --setuser ceph --setgroup ceph</span><br><span class="line"></span><br><span class="line">Sep <span class="number">12</span> <span class="number">13</span>:<span class="number">17</span>:<span class="number">34</span> lab8106 systemd[<span class="number">1</span>]: Started Ceph rados gateway.</span><br><span class="line">Sep <span class="number">12</span> <span class="number">13</span>:<span class="number">17</span>:<span class="number">34</span> lab8106 systemd[<span class="number">1</span>]: Starting Ceph rados gateway...</span><br></pre></td></tr></table></figure>
-<h3 id="4-4_检查端口是否启动">4.4 检查端口是否启动</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># netstat -tunlp|grep radosgw</span></span><br><span class="line">tcp        <span class="number">0</span>      <span class="number">0</span> <span class="number">0.0</span>.<span class="number">0.0</span>:<span class="number">7480</span>            <span class="number">0.0</span>.<span class="number">0.0</span>:*               LISTEN      <span class="number">19996</span>/radosgw</span><br></pre></td></tr></table></figure>
-<p>可以看到默认的端口是7480</p>
-<h2 id="五、配置多个自定义端口实例">五、配置多个自定义端口实例</h2><h3 id="5-1_写配置文件">5.1 写配置文件</h3><p>在配置文件 /etc/ceph/ceph.conf的最下面写下配置文件<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[client.radosgw1]</span><br><span class="line">host = lab8106</span><br><span class="line">rgw_frontends = civetweb port=<span class="number">7481</span></span><br><span class="line">rgw_content_length_compat = <span class="literal">true</span></span><br><span class="line"></span><br><span class="line">[client.radosgw2]</span><br><span class="line">host = lab8106</span><br><span class="line">rgw_frontends = civetweb port=<span class="number">7482</span></span><br><span class="line">rgw_content_length_compat = <span class="literal">true</span></span><br></pre></td></tr></table></figure></p>
-<p>这个地方配置两个实例，用了不同的名称，用了不同的端口</p>
-<h3 id="5-2_启动服务">5.2 启动服务</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># systemctl restart ceph-radosgw@radosgw1</span></span><br><span class="line">[root@lab8106 ~]<span class="comment"># systemctl restart ceph-radosgw@radosgw2</span></span><br></pre></td></tr></table></figure>
-<h3 id="5-3_检查服务状态">5.3 检查服务状态</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># systemctl status ceph-radosgw@radosgw1</span></span><br><span class="line">● ceph-radosgw@radosgw1.service - Ceph rados gateway</span><br><span class="line">   Loaded: loaded (/usr/lib/systemd/system/ceph-radosgw@.service; disabled; vendor preset: disabled)</span><br><span class="line">   Active: active (running) since Mon <span class="number">2016</span>-<span class="number">09</span>-<span class="number">12</span> <span class="number">13</span>:<span class="number">20</span>:<span class="number">06</span> CST; <span class="number">1</span>min <span class="number">4</span>s ago</span><br><span class="line"> Main PID: <span class="number">20509</span> (radosgw)</span><br><span class="line">   CGroup: /system.slice/system-ceph\x2dradosgw.slice/ceph-radosgw@radosgw1.service</span><br><span class="line">           └─<span class="number">20509</span> /usr/bin/radosgw <span class="operator">-f</span> --cluster ceph --name client.radosgw1 --setuser ceph --setgroup ceph</span><br><span class="line"></span><br><span class="line">Sep <span class="number">12</span> <span class="number">13</span>:<span class="number">20</span>:<span class="number">06</span> lab8106 systemd[<span class="number">1</span>]: Started Ceph rados gateway.</span><br><span class="line">Sep <span class="number">12</span> <span class="number">13</span>:<span class="number">20</span>:<span class="number">06</span> lab8106 systemd[<span class="number">1</span>]: Starting Ceph rados gateway...</span><br><span class="line">[root@lab8106 ~]<span class="comment"># systemctl status ceph-radosgw@radosgw2</span></span><br><span class="line">● ceph-radosgw@radosgw2.service - Ceph rados gateway</span><br><span class="line">   Loaded: loaded (/usr/lib/systemd/system/ceph-radosgw@.service; disabled; vendor preset: disabled)</span><br><span class="line">   Active: active (running) since Mon <span class="number">2016</span>-<span class="number">09</span>-<span class="number">12</span> <span class="number">13</span>:<span class="number">20</span>:<span class="number">09</span> CST; <span class="number">1</span>min <span class="number">3</span>s ago</span><br><span class="line"> Main PID: <span class="number">20696</span> (radosgw)</span><br><span class="line">   CGroup: /system.slice/system-ceph\x2dradosgw.slice/ceph-radosgw@radosgw2.service</span><br><span class="line">           └─<span class="number">20696</span> /usr/bin/radosgw <span class="operator">-f</span> --cluster ceph --name client.radosgw2 --setuser ceph --setgroup ceph</span><br><span class="line"></span><br><span class="line">Sep <span class="number">12</span> <span class="number">13</span>:<span class="number">20</span>:<span class="number">09</span> lab8106 systemd[<span class="number">1</span>]: Started Ceph rados gateway.</span><br><span class="line">Sep <span class="number">12</span> <span class="number">13</span>:<span class="number">20</span>:<span class="number">09</span> lab8106 systemd[<span class="number">1</span>]: Starting Ceph rados gateway...</span><br></pre></td></tr></table></figure>
-<h3 id="5-4_检查端口是否启动">5.4 检查端口是否启动</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># netstat -tunlp|grep radosgw</span></span><br><span class="line">tcp        <span class="number">0</span>      <span class="number">0</span> <span class="number">0.0</span>.<span class="number">0.0</span>:<span class="number">7481</span>            <span class="number">0.0</span>.<span class="number">0.0</span>:*               LISTEN      <span class="number">20509</span>/radosgw       </span><br><span class="line">tcp        <span class="number">0</span>      <span class="number">0</span> <span class="number">0.0</span>.<span class="number">0.0</span>:<span class="number">7482</span>            <span class="number">0.0</span>.<span class="number">0.0</span>:*               LISTEN      <span class="number">20696</span>/radosgw</span><br></pre></td></tr></table></figure>
-<p>可以看到服务和端口都能正常的启动了</p>
-<p>好了，关于centos7下jewel版本的radosgw配置的启动已经介绍完了，这里不涉及更多深入的东西，其他的东西可以参照其他文档配置即可，这个地方只是对启动服务这里专门的介绍一下</p>
-<h2 id="六、总结">六、总结</h2><p>从上面的过程可以看出大致的流程如下</p>
-<ul>
-<li>安装软件</li>
-<li>启动服务</li>
-<li>检查服务状态</li>
-<li>检查服务端口</li>
-</ul>
-<p>这些很多都是基础的做法，在centos7下面虽然比6做了一些改变，但是掌握了一些通用的排查方法后，是很容易举一反三的，因为看到有新手不熟悉启动，所以写下这篇文章，自己因为也没经常用，所以也写下当个笔记了</p>
-<h2 id="七、For_me">七、For me</h2><p>如果本文有帮助到你，愿意欢迎进入<a href="http://www.zphj1987.com/payforask" target="_blank" rel="external">打赏</a></p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/radosgw/gateway1.png" alt="rgw"><br></center></p>
-<h2 id="一、前言">一、前言</h2><p>本篇介绍了centos7下jewel版本的radosgw配置，这里的配置是指将服务能够正常起来，不涉及到S3的配置，以及其他的更多的配置,radosgw后面的gw就是gateway的意思，也就是我们说的网关的意思，本篇中所提及的实例也就是网关的意思，说实例是将每个单独的网关更细化一点的说法</p>
-<p>很多人不清楚在centos7下面怎么去控制这个radosgw网关的服务的控制，这个地方是会去读取配置文件的，所以配置文件得写正确</p>]]>
     
     </summary>
     

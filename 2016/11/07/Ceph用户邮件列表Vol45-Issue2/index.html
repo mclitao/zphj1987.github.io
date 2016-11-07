@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Ceph用户邮件列表Vol45-Issue2 | zphj1987&#39;Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="ceph Vol 45 Issue 21.CephFS: No space left on device
+After upgrading to 10.2.3 we frequently see messages like
+‘rm: cannot remove ‘…’: No space left on device
+The folders we are trying to delete conta">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ceph用户邮件列表Vol45-Issue2">
+<meta property="og:url" content="http://www.zphj1987.com/2016/11/07/Ceph用户邮件列表Vol45-Issue2/index.html">
+<meta property="og:site_name" content="zphj1987'Blog">
+<meta property="og:description" content="ceph Vol 45 Issue 21.CephFS: No space left on device
+After upgrading to 10.2.3 we frequently see messages like
+‘rm: cannot remove ‘…’: No space left on device
+The folders we are trying to delete conta">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Ceph用户邮件列表Vol45-Issue2">
+<meta name="twitter:description" content="ceph Vol 45 Issue 21.CephFS: No space left on device
+After upgrading to 10.2.3 we frequently see messages like
+‘rm: cannot remove ‘…’: No space left on device
+The folders we are trying to delete conta">
+  
+    <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png">
+  
+  <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/style.css" type="text/css">
+   <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/asciinema/asciinema-player.css" type="text/css">
+  
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?252ba55374ee0e63b03196973bb9b776";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">zphj1987</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">但行好事，莫问前程</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						
+						<li>关于我</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+							<li><a href="/askme">自动问答</a></li>
+				        
+							<li><a href="/instagram">图片</a></li>
+				        
+							<li><a href="/payforask">打赏</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="https://github.com/zphj1987" title="github">github</a>
+					        
+								<a class="weibo" target="_blank" href=" http://weibo.com/zphj1987" title="weibo">weibo</a>
+					        
+								<a class="rss" target="_blank" href="http://www.zphj1987.com/atom.xml" title="rss">rss</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/ceph/" style="font-size: 20px;">ceph</a><a href="/tags/instagram/" style="font-size: 10px;">instagram</a><a href="/tags/iptables/" style="font-size: 10px;">iptables</a><a href="/tags/linux/" style="font-size: 18.33px;">linux</a><a href="/tags/momotan/" style="font-size: 10px;">momotan</a><a href="/tags/nginx/" style="font-size: 13.33px;">nginx</a><a href="/tags/samba/" style="font-size: 10px;">samba</a><a href="/tags/ubuntu/" style="font-size: 16.67px;">ubuntu</a><a href="/tags/windows/" style="font-size: 10px;">windows</a><a href="/tags/zabbix/" style="font-size: 10px;">zabbix</a><a href="/tags/其他/" style="font-size: 10px;">其他</a><a href="/tags/内核/" style="font-size: 13.33px;">内核</a><a href="/tags/操作系统/" style="font-size: 11.67px;">操作系统</a><a href="/tags/杂七杂八/" style="font-size: 13.33px;">杂七杂八</a><a href="/tags/注册码/" style="font-size: 10px;">注册码</a><a href="/tags/测试工具/" style="font-size: 11.67px;">测试工具</a><a href="/tags/监控/" style="font-size: 10px;">监控</a><a href="/tags/网卡/" style="font-size: 13.33px;">网卡</a><a href="/tags/脚本/" style="font-size: 15px;">脚本</a><a href="/tags/高可用/" style="font-size: 10px;">高可用</a>
+					</div>
+				</section>
+				
+				
+				
+
+				
+				
+				<section class="switch-part switch-part3">
+				
+					<div id="js-aboutme">1987 武汉 存储行业 QQ:199383004</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">zphj1987</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">zphj1987</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">但行好事，莫问前程</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+					<li><a href="/askme">自动问答</a></li>
+		        
+					<li><a href="/instagram">图片</a></li>
+		        
+					<li><a href="/payforask">打赏</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/zphj1987" title="github">github</a>
+			        
+						<a class="weibo" target="_blank" href=" http://weibo.com/zphj1987" title="weibo">weibo</a>
+			        
+						<a class="rss" target="_blank" href="http://www.zphj1987.com/atom.xml" title="rss">rss</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-Ceph用户邮件列表Vol45-Issue2" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/11/07/Ceph用户邮件列表Vol45-Issue2/" class="article-date">
+  	<time datetime="2016-11-07T05:26:01.000Z" itemprop="datePublished">2016-11-07</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Ceph用户邮件列表Vol45-Issue2
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+        
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="ceph_Vol_45_Issue_2">ceph Vol 45 Issue 2</h2><h3 id="1-CephFS:_No_space_left_on_device">1.CephFS: No space left on device</h3><blockquote>
+<p>After upgrading to 10.2.3 we frequently see messages like</p>
+<p>‘rm: cannot remove ‘…’: No space left on device</p>
+<p>The folders we are trying to delete contain approx. 50K files 193 KB each.</p>
+<p>The cluster state and storage available are both OK:</p>
+<p>   cluster 98d72518-6619-4b5c-b148-9a781ef13bcb<br>     health HEALTH_WARN<br>            mds0: Client XXX.XXX.XXX.XXX failing to respond to cache pressure<br>            mds0: Client XXX.XXX.XXX.XXX failing to respond to cache pressure<br>            mds0: Client XXX.XXX.XXX.XXX failing to respond to cache pressure<br>            mds0: Client XXX.XXX.XXX.XXX failing to respond to cache pressure<br>            mds0: Client XXX.XXX.XXX.XXX failing to respond to cache pressure<br>     monmap e1: 1 mons at {000-s-ragnarok=XXX.XXX.XXX.XXX:6789/0}<br>            election epoch 11, quorum 0 000-s-ragnarok<br>      fsmap e62643: 1/1/1 up {0=000-s-ragnarok=up:active}<br>     osdmap e20203: 16 osds: 16 up, 16 in<br>            flags sortbitwise<br>      pgmap v15284654: 1088 pgs, 2 pools, 11263 GB data, 40801 kobjects<br>            23048 GB used, 6745 GB / 29793 GB avail<br>                1085 active+clean<br>                   2 active+clean+scrubbing<br>                   1 active+clean+scrubbing+deep</p>
+</blockquote>
+<a id="more"></a>
+<blockquote>
+<p>Has anybody experienced this issue so far?</p>
+</blockquote>
+<p>这个问题是作者在升级了一个集群以后（jewel 10.2.3），做删除的时候，发现提示了 No space left on device，按正常的理解做删除不会出现提示空间不足</p>
+<p>这个地方的原因是，有一个参数会对目录的entry做一个最大值的控制<code>mds_bal_fragment_size_max</code>,而这个参数实际上在做删除操作的时候，当文件被unlink的时候，被放入待删除区的时候，这个也是被限制住的，随意需要调整这个参数，如果有上百万的文件被等待删除的时候，可能就会出现这个情况,并且出现 <code>failing to respond to cache pressure</code> 我们根据自己的需要去设置这个值</p>
+<p>这个地方可以用命令来监控mds的当前状态<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 mnt]<span class="comment"># ceph daemonperf mds.lab8106</span></span><br><span class="line">-----mds------ --mds_server-- ---objecter--- -----mds_cache----- ---mds_<span class="built_in">log</span>---- </span><br><span class="line">rlat inos caps|hsr  hcs  hcr |writ <span class="built_in">read</span> actv|recd recy stry purg|segs evts subm|</span><br><span class="line">  <span class="number">0</span>  <span class="number">163</span>k   <span class="number">5</span> |  <span class="number">0</span>    <span class="number">0</span>    <span class="number">0</span> |  <span class="number">0</span>    <span class="number">0</span>   <span class="number">36</span> |  <span class="number">0</span>    <span class="number">0</span>  <span class="number">145</span>k   <span class="number">0</span> | <span class="number">33</span>   <span class="number">29</span>k   <span class="number">0</span> </span><br><span class="line">  <span class="number">0</span>  <span class="number">163</span>k   <span class="number">5</span> |  <span class="number">0</span>    <span class="number">0</span>    <span class="number">0</span> |  <span class="number">6</span>    <span class="number">0</span>   <span class="number">34</span> |  <span class="number">0</span>    <span class="number">0</span>  <span class="number">145</span>k   <span class="number">6</span> | <span class="number">33</span>   <span class="number">29</span>k   <span class="number">6</span> </span><br><span class="line">  <span class="number">0</span>  <span class="number">163</span>k   <span class="number">5</span> |  <span class="number">0</span>    <span class="number">0</span>    <span class="number">0</span> | <span class="number">24</span>    <span class="number">0</span>   <span class="number">32</span> |  <span class="number">0</span>    <span class="number">0</span>  <span class="number">145</span>k  <span class="number">24</span> | <span class="number">32</span>   <span class="number">29</span>k  <span class="number">24</span> </span><br><span class="line">  <span class="number">0</span>  <span class="number">163</span>k   <span class="number">5</span> |  <span class="number">0</span>    <span class="number">0</span>    <span class="number">0</span> | <span class="number">42</span>    <span class="number">0</span>   <span class="number">32</span> |  <span class="number">0</span>    <span class="number">0</span>  <span class="number">145</span>k  <span class="number">42</span> | <span class="number">32</span>   <span class="number">29</span>k  <span class="number">42</span> </span><br><span class="line">  <span class="number">0</span>  <span class="number">159</span>k   <span class="number">5</span> |  <span class="number">0</span>    <span class="number">0</span>    <span class="number">0</span> |<span class="number">972</span>    <span class="number">0</span>   <span class="number">32</span> |  <span class="number">0</span>    <span class="number">0</span>  <span class="number">144</span>k <span class="number">970</span> | <span class="number">33</span>   <span class="number">27</span>k <span class="number">971</span> </span><br><span class="line">  <span class="number">0</span>  <span class="number">159</span>k   <span class="number">5</span> |  <span class="number">0</span>    <span class="number">0</span>    <span class="number">0</span> |<span class="number">905</span>    <span class="number">0</span>   <span class="number">32</span> |  <span class="number">0</span>    <span class="number">0</span>  <span class="number">143</span>k <span class="number">905</span> | <span class="number">31</span>   <span class="number">28</span>k <span class="number">906</span> </span><br><span class="line">  <span class="number">0</span>  <span class="number">159</span>k   <span class="number">5</span> |  <span class="number">0</span>    <span class="number">0</span>    <span class="number">0</span> |<span class="number">969</span>    <span class="number">0</span>   <span class="number">32</span> |  <span class="number">0</span>    <span class="number">0</span>  <span class="number">142</span>k <span class="number">969</span> | <span class="number">32</span>   <span class="number">29</span>k <span class="number">970</span> </span><br><span class="line">  <span class="number">0</span>  <span class="number">159</span>k   <span class="number">5</span> |  <span class="number">0</span>    <span class="number">0</span>    <span class="number">0</span> |<span class="number">601</span>    <span class="number">0</span>   <span class="number">31</span> |  <span class="number">0</span>    <span class="number">0</span>  <span class="number">141</span>k <span class="number">601</span> | <span class="number">33</span>   <span class="number">29</span>k <span class="number">602</span></span><br></pre></td></tr></table></figure></p>
+<p>这个地方还有一个硬链接删除以后没有释放stry的问题，最新版的master里面已经合进去了代码（<a href="https://github.com/ukernel/ceph/commit/edc84d905a1f0e3c504f427cc4693c7a98561e7c" target="_blank" rel="external">scan_link</a>）</p>
+<p>修复过程如下<br>执行flush MDS journal<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph daemon mds.xxx flush journal</span><br></pre></td></tr></table></figure></p>
+<p>停止掉所有mds<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">stop all mds</span><br></pre></td></tr></table></figure></p>
+<p>执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cephfs-data-scan scan_links<span class="string">'</span></span><br></pre></td></tr></table></figure></p>
+<p>重启mds<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">restart mds</span><br></pre></td></tr></table></figure></p>
+<p>执行命令<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">run <span class="string">'ceph daemon mds.x scrub_path / recursive repair'</span></span><br></pre></td></tr></table></figure></p>
+<p>执行完了以后去对目录进行一次ll，可以看到mds_cache的stry的就会被清理干净了</p>
+<p>这个问题就可以解决了,实际测试中在换了新版本以后，重启后然后进行目录的ll，也能清空stry</p>
+<h3 id="变更记录">变更记录</h3><table>
+<thead>
+<tr>
+<th style="text-align:center">Why</th>
+<th style="text-align:center">Who</th>
+<th style="text-align:center">When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">创建</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2016-11-07</td>
+</tr>
+</tbody>
+</table>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2016/11/04/Ceph用户邮件列表Vol45-Issue1/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Ceph用户邮件列表Vol45-Issue1</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到：</span>
+		<a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+		<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="Ceph用户邮件列表Vol45-Issue2" data-title="Ceph用户邮件列表Vol45-Issue2" data-url="http://www.zphj1987.com/2016/11/07/Ceph用户邮件列表Vol45-Issue2/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"zphj1987"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2016 zphj1987
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/fancybox/jquery.fancybox.css" type="text/css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: undefined,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: true
+	}
+</script>
+<script src="http://7xweck.com1.z0.glb.clouddn.com/js/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="http://7xweck.com1.z0.glb.clouddn.com/js/main.js" type="text/javascript"></script>
+<script src="http://7xweck.com1.z0.glb.clouddn.com/asciinema/asciinema-player.js" type="text/javascript"></script>
+
+
+  </div>
+</body>
+</html>
