@@ -4,7 +4,7 @@
   <subtitle><![CDATA[但行好事，莫问前程]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2016-11-08T08:33:55.125Z</updated>
+  <updated>2016-11-08T09:40:46.095Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -13,6 +13,54 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[Ceph用户邮件列表Vol45-Issue3]]></title>
+    <link href="http://www.zphj1987.com/2016/11/08/Ceph%E7%94%A8%E6%88%B7%E9%82%AE%E4%BB%B6%E5%88%97%E8%A1%A8Vol45-Issue3/"/>
+    <id>http://www.zphj1987.com/2016/11/08/Ceph用户邮件列表Vol45-Issue3/</id>
+    <published>2016-11-08T09:26:01.000Z</published>
+    <updated>2016-11-08T09:40:46.095Z</updated>
+    <content type="html"><![CDATA[<h2 id="ceph_Vol_45_Issue_3">ceph Vol 45 Issue 3</h2><h3 id="1-Crash_in_ceph_readdir-">1.Crash in ceph_readdir.</h3><blockquote>
+<p>Hello, </p>
+<p>I’ve been investigating the following crash with cephfs:<br>···<br>According to the state of the ceph_inoide_info this means that<br>ceph_dir_is_complete_ordered would return true and the second condition<br>should also be true since ptr_pos is held in r12 and the dir size is 26496.<br>So the dentry being passed should be the 2953 % 512 = 393 in the<br>cache_ctl.dentries array.<br>Unfortunately my crashdump excldues the page cache pages and I cannot really see<br>what are the contents of the dentries array. </p>
+</blockquote>
+<a id="more"></a>
+<blockquote>
+<p>Could you provide any info on how to further debug this </p>
+</blockquote>
+<p>作者在使用cephfs的时候遇上了崩溃的情况，readdir的操作</p>
+<p>Yan, Zheng已经对这个bug进行了修复</p>
+<p><a href="https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/commit/?id=af5e5eb574776cdf1b756a27cc437bff257e22fe" target="_blank" rel="external">https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/commit/?id=af5e5eb574776cdf1b756a27cc437bff257e22fe</a><br><a href="https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/commit/?id=a3d714c33632ef6bfdfaacc74ae6ba297b4c5820" target="_blank" rel="external">https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/commit/?id=a3d714c33632ef6bfdfaacc74ae6ba297b4c5820</a></p>
+<p>但是这个是提交到Linux kernel的4.6的分支里面去了的，所以目前从官方版本来说是4.6或者更新的版本才会解决</p>
+<p>这个问题只能是说遇到了再升级内核了</p>
+<h3 id="变更记录">变更记录</h3><table>
+<thead>
+<tr>
+<th style="text-align:center">Why</th>
+<th style="text-align:center">Who</th>
+<th style="text-align:center">When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">创建</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2016-11-08</td>
+</tr>
+</tbody>
+</table>
+]]></content>
+    <summary type="html">
+    <![CDATA[<h2 id="ceph_Vol_45_Issue_3">ceph Vol 45 Issue 3</h2><h3 id="1-Crash_in_ceph_readdir-">1.Crash in ceph_readdir.</h3><blockquote>
+<p>Hello, </p>
+<p>I’ve been investigating the following crash with cephfs:<br>···<br>According to the state of the ceph_inoide_info this means that<br>ceph_dir_is_complete_ordered would return true and the second condition<br>should also be true since ptr_pos is held in r12 and the dir size is 26496.<br>So the dentry being passed should be the 2953 % 512 = 393 in the<br>cache_ctl.dentries array.<br>Unfortunately my crashdump excldues the page cache pages and I cannot really see<br>what are the contents of the dentries array. </p>
+</blockquote>]]>
+    
+    </summary>
+    
+      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[Ceph用户邮件列表Vol45-Issue2]]></title>
@@ -1169,130 +1217,6 @@
     <summary type="html">
     <![CDATA[<p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/rebuild/rebuild-shot.png" alt="rebuild"><br></center><br>关于mon的数据的问题，一般正常情况下都是配置的3个mon的，但是还是有人会担心 Mon 万一三个同时都挂掉了怎么办，那么集群所有的数据是不是都丢了，关于后台真实数据恢复，有去后台取对象，然后一个个拼接起来的方案，这个是确定可以成功的，但是这个方法对于生产的集群耗时巨大，并且需要导出数据，然后又配置新的集群，工程比较耗大，考虑到这个问题，Ceph 的中国（Redhat）的一位开发者 <a href="https://github.com/tchaikov">tchaikov</a> 就写了一个新的工具，来对损坏的MON的数据进行原集群的重构，这个比起其他方案要好很多，本篇将讲述怎么使用这个工具，代码已经合并到 Ceph 的master分支当中去了</p>
 <p>关于这个工具相关的<a href="http://tracker.ceph.com/issues/17292">issue</a></p>]]>
-    
-    </summary>
-    
-      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[替换OSD操作的优化与分析]]></title>
-    <link href="http://www.zphj1987.com/2016/09/19/%E6%9B%BF%E6%8D%A2OSD%E6%93%8D%E4%BD%9C%E7%9A%84%E4%BC%98%E5%8C%96%E4%B8%8E%E5%88%86%E6%9E%90/"/>
-    <id>http://www.zphj1987.com/2016/09/19/替换OSD操作的优化与分析/</id>
-    <published>2016-09-19T02:56:54.000Z</published>
-    <updated>2016-09-19T03:07:09.282Z</updated>
-    <content type="html"><![CDATA[<p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/reolaceosd/terminal.png" alt="replaceosd"><br></center></p>
-<h2 id="一、前言">一、前言</h2><p>之前有写过一篇<a href="http://www.zphj1987.com/2016/01/12/%E5%88%A0%E9%99%A4osd%E7%9A%84%E6%AD%A3%E7%A1%AE%E6%96%B9%E5%BC%8F/" target="_blank" rel="external">删除OSD的正确方式</a>，里面只是简单的讲了下删除的方式怎样能减少迁移量，本篇属于一个扩展，讲述了 Ceph 运维当中经常出现的坏盘提换盘的步骤的优化</p>
-<p>基础环境两台主机每台主机8个 OSD，一共 16 个 OSD，副本设置为2，PG 数设置为800，计算下来平均每个 OSD 上的 P G数目为100个，本篇将通过数据来分析不同的处理方法的差别</p>
-<p>开始测试前先把环境设置为 <code>noout</code>，然后通过停止 OSD 来模拟 OSD 出现了异常，之后进行不同处理方法<br><a id="more"></a></p>
-<h2 id="二、测试三种方法">二、测试三种方法</h2><h3 id="方法一：首先_out_一个_OSD，然后剔除_OSD，然后增加_OSD">方法一：首先 out 一个 OSD，然后剔除 OSD，然后增加 OSD</h3><ol>
-<li>停止指定 OSD 进程</li>
-<li>out 指定 OSD</li>
-<li>crush remove 指定 OSD</li>
-<li>增加一个新的 OSD</li>
-</ol>
-<p>一般生产环境会设置为 <code>noout</code>，当然不设置也可以，那就交给程序去控制节点的 out，默认是在进程停止后的五分钟，总之这个地方如果有 out 触发，不管是人为触发，还是自动触发数据流是一定的，我们这里为了便于测试，使用的是人为触发，上面提到的预制环境就是设置的 <code>noout</code></p>
-<p>开始测试前获取最原始的分布<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ceph pg dump pgs|awk '&#123;print $1,$15&#125;'|grep -v pg   &gt; pg1.txt</span></span><br></pre></td></tr></table></figure></p>
-<p>获取当前的 PG 分布,保存到文件pg1.txt，这个 PG 分布记录是 PG 所在的 OSD，记录下来，方便后面进行比较，从而得出需要迁移的数据 </p>
-<h4 id="停止指定的_OSD_进程">停止指定的 OSD 进程</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># systemctl stop ceph-osd@15</span></span><br></pre></td></tr></table></figure>
-<p>停止进程并不会触发迁移，只会引起 PG 状态的变化，比如原来主 PG 在停止的 OSD 上，那么停止掉 OSD 以后，原来的副本的那个 PG 就会角色升级为主 PG 了</p>
-<h4 id="out_掉一个_OSD">out 掉一个 OSD</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ceph osd out 15</span></span><br></pre></td></tr></table></figure>
-<p>在触发 out 以前，当前的 PG 状态应该有 <code>active+undersized+degraded</code>,触发 out 以后，所有的 PG 的状态应该会慢慢变成 <code>active+clean</code>,等待集群正常后，再次查询当前的 PG 分布状态<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ceph pg dump pgs|awk '&#123;print $1,$15&#125;'|grep -v pg   &gt; pg2.txt</span></span><br></pre></td></tr></table></figure></p>
-<p>保存当前的 PG 分布为pg2.txt<br>比较 out 前后的 PG 的变化情况，下面是比较具体的变化情况，只列出变化的部分<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># diff -y -W 100 pg1.txt pg2.txt  --suppress-common-lines</span></span><br></pre></td></tr></table></figure></p>
-<p>这里我们关心的是变动的数目，只统计变动的 PG 的数目<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># diff -y -W 100 pg1.txt pg2.txt  --suppress-common-lines|wc -l</span></span><br><span class="line"><span class="number">102</span></span><br></pre></td></tr></table></figure></p>
-<p>第一次 out 以后有102个 PG 的变动,这个数字记住，后面的统计会用到</p>
-<h4 id="从_crush_里面删除_OSD">从 crush 里面删除 OSD</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ceph osd crush remove osd.15</span></span><br></pre></td></tr></table></figure>
-<p>crush 删除以后同样会触发迁移，等待 PG 的均衡，也就是全部变成 <code>active+clean</code> 状态<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ceph pg dump pgs|awk '&#123;print $1,$15&#125;'|grep -v pg   &gt; pg3.txt</span></span><br></pre></td></tr></table></figure></p>
-<p>获取当前的 PG 分布的状态<br>现在来比较 crush remove 前后的 PG 变动<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># diff -y -W 100 pg2.txt pg3.txt  --suppress-common-lines|wc -l</span></span><br><span class="line"><span class="number">137</span></span><br></pre></td></tr></table></figure></p>
-<p>我们重新加上新的 OSD<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ceph-deploy osd prepare lab8107:/dev/sdi</span></span><br><span class="line">[root@lab8106 ~]<span class="comment"># ceph-deploy osd activate lab8107:/dev/sdi1</span></span><br></pre></td></tr></table></figure></p>
-<p>加完以后统计当前的新的 PG 状态<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ceph pg dump pgs|awk '&#123;print $1,$15&#125;'|grep -v pg   &gt; pg4.txt</span></span><br></pre></td></tr></table></figure></p>
-<p>比较前后的变化<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># diff -y -W 100 pg3.txt pg4.txt  --suppress-common-lines|wc -l</span></span><br><span class="line"><span class="number">167</span></span><br></pre></td></tr></table></figure></p>
-<p>整个替换流程完毕，统计上面的 PG 总的变动</p>
-<blockquote>
-<p>102 +137 +167 = 406</p>
-</blockquote>
-<p>也就是按这个方法的变动为406个 PG，因为是只有双主机，里面可能存在某些放大问题，这里不做深入的讨论，因为我的三组测试环境都是一样的情况，只做横向比较，原理相通，这里是用数据来分析出差别</p>
-<h3 id="方法二：先crush_reweight_0_，然后out，然后再增加osd">方法二：先crush reweight 0 ，然后out，然后再增加osd</h3><p>首先恢复环境为测试前的环境<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ceph pg dump pgs|awk '&#123;print $1,$15&#125;'|grep -v pg   &gt; 2pg1.txt</span></span><br></pre></td></tr></table></figure></p>
-<p>记录最原始的 PG 分布情况</p>
-<h4 id="crush_reweight_指定OSD">crush reweight 指定OSD</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ceph osd crush reweight osd.16 0</span></span><br><span class="line">reweighted item id <span class="number">16</span> name <span class="string">'osd.16'</span> to <span class="number">0</span> <span class="keyword">in</span> crush map</span><br></pre></td></tr></table></figure>
-<p>等待平衡了以后记录当前的 PG 分布状态<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ceph pg dump pgs|awk '&#123;print $1,$15&#125;'|grep -v pg   &gt; 2pg2.txt</span></span><br><span class="line">dumped pgs <span class="keyword">in</span> format plain</span><br></pre></td></tr></table></figure></p>
-<p>比较前后的变动<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># diff -y -W 100 2pg1.txt 2pg2.txt  --suppress-common-lines|wc -l</span></span><br><span class="line"><span class="number">166</span></span><br></pre></td></tr></table></figure></p>
-<h4 id="crush_remove_指定_OSD">crush remove 指定 OSD</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ceph osd crush remove osd.16</span></span><br><span class="line">removed item id <span class="number">16</span> name <span class="string">'osd.16'</span> from crush map</span><br></pre></td></tr></table></figure>
-<p>这个地方因为上面 crush 已经是0了所以删除也不会引起 PG 变动<br>然后直接 <code>ceph osd rm osd.16</code> 同样没有 PG 变动</p>
-<h4 id="增加新的_OSD">增加新的 OSD</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment">#ceph-deploy osd prepare lab8107:/dev/sdi</span></span><br><span class="line">[root@lab8106 ~]<span class="comment">#ceph-deploy osd activate lab8107:/dev/sdi1</span></span><br></pre></td></tr></table></figure>
-<p>等待平衡以后获取当前的 PG 分布<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># ceph pg dump pgs|awk '&#123;print $1,$15&#125;'|grep -v pg   &gt; 2pg3.txt</span></span><br></pre></td></tr></table></figure></p>
-<p>来比较前后的变化<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># diff -y -W 100 2pg2.txt 2pg3.txt --suppress-common-lines|wc -l</span></span><br><span class="line"><span class="number">159</span></span><br></pre></td></tr></table></figure></p>
-<p>总的 PG 变动为</p>
-<blockquote>
-<p>166+159=325</p>
-</blockquote>
-<h3 id="方法3：开始做norebalance，然后做crush_remove，然后做add">方法3：开始做norebalance，然后做crush remove，然后做add</h3><p>恢复环境为初始环境，然后获取当前的 PG 分布<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ceph pg dump pgs|awk '&#123;print $1,$15&#125;'|grep -v pg   &gt; 3pg1.txt</span></span><br><span class="line">dumped pgs <span class="keyword">in</span> format plain</span><br></pre></td></tr></table></figure></p>
-<h4 id="给集群做多种标记，防止迁移">给集群做多种标记，防止迁移</h4><p>设置为 norebalance，nobackfill，norecover,后面是有地方会解除这些设置的<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ceph osd set norebalance</span></span><br><span class="line"><span class="built_in">set</span> norebalance</span><br><span class="line">[root@lab8106 ~]<span class="comment"># ceph osd set nobackfill</span></span><br><span class="line"><span class="built_in">set</span> nobackfill</span><br><span class="line">[root@lab8106 ~]<span class="comment"># ceph osd set norecover</span></span><br><span class="line"><span class="built_in">set</span> norecover</span><br></pre></td></tr></table></figure></p>
-<h4 id="crush_reweight_指定_OSD">crush reweight 指定 OSD</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ceph osd crush reweight osd.15 0</span></span><br><span class="line">reweighted item id <span class="number">15</span> name <span class="string">'osd.15'</span> to <span class="number">0</span> <span class="keyword">in</span> crush map</span><br></pre></td></tr></table></figure>
-<p>这个地方因为已经做了上面的标记，所以只会出现状态变化，而没有真正的迁移，我们也先统计一下<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ceph pg dump pgs|awk '&#123;print $1,$15&#125;'|grep -v pg   &gt; 3pg2.txt</span></span><br><span class="line">[root@lab8106 ~]<span class="comment"># diff -y -W 100 3pg1.txt 3pg2.txt --suppress-common-lines|wc -l</span></span><br><span class="line"><span class="number">158</span></span><br></pre></td></tr></table></figure></p>
-<p>注意这里只是计算了，并没有真正的数据变动，可以通过监控两台的主机的网络流量来判断,所以这里的变动并不用计算到需要迁移的 PG 数目当中</p>
-<h4 id="crush_remove_指定_OSD-1">crush remove 指定 OSD</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment">#ceph osd crush remove osd.15</span></span><br></pre></td></tr></table></figure>
-<h4 id="删除指定的_OSD">删除指定的 OSD</h4><p>删除以后同样是没有 PG 的变动的<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph osd rm osd.<span class="number">15</span></span><br></pre></td></tr></table></figure></p>
-<p>这个地方有个小地方需要注意一下，不做 ceph auth del osd.15 把15的编号留着，这样好判断前后的 PG 的变化，不然相同的编号，就无法判断是不是做了迁移了</p>
-<h4 id="增加新的_OSD-1">增加新的 OSD</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment">#ceph-deploy osd prepare lab8107:/dev/sdi</span></span><br><span class="line">[root@lab8106 ~]<span class="comment">#ceph-deploy osd activate lab8107:/dev/sdi1</span></span><br></pre></td></tr></table></figure>
-<p>我的环境下，新增的 OSD 的编号为16了</p>
-<h4 id="解除各种标记">解除各种标记</h4><p>我们放开上面的设置，看下数据的变动情况<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># ceph osd unset norebalance</span></span><br><span class="line"><span class="built_in">unset</span> norebalance</span><br><span class="line">[root@lab8106 ceph]<span class="comment"># ceph osd unset nobackfill</span></span><br><span class="line"><span class="built_in">unset</span> nobackfill</span><br><span class="line">[root@lab8106 ceph]<span class="comment"># ceph osd unset norecover</span></span><br><span class="line"><span class="built_in">unset</span> norecover</span><br></pre></td></tr></table></figure></p>
-<p>设置完了后数据才真正开始变动了，可以通过观察网卡流量看到，来看下最终pg变化<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># ceph pg dump pgs|awk '&#123;print $1,$15&#125;'|grep -v pg   &gt; 3pg3.txt</span></span><br><span class="line">dumped pgs <span class="keyword">in</span> format plain</span><br><span class="line">[root@lab8106 ~]<span class="comment"># diff -y -W 100 3pg1.txt 3pg3.txt --suppress-common-lines|wc -l</span></span><br><span class="line"><span class="number">195</span></span><br></pre></td></tr></table></figure></p>
-<p>这里我们只需要跟最开始的 PG 分布状况进行比较就可以了，因为中间的状态实际上都没有做数据的迁移，所以不需要统计进去，可以看到这个地方动了195个 PG<br>总共的 PG 迁移量为</p>
-<blockquote>
-<p>195</p>
-</blockquote>
-<h2 id="三、数据汇总">三、数据汇总</h2><p>现在通过表格来对比下三种方法的迁移量的比较(括号内为迁移 PG 数目)</p>
-<table>
-<thead>
-<tr>
-<th style="text-align:center">　</th>
-<th style="text-align:left">方法一</th>
-<th style="text-align:left">方法二</th>
-<th style="text-align:left">方法三</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">所做操作</td>
-<td style="text-align:left">stop osd (0)<br>out osd(102)<br>crush remove osd (137)<br> add osd(167)</td>
-<td style="text-align:left">crush reweight osd(166)<br>out osd(0)<br>crush remove osd (0)<br>add osd(159)</td>
-<td style="text-align:left">set 标记(0)<br>crush reweight osd(0)<br>crush remove osd (0)<br>add osd(195)</td>
-</tr>
-<tr>
-<td style="text-align:center">PG迁移数量</td>
-<td style="text-align:left">406</td>
-<td style="text-align:left">325</td>
-<td style="text-align:left">195</td>
-</tr>
-</tbody>
-</table>
-<p>可以很清楚的看到三种不同的方法，最终的触发的迁移量是不同的，处理的好的话，能节约差不多一半的迁移的数据量，这个对于生产环境来说还是很好的，关于这个建议先在测试环境上进行测试，然后再操作，上面的操作只要不对磁盘进行格式化，操作都是可逆的，也就是可以比较放心的做，记住所做的操作，每一步都做完都去检查 PG 的状态是否是正常的</p>
-<h2 id="四、总结">四、总结</h2><p>从我自己的操作经验来看，最开始是用的第一种方法，后面就用第二种方法减少了一部分迁移量，最近看到资料写做剔除OSD的时候可以关闭迁移防止无效的过多的迁移，然后就测试了一下，确实能够减少不少的迁移量，这个减少在某些场景下还是很好的，当然如果不太熟悉，用哪一种都可以，最终能达到的目的是一样的</p>
-<h2 id="五、变更记录">五、变更记录</h2><table>
-<thead>
-<tr>
-<th style="text-align:center">Why</th>
-<th style="text-align:center">Who</th>
-<th style="text-align:center">When</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">创建</td>
-<td style="text-align:center">武汉-运维-磨渣</td>
-<td style="text-align:center">2016-09-19</td>
-</tr>
-</tbody>
-</table>
-<h2 id="六、For_me">六、For me</h2><p>如果本文有帮助到你，愿意欢迎进入<a href="http://www.zphj1987.com/payforask" target="_blank" rel="external">打赏</a></p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/reolaceosd/terminal.png" alt="replaceosd"><br></center></p>
-<h2 id="一、前言">一、前言</h2><p>之前有写过一篇<a href="http://www.zphj1987.com/2016/01/12/%E5%88%A0%E9%99%A4osd%E7%9A%84%E6%AD%A3%E7%A1%AE%E6%96%B9%E5%BC%8F/">删除OSD的正确方式</a>，里面只是简单的讲了下删除的方式怎样能减少迁移量，本篇属于一个扩展，讲述了 Ceph 运维当中经常出现的坏盘提换盘的步骤的优化</p>
-<p>基础环境两台主机每台主机8个 OSD，一共 16 个 OSD，副本设置为2，PG 数设置为800，计算下来平均每个 OSD 上的 P G数目为100个，本篇将通过数据来分析不同的处理方法的差别</p>
-<p>开始测试前先把环境设置为 <code>noout</code>，然后通过停止 OSD 来模拟 OSD 出现了异常，之后进行不同处理方法<br>]]>
     
     </summary>
     

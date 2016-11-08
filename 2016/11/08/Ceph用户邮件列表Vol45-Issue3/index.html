@@ -3,17 +3,23 @@
 <head>
   <meta charset="utf-8">
   
-  <title>zphj1987&#39;Blog</title>
+  <title>Ceph用户邮件列表Vol45-Issue3 | zphj1987&#39;Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description">
-<meta property="og:type" content="website">
-<meta property="og:title" content="zphj1987'Blog">
-<meta property="og:url" content="http://www.zphj1987.com/archives/2016/11/index.html">
+  <meta name="description" content="ceph Vol 45 Issue 31.Crash in ceph_readdir.
+Hello, 
+I’ve been investigating the following crash with cephfs:···According to the state of the ceph_inoide_info this means thatceph_dir_is_complete_ordere">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ceph用户邮件列表Vol45-Issue3">
+<meta property="og:url" content="http://www.zphj1987.com/2016/11/08/Ceph用户邮件列表Vol45-Issue3/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
-<meta property="og:description">
+<meta property="og:description" content="ceph Vol 45 Issue 31.Crash in ceph_readdir.
+Hello, 
+I’ve been investigating the following crash with cephfs:···According to the state of the ceph_inoide_info this means thatceph_dir_is_complete_ordere">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="zphj1987'Blog">
-<meta name="twitter:description">
+<meta name="twitter:title" content="Ceph用户邮件列表Vol45-Issue3">
+<meta name="twitter:description" content="ceph Vol 45 Issue 31.Crash in ceph_readdir.
+Hello, 
+I’ve been investigating the following crash with cephfs:···According to the state of the ceph_inoide_info this means thatceph_dir_is_complete_ordere">
   
     <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
   
@@ -189,177 +195,131 @@ var _hmt = _hmt || [];
 		</header>				
 	</div>
 </nav>
-      <div class="body-wrap">
+      <div class="body-wrap"><article id="post-Ceph用户邮件列表Vol45-Issue3" class="article article-type-post" itemscope itemprop="blogPost">
   
+    <div class="article-meta">
+      <a href="/2016/11/08/Ceph用户邮件列表Vol45-Issue3/" class="article-date">
+  	<time datetime="2016-11-08T09:26:01.000Z" itemprop="datePublished">2016-11-08</time>
+</a>
+    </div>
   
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
     
     
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Ceph用户邮件列表Vol45-Issue3
+    </h1>
+  
+
+      </header>
       
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+        
+
+        <div class="clearfix"></div>
+      </div>
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2016" class="archive-year">2016</a>
-        </div>
-        <div class="archives">
     
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2016/11/08/Ceph用户邮件列表Vol45-Issue3/" class="archive-article-date">
-  	<time datetime="2016-11-08T09:26:01.000Z" itemprop="datePublished">Nov 8</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/11/08/Ceph用户邮件列表Vol45-Issue3/">Ceph用户邮件列表Vol45-Issue3</a>
-    </h1>
-  
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="ceph_Vol_45_Issue_3">ceph Vol 45 Issue 3</h2><h3 id="1-Crash_in_ceph_readdir-">1.Crash in ceph_readdir.</h3><blockquote>
+<p>Hello, </p>
+<p>I’ve been investigating the following crash with cephfs:<br>···<br>According to the state of the ceph_inoide_info this means that<br>ceph_dir_is_complete_ordered would return true and the second condition<br>should also be true since ptr_pos is held in r12 and the dir size is 26496.<br>So the dentry being passed should be the 2953 % 512 = 393 in the<br>cache_ctl.dentries array.<br>Unfortunately my crashdump excldues the page cache pages and I cannot really see<br>what are the contents of the dentries array. </p>
+</blockquote>
+<a id="more"></a>
+<blockquote>
+<p>Could you provide any info on how to further debug this </p>
+</blockquote>
+<p>作者在使用cephfs的时候遇上了崩溃的情况，readdir的操作</p>
+<p>Yan, Zheng已经对这个bug进行了修复</p>
+<p><a href="https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/commit/?id=af5e5eb574776cdf1b756a27cc437bff257e22fe" target="_blank" rel="external">https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/commit/?id=af5e5eb574776cdf1b756a27cc437bff257e22fe</a><br><a href="https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/commit/?id=a3d714c33632ef6bfdfaacc74ae6ba297b4c5820" target="_blank" rel="external">https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/commit/?id=a3d714c33632ef6bfdfaacc74ae6ba297b4c5820</a></p>
+<p>但是这个是提交到Linux kernel的4.6的分支里面去了的，所以目前从官方版本来说是4.6或者更新的版本才会解决</p>
+<p>这个问题只能是说遇到了再升级内核了</p>
+<h3 id="变更记录">变更记录</h3><table>
+<thead>
+<tr>
+<th style="text-align:center">Why</th>
+<th style="text-align:center">Who</th>
+<th style="text-align:center">When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">创建</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2016-11-08</td>
+</tr>
+</tbody>
+</table>
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
+      
+    </div>
+    
   </div>
-</article>
   
     
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2016/11/07/Ceph用户邮件列表Vol45-Issue2/" class="archive-article-date">
-  	<time datetime="2016-11-07T05:26:01.000Z" itemprop="datePublished">Nov 7</time>
-</a>
-        </div>
-    	 
+<nav id="article-nav">
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/11/07/Ceph用户邮件列表Vol45-Issue2/">Ceph用户邮件列表Vol45-Issue2</a>
-    </h1>
   
+    <a href="/2016/11/07/Ceph用户邮件列表Vol45-Issue2/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Ceph用户邮件列表Vol45-Issue2</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+  
+</article>
+
+
+<div class="share">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到：</span>
+		<a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+		<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
 	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
 
-          
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2016/11/04/Ceph用户邮件列表Vol45-Issue1/" class="archive-article-date">
-  	<time datetime="2016-11-04T03:57:25.000Z" itemprop="datePublished">Nov 4</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/11/04/Ceph用户邮件列表Vol45-Issue1/">Ceph用户邮件列表Vol45-Issue1</a>
-    </h1>
-  
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="Ceph用户邮件列表Vol45-Issue3" data-title="Ceph用户邮件列表Vol45-Issue3" data-url="http://www.zphj1987.com/2016/11/08/Ceph用户邮件列表Vol45-Issue3/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"zphj1987"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
 
-          
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2016/11/03/Ceph日历格子之2016年10月-Vol45/" class="archive-article-date">
-  	<time datetime="2016-11-03T09:51:33.000Z" itemprop="datePublished">Nov 3</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/11/03/Ceph日历格子之2016年10月-Vol45/">Ceph日历格子之2016年10月(Vol45)</a>
-    </h1>
-  
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2016/11/02/Ceph部署的时候修改默认权重/" class="archive-article-date">
-  	<time datetime="2016-11-02T07:46:07.000Z" itemprop="datePublished">Nov 2</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/11/02/Ceph部署的时候修改默认权重/">Ceph部署的时候修改默认权重</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
-
-    
 
 </div>
       <footer id="footer">
@@ -385,7 +345,7 @@ var _hmt = _hmt || [];
 		mathjax: undefined,
 		animate: true,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,
