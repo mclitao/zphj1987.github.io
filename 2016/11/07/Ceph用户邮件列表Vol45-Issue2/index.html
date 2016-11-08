@@ -17,6 +17,7 @@ The folders we are trying to delete conta">
 After upgrading to 10.2.3 we frequently see messages like
 ‘rm: cannot remove ‘…’: No space left on device
 The folders we are trying to delete conta">
+<meta property="og:image" content="http://7xweck.com1.z0.glb.clouddn.com/cache.png">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Ceph用户邮件列表Vol45-Issue2">
 <meta name="twitter:description" content="ceph Vol 45 Issue 21.CephFS: No space left on device
@@ -248,6 +249,7 @@ var _hmt = _hmt || [];
 </blockquote>
 <p>这个问题是作者在升级了一个集群以后（jewel 10.2.3），做删除的时候，发现提示了 No space left on device，按正常的理解做删除不会出现提示空间不足</p>
 <p>这个地方的原因是，有一个参数会对目录的entry做一个最大值的控制<code>mds_bal_fragment_size_max</code>,而这个参数实际上在做删除操作的时候，当文件被unlink的时候，被放入待删除区的时候，这个也是被限制住的，所以需要调整这个参数，如果有上百万的文件被等待删除的时候，可能就会出现这个情况,并且出现 <code>failing to respond to cache pressure</code> 我们根据自己的需要去设置这个值</p>
+<p>默认的 mds_bal_fragment_size_max=100000，也就是单个文件10万文件，如果不调整，单目录写入10万文件就能出现上面的问题</p>
 <p>这个地方可以用命令来监控mds的当前状态<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 mnt]<span class="comment"># ceph daemonperf mds.lab8106</span></span><br><span class="line">-----mds------ --mds_server-- ---objecter--- -----mds_cache----- ---mds_<span class="built_in">log</span>---- </span><br><span class="line">rlat inos caps|hsr  hcs  hcr |writ <span class="built_in">read</span> actv|recd recy stry purg|segs evts subm|</span><br><span class="line">  <span class="number">0</span>  <span class="number">163</span>k   <span class="number">5</span> |  <span class="number">0</span>    <span class="number">0</span>    <span class="number">0</span> |  <span class="number">0</span>    <span class="number">0</span>   <span class="number">36</span> |  <span class="number">0</span>    <span class="number">0</span>  <span class="number">145</span>k   <span class="number">0</span> | <span class="number">33</span>   <span class="number">29</span>k   <span class="number">0</span> </span><br><span class="line">  <span class="number">0</span>  <span class="number">163</span>k   <span class="number">5</span> |  <span class="number">0</span>    <span class="number">0</span>    <span class="number">0</span> |  <span class="number">6</span>    <span class="number">0</span>   <span class="number">34</span> |  <span class="number">0</span>    <span class="number">0</span>  <span class="number">145</span>k   <span class="number">6</span> | <span class="number">33</span>   <span class="number">29</span>k   <span class="number">6</span> </span><br><span class="line">  <span class="number">0</span>  <span class="number">163</span>k   <span class="number">5</span> |  <span class="number">0</span>    <span class="number">0</span>    <span class="number">0</span> | <span class="number">24</span>    <span class="number">0</span>   <span class="number">32</span> |  <span class="number">0</span>    <span class="number">0</span>  <span class="number">145</span>k  <span class="number">24</span> | <span class="number">32</span>   <span class="number">29</span>k  <span class="number">24</span> </span><br><span class="line">  <span class="number">0</span>  <span class="number">163</span>k   <span class="number">5</span> |  <span class="number">0</span>    <span class="number">0</span>    <span class="number">0</span> | <span class="number">42</span>    <span class="number">0</span>   <span class="number">32</span> |  <span class="number">0</span>    <span class="number">0</span>  <span class="number">145</span>k  <span class="number">42</span> | <span class="number">32</span>   <span class="number">29</span>k  <span class="number">42</span> </span><br><span class="line">  <span class="number">0</span>  <span class="number">159</span>k   <span class="number">5</span> |  <span class="number">0</span>    <span class="number">0</span>    <span class="number">0</span> |<span class="number">972</span>    <span class="number">0</span>   <span class="number">32</span> |  <span class="number">0</span>    <span class="number">0</span>  <span class="number">144</span>k <span class="number">970</span> | <span class="number">33</span>   <span class="number">27</span>k <span class="number">971</span> </span><br><span class="line">  <span class="number">0</span>  <span class="number">159</span>k   <span class="number">5</span> |  <span class="number">0</span>    <span class="number">0</span>    <span class="number">0</span> |<span class="number">905</span>    <span class="number">0</span>   <span class="number">32</span> |  <span class="number">0</span>    <span class="number">0</span>  <span class="number">143</span>k <span class="number">905</span> | <span class="number">31</span>   <span class="number">28</span>k <span class="number">906</span> </span><br><span class="line">  <span class="number">0</span>  <span class="number">159</span>k   <span class="number">5</span> |  <span class="number">0</span>    <span class="number">0</span>    <span class="number">0</span> |<span class="number">969</span>    <span class="number">0</span>   <span class="number">32</span> |  <span class="number">0</span>    <span class="number">0</span>  <span class="number">142</span>k <span class="number">969</span> | <span class="number">32</span>   <span class="number">29</span>k <span class="number">970</span> </span><br><span class="line">  <span class="number">0</span>  <span class="number">159</span>k   <span class="number">5</span> |  <span class="number">0</span>    <span class="number">0</span>    <span class="number">0</span> |<span class="number">601</span>    <span class="number">0</span>   <span class="number">31</span> |  <span class="number">0</span>    <span class="number">0</span>  <span class="number">141</span>k <span class="number">601</span> | <span class="number">33</span>   <span class="number">29</span>k <span class="number">602</span></span><br></pre></td></tr></table></figure></p>
 <p>这个地方还有一个硬链接删除以后没有释放stry的问题，最新版的master里面已经合进去了代码（<a href="https://github.com/ukernel/ceph/commit/edc84d905a1f0e3c504f427cc4693c7a98561e7c" target="_blank" rel="external">scan_link</a>）</p>
 <p>修复过程如下<br>执行flush MDS journal<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph daemon mds.xxx flush journal</span><br></pre></td></tr></table></figure></p>
@@ -257,6 +259,60 @@ var _hmt = _hmt || [];
 <p>执行命令<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">run <span class="string">'ceph daemon mds.x scrub_path / recursive repair'</span></span><br></pre></td></tr></table></figure></p>
 <p>执行完了以后去对目录进行一次ll，可以看到mds_cache的stry的就会被清理干净了</p>
 <p>这个问题就可以解决了,实际测试中在换了新版本以后，重启后然后进行目录的ll，也能清空stry</p>
+<h3 id="2-_Blog_post_about_Ceph_cache_tiers_-_feedback_welcome">2. Blog post about Ceph cache tiers - feedback welcome</h3><blockquote>
+<p>Hi all,</p>
+<p>as it took quite a while until we got our Ceph cache working (and we’re still hit but some unexpected things, see the thread Ceph with cache pool - disk usage / cleanup), I thought it might be good to write a summary of what I (believe) to know up to this point.</p>
+<p>Any feedback, especially corrections is highly welcome!</p>
+<p><a href="http://maybebuggy.de/post/ceph-cache-tier/" target="_blank" rel="external">http://maybebuggy.de/post/ceph-cache-tier/</a></p>
+<p>Greetings<br>-Sascha-</p>
+</blockquote>
+<p>这是一篇分享文，作者因为最近想深入研究下ceph的cache pool，作者写的文章非常的好，这里先直接翻译这篇文章，然后再加入我自己的相关数据</p>
+<h3 id="blog原文"><a href="http://maybebuggy.de/post/ceph-cache-tier/" target="_blank" rel="external">blog原文</a></h3><p>作者想启动blog写下自己的Openstack和Ceph的相关经验，第一个话题就选择了<code>Ceph cache tiering</code>, 作者的使用场景为短时间的虚拟机，用来跑测试的，这种场景他们准备用Nvme做一个缓冲池来加速的虚拟机</p>
+<p>cache 相关的一些参数<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">target_max_bytes</span><br><span class="line">target_max_objects</span><br><span class="line">cache_target_dirty_ratio</span><br><span class="line">cache_target_full_ratio</span><br><span class="line">cache_min_flush_age</span><br><span class="line">cache_min_evict_age</span><br></pre></td></tr></table></figure></p>
+<p>Jewel版本还新加入了一个参数<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cache_target_dirty_high_ratio</span><br></pre></td></tr></table></figure></p>
+<p>作者的想法是先把数据写入到缓冲池当中，等后面某个时刻再写入到真实的存储池的当中</p>
+<p>Flushing vs. Evicting<br>Flushing是将缓冲池中的数据刷到真实的存储池当中去，但是并不去删除缓冲池里面缓存的数据，只有clean的数据才能被evic，如果是dirty的数据做evic，那么先要flush到真实存储池，然后再删除掉</p>
+<p>Cache 调整</p>
+<p>Ceph的是不能够自动确定缓存池的大小，所以这里需要配置一个缓冲池的绝对大小，flush/evic将无法工作。</p>
+<p>设置了上限以后，相关的参数就是cache_target_full_ratio和cache_target_dirty_ratio。这些参数是控制什么时候进行flush和evic的</p>
+<p>这个dirty ratio是比较难设置的值，需要根据场景进行相关的调整</p>
+<p>新版本里面到了dirty_high_ratio才开始下刷</p>
+<p>还有cache_min_flush_age和cache_min_evict_age这个控制，这个一般来说到了设定的阀值前，这些对象的留存时间应该是要够老的，能够被触发清理掉的</p>
+<p>通过ceph df detail 可以观测你的存储池的数据的情况</p>
+<p>里面会有一些0字节对象的，缓冲池的0字节对象是数据已经被删除了，防止刷新的时候又要操作对象。在真实存储池中的0字节对象是数据已经在缓冲池当中，但没有刷新到缓冲池</p>
+<h3 id="案例测试">案例测试</h3><p>基于上面的控制，下面我们来具体看下这些参数的实际效果是怎样的，这样我们才能真正在实际场景当中做到精准的控制</p>
+<p>首先我们要对参数分类</p>
+<ul>
+<li>缓冲池的总大小，这个大小分成两类一个对象个数控制，一个大小的控制</li>
+<li>flush和evic的百分比，这个百分比既按照大小进行控制，也按照对象进行控制</li>
+<li>flush和evic的时间控制</li>
+</ul>
+<p>分好类以后，我们就开始我们的测试，基于对象的数目的控制，比较容易观察，我们就用对象控制来举例子</p>
+<h3 id="创建一个缓冲池的环境">创建一个缓冲池的环境</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph osd pool create testpool <span class="number">24</span> <span class="number">24</span> </span><br><span class="line">ceph osd pool create cachepool <span class="number">24</span> <span class="number">24</span></span><br><span class="line">ceph osd tier add  testpool cachepool</span><br><span class="line">ceph osd tier cache-mode  cachepool writeback</span><br><span class="line">ceph osd tier <span class="built_in">set</span>-overlay  testpool cachepool</span><br><span class="line">ceph osd pool <span class="built_in">set</span> cachepool hit_<span class="built_in">set</span>_<span class="built_in">type</span> bloom</span><br><span class="line">ceph osd pool <span class="built_in">set</span> cachepool hit_<span class="built_in">set</span>_count <span class="number">1</span></span><br><span class="line">ceph osd pool <span class="built_in">set</span> cachepool hit_<span class="built_in">set</span>_period <span class="number">3600</span></span><br></pre></td></tr></table></figure>
+<p>上面的操作是基本的一些操作、我们现在做参数相关的调整<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph osd pool <span class="built_in">set</span> cachepool  target_max_bytes <span class="number">1000000000000</span></span><br></pre></td></tr></table></figure></p>
+<p>为了排除干扰，我们把 target_max_bytes设置成了1T，我们的测试数据很少，肯定不会触发这个大小</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph osd pool <span class="built_in">set</span> cachepool target_max_objects <span class="number">1000</span></span><br></pre></td></tr></table></figure>
+<p>设置缓冲池的对象max为1000<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph osd pool <span class="built_in">set</span> cachepool cache_target_dirty_ratio <span class="number">0.4</span></span><br></pre></td></tr></table></figure></p>
+<p>设置dirty_ratio为0.4，也就是0.4为判断为dirty的阀值<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph osd pool <span class="built_in">set</span> cachepool cache_target_full_ratio <span class="number">0.8</span></span><br></pre></td></tr></table></figure></p>
+<p>设置cache_target_full_ratio为0.8，即超过80%的时候需要evic<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph osd pool <span class="built_in">set</span> cachepool cache_min_flush_age <span class="number">600</span></span><br><span class="line">ceph osd pool <span class="built_in">set</span> cachepool cache_min_evict_age <span class="number">1800</span></span><br></pre></td></tr></table></figure></p>
+<p>设置两个flush和evic的时间，这个时间周期比我写入的数据的时间周期大很多，这个等下会调整这个</p>
+<p>开启一个终端动态观察存储池的对象变化<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># watch ceph df</span></span><br><span class="line">Every <span class="number">2.0</span>s: ceph df                                                                    </span><br><span class="line"></span><br><span class="line">GLOBAL:</span><br><span class="line">    SIZE     AVAIL     RAW USED     %RAW USED</span><br><span class="line">    <span class="number">834</span>G      <span class="number">833</span>G         <span class="number">958</span>M          <span class="number">0.11</span></span><br><span class="line">POOLS:</span><br><span class="line">    NAME          ID     USED       %USED     MAX AVAIL     OBJECTS</span><br><span class="line">    rbd           <span class="number">0</span>           <span class="number">0</span>         <span class="number">0</span>          <span class="number">277</span>G           <span class="number">0</span></span><br><span class="line">    metadata	  <span class="number">1</span>	  <span class="number">61953</span>k      <span class="number">0.01</span>          <span class="number">416</span>G          <span class="number">39</span></span><br><span class="line">    data          <span class="number">2</span>	  <span class="number">50500</span>k      <span class="number">0.01</span>          <span class="number">416</span>G       <span class="number">50501</span></span><br><span class="line">    testpool	  <span class="number">5</span>           <span class="number">0</span>         <span class="number">0</span>          <span class="number">416</span>G           <span class="number">0</span></span><br><span class="line">    cachepool     <span class="number">6</span>           <span class="number">0</span>         <span class="number">0</span>          <span class="number">416</span>G           <span class="number">0</span></span><br></pre></td></tr></table></figure></p>
+<p>尝试写入数据并且观察，到了1000左右的时候停止<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rados -p testpool bench <span class="number">100</span> write  -b <span class="number">4</span>K --no-cleanup</span><br></pre></td></tr></table></figure></p>
+<p>可以观察到cachepool的对象数目大概在1100-1200直接，一直写也会是这个数字，在停止写以后，观察cachepool的对象数目在960左右，我们设置的 target_max_objects 为1000，在超过了这个值以后，并且写停止的情况下，系统会把这个cache pool的对象控制在比target_max少50左右，现在我们修改下<code>cache_min_evict_age</code>这个参数，看下会发生些什么</p>
+<p>我们把这个参数调整为30<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph osd pool <span class="built_in">set</span> cachepool cache_min_evict_age <span class="number">30</span></span><br></pre></td></tr></table></figure></p>
+<p>设置完了以后，可以看到cache pool的对象数目在 744左右，现在再写入数据，然后等待，看下会是多少，还是756，如果按我们设置的<code>cache_target_full_ratio</code>0.8就正好是800，我们尝试再次调整大cache_min_evict_age看下情况，对象维持在960左右，根据这个测试，基本上可以看出来是如何控制缓存的数据了，下面用一张图来看下这个问题</p>
+<p><img src="http://7xweck.com1.z0.glb.clouddn.com/cache.png" alt=""></p>
+<p>来总结一下：</p>
+<ul>
+<li>如果cache pool对象到了 target_max_objects，那么会边flush，边evic，然后因为前面有客户端请求，这个时候实际是会阻塞的</li>
+<li>如果停止了写请求，系统会自动将cache pool的对象控制在比 target_max_objects 少一点点</li>
+<li>如果时间周期到了cache_min_evict_age，那么系统会自动将cache pool的对象控制在比 cache_target_full_ratio 少一点点</li>
+<li>同理如果到了cache_min_flush_age，那么会将对象往真实的存储池flush到 cache_target_dirty_ratio 少一点点</li>
+</ul>
+<p>也就是ratio是给定了一个比例，然后时间到了就去将缓存控制到指定的ratio，这个地方就需要根据需要去控制缓冲池数据是留有多少的缓存余地的</p>
+<p>使用命令清空缓冲池的数据，会将数据flush到真实存储池，然后将数据evic掉</p>
+<p>关于缓冲池的就写这么多了，实际环境是要根据自己的使用场景去制定这些值的，从而能保证缓冲池能真正起到作用，上面的例子是基于对象的控制的，基于大小的控制是一样的，只是将对象数的设置换成了大小即可，然后尽量去放大对象的控制</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rados -p cachepool cache-try-flush-evict-all</span><br></pre></td></tr></table></figure>
 <h3 id="变更记录">变更记录</h3><table>
 <thead>
 <tr>
@@ -270,6 +326,11 @@ var _hmt = _hmt || [];
 <td style="text-align:center">创建</td>
 <td style="text-align:center">武汉-运维-磨渣</td>
 <td style="text-align:center">2016-11-07</td>
+</tr>
+<tr>
+<td style="text-align:center">完成缓冲池相关</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2016-11-08</td>
 </tr>
 </tbody>
 </table>
