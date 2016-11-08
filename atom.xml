@@ -4,7 +4,7 @@
   <subtitle><![CDATA[但行好事，莫问前程]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2016-11-08T08:17:08.920Z</updated>
+  <updated>2016-11-08T08:33:55.125Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="http://www.zphj1987.com/2016/11/07/Ceph%E7%94%A8%E6%88%B7%E9%82%AE%E4%BB%B6%E5%88%97%E8%A1%A8Vol45-Issue2/"/>
     <id>http://www.zphj1987.com/2016/11/07/Ceph用户邮件列表Vol45-Issue2/</id>
     <published>2016-11-07T05:26:01.000Z</published>
-    <updated>2016-11-08T08:17:08.920Z</updated>
+    <updated>2016-11-08T08:33:55.125Z</updated>
     <content type="html"><![CDATA[<h2 id="ceph_Vol_45_Issue_2">ceph Vol 45 Issue 2</h2><h3 id="1-CephFS:_No_space_left_on_device">1.CephFS: No space left on device</h3><blockquote>
 <p>After upgrading to 10.2.3 we frequently see messages like</p>
 <p>‘rm: cannot remove ‘…’: No space left on device</p>
@@ -82,7 +82,7 @@
 <p>设置两个flush和evic的时间，这个时间周期比我写入的数据的时间周期大很多，这个等下会调整这个</p>
 <p>开启一个终端动态观察存储池的对象变化<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># watch ceph df</span></span><br><span class="line">Every <span class="number">2.0</span>s: ceph df                                                                    </span><br><span class="line"></span><br><span class="line">GLOBAL:</span><br><span class="line">    SIZE     AVAIL     RAW USED     %RAW USED</span><br><span class="line">    <span class="number">834</span>G      <span class="number">833</span>G         <span class="number">958</span>M          <span class="number">0.11</span></span><br><span class="line">POOLS:</span><br><span class="line">    NAME          ID     USED       %USED     MAX AVAIL     OBJECTS</span><br><span class="line">    rbd           <span class="number">0</span>           <span class="number">0</span>         <span class="number">0</span>          <span class="number">277</span>G           <span class="number">0</span></span><br><span class="line">    metadata	  <span class="number">1</span>	  <span class="number">61953</span>k      <span class="number">0.01</span>          <span class="number">416</span>G          <span class="number">39</span></span><br><span class="line">    data          <span class="number">2</span>	  <span class="number">50500</span>k      <span class="number">0.01</span>          <span class="number">416</span>G       <span class="number">50501</span></span><br><span class="line">    testpool	  <span class="number">5</span>           <span class="number">0</span>         <span class="number">0</span>          <span class="number">416</span>G           <span class="number">0</span></span><br><span class="line">    cachepool     <span class="number">6</span>           <span class="number">0</span>         <span class="number">0</span>          <span class="number">416</span>G           <span class="number">0</span></span><br></pre></td></tr></table></figure></p>
 <p>尝试写入数据并且观察，到了1000左右的时候停止<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rados -p testpool bench <span class="number">100</span> write  -b <span class="number">4</span>K --no-cleanup</span><br></pre></td></tr></table></figure></p>
-<p>可以观察到cachepool的对象数目大概在1100-1200直接，一直写也会是这个数字，在停止写以后，观察cachepool的对象数目在960左右，我们设置的 target_max_objects 为1000，在超过了这个值以后，并且写停止的情况下，系统会把这个cache pool的对象控制在比target_max少50左右，现在我们修改下<code>cache_min_evict_age</code>这个参数，看下会发生些什么</p>
+<p>可以观察到cachepool的对象数目大概在1100-1200之间，一直写也会是这个数字，在停止写以后，观察cachepool的对象数目在960左右，我们设置的 target_max_objects 为1000，在超过了这个值以后，并且写停止的情况下，系统会把这个cache pool的对象控制在比target_max少50左右，现在我们修改下<code>cache_min_evict_age</code>这个参数，看下会发生些什么</p>
 <p>我们把这个参数调整为30<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph osd pool <span class="built_in">set</span> cachepool cache_min_evict_age <span class="number">30</span></span><br></pre></td></tr></table></figure></p>
 <p>设置完了以后，可以看到cache pool的对象数目在 744左右，现在再写入数据，然后等待，看下会是多少，还是756，如果按我们设置的<code>cache_target_full_ratio</code>0.8就正好是800，我们尝试再次调整大cache_min_evict_age看下情况，对象维持在960左右，根据这个测试，基本上可以看出来是如何控制缓存的数据了，下面用一张图来看下这个问题</p>
 <p><img src="http://7xweck.com1.z0.glb.clouddn.com/cache.png" alt=""></p>
