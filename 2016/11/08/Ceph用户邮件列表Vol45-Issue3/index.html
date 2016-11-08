@@ -245,6 +245,16 @@ var _hmt = _hmt || [];
 <p><a href="https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/commit/?id=af5e5eb574776cdf1b756a27cc437bff257e22fe" target="_blank" rel="external">https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/commit/?id=af5e5eb574776cdf1b756a27cc437bff257e22fe</a><br><a href="https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/commit/?id=a3d714c33632ef6bfdfaacc74ae6ba297b4c5820" target="_blank" rel="external">https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/commit/?id=a3d714c33632ef6bfdfaacc74ae6ba297b4c5820</a></p>
 <p>但是这个是提交到Linux kernel的4.6的分支里面去了的，所以目前从官方版本来说是4.6或者更新的版本才会解决</p>
 <p>这个问题只能是说遇到了再升级内核了</p>
+<h3 id="2-Can’t_activate_OSD">2.Can’t activate OSD</h3><blockquote>
+<p>Hello all,</p>
+<p>Over the past few weeks I’ve been trying to go through the Quick Ceph Deploy<br>tutorial at:</p>
+<p>ceph-deploy osd activate ceph02:/dev/sdc ceph03:/dev/sdc</p>
+<p>part. It never actually seems to activate the OSD and eventually times out:</p>
+<p>[ceph03][INFO  ] Running command: sudo /usr/sbin/ceph-disk -v activate  —mark-init systemd —mount /dev/sdc<br>[ceph03][WARNIN] main_activate: path = /dev/sdc<br>[ceph03][WARNIN] No data was received after 300 seconds, disconnecting…</p>
+</blockquote>
+<p>作者在部署osd的时候出现无法激活osd的问题，最后在别人的帮助下发现了问题，在交换机上创建了 VLAN ，但没允许jumbo packets，所以出现了问题</p>
+<p>另外一个人也出现了类似的问题，通过升级了parted解决问题（from 3.1 from the CentOS7 base）<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rpm -Uhv ftp://<span class="number">195.220</span>.<span class="number">108.108</span>/linux/fedora/linux/updates/<span class="number">22</span>/x86_64/p/parted-<span class="number">3.2</span>-<span class="number">16</span>.fc22.x86_64.rpm</span><br></pre></td></tr></table></figure></p>
+<p>这个一般没什么问题，确实定位到这里再升级了，一般情况下很少出现不能activate osd的情况</p>
 <h3 id="变更记录">变更记录</h3><table>
 <thead>
 <tr>
@@ -256,6 +266,11 @@ var _hmt = _hmt || [];
 <tbody>
 <tr>
 <td style="text-align:center">创建</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2016-11-08</td>
+</tr>
+<tr>
+<td style="text-align:center">完成Issue 3</td>
 <td style="text-align:center">武汉-运维-磨渣</td>
 <td style="text-align:center">2016-11-08</td>
 </tr>

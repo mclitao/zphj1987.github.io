@@ -4,7 +4,7 @@
   <subtitle><![CDATA[但行好事，莫问前程]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2016-11-08T09:40:46.095Z</updated>
+  <updated>2016-11-08T10:00:49.286Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="http://www.zphj1987.com/2016/11/08/Ceph%E7%94%A8%E6%88%B7%E9%82%AE%E4%BB%B6%E5%88%97%E8%A1%A8Vol45-Issue3/"/>
     <id>http://www.zphj1987.com/2016/11/08/Ceph用户邮件列表Vol45-Issue3/</id>
     <published>2016-11-08T09:26:01.000Z</published>
-    <updated>2016-11-08T09:40:46.095Z</updated>
+    <updated>2016-11-08T10:00:49.286Z</updated>
     <content type="html"><![CDATA[<h2 id="ceph_Vol_45_Issue_3">ceph Vol 45 Issue 3</h2><h3 id="1-Crash_in_ceph_readdir-">1.Crash in ceph_readdir.</h3><blockquote>
 <p>Hello, </p>
 <p>I’ve been investigating the following crash with cephfs:<br>···<br>According to the state of the ceph_inoide_info this means that<br>ceph_dir_is_complete_ordered would return true and the second condition<br>should also be true since ptr_pos is held in r12 and the dir size is 26496.<br>So the dentry being passed should be the 2953 % 512 = 393 in the<br>cache_ctl.dentries array.<br>Unfortunately my crashdump excldues the page cache pages and I cannot really see<br>what are the contents of the dentries array. </p>
@@ -33,6 +33,16 @@
 <p><a href="https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/commit/?id=af5e5eb574776cdf1b756a27cc437bff257e22fe" target="_blank" rel="external">https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/commit/?id=af5e5eb574776cdf1b756a27cc437bff257e22fe</a><br><a href="https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/commit/?id=a3d714c33632ef6bfdfaacc74ae6ba297b4c5820" target="_blank" rel="external">https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/commit/?id=a3d714c33632ef6bfdfaacc74ae6ba297b4c5820</a></p>
 <p>但是这个是提交到Linux kernel的4.6的分支里面去了的，所以目前从官方版本来说是4.6或者更新的版本才会解决</p>
 <p>这个问题只能是说遇到了再升级内核了</p>
+<h3 id="2-Can’t_activate_OSD">2.Can’t activate OSD</h3><blockquote>
+<p>Hello all,</p>
+<p>Over the past few weeks I’ve been trying to go through the Quick Ceph Deploy<br>tutorial at:</p>
+<p>ceph-deploy osd activate ceph02:/dev/sdc ceph03:/dev/sdc</p>
+<p>part. It never actually seems to activate the OSD and eventually times out:</p>
+<p>[ceph03][INFO  ] Running command: sudo /usr/sbin/ceph-disk -v activate  —mark-init systemd —mount /dev/sdc<br>[ceph03][WARNIN] main_activate: path = /dev/sdc<br>[ceph03][WARNIN] No data was received after 300 seconds, disconnecting…</p>
+</blockquote>
+<p>作者在部署osd的时候出现无法激活osd的问题，最后在别人的帮助下发现了问题，在交换机上创建了 VLAN ，但没允许jumbo packets，所以出现了问题</p>
+<p>另外一个人也出现了类似的问题，通过升级了parted解决问题（from 3.1 from the CentOS7 base）<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rpm -Uhv ftp://<span class="number">195.220</span>.<span class="number">108.108</span>/linux/fedora/linux/updates/<span class="number">22</span>/x86_64/p/parted-<span class="number">3.2</span>-<span class="number">16</span>.fc22.x86_64.rpm</span><br></pre></td></tr></table></figure></p>
+<p>这个一般没什么问题，确实定位到这里再升级了，一般情况下很少出现不能activate osd的情况</p>
 <h3 id="变更记录">变更记录</h3><table>
 <thead>
 <tr>
@@ -44,6 +54,11 @@
 <tbody>
 <tr>
 <td style="text-align:center">创建</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2016-11-08</td>
+</tr>
+<tr>
+<td style="text-align:center">完成Issue 3</td>
 <td style="text-align:center">武汉-运维-磨渣</td>
 <td style="text-align:center">2016-11-08</td>
 </tr>
@@ -245,7 +260,7 @@
     <link href="http://www.zphj1987.com/2016/11/03/Ceph%E6%97%A5%E5%8E%86%E6%A0%BC%E5%AD%90%E4%B9%8B2016%E5%B9%B410%E6%9C%88-Vol45/"/>
     <id>http://www.zphj1987.com/2016/11/03/Ceph日历格子之2016年10月-Vol45/</id>
     <published>2016-11-03T09:51:33.000Z</published>
-    <updated>2016-11-08T09:43:45.851Z</updated>
+    <updated>2016-11-08T10:01:03.670Z</updated>
     <content type="html"><![CDATA[<p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/rili/rili.png" alt=""><br></center></p>
 <h2 id="一、前言">一、前言</h2><p>准备策划一个系列，之前也做了一次尝试，中断了，现在准备续起来，能做就尽量坚持做下去，准备根据日历的形式梳理出来，如同打怪一样，一个个去干掉这些问题，每个issue里面会有每天邮件列表里面提出的问题，一般为8到9个问题，如果完成一个Issue，就会在这里给出对应的Issue的链接，相当于一个目录和进度的功能，所以本篇会是一个持续更新的过程<br><a id="more"></a></p>
 <h2 id="二、内容">二、内容</h2><p>Ceph邮件列表2016年10月Issue格子   </p>
@@ -312,7 +327,7 @@
 </tr>
 </tbody>
 </table>
-<h2 id="三、本月主要问题如下：">三、本月主要问题如下：</h2><p>如何处理对象丢失引起的PG状态不对的问题(Issue1)<br>处理Cephfs的No space left on device(Issue2)<br>处理mds0: Client XXX.XXX.XXX.XXX failing to respond to cache pressure(Issue2)<br>处理stry not clean(Issue2)<br>关于缓冲池相关参数的控制（Issue2）<br>Cephfs readdir出现crash的问题（Issue3）</p>
+<h2 id="三、本月主要问题如下：">三、本月主要问题如下：</h2><p>如何处理对象丢失引起的PG状态不对的问题(Issue1)<br>处理Cephfs的No space left on device(Issue2)<br>处理mds0: Client XXX.XXX.XXX.XXX failing to respond to cache pressure(Issue2)<br>处理stry not clean(Issue2)<br>关于缓冲池相关参数的控制（Issue2）<br>Cephfs readdir出现crash的问题（Issue3）<br>无法 activate OSD（Issue3）</p>
 <h2 id="四、变更记录">四、变更记录</h2><table>
 <thead>
 <tr>
@@ -333,7 +348,7 @@
 <td style="text-align:center">2016-11-07</td>
 </tr>
 <tr>
-<td style="text-align:center">完成Issue2,增加Issue3</td>
+<td style="text-align:center">完成Issue2,完成Issue3</td>
 <td style="text-align:center">武汉-运维-磨渣</td>
 <td style="text-align:center">2016-11-08</td>
 </tr>
