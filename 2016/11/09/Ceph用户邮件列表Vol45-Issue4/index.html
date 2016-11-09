@@ -3,22 +3,26 @@
 <head>
   <meta charset="utf-8">
   
-  <title>rbd无法map(rbd feature disable) | zphj1987&#39;Blog</title>
+  <title>Ceph用户邮件列表Vol45-Issue4 | zphj1987&#39;Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="在jewel版本下默认开启了rbd的一些属性[root@lab8106 ~]# ceph --show-config|grep rbd|grep features rbd_default_features = 61
-RBD属性表：61的意思是上面图中的bit码相加得到的值">
+  <meta name="description" content="ceph Vol 45 Issue 41.upgrade from v0.94.6 or lower and ‘failed to encode map X with expected crc’
+f user upgrades the cluster from a prior release to v0.94.7 or up byfollowing the steps:
+
+upgrade the">
 <meta property="og:type" content="article">
-<meta property="og:title" content="rbd无法map(rbd feature disable)">
-<meta property="og:url" content="http://www.zphj1987.com/2016/06/07/rbd无法map(rbd-feature-disable)/index.html">
+<meta property="og:title" content="Ceph用户邮件列表Vol45-Issue4">
+<meta property="og:url" content="http://www.zphj1987.com/2016/11/09/Ceph用户邮件列表Vol45-Issue4/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
-<meta property="og:description" content="在jewel版本下默认开启了rbd的一些属性[root@lab8106 ~]# ceph --show-config|grep rbd|grep features rbd_default_features = 61
-RBD属性表：61的意思是上面图中的bit码相加得到的值">
-<meta property="og:image" content="http://static.zybuluo.com/zphj1987/1amw9dopkoohq90dfwme7z6p/%E5%B1%9E%E6%80%A7.png">
-<meta property="og:image" content="http://static.zybuluo.com/zphj1987/fi2557g55ucsdpyblopyfudl/newpay.png">
+<meta property="og:description" content="ceph Vol 45 Issue 41.upgrade from v0.94.6 or lower and ‘failed to encode map X with expected crc’
+f user upgrades the cluster from a prior release to v0.94.7 or up byfollowing the steps:
+
+upgrade the">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="rbd无法map(rbd feature disable)">
-<meta name="twitter:description" content="在jewel版本下默认开启了rbd的一些属性[root@lab8106 ~]# ceph --show-config|grep rbd|grep features rbd_default_features = 61
-RBD属性表：61的意思是上面图中的bit码相加得到的值">
+<meta name="twitter:title" content="Ceph用户邮件列表Vol45-Issue4">
+<meta name="twitter:description" content="ceph Vol 45 Issue 41.upgrade from v0.94.6 or lower and ‘failed to encode map X with expected crc’
+f user upgrades the cluster from a prior release to v0.94.7 or up byfollowing the steps:
+
+upgrade the">
   
     <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
   
@@ -194,11 +198,11 @@ var _hmt = _hmt || [];
 		</header>				
 	</div>
 </nav>
-      <div class="body-wrap"><article id="post-rbd无法map(rbd-feature-disable)" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-Ceph用户邮件列表Vol45-Issue4" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2016/06/07/rbd无法map(rbd-feature-disable)/" class="article-date">
-  	<time datetime="2016-06-07T05:02:44.000Z" itemprop="datePublished">2016-06-07</time>
+      <a href="/2016/11/09/Ceph用户邮件列表Vol45-Issue4/" class="article-date">
+  	<time datetime="2016-11-09T03:37:34.000Z" itemprop="datePublished">2016-11-09</time>
 </a>
     </div>
   
@@ -211,7 +215,7 @@ var _hmt = _hmt || [];
         
   
     <h1 class="article-title" itemprop="name">
-      rbd无法map(rbd feature disable)
+      Ceph用户邮件列表Vol45-Issue4
     </h1>
   
 
@@ -231,31 +235,59 @@ var _hmt = _hmt || [];
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>在jewel版本下默认开启了rbd的一些属性<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ceph --show-config|grep rbd|grep features </span></span><br><span class="line">rbd_default_features = <span class="number">61</span></span><br></pre></td></tr></table></figure></p>
-<p>RBD属性表：<br><img src="http://static.zybuluo.com/zphj1987/1amw9dopkoohq90dfwme7z6p/%E5%B1%9E%E6%80%A7.png" alt="此处输入图片的描述"><br>61的意思是上面图中的bit码相加得到的值<br><a id="more"></a><br>对rbd进行内核的map操作<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># rbd map mytest</span></span><br><span class="line">rbd: sysfs write failed</span><br><span class="line">RBD image feature <span class="built_in">set</span> mismatch. You can <span class="built_in">disable</span> features unsupported by the kernel with <span class="string">"rbd feature disable"</span>.</span><br><span class="line">In some cases useful info is found <span class="keyword">in</span> syslog - try <span class="string">"dmesg | tail"</span> or so.</span><br><span class="line">rbd: map failed: (<span class="number">6</span>) No such device or address</span><br></pre></td></tr></table></figure></p>
-<p>根据提示查询打印的信息<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># dmesg | tail</span></span><br><span class="line">[<span class="number">10440.462708</span>] rbd: image mytest: image uses unsupported features: <span class="number">0</span>x3c</span><br></pre></td></tr></table></figure></p>
-<p>这个地方提示的很清楚了，不支持的属性0x3c，0x3c是16进制的数值，换算成10进制是3*16+12=60<br>60的意思是不支持：</p>
-<blockquote>
-<p>32+16+8+4 = exclusive-lock, object-map, fast-diff, deep-flatten<br>也就是不支持这些属性，现在动态关闭这些属性</p>
+        <h2 id="ceph_Vol_45_Issue_4">ceph Vol 45 Issue 4</h2><h3 id="1-upgrade_from_v0-94-6_or_lower_and_‘failed_to_encode_map_X_with_expected_crc’">1.upgrade from v0.94.6 or lower and ‘failed to encode map X with expected crc’</h3><blockquote>
+<p>f user upgrades the cluster from a prior release to v0.94.7 or up by<br>following the steps:</p>
+<ol>
+<li>upgrade the monitors first,</li>
+<li>and then the OSDs.</li>
+</ol>
+<p>It is expected that the cluster log will be flooded with messages like:</p>
+<p>2016-07-12 08:42:42.1234567 osd.1234 [WRN] failed to encode map e4321<br>with expected crc</p>
 </blockquote>
-<p>查看当前使用的image属性<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># rbd info mytest</span></span><br><span class="line">rbd image <span class="string">'mytest'</span>:</span><br><span class="line">	size <span class="number">2000</span> MB <span class="keyword">in</span> <span class="number">500</span> objects</span><br><span class="line">	order <span class="number">22</span> (<span class="number">4096</span> kB objects)</span><br><span class="line">	block_name_prefix: rbd_data.<span class="number">10276</span>b8b4567</span><br><span class="line">	format: <span class="number">2</span></span><br><span class="line">	features: layering, exclusive-lock, object-map, fast-diff, deep-flatten</span><br><span class="line">	flags:</span><br></pre></td></tr></table></figure></p>
-<p>开启的属性有4个是不支持的，关闭这些属性<br>语法是：</p>
-<blockquote>
-<p>rbd feature disable {poolname}/{imagename} {feature}<br>具体到这个测试的命令<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># rbd feature disable rbd/mytest deep-flatten</span></span><br><span class="line">[root@lab8106 ~]<span class="comment"># rbd feature disable rbd/mytest fast-diff</span></span><br><span class="line">[root@lab8106 ~]<span class="comment"># rbd feature disable rbd/mytest object-map</span></span><br><span class="line">[root@lab8106 ~]<span class="comment"># rbd feature disable rbd/mytest exclusive-lock</span></span><br></pre></td></tr></table></figure></p>
-</blockquote>
-<p>再次查询image的info信息<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># rbd info mytest</span></span><br><span class="line">rbd image <span class="string">'mytest'</span>:</span><br><span class="line">	size <span class="number">2000</span> MB <span class="keyword">in</span> <span class="number">500</span> objects</span><br><span class="line">	order <span class="number">22</span> (<span class="number">4096</span> kB objects)</span><br><span class="line">	block_name_prefix: rbd_data.<span class="number">10276</span>b8b4567</span><br><span class="line">	format: <span class="number">2</span></span><br><span class="line">	features: layering</span><br><span class="line">	flags:</span><br></pre></td></tr></table></figure></p>
-<p>可以看到已经关闭了不支持的属性<br>进行kernel rbd 的map的操作<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># rbd map mytest</span></span><br><span class="line">/dev/rbd1</span><br></pre></td></tr></table></figure></p>
-<p>如果不想动态的关闭，那么在创建rbd之前，在配置文件中设置这个参数即可</p>
-<blockquote>
-<p>rbd_default_features = 3</p>
-</blockquote>
-<p>关于属性支持的，目前到内核4.6仍然只支持</p>
-<blockquote>
-<p>layering,striping = 1 + 2</p>
-</blockquote>
-<p>这两个属性</p>
-<h3 id="打赏通道">打赏通道</h3><center><br><img src="http://static.zybuluo.com/zphj1987/fi2557g55ucsdpyblopyfudl/newpay.png" alt="打赏" title="打赏"><br></center>
-
+<p>这个是开发者kefu chai发出来的邮件，是提醒用户注意一个升级的问题的，先介绍下这个问题<br><a id="more"></a></p>
+<p>因为在ceph的hammer的0.94.7版本开始采用了一种新的osdmap的编码方式，在更新了以后，mon会用新的编码方式发送新的增量osdmap到其他osd，但是老的osd上还是老的编码方式，就会产生CRC错误，提示不匹配，然后OSD就会向MON请求全量的osdmap<br>对于一个很大的ceph集群就会有下面的问题</p>
+<p>1、mon会因为这个clog产生大量消息flood<br>2、mon因为需要发送全量的osdmap增加负载<br>3、网络会被大量的osdmap的全量的消息占用<br>4、因为osdmap更新和网络的大量请求，客户端出现slow request</p>
+<p>对于已经升级的了集群解决办法是：<br>先降低到之前的版本</p>
+<ul>
+<li>升级OSD的机器到新的版本</li>
+<li>升级MON的机器到新的版本</li>
+</ul>
+<p>如果准备计划升级的集群</p>
+<ul>
+<li>先升级OSD的机器到新的版本</li>
+<li>再升级MON的机器到新的版本</li>
+</ul>
+<p>目前社区准备解决这个问题（<a href="http://tracker.ceph.com/issues/17386" target="_blank" rel="external">Issue</a>）</p>
+<p>目前可以用上面的方法避免</p>
+<h3 id="问题重现方法">问题重现方法</h3><p>配置一个0.94.6或者以下的集群<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum install ceph-<span class="number">0.94</span>.<span class="number">6</span>-<span class="number">0</span>.el7</span><br></pre></td></tr></table></figure></p>
+<p>配置好了后升级<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum install ceph-<span class="number">0.94</span>.<span class="number">7</span>-<span class="number">0</span>.el7</span><br></pre></td></tr></table></figure></p>
+<p>升级以后如果不重启进程实际上是没更新的，根据官方的建议先重启mon<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/etc/init.d/ceph restart mon</span><br></pre></td></tr></table></figure></p>
+<p>然后重启osd，然后查看ceph -w<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/etc/init.d/ceph restart osd</span><br></pre></td></tr></table></figure></p>
+<p>可以看到failed to encode map e4321 with expected crc</p>
+<h3 id="换一种升级方式">换一种升级方式</h3><p>先降级，这里用yum的方式<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum <span class="built_in">history</span> list</span><br></pre></td></tr></table></figure></p>
+<p>找到刚刚upgrade的编号<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum <span class="built_in">history</span> undo <span class="number">289</span></span><br></pre></td></tr></table></figure></p>
+<p>就可以降级到0.94.6了</p>
+<h3 id="新的操作">新的操作</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum install ceph-<span class="number">0.94</span>.<span class="number">7</span>-<span class="number">0</span>.el7</span><br></pre></td></tr></table></figure>
+<p>先重启OSD<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/etc/init.d/ceph restart osd</span><br></pre></td></tr></table></figure></p>
+<p>再重启mon<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/etc/init.d/ceph restart mon</span><br></pre></td></tr></table></figure></p>
+<p>再观察<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph -w</span><br></pre></td></tr></table></figure></p>
+<p>已经没有提示了</p>
+<h3 id="变更记录">变更记录</h3><table>
+<thead>
+<tr>
+<th style="text-align:center">Why</th>
+<th style="text-align:center">Who</th>
+<th style="text-align:center">When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">创建</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2016-11-09</td>
+</tr>
+</tbody>
+</table>
 
       
     </div>
@@ -265,18 +297,9 @@ var _hmt = _hmt || [];
     
 <nav id="article-nav">
   
-    <a href="/2016/06/07/加速OSD的启动/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption"><</strong>
-      <div class="article-nav-title">
-        
-          加速OSD的启动
-        
-      </div>
-    </a>
   
-  
-    <a href="/2016/06/04/利用虚拟化环境虚拟nvme盘/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">利用虚拟化环境虚拟nvme盘</div>
+    <a href="/2016/11/08/Ceph用户邮件列表Vol45-Issue3/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Ceph用户邮件列表Vol45-Issue3</div>
       <strong class="article-nav-caption">></strong>
     </a>
   
@@ -305,7 +328,7 @@ var _hmt = _hmt || [];
 
 <div class="duoshuo">
 	<!-- 多说评论框 start -->
-	<div class="ds-thread" data-thread-key="rbd无法map(rbd-feature-disable)" data-title="rbd无法map(rbd feature disable)" data-url="http://www.zphj1987.com/2016/06/07/rbd无法map(rbd-feature-disable)/"></div>
+	<div class="ds-thread" data-thread-key="Ceph用户邮件列表Vol45-Issue4" data-title="Ceph用户邮件列表Vol45-Issue4" data-url="http://www.zphj1987.com/2016/11/09/Ceph用户邮件列表Vol45-Issue4/"></div>
 	<!-- 多说评论框 end -->
 	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 	<script type="text/javascript">
