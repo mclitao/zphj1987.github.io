@@ -257,9 +257,9 @@ var _hmt = _hmt || [];
 <p>这个地方还有一个硬链接删除以后没有释放stry的问题，最新版的master里面已经合进去了代码（<a href="https://github.com/ukernel/ceph/commit/edc84d905a1f0e3c504f427cc4693c7a98561e7c" target="_blank" rel="external">scan_link</a>）</p>
 <p>修复过程如下<br>执行flush MDS journal<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph daemon mds.xxx flush journal</span><br></pre></td></tr></table></figure></p>
 <p>停止掉所有mds<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">stop all mds</span><br></pre></td></tr></table></figure></p>
-<p>执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cephfs-data-scan scan_links<span class="string">'</span></span><br></pre></td></tr></table></figure></p>
+<p>执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cephfs-data-scan scan_links</span><br></pre></td></tr></table></figure></p>
 <p>重启mds<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">restart mds</span><br></pre></td></tr></table></figure></p>
-<p>执行命令<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">run <span class="string">'ceph daemon mds.x scrub_path / recursive repair'</span></span><br></pre></td></tr></table></figure></p>
+<p>执行命令<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph daemon mds.x scrub_path / recursive repair</span><br></pre></td></tr></table></figure></p>
 <p>执行完了以后去对目录进行一次ll，可以看到mds_cache的stry的就会被清理干净了</p>
 <p>这个问题就可以解决了,实际测试中在换了新版本以后，重启后然后进行目录的ll，也能清空stry</p>
 <h3 id="2-_Blog_post_about_Ceph_cache_tiers_-_feedback_welcome">2. Blog post about Ceph cache tiers - feedback welcome</h3><blockquote>

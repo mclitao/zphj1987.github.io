@@ -166,7 +166,7 @@
     <link href="http://www.zphj1987.com/2016/11/07/Ceph%E7%94%A8%E6%88%B7%E9%82%AE%E4%BB%B6%E5%88%97%E8%A1%A8Vol45-Issue2/"/>
     <id>http://www.zphj1987.com/2016/11/07/Ceph用户邮件列表Vol45-Issue2/</id>
     <published>2016-11-07T05:26:01.000Z</published>
-    <updated>2016-11-09T07:59:58.147Z</updated>
+    <updated>2016-11-09T14:35:02.794Z</updated>
     <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/number/daytwo.jpg" alt=""><br></center>
 
 <h2 id="ceph_Vol_45_Issue_2">ceph Vol 45 Issue 2</h2><h3 id="1-CephFS:_No_space_left_on_device">1.CephFS: No space left on device</h3><blockquote>
@@ -187,9 +187,9 @@
 <p>这个地方还有一个硬链接删除以后没有释放stry的问题，最新版的master里面已经合进去了代码（<a href="https://github.com/ukernel/ceph/commit/edc84d905a1f0e3c504f427cc4693c7a98561e7c" target="_blank" rel="external">scan_link</a>）</p>
 <p>修复过程如下<br>执行flush MDS journal<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph daemon mds.xxx flush journal</span><br></pre></td></tr></table></figure></p>
 <p>停止掉所有mds<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">stop all mds</span><br></pre></td></tr></table></figure></p>
-<p>执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cephfs-data-scan scan_links<span class="string">'</span></span><br></pre></td></tr></table></figure></p>
+<p>执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cephfs-data-scan scan_links</span><br></pre></td></tr></table></figure></p>
 <p>重启mds<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">restart mds</span><br></pre></td></tr></table></figure></p>
-<p>执行命令<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">run <span class="string">'ceph daemon mds.x scrub_path / recursive repair'</span></span><br></pre></td></tr></table></figure></p>
+<p>执行命令<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph daemon mds.x scrub_path / recursive repair</span><br></pre></td></tr></table></figure></p>
 <p>执行完了以后去对目录进行一次ll，可以看到mds_cache的stry的就会被清理干净了</p>
 <p>这个问题就可以解决了,实际测试中在换了新版本以后，重启后然后进行目录的ll，也能清空stry</p>
 <h3 id="2-_Blog_post_about_Ceph_cache_tiers_-_feedback_welcome">2. Blog post about Ceph cache tiers - feedback welcome</h3><blockquote>
