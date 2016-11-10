@@ -4,7 +4,7 @@
   <subtitle><![CDATA[但行好事，莫问前程]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2016-11-10T07:11:04.982Z</updated>
+  <updated>2016-11-10T07:14:42.232Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="http://www.zphj1987.com/2016/11/10/%E9%A2%84%E4%BC%B0Ceph%E9%9B%86%E7%BE%A4%E6%81%A2%E5%A4%8D%E6%97%B6%E9%97%B4/"/>
     <id>http://www.zphj1987.com/2016/11/10/预估Ceph集群恢复时间/</id>
     <published>2016-11-10T06:52:46.000Z</published>
-    <updated>2016-11-10T07:11:04.982Z</updated>
+    <updated>2016-11-10T07:14:42.232Z</updated>
     <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/time-and-money.gif" alt=""><br></center>
 
 <h2 id="一、前言">一、前言</h2><p>本章很简单，就是预估集群恢复的时间,这个地方是简单的通过计算来预估需要恢复的实际，动态的显示<br><a id="more"></a></p>
@@ -45,7 +45,7 @@
 </tr>
 </tbody>
 </table>
-]]></content>
+<h3 id="我的公众号-磨磨谈">我的公众号-磨磨谈</h3><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/qrcode_for_gh_6998a54d68f7_430.jpg" alt=""><br></center>]]></content>
     <summary type="html">
     <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/time-and-money.gif" alt=""><br></center>
 
@@ -62,74 +62,10 @@
     <link href="http://www.zphj1987.com/2016/11/09/Ceph%E7%94%A8%E6%88%B7%E9%82%AE%E4%BB%B6%E5%88%97%E8%A1%A8Vol45-Issue4/"/>
     <id>http://www.zphj1987.com/2016/11/09/Ceph用户邮件列表Vol45-Issue4/</id>
     <published>2016-11-09T03:37:34.000Z</published>
-    <updated>2016-11-09T08:05:26.886Z</updated>
-    <content type="html"><![CDATA[<p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/number/dayfour.jpg" alt=""><br></center></p>
-<h2 id="ceph_Vol_45_Issue_4">ceph Vol 45 Issue 4</h2><h3 id="1-upgrade_from_v0-94-6_or_lower_and_‘failed_to_encode_map_X_with_expected_crc’">1.upgrade from v0.94.6 or lower and ‘failed to encode map X with expected crc’</h3><blockquote>
-<p>f user upgrades the cluster from a prior release to v0.94.7 or up by<br>following the steps:</p>
-<ol>
-<li>upgrade the monitors first,</li>
-<li>and then the OSDs.</li>
-</ol>
-<p>It is expected that the cluster log will be flooded with messages like:</p>
-<p>2016-07-12 08:42:42.1234567 osd.1234 [WRN] failed to encode map e4321<br>with expected crc</p>
-</blockquote>
-<p>这个是开发者kefu chai发出来的邮件，是提醒用户注意一个升级的问题的，先介绍下这个问题<br><a id="more"></a></p>
-<p>因为在ceph的hammer的0.94.7版本开始采用了一种新的osdmap的编码方式，在更新了以后，mon会用新的编码方式发送新的增量osdmap到其他osd，但是老的osd上还是老的编码方式，就会产生CRC错误，提示不匹配，然后OSD就会向MON请求全量的osdmap<br>对于一个很大的ceph集群就会有下面的问题</p>
-<p>1、mon会因为这个clog产生大量消息flood<br>2、mon因为需要发送全量的osdmap增加负载<br>3、网络会被大量的osdmap的全量的消息占用<br>4、因为osdmap更新和网络的大量请求，客户端出现slow request</p>
-<p>对于已经升级的了集群解决办法是：<br>先降低到之前的版本</p>
-<ul>
-<li>升级OSD的机器到新的版本</li>
-<li>升级MON的机器到新的版本</li>
-</ul>
-<p>如果准备计划升级的集群</p>
-<ul>
-<li>先升级OSD的机器到新的版本</li>
-<li>再升级MON的机器到新的版本</li>
-</ul>
-<p>目前社区准备解决这个问题（<a href="http://tracker.ceph.com/issues/17386" target="_blank" rel="external">Issue</a>）</p>
-<p>目前可以用上面的方法避免</p>
-<h3 id="问题重现方法">问题重现方法</h3><p>配置一个0.94.6或者以下的集群<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum install ceph-<span class="number">0.94</span>.<span class="number">6</span>-<span class="number">0</span>.el7</span><br></pre></td></tr></table></figure></p>
-<p>配置好了后升级<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum install ceph-<span class="number">0.94</span>.<span class="number">7</span>-<span class="number">0</span>.el7</span><br></pre></td></tr></table></figure></p>
-<p>升级以后如果不重启进程实际上是没更新的，根据官方的建议先重启mon<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/etc/init.d/ceph restart mon</span><br></pre></td></tr></table></figure></p>
-<p>然后重启osd，然后查看ceph -w<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/etc/init.d/ceph restart osd</span><br></pre></td></tr></table></figure></p>
-<p>可以看到failed to encode map e4321 with expected crc</p>
-<h3 id="换一种升级方式">换一种升级方式</h3><p>先降级，这里用yum的方式<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum <span class="built_in">history</span> list</span><br></pre></td></tr></table></figure></p>
-<p>找到刚刚upgrade的编号<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum <span class="built_in">history</span> undo <span class="number">289</span></span><br></pre></td></tr></table></figure></p>
-<p>就可以降级到0.94.6了</p>
-<h3 id="新的操作">新的操作</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum install ceph-<span class="number">0.94</span>.<span class="number">7</span>-<span class="number">0</span>.el7</span><br></pre></td></tr></table></figure>
-<p>先重启OSD<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/etc/init.d/ceph restart osd</span><br></pre></td></tr></table></figure></p>
-<p>再重启mon<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/etc/init.d/ceph restart mon</span><br></pre></td></tr></table></figure></p>
-<p>再观察<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph -w</span><br></pre></td></tr></table></figure></p>
-<p>已经没有提示了</p>
-<h3 id="变更记录">变更记录</h3><table>
-<thead>
-<tr>
-<th style="text-align:center">Why</th>
-<th style="text-align:center">Who</th>
-<th style="text-align:center">When</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">创建</td>
-<td style="text-align:center">武汉-运维-磨渣</td>
-<td style="text-align:center">2016-11-09</td>
-</tr>
-</tbody>
-</table>
-]]></content>
+    <updated>2016-11-10T07:14:20.290Z</updated>
+    <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/number/dayfour.jpg" alt=""><br></center><br>##ceph Vol 45 Issue 4<br>###1.upgrade from v0.94.6 or lower and ‘failed to encode map X with expected crc’<br>&gt;f user upgrades the cluster from a prior release to v0.94.7 or up by<br>following the steps:<br><br>&gt;1. upgrade the monitors first,<br>2. and then the OSDs.<br><br>&gt;It is expected that the cluster log will be flooded with messages like:<br><br>&gt;2016-07-12 08:42:42.1234567 osd.1234 [WRN] failed to encode map e4321<br>with expected crc<br><br>这个是开发者kefu chai发出来的邮件，是提醒用户注意一个升级的问题的，先介绍下这个问题<br><a id="more"></a><br><br>因为在ceph的hammer的0.94.7版本开始采用了一种新的osdmap的编码方式，在更新了以后，mon会用新的编码方式发送新的增量osdmap到其他osd，但是老的osd上还是老的编码方式，就会产生CRC错误，提示不匹配，然后OSD就会向MON请求全量的osdmap<br>对于一个很大的ceph集群就会有下面的问题<br><br>1、mon会因为这个clog产生大量消息flood<br>2、mon因为需要发送全量的osdmap增加负载<br>3、网络会被大量的osdmap的全量的消息占用<br>4、因为osdmap更新和网络的大量请求，客户端出现slow request<br><br>对于已经升级的了集群解决办法是：<br>先降低到之前的版本<br><br>- 升级OSD的机器到新的版本<br>- 升级MON的机器到新的版本<br><br>如果准备计划升级的集群<br><br>- 先升级OSD的机器到新的版本<br>- 再升级MON的机器到新的版本<br><br>目前社区准备解决这个问题（<a href="http://tracker.ceph.com/issues/17386" target="_blank" rel="external">Issue</a>）<br><br>目前可以用上面的方法避免<br><br>###问题重现方法<br><br>配置一个0.94.6或者以下的集群<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum install ceph-<span class="number">0.94</span>.<span class="number">6</span>-<span class="number">0</span>.el7</span><br></pre></td></tr></table></figure><br><br>配置好了后升级<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum install ceph-<span class="number">0.94</span>.<span class="number">7</span>-<span class="number">0</span>.el7</span><br></pre></td></tr></table></figure><br><br>升级以后如果不重启进程实际上是没更新的，根据官方的建议先重启mon<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/etc/init.d/ceph restart mon</span><br></pre></td></tr></table></figure><br><br>然后重启osd，然后查看ceph -w<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/etc/init.d/ceph restart osd</span><br></pre></td></tr></table></figure><br><br>可以看到failed to encode map e4321 with expected crc<br><br>###换一种升级方式<br>先降级，这里用yum的方式<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum <span class="built_in">history</span> list</span><br></pre></td></tr></table></figure><br><br>找到刚刚upgrade的编号<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum <span class="built_in">history</span> undo <span class="number">289</span></span><br></pre></td></tr></table></figure><br><br>就可以降级到0.94.6了<br><br>###新的操作<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum install ceph-<span class="number">0.94</span>.<span class="number">7</span>-<span class="number">0</span>.el7</span><br></pre></td></tr></table></figure><br><br>先重启OSD<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/etc/init.d/ceph restart osd</span><br></pre></td></tr></table></figure><br><br>再重启mon<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/etc/init.d/ceph restart mon</span><br></pre></td></tr></table></figure><br><br>再观察<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph -w</span><br></pre></td></tr></table></figure><br><br>已经没有提示了<br><br>###变更记录<br><br>|Why|    Who    |When|<br>| :————:  | :——-:  | :——:  |<br>|创建    |武汉-运维-磨渣|    2016-11-09|<br><br>###我的公众号-磨磨谈<br><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/qrcode_for_gh_6998a54d68f7_430.jpg" alt=""><br></center>]]></content>
     <summary type="html">
-    <![CDATA[<p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/number/dayfour.jpg" alt=""><br></center></p>
-<h2 id="ceph_Vol_45_Issue_4">ceph Vol 45 Issue 4</h2><h3 id="1-upgrade_from_v0-94-6_or_lower_and_‘failed_to_encode_map_X_with_expected_crc’">1.upgrade from v0.94.6 or lower and ‘failed to encode map X with expected crc’</h3><blockquote>
-<p>f user upgrades the cluster from a prior release to v0.94.7 or up by<br>following the steps:</p>
-<ol>
-<li>upgrade the monitors first,</li>
-<li>and then the OSDs.</li>
-</ol>
-<p>It is expected that the cluster log will be flooded with messages like:</p>
-<p>2016-07-12 08:42:42.1234567 osd.1234 [WRN] failed to encode map e4321<br>with expected crc</p>
-</blockquote>
-<p>这个是开发者kefu chai发出来的邮件，是提醒用户注意一个升级的问题的，先介绍下这个问题<br>]]>
+    <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/number/dayfour.jpg" alt=""><br></center><br>##ceph Vol 45 Issue 4<br>###1.upgrade from v0.94.6 or lower and ‘failed to encode map X with expected crc’<br>&gt;f user upgrades the cluster from a prior release to v0.94.7 or up by<br>following the steps:<br><br>&gt;1. upgrade the monitors first,<br>2. and then the OSDs.<br><br>&gt;It is expected that the cluster log will be flooded with messages like:<br><br>&gt;2016-07-12 08:42:42.1234567 osd.1234 [WRN] failed to encode map e4321<br>with expected crc<br><br>这个是开发者kefu chai发出来的邮件，是提醒用户注意一个升级的问题的，先介绍下这个问题<br>]]>
     
     </summary>
     
@@ -142,7 +78,7 @@
     <link href="http://www.zphj1987.com/2016/11/08/Ceph%E7%94%A8%E6%88%B7%E9%82%AE%E4%BB%B6%E5%88%97%E8%A1%A8Vol45-Issue3/"/>
     <id>http://www.zphj1987.com/2016/11/08/Ceph用户邮件列表Vol45-Issue3/</id>
     <published>2016-11-08T09:26:01.000Z</published>
-    <updated>2016-11-09T08:03:13.726Z</updated>
+    <updated>2016-11-10T07:14:26.966Z</updated>
     <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/number/daythree.png" alt=""><br></center>
 
 <h2 id="ceph_Vol_45_Issue_3">ceph Vol 45 Issue 3</h2><h3 id="1-Crash_in_ceph_readdir-">1.Crash in ceph_readdir.</h3><blockquote>
@@ -189,7 +125,7 @@
 </tr>
 </tbody>
 </table>
-]]></content>
+<h3 id="我的公众号-磨磨谈">我的公众号-磨磨谈</h3><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/qrcode_for_gh_6998a54d68f7_430.jpg" alt=""><br></center>]]></content>
     <summary type="html">
     <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/number/daythree.png" alt=""><br></center>
 
