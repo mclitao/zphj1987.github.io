@@ -277,7 +277,18 @@ var _hmt = _hmt || [];
     
     <div class="article-entry" itemprop="articleBody">
       
-        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/number/dayfour.jpg" alt=""><br></center><br>##ceph Vol 45 Issue 4<br>###1.upgrade from v0.94.6 or lower and ‘failed to encode map X with expected crc’<br>&gt;f user upgrades the cluster from a prior release to v0.94.7 or up by<br>following the steps:<br><br>&gt;1. upgrade the monitors first,<br>2. and then the OSDs.<br><br>&gt;It is expected that the cluster log will be flooded with messages like:<br><br>&gt;2016-07-12 08:42:42.1234567 osd.1234 [WRN] failed to encode map e4321<br>with expected crc<br><br>这个是开发者kefu chai发出来的邮件，是提醒用户注意一个升级的问题的，先介绍下这个问题<br>
+        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/number/dayfour.jpg" alt=""><br></center>
+
+<h2 id="ceph_Vol_45_Issue_4">ceph Vol 45 Issue 4</h2><h3 id="1-upgrade_from_v0-94-6_or_lower_and_‘failed_to_encode_map_X_with_expected_crc’">1.upgrade from v0.94.6 or lower and ‘failed to encode map X with expected crc’</h3><blockquote>
+<p>f user upgrades the cluster from a prior release to v0.94.7 or up by<br>following the steps:</p>
+<ol>
+<li>upgrade the monitors first,</li>
+<li>and then the OSDs.</li>
+</ol>
+<p>It is expected that the cluster log will be flooded with messages like:</p>
+<p>2016-07-12 08:42:42.1234567 osd.1234 [WRN] failed to encode map e4321<br>with expected crc</p>
+</blockquote>
+<p>这个是开发者kefu chai发出来的邮件，是提醒用户注意一个升级的问题的，先介绍下这个问题<br>
       
     </div>
     
