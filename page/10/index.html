@@ -191,6 +191,193 @@ var _hmt = _hmt || [];
 </nav>
       <div class="body-wrap">
   
+    <article id="post-Mon失效处理方法" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/11/01/Mon失效处理方法/" class="article-date">
+  	<time datetime="2015-11-01T15:34:26.000Z" itemprop="datePublished">2015-11-01</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/11/01/Mon失效处理方法/">Mon失效处理方法</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>假设环境为三个mon，主机名为mon1、mon2、mon3，现在mon3上面的系统盘损坏，mon的数据完全丢失，现在需要对mon3进行恢复处理</p>
+<p>1、停止所有mon进程，可以不停其他进程，需要停止内核客户端以及对外的服务，防止卡死<br>在mon1机器上执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/etc/init.d/ceph stop mon</span><br></pre></td></tr></table></figure></p>
+<p>在mon2机器上执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/etc/init.d/ceph stop mon</span><br></pre></td></tr></table></figure></p>
+<p>2、分别在mon主机上获取当前的monmap<br>在mon1机器上执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph-mon -i mon1 --extract-monmap /tmp/monmap</span><br></pre></td></tr></table></figure></p>
+<p>备份原始monmap<br>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2015/11/01/Mon失效处理方法/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-在页面中嵌入自适应视频的方法" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/10/13/在页面中嵌入自适应视频的方法/" class="article-date">
+  	<time datetime="2015-10-13T13:50:23.000Z" itemprop="datePublished">2015-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/10/13/在页面中嵌入自适应视频的方法/">在页面中嵌入自适应视频的方法</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>准备在博客中嵌入视频，从视频网站获取的embed代码是指定宽度和高度的，这样在一些窗口或者移动端进行访问的时候，就可能视频溢出屏幕了，体验不好，实际上这几年响应式网站比较流行，也就是能让内容自动的适应窗口的大小</p>
+<p>屏幕的宽度可以用 <code>width：100%</code> 进行设置，高度看到有个 <code>height:100%</code> 设置后height实际取的是上一层的高度的百分比，如果没设置的话，这个就为0，看到嵌入的视频就没有高度了，网上关于这个的资料很多，可以搜索下</p>
+<p>关于视频的自适应看到  <a href="https://developers.google.com/web/fundamentals/media/video/size-videos-correctly?hl=zh-cn#section" title="google 自适应设置建议">google 自适应设置建议</a> 这个介绍的很好<br>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/杂七杂八/">杂七杂八</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2015/10/13/在页面中嵌入自适应视频的方法/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-inkscope管理平台试用" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/10/12/inkscope管理平台试用/" class="article-date">
+  	<time datetime="2015-10-12T13:28:22.000Z" itemprop="datePublished">2015-10-12</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/10/12/inkscope管理平台试用/">inkscope管理平台试用</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>下面为inkscope的管理平台的操作记录，一直听说过这个管理平台，但一直没有真正的去配置过，花了一点时间进行了配置</p>
+<p>inkscope的管理平台总结下有下面几个：</p>
+<ul>
+<li>使用sysprobe获取节点的操作系统监控信息</li>
+<li>使用cephprobe去跟ceph集群进行交互，调用了ceph-rest-api进行集群的数据和操作交互</li>
+<li>使用mongodb进行监控信息的存储</li>
+</ul>
+<p>总体来说架构简单，很容易配置，并且官方提供了包，是比较成熟的管理平台了，具体的可以看下面的这个视频<br>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2015/10/12/inkscope管理平台试用/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-查询osd上的pg数" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -599,188 +786,6 @@ var _hmt = _hmt || [];
       
         <p class="article-more-link">
           <a  href="/2015/05/27/linux服务器远程网络开机（wake-on-lan）/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-dm-crypt加密磁盘" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/05/25/dm-crypt加密磁盘/" class="article-date">
-  	<time datetime="2015-05-25T06:07:58.000Z" itemprop="datePublished">2015-05-25</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/05/25/dm-crypt加密磁盘/">dm-crypt加密磁盘</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="dm-cry加密方式密码与文件">dm-cry加密方式密码与文件</h3><p>与其它创建加密文件系统的方法相比，dm-crypt系统有着无可比拟的优越性：它的速度更快，易用性更强。除此之外，它的适用面也很广，能够运行在各种块设备上，即使这些设备使用了RAID和 LVM也毫无障碍。</p>
-<p>如果看到类似下面的输出，说明AES模块已经加载了。<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">cat /proc/crypto&#10;&#10;name         : aes&#10;driver       : aes-generic&#10;module       : kernel&#10;priority     : 100&#10;refcnt       : 3&#10;selftest     : passed&#10;type         : cipher&#10;blocksize    : 16&#10;min keysize  : 16&#10;max keysize  : 32</span><br></pre></td></tr></table></figure></p>
-<p>否则可以用modprobe命令来手工加载AES模块。<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">modprobe aes</span><br></pre></td></tr></table></figure></p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/05/25/dm-crypt加密磁盘/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-linux系统克隆系统盘" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/05/12/linux系统克隆系统盘/" class="article-date">
-  	<time datetime="2015-05-12T06:24:31.000Z" itemprop="datePublished">2015-05-12</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/05/12/linux系统克隆系统盘/">linux系统克隆系统盘</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>本文将介绍两种方式的系统盘的完整的备份，两种方式各有优缺点，需要根据实际情况来进行选择</p>
-<ul>
-<li>使用dd的完整镜像克隆的方式</li>
-<li>使用tar去备份数据，安装grub的方式</li>
-</ul>
-<h4 id="dd方式">dd方式</h4><p>优点：<br>简单，一条命令 dd if=/dev/sda of=/dev/sdb 就可以进行完整的系统备份了</p>
-<p>缺点：<br>时间非常长，备份一个系统盘，无论数据多少，系统盘全部会读取一遍，时间比较久<br>备份目的盘需要大于原盘<br>分区无法调整，根原分区一模一样</p>
-<h4 id="tar方式">tar方式</h4><p>优点：<br>时间短，只需要备份实际磁盘上的数据即可<br>自定义，可以修改分区的大小，可以控制备份的类容，可以定期备份<br>对目的盘大小无限制，比较灵活</p>
-<p>缺点：<br>人为修改东西比较多，需要手动去修改一些信息<br>当然在掌握了一定的linux基础的情况下建议是使用tar方式的，，下面将介绍tar方式的处理方式：</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/操作系统/">操作系统</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/05/12/linux系统克隆系统盘/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-linux下制作软件包安装服务器" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/04/28/linux下制作软件包安装服务器/" class="article-date">
-  	<time datetime="2015-04-28T08:43:29.000Z" itemprop="datePublished">2015-04-28</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/04/28/linux下制作软件包安装服务器/">linux下制作软件包安装服务器</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>linux下的软件包在有网络的情况下比较好安装，在ubuntu下，更新sourcelist，然后使用apt-get就可以很方便的安装包，在centos下面，更新yum列表，然后使用yum也可以进行方便的软件安装，但是在没有网络的情况下就比较难安装，可以用一个个包的安装的方式去安装，这个在少量的包的情况下比较好处理，在多的情况下就比较麻烦了，本篇文档，就是介绍了在无网的情况下，根据自己的需要制作内网的包的安装服务器</p>
-<h2 id="centos系列">centos系列</h2><h3 id="使用光驱作为安装源">使用光驱作为安装源</h3><p>1、将光驱挂载到服务器的本地目录</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@node1 ~]<span class="comment"># mount /dev/cdrom /mnt</span></span><br><span class="line">mount: block device /dev/sr0 is write-protected, mounting <span class="built_in">read</span>-only</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/04/28/linux下制作软件包安装服务器/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>

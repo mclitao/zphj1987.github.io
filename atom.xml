@@ -4,7 +4,7 @@
   <subtitle><![CDATA[但行好事，莫问前程]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2016-11-10T09:26:14.117Z</updated>
+  <updated>2016-11-16T15:08:55.857Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -13,6 +13,140 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[查询OSD运行在哪些cpu上]]></title>
+    <link href="http://www.zphj1987.com/2016/11/16/%E6%9F%A5%E8%AF%A2OSD%E8%BF%90%E8%A1%8C%E5%9C%A8%E5%93%AA%E4%BA%9Bcpu%E4%B8%8A/"/>
+    <id>http://www.zphj1987.com/2016/11/16/查询OSD运行在哪些cpu上/</id>
+    <published>2016-11-16T08:58:58.000Z</published>
+    <updated>2016-11-16T15:08:55.857Z</updated>
+    <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/cpu.png" alt=""><br></center>
+
+<h2 id="前言">前言</h2><p>在看CPU相关的文章的时候，想起来之前有文章讨论是否要做CPU绑定，这个有说绑定的也有说不绑定的，然后就想到一个问题，有去观测这些OSD到底运行在哪些CPU上面么,有问题就好解决了，现在就是要查下机器上的OSD运行在哪些CPU上</p>
+<a id="more"></a>
+<h2 id="代码">代码</h2><p>这里直接上代码了，最近学习python在，就用python来实现<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># -*- coding: UTF-8 -*-</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="keyword">import</span> psutil</span><br><span class="line"><span class="keyword">import</span> commands</span><br><span class="line"><span class="keyword">from</span> prettytable <span class="keyword">import</span> PrettyTable</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">if</span> len(sys.argv) == <span class="number">1</span>:</span><br><span class="line">        printosdcputable(<span class="string">"process"</span>)</span><br><span class="line">    <span class="keyword">elif</span> sys.argv[<span class="number">1</span>] == <span class="string">'t'</span>:</span><br><span class="line">        printosdcputable(<span class="string">"thread"</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">printosdcputable</span><span class="params">(choose)</span>:</span></span><br><span class="line">    <span class="keyword">print</span> choose</span><br><span class="line">    row = PrettyTable()</span><br><span class="line">    row.header = <span class="keyword">True</span></span><br><span class="line">    cpulist = [<span class="string">"OSD\CPU"</span>]</span><br><span class="line">    corelist=[<span class="string">"Core ID"</span>]</span><br><span class="line">    phylist = [<span class="string">"Physical ID"</span>]</span><br><span class="line">    emplist=[<span class="string">"-----------"</span>]</span><br><span class="line">    <span class="keyword">for</span> cpupro <span class="keyword">in</span> range(psutil.cpu_count()):</span><br><span class="line">        cpulist.append(<span class="string">"%s"</span> %cpupro )</span><br><span class="line"></span><br><span class="line">        coreid=commands.getoutput(<span class="string">'egrep \'processor|physical id|core id\' /proc/cpuinfo | cut -d : -f 2 | paste - - -  | awk  \'$1==%s &#123;print $3 &#125;\''</span> %cpupro)</span><br><span class="line">        corelist.append(<span class="string">"%s"</span> %coreid)</span><br><span class="line"></span><br><span class="line">        phyid = commands.getoutput(<span class="string">'egrep \'processor|physical id|core id\' /proc/cpuinfo | cut -d : -f 2 | paste - - -  | awk  \'$1==%s &#123;print $2 &#125;\''</span> % cpupro)</span><br><span class="line">        phylist.append(<span class="string">"%s"</span> %phyid)</span><br><span class="line">        emplist.append(<span class="string">"--"</span>)</span><br><span class="line"></span><br><span class="line">    row.field_names = cpulist</span><br><span class="line">    row.add_row(corelist)</span><br><span class="line">    row.add_row(phylist)</span><br><span class="line">    row.add_row(emplist)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> root, dirs, files <span class="keyword">in</span> os.walk(<span class="string">'/var/run/ceph/'</span>):</span><br><span class="line">        <span class="keyword">for</span> name <span class="keyword">in</span> files:</span><br><span class="line">            <span class="keyword">if</span> <span class="string">"osd"</span>  <span class="keyword">in</span> name <span class="keyword">and</span> <span class="string">"pid"</span> <span class="keyword">in</span> name :</span><br><span class="line">                osdlist = []</span><br><span class="line">                osdthlist=[]</span><br><span class="line">                <span class="keyword">for</span> osdcpu <span class="keyword">in</span> range(psutil.cpu_count()):</span><br><span class="line">                    osdlist.append(<span class="string">" "</span>)</span><br><span class="line">                    osdthlist.append(<span class="string">"0"</span>)</span><br><span class="line">                pidfile=root+ name</span><br><span class="line">                osdid=commands.getoutput(<span class="string">'ls  %s|cut -d "." -f 2 2&gt;/dev/null'</span>  %pidfile )</span><br><span class="line">                osdpid = commands.getoutput(<span class="string">'cat %s  2&gt;/dev/null'</span> %pidfile)</span><br><span class="line">                osd_runcpu = commands.getoutput(<span class="string">'ps -o  psr -p %s |grep -v PSR 2&gt;/dev/null'</span> %osdpid)</span><br><span class="line">                th_list = commands.getoutput(<span class="string">'ps -o  psr -L  -p %s |grep -v PSR|awk \'gsub(/^ *| *$/,"")\'  2&gt;/dev/null'</span> % osdpid)</span><br><span class="line"></span><br><span class="line">                osdname=<span class="string">"osd."</span>+osdid</span><br><span class="line">                osdlist[int(osd_runcpu)]=<span class="string">"+"</span></span><br><span class="line">                <span class="keyword">for</span> osdth <span class="keyword">in</span> th_list.split(<span class="string">'\n'</span>):</span><br><span class="line">                    osdthlist[int(osdth)] = int(osdthlist[int(osdth)])+<span class="number">1</span></span><br><span class="line">                osdlist.insert(<span class="number">0</span>,osdname)</span><br><span class="line">                osdthlist.insert(<span class="number">0</span>,osdname)</span><br><span class="line">                <span class="keyword">if</span> choose == <span class="string">"process"</span>:</span><br><span class="line">                    row.add_row(osdlist)</span><br><span class="line">                <span class="keyword">elif</span> choose == <span class="string">"thread"</span>:</span><br><span class="line">                    row.add_row(osdthlist)</span><br><span class="line">    <span class="keyword">print</span> row</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure></p>
+<p>运行脚本：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">watch python getosdcpu.py</span><br></pre></td></tr></table></figure></p>
+<p>或者监控线程<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">watch python getosdcpu.py t</span><br></pre></td></tr></table></figure></p>
+<p>运行效果如下：</p>
+<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/osdcpu.png" alt=""><br></center>
+
+<p>线程的情况</p>
+<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/thread.png" alt=""><br></center>
+
+
+<p>看上去确实有些CPU上面运行了多个OSD，这里不讨论CPU绑定的好坏，只是展示现象，具体有什么效果，是需要用数据取分析的，这个以后再看下</p>
+<h2 id="我的公众号-磨磨谈">我的公众号-磨磨谈</h2><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/qrcode_for_gh_6998a54d68f7_430.jpg" alt=""><br></center>]]></content>
+    <summary type="html">
+    <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/cpu.png" alt=""><br></center>
+
+<h2 id="前言">前言</h2><p>在看CPU相关的文章的时候，想起来之前有文章讨论是否要做CPU绑定，这个有说绑定的也有说不绑定的，然后就想到一个问题，有去观测这些OSD到底运行在哪些CPU上面么,有问题就好解决了，现在就是要查下机器上的OSD运行在哪些CPU上</p>]]>
+    
+    </summary>
+    
+      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[处理stale的pg]]></title>
+    <link href="http://www.zphj1987.com/2016/11/14/%E5%A4%84%E7%90%86stale%E7%9A%84pg/"/>
+    <id>http://www.zphj1987.com/2016/11/14/处理stale的pg/</id>
+    <published>2016-11-14T12:32:27.000Z</published>
+    <updated>2016-11-14T12:58:58.506Z</updated>
+    <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/wremch.png" alt=""><br></center>
+
+<h2 id="前言">前言</h2><p>在某些场景下Ceph集群会出现stale的情况，也就是ceph集群PG的僵死状态，这个状态实际上是无法处理新的请求了，新的请求过来只会block，那么我们如何去恢复环境</p>
+<h2 id="实践过程">实践过程</h2><p>首先模拟stale环境，这个比较好模拟</p>
+<blockquote>
+<p>设置副本2，然后同时关闭两个OSD（不同故障域上），然后删除这两个OSD</p>
+</blockquote>
+<p>集群这个时候就会出现stale的情况了，因为两份数据都丢了，在一些环境下，数据本身就是临时的或者不是那么重要的，比如存储日志，这样的环境下，只需要快速的恢复环境即可，而不担心数据的丢失</p>
+<a id="more"></a>
+<h3 id="处理过程">处理过程</h3><p>首先用ceph pg dump|grep stale 找出所有的stale的pg</p>
+<p>然后用 ceph force_create_pg  pg_id</p>
+<p>如果做到这里，可以看到之前的stale的状态的PG，现在已经是creating状态的了，这个时候一个关键的步骤需要做下</p>
+<p>就是重启整个集群的OSD，在重启完成了以后，集群的状态就会恢复正常了，也能够正常的写入新的数据了，对于老的数据，做下清理即可</p>
+<h2 id="变更记录">变更记录</h2><table>
+<thead>
+<tr>
+<th style="text-align:center">Why</th>
+<th style="text-align:center">Who</th>
+<th style="text-align:center">When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">创建</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2016-11-14</td>
+</tr>
+</tbody>
+</table>
+<h2 id="我的公众号-磨磨谈">我的公众号-磨磨谈</h2><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/qrcode_for_gh_6998a54d68f7_430.jpg" alt=""><br></center>
+
+]]></content>
+    <summary type="html">
+    <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/wremch.png" alt=""><br></center>
+
+<h2 id="前言">前言</h2><p>在某些场景下Ceph集群会出现stale的情况，也就是ceph集群PG的僵死状态，这个状态实际上是无法处理新的请求了，新的请求过来只会block，那么我们如何去恢复环境</p>
+<h2 id="实践过程">实践过程</h2><p>首先模拟stale环境，这个比较好模拟</p>
+<blockquote>
+<p>设置副本2，然后同时关闭两个OSD（不同故障域上），然后删除这两个OSD</p>
+</blockquote>
+<p>集群这个时候就会出现stale的情况了，因为两份数据都丢了，在一些环境下，数据本身就是临时的或者不是那么重要的，比如存储日志，这样的环境下，只需要快速的恢复环境即可，而不担心数据的丢失</p>]]>
+    
+    </summary>
+    
+      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[yum安装Ceph指定Jewel版本]]></title>
+    <link href="http://www.zphj1987.com/2016/11/14/yum%E5%AE%89%E8%A3%85Ceph%E6%8C%87%E5%AE%9AJewel%E7%89%88%E6%9C%AC/"/>
+    <id>http://www.zphj1987.com/2016/11/14/yum安装Ceph指定Jewel版本/</id>
+    <published>2016-11-14T10:04:16.000Z</published>
+    <updated>2016-11-14T12:58:47.384Z</updated>
+    <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/yum-logo.png" alt=""><br></center>
+
+<h2 id="前言">前言</h2><p>通过yum安装指定的rpm包，这个一般是 <code>yum --showduplicates list ceph | expand</code>,然后去通过yum安装指定的版本即可，这个在hammer下是没有问题的，但是在Jewel下进行安装的时候却出现了问题，我们来看下怎么解决这个问题的</p>
+<h2 id="实践过程">实践过程</h2><p>我们需要安装 <code>ceph-10.2.0-0.el7</code> 这个版本的，根据之前的方法<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># yum install  ceph-10.2.0-0.el7</span></span><br><span class="line">Loaded plugins: fastestmirror, langpacks, priorities</span><br><span class="line">base                                                                            | <span class="number">3.6</span> kB  <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>     </span><br><span class="line">ceph                                                                            | <span class="number">2.9</span> kB  <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>     </span><br><span class="line">ceph-noarch                                                                     | <span class="number">2.9</span> kB  <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>     </span><br><span class="line">epel                                                                            | <span class="number">4.3</span> kB  <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span></span><br><span class="line">···</span><br><span class="line">Error: Package: <span class="number">1</span>:ceph-base-<span class="number">10.2</span>.<span class="number">0</span>-<span class="number">0</span>.el7.x86_64 (ceph)</span><br><span class="line">           Requires: librados2 = <span class="number">1</span>:<span class="number">10.2</span>.<span class="number">0</span>-<span class="number">0</span>.el7</span><br><span class="line">           Removing: <span class="number">1</span>:librados2-<span class="number">0.94</span>.<span class="number">6</span>-<span class="number">0</span>.el7.x86_64 (@ceph)</span><br><span class="line">               librados2 = <span class="number">1</span>:<span class="number">0.94</span>.<span class="number">6</span>-<span class="number">0</span>.el7</span><br><span class="line">           Updated By: <span class="number">1</span>:librados2-<span class="number">10.2</span>.<span class="number">3</span>-<span class="number">0</span>.el7.x86_64 (ceph)</span><br><span class="line">               librados2 = <span class="number">1</span>:<span class="number">10.2</span>.<span class="number">3</span>-<span class="number">0</span>.el7</span><br><span class="line">           Available: <span class="number">1</span>:librados2-<span class="number">0.80</span>.<span class="number">7</span>-<span class="number">0.8</span>.el7.x86_64 (epel)</span><br><span class="line">               librados2 = <span class="number">1</span>:<span class="number">0.80</span>.<span class="number">7</span>-<span class="number">0.8</span>.el7</span><br><span class="line">           Available: <span class="number">1</span>:librados2-<span class="number">0.80</span>.<span class="number">7</span>-<span class="number">3</span>.el7.x86_64 (base)</span><br><span class="line">               librados2 = <span class="number">1</span>:<span class="number">0.80</span>.<span class="number">7</span>-<span class="number">3</span>.el7</span><br><span class="line">           Available: <span class="number">1</span>:librados2-<span class="number">10.1</span>.<span class="number">0</span>-<span class="number">0</span>.el7.x86_64 (ceph)</span><br></pre></td></tr></table></figure></p>
+<a id="more"></a>
+<p>可以看到我们指定了ceph-10.2.0,但是这个rpm包的依赖却自动的去升级到了librados2-10.2.3，然后这个10.2.3又会跟准备安装的ceph-10.2.0冲突了，然后就会提示无法安装了</p>
+<p>问题已经找到了，我们如何解决这个问题，第一想法就是应该把版本限制住，在参阅了一些资料以后，发现yum确实可以支持这个需求的，我们来限制下版本</p>
+<h3 id="限制yum版本">限制yum版本</h3><p>vim /etc/yum.conf<br>在[main]当中,添加下面的内容<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">exclude=*<span class="number">10.2</span>.<span class="number">3</span>* *<span class="number">10.2</span>.<span class="number">2</span>* *<span class="number">10.2</span>.<span class="number">1</span>*</span><br></pre></td></tr></table></figure></p>
+<p>为什么写了三个，因为在10.2.0之上有三个版本的，这个地方进行全匹配的方式进行限制</p>
+<h3 id="安装ceph-10-2-0">安装ceph-10.2.0</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># yum install  ceph-10.2.0-0.el7</span></span><br><span class="line">Dependencies Resolved</span><br><span class="line"></span><br><span class="line">==================================================================================================================================================================================================================</span><br><span class="line"> Package                                                 Arch                                          Version                                                  Repository                                   Size</span><br><span class="line">==================================================================================================================================================================================================================</span><br><span class="line">Updating:</span><br><span class="line"> ceph                                                    x86_64                                        <span class="number">1</span>:<span class="number">10.2</span>.<span class="number">0</span>-<span class="number">0</span>.el7                                           ceph                                        <span class="number">3.1</span> k</span><br><span class="line">Installing <span class="keyword">for</span> dependencies:</span><br><span class="line"> ceph-base                                               x86_64                                        <span class="number">1</span>:<span class="number">10.2</span>.<span class="number">0</span>-<span class="number">0</span>.el7                                           ceph                                        <span class="number">4.2</span> M</span><br><span class="line"> ceph-mds                                                x86_64                                        <span class="number">1</span>:<span class="number">10.2</span>.<span class="number">0</span>-<span class="number">0</span>.el7                                           ceph                                        <span class="number">2.8</span> M</span><br><span class="line"> ceph-mon                                                x86_64                                        <span class="number">1</span>:<span class="number">10.2</span>.<span class="number">0</span>-<span class="number">0</span>.el7                                           ceph                                        <span class="number">2.8</span> M</span><br><span class="line"> ceph-osd                                                x86_64                                        <span class="number">1</span>:<span class="number">10.2</span>.<span class="number">0</span>-<span class="number">0</span>.el7                                           ceph                                        <span class="number">9.0</span> M</span><br><span class="line"> ceph-selinux                                            x86_64                                        <span class="number">1</span>:<span class="number">10.2</span>.<span class="number">0</span>-<span class="number">0</span>.el7                                           ceph                                         <span class="number">20</span> k</span><br><span class="line"> libradosstriper1                                        x86_64                                        <span class="number">1</span>:<span class="number">10.2</span>.<span class="number">0</span>-<span class="number">0</span>.el7                                           ceph                                        <span class="number">1.8</span> M</span><br><span class="line"> librgw2                                                 x86_64                                        <span class="number">1</span>:<span class="number">10.2</span>.<span class="number">0</span>-<span class="number">0</span>.el7                                           ceph                                        <span class="number">2.8</span> M</span><br><span class="line">Updating <span class="keyword">for</span> dependencies:</span><br><span class="line"> ceph-common                                             x86_64                                        <span class="number">1</span>:<span class="number">10.2</span>.<span class="number">0</span>-<span class="number">0</span>.el7                                           ceph                                         <span class="number">15</span> M</span><br><span class="line"> libcephfs1                                              x86_64                                        <span class="number">1</span>:<span class="number">10.2</span>.<span class="number">0</span>-<span class="number">0</span>.el7                                           ceph                                        <span class="number">1.8</span> M</span><br><span class="line"> librados2                                               x86_64                                        <span class="number">1</span>:<span class="number">10.2</span>.<span class="number">0</span>-<span class="number">0</span>.el7                                           ceph                                        <span class="number">1.9</span> M</span><br><span class="line"> librbd1                                                 x86_64                                        <span class="number">1</span>:<span class="number">10.2</span>.<span class="number">0</span>-<span class="number">0</span>.el7                                           ceph                                        <span class="number">2.4</span> M</span><br><span class="line"> python-cephfs                                           x86_64                                        <span class="number">1</span>:<span class="number">10.2</span>.<span class="number">0</span>-<span class="number">0</span>.el7                                           ceph                                         <span class="number">67</span> k</span><br><span class="line"> python-rados                                            x86_64                                        <span class="number">1</span>:<span class="number">10.2</span>.<span class="number">0</span>-<span class="number">0</span>.el7                                           ceph                                        <span class="number">146</span> k</span><br><span class="line"> python-rbd                                              x86_64                                        <span class="number">1</span>:<span class="number">10.2</span>.<span class="number">0</span>-<span class="number">0</span>.el7                                           ceph                                         <span class="number">62</span> k</span><br><span class="line"></span><br><span class="line">Transaction Summary</span><br><span class="line">==================================================================================================================================================================================================================</span><br><span class="line">Install             ( <span class="number">7</span> Dependent packages)</span><br><span class="line">Upgrade  <span class="number">1</span> Package  (+<span class="number">7</span> Dependent packages)</span><br></pre></td></tr></table></figure>
+<p>可以正确的安装了</p>
+<h3 id="总结">总结</h3><p>通过yum去指定版本，然后去过滤高的版本的方式，来安装了指定的版本的ceph</p>
+<h3 id="变更记录">变更记录</h3><table>
+<thead>
+<tr>
+<th style="text-align:center">Why</th>
+<th style="text-align:center">Who</th>
+<th style="text-align:center">When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">创建</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2016-11-14</td>
+</tr>
+</tbody>
+</table>
+<h3 id="我的公众号-磨磨谈">我的公众号-磨磨谈</h3><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/qrcode_for_gh_6998a54d68f7_430.jpg" alt=""><br></center>]]></content>
+    <summary type="html">
+    <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/yum-logo.png" alt=""><br></center>
+
+<h2 id="前言">前言</h2><p>通过yum安装指定的rpm包，这个一般是 <code>yum --showduplicates list ceph | expand</code>,然后去通过yum安装指定的版本即可，这个在hammer下是没有问题的，但是在Jewel下进行安装的时候却出现了问题，我们来看下怎么解决这个问题的</p>
+<h2 id="实践过程">实践过程</h2><p>我们需要安装 <code>ceph-10.2.0-0.el7</code> 这个版本的，根据之前的方法<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># yum install  ceph-10.2.0-0.el7</span></span><br><span class="line">Loaded plugins: fastestmirror, langpacks, priorities</span><br><span class="line">base                                                                            | <span class="number">3.6</span> kB  <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>     </span><br><span class="line">ceph                                                                            | <span class="number">2.9</span> kB  <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>     </span><br><span class="line">ceph-noarch                                                                     | <span class="number">2.9</span> kB  <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>     </span><br><span class="line">epel                                                                            | <span class="number">4.3</span> kB  <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span></span><br><span class="line">···</span><br><span class="line">Error: Package: <span class="number">1</span>:ceph-base-<span class="number">10.2</span>.<span class="number">0</span>-<span class="number">0</span>.el7.x86_64 (ceph)</span><br><span class="line">           Requires: librados2 = <span class="number">1</span>:<span class="number">10.2</span>.<span class="number">0</span>-<span class="number">0</span>.el7</span><br><span class="line">           Removing: <span class="number">1</span>:librados2-<span class="number">0.94</span>.<span class="number">6</span>-<span class="number">0</span>.el7.x86_64 (@ceph)</span><br><span class="line">               librados2 = <span class="number">1</span>:<span class="number">0.94</span>.<span class="number">6</span>-<span class="number">0</span>.el7</span><br><span class="line">           Updated By: <span class="number">1</span>:librados2-<span class="number">10.2</span>.<span class="number">3</span>-<span class="number">0</span>.el7.x86_64 (ceph)</span><br><span class="line">               librados2 = <span class="number">1</span>:<span class="number">10.2</span>.<span class="number">3</span>-<span class="number">0</span>.el7</span><br><span class="line">           Available: <span class="number">1</span>:librados2-<span class="number">0.80</span>.<span class="number">7</span>-<span class="number">0.8</span>.el7.x86_64 (epel)</span><br><span class="line">               librados2 = <span class="number">1</span>:<span class="number">0.80</span>.<span class="number">7</span>-<span class="number">0.8</span>.el7</span><br><span class="line">           Available: <span class="number">1</span>:librados2-<span class="number">0.80</span>.<span class="number">7</span>-<span class="number">3</span>.el7.x86_64 (base)</span><br><span class="line">               librados2 = <span class="number">1</span>:<span class="number">0.80</span>.<span class="number">7</span>-<span class="number">3</span>.el7</span><br><span class="line">           Available: <span class="number">1</span>:librados2-<span class="number">10.1</span>.<span class="number">0</span>-<span class="number">0</span>.el7.x86_64 (ceph)</span><br></pre></td></tr></table></figure></p>]]>
+    
+    </summary>
+    
+      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[预估Ceph集群恢复时间]]></title>
@@ -1114,139 +1248,6 @@
     </summary>
     
       <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[编译一个支持多线程的php安装包]]></title>
-    <link href="http://www.zphj1987.com/2016/10/10/%E7%BC%96%E8%AF%91%E4%B8%80%E4%B8%AA%E6%94%AF%E6%8C%81%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%9A%84php%E5%AE%89%E8%A3%85%E5%8C%85/"/>
-    <id>http://www.zphj1987.com/2016/10/10/编译一个支持多线程的php安装包/</id>
-    <published>2016-10-10T04:27:18.000Z</published>
-    <updated>2016-10-10T04:44:29.648Z</updated>
-    <content type="html"><![CDATA[<p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/php/php-elephant-01.png" alt=""><br></center></p>
-<h2 id="一、前言">一、前言</h2><p>因为项目上的需要，需要用到php，一般来说，用默认的版本和配置就可以满足大多数的场景，因为需要加入多线程，所以需要自己编译一个包</p>
-<p>一般来说，发行的包的版本的配置选项和代码都是最稳定的，所以在大多数情况下，我都不会直接去拿原始的源码做编译，这里我的经验是用别人发布版本的源码包，然后根据自己的需要，做修改，然后打包，这次的处理方法还是一样<br><a id="more"></a></p>
-<h2 id="二、获取源码">二、获取源码</h2><p>地址：<br><figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="symbol">https:</span>/<span class="regexp">/uk.repo.webtatic.com/yum</span><span class="regexp">/el7/</span><span class="constant">SRPMS/RPMS/</span></span><br></pre></td></tr></table></figure></p>
-<p>这个是webtatic发行的php版本，做了一些修改和优化</p>
-<p>选择需要的版本<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 myphp]<span class="comment"># wget https://uk.repo.webtatic.com/yum/el7/SRPMS/RPMS/php56w-5.6.26-1.w7.src.rpm</span></span><br></pre></td></tr></table></figure></p>
-<p>解压安装包<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 myphp]<span class="comment"># rpm2cpio php56w-5.6.26-1.w7.src.rpm |cpio -div</span></span><br></pre></td></tr></table></figure></p>
-<p>解压完成了后，当前目录下面会有很多文件<br>修改当前目录下面的php56.spec<br>在编译相关的configure后面增加</p>
-<blockquote>
-<p>—enable-maintainer-zts</p>
-</blockquote>
-<p>拷贝解压和修改的文件到源码编译目录<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 myphp]<span class="comment"># cp -ra * /root/rpmbuild/SOURCES/</span></span><br></pre></td></tr></table></figure></p>
-<h2 id="三、编译rpm包">三、编译rpm包</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 myphp]<span class="comment"># rpmbuild -bb php56.spec</span></span><br></pre></td></tr></table></figure>
-<p>如果提示缺依赖，就把相关的依赖包安装好就可以了，编译环境最好跟最终使用环境是一样的环境，执行完成了以后，会生成rpm安装包</p>
-<h2 id="四、增加多线程支持">四、增加多线程支持</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pecl install pthreads-<span class="number">2.0</span>.<span class="number">9</span></span><br></pre></td></tr></table></figure>
-<p>这个会下载源码，然后自动编译成可用的内核模块，将这个内核模块的配置文件和模块文件拷贝到最终使用环境即可</p>
-<p>检查是否安装成功<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># php -m|grep pth</span></span><br><span class="line">pthreads</span><br></pre></td></tr></table></figure></p>
-<p>可用看到已经支持了</p>
-<h2 id="五、变更记录">五、变更记录</h2><table>
-<thead>
-<tr>
-<th style="text-align:center">Why</th>
-<th style="text-align:center">Who</th>
-<th style="text-align:center">When</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">创建</td>
-<td style="text-align:center">武汉-运维-磨渣</td>
-<td style="text-align:center">2016-10-10</td>
-</tr>
-</tbody>
-</table>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/php/php-elephant-01.png" alt=""><br></center></p>
-<h2 id="一、前言">一、前言</h2><p>因为项目上的需要，需要用到php，一般来说，用默认的版本和配置就可以满足大多数的场景，因为需要加入多线程，所以需要自己编译一个包</p>
-<p>一般来说，发行的包的版本的配置选项和代码都是最稳定的，所以在大多数情况下，我都不会直接去拿原始的源码做编译，这里我的经验是用别人发布版本的源码包，然后根据自己的需要，做修改，然后打包，这次的处理方法还是一样<br>]]>
-    
-    </summary>
-    
-      <category term="linux" scheme="http://www.zphj1987.com/tags/linux/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[fio测试数据的可视化]]></title>
-    <link href="http://www.zphj1987.com/2016/09/28/fio%E6%B5%8B%E8%AF%95%E6%95%B0%E6%8D%AE%E7%9A%84%E5%8F%AF%E8%A7%86%E5%8C%96/"/>
-    <id>http://www.zphj1987.com/2016/09/28/fio测试数据的可视化/</id>
-    <published>2016-09-28T10:13:04.000Z</published>
-    <updated>2016-09-28T10:17:48.586Z</updated>
-    <content type="html"><![CDATA[<h2 id="前言">前言</h2><p>近期会做一个事情，把fio的数据可视化，目前有gfio可以动态的获取状态，希望能够对已经产生的数据进行分析</p>
-<p>目前处于起步数据分析阶段，通过python获取需要的数据输出到csv，然后对csv进行综合的输出，从而能够清楚的从大量数据当中得到想要的效果<br><a id="more"></a></p>
-<h2 id="图例">图例</h2><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/fio/fiokeshuhua.png" alt=""><br></center>
-
-<h2 id="变更记录">变更记录</h2><table>
-<thead>
-<tr>
-<th style="text-align:center">Why</th>
-<th style="text-align:center">Who</th>
-<th style="text-align:center">When</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">创建</td>
-<td style="text-align:center">武汉-运维-磨渣</td>
-<td style="text-align:center">2016-09-28</td>
-</tr>
-</tbody>
-</table>
-]]></content>
-    <summary type="html">
-    <![CDATA[<h2 id="前言">前言</h2><p>近期会做一个事情，把fio的数据可视化，目前有gfio可以动态的获取状态，希望能够对已经产生的数据进行分析</p>
-<p>目前处于起步数据分析阶段，通过python获取需要的数据输出到csv，然后对csv进行综合的输出，从而能够清楚的从大量数据当中得到想要的效果<br>]]>
-    
-    </summary>
-    
-      <category term="linux" scheme="http://www.zphj1987.com/tags/linux/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[Python生成csv中文乱码解决办法]]></title>
-    <link href="http://www.zphj1987.com/2016/09/28/Python%E7%94%9F%E6%88%90csv%E4%B8%AD%E6%96%87%E4%B9%B1%E7%A0%81%E7%9A%84%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95/"/>
-    <id>http://www.zphj1987.com/2016/09/28/Python生成csv中文乱码的解决办法/</id>
-    <published>2016-09-28T06:36:43.000Z</published>
-    <updated>2016-09-28T06:39:34.698Z</updated>
-    <content type="html"><![CDATA[<p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/csv/parsing-csv-dribbble.gif" alt="csv"><br></center></p>
-<h2 id="一、前言">一、前言</h2><p>在Linux下面用python进行数据处理，然后输出为csv格式，如果没有中文一切正常，但是如果有中文，就会出现乱码的问题,本篇将讲述怎么处理这个问题<br><a id="more"></a></p>
-<h2 id="二、处理过程">二、处理过程</h2><h3 id="原始代码">原始代码</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># -*- coding: UTF-8 -*-</span></span><br><span class="line">import csv</span><br><span class="line"><span class="comment">#import codecs</span></span><br><span class="line">with open(<span class="string">'test.csv'</span>, <span class="string">'wb'</span>) as csvfile:</span><br><span class="line"><span class="comment">#    csvfile.write(codecs.BOM_UTF8)</span></span><br><span class="line">    spamwriter = csv.writer(csvfile, dialect=<span class="string">'excel'</span>)</span><br><span class="line">    spamwriter.writerow([<span class="string">'测试'</span>] * <span class="number">5</span> + [<span class="string">'Baked Beans'</span>])</span><br><span class="line">    spamwriter.writerow([<span class="string">'Spam'</span>, <span class="string">'Lovely Spam'</span>, <span class="string">'Wonderful Spam'</span>])</span><br></pre></td></tr></table></figure>
-<p>运行以后：<br>Linux下的效果<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># cat test.csv </span></span><br><span class="line">测试,测试,测试,测试,测试,Baked Beans</span><br><span class="line">Spam,Lovely Spam,Wonderful Spam</span><br></pre></td></tr></table></figure></p>
-<p>Windows下打开的效果<br><img src="http://static.zybuluo.com/zphj1987/2cve2nr8jyy4chs7kvur5wwt/image_1atnnp5i41b7lf7tumgj6175k9.png" alt="image_1atnnp5i41b7lf7tumgj6175k9.png-4.3kB"></p>
-<h3 id="修改代码">修改代码</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># -*- coding: UTF-8 -*-</span></span><br><span class="line">import csv</span><br><span class="line">import codecs</span><br><span class="line">with open(<span class="string">'test.csv'</span>, <span class="string">'wb'</span>) as csvfile:</span><br><span class="line">    csvfile.write(codecs.BOM_UTF8)</span><br><span class="line">    spamwriter = csv.writer(csvfile, dialect=<span class="string">'excel'</span>)</span><br><span class="line">    spamwriter.writerow([<span class="string">'测试'</span>] * <span class="number">5</span> + [<span class="string">'Baked Beans'</span>])</span><br><span class="line">    spamwriter.writerow([<span class="string">'Spam'</span>, <span class="string">'Lovely Spam'</span>, <span class="string">'Wonderful Spam'</span>])</span><br></pre></td></tr></table></figure>
-<p>跟上面的代码相比，引入了两行代码</p>
-<blockquote>
-<p>import codecs<br>csvfile.write(codecs.BOM_UTF8)</p>
-</blockquote>
-<p>我们再来看效果Linux下的效果<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># cat test.csv </span></span><br><span class="line">测试,测试,测试,测试,测试,Baked Beans</span><br><span class="line">Spam,Lovely Spam,Wonderful Spam</span><br></pre></td></tr></table></figure></p>
-<p>Windows下打开的效果<br><img src="http://static.zybuluo.com/zphj1987/k9m15wfa83wbrhuc6b0xyftg/image_1atnnsp1713931d1h1e641l4f13kim.png" alt="image_1atnnsp1713931d1h1e641l4f13kim.png-3.5kB"><br>问题解决</p>
-<h2 id="三、总结">三、总结</h2><p>网上找了一些资料，这个方式比较快而简单，就先用这个方式解决，方法有很多</p>
-<h2 id="四、变更记录">四、变更记录</h2><table>
-<thead>
-<tr>
-<th style="text-align:center">Why</th>
-<th style="text-align:center">Who</th>
-<th style="text-align:center">When</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">创建</td>
-<td style="text-align:center">武汉-运维-磨渣</td>
-<td style="text-align:center">2016-09-28</td>
-</tr>
-</tbody>
-</table>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/csv/parsing-csv-dribbble.gif" alt="csv"><br></center></p>
-<h2 id="一、前言">一、前言</h2><p>在Linux下面用python进行数据处理，然后输出为csv格式，如果没有中文一切正常，但是如果有中文，就会出现乱码的问题,本篇将讲述怎么处理这个问题<br>]]>
-    
-    </summary>
     
   </entry>
   

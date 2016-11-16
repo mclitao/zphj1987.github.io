@@ -191,6 +191,169 @@ var _hmt = _hmt || [];
 </nav>
       <div class="body-wrap">
   
+    <article id="post-清理win7注册表后，没有了右键新建选项处理办法" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/03/22/清理win7注册表后，没有了右键新建选项处理办法/" class="article-date">
+  	<time datetime="2015-03-22T08:09:11.000Z" itemprop="datePublished">2015-03-22</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/03/22/清理win7注册表后，没有了右键新建选项处理办法/">清理win7注册表后，没有了右键新建选项处理办法</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>今天清理win7注册表的右键选项,发现清理完了后,居然没有了右键新建,什么文件都无法创建,搜索了下,发现有人给出了解决办法,如下:<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">REGEDIT4 [HKEY_CLASSES_ROOT\Directory\Background\shellex\ContextMenuHandlers\New] @=&#34;&#123;D969A300-E7FF-11d0-A93B-00A0C90F2719&#125;&#34; [HKEY_CLASSES_ROOT\Directory\Background\shellex\ContextMenuHandlers\New\command] @=hex(2):</span><br></pre></td></tr></table></figure></p>
+<p>建一个文本文件,把上面的内容拷过去,然后把文件后缀改成.reg。双击执行就可以了</p>
+<p>写于: 2012年04月25日<br>更新于: 2015年03月22日</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-把你的常用文件夹直接显示在“计算机”中" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/03/22/把你的常用文件夹直接显示在“计算机”中/" class="article-date">
+  	<time datetime="2015-03-22T08:05:43.000Z" itemprop="datePublished">2015-03-22</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/03/22/把你的常用文件夹直接显示在“计算机”中/">把你的常用文件夹直接显示在“计算机”中</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>win7 中“我的电脑”改名为了“计算机”,而且计算机中不再有我的文档共享文档等链接,虽然计算机左侧的链接中有常用文件夹的链接，用户也可以把自己的快捷方式放入其中。<br>但某些东西还是想直接放在计算机中，很简单，只要把文件或文件夹或它们的快捷方式放到以下目录即可。<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">C:\Users\&#20320;&#30340;&#29992;&#25143;&#21517;\AppData\Roaming\Microsoft\Windows\Network Shortcuts</span><br></pre></td></tr></table></figure></p>
+<p>即可在“计算机”中显示。</p>
+<p>写于: 2012年4月24日<br>更新于: 2015年03月22日</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-关于nginx-upstream的几种配置方式" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/03/22/关于nginx-upstream的几种配置方式/" class="article-date">
+  	<time datetime="2015-03-22T07:55:56.000Z" itemprop="datePublished">2015-03-22</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/03/22/关于nginx-upstream的几种配置方式/">关于nginx upstream的几种配置方式</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>平时一直依赖硬件来作load blance,最近研究Nginx来做负载设备,记录下upstream的几种配置方式。</p>
+<p>第一种:轮询<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">upstream test&#123;&#10;    server 192.168.0.1:3000;&#10;    server 192.168.0.1:3001;&#10;&#125;</span><br></pre></td></tr></table></figure></p>
+<p>第二种:权重<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">upstream test&#123;&#10;    server 192.168.0.1 weight=2;&#10;    server 192.168.0.2 weight=3;&#10;&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这种模式可解决服务器性能不等的情况下轮询比率的调配</p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2015/03/22/关于nginx-upstream的几种配置方式/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-win7安装系统出现“安装程序无法创建新的系统分区，也无法定位现有的系统分区”解决方法" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -576,179 +739,6 @@ var _hmt = _hmt || [];
       
         <p class="article-more-link">
           <a  href="/2015/03/22/du查看的目录大小与df查看的大小不同的时候用lsof查找/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-遍历指定目录并且从子目录开始将目录输出到指定文件" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/03/22/遍历指定目录并且从子目录开始将目录输出到指定文件/" class="article-date">
-  	<time datetime="2015-03-22T06:18:05.000Z" itemprop="datePublished">2015-03-22</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/03/22/遍历指定目录并且从子目录开始将目录输出到指定文件/">遍历指定目录并且从子目录开始将目录输出到指定文件</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>shell脚本:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="shebang">#! /bin/sh</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"type a backup directory name:"</span></span><br><span class="line"><span class="built_in">read</span> <span class="operator">-e</span> r</span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$r</span>   </span><br><span class="line">python /zp/bianli.py <span class="variable">$r</span>                 <span class="comment">#传递参数到python脚本文件中</span></span><br><span class="line"><span class="keyword">for</span> dir <span class="keyword">in</span> `cat /zp/mulu.txt`</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$dir</span></span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure></p>
-<p>python脚本:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#! /usr/bin/env python</span></span><br><span class="line">import os,sys</span><br><span class="line">r=sys.argv[<span class="number">1</span>]                <span class="comment">#将第一个参数值传入到r当中</span></span><br><span class="line"><span class="keyword">for</span> root,<span class="built_in">dirs</span>,files <span class="keyword">in</span> os.walk(r,topdown=False):</span><br><span class="line">        <span class="keyword">for</span> dir <span class="keyword">in</span> <span class="built_in">dirs</span>:</span><br><span class="line">                <span class="built_in">print</span> os.path.join(root,dir)            <span class="comment">#输出路径</span></span><br></pre></td></tr></table></figure></p>
-<p>写于: 2012年3月13日<br>更新于: 2015年03月22日</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/脚本/">脚本</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-利用现有的网络产品实现内网linux服务器文件的公网同步" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/03/22/利用现有的网络产品实现内网linux服务器文件的公网同步/" class="article-date">
-  	<time datetime="2015-03-22T05:23:41.000Z" itemprop="datePublished">2015-03-22</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/03/22/利用现有的网络产品实现内网linux服务器文件的公网同步/">利用现有的网络产品实现内网linux服务器文件的公网同步</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>更新这篇文章的时候发现原来引用的互联网产品everbox已经不在了,作为国内第一批网盘产品,模仿dropbox做出来的,说实话,这个产品真的还不错,不过可能由于盛大运营方向的改变,对于这个短期内不会有收益的产品，最终被废掉了,其实对于技术发展很快的今天,拥有数据才是重点,进行数据重复删除以后,对于企业的存储压力其实不太大了,该淘汰的终归要淘汰，就像盛大的没落</p>
-<p>下面介绍的是通用的方法,网盘产品很多,都可以使用:</p>
-<p>现在可能会出现这样的情况,你在用你的linux服务器开发一个产品,在公司的时候,你可以通过内网连接到你的机器进行开发,但是回家以后,这些东西怎么带回家,怎么实现在线同步,这是一个问题,最近公司在开发产品的时候就面临这个问题,正好在寻找怎么远程连接内网服务器的时候想到了这个办法,内网服务器的连接办法另外一篇介绍:</p>
-<p>注册网盘账号,方法就不在这里介绍了</p>
-<p>在你的linux机器上安装samba,将你需要使用的目录设置为共享目录<br>这个在/etc/samba/smb.conf中配置就可以</p>
-<p>然后找一台windows机器,将需要备份的目录映射到本地盘,然后将同步的目录指定到这个盘,就可以进行同步了,有的同步软件不支持指定到根目录,那么可以在本地运行一个同步软件,将盘符与本地目录同步起来,然后将同步的盘指定到这个目录即可</p>
-<p>现在有支持可以同步linux和windows的软件了,btsync,这个很简单,需要两边都可以上网即可</p>
-<p>写于: 2012年02月03日<br>更新于: 2015年03月22日</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-利用脚本自动下载ftp列表中的文件" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/03/22/利用脚本自动下载ftp列表中的文件/" class="article-date">
-  	<time datetime="2015-03-22T05:09:35.000Z" itemprop="datePublished">2015-03-22</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/03/22/利用脚本自动下载ftp列表中的文件/">利用脚本自动下载ftp列表中的文件</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>我们可能会遇到这种场景，在某个机构订阅了一个邮件列表,然后这个机构会定期的发送带有ftp目录的url地址到你的邮件,现在你想在你的服务器上能够方便的下载这个列表上的文件,而不是手动的一个个去下,那么我们可以用脚本来完成这个功能,我将这个过程分为两部分,第一步获取到ftp页面的所有文件名称,第二步是通过获得的文件名来下载文件<br>下面以一个卫星数据的下载为例:</p>
-<p>ftp://oceans.gsfc.nasa.gov/subscriptions/1227</p>
-<p>这个是邮件中收到的url地址,在浏览器中可以查看到文件名,由于这个数据是0,这个是这样设计的.</p>
-<h3 id="第一步:我们只需要获取他的文件名,用下面这个脚本">第一步:我们只需要获取他的文件名,用下面这个脚本</h3><figure class="highlight"><table><tr><td class="code"><pre><span class="line">#! /bin/sh&#10;echo &#34;&#35831;&#36755;&#20837;&#20320;&#30340;FTP&#30446;&#24405;&#32534;&#21495;&#34;&#10;read -e id&#10;wget -r  ftp://oceans.gsfc.nasa.gov/subscriptions/$id&#10;ls  /usr/src/oceans.gsfc.nasa.gov/subscriptions/$id/ &#62; /usr/src/filename.txt</span><br></pre></td></tr></table></figure>
-<p>这样文件名就被下载到了/usr/src/filename.txt中了</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/03/22/利用脚本自动下载ftp列表中的文件/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>
