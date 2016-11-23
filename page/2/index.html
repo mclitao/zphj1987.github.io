@@ -191,6 +191,65 @@ var _hmt = _hmt || [];
 </nav>
       <div class="body-wrap">
   
+    <article id="post-Ceph部署的时候修改默认权重" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/11/02/Ceph部署的时候修改默认权重/" class="article-date">
+  	<time datetime="2016-11-02T07:46:07.000Z" itemprop="datePublished">2016-11-02</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/11/02/Ceph部署的时候修改默认权重/">Ceph部署的时候修改默认权重</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/weight.jpg" alt=""><br></center></p>
+<h2 id="一、前言">一、前言</h2><p>部署集群的时候权重是默认生成的，这个是根据磁盘大小分配的，我们有的时候需要去修改一下这个默认权重<br>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2016/11/02/Ceph部署的时候修改默认权重/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-Cephday深圳20161029总结" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -737,66 +796,6 @@ var _hmt = _hmt || [];
       
         <p class="article-more-link">
           <a  href="/2016/10/13/Ceph的参数mon-osd-down-out-subtree-limit细解/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-创建一个自定义名称的Ceph集群" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/10/12/创建一个自定义名称的Ceph集群/" class="article-date">
-  	<time datetime="2016-10-12T02:44:17.000Z" itemprop="datePublished">2016-10-12</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/10/12/创建一个自定义名称的Ceph集群/">创建一个自定义名称的Ceph集群</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="一、前言">一、前言</h2><p>这里有个条件，系统环境是Centos 7 ,Ceph 的版本为Jewel版本，因为这个组合下是由systemctl来进行服务控制的，所以需要做稍微的改动即可实现</p>
-<h2 id="二、准备工作">二、准备工作</h2><p>部署mon的时候需要修改这个几个文件<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">/usr/lib/systemd/system/ceph-mon@.service&#10;/usr/lib/systemd/system/ceph-create-keys@.service&#10;/usr/lib/systemd/system/ceph-osd@.service&#10;/usr/lib/systemd/system/ceph-mds@.service</span><br></pre></td></tr></table></figure></p>
-<p>将 <code>Environment=CLUSTER=ceph</code> 改成 <code>Environment=CLUSTER=myceph</code> 后面的myceph可以为你自定义的名称</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2016/10/12/创建一个自定义名称的Ceph集群/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>

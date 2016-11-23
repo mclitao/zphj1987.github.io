@@ -4,7 +4,7 @@
   <subtitle><![CDATA[但行好事，莫问前程]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2016-11-16T15:08:55.857Z</updated>
+  <updated>2016-11-23T15:08:27.351Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -13,6 +13,42 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[fio测试ceph的filestore]]></title>
+    <link href="http://www.zphj1987.com/2016/11/23/fio%E6%B5%8B%E8%AF%95ceph%E7%9A%84filestore/"/>
+    <id>http://www.zphj1987.com/2016/11/23/fio测试ceph的filestore/</id>
+    <published>2016-11-23T15:04:53.000Z</published>
+    <updated>2016-11-23T15:08:27.351Z</updated>
+    <content type="html"><![CDATA[<p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/fio-banner.jpg" alt="fio"><br></center></p>
+<h2 id="前言">前言</h2><p>fio是一个适应性非常强的软件，基本上能够模拟所有的IO请求，是目前最全面的一款测试软件，之前在看德国电信的一篇分享的时候，里面就提到了，如果需要测试存储性能，尽量只用一款软件，这样从上层测试到底层去，才能更好的去比较差别</p>
+<p>fio对于ceph来说，可以测试文件系统，基于文件系统之上测试，可以测试内核rbd，将rbdmap到本地格式化以后进行测试，或者基于librbd直接对rbd进行测试，这个是目前都已经有的测试场景，这些不在本篇的讨论的范围内，今天讲的是一种新的测试场景，直接对ceph的底层存储进行测试</p>
+<a id="more"></a>
+<p>为什么会有这个，因为在以前，如果你要测试一块磁盘是不是适合ceph使用的时候，都是直接对挂载的磁盘进行一些测试，这个是基于文件系统的，并没有真正的模拟到ceph自己的写入模型，所以在开发人员的努力下，模拟对象的写入的驱动已经完成了，这就是本篇需要讲述的内容</p>
+<h2 id="实践过程">实践过程</h2><p>fio engine for objectstore 这个是在ceph的11.0.2这个版本才正式发布出来的，可以看这个pr(<a href="https://github.com/ceph/ceph/pull/10267" target="_blank" rel="external">pr10267</a>),11.0.2是ceph第一个公开释放的KRAKEN版本的，也说明Jewel版本即将进入比较稳定的情况，新的功能可能会尽量在K版本进行开发</p>
+<h3 id="下载相关代码">下载相关代码</h3><p>创建一个目录用于存储代码<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># mkdir /root/newceph</span></span><br><span class="line">[root@lab8106 ~]<span class="comment"># cd /root/newceph/</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="下载fio的代码">下载fio的代码</h4><p>[root@lab8106 newceph]# git clone git://git.kernel.dk/fio.git</p>
+<h4 id="下载ceph的代码">下载ceph的代码</h4><p>下载代码并且切换到指定的11.0.2分支，不要用master分支，里面还没有合进去，并且还有bug<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># cd /root/newceph/</span></span><br><span class="line">[root@lab8106 newceph]<span class="comment"># git clone git://github.com/ceph/ceph.git</span></span><br><span class="line">[root@lab8106 newceph]<span class="comment"># cd ceph</span></span><br><span class="line">[root@lab8106 ceph]<span class="comment">#git checkout -b myfenzhi v11.0.2</span></span><br><span class="line">[root@lab8106 ceph]<span class="comment">#git submodule update --init --recursive</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="创建一个cmake编译的目录并且编译">创建一个cmake编译的目录并且编译</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># mkdir /root/newceph/build</span></span><br><span class="line">[root@lab8106 ~]<span class="comment"># cd /root/newceph/build</span></span><br><span class="line">[root@lab8106 build]<span class="comment"># cmake -DWITH_FIO=ON -DFIO_INCLUDE_DIR=/root/newceph/fio/ -DCMAKE_BUILD_TYPE=Release /root/newceph/ceph </span></span><br><span class="line">[root@lab8106 build]<span class="comment"># make install -j 16</span></span><br></pre></td></tr></table></figure>
+<p>安装完成检查是不是生成了这个库文件,fio就是利用这个库作为写入引擎的<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 build]<span class="comment"># ll lib/libfio_ceph_objectstore.so</span></span><br><span class="line">-rwxr-xr-x <span class="number">1</span> root root <span class="number">59090338</span> Nov <span class="number">23</span> <span class="number">22</span>:<span class="number">17</span> lib/libfio_ceph_objectstore.so</span><br></pre></td></tr></table></figure></p>
+<p>将库路径让系统识别<br>export LD_LIBRARY_PATH=/root/newceph/build/lib/</p>
+<p>编译fio<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># cd /root/newceph/fio/</span></span><br><span class="line">[root@lab8106 fio]<span class="comment">#./configure</span></span><br><span class="line">[root@lab8106 fio]<span class="comment"># make</span></span><br></pre></td></tr></table></figure></p>
+<p>如果显示下面的，就可以了<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 fio]<span class="comment"># ./fio --enghelp=libfio_ceph_objectstore.so</span></span><br><span class="line">conf                    : Path to a ceph configuration file</span><br></pre></td></tr></table></figure></p>
+<h3 id="配置测试">配置测试</h3><p>下面需要准备两个配置文件，一个是ceph自身的，一个是fio配置文件，我们看下我的环境下这个配置文件如何写的<br>写fio的测试文件<br>vim filestore.fio<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[global]</span><br><span class="line">ioengine=libfio_ceph_objectstore.so <span class="comment"># must be found in your LD_LIBRARY_PATH</span></span><br><span class="line"></span><br><span class="line">conf=/etc/ceph/ceph-filestore.conf <span class="comment"># must point to a valid ceph configuration file</span></span><br><span class="line">directory=/var/lib/ceph/osd/ceph-<span class="number">8</span> <span class="comment"># directory for osd_data</span></span><br><span class="line"></span><br><span class="line">rw=randwrite</span><br><span class="line">iodepth=<span class="number">16</span></span><br><span class="line"></span><br><span class="line">time_based=<span class="number">1</span></span><br><span class="line">runtime=<span class="number">20</span>s</span><br><span class="line"></span><br><span class="line">[filestore]</span><br><span class="line">nr_files=<span class="number">64</span></span><br><span class="line">size=<span class="number">256</span>m</span><br><span class="line">bs=<span class="number">64</span>k</span><br></pre></td></tr></table></figure></p>
+<p>上面的指定了一个配置文件和一个目录，这个目录是你需要测试的集群的存储的目录，里面不需要数据<br>写ceph的配置文件<br>vim /etc/ceph/ceph-filestore.conf<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[global]</span><br><span class="line">    debug filestore = <span class="number">0</span>/<span class="number">0</span></span><br><span class="line">    debug journal = <span class="number">0</span>/<span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># spread objects over 8 collections</span></span><br><span class="line">    osd pool default pg num = <span class="number">8</span></span><br><span class="line">    <span class="comment"># increasing shards can help when scaling number of collections</span></span><br><span class="line">    osd op num shards = <span class="number">5</span></span><br><span class="line"></span><br><span class="line">    filestore fd cache size = <span class="number">32</span></span><br><span class="line"></span><br><span class="line">[osd]</span><br><span class="line">    osd objectstore = filestore</span><br><span class="line"></span><br><span class="line">    <span class="comment"># use directory= option from fio job file</span></span><br><span class="line">    osd data =  /var/lib/ceph/osd/ceph-<span class="number">8</span>/</span><br><span class="line"></span><br><span class="line">    <span class="comment"># journal inside fio_dir</span></span><br><span class="line">    osd journal =  /var/lib/ceph/osd/ceph-<span class="number">8</span>/journal</span><br><span class="line">    osd journal size = <span class="number">5000</span></span><br><span class="line">    journal force aio = <span class="number">1</span></span><br><span class="line">```    </span><br><span class="line">    </span><br><span class="line">配置文件指定数据目录，和journal路径</span><br><span class="line"></span><br><span class="line">开始测试</span><br><span class="line">```bash</span><br><span class="line">[root@lab8106 fio]<span class="comment"># ./fio  filestore.fio </span></span><br><span class="line">filestore: (g=<span class="number">0</span>): rw=randwrite, bs=<span class="number">64</span>K-<span class="number">64</span>K/<span class="number">64</span>K-<span class="number">64</span>K/<span class="number">64</span>K-<span class="number">64</span>K, ioengine=ceph-os, iodepth=<span class="number">16</span></span><br><span class="line">fio-<span class="number">2.15</span>-<span class="number">11</span>-g42f1</span><br><span class="line">Starting <span class="number">1</span> process</span><br><span class="line"><span class="number">2016</span>-<span class="number">11</span>-<span class="number">23</span> <span class="number">22</span>:<span class="number">32</span>:<span class="number">17.713473</span> <span class="number">7</span>f7536d56780  <span class="number">0</span> filestore(/var/lib/ceph/osd/ceph-<span class="number">8</span>/) backend xfs (magic <span class="number">0</span>x58465342)</span><br><span class="line"><span class="number">2016</span>-<span class="number">11</span>-<span class="number">23</span> <span class="number">22</span>:<span class="number">32</span>:<span class="number">17.804601</span> <span class="number">7</span>f7536d56780  <span class="number">0</span> filestore(/var/lib/ceph/osd/ceph-<span class="number">8</span>/) backend xfs (magic <span class="number">0</span>x58465342)</span><br><span class="line"><span class="number">2016</span>-<span class="number">11</span>-<span class="number">23</span> <span class="number">22</span>:<span class="number">32</span>:<span class="number">17.805003</span> <span class="number">7</span>f7536d56780  <span class="number">0</span> genericfilestorebackend(/var/lib/ceph/osd/ceph-<span class="number">8</span>/) detect_features: FIEMAP ioctl is disabled via <span class="string">'filestore fiemap'</span> config option</span><br><span class="line"><span class="number">2016</span>-<span class="number">11</span>-<span class="number">23</span> <span class="number">22</span>:<span class="number">32</span>:<span class="number">17.805018</span> <span class="number">7</span>f7536d56780  <span class="number">0</span> genericfilestorebackend(/var/lib/ceph/osd/ceph-<span class="number">8</span>/) detect_features: SEEK_DATA/SEEK_HOLE is disabled via <span class="string">'filestore seek data hole'</span> config option</span><br><span class="line"><span class="number">2016</span>-<span class="number">11</span>-<span class="number">23</span> <span class="number">22</span>:<span class="number">32</span>:<span class="number">17.805020</span> <span class="number">7</span>f7536d56780  <span class="number">0</span> genericfilestorebackend(/var/lib/ceph/osd/ceph-<span class="number">8</span>/) detect_features: splice() is disabled via <span class="string">'filestore splice'</span> config option</span><br><span class="line"><span class="number">2016</span>-<span class="number">11</span>-<span class="number">23</span> <span class="number">22</span>:<span class="number">32</span>:<span class="number">17.864962</span> <span class="number">7</span>f7536d56780  <span class="number">0</span> genericfilestorebackend(/var/lib/ceph/osd/ceph-<span class="number">8</span>/) detect_features: syncfs(<span class="number">2</span>) syscall fully supported (by glibc and kernel)</span><br><span class="line"><span class="number">2016</span>-<span class="number">11</span>-<span class="number">23</span> <span class="number">22</span>:<span class="number">32</span>:<span class="number">17.865056</span> <span class="number">7</span>f7536d56780  <span class="number">0</span> xfsfilestorebackend(/var/lib/ceph/osd/ceph-<span class="number">8</span>/) detect_feature: extsize is disabled by conf</span><br><span class="line"><span class="number">2016</span>-<span class="number">11</span>-<span class="number">23</span> <span class="number">22</span>:<span class="number">32</span>:<span class="number">17.865643</span> <span class="number">7</span>f7536d56780  <span class="number">0</span> filestore(/var/lib/ceph/osd/ceph-<span class="number">8</span>/) start omap initiation</span><br><span class="line"><span class="number">2016</span>-<span class="number">11</span>-<span class="number">23</span> <span class="number">22</span>:<span class="number">32</span>:<span class="number">17.926589</span> <span class="number">7</span>f7536d56780  <span class="number">0</span> filestore(/var/lib/ceph/osd/ceph-<span class="number">8</span>/) mount: enabling WRITEAHEAD journal mode: checkpoint is not enabled</span><br></pre></td></tr></table></figure></p>
+<p>可以看到，已经开始以对象存储的IO模型去生成测试了，根据自己的需要对不同的存储设备和组合进行测试就可以了</p>
+<h2 id="总结">总结</h2><p>作为一个新的测试模型的出现，更加完善了ceph的整体体系，也给磁盘的选型增加更好的测试工具</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/fio-banner.jpg" alt="fio"><br></center></p>
+<h2 id="前言">前言</h2><p>fio是一个适应性非常强的软件，基本上能够模拟所有的IO请求，是目前最全面的一款测试软件，之前在看德国电信的一篇分享的时候，里面就提到了，如果需要测试存储性能，尽量只用一款软件，这样从上层测试到底层去，才能更好的去比较差别</p>
+<p>fio对于ceph来说，可以测试文件系统，基于文件系统之上测试，可以测试内核rbd，将rbdmap到本地格式化以后进行测试，或者基于librbd直接对rbd进行测试，这个是目前都已经有的测试场景，这些不在本篇的讨论的范围内，今天讲的是一种新的测试场景，直接对ceph的底层存储进行测试</p>]]>
+    
+    </summary>
+    
+      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[查询OSD运行在哪些cpu上]]></title>
@@ -1201,49 +1237,6 @@
 <h2 id="二、测试环境准备">二、测试环境准备</h2><p>首先配置一个集群环境，配置基本参数<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">mon_osd_down_out_interval = 20</span><br></pre></td></tr></table></figure></p>
 <p>调整这个参数为20s,默认为300s,默认一个osd,down超过300s就会标记为out，然后触发迁移,这个是为了方便尽快看到测试的效果，很多测试都是可以这样缩短测试周期的</p>
 <p>本次测试关心的是这个参数<code>mon osd down out subtree limit</code><br>]]>
-    
-    </summary>
-    
-      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[创建一个自定义名称的Ceph集群]]></title>
-    <link href="http://www.zphj1987.com/2016/10/12/%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E8%87%AA%E5%AE%9A%E4%B9%89%E5%90%8D%E7%A7%B0%E7%9A%84Ceph%E9%9B%86%E7%BE%A4/"/>
-    <id>http://www.zphj1987.com/2016/10/12/创建一个自定义名称的Ceph集群/</id>
-    <published>2016-10-12T02:44:17.000Z</published>
-    <updated>2016-10-12T02:45:39.610Z</updated>
-    <content type="html"><![CDATA[<h2 id="一、前言">一、前言</h2><p>这里有个条件，系统环境是Centos 7 ,Ceph 的版本为Jewel版本，因为这个组合下是由systemctl来进行服务控制的，所以需要做稍微的改动即可实现</p>
-<h2 id="二、准备工作">二、准备工作</h2><p>部署mon的时候需要修改这个几个文件<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">/usr/lib/systemd/system/ceph-mon@.service&#10;/usr/lib/systemd/system/ceph-create-keys@.service&#10;/usr/lib/systemd/system/ceph-osd@.service&#10;/usr/lib/systemd/system/ceph-mds@.service</span><br></pre></td></tr></table></figure></p>
-<p>将 <code>Environment=CLUSTER=ceph</code> 改成 <code>Environment=CLUSTER=myceph</code> 后面的myceph可以为你自定义的名称</p>
-<a id="more"></a>
-<h2 id="三、简单的创建过程">三、简单的创建过程</h2><p>创建mon<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph-deploy  --cluster myceph mon create lab8107</span><br></pre></td></tr></table></figure></p>
-<p>获取部署密钥<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph-deploy  --cluster myceph gatherkeys lab8107</span><br></pre></td></tr></table></figure></p>
-<p>部署osd<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph-deploy  --cluster myceph osd prepare lab8107:/dev/sdb</span><br><span class="line">ceph-deploy  --cluster myceph osd activate lab8107:/dev/sdb1</span><br></pre></td></tr></table></figure></p>
-<p>查询集群状态<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph --cluster myceph <span class="operator">-s</span></span><br></pre></td></tr></table></figure></p>
-<h2 id="四、总结">四、总结</h2><p>最简单的修改名称主要步骤就在这里了，关键部分就是修改那几个文件里面的集群的名称，这个里面是用一个变量写成了ceph，根据自己的需要进行修改即可</p>
-<h2 id="五、变更记录">五、变更记录</h2><table>
-<thead>
-<tr>
-<th style="text-align:center">Why</th>
-<th style="text-align:center">Who</th>
-<th style="text-align:center">When</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">创建</td>
-<td style="text-align:center">武汉-运维-磨渣</td>
-<td style="text-align:center">2016-10-12</td>
-</tr>
-</tbody>
-</table>
-]]></content>
-    <summary type="html">
-    <![CDATA[<h2 id="一、前言">一、前言</h2><p>这里有个条件，系统环境是Centos 7 ,Ceph 的版本为Jewel版本，因为这个组合下是由systemctl来进行服务控制的，所以需要做稍微的改动即可实现</p>
-<h2 id="二、准备工作">二、准备工作</h2><p>部署mon的时候需要修改这个几个文件<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">/usr/lib/systemd/system/ceph-mon@.service&#10;/usr/lib/systemd/system/ceph-create-keys@.service&#10;/usr/lib/systemd/system/ceph-osd@.service&#10;/usr/lib/systemd/system/ceph-mds@.service</span><br></pre></td></tr></table></figure></p>
-<p>将 <code>Environment=CLUSTER=ceph</code> 改成 <code>Environment=CLUSTER=myceph</code> 后面的myceph可以为你自定义的名称</p>]]>
     
     </summary>
     
