@@ -191,6 +191,66 @@ var _hmt = _hmt || [];
 </nav>
       <div class="body-wrap">
   
+    <article id="post-The-Dos-and-Don-ts-for-Ceph-for-OpenStack" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/11/29/The-Dos-and-Don-ts-for-Ceph-for-OpenStack/" class="article-date">
+  	<time datetime="2016-11-29T15:59:07.000Z" itemprop="datePublished">2016-11-29</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/11/29/The-Dos-and-Don-ts-for-Ceph-for-OpenStack/">The Dos and Don&#39;ts for Ceph for OpenStack</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/dos-and-dons.png" alt=""><br></center>
+
+<p>Ceph和OpenStack是一个非常有用和非常受欢迎的组合。 不过，部署Ceph / OpenStack经常会有一些容易避免的缺点 - 我们将帮助你解决它们</p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2016/11/29/The-Dos-and-Don-ts-for-Ceph-for-OpenStack/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-Cephday武汉20161119分享回顾" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -740,70 +800,6 @@ var _hmt = _hmt || [];
       
         <p class="article-more-link">
           <a  href="/2016/11/07/Ceph用户邮件列表Vol45-Issue2/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Ceph用户邮件列表Vol45-Issue1" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/11/04/Ceph用户邮件列表Vol45-Issue1/" class="article-date">
-  	<time datetime="2016-11-04T03:57:25.000Z" itemprop="datePublished">2016-11-04</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/11/04/Ceph用户邮件列表Vol45-Issue1/">Ceph用户邮件列表Vol45-Issue1</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/number/dayone.png" alt=""><br></center>
-
-<h2 id="ceph_Vol_45_Issue_1">ceph Vol 45 Issue 1</h2><h3 id="1-unfound_objects_blocking_cluster,_need_help!(原文)">1.unfound objects blocking cluster, need help!(<a href="https://www.mail-archive.com/ceph-users@lists.ceph.com/msg32804.html">原文</a>)</h3><blockquote>
-<p>Hi,</p>
-<p>I have a production cluster on which 1 OSD on a failing disk was slowing the whole cluster down. I removed the OSD (osd.87) like usual in such case but this time it resulted in 17 unfound objects. I no longer have the files from osd.87. I was able to call “ceph pg PGID mark_unfound_lost delete” on 10 of those objects.</p>
-<p>On the remaining objects 7 the command blocks. When I try to do “ceph pg PGID query” on this PG it also blocks. I suspect this is same reason why mark_unfound blocks.</p>
-<p>Other client IO to PGs that have unfound objects are also blocked. When trying to query the OSDs which has the PG with unfound objects, “ceph tell” blocks.<br>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2016/11/04/Ceph用户邮件列表Vol45-Issue1/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>
