@@ -4,7 +4,7 @@
   <subtitle><![CDATA[但行好事，莫问前程]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2016-11-29T16:36:07.887Z</updated>
+  <updated>2016-11-30T03:10:40.805Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="http://www.zphj1987.com/2016/11/29/The-Dos-and-Don-ts-for-Ceph-for-OpenStack/"/>
     <id>http://www.zphj1987.com/2016/11/29/The-Dos-and-Don-ts-for-Ceph-for-OpenStack/</id>
     <published>2016-11-29T15:59:07.000Z</published>
-    <updated>2016-11-29T16:36:07.887Z</updated>
+    <updated>2016-11-30T03:10:40.805Z</updated>
     <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/dos-and-dons.png" alt=""><br></center>
 
 <p>Ceph和OpenStack是一个非常有用和非常受欢迎的组合。 不过，部署Ceph / OpenStack经常会有一些容易避免的缺点 - 我们将帮助你解决它们</p>
@@ -57,7 +57,7 @@
 </li>
 </ul>
 <p>通常有三个不同的池：一个用于Glance图像（通常命名为glance或图像），一个用于Cinder卷（cinder或卷），一个用于VM（nova-compute或vms）。</p>
-<h2 id="不要使用SSD作为你的Ceph_OSD_journal">不要使用SSD作为你的Ceph OSD journal</h2><p>在这篇文章的建议中，这一个可能是最令人感觉到奇怪和不认可的。 当然，传统的情况下都会认为，你应该总是把你的OSD journal在更快的设备上，并且你应该以1：4到1：6的比例部署ssd和普通磁盘，对吧？</p>
+<h2 id="不需要使用SSD作为你的Ceph_OSD_journal">不需要使用SSD作为你的Ceph OSD journal</h2><p>在这篇文章的建议中，这一个可能是最令人感觉到奇怪和不认可的。 当然，传统的情况下都会认为，你应该总是把你的OSD journal在更快的设备上，并且你应该以1：4到1：6的比例部署ssd和普通磁盘，对吧？</p>
 <p>让我们来看看。 假设你是按1：6的配比方法，你的SATA转盘能够以100 MB/s的速度写。 6个OSD，每个OSD使用企业SSD分区上的分区作为。进一步假设SSD能够以500MB/s写入。  </p>
 <p>恭喜你，在那种情况下，你刚刚使你的SSD成为瓶颈。虽然你的OSDs聚合带宽支持600 MB / s，你的SSD限制你大约83％的性能。</p>
 <p>在这种情况下，你实际上可以用1：4的比例，但使你的聚合带宽只快了一点点，SSD的没有很大的优势</p>
