@@ -4,7 +4,7 @@
   <subtitle><![CDATA[但行好事，莫问前程]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2016-12-07T07:57:06.418Z</updated>
+  <updated>2016-12-07T07:59:05.158Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -19,8 +19,29 @@
     <link href="http://www.zphj1987.com/2016/12/07/%E5%9F%BA%E4%BA%8E%E5%8F%91%E8%A1%8C%E7%89%88%E6%9C%AC%E5%86%85%E6%A0%B8%E6%89%93%E9%80%A0%E8%87%AA%E5%B7%B1%E7%9A%84%E5%86%85%E6%A0%B8/"/>
     <id>http://www.zphj1987.com/2016/12/07/基于发行版本内核打造自己的内核/</id>
     <published>2016-12-07T07:55:38.000Z</published>
-    <updated>2016-12-07T07:57:06.418Z</updated>
-    <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/kernel.png" alt="此处输入图片的描述"><br></center><br>Linux当中最核心的部分就是内核，这个也是最基础，最可能被忽视的一部分，随便找一个刚入职的运维，学习个两三天，网上找些资料也能能自己安装编译内核了，很多运维的初期培训就是做的这些学习，为什么在网上已经有这么多文章的情况下，还要写一篇关于内核的文章，这是因为，我想讲的是如何去选择内核<br><br><a id="more"></a><br><br>一般来说，找内核的时候都会去下面这个网站进行选择<br>&gt; <a href="https://www.kernel.org/" target="_blank" rel="external">https://www.kernel.org/</a><br><br>很多人在问我的时候，都会问，我该怎么去选择哪个版本的内核，一般来说我的回答是这样的<br>&gt;选取最后一个长期支持版本，或者最后一个稳定的版本<br><br>一般来说,选择这两个版本基本不会出太大的问题，并且即使有问题，后面做小版本的升级也不是很难的事情，当然这是基于你对自定义内核很有兴趣，或者需要自己去裁剪，增加一些东西的时候，用我上面说的两个版本都没有问题，下面是一个其他的选择<br><br>最近把linus的just for fun看完了，也基本上了解了linux大概的发展历程，linux走向成功也有一定的原因是围绕在其周围的一些商业公司，红帽是其中最成功的一个公司，当然还有其他各种发型版本，开源版本和商业版本的最大区别在于服务上面，商业公司能够提供专业的服务，开源并不意味着免费，其中很大一部分是学习成本，然后其次就是包装和推广了，最终才是一个完整的产品<br><br>开源有开源的规矩，当然这个规矩在中国不一定行得通，大部分公司不会将开源修改的东西回馈回去，而能够回馈回去的，基本都是技术非常领先的公司，这些公司核心在于自己的技术，以及对产品的把控，所以也就不介意源代码的开源了，并且乐意去引领行业的发展<br><br>当然这个对于红帽这样级别的公司，代码当然是会开源的，而其发行版本的内核，其实都是经过了一些修改的，并且这些修改也都是会开源出来的，只是大部分时候我们并没有去关注它，这就是本篇的重点<br><br><br>##获取源代码<br><br>&gt;<a href="http://vault.centos.org/7.2.1511/os/Source/SPackages/" target="_blank" rel="external">http://vault.centos.org/7.2.1511/os/Source/SPackages/</a><br>centos版本<br><br>红帽的内核源码之前托管在ftp上的，现在全部放到了订阅中心了，这里进入红帽订阅中心，进行rpm包的搜索，找到需要的部分，选择下载即可<br><br>&gt;<a href="https://access.redhat.com/downloads/content/kernel/3.10.0-514.el7/x86_64/fd431d51/package" target="_blank" rel="external">https://access.redhat.com/downloads/content/kernel/3.10.0-514.el7/x86_64/fd431d51/package</a><br><br><center><br><img src="http://static.zybuluo.com/zphj1987/n8cgirh3357s5ky5bq0tqnsx/image_1b39jfbj2178udi87sdptj13809.png" alt="image_1b39jfbj2178udi87sdptj13809.png-137.5kB"><br></center>
+    <updated>2016-12-07T07:59:05.158Z</updated>
+    <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/kernel.png" alt="此处输入图片的描述"><br></center>
+
+<p>Linux当中最核心的部分就是内核，这个也是最基础，最可能被忽视的一部分，随便找一个刚入职的运维，学习个两三天，网上找些资料也能能自己安装编译内核了，很多运维的初期培训就是做的这些学习，为什么在网上已经有这么多文章的情况下，还要写一篇关于内核的文章，这是因为，我想讲的是如何去选择内核<br><a id="more"></a><br>一般来说，找内核的时候都会去下面这个网站进行选择</p>
+<blockquote>
+<p><a href="https://www.kernel.org/" target="_blank" rel="external">https://www.kernel.org/</a></p>
+</blockquote>
+<p>很多人在问我的时候，都会问，我该怎么去选择哪个版本的内核，一般来说我的回答是这样的</p>
+<blockquote>
+<p>选取最后一个长期支持版本，或者最后一个稳定的版本</p>
+</blockquote>
+<p>一般来说,选择这两个版本基本不会出太大的问题，并且即使有问题，后面做小版本的升级也不是很难的事情，当然这是基于你对自定义内核很有兴趣，或者需要自己去裁剪，增加一些东西的时候，用我上面说的两个版本都没有问题，下面是一个其他的选择</p>
+<p>最近把linus的just for fun看完了，也基本上了解了linux大概的发展历程，linux走向成功也有一定的原因是围绕在其周围的一些商业公司，红帽是其中最成功的一个公司，当然还有其他各种发型版本，开源版本和商业版本的最大区别在于服务上面，商业公司能够提供专业的服务，开源并不意味着免费，其中很大一部分是学习成本，然后其次就是包装和推广了，最终才是一个完整的产品</p>
+<p>开源有开源的规矩，当然这个规矩在中国不一定行得通，大部分公司不会将开源修改的东西回馈回去，而能够回馈回去的，基本都是技术非常领先的公司，这些公司核心在于自己的技术，以及对产品的把控，所以也就不介意源代码的开源了，并且乐意去引领行业的发展</p>
+<p>当然这个对于红帽这样级别的公司，代码当然是会开源的，而其发行版本的内核，其实都是经过了一些修改的，并且这些修改也都是会开源出来的，只是大部分时候我们并没有去关注它，这就是本篇的重点</p>
+<h2 id="获取源代码">获取源代码</h2><blockquote>
+<p><a href="http://vault.centos.org/7.2.1511/os/Source/SPackages/" target="_blank" rel="external">http://vault.centos.org/7.2.1511/os/Source/SPackages/</a><br>centos版本</p>
+</blockquote>
+<p>红帽的内核源码之前托管在ftp上的，现在全部放到了订阅中心了，这里进入红帽订阅中心，进行rpm包的搜索，找到需要的部分，选择下载即可</p>
+<blockquote>
+<p><a href="https://access.redhat.com/downloads/content/kernel/3.10.0-514.el7/x86_64/fd431d51/package" target="_blank" rel="external">https://access.redhat.com/downloads/content/kernel/3.10.0-514.el7/x86_64/fd431d51/package</a></p>
+</blockquote>
+<center><br><img src="http://static.zybuluo.com/zphj1987/n8cgirh3357s5ky5bq0tqnsx/image_1b39jfbj2178udi87sdptj13809.png" alt="image_1b39jfbj2178udi87sdptj13809.png-137.5kB"><br></center>
 
 <p>这里我们是要选择的是源码包，因为可能需要自己加些内核模块进去<br>安装源码包<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rpm -ivh kernel-<span class="number">3.10</span>.<span class="number">0</span>-<span class="number">514</span>.el7.src.rpm</span><br></pre></td></tr></table></figure></p>
 <p>安装后默认会放到下面的目录下面，如果你有自定义的目录，也可以直接解压rpm，解压的方法是,下面命令默认会将文件解压到当前目录<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rpm2cpio kernel-<span class="number">3.10</span>.<span class="number">0</span>-<span class="number">514</span>.el7.src.rpm |cpio -div</span><br></pre></td></tr></table></figure></p>
@@ -36,7 +57,9 @@
 
 ]]></content>
     <summary type="html">
-    <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/kernel.png" alt="此处输入图片的描述"><br></center><br>Linux当中最核心的部分就是内核，这个也是最基础，最可能被忽视的一部分，随便找一个刚入职的运维，学习个两三天，网上找些资料也能能自己安装编译内核了，很多运维的初期培训就是做的这些学习，为什么在网上已经有这么多文章的情况下，还要写一篇关于内核的文章，这是因为，我想讲的是如何去选择内核<br><br>]]>
+    <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/kernel.png" alt="此处输入图片的描述"><br></center>
+
+<p>Linux当中最核心的部分就是内核，这个也是最基础，最可能被忽视的一部分，随便找一个刚入职的运维，学习个两三天，网上找些资料也能能自己安装编译内核了，很多运维的初期培训就是做的这些学习，为什么在网上已经有这么多文章的情况下，还要写一篇关于内核的文章，这是因为，我想讲的是如何去选择内核<br>]]>
     
     </summary>
     
