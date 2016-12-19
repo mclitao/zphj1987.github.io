@@ -5,24 +5,24 @@
   
   <title>rbd的image快照与Pool快照 | zphj1987&#39;Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="前言这个问题在不久前ceph社区群里看到有一个人提出来的，创建image的时候，当时的报错如下：
+  <meta name="description" content="前言这个问题是不久前在ceph社区群里看到的，创建image的时候，当时的报错如下：
 
-2016-12-13 23:13:10.266865 7efbfb7fe700 -1 librbd::image::CreateRequest: pool not configured for self-managed RBD snapshot supportrbd: create error: (">
+2016-12-13 23:13:10.266865 7efbfb7fe700 -1 librbd::image::CreateRequest: pool not configured for self-managed RBD snapshot supportrbd: create error: (22) In">
 <meta property="og:type" content="article">
 <meta property="og:title" content="rbd的image快照与Pool快照">
 <meta property="og:url" content="http://www.zphj1987.com/2016/12/14/rbd的image快照与Pool快照/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
-<meta property="og:description" content="前言这个问题在不久前ceph社区群里看到有一个人提出来的，创建image的时候，当时的报错如下：
+<meta property="og:description" content="前言这个问题是不久前在ceph社区群里看到的，创建image的时候，当时的报错如下：
 
-2016-12-13 23:13:10.266865 7efbfb7fe700 -1 librbd::image::CreateRequest: pool not configured for self-managed RBD snapshot supportrbd: create error: (">
+2016-12-13 23:13:10.266865 7efbfb7fe700 -1 librbd::image::CreateRequest: pool not configured for self-managed RBD snapshot supportrbd: create error: (22) In">
 <meta property="og:image" content="http://7xweck.com1.z0.glb.clouddn.com/storagead.jpg">
 <meta property="og:image" content="http://7xweck.com1.z0.glb.clouddn.com/poolsnap.png">
 <meta property="og:image" content="http://7xweck.com1.z0.glb.clouddn.com/qrcode_for_gh_6998a54d68f7_430.jpg">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="rbd的image快照与Pool快照">
-<meta name="twitter:description" content="前言这个问题在不久前ceph社区群里看到有一个人提出来的，创建image的时候，当时的报错如下：
+<meta name="twitter:description" content="前言这个问题是不久前在ceph社区群里看到的，创建image的时候，当时的报错如下：
 
-2016-12-13 23:13:10.266865 7efbfb7fe700 -1 librbd::image::CreateRequest: pool not configured for self-managed RBD snapshot supportrbd: create error: (">
+2016-12-13 23:13:10.266865 7efbfb7fe700 -1 librbd::image::CreateRequest: pool not configured for self-managed RBD snapshot supportrbd: create error: (22) In">
   
     <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
   
@@ -229,7 +229,7 @@ var _hmt = _hmt || [];
       
         <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/storagead.jpg" alt=""><br></center>
 
-<h2 id="前言">前言</h2><p>这个问题在不久前ceph社区群里看到有一个人提出来的，创建image的时候，当时的报错如下：</p>
+<h2 id="前言">前言</h2><p>这个问题是不久前在ceph社区群里看到的，创建image的时候，当时的报错如下：</p>
 <blockquote>
 <p>2016-12-13 23:13:10.266865 7efbfb7fe700 -1 librbd::image::CreateRequest: pool not configured for self-managed RBD snapshot support<br>rbd: create error: (22) Invalid argument</p>
 </blockquote>
@@ -268,6 +268,15 @@ var _hmt = _hmt || [];
   
     
 <nav id="article-nav">
+  
+    <a href="/2016/12/18/test/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          test
+        
+      </div>
+    </a>
   
   
     <a href="/2016/12/13/Cephfs的快照功能/" id="article-nav-older" class="article-nav-link-wrap">

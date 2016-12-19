@@ -183,6 +183,131 @@ var _hmt = _hmt || [];
 </nav>
       <div class="body-wrap">
   
+    <article id="post-zabbix实现自定义自动发现的流程" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/10/28/zabbix实现自定义自动发现的流程/" class="article-date">
+  	<time datetime="2016-10-28T05:56:24.000Z" itemprop="datePublished">2016-10-28</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/10/28/zabbix实现自定义自动发现的流程/">zabbix实现自定义自动发现的流程</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="一、前言">一、前言</h2><p>本章介绍如何去自定义一个zabbix自动发现的整个流程</p>
+<h2 id="二、过程">二、过程</h2><p>首先需要在模板当中创建一个自动发现的规则，这个地方只需要一个名称和一个键值，例如</p>
+<ul>
+<li>名称：Ceph Cluster Pool Discovery</li>
+<li>键值：ceph.pools</li>
+</ul>
+<p>过滤器中间要添加你需要的用到的值宏<br>我的数据是：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># zabbix_get -s 127.0.0.1 -k ceph.pools</span></span><br><span class="line">&#123;<span class="string">"data"</span>:[&#123;<span class="string">"&#123;#POOLNAME&#125;"</span>:<span class="string">"rbd"</span>&#125;,&#123;<span class="string">"&#123;#POOLNAME&#125;"</span>:<span class="string">"metedata"</span>&#125;,&#123;<span class="string">"&#123;#POOLNAME&#125;"</span>:<span class="string">"data"</span>&#125;]&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2016/10/28/zabbix实现自定义自动发现的流程/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-zabbix自动发现的python方式数据生成" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/10/28/zabbix自动发现的python方式数据生成/" class="article-date">
+  	<time datetime="2016-10-27T17:11:08.000Z" itemprop="datePublished">2016-10-28</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/10/28/zabbix自动发现的python方式数据生成/">zabbix自动发现的python方式数据生成</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="一、前言">一、前言</h2><p>zabbix里面有个功能是自动发现，比如文件系统和网卡的获取的时候，因为预先无法知道这个网卡的名称，所以就有了这个自动发现的功能，这里我是因为要用到存储池的自动发现，所以需要对数据进行生成</p>
+<h2 id="二、实现">二、实现</h2><p>我们看下原生的接口的数据类型：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># zabbix_get -s 127.0.0.1 -k "net.if.discovery"</span></span><br><span class="line">&#123;<span class="string">"data"</span>:[&#123;<span class="string">"&#123;#IFNAME&#125;"</span>:<span class="string">"enp3s0"</span>&#125;,&#123;<span class="string">"&#123;#IFNAME&#125;"</span>:<span class="string">"virbr0-nic"</span>&#125;,&#123;<span class="string">"&#123;#IFNAME&#125;"</span>:<span class="string">"docker0"</span>&#125;,&#123;<span class="string">"&#123;#IFNAME&#125;"</span>:<span class="string">"enp4s0"</span>&#125;,&#123;<span class="string">"&#123;#IFNAME&#125;"</span>:<span class="string">"enp2s0f0"</span>&#125;,&#123;<span class="string">"&#123;#IFNAME&#125;"</span>:<span class="string">"enp2s0f1"</span>&#125;,&#123;<span class="string">"&#123;#IFNAME&#125;"</span>:<span class="string">"virbr0"</span>&#125;,&#123;<span class="string">"&#123;#IFNAME&#125;"</span>:<span class="string">"lo"</span>&#125;]&#125;</span><br></pre></td></tr></table></figure></p>
+<p>数据为格式化好了的json数据，这个地方弄了好半天，因为网上很多人是用字符串拼接的方式，实际这个是字典嵌套了列表，列表又嵌套了字典，就是后面的地方开始没弄懂怎么有大括号的<br>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/zabbix/">zabbix</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2016/10/28/zabbix自动发现的python方式数据生成/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-Docker与Ceph的分与合" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -664,120 +789,6 @@ var _hmt = _hmt || [];
       
         <p class="article-more-link">
           <a  href="/2016/10/10/编译一个支持多线程的php安装包/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-fio测试数据的可视化" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/09/28/fio测试数据的可视化/" class="article-date">
-  	<time datetime="2016-09-28T10:13:04.000Z" itemprop="datePublished">2016-09-28</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/09/28/fio测试数据的可视化/">fio测试数据的可视化</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="前言">前言</h2><p>近期会做一个事情，把fio的数据可视化，目前有gfio可以动态的获取状态，希望能够对已经产生的数据进行分析</p>
-<p>目前处于起步数据分析阶段，通过python获取需要的数据输出到csv，然后对csv进行综合的输出，从而能够清楚的从大量数据当中得到想要的效果<br>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2016/09/28/fio测试数据的可视化/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Python生成csv中文乱码的解决办法" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/09/28/Python生成csv中文乱码的解决办法/" class="article-date">
-  	<time datetime="2016-09-28T06:36:43.000Z" itemprop="datePublished">2016-09-28</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/09/28/Python生成csv中文乱码的解决办法/">Python生成csv中文乱码解决办法</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/csv/parsing-csv-dribbble.gif" alt="csv"><br></center></p>
-<h2 id="一、前言">一、前言</h2><p>在Linux下面用python进行数据处理，然后输出为csv格式，如果没有中文一切正常，但是如果有中文，就会出现乱码的问题,本篇将讲述怎么处理这个问题<br>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2016/09/28/Python生成csv中文乱码的解决办法/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>

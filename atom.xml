@@ -4,7 +4,7 @@
   <subtitle><![CDATA[但行好事，莫问前程]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2016-12-14T02:02:45.223Z</updated>
+  <updated>2016-12-18T14:52:21.175Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -15,14 +15,82 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title><![CDATA[cephonebox发布]]></title>
+    <link href="http://www.zphj1987.com/2016/12/18/cephonebox%E5%8F%91%E5%B8%83/"/>
+    <id>http://www.zphj1987.com/2016/12/18/cephonebox发布/</id>
+    <published>2016-12-18T14:25:48.000Z</published>
+    <updated>2016-12-18T14:52:21.175Z</updated>
+    <content type="html"><![CDATA[<center><br><img src="http://7xo9we.com1.z0.glb.clouddn.com/shipin/cephoneboxpre3.jpg" alt=""><br></center>
+
+<h2 id="一、前言">一、前言</h2><p>现在已经是2016年收官的一个月了，之前一直想做一个calamari的集成版本，之所以有这个想法，是因为，即使在已经打好包的情况下，因为各种软件版本的原因，造成很多人无法配置成功，calamari发布以后，因为版本的更迭，经常出现软件版本引起的BUG<br><a id="more"></a><br>这里直接把需要的软件集成在一起了，按照本篇指导，一步一步是能够很简单的配置起来的，并且提供了一个视频的指导，应该能够很大程度上降低calamari的部署难度，希望能够帮助到更多的人</p>
+<h2 id="二、集成软件版本说明">二、集成软件版本说明</h2><h3 id="操作系统_Centos_7-3">操作系统 Centos 7.3</h3><p>之所以选择这个版本是因为这个是最新发布的，centos小版本的发布能够解决一些BUG，并且不会做很大的改动，并且能够让这个集成系统保持一定的生命周期</p>
+<h3 id="ceph">ceph</h3><p>ceph采用的是Jewel版本的10.2.5，这个是最新发布的，因为Jewel版本是一个长期支持版本，并且小版本号已经到5了，已经在一定程度上达到了稳定</p>
+<h3 id="calamari">calamari</h3><p>calamari采用的是1.3版本，因为calamari要做新的接口，基本上这个就是当前系统的最后的一个稳定版本，集成的版本适配Jewel版本接口名称的变化<br>集成版本的diamond解决了无法获取iops的BUG</p>
+<h2 id="三、视频演示教程">三、视频演示教程</h2><div class="video-container"><object><video play="false" poster="http://7xo9we.com1.z0.glb.clouddn.com/shipin/cephoneboxpre2.jpg" src="http://7xo9we.com1.z0.glb.clouddn.com/shipin/cephonebox.mp4" controls="controls"></video></object></div>
+
+<h2 id="四、配置教程">四、配置教程</h2><h3 id="4-1_获取ISO">4.1 获取ISO</h3><p>地址如下：<br>链接：<a href="http://pan.baidu.com/s/1cimGYa" target="_blank" rel="external">http://pan.baidu.com/s/1cimGYa</a> 密码：1bs6<br>大小为811M</p>
+<h3 id="4-2_安装操作系统">4.2 安装操作系统</h3><p>本系统是定制的系统，默认本地硬盘启动，选择到第二项进行安装<br>需要配置的地方：</p>
+<ul>
+<li>配置磁盘分区 </li>
+<li>配置主机名和IP</li>
+</ul>
+<h3 id="4-3_进行ceph集群的配置">4.3 进行ceph集群的配置</h3><p>这个地方可以参考网上的教程进行配置，或者已经有的集群就可以直接跳过这步，这里不做过多的讲解</p>
+<h3 id="4-4_配置calamari">4.4 配置calamari</h3><p>安装好机器后，在服务器上进行calamari的初始化<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">calamari-ctl  initialize</span><br></pre></td></tr></table></figure></p>
+<p>输入用户名，和密码 ，这个是用于登录web的用户名密码</p>
+<h3 id="4-5_配置集群到calamari的连接">4.5 配置集群到calamari的连接</h3><p>集群到calamari连接一共有两个地方，一个是diamond来采集一些监控信息，一个是salt-minion来采集集群的一些信息以及接收控制</p>
+<h4 id="修改diamond-conf">修改diamond.conf</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cp /etc/diamond/diamond.conf.example /etc/diamond/diamond.conf</span><br></pre></td></tr></table></figure>
+<p>然后修改/etc/diamond/diamond.conf<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[[GraphiteHandler]]</span><br><span class="line"><span class="comment">### Options for GraphiteHandler</span></span><br><span class="line"><span class="comment"># Graphite server host</span></span><br><span class="line">host = graphite</span><br><span class="line"><span class="comment"># Port to send metrics to</span></span><br><span class="line">port = <span class="number">2003</span></span><br><span class="line"><span class="comment"># Socket timeout (seconds)</span></span><br><span class="line">timeout = <span class="number">15</span></span><br><span class="line"><span class="comment"># Batch size for metrics</span></span><br><span class="line">batch = <span class="number">1</span></span><br></pre></td></tr></table></figure></p>
+<p>修改为：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[[GraphiteHandler]]</span><br><span class="line"><span class="comment">### Options for GraphiteHandler</span></span><br><span class="line"><span class="comment"># Graphite server host</span></span><br><span class="line">host = cephoneweb</span><br><span class="line"><span class="comment"># Port to send metrics to</span></span><br><span class="line">port = <span class="number">2003</span></span><br><span class="line"><span class="comment"># Socket timeout (seconds)</span></span><br><span class="line">timeout = <span class="number">15</span></span><br><span class="line"><span class="comment"># Batch size for metrics</span></span><br><span class="line">batch = <span class="number">1</span></span><br></pre></td></tr></table></figure></p>
+<p>修改集群节点的这个配置文件当中的上面的host字段的主机名为运行calamariweb机器的主机名</p>
+<blockquote>
+<p>注意要在集群节点的hosts文件当中配置好calamari的web的主机名和IP的对应关系</p>
+</blockquote>
+<p>重启diamond<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">systemctl restart diamond</span><br></pre></td></tr></table></figure></p>
+<h4 id="修改/etc/salt/minion">修改/etc/salt/minion</h4><p>修改下面的master后面字段为cephoneweb的主机名<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Set the location of the salt master server. If the master server cannot be</span></span><br><span class="line"><span class="comment"># resolved, then the minion will fail to start.</span></span><br><span class="line">master: cephoneweb</span><br></pre></td></tr></table></figure></p>
+<p>重启salt-minion<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">systemctl restart salt-minion</span><br></pre></td></tr></table></figure></p>
+<h3 id="4-6_访问WEB">4.6 访问WEB</h3><p>配置已经完成通过web 访问cephoneweb的IP即可</p>
+<h2 id="五、故障处理">五、故障处理</h2><center><br><img src="http://static.zybuluo.com/zphj1987/ui9hlsqffofb26ofgz7zz6i7/%E6%95%85%E9%9A%9C%E4%B8%80%E5%A4%84%E7%90%86.jpg" alt="故障一处理.jpg-42.6kB"><br></center><br><center><br><img src="http://static.zybuluo.com/zphj1987/wwwynt1mzipi2knbkmj8x8w4/%E6%95%85%E9%9A%9C%E4%BA%8C%E5%A4%84%E7%90%86.jpg" alt="故障二处理.jpg-54.8kB"><br></center>
+
+<h2 id="六、我的公众号-磨磨谈">六、我的公众号-磨磨谈</h2><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/qrcode_for_gh_6998a54d68f7_430.jpg" alt=""><br></center>
+
+]]></content>
+    <summary type="html">
+    <![CDATA[<center><br><img src="http://7xo9we.com1.z0.glb.clouddn.com/shipin/cephoneboxpre3.jpg" alt=""><br></center>
+
+<h2 id="一、前言">一、前言</h2><p>现在已经是2016年收官的一个月了，之前一直想做一个calamari的集成版本，之所以有这个想法，是因为，即使在已经打好包的情况下，因为各种软件版本的原因，造成很多人无法配置成功，calamari发布以后，因为版本的更迭，经常出现软件版本引起的BUG<br>]]>
+    
+    </summary>
+    
+      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[test]]></title>
+    <link href="http://www.zphj1987.com/2016/12/18/test/"/>
+    <id>http://www.zphj1987.com/2016/12/18/test/</id>
+    <published>2016-12-17T18:35:38.000Z</published>
+    <updated>2016-12-18T13:45:25.039Z</updated>
+    <content type="html"><![CDATA[<div class="video-container"><object><br><video play="false" poster="http://7xo9we.com1.z0.glb.clouddn.com/shipin/cephoneboxpre.jpg" src="http://7xo9we.com1.z0.glb.clouddn.com/shipin/cephonebox.mp4" controls="controls"></video></object><br></div>
+
+
+
+<div class="video-container"><object><video play="false" poster="http://7xo9we.com1.z0.glb.clouddn.com/shipin/cephoneboxpre.jpg" src="http://7xo9we.com1.z0.glb.clouddn.com/shipin/cephonebox.mp4" controls="controls"></video></object></div>]]></content>
+    <summary type="html">
+    <![CDATA[<div class="video-container"><object><br><video play="false" poster="http://7xo9we.com1.z0.glb.clouddn.com/shipin/cephoneboxpre.jpg" src="ht]]>
+    </summary>
+    
+  </entry>
+  
+  <entry>
     <title><![CDATA[rbd的image快照与Pool快照]]></title>
     <link href="http://www.zphj1987.com/2016/12/14/rbd%E7%9A%84image%E5%BF%AB%E7%85%A7%E4%B8%8EPool%E5%BF%AB%E7%85%A7/"/>
     <id>http://www.zphj1987.com/2016/12/14/rbd的image快照与Pool快照/</id>
     <published>2016-12-14T01:55:51.000Z</published>
-    <updated>2016-12-14T02:02:45.223Z</updated>
+    <updated>2016-12-14T02:06:18.654Z</updated>
     <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/storagead.jpg" alt=""><br></center>
 
-<h2 id="前言">前言</h2><p>这个问题在不久前ceph社区群里看到有一个人提出来的，创建image的时候，当时的报错如下：</p>
+<h2 id="前言">前言</h2><p>这个问题是不久前在ceph社区群里看到的，创建image的时候，当时的报错如下：</p>
 <blockquote>
 <p>2016-12-13 23:13:10.266865 7efbfb7fe700 -1 librbd::image::CreateRequest: pool not configured for self-managed RBD snapshot support<br>rbd: create error: (22) Invalid argument</p>
 </blockquote>
@@ -57,7 +125,7 @@
     <summary type="html">
     <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/storagead.jpg" alt=""><br></center>
 
-<h2 id="前言">前言</h2><p>这个问题在不久前ceph社区群里看到有一个人提出来的，创建image的时候，当时的报错如下：</p>
+<h2 id="前言">前言</h2><p>这个问题是不久前在ceph社区群里看到的，创建image的时候，当时的报错如下：</p>
 <blockquote>
 <p>2016-12-13 23:13:10.266865 7efbfb7fe700 -1 librbd::image::CreateRequest: pool not configured for self-managed RBD snapshot support<br>rbd: create error: (22) Invalid argument</p>
 </blockquote>
@@ -1090,104 +1158,6 @@
     </summary>
     
       <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[zabbix实现自定义自动发现的流程]]></title>
-    <link href="http://www.zphj1987.com/2016/10/28/zabbix%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%AE%9A%E4%B9%89%E8%87%AA%E5%8A%A8%E5%8F%91%E7%8E%B0%E7%9A%84%E6%B5%81%E7%A8%8B/"/>
-    <id>http://www.zphj1987.com/2016/10/28/zabbix实现自定义自动发现的流程/</id>
-    <published>2016-10-28T05:56:24.000Z</published>
-    <updated>2016-11-01T03:56:27.977Z</updated>
-    <content type="html"><![CDATA[<h2 id="一、前言">一、前言</h2><p>本章介绍如何去自定义一个zabbix自动发现的整个流程</p>
-<h2 id="二、过程">二、过程</h2><p>首先需要在模板当中创建一个自动发现的规则，这个地方只需要一个名称和一个键值，例如</p>
-<ul>
-<li>名称：Ceph Cluster Pool Discovery</li>
-<li>键值：ceph.pools</li>
-</ul>
-<p>过滤器中间要添加你需要的用到的值宏<br>我的数据是：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># zabbix_get -s 127.0.0.1 -k ceph.pools</span></span><br><span class="line">&#123;<span class="string">"data"</span>:[&#123;<span class="string">"&#123;#POOLNAME&#125;"</span>:<span class="string">"rbd"</span>&#125;,&#123;<span class="string">"&#123;#POOLNAME&#125;"</span>:<span class="string">"metedata"</span>&#125;,&#123;<span class="string">"&#123;#POOLNAME&#125;"</span>:<span class="string">"data"</span>&#125;]&#125;</span><br></pre></td></tr></table></figure>
-<a id="more"></a>
-<p>这里我的宏就是<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&#123;<span class="comment">#POOLNAME&#125;</span></span><br></pre></td></tr></table></figure></p>
-<p>然后要创建一个监控项原型：<br>也是一个名称和一个键值：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">- 名称：<span class="built_in">test</span> on <span class="variable">$1</span></span><br><span class="line">- 键值：ceph.pools.used[&#123;<span class="comment">#POOLNAME&#125;]</span></span><br></pre></td></tr></table></figure>
-<p>这个地方名称可以用参数形式，包含的就是下面的那个键值中的参数对应的位置的值</p>
-<p>然后需要去写一个这样的键值的收集<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">UserParameter=ceph.pools, python /sbin/ceph-status.py pools</span><br><span class="line">UserParameter=ceph.pools.used[*], python /sbin/ceph-status.py pool_used <span class="variable">$1</span></span><br></pre></td></tr></table></figure></p>
-<p>测试下效果：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># zabbix_get -s 127.0.0.1 -k ceph.pools.used["rbd"]</span></span><br><span class="line"><span class="number">888</span></span><br></pre></td></tr></table></figure></p>
-<p>这个地方，上面的是去做的自动发现，下面的键值就是根据上面的自动发现返回的值去作为一个参数进行新的查询，后面的$1就是将参数传到收集的脚本里面去的，这样就能根据自动发现的不同的名称返回来不同的值，从而添加不同的监控项目，而不需要自己一个个添加了</p>
-<h2 id="三、总结">三、总结</h2><p>自动发现实际上就是需要首先去获得需要监控的值，然后将这个值作为一个新的参数传递到另外一个收集数据的item里面去，这样就可以了，这里是做的最基本的单项数据的获取，后面应该会遇到多重变量的情况，就需要赋值多重变量，到时需要用到再记录下</p>
-<h2 id="四、变更记录">四、变更记录</h2><table>
-<thead>
-<tr>
-<th style="text-align:center">Why</th>
-<th style="text-align:center">Who</th>
-<th style="text-align:center">When</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">创建</td>
-<td style="text-align:center">武汉-运维-磨渣</td>
-<td style="text-align:center">2016-10-28</td>
-</tr>
-</tbody>
-</table>
-]]></content>
-    <summary type="html">
-    <![CDATA[<h2 id="一、前言">一、前言</h2><p>本章介绍如何去自定义一个zabbix自动发现的整个流程</p>
-<h2 id="二、过程">二、过程</h2><p>首先需要在模板当中创建一个自动发现的规则，这个地方只需要一个名称和一个键值，例如</p>
-<ul>
-<li>名称：Ceph Cluster Pool Discovery</li>
-<li>键值：ceph.pools</li>
-</ul>
-<p>过滤器中间要添加你需要的用到的值宏<br>我的数据是：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># zabbix_get -s 127.0.0.1 -k ceph.pools</span></span><br><span class="line">&#123;<span class="string">"data"</span>:[&#123;<span class="string">"&#123;#POOLNAME&#125;"</span>:<span class="string">"rbd"</span>&#125;,&#123;<span class="string">"&#123;#POOLNAME&#125;"</span>:<span class="string">"metedata"</span>&#125;,&#123;<span class="string">"&#123;#POOLNAME&#125;"</span>:<span class="string">"data"</span>&#125;]&#125;</span><br></pre></td></tr></table></figure>]]>
-    
-    </summary>
-    
-      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[zabbix自动发现的python方式数据生成]]></title>
-    <link href="http://www.zphj1987.com/2016/10/28/zabbix%E8%87%AA%E5%8A%A8%E5%8F%91%E7%8E%B0%E7%9A%84python%E6%96%B9%E5%BC%8F%E6%95%B0%E6%8D%AE%E7%94%9F%E6%88%90/"/>
-    <id>http://www.zphj1987.com/2016/10/28/zabbix自动发现的python方式数据生成/</id>
-    <published>2016-10-27T17:11:08.000Z</published>
-    <updated>2016-10-27T17:29:38.340Z</updated>
-    <content type="html"><![CDATA[<h2 id="一、前言">一、前言</h2><p>zabbix里面有个功能是自动发现，比如文件系统和网卡的获取的时候，因为预先无法知道这个网卡的名称，所以就有了这个自动发现的功能，这里我是因为要用到存储池的自动发现，所以需要对数据进行生成</p>
-<h2 id="二、实现">二、实现</h2><p>我们看下原生的接口的数据类型：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># zabbix_get -s 127.0.0.1 -k "net.if.discovery"</span></span><br><span class="line">&#123;<span class="string">"data"</span>:[&#123;<span class="string">"&#123;#IFNAME&#125;"</span>:<span class="string">"enp3s0"</span>&#125;,&#123;<span class="string">"&#123;#IFNAME&#125;"</span>:<span class="string">"virbr0-nic"</span>&#125;,&#123;<span class="string">"&#123;#IFNAME&#125;"</span>:<span class="string">"docker0"</span>&#125;,&#123;<span class="string">"&#123;#IFNAME&#125;"</span>:<span class="string">"enp4s0"</span>&#125;,&#123;<span class="string">"&#123;#IFNAME&#125;"</span>:<span class="string">"enp2s0f0"</span>&#125;,&#123;<span class="string">"&#123;#IFNAME&#125;"</span>:<span class="string">"enp2s0f1"</span>&#125;,&#123;<span class="string">"&#123;#IFNAME&#125;"</span>:<span class="string">"virbr0"</span>&#125;,&#123;<span class="string">"&#123;#IFNAME&#125;"</span>:<span class="string">"lo"</span>&#125;]&#125;</span><br></pre></td></tr></table></figure></p>
-<p>数据为格式化好了的json数据，这个地方弄了好半天，因为网上很多人是用字符串拼接的方式，实际这个是字典嵌套了列表，列表又嵌套了字典，就是后面的地方开始没弄懂怎么有大括号的<br><a id="more"></a></p>
-<p>我们同样的来看看ceph原生的命令的json接口<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ceph -s -f json</span></span><br><span class="line"></span><br><span class="line">&#123;<span class="string">"health"</span>:&#123;<span class="string">"health"</span>:&#123;<span class="string">"health_services"</span>:[&#123;<span class="string">"mons"</span>:[&#123;<span class="string">"name"</span>:<span class="string">"lab8106"</span>,<span class="string">"kb_total"</span>:<span class="number">52403200</span>,<span class="string">"kb_used"</span>:<span class="number">32905432</span>,<span class="string">"kb_avail"</span>:<span class="number">19497768</span>,<span class="string">"avail_percent"</span>:<span class="number">37</span>,<span class="string">"last_updated"</span>:<span class="string">"2016-10-28 01:15:29.431854"</span>,<span class="string">"store_stats"</span>&#123;<span class="string">"bytes_total"</span>:<span class="number">20206814</span>,<span class="string">"bytes_sst"</span>:<span class="number">16929998</span>,<span class="string">"bytes_log"</span>:<span class="number">3080192</span>,<span class="string">"bytes_misc"</span>:<span class="number">196624</span>,<span class="string">"last_updated"</span>:<span class="string">"0.000000"</span>&#125;,<span class="string">"health"</span>:<span class="string">"HEALTH_OK"</span>&#125;]&#125;]&#125;,<span class="string">"timechecks"</span>:&#123;<span class="string">"epoch"</span>:<span class="number">4</span>,<span class="string">"round"</span>:<span class="number">0</span>,<span class="string">"round_status"</span>:<span class="string">"finished"</span>&#125;,<span class="string">"summary"</span>:[],<span class="string">"overall_status"</span>:<span class="string">"HEALTH_OK"</span>,<span class="string">"detail"</span>:[]&#125;,<span class="string">"fsid"</span>:<span class="string">"fae7a8db-c671-4b45-a784-ddb41e633905"</span>,<span class="string">"election_epoch"</span>:<span class="number">4</span>,<span class="string">"quorum"</span>:[<span class="number">0</span>],<span class="string">"quorum_names"</span>:[<span class="string">"lab8106"</span>],<span class="string">"monmap"</span>:&#123;<span class="string">"epoch"</span>:<span class="number">1</span>,<span class="string">"fsid"</span>:<span class="string">"fae7a8db-c671-4b45-a784-ddb41e633905"</span>,<span class="string">"modified"</span>:<span class="string">"2016-10-19 22:26:28.879232"</span>,<span class="string">"created"</span>:<span class="string">"2016-10-19 22:26:28.879232"</span>,<span class="string">"mons"</span>:[&#123;<span class="string">"rank"</span>:<span class="number">0</span>,<span class="string">"name"</span>:<span class="string">"lab8106"</span>,<span class="string">"addr"</span>:<span class="string">"192.168.8.106:6789\/0"</span>&#125;]&#125;,<span class="string">"osdmap"</span>:&#123;<span class="string">"osdmap"</span>:&#123;<span class="string">"epoch"</span>:<span class="number">63</span>,<span class="string">"num_osds"</span>:<span class="number">2</span>,<span class="string">"num_up_osds"</span>:<span class="number">2</span>,<span class="string">"num_in_osds"</span>:<span class="number">2</span>,<span class="string">"full"</span>:<span class="literal">false</span>,<span class="string">"nearfull"</span>:<span class="literal">false</span>,<span class="string">"num_remapped_pgs"</span>:<span class="number">0</span>&#125;&#125;,<span class="string">"pgmap"</span>:&#123;<span class="string">"pgs_by_state"</span>:[&#123;<span class="string">"state_name"</span>:<span class="string">"active+clean"</span>,<span class="string">"count"</span>:<span class="number">80</span>&#125;],<span class="string">"version"</span>:<span class="number">19174</span>,<span class="string">"num_pgs"</span>:<span class="number">80</span>,<span class="string">"data_bytes"</span>:<span class="number">45848191333</span>,<span class="string">"bytes_used"</span>:<span class="number">45966077952</span>,<span class="string">"bytes_avail"</span>:<span class="number">551592390656</span>,<span class="string">"bytes_total"</span>:<span class="number">597558468608</span>&#125;,<span class="string">"fsmap"</span>:&#123;<span class="string">"epoch"</span>:<span class="number">5</span>,<span class="string">"id"</span>:<span class="number">1</span>,<span class="string">"up"</span>:<span class="number">1</span>,<span class="string">"in"</span>:<span class="number">1</span>,<span class="string">"max"</span>:<span class="number">1</span>,<span class="string">"by_rank"</span>:[&#123;<span class="string">"filesystem_id"</span>:<span class="number">1</span>,<span class="string">"rank"</span>:<span class="number">0</span>,<span class="string">"name"</span>:<span class="string">"lab8106"</span>,<span class="string">"status"</span>:<span class="string">"up:active"</span>&#125;]&#125;&#125;</span><br></pre></td></tr></table></figure></p>
-<p>同样也是这个类型的数据，好了，这里直接上代码：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">def get_cluster_pools():</span><br><span class="line">    try:</span><br><span class="line">        pool_list=[]</span><br><span class="line">        data_dic = &#123;&#125;</span><br><span class="line">        cluster_pools = commands.getoutput(<span class="string">'timeout 10 ceph osd pool ls -f json 2&gt;/dev/null'</span>)</span><br><span class="line">        json_str = json.loads(cluster_pools)</span><br><span class="line">        <span class="keyword">for</span> item <span class="keyword">in</span> json_str:</span><br><span class="line">            pool_dic = &#123;&#125;</span><br><span class="line">            pool_dic[<span class="string">'&#123;#POOLNAME&#125;'</span>] = str(item)</span><br><span class="line">            pool_list.append(pool_dic)</span><br><span class="line">        data_dic[<span class="string">'data'</span>] = pool_list</span><br><span class="line">        <span class="built_in">return</span> json.dumps(data_dic,separators=(<span class="string">','</span>, <span class="string">':'</span>))</span><br><span class="line">    except:</span><br><span class="line">        <span class="built_in">return</span> <span class="number">0</span></span><br></pre></td></tr></table></figure></p>
-<p>输出如下<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">&#123;&#34;data&#34;:[&#123;&#34;&#123;#POOLNAME&#125;&#34;:&#34;rbd&#34;&#125;,&#123;&#34;&#123;#POOLNAME&#125;&#34;:&#34;metedata&#34;&#125;,&#123;&#34;&#123;#POOLNAME&#125;&#34;:&#34;data&#34;&#125;]&#125;</span><br></pre></td></tr></table></figure></p>
-<p>跟上面的格式一样了，关键在对字典进行赋值的处理，然后进行一个空格处理就完成了</p>
-<h2 id="三、总结">三、总结</h2><p>还是接触的太少，造成简单的处理都需要花费比较久的时间</p>
-<h2 id="四、变更记录">四、变更记录</h2><table>
-<thead>
-<tr>
-<th style="text-align:center">Why</th>
-<th style="text-align:center">Who</th>
-<th style="text-align:center">When</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">创建</td>
-<td style="text-align:center">武汉-运维-磨渣</td>
-<td style="text-align:center">2016-10-28</td>
-</tr>
-</tbody>
-</table>
-]]></content>
-    <summary type="html">
-    <![CDATA[<h2 id="一、前言">一、前言</h2><p>zabbix里面有个功能是自动发现，比如文件系统和网卡的获取的时候，因为预先无法知道这个网卡的名称，所以就有了这个自动发现的功能，这里我是因为要用到存储池的自动发现，所以需要对数据进行生成</p>
-<h2 id="二、实现">二、实现</h2><p>我们看下原生的接口的数据类型：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># zabbix_get -s 127.0.0.1 -k "net.if.discovery"</span></span><br><span class="line">&#123;<span class="string">"data"</span>:[&#123;<span class="string">"&#123;#IFNAME&#125;"</span>:<span class="string">"enp3s0"</span>&#125;,&#123;<span class="string">"&#123;#IFNAME&#125;"</span>:<span class="string">"virbr0-nic"</span>&#125;,&#123;<span class="string">"&#123;#IFNAME&#125;"</span>:<span class="string">"docker0"</span>&#125;,&#123;<span class="string">"&#123;#IFNAME&#125;"</span>:<span class="string">"enp4s0"</span>&#125;,&#123;<span class="string">"&#123;#IFNAME&#125;"</span>:<span class="string">"enp2s0f0"</span>&#125;,&#123;<span class="string">"&#123;#IFNAME&#125;"</span>:<span class="string">"enp2s0f1"</span>&#125;,&#123;<span class="string">"&#123;#IFNAME&#125;"</span>:<span class="string">"virbr0"</span>&#125;,&#123;<span class="string">"&#123;#IFNAME&#125;"</span>:<span class="string">"lo"</span>&#125;]&#125;</span><br></pre></td></tr></table></figure></p>
-<p>数据为格式化好了的json数据，这个地方弄了好半天，因为网上很多人是用字符串拼接的方式，实际这个是字典嵌套了列表，列表又嵌套了字典，就是后面的地方开始没弄懂怎么有大括号的<br>]]>
-    
-    </summary>
-    
-      <category term="zabbix" scheme="http://www.zphj1987.com/tags/zabbix/"/>
     
   </entry>
   

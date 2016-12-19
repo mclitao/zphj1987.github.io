@@ -183,6 +183,136 @@ var _hmt = _hmt || [];
 </nav>
       <div class="body-wrap">
   
+    <article id="post-ceph写osd的配置文件-etc-ceph-ceph-conf" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/01/11/ceph写osd的配置文件-etc-ceph-ceph-conf/" class="article-date">
+  	<time datetime="2016-01-11T08:38:25.000Z" itemprop="datePublished">2016-01-11</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/01/11/ceph写osd的配置文件-etc-ceph-ceph-conf/">ceph写osd的配置文件/etc/ceph/ceph.conf</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>ceph在部署过程中是先进行部署，再去写配置文件的，而一些新手在部署完了后，并没有写配置文件，在重启服务器后，因为挂载点没有挂载，所以服务无法启动，所以需要写好配置文件<br>还有一种情况是集群有几百个osd，在新加入或者修改的时候，再去进行变更配置文件就是一个很麻烦的事情，所以写配置文件这个如果脚本来处理，就可以节约很多时间，所以写了一个脚本如下，这个地方如果熟悉python的可以用python写，我这个是自己使用，并且使用的频率不会太高，因此，怎么方便怎么来</p>
+<p>脚本里面用了一个二进制文件是解析json用的，这个拷贝到运行的机器上就可以了</p>
+<p>解析的二进制文件在这里下载：<br><a href="http://stedolan.github.io/jq/">http://stedolan.github.io/jq/</a></p>
+<p>备用下载地址：<br><a href="http://pan.baidu.com/s/1pKgefmr">http://pan.baidu.com/s/1pKgefmr</a></p>
+<p>下载后拷贝到linux机器的/sbin/下面，为了方便重命名为 /sbin/jq</p>
+<p>后面的输出可以方便的修改，原理是获取当前的osd状态，然后去osd上获取信息</p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2016/01/11/ceph写osd的配置文件-etc-ceph-ceph-conf/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-centos6安装calamari" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/12/19/centos6安装calamari/" class="article-date">
+  	<time datetime="2015-12-19T14:07:01.000Z" itemprop="datePublished">2015-12-19</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/12/19/centos6安装calamari/">centos6安装calamari</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="一、安装操作系统">一、安装操作系统</h3><p>首先安装操作系统centos6,安装过程选择的是base server，这个不相同不要紧，出现缺少包的时候去iso找出来安装就可以了</p>
+<h3 id="二、calamari的简单介绍">二、calamari的简单介绍</h3><p>首先简单的介绍下calamari的这个软件系统的组成，主要是calamari-server,romana，salt-minion，salt-server，diamond，</p>
+<p>这些模块各自的作用：</p>
+<ul>
+<li>calamari-server这个是提供一个与集群进行交互，并且自己封装了一个自己的API，做集中管理的地方，这个只需要在集群当中的某一台机器上安装，也可以独立安装</li>
+<li>romana就是原来的calamari-client，这个叫client,其实是一个web的界面，这个叫calamari-web更好，现在已经更名为romana，这个也是只需要在集群当中的某一台机器上安装，也可以独立安装，这个需要跟calamari-server安装在一台机器上</li>
+<li>salt-server是一个管理的工具，可以批量的管理其他的机器，可以对安装了salt-minion的机器进行管理，在集群当中，这个也是跟calamari-server安装在一起的</li>
+<li>salt-minion是安装在集群的所有节点上的，这个是接收salt-server的指令对集群的机器进行操作，并且反馈一些信息到salt-server上</li>
+<li>diamond这个是系统的监控信息的收集控件，提供集群的硬件信息的监控和集群的信息的监控，数据是发送到romana的机器上的，是由romana上的carbon来收取数据并存储到机器当中的数据库当中的</li>
+</ul>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2015/12/19/centos6安装calamari/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-xenserver使用ceph的rbd的方法" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -662,131 +792,6 @@ var _hmt = _hmt || [];
       
         <p class="article-more-link">
           <a  href="/2015/11/01/Mon失效处理方法/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-在页面中嵌入自适应视频的方法" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/10/13/在页面中嵌入自适应视频的方法/" class="article-date">
-  	<time datetime="2015-10-13T13:50:23.000Z" itemprop="datePublished">2015-10-13</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/10/13/在页面中嵌入自适应视频的方法/">在页面中嵌入自适应视频的方法</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>准备在博客中嵌入视频，从视频网站获取的embed代码是指定宽度和高度的，这样在一些窗口或者移动端进行访问的时候，就可能视频溢出屏幕了，体验不好，实际上这几年响应式网站比较流行，也就是能让内容自动的适应窗口的大小</p>
-<p>屏幕的宽度可以用 <code>width：100%</code> 进行设置，高度看到有个 <code>height:100%</code> 设置后height实际取的是上一层的高度的百分比，如果没设置的话，这个就为0，看到嵌入的视频就没有高度了，网上关于这个的资料很多，可以搜索下</p>
-<p>关于视频的自适应看到  <a href="https://developers.google.com/web/fundamentals/media/video/size-videos-correctly?hl=zh-cn#section" title="google 自适应设置建议">google 自适应设置建议</a> 这个介绍的很好<br>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/杂七杂八/">杂七杂八</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/10/13/在页面中嵌入自适应视频的方法/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-inkscope管理平台试用" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/10/12/inkscope管理平台试用/" class="article-date">
-  	<time datetime="2015-10-12T13:28:22.000Z" itemprop="datePublished">2015-10-12</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/10/12/inkscope管理平台试用/">inkscope管理平台试用</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>下面为inkscope的管理平台的操作记录，一直听说过这个管理平台，但一直没有真正的去配置过，花了一点时间进行了配置</p>
-<p>inkscope的管理平台总结下有下面几个：</p>
-<ul>
-<li>使用sysprobe获取节点的操作系统监控信息</li>
-<li>使用cephprobe去跟ceph集群进行交互，调用了ceph-rest-api进行集群的数据和操作交互</li>
-<li>使用mongodb进行监控信息的存储</li>
-</ul>
-<p>总体来说架构简单，很容易配置，并且官方提供了包，是比较成熟的管理平台了，具体的可以看下面的这个视频<br>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/10/12/inkscope管理平台试用/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>
