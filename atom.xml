@@ -66,23 +66,6 @@
   </entry>
   
   <entry>
-    <title><![CDATA[test]]></title>
-    <link href="http://www.zphj1987.com/2016/12/18/test/"/>
-    <id>http://www.zphj1987.com/2016/12/18/test/</id>
-    <published>2016-12-17T18:35:38.000Z</published>
-    <updated>2016-12-18T13:45:25.039Z</updated>
-    <content type="html"><![CDATA[<div class="video-container"><object><br><video play="false" poster="http://7xo9we.com1.z0.glb.clouddn.com/shipin/cephoneboxpre.jpg" src="http://7xo9we.com1.z0.glb.clouddn.com/shipin/cephonebox.mp4" controls="controls"></video></object><br></div>
-
-
-
-<div class="video-container"><object><video play="false" poster="http://7xo9we.com1.z0.glb.clouddn.com/shipin/cephoneboxpre.jpg" src="http://7xo9we.com1.z0.glb.clouddn.com/shipin/cephonebox.mp4" controls="controls"></video></object></div>]]></content>
-    <summary type="html">
-    <![CDATA[<div class="video-container"><object><br><video play="false" poster="http://7xo9we.com1.z0.glb.clouddn.com/shipin/cephoneboxpre.jpg" src="ht]]>
-    </summary>
-    
-  </entry>
-  
-  <entry>
     <title><![CDATA[rbd的image快照与Pool快照]]></title>
     <link href="http://www.zphj1987.com/2016/12/14/rbd%E7%9A%84image%E5%BF%AB%E7%85%A7%E4%B8%8EPool%E5%BF%AB%E7%85%A7/"/>
     <id>http://www.zphj1987.com/2016/12/14/rbd的image快照与Pool快照/</id>
@@ -1154,6 +1137,62 @@
     <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/cephdayshenzheng/shenzhen.gif" alt=""><br></center>
 
 <h2 id="一、前言">一、前言</h2><p>本次的Cephday是在深圳举办的，由于台风的原因推迟了一周举办，本来计划好去深圳参加一下，本周正好有事不能参加了，只能期待下次的武汉站的活动了，每次活动一方面促进了同行业人员的沟通，一方面会带来一些技术的分享，那么就对这次分享的PPT做一个个人总结<br>]]>
+    
+    </summary>
+    
+      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[zabbix实现自定义自动发现的流程]]></title>
+    <link href="http://www.zphj1987.com/2016/10/28/zabbix%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%AE%9A%E4%B9%89%E8%87%AA%E5%8A%A8%E5%8F%91%E7%8E%B0%E7%9A%84%E6%B5%81%E7%A8%8B/"/>
+    <id>http://www.zphj1987.com/2016/10/28/zabbix实现自定义自动发现的流程/</id>
+    <published>2016-10-28T05:56:24.000Z</published>
+    <updated>2016-11-01T03:56:27.977Z</updated>
+    <content type="html"><![CDATA[<h2 id="一、前言">一、前言</h2><p>本章介绍如何去自定义一个zabbix自动发现的整个流程</p>
+<h2 id="二、过程">二、过程</h2><p>首先需要在模板当中创建一个自动发现的规则，这个地方只需要一个名称和一个键值，例如</p>
+<ul>
+<li>名称：Ceph Cluster Pool Discovery</li>
+<li>键值：ceph.pools</li>
+</ul>
+<p>过滤器中间要添加你需要的用到的值宏<br>我的数据是：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># zabbix_get -s 127.0.0.1 -k ceph.pools</span></span><br><span class="line">&#123;<span class="string">"data"</span>:[&#123;<span class="string">"&#123;#POOLNAME&#125;"</span>:<span class="string">"rbd"</span>&#125;,&#123;<span class="string">"&#123;#POOLNAME&#125;"</span>:<span class="string">"metedata"</span>&#125;,&#123;<span class="string">"&#123;#POOLNAME&#125;"</span>:<span class="string">"data"</span>&#125;]&#125;</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<p>这里我的宏就是<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&#123;<span class="comment">#POOLNAME&#125;</span></span><br></pre></td></tr></table></figure></p>
+<p>然后要创建一个监控项原型：<br>也是一个名称和一个键值：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">- 名称：<span class="built_in">test</span> on <span class="variable">$1</span></span><br><span class="line">- 键值：ceph.pools.used[&#123;<span class="comment">#POOLNAME&#125;]</span></span><br></pre></td></tr></table></figure>
+<p>这个地方名称可以用参数形式，包含的就是下面的那个键值中的参数对应的位置的值</p>
+<p>然后需要去写一个这样的键值的收集<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">UserParameter=ceph.pools, python /sbin/ceph-status.py pools</span><br><span class="line">UserParameter=ceph.pools.used[*], python /sbin/ceph-status.py pool_used <span class="variable">$1</span></span><br></pre></td></tr></table></figure></p>
+<p>测试下效果：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># zabbix_get -s 127.0.0.1 -k ceph.pools.used["rbd"]</span></span><br><span class="line"><span class="number">888</span></span><br></pre></td></tr></table></figure></p>
+<p>这个地方，上面的是去做的自动发现，下面的键值就是根据上面的自动发现返回的值去作为一个参数进行新的查询，后面的$1就是将参数传到收集的脚本里面去的，这样就能根据自动发现的不同的名称返回来不同的值，从而添加不同的监控项目，而不需要自己一个个添加了</p>
+<h2 id="三、总结">三、总结</h2><p>自动发现实际上就是需要首先去获得需要监控的值，然后将这个值作为一个新的参数传递到另外一个收集数据的item里面去，这样就可以了，这里是做的最基本的单项数据的获取，后面应该会遇到多重变量的情况，就需要赋值多重变量，到时需要用到再记录下</p>
+<h2 id="四、变更记录">四、变更记录</h2><table>
+<thead>
+<tr>
+<th style="text-align:center">Why</th>
+<th style="text-align:center">Who</th>
+<th style="text-align:center">When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">创建</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2016-10-28</td>
+</tr>
+</tbody>
+</table>
+]]></content>
+    <summary type="html">
+    <![CDATA[<h2 id="一、前言">一、前言</h2><p>本章介绍如何去自定义一个zabbix自动发现的整个流程</p>
+<h2 id="二、过程">二、过程</h2><p>首先需要在模板当中创建一个自动发现的规则，这个地方只需要一个名称和一个键值，例如</p>
+<ul>
+<li>名称：Ceph Cluster Pool Discovery</li>
+<li>键值：ceph.pools</li>
+</ul>
+<p>过滤器中间要添加你需要的用到的值宏<br>我的数据是：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># zabbix_get -s 127.0.0.1 -k ceph.pools</span></span><br><span class="line">&#123;<span class="string">"data"</span>:[&#123;<span class="string">"&#123;#POOLNAME&#125;"</span>:<span class="string">"rbd"</span>&#125;,&#123;<span class="string">"&#123;#POOLNAME&#125;"</span>:<span class="string">"metedata"</span>&#125;,&#123;<span class="string">"&#123;#POOLNAME&#125;"</span>:<span class="string">"data"</span>&#125;]&#125;</span><br></pre></td></tr></table></figure>]]>
     
     </summary>
     

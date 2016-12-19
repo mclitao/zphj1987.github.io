@@ -183,66 +183,6 @@ var _hmt = _hmt || [];
 </nav>
       <div class="body-wrap">
   
-    <article id="post-在页面中嵌入自适应视频的方法" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/10/13/在页面中嵌入自适应视频的方法/" class="article-date">
-  	<time datetime="2015-10-13T13:50:23.000Z" itemprop="datePublished">2015-10-13</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/10/13/在页面中嵌入自适应视频的方法/">在页面中嵌入自适应视频的方法</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>准备在博客中嵌入视频，从视频网站获取的embed代码是指定宽度和高度的，这样在一些窗口或者移动端进行访问的时候，就可能视频溢出屏幕了，体验不好，实际上这几年响应式网站比较流行，也就是能让内容自动的适应窗口的大小</p>
-<p>屏幕的宽度可以用 <code>width：100%</code> 进行设置，高度看到有个 <code>height:100%</code> 设置后height实际取的是上一层的高度的百分比，如果没设置的话，这个就为0，看到嵌入的视频就没有高度了，网上关于这个的资料很多，可以搜索下</p>
-<p>关于视频的自适应看到  <a href="https://developers.google.com/web/fundamentals/media/video/size-videos-correctly?hl=zh-cn#section" title="google 自适应设置建议">google 自适应设置建议</a> 这个介绍的很好<br>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/杂七杂八/">杂七杂八</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/10/13/在页面中嵌入自适应视频的方法/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
     <article id="post-inkscope管理平台试用" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -772,6 +712,72 @@ var _hmt = _hmt || [];
       
         <p class="article-more-link">
           <a  href="/2015/05/25/dm-crypt加密磁盘/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-linux系统克隆系统盘" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/05/12/linux系统克隆系统盘/" class="article-date">
+  	<time datetime="2015-05-12T06:24:31.000Z" itemprop="datePublished">2015-05-12</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/05/12/linux系统克隆系统盘/">linux系统克隆系统盘</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>本文将介绍两种方式的系统盘的完整的备份，两种方式各有优缺点，需要根据实际情况来进行选择</p>
+<ul>
+<li>使用dd的完整镜像克隆的方式</li>
+<li>使用tar去备份数据，安装grub的方式</li>
+</ul>
+<h4 id="dd方式">dd方式</h4><p>优点：<br>简单，一条命令 dd if=/dev/sda of=/dev/sdb 就可以进行完整的系统备份了</p>
+<p>缺点：<br>时间非常长，备份一个系统盘，无论数据多少，系统盘全部会读取一遍，时间比较久<br>备份目的盘需要大于原盘<br>分区无法调整，根原分区一模一样</p>
+<h4 id="tar方式">tar方式</h4><p>优点：<br>时间短，只需要备份实际磁盘上的数据即可<br>自定义，可以修改分区的大小，可以控制备份的类容，可以定期备份<br>对目的盘大小无限制，比较灵活</p>
+<p>缺点：<br>人为修改东西比较多，需要手动去修改一些信息<br>当然在掌握了一定的linux基础的情况下建议是使用tar方式的，，下面将介绍tar方式的处理方式：</p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/操作系统/">操作系统</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2015/05/12/linux系统克隆系统盘/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>

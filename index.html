@@ -243,60 +243,6 @@ var _hmt = _hmt || [];
 
 
   
-    <article id="post-test" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/12/18/test/" class="article-date">
-  	<time datetime="2016-12-17T18:35:38.000Z" itemprop="datePublished">2016-12-18</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/12/18/test/">test</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <div class="video-container"><object><br><video play="false" poster="http://7xo9we.com1.z0.glb.clouddn.com/shipin/cephoneboxpre.jpg" src="http://7xo9we.com1.z0.glb.clouddn.com/shipin/cephonebox.mp4" controls="controls"></video></object><br></div>
-
-
-
-<div class="video-container"><object><video play="false" poster="http://7xo9we.com1.z0.glb.clouddn.com/shipin/cephoneboxpre.jpg" src="http://7xo9we.com1.z0.glb.clouddn.com/shipin/cephonebox.mp4" controls="controls"></video></object></div>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
     <article id="post-rbd的image快照与Pool快照" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -762,6 +708,71 @@ var _hmt = _hmt || [];
       
         <p class="article-more-link">
           <a  href="/2016/11/16/查询OSD运行在哪些cpu上/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-处理stale的pg" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/11/14/处理stale的pg/" class="article-date">
+  	<time datetime="2016-11-14T12:32:27.000Z" itemprop="datePublished">2016-11-14</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/11/14/处理stale的pg/">处理stale的pg</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/wremch.png" alt=""><br></center>
+
+<h2 id="前言">前言</h2><p>在某些场景下Ceph集群会出现stale的情况，也就是ceph集群PG的僵死状态，这个状态实际上是无法处理新的请求了，新的请求过来只会block，那么我们如何去恢复环境</p>
+<h2 id="实践过程">实践过程</h2><p>首先模拟stale环境，这个比较好模拟</p>
+<blockquote>
+<p>设置副本2，然后同时关闭两个OSD（不同故障域上），然后删除这两个OSD</p>
+</blockquote>
+<p>集群这个时候就会出现stale的情况了，因为两份数据都丢了，在一些环境下，数据本身就是临时的或者不是那么重要的，比如存储日志，这样的环境下，只需要快速的恢复环境即可，而不担心数据的丢失</p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2016/11/14/处理stale的pg/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>
