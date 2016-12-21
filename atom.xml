@@ -4,7 +4,7 @@
   <subtitle><![CDATA[但行好事，莫问前程]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2016-12-18T14:52:21.175Z</updated>
+  <updated>2016-12-21T07:58:29.775Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="http://www.zphj1987.com/2016/12/18/cephonebox%E5%8F%91%E5%B8%83/"/>
     <id>http://www.zphj1987.com/2016/12/18/cephonebox发布/</id>
     <published>2016-12-18T14:25:48.000Z</published>
-    <updated>2016-12-18T14:52:21.175Z</updated>
+    <updated>2016-12-21T07:58:29.775Z</updated>
     <content type="html"><![CDATA[<center><br><img src="http://7xo9we.com1.z0.glb.clouddn.com/shipin/cephoneboxpre3.jpg" alt=""><br></center>
 
 <h2 id="一、前言">一、前言</h2><p>现在已经是2016年收官的一个月了，之前一直想做一个calamari的集成版本，之所以有这个想法，是因为，即使在已经打好包的情况下，因为各种软件版本的原因，造成很多人无法配置成功，calamari发布以后，因为版本的更迭，经常出现软件版本引起的BUG<br><a id="more"></a><br>这里直接把需要的软件集成在一起了，按照本篇指导，一步一步是能够很简单的配置起来的，并且提供了一个视频的指导，应该能够很大程度上降低calamari的部署难度，希望能够帮助到更多的人</p>
@@ -29,6 +29,7 @@
 <h2 id="三、视频演示教程">三、视频演示教程</h2><div class="video-container"><object><video play="false" poster="http://7xo9we.com1.z0.glb.clouddn.com/shipin/cephoneboxpre2.jpg" src="http://7xo9we.com1.z0.glb.clouddn.com/shipin/cephonebox.mp4" controls="controls"></video></object></div>
 
 <h2 id="四、配置教程">四、配置教程</h2><h3 id="4-1_获取ISO">4.1 获取ISO</h3><p>地址如下：<br>链接：<a href="http://pan.baidu.com/s/1cimGYa" target="_blank" rel="external">http://pan.baidu.com/s/1cimGYa</a> 密码：1bs6<br>大小为811M</p>
+<p>安装完成后默认：<br>用户名为root ,密码为123456</p>
 <h3 id="4-2_安装操作系统">4.2 安装操作系统</h3><p>本系统是定制的系统，默认本地硬盘启动，选择到第二项进行安装<br>需要配置的地方：</p>
 <ul>
 <li>配置磁盘分区 </li>
