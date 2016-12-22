@@ -4,7 +4,7 @@
   <subtitle><![CDATA[但行好事，莫问前程]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2016-12-21T07:58:29.775Z</updated>
+  <updated>2016-12-22T15:18:37.799Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -13,6 +13,51 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[Ceph数据盘怎样实现自动挂载]]></title>
+    <link href="http://www.zphj1987.com/2016/12/22/Ceph%E6%95%B0%E6%8D%AE%E7%9B%98%E6%80%8E%E6%A0%B7%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%8A%A8%E6%8C%82%E8%BD%BD/"/>
+    <id>http://www.zphj1987.com/2016/12/22/Ceph数据盘怎样实现自动挂载/</id>
+    <published>2016-12-22T15:16:23.000Z</published>
+    <updated>2016-12-22T15:18:37.799Z</updated>
+    <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/mountain.png" alt="mount"><br></center>
+
+<h2 id="前言">前言</h2><p>在Centos7 下，现在采用了 systemctl来控制服务，这个刚开始用起来可能不太习惯，不过这个服务比之前的服务控制要强大的多，可以做更多的控制，本节将来介绍下关于 Ceph的 osd 磁盘挂载的问题</p>
+<p>很多人部署以后，发现在Centos7下用Jewel的时候没有去写fstab也没有写配置文件，重启服务器一样能够挂载起来了，关于这个有另外一篇文章：「<a href="http://www.zphj1987.com/2016/03/31/ceph%E5%9C%A8centos7%E4%B8%8B%E4%B8%80%E4%B8%AA%E4%B8%8D%E5%AE%B9%E6%98%93%E5%8F%91%E7%8E%B0%E7%9A%84%E6%94%B9%E5%8F%98/" target="_blank" rel="external">ceph在centos7下一个不容易发现的改变</a>」<br><a id="more"></a><br>还有一些人发现自己的却启动不起来，需要写配置文件或者fstab</p>
+<p>本篇就是来解决这个疑惑的，以及在不改变原配置方法的情况下如何加入这种自启动</p>
+<h2 id="实践过程">实践过程</h2><h3 id="首先来第一种部署的方法">首先来第一种部署的方法</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph-deploy osd prepare lab8106:/dev/sde</span><br><span class="line">ceph-deploy osd activate lab8106:/dev/sde1</span><br></pre></td></tr></table></figure>
+<p>这个方法会把/dev/sde自动分成两个分区，一个分区给journal使用，一个分区给osd的数据使用，这种方法部署以后，是可以自动起来的，启动的挂载过程就是这个服务<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">systemctl start ceph-disk@/dev/sde1</span><br></pre></td></tr></table></figure></p>
+<h3 id="再来看第二种方法">再来看第二种方法</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># parted -s /dev/sdf mklabel gpt</span></span><br><span class="line">[root@lab8106 ceph]<span class="comment"># parted -s /dev/sdf mkpart primary 1 100%</span></span><br><span class="line">[root@lab8106 ceph]<span class="comment"># parted -s /dev/sdf print</span></span><br><span class="line">Model: SEAGATE ST3300657SS (scsi)</span><br><span class="line">Disk /dev/sdf: <span class="number">300</span>GB</span><br><span class="line">Sector size (logical/physical): <span class="number">512</span>B/<span class="number">512</span>B</span><br><span class="line">Partition Table: gpt</span><br><span class="line">Disk Flags: </span><br><span class="line"></span><br><span class="line">Number  Start   End    Size   File system  Name     Flags</span><br><span class="line"> <span class="number">1</span>      <span class="number">1049</span>kB  <span class="number">300</span>GB  <span class="number">300</span>GB               primary</span><br></pre></td></tr></table></figure>
+<p>提前做好了分区的工作<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph-deploy osd prepare lab8106:/dev/sdf1</span><br><span class="line">ceph-deploy osd activate lab8106:/dev/sdf1</span><br></pre></td></tr></table></figure></p>
+<p>可以看到prepare的时候是对着分区去做的<br>这种方法journal是以文件的方式在数据目录生成的,可以看到两个目录的 df 看到的就是不一样的，多的那个是 journal 文件的大小<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/dev/sde1       <span class="number">279</span>G   <span class="number">34</span>M  <span class="number">279</span>G   <span class="number">1</span>% /var/lib/ceph/osd/ceph-<span class="number">6</span></span><br><span class="line">/dev/sdf1       <span class="number">280</span>G  <span class="number">1.1</span>G  <span class="number">279</span>G   <span class="number">1</span>% /var/lib/ceph/osd/ceph-<span class="number">7</span></span><br></pre></td></tr></table></figure></p>
+<p>重启服务器<br>可以看到上面的sde1挂载了而自己分区的sdf1没有挂载</p>
+<p>我们去手动执行下:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment">#  systemctl start ceph-disk@/dev/sdf1</span></span><br><span class="line">Job <span class="keyword">for</span> ceph-disk@-dev-sdf1.service failed because the control process exited with error code. See <span class="string">"systemctl status ceph-disk@-dev-sdf1.service"</span> and <span class="string">"journalctl -xe"</span> <span class="keyword">for</span> details.</span><br></pre></td></tr></table></figure></p>
+<p>看下报错<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># systemctl status ceph-disk@-dev-sdf1.service</span></span><br><span class="line">● ceph-disk@-dev-sdf1.service - Ceph disk activation: /dev/sdf1</span><br><span class="line">   Loaded: loaded (/usr/lib/systemd/system/ceph-disk@.service; static; vendor preset: disabled)</span><br><span class="line">   Active: failed (Result: <span class="built_in">exit</span>-code) since Thu <span class="number">2016</span>-<span class="number">12</span>-<span class="number">22</span> <span class="number">10</span>:<span class="number">15</span>:<span class="number">52</span> CST; <span class="number">46</span>s ago</span><br><span class="line">  Process: <span class="number">16334</span> ExecStart=/bin/sh -c flock /var/lock/ceph-disk /usr/sbin/ceph-disk --verbose --log-stdout trigger --sync %f (code=exited, status=<span class="number">1</span>/FAILURE)</span><br><span class="line"> Main PID: <span class="number">16334</span> (code=exited, status=<span class="number">1</span>/FAILURE)</span><br><span class="line"></span><br><span class="line">Dec <span class="number">22</span> <span class="number">10</span>:<span class="number">15</span>:<span class="number">52</span> lab8106 sh[<span class="number">16334</span>]: main(sys.argv[<span class="number">1</span>:])</span><br><span class="line">Dec <span class="number">22</span> <span class="number">10</span>:<span class="number">15</span>:<span class="number">52</span> lab8106 sh[<span class="number">16334</span>]: File <span class="string">"/usr/lib/python2.7/site-packages/ceph_disk/main.py"</span>, line <span class="number">4962</span>, <span class="keyword">in</span> main</span><br><span class="line">Dec <span class="number">22</span> <span class="number">10</span>:<span class="number">15</span>:<span class="number">52</span> lab8106 sh[<span class="number">16334</span>]: args.func(args)</span><br><span class="line">Dec <span class="number">22</span> <span class="number">10</span>:<span class="number">15</span>:<span class="number">52</span> lab8106 sh[<span class="number">16334</span>]: File <span class="string">"/usr/lib/python2.7/site-packages/ceph_disk/main.py"</span>, line <span class="number">4394</span>, <span class="keyword">in</span> main_trigger</span><br><span class="line">Dec <span class="number">22</span> <span class="number">10</span>:<span class="number">15</span>:<span class="number">52</span> lab8106 sh[<span class="number">16334</span>]: raise Error(<span class="string">'unrecognized partition type %s'</span> % parttype)</span><br><span class="line">Dec <span class="number">22</span> <span class="number">10</span>:<span class="number">15</span>:<span class="number">52</span> lab8106 sh[<span class="number">16334</span>]: ceph_disk.main.Error: Error: unrecognized partition <span class="built_in">type</span> <span class="number">0</span><span class="built_in">fc</span>63daf-<span class="number">8483</span>-<span class="number">4772</span>-<span class="number">8</span>e79-<span class="number">3</span>d69d8477de4</span><br><span class="line">Dec <span class="number">22</span> <span class="number">10</span>:<span class="number">15</span>:<span class="number">52</span> lab8106 systemd[<span class="number">1</span>]: ceph-disk@-dev-sdf1.service: main process exited, code=exited, status=<span class="number">1</span>/FAILURE</span><br><span class="line">Dec <span class="number">22</span> <span class="number">10</span>:<span class="number">15</span>:<span class="number">52</span> lab8106 systemd[<span class="number">1</span>]: Failed to start Ceph disk activation: /dev/sdf1.</span><br><span class="line">Dec <span class="number">22</span> <span class="number">10</span>:<span class="number">15</span>:<span class="number">52</span> lab8106 systemd[<span class="number">1</span>]: Unit ceph-disk@-dev-sdf1.service entered failed state.</span><br><span class="line">Dec <span class="number">22</span> <span class="number">10</span>:<span class="number">15</span>:<span class="number">52</span> lab8106 systemd[<span class="number">1</span>]: ceph-disk@-dev-sdf1.service failed.</span><br></pre></td></tr></table></figure></p>
+<p>关键在这句</p>
+<blockquote>
+<p>raise Error(‘unrecognized partition type %s’ % parttype)</p>
+</blockquote>
+<p>检查分区情况，可以看到确实跟另外一种方法部署的OSD情况不同<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># ceph-disk list</span></span><br><span class="line">···</span><br><span class="line">/dev/sde2 ceph journal, <span class="keyword">for</span> /dev/sde1</span><br><span class="line"> /dev/sde1 ceph data, active, cluster ceph, osd.<span class="number">6</span>, journal /dev/sde2</span><br><span class="line">dev/sdf :</span><br><span class="line"> /dev/sdf1 other, xfs, mounted on /var/lib/ceph/osd/ceph-<span class="number">7</span></span><br></pre></td></tr></table></figure></p>
+<p>这里要如何处理,才能实现自动挂载，方法是有的</p>
+<p>这个地方需要做一步这个操作（注意下面的1：后面是写死的字符串固定的值）<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/usr/sbin/sgdisk --typecode=<span class="number">1</span>:<span class="number">4</span>fbd7e29-<span class="number">9</span>d25-<span class="number">41</span>b8-afd0-<span class="number">062</span>c0ceff05d -- /dev/sdi</span><br><span class="line"></span><br><span class="line">/dev/sdi :</span><br><span class="line"> /dev/sdi1 ceph data, active, cluster ceph, osd.<span class="number">7</span></span><br></pre></td></tr></table></figure></p>
+<p>我们来验证一下：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># systemctl stop ceph-osd@7</span></span><br><span class="line">[root@lab8106 ceph]<span class="comment"># umount /dev/sdi1 </span></span><br><span class="line">[root@lab8106 ceph]<span class="comment"># systemctl start ceph-disk@/dev/sdi1</span></span><br><span class="line">[root@lab8106 ceph]<span class="comment"># df -h|grep sdi</span></span><br><span class="line">/dev/sdi1       <span class="number">280</span>G  <span class="number">1.1</span>G  <span class="number">279</span>G   <span class="number">1</span>% /var/lib/ceph/osd/ceph-<span class="number">7</span></span><br></pre></td></tr></table></figure></p>
+<p>可以用服务挂载了<br>这个是代码里面写死的判断值，来判断osd是ready的了<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/usr/lib/python2.<span class="number">7</span>/site-packages/ceph_disk/main.py</span><br><span class="line"></span><br><span class="line"><span class="string">'osd'</span>: &#123;</span><br><span class="line">            <span class="string">'ready'</span>: <span class="string">'4fbd7e29-9d25-41b8-afd0-062c0ceff05d'</span>,</span><br><span class="line">            <span class="string">'tobe'</span>: <span class="string">'89c57f98-2fe5-4dc0-89c1-f3ad0ceff2be'</span>,</span><br><span class="line">        &#125;,</span><br></pre></td></tr></table></figure></p>
+<h2 id="总结">总结</h2><p>通过本篇的介绍，应该能够清楚什么情况下不自动挂载，什么情况下自动挂载，怎么去实现自动挂载，虽然上面只用了一调命令就实现了，不过我找了很久才定位到这个命令的，当然自己也掌握了这个知识点，公众号已经可以留言了，欢迎留言</p>
+<h2 id="我的公众号-磨磨谈">我的公众号-磨磨谈</h2><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/qrcode_for_gh_6998a54d68f7_430.jpg" alt=""><br></center>
+
+
+]]></content>
+    <summary type="html">
+    <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/mountain.png" alt="mount"><br></center>
+
+<h2 id="前言">前言</h2><p>在Centos7 下，现在采用了 systemctl来控制服务，这个刚开始用起来可能不太习惯，不过这个服务比之前的服务控制要强大的多，可以做更多的控制，本节将来介绍下关于 Ceph的 osd 磁盘挂载的问题</p>
+<p>很多人部署以后，发现在Centos7下用Jewel的时候没有去写fstab也没有写配置文件，重启服务器一样能够挂载起来了，关于这个有另外一篇文章：「<a href="http://www.zphj1987.com/2016/03/31/ceph%E5%9C%A8centos7%E4%B8%8B%E4%B8%80%E4%B8%AA%E4%B8%8D%E5%AE%B9%E6%98%93%E5%8F%91%E7%8E%B0%E7%9A%84%E6%94%B9%E5%8F%98/">ceph在centos7下一个不容易发现的改变</a>」<br>]]>
+    
+    </summary>
+    
+      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[cephonebox发布]]></title>
@@ -1138,62 +1183,6 @@
     <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/cephdayshenzheng/shenzhen.gif" alt=""><br></center>
 
 <h2 id="一、前言">一、前言</h2><p>本次的Cephday是在深圳举办的，由于台风的原因推迟了一周举办，本来计划好去深圳参加一下，本周正好有事不能参加了，只能期待下次的武汉站的活动了，每次活动一方面促进了同行业人员的沟通，一方面会带来一些技术的分享，那么就对这次分享的PPT做一个个人总结<br>]]>
-    
-    </summary>
-    
-      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[zabbix实现自定义自动发现的流程]]></title>
-    <link href="http://www.zphj1987.com/2016/10/28/zabbix%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%AE%9A%E4%B9%89%E8%87%AA%E5%8A%A8%E5%8F%91%E7%8E%B0%E7%9A%84%E6%B5%81%E7%A8%8B/"/>
-    <id>http://www.zphj1987.com/2016/10/28/zabbix实现自定义自动发现的流程/</id>
-    <published>2016-10-28T05:56:24.000Z</published>
-    <updated>2016-11-01T03:56:27.977Z</updated>
-    <content type="html"><![CDATA[<h2 id="一、前言">一、前言</h2><p>本章介绍如何去自定义一个zabbix自动发现的整个流程</p>
-<h2 id="二、过程">二、过程</h2><p>首先需要在模板当中创建一个自动发现的规则，这个地方只需要一个名称和一个键值，例如</p>
-<ul>
-<li>名称：Ceph Cluster Pool Discovery</li>
-<li>键值：ceph.pools</li>
-</ul>
-<p>过滤器中间要添加你需要的用到的值宏<br>我的数据是：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># zabbix_get -s 127.0.0.1 -k ceph.pools</span></span><br><span class="line">&#123;<span class="string">"data"</span>:[&#123;<span class="string">"&#123;#POOLNAME&#125;"</span>:<span class="string">"rbd"</span>&#125;,&#123;<span class="string">"&#123;#POOLNAME&#125;"</span>:<span class="string">"metedata"</span>&#125;,&#123;<span class="string">"&#123;#POOLNAME&#125;"</span>:<span class="string">"data"</span>&#125;]&#125;</span><br></pre></td></tr></table></figure>
-<a id="more"></a>
-<p>这里我的宏就是<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&#123;<span class="comment">#POOLNAME&#125;</span></span><br></pre></td></tr></table></figure></p>
-<p>然后要创建一个监控项原型：<br>也是一个名称和一个键值：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">- 名称：<span class="built_in">test</span> on <span class="variable">$1</span></span><br><span class="line">- 键值：ceph.pools.used[&#123;<span class="comment">#POOLNAME&#125;]</span></span><br></pre></td></tr></table></figure>
-<p>这个地方名称可以用参数形式，包含的就是下面的那个键值中的参数对应的位置的值</p>
-<p>然后需要去写一个这样的键值的收集<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">UserParameter=ceph.pools, python /sbin/ceph-status.py pools</span><br><span class="line">UserParameter=ceph.pools.used[*], python /sbin/ceph-status.py pool_used <span class="variable">$1</span></span><br></pre></td></tr></table></figure></p>
-<p>测试下效果：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># zabbix_get -s 127.0.0.1 -k ceph.pools.used["rbd"]</span></span><br><span class="line"><span class="number">888</span></span><br></pre></td></tr></table></figure></p>
-<p>这个地方，上面的是去做的自动发现，下面的键值就是根据上面的自动发现返回的值去作为一个参数进行新的查询，后面的$1就是将参数传到收集的脚本里面去的，这样就能根据自动发现的不同的名称返回来不同的值，从而添加不同的监控项目，而不需要自己一个个添加了</p>
-<h2 id="三、总结">三、总结</h2><p>自动发现实际上就是需要首先去获得需要监控的值，然后将这个值作为一个新的参数传递到另外一个收集数据的item里面去，这样就可以了，这里是做的最基本的单项数据的获取，后面应该会遇到多重变量的情况，就需要赋值多重变量，到时需要用到再记录下</p>
-<h2 id="四、变更记录">四、变更记录</h2><table>
-<thead>
-<tr>
-<th style="text-align:center">Why</th>
-<th style="text-align:center">Who</th>
-<th style="text-align:center">When</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">创建</td>
-<td style="text-align:center">武汉-运维-磨渣</td>
-<td style="text-align:center">2016-10-28</td>
-</tr>
-</tbody>
-</table>
-]]></content>
-    <summary type="html">
-    <![CDATA[<h2 id="一、前言">一、前言</h2><p>本章介绍如何去自定义一个zabbix自动发现的整个流程</p>
-<h2 id="二、过程">二、过程</h2><p>首先需要在模板当中创建一个自动发现的规则，这个地方只需要一个名称和一个键值，例如</p>
-<ul>
-<li>名称：Ceph Cluster Pool Discovery</li>
-<li>键值：ceph.pools</li>
-</ul>
-<p>过滤器中间要添加你需要的用到的值宏<br>我的数据是：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># zabbix_get -s 127.0.0.1 -k ceph.pools</span></span><br><span class="line">&#123;<span class="string">"data"</span>:[&#123;<span class="string">"&#123;#POOLNAME&#125;"</span>:<span class="string">"rbd"</span>&#125;,&#123;<span class="string">"&#123;#POOLNAME&#125;"</span>:<span class="string">"metedata"</span>&#125;,&#123;<span class="string">"&#123;#POOLNAME&#125;"</span>:<span class="string">"data"</span>&#125;]&#125;</span><br></pre></td></tr></table></figure>]]>
     
     </summary>
     
