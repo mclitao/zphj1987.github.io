@@ -183,6 +183,68 @@ var _hmt = _hmt || [];
 </nav>
       <div class="body-wrap">
   
+    <article id="post-记一次不完全成功到成功的失效恢复-20160412" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/04/13/记一次不完全成功到成功的失效恢复-20160412/" class="article-date">
+  	<time datetime="2016-04-12T16:04:56.000Z" itemprop="datePublished">2016-04-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/04/13/记一次不完全成功到成功的失效恢复-20160412/">记一次不完全成功到成功的失效恢复(20160412)</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="更新：">更新：</h3><p>在经历了好几天后，失效的环境最终变成了可用状态，只能说有的时候不放弃还真是有点用的</p>
+<hr>
+<p>在不久前处理了一个故障恢复以后，又碰上一个群友的集群出现了严重故障，本篇将记录这个中间大致处理的过程，一些细节在以后会补充</p>
+<p>首先看到给出的截图显示的是大量的pg处于异常的状态，从经验上判断，环境要么处于down机的边缘，或者是刚经历了一次大量的重启，这个时候集群可以说是前端的访问肯定全断的，这个故障的时候资源一般会比较紧张，所以在启动的过程中也要注意不要触发更大面积的down机，对于集群来说是会有连带效应的</p>
+<p>在启动了部分osd后，集群还是有大量的pg出现的是down+peering的状态，而发现down的osd实际全部在一台服务器上的，这个从ceph的架构来说是不应该出现这个状态的，这个可能是在down机过程中，频繁的pg的状态变化造成了pg的状态停留在之前的down的状态上，而pg出现锁死的状况，这个在之前的那位群友的环境中出现过一次，那个是多机有osd出现异常的情况，这次是单机出现的情况</p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2016/04/13/记一次不完全成功到成功的失效恢复-20160412/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-记一次ceph的故障修复-20160408" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -721,72 +783,6 @@ var _hmt = _hmt || [];
       
         <p class="article-more-link">
           <a  href="/2016/03/01/yum安装指定版本ceph包/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-一步一步打造集群监控系统" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/02/24/一步一步打造集群监控系统/" class="article-date">
-  	<time datetime="2016-02-24T12:28:00.000Z" itemprop="datePublished">2016-02-24</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/02/24/一步一步打造集群监控系统/">一步一步打造集群监控系统(持续更新中-最后更新20160301)</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>目前的开源的ceph的监控平台有几个，inkscope，calamari，vsm，ceph-dash，这几个软件各有各的特色各有个的特点，按需取用，下面先简单介绍下这几个软件的运行模式</p>
-<ul>
-<li>inkscope自己封装了一套api，在集群数据方面直接调用的ceph的自己的ceph-rest-api,节点硬件数据通过一个自带的插件收取数据，里面的osd的pg显示非常有特色，使用了sankey chart来显示关联关系</li>
-<li>calamari 是 redhat官方提供的一个开源监控，监控基于的graphite，diamond收集各个节点的数据发送给管理平台的机器，然后显示，目前结构稳定，基本没太多变化</li>
-<li>vsm 是intel出的一个监控加管理的平台，可以进行部署和监控，现在还处于开发阶段，版本在一直发布，与openstack有结合</li>
-<li>ceph-dash配置很简单，直接运行即可，可以获取到一些基本的数据</li>
-</ul>
-<p>以上软件都非常不错，如果需求不是太高，直接取用就行</p>
-<p>本篇将根据我自己的经验，根据现有的软件，打造一个自己需要的监控系统，本篇不会具体写细节如何实现，主要是记录，在监控一套系统的时候，需要去关注什么数据，数据以什么形式的展示，整个过程会比较久，会持续更新，欢迎探讨</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2016/02/24/一步一步打造集群监控系统/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>
