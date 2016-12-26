@@ -183,6 +183,66 @@ var _hmt = _hmt || [];
 </nav>
       <div class="body-wrap">
   
+    <article id="post-parted分区对齐" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/06/24/parted分区对齐/" class="article-date">
+  	<time datetime="2016-06-24T08:32:43.000Z" itemprop="datePublished">2016-06-24</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/06/24/parted分区对齐/">parted分区对齐</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="一、分区提示未对齐">一、分区提示未对齐</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># parted /dev/sdd </span></span><br><span class="line">GNU Parted <span class="number">3.1</span></span><br><span class="line">Using /dev/sdd</span><br><span class="line">Welcome to GNU Parted! Type <span class="string">'help'</span> to view a list of commands.</span><br><span class="line">(parted) p                                                                </span><br><span class="line">Model: SEAGATE ST3300657SS (scsi)</span><br><span class="line">Disk /dev/sdd: <span class="number">300</span>GB</span><br><span class="line">Sector size (logical/physical): <span class="number">512</span>B/<span class="number">512</span>B</span><br><span class="line">Partition Table: gpt</span><br><span class="line">Disk Flags: </span><br><span class="line"></span><br><span class="line">Number  Start  End  Size  File system  Name  Flags</span><br><span class="line"></span><br><span class="line">(parted) mkpart primary <span class="number">0</span> <span class="number">100</span>%                                            </span><br><span class="line">Warning: The resulting partition is not properly aligned <span class="keyword">for</span> best performance.</span><br><span class="line">Ignore/Cancel?</span><br></pre></td></tr></table></figure>
+<p>Warning: The resulting partition is not properly aligned for best performance.<br>分区的时候提示不是最好的模式，这个是因为没有对齐的原因，在默认情况下我都是<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkpart primary <span class="number">1</span> <span class="number">100</span>%</span><br></pre></td></tr></table></figure></p>
+<p>这个一般都是对齐的，但是最近遇到一个做了raid5的怎么都提示不行，然后搜索了下资料，这个地方是要计算下比较好的</p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2016/06/24/parted分区对齐/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-rbd的增量备份和恢复" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -715,66 +775,6 @@ var _hmt = _hmt || [];
       
         <p class="article-more-link">
           <a  href="/2016/05/26/mon到底能坏几个/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-磨磨自动问答系统上线" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/05/21/磨磨自动问答系统上线/" class="article-date">
-  	<time datetime="2016-05-20T16:22:38.000Z" itemprop="datePublished">2016-05-21</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/05/21/磨磨自动问答系统上线/">磨磨自动问答系统上线</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>新上线磨磨自动问答系统，系统也是在自我学习当中，欢迎大家踊跃提问，生命不息折腾不止</p>
-<p>本问答系统支持自动回答，有时会在线回答</p>
-<p>测试阶段，欢迎吐槽</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2016/05/21/磨磨自动问答系统上线/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>

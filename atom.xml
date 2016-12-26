@@ -4,7 +4,7 @@
   <subtitle><![CDATA[但行好事，莫问前程]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2016-12-23T15:00:42.423Z</updated>
+  <updated>2016-12-26T05:43:04.864Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -15,11 +15,55 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title><![CDATA[处理Ceph osd的journal的uuid问题]]></title>
+    <link href="http://www.zphj1987.com/2016/12/26/manage-ceph-osd-journal-uuid/"/>
+    <id>http://www.zphj1987.com/2016/12/26/manage-ceph-osd-journal-uuid/</id>
+    <published>2016-12-26T05:41:14.000Z</published>
+    <updated>2016-12-26T05:43:04.864Z</updated>
+    <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/writefor.jpg" alt="write"><br></center>
+
+<p>一、前言<br>之前有一篇文章介绍的是，在centos7的jewel下面如果自己做的分区如何处理自动挂载的问题，当时的环境对journal的地方采取的是文件的形式处理的，这样就没有了重启后journal的磁盘偏移的问题<br><a id="more"></a><br>如果采用的是ceph自带的deploy去做分区的处理的时候，是调用的sgdisk去对磁盘做了一些处理的，然后deploy能够识别一些特殊的标记，然后去做了一些其他的工作，而自己分区的时候，是没有做这些标记的这样就可能会有其他的问题</p>
+<p>我们看下如何在部署的时候就处理好journal的uuid的问题</p>
+<h3 id="二、实践">二、实践</h3><h4 id="2-1_按常规流程部署OSD">2.1 按常规流程部署OSD</h4><p>准备测试的自分区磁盘<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">dd <span class="keyword">if</span>=/dev/zero of=/dev/sde bs=<span class="number">4</span>M count=<span class="number">100</span>;</span><br><span class="line">dd <span class="keyword">if</span>=/dev/zero of=/dev/sdf bs=<span class="number">4</span>M count=<span class="number">100</span>; parted /dev/sde mklabel gpt;</span><br><span class="line">parted /dev/sdf mklabel gpt;</span><br><span class="line">parted /dev/sde mkpart primary <span class="number">1</span> <span class="number">100</span>%;</span><br><span class="line">parted /dev/sdf mkpart primary <span class="number">1</span> <span class="number">100</span>%</span><br></pre></td></tr></table></figure></p>
+<p>使用的sde1作为数据盘，使用sdf1作为ssd的独立分区的journal磁盘</p>
+<p>我们线按照常规的步骤去部署下</p>
+<h5 id="做osd的prepare操作">做osd的prepare操作</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># ceph-deploy osd prepare lab8106:/dev/sde1:/dev/sdf1</span></span><br><span class="line">···</span><br><span class="line">[lab8106][WARNIN] adjust_symlink: Creating symlink /var/lib/ceph/tmp/mnt.<span class="number">7</span>HuS8k/journal -&gt; /dev/sdf1</span><br><span class="line">···</span><br></pre></td></tr></table></figure>
+<h5 id="做osd的activate操作">做osd的activate操作</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># ceph-deploy osd activate lab8106:/dev/sde1:/dev/sdf</span></span><br><span class="line">···</span><br><span class="line">[lab8106][WARNIN] ceph_disk.main.Error: Error: [<span class="string">'ceph-osd'</span>, <span class="string">'--cluster'</span>, <span class="string">'ceph'</span>, <span class="string">'--mkfs'</span>, <span class="string">'--mkkey'</span>, <span class="string">'-i'</span>, <span class="string">'7'</span>, <span class="string">'--monmap'</span>, <span class="string">'/var/lib/ceph/tmp/mnt.yOP4gv/activate.monmap'</span>, <span class="string">'--osd-data'</span>, <span class="string">'/var/lib/ceph/tmp/mnt.yOP4gv'</span>, <span class="string">'--osd-journal'</span>, <span class="string">'/var/lib/ceph/tmp/mnt.yOP4gv/journal'</span>, <span class="string">'--osd-uuid'</span>, <span class="string">'5c59284b-8d82-4cc6-b566-8b102dc25568'</span>, <span class="string">'--keyring'</span>, <span class="string">'/var/lib/ceph/tmp/mnt.yOP4gv/keyring'</span>, <span class="string">'--setuser'</span>, <span class="string">'ceph'</span>, <span class="string">'--setgroup'</span>, <span class="string">'ceph'</span>] failed : <span class="number">2016</span>-<span class="number">12</span>-<span class="number">26</span> <span class="number">13</span>:<span class="number">11</span>:<span class="number">54.211543</span> <span class="number">7</span>f585e926800 -<span class="number">1</span> filestore(/var/lib/ceph/tmp/mnt.yOP4gv) mkjournal error creating journal on /var/lib/ceph/tmp/mnt.yOP4gv/journal: (<span class="number">13</span>) Permission denied</span><br><span class="line">[lab8106][WARNIN] <span class="number">2016</span>-<span class="number">12</span>-<span class="number">26</span> <span class="number">13</span>:<span class="number">11</span>:<span class="number">54.211564</span> <span class="number">7</span>f585e926800 -<span class="number">1</span> OSD::mkfs: ObjectStore::mkfs failed with error -<span class="number">13</span></span><br><span class="line">[lab8106][WARNIN] <span class="number">2016</span>-<span class="number">12</span>-<span class="number">26</span> <span class="number">13</span>:<span class="number">11</span>:<span class="number">54.211616</span> <span class="number">7</span>f585e926800 -<span class="number">1</span>  ** ERROR: error creating empty object store <span class="keyword">in</span> /var/lib/ceph/tmp/mnt.yOP4gv: (<span class="number">13</span>) Permission denied</span><br><span class="line">···</span><br></pre></td></tr></table></figure>
+<p>可以看到提示的是权限不足，我们检查下权限<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># mount /dev/sde1 /mnt</span></span><br><span class="line">[root@lab8106 ceph]<span class="comment"># ll /mnt/</span></span><br><span class="line">total <span class="number">32</span></span><br><span class="line">-rw-r--r-- <span class="number">1</span> root root <span class="number">193</span> Dec <span class="number">26</span> <span class="number">13</span>:<span class="number">11</span> activate.monmap</span><br><span class="line">-rw-r--r-- <span class="number">1</span> ceph ceph  <span class="number">37</span> Dec <span class="number">26</span> <span class="number">13</span>:<span class="number">11</span> ceph_fsid</span><br><span class="line">drwxr-xr-x <span class="number">3</span> ceph ceph  <span class="number">37</span> Dec <span class="number">26</span> <span class="number">13</span>:<span class="number">11</span> current</span><br><span class="line">-rw-r--r-- <span class="number">1</span> ceph ceph  <span class="number">37</span> Dec <span class="number">26</span> <span class="number">13</span>:<span class="number">11</span> fsid</span><br><span class="line">lrwxrwxrwx <span class="number">1</span> ceph ceph   <span class="number">9</span> Dec <span class="number">26</span> <span class="number">13</span>:<span class="number">11</span> journal -&gt; /dev/sdf1</span><br><span class="line">-rw-r--r-- <span class="number">1</span> ceph ceph  <span class="number">37</span> Dec <span class="number">26</span> <span class="number">13</span>:<span class="number">11</span> journal_uuid</span><br><span class="line">-rw-r--r-- <span class="number">1</span> ceph ceph  <span class="number">21</span> Dec <span class="number">26</span> <span class="number">13</span>:<span class="number">11</span> magic</span><br><span class="line">-rw-r--r-- <span class="number">1</span> ceph ceph   <span class="number">4</span> Dec <span class="number">26</span> <span class="number">13</span>:<span class="number">11</span> store_version</span><br><span class="line">-rw-r--r-- <span class="number">1</span> ceph ceph  <span class="number">53</span> Dec <span class="number">26</span> <span class="number">13</span>:<span class="number">11</span> superblock</span><br><span class="line">-rw-r--r-- <span class="number">1</span> ceph ceph   <span class="number">2</span> Dec <span class="number">26</span> <span class="number">13</span>:<span class="number">11</span> whoami</span><br><span class="line">[root@lab8106 ceph]<span class="comment"># ll /dev/sdf1</span></span><br><span class="line">brw-rw---- <span class="number">1</span> root disk <span class="number">8</span>, <span class="number">81</span> Dec <span class="number">26</span> <span class="number">13</span>:<span class="number">03</span> /dev/sdf1</span><br></pre></td></tr></table></figure></p>
+<p>创建sdf1的journal的时候权限有问题，我们给下磁盘权限<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># chown ceph:ceph /dev/sdf1 </span></span><br><span class="line">[root@lab8106 ceph]<span class="comment"># ceph-deploy osd activate lab8106:/dev/sde1:/dev/sdf1</span></span><br></pre></td></tr></table></figure></p>
+<p>可以看到成功了</p>
+<h5 id="检查下osd的目录：">检查下osd的目录：</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># ll /var/lib/ceph/osd/ceph-7</span></span><br><span class="line">total <span class="number">56</span></span><br><span class="line">-rw-r--r--   <span class="number">1</span> root root  <span class="number">193</span> Dec <span class="number">26</span> <span class="number">13</span>:<span class="number">15</span> activate.monmap</span><br><span class="line">-rw-r--r--   <span class="number">1</span> ceph ceph    <span class="number">3</span> Dec <span class="number">26</span> <span class="number">13</span>:<span class="number">15</span> active</span><br><span class="line">-rw-r--r--   <span class="number">1</span> ceph ceph   <span class="number">37</span> Dec <span class="number">26</span> <span class="number">13</span>:<span class="number">11</span> ceph_fsid</span><br><span class="line">drwxr-xr-x <span class="number">166</span> ceph ceph <span class="number">4096</span> Dec <span class="number">26</span> <span class="number">13</span>:<span class="number">16</span> current</span><br><span class="line">-rw-r--r--   <span class="number">1</span> ceph ceph   <span class="number">37</span> Dec <span class="number">26</span> <span class="number">13</span>:<span class="number">11</span> fsid</span><br><span class="line">lrwxrwxrwx   <span class="number">1</span> ceph ceph    <span class="number">9</span> Dec <span class="number">26</span> <span class="number">13</span>:<span class="number">11</span> journal -&gt; /dev/sdf1</span><br></pre></td></tr></table></figure>
+<p>可以看到journal链接到了/dev/sdf1，这次的部署是成功了，但是这里就有个问题，如果下次重启的时候，sdf1不是sdf1盘符变了，那么问题就会产生了，osd可能就无法启动了</p>
+<h2 id="2-2_优化下部署流程">2.2 优化下部署流程</h2><p>这里是优化后的流程，解决上面的问题的<br>准备测试的自分区磁盘<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">dd <span class="keyword">if</span>=/dev/zero of=/dev/sde bs=<span class="number">4</span>M count=<span class="number">100</span>;</span><br><span class="line">dd <span class="keyword">if</span>=/dev/zero of=/dev/sdf bs=<span class="number">4</span>M count=<span class="number">100</span>; </span><br><span class="line">parted /dev/sde mklabel gpt;</span><br><span class="line">parted /dev/sdf mklabel gpt;</span><br><span class="line">parted /dev/sde mkpart primary <span class="number">1</span> <span class="number">100</span>%;</span><br><span class="line">parted /dev/sdf mkpart primary <span class="number">1</span> <span class="number">100</span>%</span><br></pre></td></tr></table></figure></p>
+<p>给jounral盘做一个标记(特殊标记，下面的字符串不要变动固定写法)<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/usr/sbin/sgdisk  --change-name=<span class="number">1</span>:<span class="string">'ceph journal'</span> --typecode=<span class="number">1</span>:<span class="number">45</span>b0969e-<span class="number">9</span>b03-<span class="number">4</span>f30-b4c6-b4b80ceff106  -- /dev/sdf</span><br></pre></td></tr></table></figure></p>
+<p>给数据盘做一个标记(特殊标记，下面的字符串不要变动固定写法)<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/usr/sbin/sgdisk  --change-name=<span class="number">1</span>:<span class="string">'ceph data'</span> --typecode=<span class="number">1</span>:<span class="number">4</span>fbd7e29-<span class="number">9</span>d25-<span class="number">41</span>b8-afd0-<span class="number">062</span>c0ceff05d -- /dev/sde</span><br></pre></td></tr></table></figure></p>
+<p>检查下当前的分区标记情况<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ceph-disk list</span></span><br><span class="line">/dev/sde :</span><br><span class="line"> /dev/sde1 ceph data, unprepared</span><br><span class="line">/dev/sdf :</span><br><span class="line"> /dev/sdf1 ceph journal</span><br></pre></td></tr></table></figure></p>
+<h3 id="做osd的prepare操作-1">做osd的prepare操作</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph-deploy osd prepare lab8106:/dev/sde1:/dev/sdf1</span><br><span class="line">ceph-deploy osd activate lab8106:/dev/sde1:/dev/sdf1</span><br></pre></td></tr></table></figure>
+<p>再次检查下当前的分区标记情况<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># ceph-disk list</span></span><br><span class="line">···</span><br><span class="line">/dev/sde :</span><br><span class="line"> /dev/sde1 ceph data, active, cluster ceph, osd.<span class="number">8</span>, journal /dev/sdf1</span><br><span class="line">/dev/sdf :</span><br><span class="line"> /dev/sdf1 ceph journal, <span class="keyword">for</span> /dev/sde1</span><br></pre></td></tr></table></figure></p>
+<h5 id="查看jounral的数据">查看jounral的数据</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># ll /var/lib/ceph/osd/ceph-8</span></span><br><span class="line">total <span class="number">56</span></span><br><span class="line">-rw-r--r--   <span class="number">1</span> root root  <span class="number">193</span> Dec <span class="number">26</span> <span class="number">13</span>:<span class="number">26</span> activate.monmap</span><br><span class="line">-rw-r--r--   <span class="number">1</span> ceph ceph    <span class="number">3</span> Dec <span class="number">26</span> <span class="number">13</span>:<span class="number">26</span> active</span><br><span class="line">-rw-r--r--   <span class="number">1</span> ceph ceph   <span class="number">37</span> Dec <span class="number">26</span> <span class="number">13</span>:<span class="number">25</span> ceph_fsid</span><br><span class="line">drwxr-xr-x <span class="number">164</span> ceph ceph <span class="number">4096</span> Dec <span class="number">26</span> <span class="number">13</span>:<span class="number">26</span> current</span><br><span class="line">-rw-r--r--   <span class="number">1</span> ceph ceph   <span class="number">37</span> Dec <span class="number">26</span> <span class="number">13</span>:<span class="number">25</span> fsid</span><br><span class="line">lrwxrwxrwx   <span class="number">1</span> ceph ceph   <span class="number">58</span> Dec <span class="number">26</span> <span class="number">13</span>:<span class="number">25</span> journal -&gt; /dev/disk/by-partuuid/<span class="built_in">cd</span>72d6e8-<span class="number">07</span>d0-<span class="number">4</span><span class="built_in">cd</span>3-<span class="number">8</span>c6b<span class="operator">-a</span>33d624cae36</span><br><span class="line">···</span><br></pre></td></tr></table></figure>
+<p>可以看到已经正确的链接了,并且部署过程中也没有了上面的需要进行权限的处理，这个是deploy工具在中间帮做了</p>
+<h2 id="三、总结">三、总结</h2><p>处理的核心在于做的那两个标记，其他的就交给deploy工具自己处理就行了，如果有兴趣可以深入研究，没兴趣的话，就安装上面说的方法进行处理就行</p>
+<h2 id="六、我的公众号-磨磨谈">六、我的公众号-磨磨谈</h2><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/qrcode_for_gh_6998a54d68f7_430.jpg" alt=""><br></center>
+
+
+]]></content>
+    <summary type="html">
+    <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/writefor.jpg" alt="write"><br></center>
+
+<p>一、前言<br>之前有一篇文章介绍的是，在centos7的jewel下面如果自己做的分区如何处理自动挂载的问题，当时的环境对journal的地方采取的是文件的形式处理的，这样就没有了重启后journal的磁盘偏移的问题<br>]]>
+    
+    </summary>
+    
+      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
+    
+  </entry>
+  
+  <entry>
     <title><![CDATA[如何避免Cephfs被完全毁掉]]></title>
     <link href="http://www.zphj1987.com/2016/12/23/%E5%A6%82%E4%BD%95%E9%81%BF%E5%85%8DCephfs%E8%A2%AB%E5%AE%8C%E5%85%A8%E6%AF%81%E6%8E%89/"/>
     <id>http://www.zphj1987.com/2016/12/23/如何避免Cephfs被完全毁掉/</id>
     <published>2016-12-23T14:46:35.000Z</published>
-    <updated>2016-12-23T15:00:42.423Z</updated>
+    <updated>2016-12-26T05:42:53.951Z</updated>
     <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/kulesza-215.jpg" alt="rollback"><br></center>
 
 <h2 id="前提">前提</h2><p>一套系统的最低要求是可恢复，也就是数据不丢失，但是在各种各样的原因下，整套系统都有被毁掉的可能，一直以来有个观点就是存储是需要两套的，一般情况下很难实现，但是如何把故障发生的概率降低到最低，这个是我们需要考虑的问题<br><a id="more"></a><br>最近在社区群里面又听闻一个案例，一套系统的文件系统被重置掉了，也就是fs被重建了，实际上这属于一个不应该有的操作，但是已经发生的事情，就看怎么样能在下次避免或者把损失降到最低，对于hammer版本来说，重建cephfs只是把目录树给冲掉了，实际的目录还是能创建起来，但是这其实是一个BUG，并且在最新的Jewel下已经解决掉这个问题，这就造成无法重建目录树，在Jewel下，在不修改代码的情况下，文件都可以扫描回来，但是全部塞到了一个目录下，对于某些场景来说，这个已经是最大限度的恢复了，至少文件还在，如果文件类型可知，也可以一个个去人工识别的，虽然工作量异常的大，但至少文件回来了，这种情况，如果有保留文件名和文件md5值的强制要求的话，文件是可以完全找回来的，当然，这都是一些防范措施，看有没有重视，或者提前做好了预备</p>
@@ -42,7 +86,7 @@
 <p>这个时候查看ceph -s状态，mds都无法启动，我们来做下恢复<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 mds]<span class="comment"># systemctl stop ceph-mds@lab8106</span></span><br><span class="line">[root@lab8106 mds]<span class="comment"># ceph mds fail 0</span></span><br><span class="line">[root@lab8106 mds]<span class="comment"># ceph fs rm ceph --yes-i-really-mean-it</span></span><br><span class="line">[root@lab8106 mds]<span class="comment"># ceph fs new ceph metadata data</span></span><br><span class="line">[root@lab8106 mds]<span class="comment"># for a in `cat metalist`;do rados  -p metadata rollback $a snap1;done;</span></span><br><span class="line">rolled back pool metadata to snapshot snap1</span><br><span class="line">rolled back pool metadata to snapshot snap1</span><br><span class="line">rolled back pool metadata to snapshot snap1</span><br><span class="line">rolled back pool metadata to snapshot snap1</span><br><span class="line">···</span><br><span class="line">[root@lab8106 mds]<span class="comment"># rados  -p metadata ls|wc -l</span></span><br><span class="line"><span class="number">20</span></span><br><span class="line">[root@lab8106 mds]<span class="comment"># systemctl start ceph-mds@lab8106</span></span><br></pre></td></tr></table></figure></p>
 <p>这个时候需要多等下mds恢复正常，有可能记录了原来的客户端信息，需要做重连，如果一直没恢复就重启下mds<br>挂载以后，可以看到，对象数据都回来了</p>
 <h2 id="总结">总结</h2><p>这个能算一个防患于未然的办法，如果对于纯数据存储的情况，存储池的快照也是能够在某些场景下发挥很大的作用的，当然什么时机做快照，保留什么多少版本，什么时候删除快照，这个都是有学问的，需要根据实际的场景和压力去做</p>
-<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/qrcode_for_gh_6998a54d68f7_430.jpg" alt=""><br></center>
+<h2 id="我的公众号-磨磨谈">我的公众号-磨磨谈</h2><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/qrcode_for_gh_6998a54d68f7_430.jpg" alt=""><br></center>
 
 ]]></content>
     <summary type="html">
@@ -1130,50 +1174,6 @@
     <summary type="html">
     <![CDATA[<p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/rili/rili.png" alt=""><br></center></p>
 <h2 id="一、前言">一、前言</h2><p>准备策划一个系列，之前也做了一次尝试，中断了，现在准备续起来，能做就尽量坚持做下去，准备根据日历的形式梳理出来，如同打怪一样，一个个去干掉这些问题，每个issue里面会有每天邮件列表里面提出的问题，一般为8到9个问题，如果完成一个Issue，就会在这里给出对应的Issue的链接，相当于一个目录和进度的功能，所以本篇会是一个持续更新的过程<br>]]>
-    
-    </summary>
-    
-      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[Ceph部署的时候修改默认权重]]></title>
-    <link href="http://www.zphj1987.com/2016/11/02/Ceph%E9%83%A8%E7%BD%B2%E7%9A%84%E6%97%B6%E5%80%99%E4%BF%AE%E6%94%B9%E9%BB%98%E8%AE%A4%E6%9D%83%E9%87%8D/"/>
-    <id>http://www.zphj1987.com/2016/11/02/Ceph部署的时候修改默认权重/</id>
-    <published>2016-11-02T07:46:07.000Z</published>
-    <updated>2016-11-02T09:49:40.801Z</updated>
-    <content type="html"><![CDATA[<p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/weight.jpg" alt=""><br></center></p>
-<h2 id="一、前言">一、前言</h2><p>部署集群的时候权重是默认生成的，这个是根据磁盘大小分配的，我们有的时候需要去修改一下这个默认权重<br><a id="more"></a></p>
-<h2 id="二、修改">二、修改</h2><p>如果统一的初始值，那么直接添加参数即可<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">osd_crush_initial_weight</span><br></pre></td></tr></table></figure></p>
-<p>如果想自己添加算法，那么就根据下面的去做就可以了</p>
-<h3 id="2-1_centos+jewel">2.1 centos+jewel</h3><p>修改：<br>/usr/lib/ceph/ceph-osd-prestart.sh<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">defaultweight=`df -P -k <span class="variable">$data</span>/ | tail -<span class="number">1</span> | awk <span class="string">'&#123; d= $2/107374182 ; r = sprintf("%.4f", d); print r &#125;'</span>`</span><br></pre></td></tr></table></figure></p>
-<p>修改这个地方的值就可以了<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">defaultweight=`<span class="built_in">echo</span> <span class="number">2</span>`</span><br></pre></td></tr></table></figure></p>
-<h3 id="2-2_centos+hammer">2.2 centos+hammer</h3><p>修改 /etc/init.d/ceph<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">defaultweight=<span class="string">"<span class="variable">$(df -P -k $osd_data/. | tail -1 | awk '&#123; print sprintf("%.2f",$2/1073741824)</span> &#125;')"</span></span><br></pre></td></tr></table></figure></p>
-<p>修改成<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">defaultweight=<span class="string">"<span class="variable">$(echo 5)</span>"</span></span><br></pre></td></tr></table></figure></p>
-<h3 id="2-3_ubuntu+hammer">2.3 ubuntu+hammer</h3><p>由于ubuntu用initctl控制服务，不是用的/etc/init.d/ceph/,所以要修改另外的一个路径<br>修改/usr/libexec/ceph/ceph-osd-prestart.sh<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">defaultweight=`df -P -k /var/lib/ceph/osd/<span class="variable">$&#123;cluster:-ceph&#125;</span>-<span class="variable">$id</span>/ | tail -<span class="number">1</span> | awk <span class="string">'&#123; d= $2/1073741824 ; r = sprintf("%.2f", d); print r &#125;'</span>`</span><br></pre></td></tr></table></figure></p>
-<p>修改为：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">defaultweight=`<span class="built_in">echo</span> <span class="number">8</span>`</span><br></pre></td></tr></table></figure></p>
-<h2 id="三、总结">三、总结</h2><p>这个比较简单，通过修改取值就可以改变默认配置了,上面的可以根据自己的需求加入算法即可</p>
-<h2 id="四、变更记录">四、变更记录</h2><table>
-<thead>
-<tr>
-<th style="text-align:center">Why</th>
-<th style="text-align:center">Who</th>
-<th style="text-align:center">When</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">创建</td>
-<td style="text-align:center">武汉-运维-磨渣</td>
-<td style="text-align:center">2016-11-02</td>
-</tr>
-</tbody>
-</table>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/weight.jpg" alt=""><br></center></p>
-<h2 id="一、前言">一、前言</h2><p>部署集群的时候权重是默认生成的，这个是根据磁盘大小分配的，我们有的时候需要去修改一下这个默认权重<br>]]>
     
     </summary>
     
