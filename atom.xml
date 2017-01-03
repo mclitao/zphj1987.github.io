@@ -4,7 +4,7 @@
   <subtitle><![CDATA[但行好事，莫问前程]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2016-12-26T05:43:04.864Z</updated>
+  <updated>2017-01-03T08:20:21.256Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -13,6 +13,51 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[rbd的image对象数与能写入文件数的关系]]></title>
+    <link href="http://www.zphj1987.com/2017/01/03/rbd-image-write-objects/"/>
+    <id>http://www.zphj1987.com/2017/01/03/rbd-image-write-objects/</id>
+    <published>2017-01-03T06:35:53.000Z</published>
+    <updated>2017-01-03T08:20:21.256Z</updated>
+    <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/happy2017.gif" alt=""><br></center>
+
+<h2 id="一、前言">一、前言</h2><p>收到一个问题如下：</p>
+<blockquote>
+<p>一个300TB 的RBD，只有7800万的objects，如果存储小文件的话，感觉不够用</p>
+</blockquote>
+<p>对于这个问题，我原来的理解也是对象设置的大小确实是4M一个，存储下去的数据，如果小于4M，就会占用一个小于4M的对象，如果超过4M，那么存储的数据就会进行拆分成多个4M，这个地方其实是不严谨的</p>
+<p>对于rados接口来说，数据是多大对象put进去就是多大的对象，并没有进行拆分，进行拆分的是再上一层的应用，比如rbd，比如cephfs</p>
+<p>那么对于rbd的image显示的对象数目和文件数目有什么关系呢？本篇将来看看这个问题，到底会不会出现上面的问题<br><a id="more"></a></p>
+<h2 id="二、实践过程">二、实践过程</h2><p>创建一个image<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># rbd create --image zpsize --size 100M</span></span><br><span class="line">[root@lab8106 ~]<span class="comment"># rbd info zpsize</span></span><br><span class="line">rbd image <span class="string">'zpsize'</span>:</span><br><span class="line">	size <span class="number">102400</span> kB <span class="keyword">in</span> <span class="number">25</span> objects</span><br><span class="line">	order <span class="number">22</span> (<span class="number">4096</span> kB objects)</span><br><span class="line">	block_name_prefix: rbd_data.<span class="number">85</span>c66b8b4567</span><br><span class="line">	format: <span class="number">2</span></span><br><span class="line">	features: layering</span><br><span class="line">	flags:</span><br></pre></td></tr></table></figure></p>
+<p>可以看到，这个image从集群中分配到了25个对象，每个对象的大小为4M，假如我们写入1000个小文件看下会是什么情况</p>
+<p>映射到本地并且格式化xfs文件系统<br><figure class="highlight nix"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># rbd map zpsize</span></span><br><span class="line">/dev/rbd0</span><br><span class="line">[root@lab8106 ~]<span class="comment"># mkfs.xfs -f /dev/rbd0 </span></span><br><span class="line"><span class="variable">meta-data=</span>/dev/rbd0              <span class="variable">isize=</span><span class="number">256</span>    <span class="variable">agcount=</span><span class="number">4</span>, <span class="variable">agsize=</span><span class="number">6144</span> <span class="variable">blks</span><br><span class="line">         =</span>                       <span class="variable">sectsz=</span><span class="number">512</span>   <span class="variable">attr=</span><span class="number">2</span>, <span class="variable">projid32bit=</span><span class="number">1</span></span><br><span class="line">         =                       <span class="variable">crc=</span><span class="number">0</span>        <span class="variable">finobt=</span><span class="number">0</span></span><br><span class="line"><span class="variable">data     =</span>                       <span class="variable">bsize=</span><span class="number">4096</span>   <span class="variable">blocks=</span><span class="number">24576</span>, <span class="variable">imaxpct=</span><span class="number">25</span></span><br><span class="line">         =                       <span class="variable">sunit=</span><span class="number">1024</span>   <span class="variable">swidth=</span><span class="number">1024</span> blks</span><br><span class="line"><span class="variable">naming   =</span>version <span class="number">2</span>              <span class="variable">bsize=</span><span class="number">4096</span>   <span class="variable">ascii-ci=</span><span class="number">0</span> <span class="variable">ftype=</span><span class="number">0</span></span><br><span class="line"><span class="variable">log      =</span>internal log           <span class="variable">bsize=</span><span class="number">4096</span>   <span class="variable">blocks=</span><span class="number">624</span>, <span class="variable">version=</span><span class="number">2</span></span><br><span class="line">         =                       <span class="variable">sectsz=</span><span class="number">512</span>   <span class="variable">sunit=</span><span class="number">8</span> blks, <span class="variable">lazy-count=</span><span class="number">1</span></span><br><span class="line"><span class="variable">realtime =</span>none                   <span class="variable">extsz=</span><span class="number">4096</span>   <span class="variable">blocks=</span><span class="number">0</span>, <span class="variable">rtextents=</span><span class="number">0</span></span><br></pre></td></tr></table></figure></p>
+<p>挂载到本地<br>[root@lab8106 ~]# mount /dev/rbd0 /mnt</p>
+<p>写入1000个1K小文件<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># seq 1000|xargs -i dd if=/dev/zero of=/mnt/a&#123;&#125; bs=1K count=1</span></span><br></pre></td></tr></table></figure></p>
+<p>没有报错提示，正常写入了，我们看下写入了多少对象<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># rados  -p rbd ls|grep rbd_data.85c66b8b4567</span></span><br><span class="line">rbd_data.<span class="number">85</span>c66b8b4567.<span class="number">0000000000000018</span></span><br><span class="line">rbd_data.<span class="number">85</span>c66b8b4567.<span class="number">0000000000000000</span></span><br><span class="line">rbd_data.<span class="number">85</span>c66b8b4567.<span class="number">0000000000000006</span></span><br><span class="line">rbd_data.<span class="number">85</span>c66b8b4567.<span class="number">0000000000000001</span></span><br><span class="line">rbd_data.<span class="number">85</span>c66b8b4567.<span class="number">0000000000000017</span></span><br><span class="line">rbd_data.<span class="number">85</span>c66b8b4567.<span class="number">000000000000000</span>c</span><br><span class="line">rbd_data.<span class="number">85</span>c66b8b4567.<span class="number">0000000000000012</span></span><br><span class="line">rbd_data.<span class="number">85</span>c66b8b4567.<span class="number">0000000000000002</span></span><br></pre></td></tr></table></figure></p>
+<p>只写入了少量的对象，我们尝试下载下来看看<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ll -hl rbd_data.85c66b8b4567.0000000000000018</span></span><br><span class="line">-rw-r--r-- <span class="number">1</span> root root <span class="number">4.0</span>M Jan  <span class="number">3</span> <span class="number">14</span>:<span class="number">27</span> rbd_data.<span class="number">85</span>c66b8b4567.<span class="number">0000000000000018</span></span><br><span class="line">[root@lab8106 ~]<span class="comment"># rados  -p rbd get rbd_data.85c66b8b4567.0000000000000000 rbd_data.85c66b8b4567.0000000000000000</span></span><br><span class="line">[root@lab8106 ~]<span class="comment"># ll -hl rbd_data.85c66b8b4567.0000000000000000</span></span><br><span class="line">-rw-r--r-- <span class="number">1</span> root root <span class="number">4.0</span>M Jan  <span class="number">3</span> <span class="number">14</span>:<span class="number">27</span> rbd_data.<span class="number">85</span>c66b8b4567.<span class="number">0000000000000000</span></span><br></pre></td></tr></table></figure></p>
+<p>可以看到还是4M的对象，实际上写入的小文件已经进行了合并了，在底层已经是一个4M的对象文件了</p>
+<h2 id="总结">总结</h2><p>本篇的结论就是，rbd层之上的写入的文件的个数与底层的对象数目是没有关系的，对象数目和对象大小是底层处理的，再上一层就是文件系统去处理的了，总空间占用上是一致的</p>
+<h2 id="我的公众号-磨磨谈">我的公众号-磨磨谈</h2><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/qrcode_for_gh_6998a54d68f7_430.jpg" alt=""><br></center>
+
+
+]]></content>
+    <summary type="html">
+    <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/happy2017.gif" alt=""><br></center>
+
+<h2 id="一、前言">一、前言</h2><p>收到一个问题如下：</p>
+<blockquote>
+<p>一个300TB 的RBD，只有7800万的objects，如果存储小文件的话，感觉不够用</p>
+</blockquote>
+<p>对于这个问题，我原来的理解也是对象设置的大小确实是4M一个，存储下去的数据，如果小于4M，就会占用一个小于4M的对象，如果超过4M，那么存储的数据就会进行拆分成多个4M，这个地方其实是不严谨的</p>
+<p>对于rados接口来说，数据是多大对象put进去就是多大的对象，并没有进行拆分，进行拆分的是再上一层的应用，比如rbd，比如cephfs</p>
+<p>那么对于rbd的image显示的对象数目和文件数目有什么关系呢？本篇将来看看这个问题，到底会不会出现上面的问题<br>]]>
+    
+    </summary>
+    
+      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[处理Ceph osd的journal的uuid问题]]></title>
@@ -1064,116 +1109,6 @@
 <p>I have a production cluster on which 1 OSD on a failing disk was slowing the whole cluster down. I removed the OSD (osd.87) like usual in such case but this time it resulted in 17 unfound objects. I no longer have the files from osd.87. I was able to call “ceph pg PGID mark_unfound_lost delete” on 10 of those objects.</p>
 <p>On the remaining objects 7 the command blocks. When I try to do “ceph pg PGID query” on this PG it also blocks. I suspect this is same reason why mark_unfound blocks.</p>
 <p>Other client IO to PGs that have unfound objects are also blocked. When trying to query the OSDs which has the PG with unfound objects, “ceph tell” blocks.<br>]]>
-    
-    </summary>
-    
-      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[Ceph日历格子之2016年10月(Vol45)]]></title>
-    <link href="http://www.zphj1987.com/2016/11/03/Ceph%E6%97%A5%E5%8E%86%E6%A0%BC%E5%AD%90%E4%B9%8B2016%E5%B9%B410%E6%9C%88-Vol45/"/>
-    <id>http://www.zphj1987.com/2016/11/03/Ceph日历格子之2016年10月-Vol45/</id>
-    <published>2016-11-03T09:51:33.000Z</published>
-    <updated>2016-11-08T10:01:03.670Z</updated>
-    <content type="html"><![CDATA[<p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/rili/rili.png" alt=""><br></center></p>
-<h2 id="一、前言">一、前言</h2><p>准备策划一个系列，之前也做了一次尝试，中断了，现在准备续起来，能做就尽量坚持做下去，准备根据日历的形式梳理出来，如同打怪一样，一个个去干掉这些问题，每个issue里面会有每天邮件列表里面提出的问题，一般为8到9个问题，如果完成一个Issue，就会在这里给出对应的Issue的链接，相当于一个目录和进度的功能，所以本篇会是一个持续更新的过程<br><a id="more"></a></p>
-<h2 id="二、内容">二、内容</h2><p>Ceph邮件列表2016年10月Issue格子   </p>
-<h3 id="Vol_45">Vol 45</h3><table>
-<thead>
-<tr>
-<th style="text-align:center">一</th>
-<th style="text-align:center">二</th>
-<th style="text-align:center">三</th>
-<th style="text-align:center">四</th>
-<th style="text-align:center">五</th>
-<th style="text-align:center">六</th>
-<th style="text-align:center">日</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">-</td>
-<td style="text-align:center">-</td>
-<td style="text-align:center">-</td>
-<td style="text-align:center">-</td>
-<td style="text-align:center">-</td>
-<td style="text-align:center"><a href="http://www.zphj1987.com/2016/11/04/Ceph%E7%94%A8%E6%88%B7%E9%82%AE%E4%BB%B6%E5%88%97%E8%A1%A8Vol45-Issue1/" target="_blank" rel="external">Issue 1</a></td>
-<td style="text-align:center"><a href="http://www.zphj1987.com/2016/11/07/Ceph%E7%94%A8%E6%88%B7%E9%82%AE%E4%BB%B6%E5%88%97%E8%A1%A8Vol45-Issue2/" target="_blank" rel="external">Issue2</a></td>
-</tr>
-<tr>
-<td style="text-align:center"><a href="http://www.zphj1987.com/2016/11/08/Ceph%E7%94%A8%E6%88%B7%E9%82%AE%E4%BB%B6%E5%88%97%E8%A1%A8Vol45-Issue3/" target="_blank" rel="external">Issue 3</a></td>
-<td style="text-align:center">Issue 4</td>
-<td style="text-align:center">Issue 5</td>
-<td style="text-align:center">Issue 6</td>
-<td style="text-align:center">Issue 7</td>
-<td style="text-align:center">Issue 8</td>
-<td style="text-align:center">Issue 9</td>
-</tr>
-<tr>
-<td style="text-align:center">Issue 10</td>
-<td style="text-align:center">Issue 11</td>
-<td style="text-align:center">Issue12</td>
-<td style="text-align:center">Issue 13</td>
-<td style="text-align:center">Issue 14</td>
-<td style="text-align:center">Issue 15</td>
-<td style="text-align:center">Issue 16</td>
-</tr>
-<tr>
-<td style="text-align:center">Issue 17</td>
-<td style="text-align:center">Issue 18</td>
-<td style="text-align:center">Issue 19</td>
-<td style="text-align:center">Issue 20</td>
-<td style="text-align:center">Issue 21</td>
-<td style="text-align:center">Issue 22</td>
-<td style="text-align:center">Issue 23</td>
-</tr>
-<tr>
-<td style="text-align:center">Issue 24</td>
-<td style="text-align:center">Issue 25</td>
-<td style="text-align:center">Issue 26</td>
-<td style="text-align:center">Issue 27</td>
-<td style="text-align:center">Issue 28</td>
-<td style="text-align:center">Issue 29</td>
-<td style="text-align:center">Issue 30</td>
-</tr>
-<tr>
-<td style="text-align:center">Issue 31</td>
-</tr>
-</tbody>
-</table>
-<h2 id="三、本月主要问题如下：">三、本月主要问题如下：</h2><p>如何处理对象丢失引起的PG状态不对的问题(Issue1)<br>处理Cephfs的No space left on device(Issue2)<br>处理mds0: Client XXX.XXX.XXX.XXX failing to respond to cache pressure(Issue2)<br>处理stry not clean(Issue2)<br>关于缓冲池相关参数的控制（Issue2）<br>Cephfs readdir出现crash的问题（Issue3）<br>无法 activate OSD（Issue3）</p>
-<h2 id="四、变更记录">四、变更记录</h2><table>
-<thead>
-<tr>
-<th style="text-align:center">Why</th>
-<th style="text-align:center">Who</th>
-<th style="text-align:center">When</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">创建</td>
-<td style="text-align:center">武汉-运维-磨渣</td>
-<td style="text-align:center">2016-11-03</td>
-</tr>
-<tr>
-<td style="text-align:center">增加Issue2</td>
-<td style="text-align:center">武汉-运维-磨渣</td>
-<td style="text-align:center">2016-11-07</td>
-</tr>
-<tr>
-<td style="text-align:center">完成Issue2,完成Issue3</td>
-<td style="text-align:center">武汉-运维-磨渣</td>
-<td style="text-align:center">2016-11-08</td>
-</tr>
-</tbody>
-</table>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/rili/rili.png" alt=""><br></center></p>
-<h2 id="一、前言">一、前言</h2><p>准备策划一个系列，之前也做了一次尝试，中断了，现在准备续起来，能做就尽量坚持做下去，准备根据日历的形式梳理出来，如同打怪一样，一个个去干掉这些问题，每个issue里面会有每天邮件列表里面提出的问题，一般为8到9个问题，如果完成一个Issue，就会在这里给出对应的Issue的链接，相当于一个目录和进度的功能，所以本篇会是一个持续更新的过程<br>]]>
     
     </summary>
     
