@@ -183,6 +183,66 @@ var _hmt = _hmt || [];
 </nav>
       <div class="body-wrap">
   
+    <article id="post-如何统计Ceph的RBD真实使用容量" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/09/08/如何统计Ceph的RBD真实使用容量/" class="article-date">
+  	<time datetime="2016-09-08T09:17:08.000Z" itemprop="datePublished">2016-09-08</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/09/08/如何统计Ceph的RBD真实使用容量/">如何统计Ceph的RBD真实使用容量</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/rbdtongji/storage.png" alt="storage"><br></center></p>
+<h2 id="一、前言">一、前言</h2><p>ceph的rbd一直有个问题就是无法清楚的知道这个分配的空间里面到底使用了多少，这个在Jewel里面提供了一个新的接口去查询，对于老版本来说可能同样有这个需求，本篇将详细介绍如何解决这个问题</p>
+<h2 id="二、查询的各种方法">二、查询的各种方法</h2><p>目前已知的有三种方法<br>1、使用rbd du查询（Jewel才支持）<br>2、使用rbd diff<br>3、根据对象统计的方法进行统计</p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2016/09/08/如何统计Ceph的RBD真实使用容量/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-Ceph中的Copyset概念和使用方法" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -734,68 +794,6 @@ var _hmt = _hmt || [];
       
         <p class="article-more-link">
           <a  href="/2016/07/19/解决自动安装Freebsd系统盘符无法确定问题/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-通过ceph-deploy安装不同版本ceph" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/07/14/通过ceph-deploy安装不同版本ceph/" class="article-date">
-  	<time datetime="2016-07-14T15:28:33.000Z" itemprop="datePublished">2016-07-14</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/07/14/通过ceph-deploy安装不同版本ceph/">通过ceph-deploy安装不同版本ceph</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>之前有在论坛写了怎么用 yum 安装 ceph，但是看到ceph社区的群里还是有人经常用 ceph-deploy 进行安装，然后会出现各种不可控的情况，虽然不建议用ceph-deploy安装，但是既然想用，那就研究下怎么用好</p>
-<p>先给一个连接： <a href="http://bbs.ceph.org.cn/article/49">centos7通过yum安装ceph</a></p>
-<p>首先机器需要安装 ceph-deploy 这个工具，机器上应该安装好 epel 源和 base 源，这个可以参考上面的那个连接，也可以自己准备好</p>
-<h3 id="一、安装ceph-deploy">一、安装ceph-deploy</h3><p>使用yum直接安装<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 yum.repos.d]<span class="comment"># yum install ceph-deploy</span></span><br><span class="line">Loaded plugins: fastestmirror, langpacks, priorities</span><br><span class="line">Loading mirror speeds from cached hostfile</span><br><span class="line">Resolving Dependencies</span><br><span class="line">--&gt; Running transaction check</span><br><span class="line">---&gt; Package ceph-deploy.noarch <span class="number">0</span>:<span class="number">1.5</span>.<span class="number">25</span>-<span class="number">1</span>.el7 will be installed</span><br><span class="line">···</span><br><span class="line">===================================================================================================</span><br><span class="line"> Package            Arch            Version             Repository                    Size</span><br><span class="line">===================================================================================================</span><br><span class="line">Installing:</span><br><span class="line"> ceph-deploy        noarch          <span class="number">1.5</span>.<span class="number">25</span>-<span class="number">1</span>.el7         epel                         <span class="number">156</span> k</span><br><span class="line">···</span><br><span class="line">Installed:</span><br><span class="line">  ceph-deploy.noarch <span class="number">0</span>:<span class="number">1.5</span>.<span class="number">25</span>-<span class="number">1</span>.el7</span><br><span class="line">Complete!</span><br></pre></td></tr></table></figure></p>
-<p>可以看到是从 epel 的 repo 里面下载的版本为1.5.25，如果从ceph源里面下载的这个版本可能会更高一点，这个没什么问题</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2016/07/14/通过ceph-deploy安装不同版本ceph/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>

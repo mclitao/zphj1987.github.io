@@ -9,7 +9,7 @@
 
 一个300TB 的RBD，只有7800万的objects，如果存储小文件的话，感觉不够用
 
-对于这个问题，我原来的理解也是对象设置的大小确实是4M一个，存储下去的数据，如果小于4M，就会占用一个小于4M的对象，如果超过4M，那么存储的数据就会进行拆分成多个4M，这个地方其实是不严谨的
+对于这个问题，我原来的理解是：对象默认设置的大小是4M一个，存储下去的数据，如果小于4M，就会占用一个小于4M的对象，如果超过4M，那么存储的数据就会进行拆分成多个4M，这个地方其实是不严谨的
 对于rados接口来说，数据是多大对象put进去就是多大的对象，并没有进行拆分，进行">
 <meta property="og:type" content="article">
 <meta property="og:title" content="rbd的image对象数与能写入文件数的关系">
@@ -19,7 +19,7 @@
 
 一个300TB 的RBD，只有7800万的objects，如果存储小文件的话，感觉不够用
 
-对于这个问题，我原来的理解也是对象设置的大小确实是4M一个，存储下去的数据，如果小于4M，就会占用一个小于4M的对象，如果超过4M，那么存储的数据就会进行拆分成多个4M，这个地方其实是不严谨的
+对于这个问题，我原来的理解是：对象默认设置的大小是4M一个，存储下去的数据，如果小于4M，就会占用一个小于4M的对象，如果超过4M，那么存储的数据就会进行拆分成多个4M，这个地方其实是不严谨的
 对于rados接口来说，数据是多大对象put进去就是多大的对象，并没有进行拆分，进行">
 <meta property="og:image" content="http://7xweck.com1.z0.glb.clouddn.com/2017.png">
 <meta property="og:image" content="http://7xweck.com1.z0.glb.clouddn.com/qrcode_for_gh_6998a54d68f7_430.jpg">
@@ -29,7 +29,7 @@
 
 一个300TB 的RBD，只有7800万的objects，如果存储小文件的话，感觉不够用
 
-对于这个问题，我原来的理解也是对象设置的大小确实是4M一个，存储下去的数据，如果小于4M，就会占用一个小于4M的对象，如果超过4M，那么存储的数据就会进行拆分成多个4M，这个地方其实是不严谨的
+对于这个问题，我原来的理解是：对象默认设置的大小是4M一个，存储下去的数据，如果小于4M，就会占用一个小于4M的对象，如果超过4M，那么存储的数据就会进行拆分成多个4M，这个地方其实是不严谨的
 对于rados接口来说，数据是多大对象put进去就是多大的对象，并没有进行拆分，进行">
   
     <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
@@ -241,7 +241,7 @@ var _hmt = _hmt || [];
 <blockquote>
 <p>一个300TB 的RBD，只有7800万的objects，如果存储小文件的话，感觉不够用</p>
 </blockquote>
-<p>对于这个问题，我原来的理解也是对象设置的大小确实是4M一个，存储下去的数据，如果小于4M，就会占用一个小于4M的对象，如果超过4M，那么存储的数据就会进行拆分成多个4M，这个地方其实是不严谨的</p>
+<p>对于这个问题，我原来的理解是：对象默认设置的大小是4M一个，存储下去的数据，如果小于4M，就会占用一个小于4M的对象，如果超过4M，那么存储的数据就会进行拆分成多个4M，这个地方其实是不严谨的</p>
 <p>对于rados接口来说，数据是多大对象put进去就是多大的对象，并没有进行拆分，进行拆分的是再上一层的应用，比如rbd，比如cephfs</p>
 <p>那么对于rbd的image显示的对象数目和文件数目有什么关系呢？本篇将来看看这个问题，到底会不会出现上面的问题<br><a id="more"></a></p>
 <h2 id="二、实践过程">二、实践过程</h2><p>创建一个image<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># rbd create --image zpsize --size 100M</span></span><br><span class="line">[root@lab8106 ~]<span class="comment"># rbd info zpsize</span></span><br><span class="line">rbd image <span class="string">'zpsize'</span>:</span><br><span class="line">	size <span class="number">102400</span> kB <span class="keyword">in</span> <span class="number">25</span> objects</span><br><span class="line">	order <span class="number">22</span> (<span class="number">4096</span> kB objects)</span><br><span class="line">	block_name_prefix: rbd_data.<span class="number">85</span>c66b8b4567</span><br><span class="line">	format: <span class="number">2</span></span><br><span class="line">	features: layering</span><br><span class="line">	flags:</span><br></pre></td></tr></table></figure></p>
@@ -264,6 +264,15 @@ var _hmt = _hmt || [];
   
     
 <nav id="article-nav">
+  
+    <a href="/2017/01/05/ceph-crush-straw/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          ceph 的crush算法 straw
+        
+      </div>
+    </a>
   
   
     <a href="/2016/12/26/manage-ceph-osd-journal-uuid/" id="article-nav-older" class="article-nav-link-wrap">

@@ -183,6 +183,66 @@ var _hmt = _hmt || [];
 </nav>
       <div class="body-wrap">
   
+    <article id="post-centos做时间同步服务器" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/03/22/centos做时间同步服务器/" class="article-date">
+  	<time datetime="2015-03-22T15:02:10.000Z" itemprop="datePublished">2015-03-22</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/03/22/centos做时间同步服务器/">centos做时间同步服务器</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>修改同步服务器的配置文件/etc/ntp.conf ,删除所有的内容,添加<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">restrict default nomodify&#10;server  127.127.1.0     # local clock&#10;fudge   127.127.1.0 stratum 8</span><br></pre></td></tr></table></figure></p>
+<p>重启ntpd<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/etc/init.d/ntpd restart</span><br></pre></td></tr></table></figure></p>
+<p>等待ntp服务器自身同步完成<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">watch ntpq -p</span><br></pre></td></tr></table></figure></p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2015/03/22/centos做时间同步服务器/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-centos下多网卡做bond脚本" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -705,66 +765,6 @@ var _hmt = _hmt || [];
       
         <p class="article-more-link">
           <a  href="/2015/03/22/Ubuntu12-10-设置默认命令行启动/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Ubuntu-12-10设置root用户登录图形界面" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/03/22/Ubuntu-12-10设置root用户登录图形界面/" class="article-date">
-  	<time datetime="2015-03-22T13:53:06.000Z" itemprop="datePublished">2015-03-22</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/03/22/Ubuntu-12-10设置root用户登录图形界面/">Ubuntu 12.10设置root用户登录图形界面</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Ubuntu 12.04默认是不允许root登录的,在登录窗口只能看到普通用户和访客登录。以普通身份登陆Ubuntu后我们需要做一些修改,普通用户登录后,修改系统配置文件需要切换到超级用户模式,在终端窗口里面输入:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo  <span class="operator">-s</span></span><br></pre></td></tr></table></figure></p>
-<p>然后输入普通用户登陆的密码,回车即可进入 root用户权限模式。<br>启用root用户的前提是需要先给root设置一个密码:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo passwd root</span><br></pre></td></tr></table></figure></p>
-<p>输入root 密码即可</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ubuntu/">ubuntu</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/03/22/Ubuntu-12-10设置root用户登录图形界面/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>
