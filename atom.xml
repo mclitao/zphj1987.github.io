@@ -4,7 +4,7 @@
   <subtitle><![CDATA[但行好事，莫问前程]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2017-01-05T09:48:41.197Z</updated>
+  <updated>2017-01-09T08:09:17.587Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -13,6 +13,59 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[解决calamari无法获取节点信息的bug]]></title>
+    <link href="http://www.zphj1987.com/2017/01/09/calamari-node-info/"/>
+    <id>http://www.zphj1987.com/2017/01/09/calamari-node-info/</id>
+    <published>2017-01-09T07:06:51.000Z</published>
+    <updated>2017-01-09T08:09:17.587Z</updated>
+    <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/saltstack.png" alt="salt-stack"><br></center>
+
+<h2 id="一、前言">一、前言</h2><p>一直在做calamari的相关的一些打包和安装的工作，都是业余弄的东西，所以并没有仔细的进行功能点的验证测试，正好ceph社区群里面有人问了个问题</p>
+<blockquote>
+<p>calamari上是不是能看到ceph的version?</p>
+</blockquote>
+<p>对于这个问题，好像确实没有见到过，而之前正好有个页面看到是空的，当时还不清楚这个是什么用的</p>
+<p><img src="http://static.zybuluo.com/zphj1987/mjyvzkd7q9x6eplb538o7ltc/image_1b611hfic17lj15ej1jp1pb31m979.png" alt="origin"></p>
+<p>而另外一位群友贴出了这个地方的是有值的，这个地方是有BUG的，在咨询了相关的问题描述以后，我们来看下，可以如何解决这个问题<br><a id="more"></a></p>
+<h2 id="二、问题解决过程">二、问题解决过程</h2><h3 id="2-1_问题描述：">2.1 问题描述：</h3><p>calamari的salt-master节点在读取</p>
+<blockquote>
+<p>/var/cache/salt/master/minions/{minion-hostname}/data.p</p>
+</blockquote>
+<p>的时候有权限问题，在修改权限以后，可以读取到了，但是在重启了salt-minion以后，这个文件会被更新，然后权限又变成无法读取的</p>
+<h3 id="2-2_相关知识补充">2.2 相关知识补充</h3><p>Grains - salt-minion 自身的一些静态信息<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">salt <span class="string">'*'</span> grains.ls       <span class="comment"># 查看 grains 分类</span></span><br><span class="line">salt <span class="string">'*'</span> grains.items    <span class="comment"># 查看 grains 所有信息</span></span><br><span class="line">salt <span class="string">'*'</span> grains.item os  <span class="comment"># 查看 grains 某个信息</span></span><br><span class="line">salt <span class="string">'*'</span> grains.get os</span><br></pre></td></tr></table></figure></p>
+<p>上面的是salt-minion的静态信息的查询的相关的命令，salt-minion在进行重启的时候会将一些静态的信息推送到salt-server上面去，而这个生成的信息正好就是我们上面提出有权限问题的data.p这个存储的文件的，那么解决问题就是修改这个地方的权限的问题了</p>
+<h3 id="2-3_修改salt-server代码">2.3 修改salt-server代码</h3><p>这个问题通过修改salt-master的master.py代码可以解决</p>
+<p>写入这个grains信息的代码在/usr/lib/python2.7/site-packages/salt/master.py这个文件当中，代码段如下：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">  def _pillar(self, load):</span><br><span class="line">···</span><br><span class="line">        <span class="keyword">if</span> self.opts.get(<span class="string">'minion_data_cache'</span>, False):</span><br><span class="line">            cdir = os.path.join(self.opts[<span class="string">'cachedir'</span>], <span class="string">'minions'</span>, load[<span class="string">'id'</span>])</span><br><span class="line">            <span class="keyword">if</span> not os.path.isdir(cdir):</span><br><span class="line">                os.makedirs(cdir)</span><br><span class="line">            datap = os.path.join(cdir, <span class="string">'data.p'</span>)</span><br><span class="line">            tmpfh, tmpfname = tempfile.mkstemp(dir=cdir)</span><br><span class="line">            os.close(tmpfh)</span><br><span class="line">            with salt.utils.fopen(tmpfname, <span class="string">'w+b'</span>) as fp_:</span><br><span class="line">                fp_.write(</span><br><span class="line">                    self.serial.dumps(</span><br><span class="line">                        &#123;<span class="string">'grains'</span>: load[<span class="string">'grains'</span>],</span><br><span class="line">                         <span class="string">'pillar'</span>: data&#125;)</span><br><span class="line">                    )</span><br><span class="line">            <span class="comment"># On Windows, os.rename will fail if the destination file exists.</span></span><br><span class="line">            salt.utils.atomicfile.atomic_rename(tmpfname, datap)</span><br><span class="line">        <span class="built_in">return</span> data</span><br></pre></td></tr></table></figure></p>
+<p>就是这个函数就是负责这个文件写入的，我们只在这个代码里面增加一个文件的权限的控制，在<code>salt.utils.atomicfile.atomic_rename(tmpfname, datap)</code>这行之上增加一行代码<code>os.chmod(tmpfname, 0o644)</code></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"> def _pillar(self, load):</span><br><span class="line">···</span><br><span class="line">        <span class="keyword">if</span> self.opts.get(<span class="string">'minion_data_cache'</span>, False):</span><br><span class="line">            cdir = os.path.join(self.opts[<span class="string">'cachedir'</span>], <span class="string">'minions'</span>, load[<span class="string">'id'</span>])</span><br><span class="line">            <span class="keyword">if</span> not os.path.isdir(cdir):</span><br><span class="line">                os.makedirs(cdir)</span><br><span class="line">            datap = os.path.join(cdir, <span class="string">'data.p'</span>)</span><br><span class="line">            tmpfh, tmpfname = tempfile.mkstemp(dir=cdir)</span><br><span class="line">            os.close(tmpfh)</span><br><span class="line">            with salt.utils.fopen(tmpfname, <span class="string">'w+b'</span>) as fp_:</span><br><span class="line">                fp_.write(</span><br><span class="line">                    self.serial.dumps(</span><br><span class="line">                        &#123;<span class="string">'grains'</span>: load[<span class="string">'grains'</span>],</span><br><span class="line">                         <span class="string">'pillar'</span>: data&#125;)</span><br><span class="line">                    )</span><br><span class="line">            <span class="comment"># On Windows, os.rename will fail if the destination file exists.</span></span><br><span class="line">            os.chmod(tmpfname, <span class="number">0</span>o644)</span><br><span class="line">            salt.utils.atomicfile.atomic_rename(tmpfname, datap)</span><br><span class="line">        <span class="built_in">return</span> data</span><br></pre></td></tr></table></figure>
+<p>修改好了以后，重启下salt-master，然后重启下salt-minion<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">systemctl restart salt-minion</span><br></pre></td></tr></table></figure></p>
+<p>检查权限，已经看到权限变成了644了<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ll /var/cache/salt/master/minions/lab8106/data.p </span></span><br><span class="line">-rw-r--r-- <span class="number">1</span> root root <span class="number">5331</span> Jan  <span class="number">9</span> <span class="number">15</span>:<span class="number">33</span> /var/cache/salt/master/minions/lab8106/data.p</span><br></pre></td></tr></table></figure></p>
+<p>现在再看下前台页面效果:</p>
+<p><img src="http://static.zybuluo.com/zphj1987/4qkz1xo0kretsrvn8nalmt17/image_1b612ekp81ec0uk140t1b5tdjfm.png" alt="changge"></p>
+<p>问题解决</p>
+<h2 id="三、总结">三、总结</h2><p>calamari有一些各种各样的小问题，总体上还是一款非常简洁漂亮的管理界面，在没有监控系统的情况下，还是一个不错的选择</p>
+<h2 id="四、我的公众号-磨磨谈">四、我的公众号-磨磨谈</h2><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/qrcode_for_gh_6998a54d68f7_430.jpg" alt=""><br></center>
+
+
+]]></content>
+    <summary type="html">
+    <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/saltstack.png" alt="salt-stack"><br></center>
+
+<h2 id="一、前言">一、前言</h2><p>一直在做calamari的相关的一些打包和安装的工作，都是业余弄的东西，所以并没有仔细的进行功能点的验证测试，正好ceph社区群里面有人问了个问题</p>
+<blockquote>
+<p>calamari上是不是能看到ceph的version?</p>
+</blockquote>
+<p>对于这个问题，好像确实没有见到过，而之前正好有个页面看到是空的，当时还不清楚这个是什么用的</p>
+<p><img src="http://static.zybuluo.com/zphj1987/mjyvzkd7q9x6eplb538o7ltc/image_1b611hfic17lj15ej1jp1pb31m979.png" alt="origin"></p>
+<p>而另外一位群友贴出了这个地方的是有值的，这个地方是有BUG的，在咨询了相关的问题描述以后，我们来看下，可以如何解决这个问题<br>]]>
+    
+    </summary>
+    
+      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[Ceph编译加速的小技巧]]></title>
@@ -1001,73 +1054,6 @@
 <p>2016-07-12 08:42:42.1234567 osd.1234 [WRN] failed to encode map e4321<br>with expected crc</p>
 </blockquote>
 <p>这个是开发者kefu chai发出来的邮件，是提醒用户注意一个升级的问题的，先介绍下这个问题<br>]]>
-    
-    </summary>
-    
-      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[Ceph用户邮件列表Vol45-Issue3]]></title>
-    <link href="http://www.zphj1987.com/2016/11/08/Ceph%E7%94%A8%E6%88%B7%E9%82%AE%E4%BB%B6%E5%88%97%E8%A1%A8Vol45-Issue3/"/>
-    <id>http://www.zphj1987.com/2016/11/08/Ceph用户邮件列表Vol45-Issue3/</id>
-    <published>2016-11-08T09:26:01.000Z</published>
-    <updated>2016-11-10T07:14:26.966Z</updated>
-    <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/number/daythree.png" alt=""><br></center>
-
-<h2 id="ceph_Vol_45_Issue_3">ceph Vol 45 Issue 3</h2><h3 id="1-Crash_in_ceph_readdir-">1.Crash in ceph_readdir.</h3><blockquote>
-<p>Hello, </p>
-<p>I’ve been investigating the following crash with cephfs:<br>···<br>According to the state of the ceph_inoide_info this means that<br>ceph_dir_is_complete_ordered would return true and the second condition<br>should also be true since ptr_pos is held in r12 and the dir size is 26496.<br>So the dentry being passed should be the 2953 % 512 = 393 in the<br>cache_ctl.dentries array.<br>Unfortunately my crashdump excldues the page cache pages and I cannot really see<br>what are the contents of the dentries array. </p>
-</blockquote>
-<a id="more"></a>
-<blockquote>
-<p>Could you provide any info on how to further debug this </p>
-</blockquote>
-<p>作者在使用cephfs的时候遇上了崩溃的情况，readdir的操作</p>
-<p>Yan, Zheng已经对这个bug进行了修复</p>
-<p><a href="https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/commit/?id=af5e5eb574776cdf1b756a27cc437bff257e22fe" target="_blank" rel="external">https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/commit/?id=af5e5eb574776cdf1b756a27cc437bff257e22fe</a><br><a href="https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/commit/?id=a3d714c33632ef6bfdfaacc74ae6ba297b4c5820" target="_blank" rel="external">https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/commit/?id=a3d714c33632ef6bfdfaacc74ae6ba297b4c5820</a></p>
-<p>但是这个是提交到Linux kernel的4.6的分支里面去了的，所以目前从官方版本来说是4.6或者更新的版本才会解决</p>
-<p>这个问题只能是说遇到了再升级内核了</p>
-<h3 id="2-Can’t_activate_OSD">2.Can’t activate OSD</h3><blockquote>
-<p>Hello all,</p>
-<p>Over the past few weeks I’ve been trying to go through the Quick Ceph Deploy<br>tutorial at:</p>
-<p>ceph-deploy osd activate ceph02:/dev/sdc ceph03:/dev/sdc</p>
-<p>part. It never actually seems to activate the OSD and eventually times out:</p>
-<p>[ceph03][INFO  ] Running command: sudo /usr/sbin/ceph-disk -v activate  —mark-init systemd —mount /dev/sdc<br>[ceph03][WARNIN] main_activate: path = /dev/sdc<br>[ceph03][WARNIN] No data was received after 300 seconds, disconnecting…</p>
-</blockquote>
-<p>作者在部署osd的时候出现无法激活osd的问题，最后在别人的帮助下发现了问题，在交换机上创建了 VLAN ，但没允许jumbo packets，所以出现了问题</p>
-<p>另外一个人也出现了类似的问题，通过升级了parted解决问题（from 3.1 from the CentOS7 base）<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rpm -Uhv ftp://<span class="number">195.220</span>.<span class="number">108.108</span>/linux/fedora/linux/updates/<span class="number">22</span>/x86_64/p/parted-<span class="number">3.2</span>-<span class="number">16</span>.fc22.x86_64.rpm</span><br></pre></td></tr></table></figure></p>
-<p>这个一般没什么问题，确实定位到这里再升级了，一般情况下很少出现不能activate osd的情况</p>
-<h3 id="变更记录">变更记录</h3><table>
-<thead>
-<tr>
-<th style="text-align:center">Why</th>
-<th style="text-align:center">Who</th>
-<th style="text-align:center">When</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">创建</td>
-<td style="text-align:center">武汉-运维-磨渣</td>
-<td style="text-align:center">2016-11-08</td>
-</tr>
-<tr>
-<td style="text-align:center">完成Issue 3</td>
-<td style="text-align:center">武汉-运维-磨渣</td>
-<td style="text-align:center">2016-11-08</td>
-</tr>
-</tbody>
-</table>
-<h3 id="我的公众号-磨磨谈">我的公众号-磨磨谈</h3><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/qrcode_for_gh_6998a54d68f7_430.jpg" alt=""><br></center>]]></content>
-    <summary type="html">
-    <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/number/daythree.png" alt=""><br></center>
-
-<h2 id="ceph_Vol_45_Issue_3">ceph Vol 45 Issue 3</h2><h3 id="1-Crash_in_ceph_readdir-">1.Crash in ceph_readdir.</h3><blockquote>
-<p>Hello, </p>
-<p>I’ve been investigating the following crash with cephfs:<br>···<br>According to the state of the ceph_inoide_info this means that<br>ceph_dir_is_complete_ordered would return true and the second condition<br>should also be true since ptr_pos is held in r12 and the dir size is 26496.<br>So the dentry being passed should be the 2953 % 512 = 393 in the<br>cache_ctl.dentries array.<br>Unfortunately my crashdump excldues the page cache pages and I cannot really see<br>what are the contents of the dentries array. </p>
-</blockquote>]]>
     
     </summary>
     

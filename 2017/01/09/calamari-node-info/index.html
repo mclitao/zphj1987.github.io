@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>解决calamari无法获取节点信息的bug | zphj1987&#39;Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="一、前言一直在做calamari的相关的一些打包和安装的工作，都是业余弄的东西，所以并没有仔细的进行功能点的验证测试，正好ceph社区群里面有人问了个问题
+
+calamari上是不是能看到ceph的version?
+
+对于这个问题，好像确实没有见到过，而之前正好有个页面看到是空的，当时还不清楚这个是什么用的
+
+而另外一位群友贴出了这个地方的是有值的，这个地方是有BUG的，在咨询了相关的问题描述以后">
+<meta property="og:type" content="article">
+<meta property="og:title" content="解决calamari无法获取节点信息的bug">
+<meta property="og:url" content="http://www.zphj1987.com/2017/01/09/calamari-node-info/index.html">
+<meta property="og:site_name" content="zphj1987'Blog">
+<meta property="og:description" content="一、前言一直在做calamari的相关的一些打包和安装的工作，都是业余弄的东西，所以并没有仔细的进行功能点的验证测试，正好ceph社区群里面有人问了个问题
+
+calamari上是不是能看到ceph的version?
+
+对于这个问题，好像确实没有见到过，而之前正好有个页面看到是空的，当时还不清楚这个是什么用的
+
+而另外一位群友贴出了这个地方的是有值的，这个地方是有BUG的，在咨询了相关的问题描述以后">
+<meta property="og:image" content="http://7xweck.com1.z0.glb.clouddn.com/saltstack.png">
+<meta property="og:image" content="http://static.zybuluo.com/zphj1987/mjyvzkd7q9x6eplb538o7ltc/image_1b611hfic17lj15ej1jp1pb31m979.png">
+<meta property="og:image" content="http://static.zybuluo.com/zphj1987/4qkz1xo0kretsrvn8nalmt17/image_1b612ekp81ec0uk140t1b5tdjfm.png">
+<meta property="og:image" content="http://7xweck.com1.z0.glb.clouddn.com/qrcode_for_gh_6998a54d68f7_430.jpg">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="解决calamari无法获取节点信息的bug">
+<meta name="twitter:description" content="一、前言一直在做calamari的相关的一些打包和安装的工作，都是业余弄的东西，所以并没有仔细的进行功能点的验证测试，正好ceph社区群里面有人问了个问题
+
+calamari上是不是能看到ceph的version?
+
+对于这个问题，好像确实没有见到过，而之前正好有个页面看到是空的，当时还不清楚这个是什么用的
+
+而另外一位群友贴出了这个地方的是有值的，这个地方是有BUG的，在咨询了相关的问题描述以后">
+  
+    <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png">
+  
+  <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/style.css" type="text/css">
+   <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/asciinema/asciinema-player.css" type="text/css">
+  
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?252ba55374ee0e63b03196973bb9b776";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">zphj1987</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">但行好事，莫问前程</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						
+						<li>关于我</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+							<li><a href="/instagram">图片</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="https://github.com/zphj1987" title="github">github</a>
+					        
+								<a class="weibo" target="_blank" href=" http://weibo.com/zphj1987" title="weibo">weibo</a>
+					        
+								<a class="rss" target="_blank" href="http://www.zphj1987.com/atom.xml" title="rss">rss</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/ceph/" style="font-size: 20px;">ceph</a><a href="/tags/instagram/" style="font-size: 10px;">instagram</a><a href="/tags/iptables/" style="font-size: 10px;">iptables</a><a href="/tags/linux/" style="font-size: 18.33px;">linux</a><a href="/tags/momotan/" style="font-size: 10px;">momotan</a><a href="/tags/nginx/" style="font-size: 13.33px;">nginx</a><a href="/tags/samba/" style="font-size: 10px;">samba</a><a href="/tags/ubuntu/" style="font-size: 16.67px;">ubuntu</a><a href="/tags/windows/" style="font-size: 10px;">windows</a><a href="/tags/zabbix/" style="font-size: 10px;">zabbix</a><a href="/tags/其他/" style="font-size: 10px;">其他</a><a href="/tags/内核/" style="font-size: 13.33px;">内核</a><a href="/tags/操作系统/" style="font-size: 11.67px;">操作系统</a><a href="/tags/杂七杂八/" style="font-size: 13.33px;">杂七杂八</a><a href="/tags/注册码/" style="font-size: 10px;">注册码</a><a href="/tags/测试工具/" style="font-size: 11.67px;">测试工具</a><a href="/tags/监控/" style="font-size: 10px;">监控</a><a href="/tags/网卡/" style="font-size: 13.33px;">网卡</a><a href="/tags/脚本/" style="font-size: 15px;">脚本</a><a href="/tags/高可用/" style="font-size: 10px;">高可用</a>
+					</div>
+				</section>
+				
+				
+				
+
+				
+				
+				<section class="switch-part switch-part3">
+				
+					<div id="js-aboutme">1987 武汉 存储行业 QQ:199383004</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">zphj1987</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">zphj1987</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">但行好事，莫问前程</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+					<li><a href="/instagram">图片</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/zphj1987" title="github">github</a>
+			        
+						<a class="weibo" target="_blank" href=" http://weibo.com/zphj1987" title="weibo">weibo</a>
+			        
+						<a class="rss" target="_blank" href="http://www.zphj1987.com/atom.xml" title="rss">rss</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-calamari-node-info" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/01/09/calamari-node-info/" class="article-date">
+  	<time datetime="2017-01-09T07:06:51.000Z" itemprop="datePublished">2017-01-09</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      解决calamari无法获取节点信息的bug
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+        
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/saltstack.png" alt="salt-stack"><br></center>
+
+<h2 id="一、前言">一、前言</h2><p>一直在做calamari的相关的一些打包和安装的工作，都是业余弄的东西，所以并没有仔细的进行功能点的验证测试，正好ceph社区群里面有人问了个问题</p>
+<blockquote>
+<p>calamari上是不是能看到ceph的version?</p>
+</blockquote>
+<p>对于这个问题，好像确实没有见到过，而之前正好有个页面看到是空的，当时还不清楚这个是什么用的</p>
+<p><img src="http://static.zybuluo.com/zphj1987/mjyvzkd7q9x6eplb538o7ltc/image_1b611hfic17lj15ej1jp1pb31m979.png" alt="origin"></p>
+<p>而另外一位群友贴出了这个地方的是有值的，这个地方是有BUG的，在咨询了相关的问题描述以后，我们来看下，可以如何解决这个问题<br><a id="more"></a></p>
+<h2 id="二、问题解决过程">二、问题解决过程</h2><h3 id="2-1_问题描述：">2.1 问题描述：</h3><p>calamari的salt-master节点在读取</p>
+<blockquote>
+<p>/var/cache/salt/master/minions/{minion-hostname}/data.p</p>
+</blockquote>
+<p>的时候有权限问题，在修改权限以后，可以读取到了，但是在重启了salt-minion以后，这个文件会被更新，然后权限又变成无法读取的</p>
+<h3 id="2-2_相关知识补充">2.2 相关知识补充</h3><p>Grains - salt-minion 自身的一些静态信息<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">salt <span class="string">'*'</span> grains.ls       <span class="comment"># 查看 grains 分类</span></span><br><span class="line">salt <span class="string">'*'</span> grains.items    <span class="comment"># 查看 grains 所有信息</span></span><br><span class="line">salt <span class="string">'*'</span> grains.item os  <span class="comment"># 查看 grains 某个信息</span></span><br><span class="line">salt <span class="string">'*'</span> grains.get os</span><br></pre></td></tr></table></figure></p>
+<p>上面的是salt-minion的静态信息的查询的相关的命令，salt-minion在进行重启的时候会将一些静态的信息推送到salt-server上面去，而这个生成的信息正好就是我们上面提出有权限问题的data.p这个存储的文件的，那么解决问题就是修改这个地方的权限的问题了</p>
+<h3 id="2-3_修改salt-server代码">2.3 修改salt-server代码</h3><p>这个问题通过修改salt-master的master.py代码可以解决</p>
+<p>写入这个grains信息的代码在/usr/lib/python2.7/site-packages/salt/master.py这个文件当中，代码段如下：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">  def _pillar(self, load):</span><br><span class="line">···</span><br><span class="line">        <span class="keyword">if</span> self.opts.get(<span class="string">'minion_data_cache'</span>, False):</span><br><span class="line">            cdir = os.path.join(self.opts[<span class="string">'cachedir'</span>], <span class="string">'minions'</span>, load[<span class="string">'id'</span>])</span><br><span class="line">            <span class="keyword">if</span> not os.path.isdir(cdir):</span><br><span class="line">                os.makedirs(cdir)</span><br><span class="line">            datap = os.path.join(cdir, <span class="string">'data.p'</span>)</span><br><span class="line">            tmpfh, tmpfname = tempfile.mkstemp(dir=cdir)</span><br><span class="line">            os.close(tmpfh)</span><br><span class="line">            with salt.utils.fopen(tmpfname, <span class="string">'w+b'</span>) as fp_:</span><br><span class="line">                fp_.write(</span><br><span class="line">                    self.serial.dumps(</span><br><span class="line">                        &#123;<span class="string">'grains'</span>: load[<span class="string">'grains'</span>],</span><br><span class="line">                         <span class="string">'pillar'</span>: data&#125;)</span><br><span class="line">                    )</span><br><span class="line">            <span class="comment"># On Windows, os.rename will fail if the destination file exists.</span></span><br><span class="line">            salt.utils.atomicfile.atomic_rename(tmpfname, datap)</span><br><span class="line">        <span class="built_in">return</span> data</span><br></pre></td></tr></table></figure></p>
+<p>就是这个函数就是负责这个文件写入的，我们只在这个代码里面增加一个文件的权限的控制，在<code>salt.utils.atomicfile.atomic_rename(tmpfname, datap)</code>这行之上增加一行代码<code>os.chmod(tmpfname, 0o644)</code></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"> def _pillar(self, load):</span><br><span class="line">···</span><br><span class="line">        <span class="keyword">if</span> self.opts.get(<span class="string">'minion_data_cache'</span>, False):</span><br><span class="line">            cdir = os.path.join(self.opts[<span class="string">'cachedir'</span>], <span class="string">'minions'</span>, load[<span class="string">'id'</span>])</span><br><span class="line">            <span class="keyword">if</span> not os.path.isdir(cdir):</span><br><span class="line">                os.makedirs(cdir)</span><br><span class="line">            datap = os.path.join(cdir, <span class="string">'data.p'</span>)</span><br><span class="line">            tmpfh, tmpfname = tempfile.mkstemp(dir=cdir)</span><br><span class="line">            os.close(tmpfh)</span><br><span class="line">            with salt.utils.fopen(tmpfname, <span class="string">'w+b'</span>) as fp_:</span><br><span class="line">                fp_.write(</span><br><span class="line">                    self.serial.dumps(</span><br><span class="line">                        &#123;<span class="string">'grains'</span>: load[<span class="string">'grains'</span>],</span><br><span class="line">                         <span class="string">'pillar'</span>: data&#125;)</span><br><span class="line">                    )</span><br><span class="line">            <span class="comment"># On Windows, os.rename will fail if the destination file exists.</span></span><br><span class="line">            os.chmod(tmpfname, <span class="number">0</span>o644)</span><br><span class="line">            salt.utils.atomicfile.atomic_rename(tmpfname, datap)</span><br><span class="line">        <span class="built_in">return</span> data</span><br></pre></td></tr></table></figure>
+<p>修改好了以后，重启下salt-master，然后重启下salt-minion<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">systemctl restart salt-minion</span><br></pre></td></tr></table></figure></p>
+<p>检查权限，已经看到权限变成了644了<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ll /var/cache/salt/master/minions/lab8106/data.p </span></span><br><span class="line">-rw-r--r-- <span class="number">1</span> root root <span class="number">5331</span> Jan  <span class="number">9</span> <span class="number">15</span>:<span class="number">33</span> /var/cache/salt/master/minions/lab8106/data.p</span><br></pre></td></tr></table></figure></p>
+<p>现在再看下前台页面效果:</p>
+<p><img src="http://static.zybuluo.com/zphj1987/4qkz1xo0kretsrvn8nalmt17/image_1b612ekp81ec0uk140t1b5tdjfm.png" alt="changge"></p>
+<p>问题解决</p>
+<h2 id="三、总结">三、总结</h2><p>calamari有一些各种各样的小问题，总体上还是一款非常简洁漂亮的管理界面，在没有监控系统的情况下，还是一个不错的选择</p>
+<h2 id="四、我的公众号-磨磨谈">四、我的公众号-磨磨谈</h2><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/qrcode_for_gh_6998a54d68f7_430.jpg" alt=""><br></center>
+
+
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2017/01/05/Ceph-compile-speedup/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Ceph编译加速的小技巧</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到：</span>
+		<a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+		<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="calamari-node-info" data-title="解决calamari无法获取节点信息的bug" data-url="http://www.zphj1987.com/2017/01/09/calamari-node-info/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"zphj1987"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2017 zphj1987
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/fancybox/jquery.fancybox.css" type="text/css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: undefined,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: true
+	}
+</script>
+<script src="http://7xweck.com1.z0.glb.clouddn.com/js/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="http://7xweck.com1.z0.glb.clouddn.com/js/main.js" type="text/javascript"></script>
+<script src="http://7xweck.com1.z0.glb.clouddn.com/asciinema/asciinema-player.js" type="text/javascript"></script>
+
+
+  </div>
+</body>
+</html>
