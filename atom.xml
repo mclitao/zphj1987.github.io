@@ -4,7 +4,7 @@
   <subtitle><![CDATA[但行好事，莫问前程]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2017-01-09T08:17:28.092Z</updated>
+  <updated>2017-01-09T08:27:22.650Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="http://www.zphj1987.com/2017/01/09/calamari-node-info/"/>
     <id>http://www.zphj1987.com/2017/01/09/calamari-node-info/</id>
     <published>2017-01-09T07:06:51.000Z</published>
-    <updated>2017-01-09T08:17:28.092Z</updated>
+    <updated>2017-01-09T08:27:22.650Z</updated>
     <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/saltstack.png" alt="salt-stack"><br></center>
 
 <h2 id="一、前言">一、前言</h2><p>一直在做calamari的相关的一些打包和安装的工作，都是业余弄的东西，所以并没有仔细的进行功能点的验证测试，正好ceph社区群里面有人问了个问题</p>
@@ -29,7 +29,13 @@
 <p>对于这个问题，好像确实没有见到过，而之前正好有个页面看到是空的，当时还不清楚这个是什么用的</p>
 <p><img src="http://static.zybuluo.com/zphj1987/mjyvzkd7q9x6eplb538o7ltc/image_1b611hfic17lj15ej1jp1pb31m979.png" alt="origin"></p>
 <p>而另外一位群友贴出了这个地方的是有值的，这个地方是有BUG的，在咨询了相关的问题描述以后，我们来看下，可以如何解决这个问题<br><a id="more"></a></p>
-<h2 id="二、问题解决过程">二、问题解决过程</h2><h3 id="2-1_问题描述：">2.1 问题描述：</h3><p>calamari的salt-master节点在读取</p>
+<h2 id="二、问题解决过程">二、问题解决过程</h2><p>salt的软件版本：</p>
+<ul>
+<li>salt-master-2015.8.1-1.el7.noarch</li>
+<li>salt-2015.8.1-1.el7.noarch</li>
+<li>salt-minion-2015.8.1-1.el7.noarch</li>
+</ul>
+<h3 id="2-1_问题描述：">2.1 问题描述：</h3><p>calamari的salt-master节点在读取</p>
 <blockquote>
 <p>/var/cache/salt/master/minions/{minion-hostname}/data.p</p>
 </blockquote>
