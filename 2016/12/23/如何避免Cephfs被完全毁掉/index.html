@@ -12,7 +12,6 @@
 <meta property="og:site_name" content="zphj1987'Blog">
 <meta property="og:description" content="前提一套系统的最低要求是可恢复，也就是数据不丢失，但是在各种各样的原因下，整套系统都有被毁掉的可能，一直以来有个观点就是存储是需要两套的，一般情况下很难实现，但是如何把故障发生的概率降低到最低，这个是我们需要考虑的问题">
 <meta property="og:image" content="http://7xweck.com1.z0.glb.clouddn.com/kulesza-215.jpg">
-<meta property="og:image" content="http://7xweck.com1.z0.glb.clouddn.com/qrcode_for_gh_6998a54d68f7_430.jpg">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="如何避免Cephfs被完全毁掉">
 <meta name="twitter:description" content="前提一套系统的最低要求是可恢复，也就是数据不丢失，但是在各种各样的原因下，整套系统都有被毁掉的可能，一直以来有个观点就是存储是需要两套的，一般情况下很难实现，但是如何把故障发生的概率降低到最低，这个是我们需要考虑的问题">
@@ -246,8 +245,6 @@ var _hmt = _hmt || [];
 <p>这个时候查看ceph -s状态，mds都无法启动，我们来做下恢复<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 mds]<span class="comment"># systemctl stop ceph-mds@lab8106</span></span><br><span class="line">[root@lab8106 mds]<span class="comment"># ceph mds fail 0</span></span><br><span class="line">[root@lab8106 mds]<span class="comment"># ceph fs rm ceph --yes-i-really-mean-it</span></span><br><span class="line">[root@lab8106 mds]<span class="comment"># ceph fs new ceph metadata data</span></span><br><span class="line">[root@lab8106 mds]<span class="comment"># for a in `cat metalist`;do rados  -p metadata rollback $a snap1;done;</span></span><br><span class="line">rolled back pool metadata to snapshot snap1</span><br><span class="line">rolled back pool metadata to snapshot snap1</span><br><span class="line">rolled back pool metadata to snapshot snap1</span><br><span class="line">rolled back pool metadata to snapshot snap1</span><br><span class="line">···</span><br><span class="line">[root@lab8106 mds]<span class="comment"># rados  -p metadata ls|wc -l</span></span><br><span class="line"><span class="number">20</span></span><br><span class="line">[root@lab8106 mds]<span class="comment"># systemctl start ceph-mds@lab8106</span></span><br></pre></td></tr></table></figure></p>
 <p>这个时候需要多等下mds恢复正常，有可能记录了原来的客户端信息，需要做重连，如果一直没恢复就重启下mds<br>挂载以后，可以看到，对象数据都回来了</p>
 <h2 id="总结">总结</h2><p>这个能算一个防患于未然的办法，如果对于纯数据存储的情况，存储池的快照也是能够在某些场景下发挥很大的作用的，当然什么时机做快照，保留什么多少版本，什么时候删除快照，这个都是有学问的，需要根据实际的场景和压力去做</p>
-<h2 id="我的公众号-磨磨谈">我的公众号-磨磨谈</h2><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/qrcode_for_gh_6998a54d68f7_430.jpg" alt=""><br></center>
-
 
       
     </div>

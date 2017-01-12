@@ -4,7 +4,7 @@
   <subtitle><![CDATA[但行好事，莫问前程]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2017-01-12T05:09:21.093Z</updated>
+  <updated>2017-01-12T05:46:05.621Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="http://www.zphj1987.com/2017/01/12/sortbitwise-mean/"/>
     <id>http://www.zphj1987.com/2017/01/12/sortbitwise-mean/</id>
     <published>2017-01-12T04:39:24.000Z</published>
-    <updated>2017-01-12T05:09:21.093Z</updated>
+    <updated>2017-01-12T05:46:05.621Z</updated>
     <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/techie.jpg" alt=""><br></center>
 
 <h2 id="问题">问题</h2><p>flag sortbitwise 在ceph中是什么意思,在Jewel版本下可以看到多了这个flags</p>
@@ -30,12 +30,12 @@
 </blockquote>
 <p>From <a href="http://docs.ceph.com/docs/master/release-notes/#upgrading-from-infernalis-or-hammer" target="_blank" rel="external">Ceph release notes</a></p>
 <blockquote>
-<p>commit 383185bfbae74797cdb44f50b4bf651422800ff1<br>Author: Sage Weil <a href="&#x6d;&#97;&#x69;&#x6c;&#x74;&#x6f;&#58;&#x73;&#x61;&#103;&#x65;&#x40;&#114;&#x65;&#x64;&#104;&#97;&#116;&#x2e;&#x63;&#111;&#x6d;">&#x73;&#x61;&#103;&#x65;&#x40;&#114;&#x65;&#x64;&#104;&#97;&#116;&#x2e;&#x63;&#111;&#x6d;</a><br>Date: Fri Aug 7 16:14:09 2015 -0400<br>mon/OSDMonitor: osd set/unset sortbitwise<br> Add monitor command to flip the switch on the OSD hobject_t sort<br> order.</p>
+<p>commit 383185bfbae74797cdb44f50b4bf651422800ff1<br>Author: Sage Weil <a href="&#x6d;&#x61;&#105;&#x6c;&#x74;&#111;&#x3a;&#115;&#x61;&#103;&#x65;&#x40;&#x72;&#x65;&#x64;&#104;&#97;&#x74;&#x2e;&#x63;&#x6f;&#x6d;">&#115;&#x61;&#103;&#x65;&#x40;&#x72;&#x65;&#x64;&#104;&#97;&#x74;&#x2e;&#x63;&#x6f;&#x6d;</a><br>Date: Fri Aug 7 16:14:09 2015 -0400<br>mon/OSDMonitor: osd set/unset sortbitwise<br> Add monitor command to flip the switch on the OSD hobject_t sort<br> order.</p>
 </blockquote>
 <p>From git</p>
 <p>第一次在源码中出现:</p>
 <blockquote>
-<p>commit 138f58493715e386929f152424b70df37843541b<br>Author: John Spray <a href="&#x6d;&#x61;&#105;&#x6c;&#116;&#x6f;&#x3a;&#106;&#x6f;&#x68;&#110;&#x2e;&#115;&#x70;&#x72;&#x61;&#x79;&#64;&#114;&#x65;&#x64;&#x68;&#97;&#x74;&#46;&#x63;&#x6f;&#109;">&#106;&#x6f;&#x68;&#110;&#x2e;&#115;&#x70;&#x72;&#x61;&#x79;&#64;&#114;&#x65;&#x64;&#x68;&#97;&#x74;&#46;&#x63;&#x6f;&#109;</a><br>Date: Mon Aug 17 14:40:46 2015 -0400<br>osdc/Objecter: new-style pgls<br> Signed-off-by: John Spray <a href="&#x6d;&#97;&#x69;&#108;&#116;&#x6f;&#58;&#106;&#111;&#x68;&#110;&#x2e;&#115;&#112;&#x72;&#x61;&#121;&#64;&#114;&#101;&#100;&#x68;&#97;&#116;&#46;&#99;&#111;&#109;">&#106;&#111;&#x68;&#110;&#x2e;&#115;&#112;&#x72;&#x61;&#121;&#64;&#114;&#101;&#100;&#x68;&#97;&#116;&#46;&#99;&#111;&#109;</a><br> Signed-off-by: Sage Weil <a href="&#x6d;&#x61;&#105;&#108;&#x74;&#111;&#x3a;&#x73;&#97;&#x67;&#x65;&#64;&#x72;&#x65;&#100;&#x68;&#x61;&#116;&#46;&#99;&#x6f;&#109;">&#x73;&#97;&#x67;&#x65;&#64;&#x72;&#x65;&#100;&#x68;&#x61;&#116;&#46;&#99;&#x6f;&#109;</a></p>
+<p>commit 138f58493715e386929f152424b70df37843541b<br>Author: John Spray <a href="&#109;&#97;&#105;&#x6c;&#116;&#111;&#58;&#x6a;&#x6f;&#104;&#x6e;&#46;&#x73;&#x70;&#114;&#x61;&#x79;&#x40;&#x72;&#x65;&#x64;&#x68;&#x61;&#x74;&#x2e;&#x63;&#x6f;&#x6d;">&#x6a;&#x6f;&#104;&#x6e;&#46;&#x73;&#x70;&#114;&#x61;&#x79;&#x40;&#x72;&#x65;&#x64;&#x68;&#x61;&#x74;&#x2e;&#x63;&#x6f;&#x6d;</a><br>Date: Mon Aug 17 14:40:46 2015 -0400<br>osdc/Objecter: new-style pgls<br> Signed-off-by: John Spray <a href="&#x6d;&#x61;&#x69;&#x6c;&#x74;&#111;&#58;&#106;&#111;&#104;&#x6e;&#46;&#115;&#112;&#114;&#97;&#121;&#64;&#114;&#x65;&#x64;&#x68;&#x61;&#x74;&#x2e;&#x63;&#x6f;&#109;">&#106;&#111;&#104;&#x6e;&#46;&#115;&#112;&#114;&#97;&#121;&#64;&#114;&#x65;&#x64;&#x68;&#x61;&#x74;&#x2e;&#x63;&#x6f;&#109;</a><br> Signed-off-by: Sage Weil <a href="&#x6d;&#97;&#105;&#x6c;&#x74;&#111;&#58;&#115;&#x61;&#103;&#101;&#x40;&#114;&#x65;&#100;&#104;&#97;&#x74;&#x2e;&#x63;&#111;&#109;">&#115;&#x61;&#103;&#101;&#x40;&#114;&#x65;&#100;&#104;&#97;&#x74;&#x2e;&#x63;&#111;&#109;</a></p>
 </blockquote>
 <p>From git</p>
 <p>Related github issue: <a href="https://github.com/ceph/ceph/pull/4919/commits" target="_blank" rel="external">https://github.com/ceph/ceph/pull/4919/commits</a></p>
@@ -49,7 +49,6 @@
 <p>下载ceph的源码，进入源码目录<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 all]<span class="comment"># git show 968261b11ac30622c0606d1e2ddf422009e7d330</span></span><br><span class="line">commit <span class="number">968261</span>b11ac30622c0606d1e2ddf422009e7d330</span><br><span class="line">Author: Sage Weil &lt;sage@redhat.com&gt;</span><br><span class="line">Date:   Fri Aug <span class="number">7</span> <span class="number">16</span>:<span class="number">01</span>:<span class="number">12</span> <span class="number">2015</span> -<span class="number">0400</span></span><br><span class="line"></span><br><span class="line">    osd/OSDMap: add a SORTBITWISE OSDMap flag</span><br><span class="line"></span><br><span class="line">    This flag will indicate that hobject_t<span class="string">'s shall hence-forth be</span><br><span class="line">    sorted in a bitwise fashion.</span><br><span class="line"></span><br><span class="line">    Signed-off-by: Sage Weil &lt;sage@redhat.com&gt;</span></span><br></pre></td></tr></table></figure></p>
 <p>正如我们在上面给定的提交的描述中所说，该标志将表明hobject_t的将以 bitwise fashion方式排序。<br>现在意味着现在的对象将在OSDs中以按位方式排序，并且此标志默认在Infernalis和Jewel发布版本中启用。</p>
 <h2 id="总结">总结</h2><p>目前来看这个是底层的一个排序的算法的变动，对上层目前还不清楚是有什么可以可见的变化，总之，这个让它默认开启就行，不要去修改它就可以了</p>
-<h2 id="我的公众号-磨磨谈">我的公众号-磨磨谈</h2><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/qrcode_for_gh_6998a54d68f7_430.jpg" alt=""><br></center>
 ]]></content>
     <summary type="html">
     <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/techie.jpg" alt=""><br></center>
@@ -68,7 +67,7 @@
     <link href="http://www.zphj1987.com/2017/01/09/calamari-node-info/"/>
     <id>http://www.zphj1987.com/2017/01/09/calamari-node-info/</id>
     <published>2017-01-09T07:06:51.000Z</published>
-    <updated>2017-01-09T08:27:22.650Z</updated>
+    <updated>2017-01-12T05:46:13.220Z</updated>
     <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/saltstack.png" alt="salt-stack"><br></center>
 
 <h2 id="一、前言">一、前言</h2><p>一直在做calamari的相关的一些打包和安装的工作，都是业余弄的东西，所以并没有仔细的进行功能点的验证测试，正好ceph社区群里面有人问了个问题</p>
@@ -101,9 +100,6 @@
 <p><img src="http://static.zybuluo.com/zphj1987/4qkz1xo0kretsrvn8nalmt17/image_1b612ekp81ec0uk140t1b5tdjfm.png" alt="changge"></p>
 <p>问题解决</p>
 <h2 id="三、总结">三、总结</h2><p>calamari有一些各种各样的小问题，总体上还是一款非常简洁漂亮的管理界面，在没有监控系统的情况下，还是一个不错的选择</p>
-<h2 id="四、我的公众号-磨磨谈">四、我的公众号-磨磨谈</h2><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/qrcode_for_gh_6998a54d68f7_430.jpg" alt=""><br></center>
-
-
 ]]></content>
     <summary type="html">
     <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/saltstack.png" alt="salt-stack"><br></center>
@@ -127,7 +123,7 @@
     <link href="http://www.zphj1987.com/2017/01/05/Ceph-compile-speedup/"/>
     <id>http://www.zphj1987.com/2017/01/05/Ceph-compile-speedup/</id>
     <published>2017-01-05T09:46:54.000Z</published>
-    <updated>2017-01-05T09:48:41.197Z</updated>
+    <updated>2017-01-12T05:47:09.044Z</updated>
     <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/octoalien.jpg" alt="此处输入图片的描述"><br></center>
 
 <p>总结了几个小技巧，用于在ceph编译过程中，能够更快一点<br><a id="more"></a></p>
@@ -172,10 +168,6 @@
 </blockquote>
 <p>然后执行install-deps.sh，这样会快很多的</p>
 <h2 id="总结">总结</h2><p>目前就这么多，后续有更多的影响速度的地方会增加上去</p>
-<h2 id="我的公众号-磨磨谈">我的公众号-磨磨谈</h2><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/qrcode_for_gh_6998a54d68f7_430.jpg" alt=""><br></center>
-
-
-
 ]]></content>
     <summary type="html">
     <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/octoalien.jpg" alt="此处输入图片的描述"><br></center>
@@ -193,7 +185,7 @@
     <link href="http://www.zphj1987.com/2017/01/05/ceph-crush-straw/"/>
     <id>http://www.zphj1987.com/2017/01/05/ceph-crush-straw/</id>
     <published>2017-01-05T04:45:23.000Z</published>
-    <updated>2017-01-05T05:33:41.099Z</updated>
+    <updated>2017-01-12T05:46:38.437Z</updated>
     <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/crushmode.jpg" alt=""><br></center>
 
 <p>很多年以前，Sage 在写CRUSH的原始算法的时候，写了不同的Bucket类型，可以选择不同的伪随机选择算法，大部分的模型是基于RJ Honicky写的RUSH algorithms 这个算法，这个在网上可以找到资料，这里面有一个新的特性是sage很引以为豪的，straw算法，也就是我们现在常用的一些算法，这个算法有下面的特性：</p>
@@ -248,9 +240,6 @@
 <p>开始设置好了 新创建的默认就是会straw2就会省去修改crushmap的操作</p>
 <p>注意librados是服务端支持，客户端就支持，涉及到内核客户端的，就需要内核版本的支持，内核从4.1开始支持，也就是cephfs和rbd的块设备方式需要内核4.1及以上支持，openstack对接的是librados可以默认支持，其他的也都默认可以支持的</p>
 <h2 id="相关链接">相关链接</h2><p><a href="https://en.wikipedia.org/wiki/Exponential_distribution#Distribution_of_the_minimum_of_exponential_random_variables" target="_blank" rel="external">https://en.wikipedia.org/wiki/Exponential_distribution#Distribution_of_the_minimum_of_exponential_random_variables</a></p>
-<h3 id="我的公众号-磨磨谈">我的公众号-磨磨谈</h3><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/qrcode_for_gh_6998a54d68f7_430.jpg" alt=""><br></center>
-
-
 ]]></content>
     <summary type="html">
     <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/crushmode.jpg" alt=""><br></center>
@@ -272,7 +261,7 @@
     <link href="http://www.zphj1987.com/2017/01/03/rbd-image-write-objects/"/>
     <id>http://www.zphj1987.com/2017/01/03/rbd-image-write-objects/</id>
     <published>2017-01-03T06:35:53.000Z</published>
-    <updated>2017-01-03T08:39:07.311Z</updated>
+    <updated>2017-01-12T05:47:15.872Z</updated>
     <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/2017.png" alt=""><br></center>
 
 <h2 id="一、前言">一、前言</h2><p>收到一个问题如下：</p>
@@ -291,9 +280,6 @@
 <p>只写入了少量的对象，我们尝试下载下来看看<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ll -hl rbd_data.85c66b8b4567.0000000000000018</span></span><br><span class="line">-rw-r--r-- <span class="number">1</span> root root <span class="number">4.0</span>M Jan  <span class="number">3</span> <span class="number">14</span>:<span class="number">27</span> rbd_data.<span class="number">85</span>c66b8b4567.<span class="number">0000000000000018</span></span><br><span class="line">[root@lab8106 ~]<span class="comment"># rados  -p rbd get rbd_data.85c66b8b4567.0000000000000000 rbd_data.85c66b8b4567.0000000000000000</span></span><br><span class="line">[root@lab8106 ~]<span class="comment"># ll -hl rbd_data.85c66b8b4567.0000000000000000</span></span><br><span class="line">-rw-r--r-- <span class="number">1</span> root root <span class="number">4.0</span>M Jan  <span class="number">3</span> <span class="number">14</span>:<span class="number">27</span> rbd_data.<span class="number">85</span>c66b8b4567.<span class="number">0000000000000000</span></span><br></pre></td></tr></table></figure></p>
 <p>可以看到还是4M的对象，实际上写入的小文件已经进行了合并了，在底层已经是一个4M的对象文件了</p>
 <h2 id="总结">总结</h2><p>本篇的结论就是，rbd层之上的写入的文件的个数与底层的对象数目是没有关系的，对象数目和对象大小是底层处理的，再上一层就是文件系统去处理的了，总空间占用上是一致的</p>
-<h2 id="我的公众号-磨磨谈">我的公众号-磨磨谈</h2><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/qrcode_for_gh_6998a54d68f7_430.jpg" alt=""><br></center>
-
-
 ]]></content>
     <summary type="html">
     <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/2017.png" alt=""><br></center>
@@ -317,7 +303,7 @@
     <link href="http://www.zphj1987.com/2016/12/26/manage-ceph-osd-journal-uuid/"/>
     <id>http://www.zphj1987.com/2016/12/26/manage-ceph-osd-journal-uuid/</id>
     <published>2016-12-26T05:41:14.000Z</published>
-    <updated>2016-12-26T05:43:04.864Z</updated>
+    <updated>2017-01-12T05:47:24.670Z</updated>
     <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/writefor.jpg" alt="write"><br></center>
 
 <p>一、前言<br>之前有一篇文章介绍的是，在centos7的jewel下面如果自己做的分区如何处理自动挂载的问题，当时的环境对journal的地方采取的是文件的形式处理的，这样就没有了重启后journal的磁盘偏移的问题<br><a id="more"></a><br>如果采用的是ceph自带的deploy去做分区的处理的时候，是调用的sgdisk去对磁盘做了一些处理的，然后deploy能够识别一些特殊的标记，然后去做了一些其他的工作，而自己分区的时候，是没有做这些标记的这样就可能会有其他的问题</p>
@@ -341,9 +327,6 @@
 <h5 id="查看jounral的数据">查看jounral的数据</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># ll /var/lib/ceph/osd/ceph-8</span></span><br><span class="line">total <span class="number">56</span></span><br><span class="line">-rw-r--r--   <span class="number">1</span> root root  <span class="number">193</span> Dec <span class="number">26</span> <span class="number">13</span>:<span class="number">26</span> activate.monmap</span><br><span class="line">-rw-r--r--   <span class="number">1</span> ceph ceph    <span class="number">3</span> Dec <span class="number">26</span> <span class="number">13</span>:<span class="number">26</span> active</span><br><span class="line">-rw-r--r--   <span class="number">1</span> ceph ceph   <span class="number">37</span> Dec <span class="number">26</span> <span class="number">13</span>:<span class="number">25</span> ceph_fsid</span><br><span class="line">drwxr-xr-x <span class="number">164</span> ceph ceph <span class="number">4096</span> Dec <span class="number">26</span> <span class="number">13</span>:<span class="number">26</span> current</span><br><span class="line">-rw-r--r--   <span class="number">1</span> ceph ceph   <span class="number">37</span> Dec <span class="number">26</span> <span class="number">13</span>:<span class="number">25</span> fsid</span><br><span class="line">lrwxrwxrwx   <span class="number">1</span> ceph ceph   <span class="number">58</span> Dec <span class="number">26</span> <span class="number">13</span>:<span class="number">25</span> journal -&gt; /dev/disk/by-partuuid/<span class="built_in">cd</span>72d6e8-<span class="number">07</span>d0-<span class="number">4</span><span class="built_in">cd</span>3-<span class="number">8</span>c6b<span class="operator">-a</span>33d624cae36</span><br><span class="line">···</span><br></pre></td></tr></table></figure>
 <p>可以看到已经正确的链接了,并且部署过程中也没有了上面的需要进行权限的处理，这个是deploy工具在中间帮做了</p>
 <h2 id="三、总结">三、总结</h2><p>处理的核心在于做的那两个标记，其他的就交给deploy工具自己处理就行了，如果有兴趣可以深入研究，没兴趣的话，就安装上面说的方法进行处理就行</p>
-<h2 id="六、我的公众号-磨磨谈">六、我的公众号-磨磨谈</h2><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/qrcode_for_gh_6998a54d68f7_430.jpg" alt=""><br></center>
-
-
 ]]></content>
     <summary type="html">
     <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/writefor.jpg" alt="write"><br></center>
@@ -361,7 +344,7 @@
     <link href="http://www.zphj1987.com/2016/12/23/%E5%A6%82%E4%BD%95%E9%81%BF%E5%85%8DCephfs%E8%A2%AB%E5%AE%8C%E5%85%A8%E6%AF%81%E6%8E%89/"/>
     <id>http://www.zphj1987.com/2016/12/23/如何避免Cephfs被完全毁掉/</id>
     <published>2016-12-23T14:46:35.000Z</published>
-    <updated>2016-12-26T05:42:53.951Z</updated>
+    <updated>2017-01-12T05:47:32.986Z</updated>
     <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/kulesza-215.jpg" alt="rollback"><br></center>
 
 <h2 id="前提">前提</h2><p>一套系统的最低要求是可恢复，也就是数据不丢失，但是在各种各样的原因下，整套系统都有被毁掉的可能，一直以来有个观点就是存储是需要两套的，一般情况下很难实现，但是如何把故障发生的概率降低到最低，这个是我们需要考虑的问题<br><a id="more"></a><br>最近在社区群里面又听闻一个案例，一套系统的文件系统被重置掉了，也就是fs被重建了，实际上这属于一个不应该有的操作，但是已经发生的事情，就看怎么样能在下次避免或者把损失降到最低，对于hammer版本来说，重建cephfs只是把目录树给冲掉了，实际的目录还是能创建起来，但是这其实是一个BUG，并且在最新的Jewel下已经解决掉这个问题，这就造成无法重建目录树，在Jewel下，在不修改代码的情况下，文件都可以扫描回来，但是全部塞到了一个目录下，对于某些场景来说，这个已经是最大限度的恢复了，至少文件还在，如果文件类型可知，也可以一个个去人工识别的，虽然工作量异常的大，但至少文件回来了，这种情况，如果有保留文件名和文件md5值的强制要求的话，文件是可以完全找回来的，当然，这都是一些防范措施，看有没有重视，或者提前做好了预备</p>
@@ -384,8 +367,6 @@
 <p>这个时候查看ceph -s状态，mds都无法启动，我们来做下恢复<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 mds]<span class="comment"># systemctl stop ceph-mds@lab8106</span></span><br><span class="line">[root@lab8106 mds]<span class="comment"># ceph mds fail 0</span></span><br><span class="line">[root@lab8106 mds]<span class="comment"># ceph fs rm ceph --yes-i-really-mean-it</span></span><br><span class="line">[root@lab8106 mds]<span class="comment"># ceph fs new ceph metadata data</span></span><br><span class="line">[root@lab8106 mds]<span class="comment"># for a in `cat metalist`;do rados  -p metadata rollback $a snap1;done;</span></span><br><span class="line">rolled back pool metadata to snapshot snap1</span><br><span class="line">rolled back pool metadata to snapshot snap1</span><br><span class="line">rolled back pool metadata to snapshot snap1</span><br><span class="line">rolled back pool metadata to snapshot snap1</span><br><span class="line">···</span><br><span class="line">[root@lab8106 mds]<span class="comment"># rados  -p metadata ls|wc -l</span></span><br><span class="line"><span class="number">20</span></span><br><span class="line">[root@lab8106 mds]<span class="comment"># systemctl start ceph-mds@lab8106</span></span><br></pre></td></tr></table></figure></p>
 <p>这个时候需要多等下mds恢复正常，有可能记录了原来的客户端信息，需要做重连，如果一直没恢复就重启下mds<br>挂载以后，可以看到，对象数据都回来了</p>
 <h2 id="总结">总结</h2><p>这个能算一个防患于未然的办法，如果对于纯数据存储的情况，存储池的快照也是能够在某些场景下发挥很大的作用的，当然什么时机做快照，保留什么多少版本，什么时候删除快照，这个都是有学问的，需要根据实际的场景和压力去做</p>
-<h2 id="我的公众号-磨磨谈">我的公众号-磨磨谈</h2><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/qrcode_for_gh_6998a54d68f7_430.jpg" alt=""><br></center>
-
 ]]></content>
     <summary type="html">
     <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/kulesza-215.jpg" alt="rollback"><br></center>
@@ -403,7 +384,7 @@
     <link href="http://www.zphj1987.com/2016/12/22/Ceph%E6%95%B0%E6%8D%AE%E7%9B%98%E6%80%8E%E6%A0%B7%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%8A%A8%E6%8C%82%E8%BD%BD/"/>
     <id>http://www.zphj1987.com/2016/12/22/Ceph数据盘怎样实现自动挂载/</id>
     <published>2016-12-22T15:16:23.000Z</published>
-    <updated>2016-12-22T15:18:37.799Z</updated>
+    <updated>2017-01-12T05:47:40.578Z</updated>
     <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/mountain.png" alt="mount"><br></center>
 
 <h2 id="前言">前言</h2><p>在Centos7 下，现在采用了 systemctl来控制服务，这个刚开始用起来可能不太习惯，不过这个服务比之前的服务控制要强大的多，可以做更多的控制，本节将来介绍下关于 Ceph的 osd 磁盘挂载的问题</p>
@@ -427,9 +408,6 @@
 <p>我们来验证一下：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># systemctl stop ceph-osd@7</span></span><br><span class="line">[root@lab8106 ceph]<span class="comment"># umount /dev/sdi1 </span></span><br><span class="line">[root@lab8106 ceph]<span class="comment"># systemctl start ceph-disk@/dev/sdi1</span></span><br><span class="line">[root@lab8106 ceph]<span class="comment"># df -h|grep sdi</span></span><br><span class="line">/dev/sdi1       <span class="number">280</span>G  <span class="number">1.1</span>G  <span class="number">279</span>G   <span class="number">1</span>% /var/lib/ceph/osd/ceph-<span class="number">7</span></span><br></pre></td></tr></table></figure></p>
 <p>可以用服务挂载了<br>这个是代码里面写死的判断值，来判断osd是ready的了<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/usr/lib/python2.<span class="number">7</span>/site-packages/ceph_disk/main.py</span><br><span class="line"></span><br><span class="line"><span class="string">'osd'</span>: &#123;</span><br><span class="line">            <span class="string">'ready'</span>: <span class="string">'4fbd7e29-9d25-41b8-afd0-062c0ceff05d'</span>,</span><br><span class="line">            <span class="string">'tobe'</span>: <span class="string">'89c57f98-2fe5-4dc0-89c1-f3ad0ceff2be'</span>,</span><br><span class="line">        &#125;,</span><br></pre></td></tr></table></figure></p>
 <h2 id="总结">总结</h2><p>通过本篇的介绍，应该能够清楚什么情况下不自动挂载，什么情况下自动挂载，怎么去实现自动挂载，虽然上面只用了一调命令就实现了，不过我找了很久才定位到这个命令的，当然自己也掌握了这个知识点，公众号已经可以留言了，欢迎留言</p>
-<h2 id="我的公众号-磨磨谈">我的公众号-磨磨谈</h2><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/qrcode_for_gh_6998a54d68f7_430.jpg" alt=""><br></center>
-
-
 ]]></content>
     <summary type="html">
     <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/mountain.png" alt="mount"><br></center>
@@ -448,7 +426,7 @@
     <link href="http://www.zphj1987.com/2016/12/18/cephonebox%E5%8F%91%E5%B8%83/"/>
     <id>http://www.zphj1987.com/2016/12/18/cephonebox发布/</id>
     <published>2016-12-18T14:25:48.000Z</published>
-    <updated>2016-12-21T07:58:29.775Z</updated>
+    <updated>2017-01-12T05:47:57.796Z</updated>
     <content type="html"><![CDATA[<center><br><img src="http://7xo9we.com1.z0.glb.clouddn.com/shipin/cephoneboxpre3.jpg" alt=""><br></center>
 
 <h2 id="一、前言">一、前言</h2><p>现在已经是2016年收官的一个月了，之前一直想做一个calamari的集成版本，之所以有这个想法，是因为，即使在已经打好包的情况下，因为各种软件版本的原因，造成很多人无法配置成功，calamari发布以后，因为版本的更迭，经常出现软件版本引起的BUG<br><a id="more"></a><br>这里直接把需要的软件集成在一起了，按照本篇指导，一步一步是能够很简单的配置起来的，并且提供了一个视频的指导，应该能够很大程度上降低calamari的部署难度，希望能够帮助到更多的人</p>
@@ -481,7 +459,6 @@
 <h3 id="4-6_访问WEB">4.6 访问WEB</h3><p>配置已经完成通过web 访问cephoneweb的IP即可</p>
 <h2 id="五、故障处理">五、故障处理</h2><center><br><img src="http://static.zybuluo.com/zphj1987/ui9hlsqffofb26ofgz7zz6i7/%E6%95%85%E9%9A%9C%E4%B8%80%E5%A4%84%E7%90%86.jpg" alt="故障一处理.jpg-42.6kB"><br></center><br><center><br><img src="http://static.zybuluo.com/zphj1987/wwwynt1mzipi2knbkmj8x8w4/%E6%95%85%E9%9A%9C%E4%BA%8C%E5%A4%84%E7%90%86.jpg" alt="故障二处理.jpg-54.8kB"><br></center>
 
-<h2 id="六、我的公众号-磨磨谈">六、我的公众号-磨磨谈</h2><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/qrcode_for_gh_6998a54d68f7_430.jpg" alt=""><br></center>
 
 ]]></content>
     <summary type="html">
@@ -500,7 +477,7 @@
     <link href="http://www.zphj1987.com/2016/12/14/rbd%E7%9A%84image%E5%BF%AB%E7%85%A7%E4%B8%8EPool%E5%BF%AB%E7%85%A7/"/>
     <id>http://www.zphj1987.com/2016/12/14/rbd的image快照与Pool快照/</id>
     <published>2016-12-14T01:55:51.000Z</published>
-    <updated>2016-12-14T02:06:18.654Z</updated>
+    <updated>2017-01-12T05:48:04.733Z</updated>
     <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/storagead.jpg" alt=""><br></center>
 
 <h2 id="前言">前言</h2><p>这个问题是不久前在ceph社区群里看到的，创建image的时候，当时的报错如下：</p>
@@ -531,9 +508,6 @@
 <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/poolsnap.png" alt="此处输入图片的描述"><br></center>
 
 <h2 id="总结">总结</h2><p>本篇总结了快照的两个出错的原因，尽量提前做好规划，再去选择哪种</p>
-<h2 id="我的公众号-磨磨谈">我的公众号-磨磨谈</h2><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/qrcode_for_gh_6998a54d68f7_430.jpg" alt=""><br></center>
-
-
 ]]></content>
     <summary type="html">
     <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/storagead.jpg" alt=""><br></center>
@@ -555,7 +529,7 @@
     <link href="http://www.zphj1987.com/2016/12/13/Cephfs%E7%9A%84%E5%BF%AB%E7%85%A7%E5%8A%9F%E8%83%BD/"/>
     <id>http://www.zphj1987.com/2016/12/13/Cephfs的快照功能/</id>
     <published>2016-12-13T08:26:35.000Z</published>
-    <updated>2016-12-13T08:45:45.190Z</updated>
+    <updated>2017-01-12T05:48:11.225Z</updated>
     <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/snapshot.jpg" alt=""><br></center>
 
 <h2 id="前言">前言</h2><p>Cephfs的快照功能在官网都很少提及，因为即使开发了很多年，但是由于cephfs的复杂性，功能一直没能达到稳定，这里，只是介绍一下这个功能，怎么使用，并且建议不要在生产中使用，因为搞不好是会丢数据的</p>
@@ -575,7 +549,7 @@
 <p>删除快照<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 mnt]<span class="comment"># rmdir .snap/snap1</span></span><br></pre></td></tr></table></figure></p>
 <p>删除快照需要用rmdir命令</p>
 <h2 id="总结">总结</h2><p>本篇简单的介绍了下cephfs快照的相关的操作，自己很久没搞，命令都找不到了，供参考</p>
-<h2 id="我的公众号-磨磨谈">我的公众号-磨磨谈</h2><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/qrcode_for_gh_6998a54d68f7_430.jpg" alt=""><br></center>]]></content>
+]]></content>
     <summary type="html">
     <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/snapshot.jpg" alt=""><br></center>
 
@@ -592,13 +566,13 @@
     <link href="http://www.zphj1987.com/2016/12/08/%E6%9F%A5%E8%AF%A2Ceph%E7%9A%84OSD%E5%8D%A0%E7%94%A8%E5%86%85%E5%AD%98/"/>
     <id>http://www.zphj1987.com/2016/12/08/查询Ceph的OSD占用内存/</id>
     <published>2016-12-08T14:15:19.000Z</published>
-    <updated>2016-12-09T02:09:14.892Z</updated>
+    <updated>2017-01-12T05:48:16.818Z</updated>
     <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/Memory.png" alt=""><br></center>
 
 <h2 id="前言">前言</h2><p>之前写过一篇关于查询OSD的运行的CPU的情况的分享，本篇是讲的获取内存占用的，代码包括两种输出，一种是直接的表格，一种是可以方便解析的json<br><a id="more"></a></p>
 <h2 id="代码">代码</h2><p>直接上代码，python才用不久，所以可能代码实现比较低级，主要是看实现的方法<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># -*- coding: UTF-8 -*-</span></span><br><span class="line">import os</span><br><span class="line">import sys</span><br><span class="line">import json</span><br><span class="line">import psutil</span><br><span class="line">import commands</span><br><span class="line">from prettytable import PrettyTable</span><br><span class="line">def main():</span><br><span class="line">    <span class="keyword">if</span> len(sys.argv) == <span class="number">1</span>:</span><br><span class="line">        printosdmemtable(<span class="string">"table"</span>)</span><br><span class="line">    <span class="keyword">elif</span> sys.argv[<span class="number">1</span>] == <span class="string">'json'</span>:</span><br><span class="line">        printosdmemtable(<span class="string">"json"</span>)</span><br><span class="line"></span><br><span class="line">def printosdmemtable(chosse):</span><br><span class="line">        data_dic = &#123;&#125;</span><br><span class="line">        osd_list=&#123;&#125;</span><br><span class="line">        row = PrettyTable()</span><br><span class="line">        row.header = True</span><br><span class="line">        memlist = [<span class="string">"OSD\MEM"</span>]</span><br><span class="line">        memchose = [ <span class="string">'VIRT'</span>,<span class="string">'RES'</span>]</span><br><span class="line">        <span class="keyword">for</span> meminfo <span class="keyword">in</span> memchose:</span><br><span class="line">            memlist.append(<span class="string">"%s"</span> %meminfo )</span><br><span class="line">        row.field_names = memlist</span><br><span class="line">        <span class="keyword">for</span> root, <span class="built_in">dirs</span>, files <span class="keyword">in</span> os.walk(<span class="string">'/var/run/ceph/'</span>):</span><br><span class="line">            <span class="keyword">for</span> name <span class="keyword">in</span> files:</span><br><span class="line">                <span class="keyword">if</span> <span class="string">"osd"</span>  <span class="keyword">in</span> name and <span class="string">"pid"</span> <span class="keyword">in</span> name :</span><br><span class="line">                    osdlist = []</span><br><span class="line">                    osdthlist=[]</span><br><span class="line">                    <span class="keyword">for</span> osdmem <span class="keyword">in</span> range(len(memchose)):</span><br><span class="line">                        osdlist.append(<span class="string">" "</span>)</span><br><span class="line">                    pidfile=root+ name</span><br><span class="line">                    osdid=commands.getoutput(<span class="string">'ls  %s|cut -d "." -f 2 2&gt;/dev/null'</span>  %pidfile )</span><br><span class="line">                    osdpid = commands.getoutput(<span class="string">'cat %s  2&gt;/dev/null'</span> %pidfile)</span><br><span class="line">                    osd_runmemvsz = commands.getoutput(<span class="string">'ps -p %s  -o vsz |grep -v VSZ 2&gt;/dev/null'</span> %osdpid)</span><br><span class="line">                    osd_runmemrsz = commands.getoutput(<span class="string">'ps -p %s  -o rsz |grep -v RSZ 2&gt;/dev/null'</span> %osdpid)</span><br><span class="line">                    osdname=<span class="string">"osd."</span>+osdid</span><br><span class="line">                    osdlist.insert(<span class="number">0</span>,osdname)</span><br><span class="line">                    osdlist[<span class="number">1</span>] = str(int(osd_runmemvsz)/<span class="number">1024</span>)+<span class="string">"KB"</span></span><br><span class="line">                    osdlist[<span class="number">2</span>] = str(int(osd_runmemrsz)/<span class="number">1024</span>)+<span class="string">"KB"</span></span><br><span class="line">                    vm_dic = &#123;&#125;</span><br><span class="line">                    vm_dic[<span class="string">'VSZ'</span>]= str(int(osd_runmemvsz)/<span class="number">1024</span>)+<span class="string">"KB"</span></span><br><span class="line">                    vm_dic[<span class="string">'RSZ'</span>]= str(int(osd_runmemrsz)/<span class="number">1024</span>)+<span class="string">"KB"</span></span><br><span class="line">                    osd_list[osdname] = vm_dic</span><br><span class="line">                    data_dic[<span class="string">'osdmemused'</span>] = osd_list</span><br><span class="line">                    <span class="keyword">if</span> chosse == <span class="string">"table"</span>:</span><br><span class="line">                        row.add_row(osdlist)</span><br><span class="line">                    <span class="keyword">elif</span> chosse == <span class="string">"json"</span>:</span><br><span class="line">                        row = json.dumps(data_dic,separators=(<span class="string">','</span>, <span class="string">':'</span>))</span><br><span class="line">        <span class="built_in">print</span> row</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure></p>
 <h2 id="运行脚本">运行脚本</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 getmem]<span class="comment"># python getmem.py </span></span><br><span class="line">+---------+-------+------+</span><br><span class="line">| OSD\MEM |  VIRT | RES  |</span><br><span class="line">+---------+-------+------+</span><br><span class="line">|  osd.<span class="number">0</span>  | <span class="number">825</span>KB | <span class="number">43</span>KB |</span><br><span class="line">|  osd.<span class="number">1</span>  | <span class="number">826</span>KB | <span class="number">43</span>KB |</span><br><span class="line">+---------+-------+------+</span><br><span class="line">[root@lab8106 getmem]<span class="comment"># python getmem.py json</span></span><br><span class="line">&#123;<span class="string">"osdmemused"</span>:&#123;<span class="string">"osd.1"</span>:&#123;<span class="string">"VSZ"</span>:<span class="string">"826KB"</span>,<span class="string">"RSZ"</span>:<span class="string">"43KB"</span>&#125;,<span class="string">"osd.0"</span>:&#123;<span class="string">"VSZ"</span>:<span class="string">"825KB"</span>,<span class="string">"RSZ"</span>:<span class="string">"43KB"</span>&#125;&#125;&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="我的公众号-磨磨谈">我的公众号-磨磨谈</h2><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/qrcode_for_gh_6998a54d68f7_430.jpg" alt=""><br></center>]]></content>
+]]></content>
     <summary type="html">
     <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/Memory.png" alt=""><br></center>
 
@@ -615,7 +589,7 @@
     <link href="http://www.zphj1987.com/2016/12/07/%E5%9F%BA%E4%BA%8E%E5%8F%91%E8%A1%8C%E7%89%88%E6%9C%AC%E5%86%85%E6%A0%B8%E6%89%93%E9%80%A0%E8%87%AA%E5%B7%B1%E7%9A%84%E5%86%85%E6%A0%B8/"/>
     <id>http://www.zphj1987.com/2016/12/07/基于发行版本内核打造自己的内核/</id>
     <published>2016-12-07T07:55:38.000Z</published>
-    <updated>2016-12-07T07:59:05.158Z</updated>
+    <updated>2017-01-12T05:48:24.382Z</updated>
     <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/kernel.png" alt="此处输入图片的描述"><br></center>
 
 <p>Linux当中最核心的部分就是内核，这个也是最基础，最可能被忽视的一部分，随便找一个刚入职的运维，学习个两三天，网上找些资料也能能自己安装编译内核了，很多运维的初期培训就是做的这些学习，为什么在网上已经有这么多文章的情况下，还要写一篇关于内核的文章，这是因为，我想讲的是如何去选择内核<br><a id="more"></a><br>一般来说，找内核的时候都会去下面这个网站进行选择</p>
@@ -648,9 +622,6 @@
 <blockquote>
 <p>/root/rpmbuild/RPMS/x86_64/</p>
 </blockquote>
-<h2 id="我的公众号-磨磨谈">我的公众号-磨磨谈</h2><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/qrcode_for_gh_6998a54d68f7_430.jpg" alt=""><br></center>
-
-
 ]]></content>
     <summary type="html">
     <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/kernel.png" alt="此处输入图片的描述"><br></center>
@@ -666,7 +637,7 @@
     <link href="http://www.zphj1987.com/2016/11/29/The-Dos-and-Don-ts-for-Ceph-for-OpenStack/"/>
     <id>http://www.zphj1987.com/2016/11/29/The-Dos-and-Don-ts-for-Ceph-for-OpenStack/</id>
     <published>2016-11-29T15:59:07.000Z</published>
-    <updated>2016-11-30T03:10:40.805Z</updated>
+    <updated>2017-01-12T05:48:35.457Z</updated>
     <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/dos-and-dons.png" alt=""><br></center>
 
 <p>Ceph和OpenStack是一个非常有用和非常受欢迎的组合。 不过，部署Ceph / OpenStack经常会有一些容易避免的缺点 - 我们将帮助你解决它们</p>
@@ -736,8 +707,6 @@
 <p>好消息是，大多数应用程序不关心这种延迟开销，因为它们延迟不是关键的。 坏消息是，有些非常在意。</p>
 <p>所以，你应该放弃Ceph因为这样吗？ 不。 但是请考虑添加一些未使用libvirt / images_type = rbd配置的计算节点，而是使用本地磁盘映像。 将这些主机进行主机聚合，并将它们映射到指定的flavor。 建议您的用户，他们选择这种flavor来跑低延迟的应用程序。</p>
 <h2 id="引用">引用</h2><p><a href="https://www.hastexo.com/resources/hints-and-kinks/dos-donts-ceph-openstack/index.html" target="_blank" rel="external">本篇英文原文</a></p>
-<h2 id="我的公众号-磨磨谈">我的公众号-磨磨谈</h2><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/qrcode_for_gh_6998a54d68f7_430.jpg" alt=""><br></center>
-
 ]]></content>
     <summary type="html">
     <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/dos-and-dons.png" alt=""><br></center>
@@ -755,7 +724,7 @@
     <link href="http://www.zphj1987.com/2016/11/29/Cephday%E6%AD%A6%E6%B1%8920161119%E5%88%86%E4%BA%AB%E5%9B%9E%E9%A1%BE/"/>
     <id>http://www.zphj1987.com/2016/11/29/Cephday武汉20161119分享回顾/</id>
     <published>2016-11-29T04:29:37.000Z</published>
-    <updated>2016-11-29T07:43:18.135Z</updated>
+    <updated>2017-01-12T05:48:43.410Z</updated>
     <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/wuhan/wuhan-china.png" alt="image_1b2ne8h4m1vfq1f7b1qgr262dfn9.png-405.3kB"><br></center>
 
 <h2 id="活动地点">活动地点</h2><p>这次的分享活动是由武汉烽火进行赞助的，在烽火创新谷谷咖啡进行的，武汉的高校很多，光一本重点学校就有十所，武大，华科的学生的科研水平在全国也是非常强的，但是与之相匹配的大型企业却不是很多，本土大型企业更是少，这个地方还是一个相对封闭的地方，技术的交流远没有达到北上广深等地的开放程度，光谷也是在近十年成为一个科技飞速发展的地方，这与东湖高新的大力支持以及一些高校参与到企业当中来有很大的关系，未来的发展还是值得期待的<br><a id="more"></a></p>
@@ -795,8 +764,6 @@
 
 <p>本篇来自杉岩数据的花瑞做的分享，加速方案采用的是bcache，这个方案之前在邮件列表里面有看到国外的cepher有提到他的千兆ceph环境很容易出block，在使用加速方案以后得到了很好的改善，加速方案有很多，bcache，flashcache，EnhanceIO,dm-cache,原理都是相似的，都是采用一个ssd设备进行一个缓存，从而达到加速的，本篇详细的介绍了bcache的优点和原理，这个方案我个人也是很推荐的一种加速方案，选择加速方案的时候，需要进行几种软件的功能点比较，然后选择适合自己使用环境的，缓存方案主要是面向随机写的场景，顺序下大文件的场景，SSD可能看不出很大的优势</p>
 <h2 id="总结">总结</h2><p>本次武汉的社区活动偏方案的要多一些，这些其实对于企业来说都是很好的分享点，面对各种解决方案，如何找到适合自己场景的方案才是最重要的</p>
-<h2 id="我的公众号-磨磨谈">我的公众号-磨磨谈</h2><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/qrcode_for_gh_6998a54d68f7_430.jpg" alt=""><br></center>
-
 ]]></content>
     <summary type="html">
     <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/wuhan/wuhan-china.png" alt="image_1b2ne8h4m1vfq1f7b1qgr262dfn9.png-405.3kB"><br></center>
@@ -814,7 +781,7 @@
     <link href="http://www.zphj1987.com/2016/11/23/fio%E6%B5%8B%E8%AF%95ceph%E7%9A%84filestore/"/>
     <id>http://www.zphj1987.com/2016/11/23/fio测试ceph的filestore/</id>
     <published>2016-11-23T15:04:53.000Z</published>
-    <updated>2016-11-23T15:47:38.431Z</updated>
+    <updated>2017-01-12T05:49:01.554Z</updated>
     <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/fio-banner.jpg" alt="fio"><br></center>
 
 <h2 id="前言">前言</h2><p>fio是一个适应性非常强的软件，基本上能够模拟所有的IO请求，是目前最全面的一款测试软件，之前在看德国电信的一篇分享的时候，里面就提到了，如果需要测试存储性能，尽量只用一款软件，这样从上层测试到底层去，才能更好的去比较差别</p>
@@ -841,9 +808,6 @@
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 fio]<span class="comment"># ./fio  filestore.fio </span></span><br><span class="line">filestore: (g=<span class="number">0</span>): rw=randwrite, bs=<span class="number">64</span>K-<span class="number">64</span>K/<span class="number">64</span>K-<span class="number">64</span>K/<span class="number">64</span>K-<span class="number">64</span>K, ioengine=ceph-os, iodepth=<span class="number">16</span></span><br><span class="line">fio-<span class="number">2.15</span>-<span class="number">11</span>-g42f1</span><br><span class="line">Starting <span class="number">1</span> process</span><br><span class="line"><span class="number">2016</span>-<span class="number">11</span>-<span class="number">23</span> <span class="number">22</span>:<span class="number">32</span>:<span class="number">17.713473</span> <span class="number">7</span>f7536d56780  <span class="number">0</span> filestore(/var/lib/ceph/osd/ceph-<span class="number">8</span>/) backend xfs (magic <span class="number">0</span>x58465342)</span><br><span class="line"><span class="number">2016</span>-<span class="number">11</span>-<span class="number">23</span> <span class="number">22</span>:<span class="number">32</span>:<span class="number">17.804601</span> <span class="number">7</span>f7536d56780  <span class="number">0</span> filestore(/var/lib/ceph/osd/ceph-<span class="number">8</span>/) backend xfs (magic <span class="number">0</span>x58465342)</span><br><span class="line"><span class="number">2016</span>-<span class="number">11</span>-<span class="number">23</span> <span class="number">22</span>:<span class="number">32</span>:<span class="number">17.805003</span> <span class="number">7</span>f7536d56780  <span class="number">0</span> genericfilestorebackend(/var/lib/ceph/osd/ceph-<span class="number">8</span>/) detect_features: FIEMAP ioctl is disabled via <span class="string">'filestore fiemap'</span> config option</span><br><span class="line"><span class="number">2016</span>-<span class="number">11</span>-<span class="number">23</span> <span class="number">22</span>:<span class="number">32</span>:<span class="number">17.805018</span> <span class="number">7</span>f7536d56780  <span class="number">0</span> genericfilestorebackend(/var/lib/ceph/osd/ceph-<span class="number">8</span>/) detect_features: SEEK_DATA/SEEK_HOLE is disabled via <span class="string">'filestore seek data hole'</span> config option</span><br><span class="line"><span class="number">2016</span>-<span class="number">11</span>-<span class="number">23</span> <span class="number">22</span>:<span class="number">32</span>:<span class="number">17.805020</span> <span class="number">7</span>f7536d56780  <span class="number">0</span> genericfilestorebackend(/var/lib/ceph/osd/ceph-<span class="number">8</span>/) detect_features: splice() is disabled via <span class="string">'filestore splice'</span> config option</span><br><span class="line"><span class="number">2016</span>-<span class="number">11</span>-<span class="number">23</span> <span class="number">22</span>:<span class="number">32</span>:<span class="number">17.864962</span> <span class="number">7</span>f7536d56780  <span class="number">0</span> genericfilestorebackend(/var/lib/ceph/osd/ceph-<span class="number">8</span>/) detect_features: syncfs(<span class="number">2</span>) syscall fully supported (by glibc and kernel)</span><br><span class="line"><span class="number">2016</span>-<span class="number">11</span>-<span class="number">23</span> <span class="number">22</span>:<span class="number">32</span>:<span class="number">17.865056</span> <span class="number">7</span>f7536d56780  <span class="number">0</span> xfsfilestorebackend(/var/lib/ceph/osd/ceph-<span class="number">8</span>/) detect_feature: extsize is disabled by conf</span><br><span class="line"><span class="number">2016</span>-<span class="number">11</span>-<span class="number">23</span> <span class="number">22</span>:<span class="number">32</span>:<span class="number">17.865643</span> <span class="number">7</span>f7536d56780  <span class="number">0</span> filestore(/var/lib/ceph/osd/ceph-<span class="number">8</span>/) start omap initiation</span><br><span class="line"><span class="number">2016</span>-<span class="number">11</span>-<span class="number">23</span> <span class="number">22</span>:<span class="number">32</span>:<span class="number">17.926589</span> <span class="number">7</span>f7536d56780  <span class="number">0</span> filestore(/var/lib/ceph/osd/ceph-<span class="number">8</span>/) mount: enabling WRITEAHEAD journal mode: checkpoint is not enabled</span><br></pre></td></tr></table></figure>
 <p>可以看到，已经开始以对象存储的IO模型去生成测试了，根据自己的需要对不同的存储设备和组合进行测试就可以了</p>
 <h2 id="总结">总结</h2><p>作为一个新的测试模型的出现，更加完善了ceph的整体体系，也给磁盘的选型增加更好的测试工具</p>
-<h2 id="我的公众号-磨磨谈">我的公众号-磨磨谈</h2><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/qrcode_for_gh_6998a54d68f7_430.jpg" alt=""><br></center>
-
-
 ]]></content>
     <summary type="html">
     <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/fio-banner.jpg" alt="fio"><br></center>
@@ -862,7 +826,7 @@
     <link href="http://www.zphj1987.com/2016/11/16/%E6%9F%A5%E8%AF%A2OSD%E8%BF%90%E8%A1%8C%E5%9C%A8%E5%93%AA%E4%BA%9Bcpu%E4%B8%8A/"/>
     <id>http://www.zphj1987.com/2016/11/16/查询OSD运行在哪些cpu上/</id>
     <published>2016-11-16T08:58:58.000Z</published>
-    <updated>2016-11-16T15:08:55.857Z</updated>
+    <updated>2017-01-12T05:49:07.000Z</updated>
     <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/cpu.png" alt=""><br></center>
 
 <h2 id="前言">前言</h2><p>在看CPU相关的文章的时候，想起来之前有文章讨论是否要做CPU绑定，这个有说绑定的也有说不绑定的，然后就想到一个问题，有去观测这些OSD到底运行在哪些CPU上面么,有问题就好解决了，现在就是要查下机器上的OSD运行在哪些CPU上</p>
@@ -878,7 +842,7 @@
 
 
 <p>看上去确实有些CPU上面运行了多个OSD，这里不讨论CPU绑定的好坏，只是展示现象，具体有什么效果，是需要用数据取分析的，这个以后再看下</p>
-<h2 id="我的公众号-磨磨谈">我的公众号-磨磨谈</h2><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/qrcode_for_gh_6998a54d68f7_430.jpg" alt=""><br></center>]]></content>
+]]></content>
     <summary type="html">
     <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/cpu.png" alt=""><br></center>
 
@@ -895,7 +859,7 @@
     <link href="http://www.zphj1987.com/2016/11/14/%E5%A4%84%E7%90%86stale%E7%9A%84pg/"/>
     <id>http://www.zphj1987.com/2016/11/14/处理stale的pg/</id>
     <published>2016-11-14T12:32:27.000Z</published>
-    <updated>2016-11-14T12:58:58.506Z</updated>
+    <updated>2017-01-12T05:49:12.918Z</updated>
     <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/wremch.png" alt=""><br></center>
 
 <h2 id="前言">前言</h2><p>在某些场景下Ceph集群会出现stale的情况，也就是ceph集群PG的僵死状态，这个状态实际上是无法处理新的请求了，新的请求过来只会block，那么我们如何去恢复环境</p>
@@ -925,8 +889,6 @@
 </tr>
 </tbody>
 </table>
-<h2 id="我的公众号-磨磨谈">我的公众号-磨磨谈</h2><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/qrcode_for_gh_6998a54d68f7_430.jpg" alt=""><br></center>
-
 ]]></content>
     <summary type="html">
     <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/wremch.png" alt=""><br></center>
@@ -949,7 +911,7 @@
     <link href="http://www.zphj1987.com/2016/11/14/yum%E5%AE%89%E8%A3%85Ceph%E6%8C%87%E5%AE%9AJewel%E7%89%88%E6%9C%AC/"/>
     <id>http://www.zphj1987.com/2016/11/14/yum安装Ceph指定Jewel版本/</id>
     <published>2016-11-14T10:04:16.000Z</published>
-    <updated>2016-11-14T12:58:47.384Z</updated>
+    <updated>2017-01-12T05:49:19.074Z</updated>
     <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/yum-logo.png" alt=""><br></center>
 
 <h2 id="前言">前言</h2><p>通过yum安装指定的rpm包，这个一般是 <code>yum --showduplicates list ceph | expand</code>,然后去通过yum安装指定的版本即可，这个在hammer下是没有问题的，但是在Jewel下进行安装的时候却出现了问题，我们来看下怎么解决这个问题的</p>
@@ -978,7 +940,7 @@
 </tr>
 </tbody>
 </table>
-<h3 id="我的公众号-磨磨谈">我的公众号-磨磨谈</h3><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/qrcode_for_gh_6998a54d68f7_430.jpg" alt=""><br></center>]]></content>
+]]></content>
     <summary type="html">
     <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/yum-logo.png" alt=""><br></center>
 
@@ -996,7 +958,7 @@
     <link href="http://www.zphj1987.com/2016/11/10/%E9%A2%84%E4%BC%B0Ceph%E9%9B%86%E7%BE%A4%E6%81%A2%E5%A4%8D%E6%97%B6%E9%97%B4/"/>
     <id>http://www.zphj1987.com/2016/11/10/预估Ceph集群恢复时间/</id>
     <published>2016-11-10T06:52:46.000Z</published>
-    <updated>2016-11-10T09:26:14.117Z</updated>
+    <updated>2017-01-12T05:49:24.832Z</updated>
     <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/time-and-money.gif" alt=""><br></center>
 
 <h2 id="一、前言">一、前言</h2><p>本章很简单，就是预估集群恢复的时间,这个地方是简单的通过计算来预估需要恢复的实际，动态的显示<br><a id="more"></a></p>
@@ -1022,7 +984,7 @@
 </tr>
 </tbody>
 </table>
-<h3 id="我的公众号-磨磨谈">我的公众号-磨磨谈</h3><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/qrcode_for_gh_6998a54d68f7_430.jpg" alt=""><br></center>]]></content>
+]]></content>
     <summary type="html">
     <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/time-and-money.gif" alt=""><br></center>
 
