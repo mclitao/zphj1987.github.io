@@ -6,24 +6,24 @@
   <title>ceph的rbd备份软件ceph-backup | zphj1987&#39;Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="teralytics是一家国外的大数据公司，这个是他们开源的ceph的备份的工具，在twitter上搜索相关信息的时候看到，觉得不错就拿来试用一番
-这是个什么软件一个用来备份ceph的RBD的image的开源软件，提供了两种模式增量：在给定备份时间窗口内基于rbd快照的增量备份完全：完整映像导出时不包含快照
+这是个什么软件一个用来备份 ceph 的 rbd 的image的开源软件，提供了两种模式增量：在给定备份时间窗口内基于 rbd 快照的增量备份完全：完整映像导出时不包含快照
 
-注意一致性：此工具可以生成rbd图像的快照，而不会感知到它们的文件系统的状态，注意下rb">
+注意一致性：此工具可以生成 rbd 镜像的快照，而不会感知到它们的文件系统的">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ceph的rbd备份软件ceph-backup">
 <meta property="og:url" content="http://www.zphj1987.com/2017/01/19/ceph-rbd-ceph-backup/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
 <meta property="og:description" content="teralytics是一家国外的大数据公司，这个是他们开源的ceph的备份的工具，在twitter上搜索相关信息的时候看到，觉得不错就拿来试用一番
-这是个什么软件一个用来备份ceph的RBD的image的开源软件，提供了两种模式增量：在给定备份时间窗口内基于rbd快照的增量备份完全：完整映像导出时不包含快照
+这是个什么软件一个用来备份 ceph 的 rbd 的image的开源软件，提供了两种模式增量：在给定备份时间窗口内基于 rbd 快照的增量备份完全：完整映像导出时不包含快照
 
-注意一致性：此工具可以生成rbd图像的快照，而不会感知到它们的文件系统的状态，注意下rb">
+注意一致性：此工具可以生成 rbd 镜像的快照，而不会感知到它们的文件系统的">
 <meta property="og:image" content="http://7xo9we.com1.z0.glb.clouddn.com/backupmp.png">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ceph的rbd备份软件ceph-backup">
 <meta name="twitter:description" content="teralytics是一家国外的大数据公司，这个是他们开源的ceph的备份的工具，在twitter上搜索相关信息的时候看到，觉得不错就拿来试用一番
-这是个什么软件一个用来备份ceph的RBD的image的开源软件，提供了两种模式增量：在给定备份时间窗口内基于rbd快照的增量备份完全：完整映像导出时不包含快照
+这是个什么软件一个用来备份 ceph 的 rbd 的image的开源软件，提供了两种模式增量：在给定备份时间窗口内基于 rbd 快照的增量备份完全：完整映像导出时不包含快照
 
-注意一致性：此工具可以生成rbd图像的快照，而不会感知到它们的文件系统的状态，注意下rb">
+注意一致性：此工具可以生成 rbd 镜像的快照，而不会感知到它们的文件系统的">
   
     <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
   
@@ -235,14 +235,14 @@ var _hmt = _hmt || [];
         <center><br><img src="http://7xo9we.com1.z0.glb.clouddn.com/backupmp.png" alt=""><br></center>
 
 <p>teralytics是一家国外的大数据公司，这个是他们开源的ceph的备份的工具，在twitter上搜索相关信息的时候看到，觉得不错就拿来试用一番</p>
-<h2 id="这是个什么软件">这是个什么软件</h2><p>一个用来备份ceph的RBD的image的开源软件，提供了两种模式<br>增量：在给定备份时间窗口内基于rbd快照的增量备份<br>完全：完整映像导出时不包含快照</p>
+<h2 id="这是个什么软件">这是个什么软件</h2><p>一个用来备份 ceph 的 rbd 的image的开源软件，提供了两种模式<br>增量：在给定备份时间窗口内基于 rbd 快照的增量备份<br>完全：完整映像导出时不包含快照</p>
 <blockquote>
-<p>注意一致性：此工具可以生成rbd图像的快照，而不会感知到它们的文件系统的状态，注意下rbd快照的一致性限制（<a href="http://docs.ceph.com/docs/hammer/rbd/rbd-snapshot/）由于“完全”模式不使用快照，“完全”模式下的实时映像备份不一致（“增量”模式始终使用快照）" target="_blank" rel="external">http://docs.ceph.com/docs/hammer/rbd/rbd-snapshot/）由于“完全”模式不使用快照，“完全”模式下的实时映像备份不一致（“增量”模式始终使用快照）</a></p>
+<p>注意一致性：此工具可以生成 rbd 镜像的快照，而不会感知到它们的文件系统的状态，注意下 rbd 快照的一致性限制（<a href="http://docs.ceph.com/docs/hammer/rbd/rbd-snapshot/" target="_blank" rel="external">官网文档</a>） 由于“完全”模式不使用快照，“完全”模式下的实时映像备份不一致（“增量”模式始终使用快照）</p>
 </blockquote>
-<p>超过时间窗口以后，会进行一次全量备份，并且把之前的快照进行删除掉，重新备份一次全量，并且基于这个时间计算是否需要删除备份的文件</p>
+<p>超过时间窗口以后，会进行一次全量备份，并且把之前的快照删除掉，重新进行一次全量备份，并且基于这个时间窗口计算是否需要删除备份的文件</p>
 <p>软件包含以下功能：</p>
 <ul>
-<li>支持存储池和多image的只对</li>
+<li>支持存储池和多image的指定</li>
 <li>支持自定义备份目标路径</li>
 <li>配置文件支持</li>
 <li>支持备份窗口设置</li>
@@ -253,9 +253,9 @@ var _hmt = _hmt || [];
 </ul>
 <p>安装过程中会下载一些东西，注意要有网络，需要等待一会</p>
 <h2 id="准备配置文件">准备配置文件</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph-backup]<span class="comment"># mkdir /etc/cephbackup/</span></span><br><span class="line">[root@lab8106 ceph-backup]<span class="comment"># cp ceph-backup.cfg /etc/cephbackup/cephbackup.conf</span></span><br></pre></td></tr></table></figure>
-<p>我的配置文件如下，备份rbd存储的zp的镜像，支持多image，images后面用逗号隔开就可以<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># cat /etc/cephbackup/cephbackup.conf </span></span><br><span class="line">[rbd]</span><br><span class="line">window size = <span class="number">7</span></span><br><span class="line">window unit = days</span><br><span class="line">destination directory = /tmp/</span><br><span class="line">images = zp</span><br><span class="line">compress = yes</span><br><span class="line">ceph config = /etc/ceph/ceph.conf</span><br><span class="line">backup mode = full</span><br><span class="line">check mode = no</span><br></pre></td></tr></table></figure></p>
+<p>我的配置文件如下，备份 rbd 存储的 zp 的镜像，支持多 image，images后面用逗号隔开就可以<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># cat /etc/cephbackup/cephbackup.conf </span></span><br><span class="line">[rbd]</span><br><span class="line">window size = <span class="number">7</span></span><br><span class="line">window unit = days</span><br><span class="line">destination directory = /tmp/</span><br><span class="line">images = zp</span><br><span class="line">compress = yes</span><br><span class="line">ceph config = /etc/ceph/ceph.conf</span><br><span class="line">backup mode = full</span><br><span class="line">check mode = no</span><br></pre></td></tr></table></figure></p>
 <h2 id="开始备份">开始备份</h2><h3 id="全量备份配置">全量备份配置</h3><p>上面的配置文件已经写好了，直接执行备份命令就可以了<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># cephbackup</span></span><br><span class="line">Starting backup <span class="keyword">for</span> pool rbd</span><br><span class="line">Full ceph backup</span><br><span class="line">Images to backup:</span><br><span class="line">	rbd/zp</span><br><span class="line">Backup folder: /tmp/</span><br><span class="line">Compression: True</span><br><span class="line">Check mode: False</span><br><span class="line">Taking full backup of images: zp</span><br><span class="line">rbd image <span class="string">'zp'</span>:</span><br><span class="line">	size <span class="number">40960</span> MB <span class="keyword">in</span> <span class="number">10240</span> objects</span><br><span class="line">	order <span class="number">22</span> (<span class="number">4096</span> kB objects)</span><br><span class="line">	block_name_prefix: rbd_data.<span class="number">25496</span>b8b4567</span><br><span class="line">	format: <span class="number">2</span></span><br><span class="line">	features: layering</span><br><span class="line">	flags: </span><br><span class="line">Exporting image zp to /tmp/rbd/zp/zp_UTC20170119T092933.full</span><br><span class="line">Compress mode activated</span><br><span class="line"><span class="comment"># rbd export rbd/zp /tmp/rbd/zp/zp_UTC20170119T092933.full</span></span><br><span class="line">Exporting image: <span class="number">100</span>% complete...done.</span><br><span class="line"><span class="comment"># tar Scvfz /tmp/rbd/zp/zp_UTC20170119T092933.full.tar.gz /tmp/rbd/zp/zp_UTC20170119T092933.full</span></span><br><span class="line">tar: Removing leading `/<span class="string">' from member names</span></span><br></pre></td></tr></table></figure></p>
-<p>压缩的如果开了，正好文件也是稀疏文件的话，需要等很久，压缩的效果很好，dd生成的文件可以压缩到很小</p>
+<p>压缩的如果开了，正好文件也是稀疏文件的话，需要等很久，压缩的效果很好，dd 生成的文件可以压缩到很小</p>
 <p>检查备份生成的文件<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ll /tmp/rbd/zp/zp_UTC20170119T092933.full*</span></span><br><span class="line">-rw-r--r-- <span class="number">1</span> root root <span class="number">42949672960</span> Jan <span class="number">19</span> <span class="number">17</span>:<span class="number">29</span> /tmp/rbd/zp/zp_UTC20170119T092933.full</span><br><span class="line">-rw-r--r-- <span class="number">1</span> root root           <span class="number">0</span> Jan <span class="number">19</span> <span class="number">17</span>:<span class="number">29</span> /tmp/rbd/zp/zp_UTC20170119T092933.full.tar.gz</span><br></pre></td></tr></table></figure></p>
 <h4 id="全量备份的还原">全量备份的还原</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rbd import /tmp/rbd/zp/zp_UTC20170119T092933.full zpbk</span><br></pre></td></tr></table></figure>
 <p>检查数据，没有问题</p>
