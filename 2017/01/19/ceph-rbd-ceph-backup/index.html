@@ -6,7 +6,7 @@
   <title>ceph的rbd备份软件ceph-backup | zphj1987&#39;Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="teralytics是一家国外的大数据公司，这个是他们开源的ceph的备份的工具，在twitter上搜索相关信息的时候看到，觉得不错就拿来试用一番
-这是个什么软件一个用来备份 ceph 的 rbd 的image的开源软件，提供了两种模式增量：在给定备份时间窗口内基于 rbd 快照的增量备份完全：完整映像导出时不包含快照
+这是个什么软件一个用来备份 ceph 的 rbd 的image的开源软件，提供了两种模式增量：在给定备份时间窗口内基于 rbd 快照的增量备份完全：完整镜像导出时不包含快照
 
 注意一致性：此工具可以生成 rbd 镜像的快照，而不会感知到它们的文件系统的">
 <meta property="og:type" content="article">
@@ -14,14 +14,14 @@
 <meta property="og:url" content="http://www.zphj1987.com/2017/01/19/ceph-rbd-ceph-backup/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
 <meta property="og:description" content="teralytics是一家国外的大数据公司，这个是他们开源的ceph的备份的工具，在twitter上搜索相关信息的时候看到，觉得不错就拿来试用一番
-这是个什么软件一个用来备份 ceph 的 rbd 的image的开源软件，提供了两种模式增量：在给定备份时间窗口内基于 rbd 快照的增量备份完全：完整映像导出时不包含快照
+这是个什么软件一个用来备份 ceph 的 rbd 的image的开源软件，提供了两种模式增量：在给定备份时间窗口内基于 rbd 快照的增量备份完全：完整镜像导出时不包含快照
 
 注意一致性：此工具可以生成 rbd 镜像的快照，而不会感知到它们的文件系统的">
 <meta property="og:image" content="http://7xo9we.com1.z0.glb.clouddn.com/backupmp.png">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ceph的rbd备份软件ceph-backup">
 <meta name="twitter:description" content="teralytics是一家国外的大数据公司，这个是他们开源的ceph的备份的工具，在twitter上搜索相关信息的时候看到，觉得不错就拿来试用一番
-这是个什么软件一个用来备份 ceph 的 rbd 的image的开源软件，提供了两种模式增量：在给定备份时间窗口内基于 rbd 快照的增量备份完全：完整映像导出时不包含快照
+这是个什么软件一个用来备份 ceph 的 rbd 的image的开源软件，提供了两种模式增量：在给定备份时间窗口内基于 rbd 快照的增量备份完全：完整镜像导出时不包含快照
 
 注意一致性：此工具可以生成 rbd 镜像的快照，而不会感知到它们的文件系统的">
   
@@ -235,7 +235,7 @@ var _hmt = _hmt || [];
         <center><br><img src="http://7xo9we.com1.z0.glb.clouddn.com/backupmp.png" alt=""><br></center>
 
 <p>teralytics是一家国外的大数据公司，这个是他们开源的ceph的备份的工具，在twitter上搜索相关信息的时候看到，觉得不错就拿来试用一番</p>
-<h2 id="这是个什么软件">这是个什么软件</h2><p>一个用来备份 ceph 的 rbd 的image的开源软件，提供了两种模式<br>增量：在给定备份时间窗口内基于 rbd 快照的增量备份<br>完全：完整映像导出时不包含快照</p>
+<h2 id="这是个什么软件">这是个什么软件</h2><p>一个用来备份 ceph 的 rbd 的image的开源软件，提供了两种模式<br>增量：在给定备份时间窗口内基于 rbd 快照的增量备份<br>完全：完整镜像导出时不包含快照</p>
 <blockquote>
 <p>注意一致性：此工具可以生成 rbd 镜像的快照，而不会感知到它们的文件系统的状态，注意下 rbd 快照的一致性限制（<a href="http://docs.ceph.com/docs/hammer/rbd/rbd-snapshot/" target="_blank" rel="external">官网文档</a>） 由于“完全”模式不使用快照，“完全”模式下的实时映像备份不一致（“增量”模式始终使用快照）</p>
 </blockquote>
