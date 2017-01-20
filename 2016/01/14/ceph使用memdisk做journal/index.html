@@ -13,7 +13,6 @@
 <meta property="og:site_name" content="zphj1987'Blog">
 <meta property="og:description" content="记得在很久很久以前，ceph当时的版本是有提供使用内存做journal的配置的，当时是使用的tmpfs，但是现在的版本在搜资料的时候，发现关于这个的没怎么找到资料，邮件列表里面有人有提到怎么做，看了下大致的原理，然后还是自己来实践一次
 预备知识：首先需要知道的是什么是内存盘，内存盘就是划分了一个内存空间来当磁盘使用来进行加速的，这个在某些操作系统里面会把/tmp/分区挂载到tmpfs下，来达到加速">
-<meta property="og:image" content="http://7xo9we.com1.z0.glb.clouddn.com/zhifubao.png">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ceph使用memdisk做journal">
 <meta name="twitter:description" content="记得在很久很久以前，ceph当时的版本是有提供使用内存做journal的配置的，当时是使用的tmpfs，但是现在的版本在搜资料的时候，发现关于这个的没怎么找到资料，邮件列表里面有人有提到怎么做，看了下大致的原理，然后还是自己来实践一次
@@ -262,7 +261,7 @@ var _hmt = _hmt || [];
 <li>搞坏的情况是否能恢复</li>
 </ul>
 <p>如果解决了这些问题，这个不失为一种性能提升的方案，毕竟内存的成本和速度是ssd的磁盘和单独磁盘journal不能比的，journal本身也是一种循环的写入的空间</p>
-<h2 id="增加知识">增加知识</h2><p>上面的通过memdisk的方式是可以，还有更方便的方式就是直接用内存路径，需要处理几个地方，我们来看下怎么处理</p>
+<h2 id="增加知识（/dev/shm模式）">增加知识（/dev/shm模式）</h2><p>上面的通过memdisk的方式是可以，还有更方便的方式就是直接用内存路径，需要处理几个地方，我们来看下怎么处理</p>
 <p>首先修改配置文件<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">osd_journal =/dev/shm/<span class="variable">$cluster</span>-<span class="variable">$id</span>/journal</span><br><span class="line">journal dio = <span class="literal">false</span></span><br><span class="line">journal aio = <span class="literal">false</span></span><br></pre></td></tr></table></figure></p>
 <p>增加这三个选项，否则会失败，这个是因为在内存这个路径下用文件的时候是无法满足默认的dio,和aio选项的，会造成无法生成journal文件，生成的journal的文件的大小为0，无法成功</p>
 <p>假如我们给osd.5替换journal，我们看下操作步骤<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph-<span class="number">5</span>]<span class="comment"># mkdir /dev/shm/ceph-5</span></span><br><span class="line">[root@lab8106 ceph-<span class="number">5</span>]<span class="comment"># chown ceph:ceph /dev/shm/ceph-</span></span><br></pre></td></tr></table></figure></p>
@@ -271,15 +270,28 @@ var _hmt = _hmt || [];
 <p>所以修改这个文件<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="number">00000000</span>-<span class="number">0000</span>-<span class="number">0000</span>-<span class="number">0000</span>-<span class="number">000000000000</span> &gt; fsid</span><br></pre></td></tr></table></figure></p>
 <p>创建journal<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph-<span class="number">5</span>]<span class="comment"># ceph-osd -i 5 --mkjournal --setuser ceph --setgroup ceph --debug_ms 20 --debug_osd 20</span></span><br><span class="line"><span class="number">2017</span>-<span class="number">01</span>-<span class="number">20</span> <span class="number">10</span>:<span class="number">58</span>:<span class="number">22.297737</span> <span class="number">7</span>f0f1a75a800 -<span class="number">1</span> created new journal /dev/shm/ceph-<span class="number">5</span>/journal <span class="keyword">for</span> object store /var/lib/ceph/osd/ceph-<span class="number">5</span></span><br><span class="line">[root@lab8106 ceph-<span class="number">5</span>]<span class="comment"># ll /dev/shm/ceph-5/journal</span></span><br><span class="line">-rw-r--r-- <span class="number">1</span> ceph ceph <span class="number">1073741824</span> Jan <span class="number">20</span> <span class="number">10</span>:<span class="number">58</span> /dev/shm/ceph-<span class="number">5</span>/journal</span><br></pre></td></tr></table></figure></p>
 <p>启动osd就可以了</p>
-<hr>
-<p>教程的方式暂时停止了，毕竟推广这块还是有问题<br>结尾还是来个支持的链接，如果你觉得文章写得好，欢迎打赏，如果有新文章我会第一时间推送给支持我的朋友</p>
-<p><img src="http://7xo9we.com1.z0.glb.clouddn.com/zhifubao.png" alt=""></p>
-<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- myweb -->
-<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3305801963238415" data-ad-slot="9673687470" data-ad-format="auto"></ins>
-<script>
-(adsbygoogle = window.adsbygoogle || []).push({});
-</script>
+<h2 id="变更记录">变更记录</h2><table>
+<thead>
+<tr>
+<th style="text-align:center">Why</th>
+<th style="text-align:center">Who</th>
+<th style="text-align:center">When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">创建</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2016-01-14</td>
+</tr>
+<tr>
+<td style="text-align:center">增加/dev/shm/路径模式</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2017-01-20</td>
+</tr>
+</tbody>
+</table>
+
       
     </div>
     
