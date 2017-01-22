@@ -187,6 +187,68 @@ var _hmt = _hmt || [];
 </nav>
       <div class="body-wrap">
   
+    <article id="post-ceph卡在active-remapped状态" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/05/14/ceph卡在active-remapped状态/" class="article-date">
+  	<time datetime="2016-05-13T16:12:26.000Z" itemprop="datePublished">2016-05-14</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/05/14/ceph卡在active-remapped状态/">ceph卡在active+remapped状态</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>最近看到了有人的环境出现了出现了卡在active+remapped状态，并且卡住不动的状态，从pg的状态去看，这个pg值分配了主的pg，没有分配到副本的osd，集群的其他设置一切正常</p>
+<p>这个从网上搜寻到的资料来看，大多数都是由于不均衡的主机osd引起的，所谓不平衡的osd</p>
+<ul>
+<li>一台机器上面的磁盘的容量不一样，有的3T，有的1T</li>
+<li>两台主机上面的OSD个数不一样，有的5个，有的2个
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2016/05/14/ceph卡在active-remapped状态/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-如何开启内网的外网访问" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -741,68 +803,6 @@ var _hmt = _hmt || [];
       
         <p class="article-more-link">
           <a  href="/2016/04/11/记一次ceph的故障修复-20160408/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-ceph在centos7下一个不容易发现的改变" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/03/31/ceph在centos7下一个不容易发现的改变/" class="article-date">
-  	<time datetime="2016-03-31T08:19:27.000Z" itemprop="datePublished">2016-03-31</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/03/31/ceph在centos7下一个不容易发现的改变/">ceph在centos7下一个不容易发现的改变</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>在centos6以及以前的osd版本，在启动osd的时候，回去根据ceph.conf的配置文件进行挂载osd，然后进行进程的启动，这个格式是这样的<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[osd.<span class="number">0</span>]</span><br><span class="line">host = hostname</span><br><span class="line">devs=/dev/sdb1</span><br></pre></td></tr></table></figure></p>
-<p>启动的时候就会把sdb1盘符挂载到0的目录里面去了</p>
-<p>然后在centos7的版本的时候，发现居然不写配置文件也能够自动挂载启动，这个地方是什么地方发生了变化，在做了一些日志的查询以后，发现centos7下居然做了一个改变</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># systemctl list-unit-files |grep ceph-disk</span></span><br><span class="line">ceph-disk@.service                          static</span><br></pre></td></tr></table></figure>
-<p>可以看到有这个服务</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2016/03/31/ceph在centos7下一个不容易发现的改变/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>
