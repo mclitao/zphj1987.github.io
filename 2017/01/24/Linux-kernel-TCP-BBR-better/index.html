@@ -5,16 +5,16 @@
   
   <title>Linux 升级内核开启 TCP BBR 有多大好处 | zphj1987&#39;Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="如果你有订阅一些科技新闻，应该会有看过内核在4.9当中加入了一个新的算法，来解决在有一定的丢包率的情况下的带宽稳定的问题，这个是谷歌为我们带来了干货 新的 TCP 拥塞控制算法 BBR (Bottleneck Bandwidth and RTT)，谷歌一向的做法是，先上生产，然后发论文，然后有可能开源，所以这个已经合并到了内核4.9分支当中，这个带来的改变在出的测试报告当中提供了非常详细的测试数据">
+  <meta name="description" content="如果你有订阅一些科技新闻，应该会有看过内核在4.9当中加入了一个新的算法，来解决在有一定的丢包率的情况下的带宽稳定的问题，这个是谷歌为我们带来的干货，新的 TCP 拥塞控制算法 BBR (Bottleneck Bandwidth and RTT)，谷歌一向的做法是，先上生产，然后发论文，然后有可能开源，所以这个已经合并到了内核4.9分支当中，算法带来的改变在出的测试报告当中提供了非常详细的测试数据">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Linux 升级内核开启 TCP BBR 有多大好处">
 <meta property="og:url" content="http://www.zphj1987.com/2017/01/24/Linux-kernel-TCP-BBR-better/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
-<meta property="og:description" content="如果你有订阅一些科技新闻，应该会有看过内核在4.9当中加入了一个新的算法，来解决在有一定的丢包率的情况下的带宽稳定的问题，这个是谷歌为我们带来了干货 新的 TCP 拥塞控制算法 BBR (Bottleneck Bandwidth and RTT)，谷歌一向的做法是，先上生产，然后发论文，然后有可能开源，所以这个已经合并到了内核4.9分支当中，这个带来的改变在出的测试报告当中提供了非常详细的测试数据">
+<meta property="og:description" content="如果你有订阅一些科技新闻，应该会有看过内核在4.9当中加入了一个新的算法，来解决在有一定的丢包率的情况下的带宽稳定的问题，这个是谷歌为我们带来的干货，新的 TCP 拥塞控制算法 BBR (Bottleneck Bandwidth and RTT)，谷歌一向的做法是，先上生产，然后发论文，然后有可能开源，所以这个已经合并到了内核4.9分支当中，算法带来的改变在出的测试报告当中提供了非常详细的测试数据">
 <meta property="og:image" content="http://7xo9we.com1.z0.glb.clouddn.com/tcp_ip_protocol.gif">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Linux 升级内核开启 TCP BBR 有多大好处">
-<meta name="twitter:description" content="如果你有订阅一些科技新闻，应该会有看过内核在4.9当中加入了一个新的算法，来解决在有一定的丢包率的情况下的带宽稳定的问题，这个是谷歌为我们带来了干货 新的 TCP 拥塞控制算法 BBR (Bottleneck Bandwidth and RTT)，谷歌一向的做法是，先上生产，然后发论文，然后有可能开源，所以这个已经合并到了内核4.9分支当中，这个带来的改变在出的测试报告当中提供了非常详细的测试数据">
+<meta name="twitter:description" content="如果你有订阅一些科技新闻，应该会有看过内核在4.9当中加入了一个新的算法，来解决在有一定的丢包率的情况下的带宽稳定的问题，这个是谷歌为我们带来的干货，新的 TCP 拥塞控制算法 BBR (Bottleneck Bandwidth and RTT)，谷歌一向的做法是，先上生产，然后发论文，然后有可能开源，所以这个已经合并到了内核4.9分支当中，算法带来的改变在出的测试报告当中提供了非常详细的测试数据">
   
     <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
   
@@ -225,10 +225,12 @@ var _hmt = _hmt || [];
       
         <center><br><img src="http://7xo9we.com1.z0.glb.clouddn.com/tcp_ip_protocol.gif" alt=""><br></center>
 
-<p>如果你有订阅一些科技新闻，应该会有看过内核在4.9当中加入了一个新的算法，来解决在有一定的丢包率的情况下的带宽稳定的问题，这个是谷歌为我们带来了干货 新的 TCP 拥塞控制算法 BBR (Bottleneck Bandwidth and RTT)，谷歌一向的做法是，先上生产，然后发论文，然后有可能开源，所以这个已经合并到了内核4.9分支当中，这个带来的改变在出的测试报告当中提供了非常详细的测试数据，这个看多了可能反而不知道到底会有什么明显改变，特别是对于我们自己的场景</p>
+<p>如果你有订阅一些科技新闻，应该会有看过内核在4.9当中加入了一个新的算法，来解决在有一定的丢包率的情况下的带宽稳定的问题，这个是谷歌为我们带来的干货，新的 TCP 拥塞控制算法 BBR (Bottleneck Bandwidth and RTT)，谷歌一向的做法是，先上生产，然后发论文，然后有可能开源，所以这个已经合并到了内核4.9分支当中，算法带来的改变在出的测试报告当中提供了非常详细的测试数据，这个看多了可能反而不知道到底会有什么明显改变，特别是对于我们自己的场景</p>
 <p>那么本篇就是来做一个实践的，开看看在通用的一些场景下，这个改变有多大，先说下结果，是真的非常大<br><a id="more"></a></p>
 <h2 id="实践">实践</h2><p>还是我的两台机器lab8106和lab8107,lab8106做一个webserver，lab8107模拟客户端，用简单的wget来进行测试，环境为同一个交换机上的万兆网卡服务器</p>
 <p>我们本次测试只测试一种丢包率的情况就是1%，有兴趣的情况下，可以自己去做些其他丢包率的测试，大多数写在丢包率20%以上的时候，效果可能没那么好，这个高丢包率不是我们探讨的情况，毕竟不是常用的场景</p>
+<h3 id="安装新内核">安装新内核</h3><p>内核可以自己选择4.9或者以上的进行安装，也可以用yum安装,这里只是测试，就yum直接安装<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum --enablerepo=elrepo-kernel install kernel-ml</span><br></pre></td></tr></table></figure></p>
+<p>修改启动项<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">grub2-editenv list</span><br><span class="line">grub2-set-default <span class="string">'CentOS Linux (4.9.5-1.el7.elrepo.x86_64) 7 (Core)'</span></span><br><span class="line">grub2-editenv list</span><br></pre></td></tr></table></figure></p>
 <h3 id="准备下载数据">准备下载数据</h3><p>准备一个web服务器然后把一个iso丢到根目录下，用于客户端的wget</p>
 <h3 id="设置丢包率">设置丢包率</h3><p>这里用tc进行控制的，也就是一条命令就可以了,这个还可以做其他很多控制，可以自行研究<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tc qdisc add dev enp2s0f0 root netem loss <span class="number">1</span>%</span><br></pre></td></tr></table></figure></p>
 <p>如果需要取消限制<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tc qdisc del root dev enp2s0f0</span><br></pre></td></tr></table></figure></p>
@@ -252,6 +254,7 @@ var _hmt = _hmt || [];
 <p>曾经有同事问我，为啥有些新业务给老员工做，交学费，而不是市场上招人更有效率。。。俺说渣浪业务起起伏伏，如果所有战线都用雇佣兵，顺的时候势如破竹，逆的时候兵败山倒了。。公司和员工都是相互扶持的，有些新业务，员工有能力做，只是经验不足，公司多付出一些，就当给未来不顺的时候上一份保险了</p>
 </blockquote>
 <p>所以作为管理者，是不是多考虑多留住一些老员工，少期待一些雇佣兵</p>
+<h2 id="相关链接">相关链接</h2><p><a href="https://www.zhihu.com/question/53559433" target="_blank" rel="external">Linux Kernel 4.9 中的 BBR 算法与之前的 TCP 拥塞控制相比有什么优势？</a><br><a href="https://www.mf8.biz/linux-kernel-with-tcp-bbr/" target="_blank" rel="external">Linux 升级内核开启 TCP BBR 实现高效单边加速</a></p>
 <h2 id="变更记录">变更记录</h2><table>
 <thead>
 <tr>
