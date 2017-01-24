@@ -187,6 +187,65 @@ var _hmt = _hmt || [];
 </nav>
       <div class="body-wrap">
   
+    <article id="post-nginx开启目录浏览" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/03/24/nginx开启目录浏览/" class="article-date">
+  	<time datetime="2015-03-24T00:04:52.000Z" itemprop="datePublished">2015-03-24</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/03/24/nginx开启目录浏览/">nginx开启目录浏览</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>使用nginx作为下载站点,开启目录浏览的功能<br>在/etc/nginx/sites-enabled/default中添加:<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">autoindex on ;&#10;autoindex_exact_size off;&#10;autoindex_localtime on;</span><br></pre></td></tr></table></figure></p>
+<p>说明:</p>
+<p>第一个为目录浏览功能开始<br>第二个为不精确计算文件大小<br>第三个为取时间为服务器本地的时间</p>
+<p>删除location相关的内容<br>修改完成重启nginx服务</p>
+<p>写于: 2014年07月16日<br>更新于: 2015年03月24日</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nginx/">nginx</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-ubuntu13-04修改默认启动内核" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -710,63 +769,6 @@ var _hmt = _hmt || [];
         <p class="article-more-link">
           <a  href="/2015/03/23/linux中KVM桥接网卡br0/#more">more >></a>
         </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-ubuntu掉电出现检查文件系统的问题" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/03/23/ubuntu掉电出现检查文件系统的问题/" class="article-date">
-  	<time datetime="2015-03-23T14:04:00.000Z" itemprop="datePublished">2015-03-23</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/03/23/ubuntu掉电出现检查文件系统的问题/">ubuntu掉电出现检查文件系统的问题</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>修改:<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">/etc/default/rcS &#10;FSCKFIX=no &#20026; FSCKFIX=yes</span><br></pre></td></tr></table></figure></p>
-<p>出现这个情况的原因是硬件时钟偏移了<br>显示上次挂载根目录在未来时间。</p>
-<p>写于: 2013年11月28日<br>更新于: 2015年03月23日</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ubuntu/">ubuntu</a></li></ul>
-	</div>
-
-      
-
       
       <div class="clearfix"></div>
     </div>

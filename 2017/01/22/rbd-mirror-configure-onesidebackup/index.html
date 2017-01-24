@@ -13,6 +13,7 @@
 <meta property="og:site_name" content="zphj1987'Blog">
 <meta property="og:description" content="RBD 的 mirroring 功能将在Jewel中实现的，这个Jewel版本已经发布了很久了,这个功能已经在这个发布的版本中实现了，本来之前写过一篇文章，但是有几个朋友根据文档配置后，发现还是有问题，自己在进行再次配置的时候也发现有些地方没讲清楚，容易造成误解，这里对文档进行再一次的梳理
 一、基本原理我们试图解决的或者至少需要克服的问题是，ceph在内部是强一致性的，这个对于跨区域的情况数据同步">
+<meta property="og:image" content="http://7xo9we.com1.z0.glb.clouddn.com/mirrorpng.png">
 <meta property="og:image" content="http://static.zybuluo.com/zphj1987/owvwxjz172f2aokh699fd008/%E7%94%BB%E5%9B%BE.png">
 <meta property="og:image" content="http://static.zybuluo.com/zphj1987/60ehzzmtrvrf8rhdl9yelyqw/ceph-rbd-mirror-inside.png">
 <meta name="twitter:card" content="summary">
@@ -227,7 +228,10 @@ var _hmt = _hmt || [];
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>RBD 的 mirroring 功能将在Jewel中实现的，这个Jewel版本已经发布了很久了,这个功能已经在这个发布的版本中实现了，本来之前写过一篇文章，但是有几个朋友根据文档配置后，发现还是有问题，自己在进行再次配置的时候也发现有些地方没讲清楚，容易造成误解，这里对文档进行再一次的梳理</p>
+        <center><br><img src="http://7xo9we.com1.z0.glb.clouddn.com/mirrorpng.png" alt=""><br></center>
+
+
+<p>RBD 的 mirroring 功能将在Jewel中实现的，这个Jewel版本已经发布了很久了,这个功能已经在这个发布的版本中实现了，本来之前写过一篇文章，但是有几个朋友根据文档配置后，发现还是有问题，自己在进行再次配置的时候也发现有些地方没讲清楚，容易造成误解，这里对文档进行再一次的梳理</p>
 <p>一、基本原理<br>我们试图解决的或者至少需要克服的问题是，ceph在内部是强一致性的，这个对于跨区域的情况数据同步是无法接受的，一个请求需要异地返回再确认完成，这个在性能上肯定是无法接受的，这就是为什么基本上无法部署跨区域的ceph集群</p>
 <p>因此我们需要有一种机制能够让我们在不同区域的集群之间复制块设备。这个能够帮助我们实现两个功能：</p>
 <ul>
@@ -332,6 +336,22 @@ var _hmt = _hmt || [];
 <h2 id="总结">总结</h2><p>通过配置文件控制，可以实现集群名称不修改<br>rbd-mirror进程是在备份的集群上面启动的，并且是要能跟主集群和备份集群都能通信的，也就是peer都需要做，并且用户权限要控制好</p>
 <p>根据上面的操作流程操作下来，应该是能够配置好rbd-mirror的</p>
 <h2 id="相关链接">相关链接</h2><p><a href="http://www.sebastien-han.fr/blog/2016/03/28/ceph-jewel-preview-ceph-rbd-mirroring/" target="_blank" rel="external">Ceph Jewel Preview: Ceph RBD mirroring</a></p>
+<h2 id="变更记录">变更记录</h2><table>
+<thead>
+<tr>
+<th style="text-align:center">Why</th>
+<th style="text-align:center">Who</th>
+<th style="text-align:center">When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">创建</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2017-01-22</td>
+</tr>
+</tbody>
+</table>
 
       
     </div>
@@ -340,6 +360,15 @@ var _hmt = _hmt || [];
   
     
 <nav id="article-nav">
+  
+    <a href="/2017/01/24/Linux-kernel-TCP-BBR-better/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          Linux 升级内核开启 TCP BBR 有多大好处
+        
+      </div>
+    </a>
   
   
     <a href="/2017/01/19/ceph-rbd-ceph-backup/" id="article-nav-older" class="article-nav-link-wrap">

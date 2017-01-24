@@ -4,7 +4,7 @@
   <subtitle><![CDATA[但行好事，莫问前程]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2017-01-22T08:40:15.848Z</updated>
+  <updated>2017-01-24T03:00:33.769Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -15,12 +15,79 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title><![CDATA[Linux 升级内核开启 TCP BBR 有多大好处]]></title>
+    <link href="http://www.zphj1987.com/2017/01/24/Linux-kernel-TCP-BBR-better/"/>
+    <id>http://www.zphj1987.com/2017/01/24/Linux-kernel-TCP-BBR-better/</id>
+    <published>2017-01-24T02:54:44.000Z</published>
+    <updated>2017-01-24T03:00:33.769Z</updated>
+    <content type="html"><![CDATA[<center><br><img src="http://7xo9we.com1.z0.glb.clouddn.com/tcp_ip_protocol.gif" alt=""><br></center>
+
+<p>如果你有订阅一些科技新闻，应该会有看过内核在4.9当中加入了一个新的算法，来解决在有一定的丢包率的情况下的带宽稳定的问题，这个是谷歌为我们带来了干货 新的 TCP 拥塞控制算法 BBR (Bottleneck Bandwidth and RTT)，谷歌一向的做法是，先上生产，然后发论文，然后有可能开源，所以这个已经合并到了内核4.9分支当中，这个带来的改变在出的测试报告当中提供了非常详细的测试数据，这个看多了可能反而不知道到底会有什么明显改变，特别是对于我们自己的场景</p>
+<p>那么本篇就是来做一个实践的，开看看在通用的一些场景下，这个改变有多大，先说下结果，是真的非常大<br><a id="more"></a></p>
+<h2 id="实践">实践</h2><p>还是我的两台机器lab8106和lab8107,lab8106做一个webserver，lab8107模拟客户端，用简单的wget来进行测试，环境为同一个交换机上的万兆网卡服务器</p>
+<p>我们本次测试只测试一种丢包率的情况就是1%，有兴趣的情况下，可以自己去做些其他丢包率的测试，大多数写在丢包率20%以上的时候，效果可能没那么好，这个高丢包率不是我们探讨的情况，毕竟不是常用的场景</p>
+<h3 id="准备下载数据">准备下载数据</h3><p>准备一个web服务器然后把一个iso丢到根目录下，用于客户端的wget</p>
+<h3 id="设置丢包率">设置丢包率</h3><p>这里用tc进行控制的，也就是一条命令就可以了,这个还可以做其他很多控制，可以自行研究<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tc qdisc add dev enp2s0f0 root netem loss <span class="number">1</span>%</span><br></pre></td></tr></table></figure></p>
+<p>如果需要取消限制<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tc qdisc del root dev enp2s0f0</span><br></pre></td></tr></table></figure></p>
+<h3 id="设置新的算法">设置新的算法</h3><p>讲下面的两个配置文件添加到/etc/sysctl.conf<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">net.ipv4.tcp_congestion_control=bbr</span><br><span class="line">net.core.default_qdisc=fq</span><br></pre></td></tr></table></figure></p>
+<p>然后执行sysctl -p让它生效</p>
+<p>检查是参数是否生效<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 rpmbuild]<span class="comment"># sysctl net.ipv4.tcp_available_congestion_control</span></span><br><span class="line">net.ipv4.tcp_available_congestion_control = bbr cubic reno</span><br></pre></td></tr></table></figure></p>
+<p>检查模块是否开启<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 rpmbuild]<span class="comment"># lsmod | grep bbr</span></span><br><span class="line">tcp_bbr                <span class="number">16384</span>  <span class="number">0</span></span><br></pre></td></tr></table></figure></p>
+<p>如果需要恢复成默认的就修改成下面这个值，然后执行sysct -p恢复默认<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">net.ipv4.tcp_congestion_control = cubic</span><br><span class="line">net.core.default_qdisc = pfifo_fast</span><br></pre></td></tr></table></figure></p>
+<h3 id="开始测试">开始测试</h3><p>为了避免磁盘本身的写入速度的影响，我们直接将数据wget到内存当中去<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8107 ~]<span class="comment"># cd /dev/shm</span></span><br></pre></td></tr></table></figure></p>
+<p>写入到这个目录当中的数据就是直接写入内存的<br>我们先来对比下没有丢包的时候的速度</p>
+<h4 id="1、默认算法，无丢包率">1、默认算法，无丢包率</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"> wget http://<span class="number">192.168</span>.<span class="number">8.106</span>/FreeBSD-<span class="number">10.2</span>-RELEASE-amd64-dvd1.iso</span><br><span class="line"><span class="number">2017</span>-<span class="number">01</span>-<span class="number">24</span> <span class="number">12</span>:<span class="number">34</span>:<span class="number">01</span> (<span class="number">909</span> MB/s) - ‘FreeBSD-<span class="number">10.2</span>-RELEASE-amd64-dvd1.iso’ saved</span><br></pre></td></tr></table></figure>
+<h4 id="2、BBR算法，无丢包率">2、BBR算法，无丢包率</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget http://<span class="number">192.168</span>.<span class="number">8.106</span>/FreeBSD-<span class="number">10.2</span>-RELEASE-amd64-dvd1.iso</span><br><span class="line"><span class="number">2017</span>-<span class="number">01</span>-<span class="number">24</span> <span class="number">12</span>:<span class="number">36</span>:<span class="number">21</span> (<span class="number">913</span> MB/s) - ‘FreeBSD-<span class="number">10.2</span>-RELEASE-amd64-dvd1.iso’ saved</span><br></pre></td></tr></table></figure>
+<p>上面的两组数据基本一样，没有什么差别<br>下面的测试将丢包率控制到1%，然后继续测试</p>
+<h4 id="3、默认算法，1%丢包率">3、默认算法，1%丢包率</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget http://<span class="number">192.168</span>.<span class="number">8.106</span>/FreeBSD-<span class="number">10.2</span>-RELEASE-amd64-dvd1.iso</span><br><span class="line"><span class="number">2017</span>-<span class="number">01</span>-<span class="number">24</span> <span class="number">12</span>:<span class="number">38</span>:<span class="number">47</span> (<span class="number">142</span> MB/s) - ‘FreeBSD-<span class="number">10.2</span>-RELEASE-amd64-dvd1.iso’ saved</span><br></pre></td></tr></table></figure>
+<p>可以看到在1%丢包率下，速度已经降为正常的1/6左右了，是一个很大的衰减</p>
+<h4 id="4、BBR算法，1%丢包率">4、BBR算法，1%丢包率</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget http://<span class="number">192.168</span>.<span class="number">8.106</span>/FreeBSD-<span class="number">10.2</span>-RELEASE-amd64-dvd1.iso</span><br><span class="line"><span class="number">2017</span>-<span class="number">01</span>-<span class="number">24</span> <span class="number">12</span>:<span class="number">40</span>:<span class="number">25</span> (<span class="number">896</span> MB/s) - ‘FreeBSD-<span class="number">10.2</span>-RELEASE-amd64-dvd1.iso’</span><br></pre></td></tr></table></figure>
+<p>可以看到在1%丢包率下，还能维持接近900MB/s的下载速度，相对于默认算法，相差了真实非常非常的大，google在很多情况下技术甩了其他公司真的是几条街了</p>
+<h2 id="总结">总结</h2><p>上面的测试通过一个简单的场景来验证了bbr算法对于丢包情况下的带宽的优化，这个对于一些提供下载服务，并且有一定的丢包率的场景的情况下，能够有很大的改善，所以算法对于技术的改变还是非常大的，很多时候就是这种异常情况下的差别，才是真正的差别</p>
+<p>顺便提一句微博的技术经理@来去之间说的一句话：</p>
+<blockquote>
+<p>曾经有同事问我，为啥有些新业务给老员工做，交学费，而不是市场上招人更有效率。。。俺说渣浪业务起起伏伏，如果所有战线都用雇佣兵，顺的时候势如破竹，逆的时候兵败山倒了。。公司和员工都是相互扶持的，有些新业务，员工有能力做，只是经验不足，公司多付出一些，就当给未来不顺的时候上一份保险了</p>
+</blockquote>
+<p>所以作为管理者，是不是多考虑多留住一些老员工，少期待一些雇佣兵</p>
+<h2 id="变更记录">变更记录</h2><table>
+<thead>
+<tr>
+<th style="text-align:center">Why</th>
+<th style="text-align:center">Who</th>
+<th style="text-align:center">When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">创建</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2017-01-24</td>
+</tr>
+</tbody>
+</table>
+]]></content>
+    <summary type="html">
+    <![CDATA[<center><br><img src="http://7xo9we.com1.z0.glb.clouddn.com/tcp_ip_protocol.gif" alt=""><br></center>
+
+<p>如果你有订阅一些科技新闻，应该会有看过内核在4.9当中加入了一个新的算法，来解决在有一定的丢包率的情况下的带宽稳定的问题，这个是谷歌为我们带来了干货 新的 TCP 拥塞控制算法 BBR (Bottleneck Bandwidth and RTT)，谷歌一向的做法是，先上生产，然后发论文，然后有可能开源，所以这个已经合并到了内核4.9分支当中，这个带来的改变在出的测试报告当中提供了非常详细的测试数据，这个看多了可能反而不知道到底会有什么明显改变，特别是对于我们自己的场景</p>
+<p>那么本篇就是来做一个实践的，开看看在通用的一些场景下，这个改变有多大，先说下结果，是真的非常大<br>]]>
+    
+    </summary>
+    
+      <category term="linux" scheme="http://www.zphj1987.com/tags/linux/"/>
+    
+  </entry>
+  
+  <entry>
     <title><![CDATA[rbd-mirror配置指南-单向备份]]></title>
     <link href="http://www.zphj1987.com/2017/01/22/rbd-mirror-configure-onesidebackup/"/>
     <id>http://www.zphj1987.com/2017/01/22/rbd-mirror-configure-onesidebackup/</id>
     <published>2017-01-22T08:35:53.000Z</published>
-    <updated>2017-01-22T08:40:15.848Z</updated>
-    <content type="html"><![CDATA[<p>RBD 的 mirroring 功能将在Jewel中实现的，这个Jewel版本已经发布了很久了,这个功能已经在这个发布的版本中实现了，本来之前写过一篇文章，但是有几个朋友根据文档配置后，发现还是有问题，自己在进行再次配置的时候也发现有些地方没讲清楚，容易造成误解，这里对文档进行再一次的梳理</p>
+    <updated>2017-01-22T09:05:48.148Z</updated>
+    <content type="html"><![CDATA[<center><br><img src="http://7xo9we.com1.z0.glb.clouddn.com/mirrorpng.png" alt=""><br></center>
+
+
+<p>RBD 的 mirroring 功能将在Jewel中实现的，这个Jewel版本已经发布了很久了,这个功能已经在这个发布的版本中实现了，本来之前写过一篇文章，但是有几个朋友根据文档配置后，发现还是有问题，自己在进行再次配置的时候也发现有些地方没讲清楚，容易造成误解，这里对文档进行再一次的梳理</p>
 <p>一、基本原理<br>我们试图解决的或者至少需要克服的问题是，ceph在内部是强一致性的，这个对于跨区域的情况数据同步是无法接受的，一个请求需要异地返回再确认完成，这个在性能上肯定是无法接受的，这就是为什么基本上无法部署跨区域的ceph集群</p>
 <p>因此我们需要有一种机制能够让我们在不同区域的集群之间复制块设备。这个能够帮助我们实现两个功能：</p>
 <ul>
@@ -125,9 +192,28 @@
 <h2 id="总结">总结</h2><p>通过配置文件控制，可以实现集群名称不修改<br>rbd-mirror进程是在备份的集群上面启动的，并且是要能跟主集群和备份集群都能通信的，也就是peer都需要做，并且用户权限要控制好</p>
 <p>根据上面的操作流程操作下来，应该是能够配置好rbd-mirror的</p>
 <h2 id="相关链接">相关链接</h2><p><a href="http://www.sebastien-han.fr/blog/2016/03/28/ceph-jewel-preview-ceph-rbd-mirroring/" target="_blank" rel="external">Ceph Jewel Preview: Ceph RBD mirroring</a></p>
+<h2 id="变更记录">变更记录</h2><table>
+<thead>
+<tr>
+<th style="text-align:center">Why</th>
+<th style="text-align:center">Who</th>
+<th style="text-align:center">When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">创建</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2017-01-22</td>
+</tr>
+</tbody>
+</table>
 ]]></content>
     <summary type="html">
-    <![CDATA[<p>RBD 的 mirroring 功能将在Jewel中实现的，这个Jewel版本已经发布了很久了,这个功能已经在这个发布的版本中实现了，本来之前写过一篇文章，但是有几个朋友根据文档配置后，发现还是有问题，自己在进行再次配置的时候也发现有些地方没讲清楚，容易造成误解，这里对文档进行再一次的梳理</p>
+    <![CDATA[<center><br><img src="http://7xo9we.com1.z0.glb.clouddn.com/mirrorpng.png" alt=""><br></center>
+
+
+<p>RBD 的 mirroring 功能将在Jewel中实现的，这个Jewel版本已经发布了很久了,这个功能已经在这个发布的版本中实现了，本来之前写过一篇文章，但是有几个朋友根据文档配置后，发现还是有问题，自己在进行再次配置的时候也发现有些地方没讲清楚，容易造成误解，这里对文档进行再一次的梳理</p>
 <p>一、基本原理<br>我们试图解决的或者至少需要克服的问题是，ceph在内部是强一致性的，这个对于跨区域的情况数据同步是无法接受的，一个请求需要异地返回再确认完成，这个在性能上肯定是无法接受的，这就是为什么基本上无法部署跨区域的ceph集群</p>
 <p>因此我们需要有一种机制能够让我们在不同区域的集群之间复制块设备。这个能够帮助我们实现两个功能：</p>
 <ul>
@@ -241,12 +327,12 @@
 </blockquote>
 <p>From <a href="http://docs.ceph.com/docs/master/release-notes/#upgrading-from-infernalis-or-hammer" target="_blank" rel="external">Ceph release notes</a></p>
 <blockquote>
-<p>commit 383185bfbae74797cdb44f50b4bf651422800ff1<br>Author: Sage Weil <a href="&#109;&#x61;&#105;&#108;&#x74;&#x6f;&#58;&#x73;&#x61;&#103;&#101;&#64;&#x72;&#101;&#x64;&#x68;&#x61;&#x74;&#46;&#x63;&#x6f;&#x6d;">&#x73;&#x61;&#103;&#101;&#64;&#x72;&#101;&#x64;&#x68;&#x61;&#x74;&#46;&#x63;&#x6f;&#x6d;</a><br>Date: Fri Aug 7 16:14:09 2015 -0400<br>mon/OSDMonitor: osd set/unset sortbitwise<br> Add monitor command to flip the switch on the OSD hobject_t sort<br> order.</p>
+<p>commit 383185bfbae74797cdb44f50b4bf651422800ff1<br>Author: Sage Weil <a href="&#x6d;&#x61;&#105;&#108;&#x74;&#111;&#58;&#115;&#x61;&#103;&#x65;&#x40;&#114;&#101;&#100;&#x68;&#97;&#116;&#46;&#x63;&#111;&#x6d;">&#115;&#x61;&#103;&#x65;&#x40;&#114;&#101;&#100;&#x68;&#97;&#116;&#46;&#x63;&#111;&#x6d;</a><br>Date: Fri Aug 7 16:14:09 2015 -0400<br>mon/OSDMonitor: osd set/unset sortbitwise<br> Add monitor command to flip the switch on the OSD hobject_t sort<br> order.</p>
 </blockquote>
 <p>From git</p>
 <p>第一次在源码中出现:</p>
 <blockquote>
-<p>commit 138f58493715e386929f152424b70df37843541b<br>Author: John Spray <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#106;&#x6f;&#x68;&#110;&#x2e;&#x73;&#x70;&#x72;&#x61;&#x79;&#x40;&#x72;&#x65;&#100;&#104;&#x61;&#x74;&#46;&#x63;&#x6f;&#x6d;">&#106;&#x6f;&#x68;&#110;&#x2e;&#x73;&#x70;&#x72;&#x61;&#x79;&#x40;&#x72;&#x65;&#100;&#104;&#x61;&#x74;&#46;&#x63;&#x6f;&#x6d;</a><br>Date: Mon Aug 17 14:40:46 2015 -0400<br>osdc/Objecter: new-style pgls<br> Signed-off-by: John Spray <a href="&#109;&#97;&#x69;&#108;&#116;&#x6f;&#58;&#106;&#111;&#x68;&#x6e;&#x2e;&#x73;&#x70;&#x72;&#x61;&#121;&#64;&#x72;&#x65;&#x64;&#x68;&#x61;&#x74;&#46;&#x63;&#111;&#x6d;">&#106;&#111;&#x68;&#x6e;&#x2e;&#x73;&#x70;&#x72;&#x61;&#121;&#64;&#x72;&#x65;&#x64;&#x68;&#x61;&#x74;&#46;&#x63;&#111;&#x6d;</a><br> Signed-off-by: Sage Weil <a href="&#x6d;&#97;&#x69;&#x6c;&#x74;&#x6f;&#58;&#x73;&#x61;&#103;&#x65;&#64;&#114;&#x65;&#100;&#x68;&#97;&#116;&#x2e;&#99;&#111;&#x6d;">&#x73;&#x61;&#103;&#x65;&#64;&#114;&#x65;&#100;&#x68;&#97;&#116;&#x2e;&#99;&#111;&#x6d;</a></p>
+<p>commit 138f58493715e386929f152424b70df37843541b<br>Author: John Spray <a href="&#x6d;&#x61;&#105;&#108;&#x74;&#x6f;&#58;&#106;&#x6f;&#104;&#110;&#x2e;&#x73;&#112;&#114;&#97;&#121;&#64;&#x72;&#x65;&#100;&#104;&#x61;&#x74;&#46;&#99;&#111;&#109;">&#106;&#x6f;&#104;&#110;&#x2e;&#x73;&#112;&#114;&#97;&#121;&#64;&#x72;&#x65;&#100;&#104;&#x61;&#x74;&#46;&#99;&#111;&#109;</a><br>Date: Mon Aug 17 14:40:46 2015 -0400<br>osdc/Objecter: new-style pgls<br> Signed-off-by: John Spray <a href="&#x6d;&#x61;&#105;&#x6c;&#116;&#x6f;&#x3a;&#106;&#111;&#x68;&#x6e;&#46;&#x73;&#x70;&#x72;&#97;&#x79;&#64;&#x72;&#x65;&#x64;&#x68;&#97;&#x74;&#46;&#x63;&#111;&#109;">&#106;&#111;&#x68;&#x6e;&#46;&#x73;&#x70;&#x72;&#97;&#x79;&#64;&#x72;&#x65;&#x64;&#x68;&#97;&#x74;&#46;&#x63;&#111;&#109;</a><br> Signed-off-by: Sage Weil <a href="&#109;&#97;&#105;&#x6c;&#116;&#111;&#58;&#x73;&#x61;&#103;&#x65;&#64;&#114;&#x65;&#x64;&#x68;&#x61;&#x74;&#x2e;&#99;&#x6f;&#109;">&#x73;&#x61;&#103;&#x65;&#64;&#114;&#x65;&#x64;&#x68;&#x61;&#x74;&#x2e;&#99;&#x6f;&#109;</a></p>
 </blockquote>
 <p>From git</p>
 <p>Related github issue: <a href="https://github.com/ceph/ceph/pull/4919/commits" target="_blank" rel="external">https://github.com/ceph/ceph/pull/4919/commits</a></p>
@@ -1058,58 +1144,6 @@
     <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/cpu.png" alt=""><br></center>
 
 <h2 id="前言">前言</h2><p>在看CPU相关的文章的时候，想起来之前有文章讨论是否要做CPU绑定，这个有说绑定的也有说不绑定的，然后就想到一个问题，有去观测这些OSD到底运行在哪些CPU上面么,有问题就好解决了，现在就是要查下机器上的OSD运行在哪些CPU上</p>]]>
-    
-    </summary>
-    
-      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[处理stale的pg]]></title>
-    <link href="http://www.zphj1987.com/2016/11/14/%E5%A4%84%E7%90%86stale%E7%9A%84pg/"/>
-    <id>http://www.zphj1987.com/2016/11/14/处理stale的pg/</id>
-    <published>2016-11-14T12:32:27.000Z</published>
-    <updated>2017-01-12T05:49:12.918Z</updated>
-    <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/wremch.png" alt=""><br></center>
-
-<h2 id="前言">前言</h2><p>在某些场景下Ceph集群会出现stale的情况，也就是ceph集群PG的僵死状态，这个状态实际上是无法处理新的请求了，新的请求过来只会block，那么我们如何去恢复环境</p>
-<h2 id="实践过程">实践过程</h2><p>首先模拟stale环境，这个比较好模拟</p>
-<blockquote>
-<p>设置副本2，然后同时关闭两个OSD（不同故障域上），然后删除这两个OSD</p>
-</blockquote>
-<p>集群这个时候就会出现stale的情况了，因为两份数据都丢了，在一些环境下，数据本身就是临时的或者不是那么重要的，比如存储日志，这样的环境下，只需要快速的恢复环境即可，而不担心数据的丢失</p>
-<a id="more"></a>
-<h3 id="处理过程">处理过程</h3><p>首先用ceph pg dump|grep stale 找出所有的stale的pg</p>
-<p>然后用 ceph force_create_pg  pg_id</p>
-<p>如果做到这里，可以看到之前的stale的状态的PG，现在已经是creating状态的了，这个时候一个关键的步骤需要做下</p>
-<p>就是重启整个集群的OSD，在重启完成了以后，集群的状态就会恢复正常了，也能够正常的写入新的数据了，对于老的数据，做下清理即可</p>
-<h2 id="变更记录">变更记录</h2><table>
-<thead>
-<tr>
-<th style="text-align:center">Why</th>
-<th style="text-align:center">Who</th>
-<th style="text-align:center">When</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">创建</td>
-<td style="text-align:center">武汉-运维-磨渣</td>
-<td style="text-align:center">2016-11-14</td>
-</tr>
-</tbody>
-</table>
-]]></content>
-    <summary type="html">
-    <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/wremch.png" alt=""><br></center>
-
-<h2 id="前言">前言</h2><p>在某些场景下Ceph集群会出现stale的情况，也就是ceph集群PG的僵死状态，这个状态实际上是无法处理新的请求了，新的请求过来只会block，那么我们如何去恢复环境</p>
-<h2 id="实践过程">实践过程</h2><p>首先模拟stale环境，这个比较好模拟</p>
-<blockquote>
-<p>设置副本2，然后同时关闭两个OSD（不同故障域上），然后删除这两个OSD</p>
-</blockquote>
-<p>集群这个时候就会出现stale的情况了，因为两份数据都丢了，在一些环境下，数据本身就是临时的或者不是那么重要的，比如存储日志，这样的环境下，只需要快速的恢复环境即可，而不担心数据的丢失</p>]]>
     
     </summary>
     

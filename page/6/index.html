@@ -187,6 +187,68 @@ var _hmt = _hmt || [];
 </nav>
       <div class="body-wrap">
   
+    <article id="post-重写ceph-lazy" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/08/28/重写ceph-lazy/" class="article-date">
+  	<time datetime="2016-08-28T15:58:04.000Z" itemprop="datePublished">2016-08-28</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/08/28/重写ceph-lazy/">重写ceph-lazy</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/ceph-lazy/lazy.jpg" alt="ceph-lzy"><br></center></p>
+<h2 id="前言">前言</h2><p>这个工具最开始是从sebastien的blog里面看到的，这个是 <a href="https://github.com/gcharot/">Gregory Charot</a>（工具的作者）写的，通常我们在获取一个ceph的信息的时候，需要敲一连串的命令去获得自己需要的信息，可能需要一大堆的解析才能完成，而经常出现的是，使用了后，下次使用的时候，又要重来一遍，所以作者把这些常用的操作做了一些归纳，形成了一个查询的工具，很多人有个相同的观点就是，越懒，就会想办法提高效率，当然，首先得有提高效率的意识，否则只剩下懒了</p>
+<p>我做的事情就是把作者用shell的逻辑转换成了python的版本，这样也方便自己以后的扩展，这里感谢作者做的一些工作，让我很快就能完成了，这里并不是重复造车轮，本来自己就不会python，权当练手了</p>
+<p>在linux下面我是不建议用中文的，但是这个工具里面还是改成用中文提示，因为中文可能看上去更清楚需要做的是一个什么事情，这个仅仅是一个查询工具</p>
+<p>有一段时间没有更新blog了，主要是最近比较忙，没有时间去看太多的资料，没有时间来写下更多的东西，有时间还是会坚持写下去</p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2016/08/28/重写ceph-lazy/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-Linux配置邮件发送信息" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -735,69 +797,6 @@ var _hmt = _hmt || [];
       
         <p class="article-more-link">
           <a  href="/2016/06/22/rbd的增量备份和恢复/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-rgw实现nfs的首测" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/06/19/rgw实现nfs的首测/" class="article-date">
-  	<time datetime="2016-06-18T18:47:56.000Z" itemprop="datePublished">2016-06-19</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/06/19/rgw实现nfs的首测/">rgw实现nfs的首测</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="一、功能介绍">一、功能介绍</h3><p>关于rgw实现nfs接口这个，刚接触的人可能并不清楚这个是个什么样的服务架构，rgw是ceph里面的对象存储接口，而nfs则是纯正的网络文件系统接口，这二者如何结合在一起,关于这个,有几个相关的链接供大家了解</p>
-<ul>
-<li><a href="http://tracker.ceph.com/projects/ceph/wiki/RGW_-_NFS">ceph官方的RGW_NFS项目规划</a></li>
-<li><a href="http://chuansong.me/n/2385718">麦子迈关于RGW_NFS的文章</a></li>
-</ul>
-<p>之所以这个功能能实现这么快，原因是nfs-ganesha的开发者Matt Benjamin加入到了Redhat，而ceph目前的开发是Redhat在主导开发，所以功能的实现是非常快的，但是目前官方并没有提供相关的文档，个人推测是功能并未完全开发完成，一旦未完全开发完成的功能放出来，邮件列表和Bug列表就会有很多相关问题，开发者应该还是希望安静的把功能做好，再提供相关的文档，而这个功能也是在ceph 的jewel版本里面才加入的</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2016/06/19/rgw实现nfs的首测/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>

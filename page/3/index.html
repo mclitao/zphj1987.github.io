@@ -187,6 +187,71 @@ var _hmt = _hmt || [];
 </nav>
       <div class="body-wrap">
   
+    <article id="post-处理stale的pg" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/11/14/处理stale的pg/" class="article-date">
+  	<time datetime="2016-11-14T12:32:27.000Z" itemprop="datePublished">2016-11-14</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/11/14/处理stale的pg/">处理stale的pg</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/wremch.png" alt=""><br></center>
+
+<h2 id="前言">前言</h2><p>在某些场景下Ceph集群会出现stale的情况，也就是ceph集群PG的僵死状态，这个状态实际上是无法处理新的请求了，新的请求过来只会block，那么我们如何去恢复环境</p>
+<h2 id="实践过程">实践过程</h2><p>首先模拟stale环境，这个比较好模拟</p>
+<blockquote>
+<p>设置副本2，然后同时关闭两个OSD（不同故障域上），然后删除这两个OSD</p>
+</blockquote>
+<p>集群这个时候就会出现stale的情况了，因为两份数据都丢了，在一些环境下，数据本身就是临时的或者不是那么重要的，比如存储日志，这样的环境下，只需要快速的恢复环境即可，而不担心数据的丢失</p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2016/11/14/处理stale的pg/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-yum安装Ceph指定Jewel版本" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -732,71 +797,6 @@ var _hmt = _hmt || [];
       
         <p class="article-more-link">
           <a  href="/2016/10/31/Cephday深圳20161029总结/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-zabbix实现自定义自动发现的流程" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/10/28/zabbix实现自定义自动发现的流程/" class="article-date">
-  	<time datetime="2016-10-28T05:56:24.000Z" itemprop="datePublished">2016-10-28</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/10/28/zabbix实现自定义自动发现的流程/">zabbix实现自定义自动发现的流程</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="一、前言">一、前言</h2><p>本章介绍如何去自定义一个zabbix自动发现的整个流程</p>
-<h2 id="二、过程">二、过程</h2><p>首先需要在模板当中创建一个自动发现的规则，这个地方只需要一个名称和一个键值，例如</p>
-<ul>
-<li>名称：Ceph Cluster Pool Discovery</li>
-<li>键值：ceph.pools</li>
-</ul>
-<p>过滤器中间要添加你需要的用到的值宏<br>我的数据是：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># zabbix_get -s 127.0.0.1 -k ceph.pools</span></span><br><span class="line">&#123;<span class="string">"data"</span>:[&#123;<span class="string">"&#123;#POOLNAME&#125;"</span>:<span class="string">"rbd"</span>&#125;,&#123;<span class="string">"&#123;#POOLNAME&#125;"</span>:<span class="string">"metedata"</span>&#125;,&#123;<span class="string">"&#123;#POOLNAME&#125;"</span>:<span class="string">"data"</span>&#125;]&#125;</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2016/10/28/zabbix实现自定义自动发现的流程/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>
