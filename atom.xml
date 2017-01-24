@@ -4,7 +4,7 @@
   <subtitle><![CDATA[但行好事，莫问前程]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2017-01-24T05:00:03.972Z</updated>
+  <updated>2017-01-24T06:26:44.579Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="http://www.zphj1987.com/2017/01/24/Linux-kernel-TCP-BBR-better/"/>
     <id>http://www.zphj1987.com/2017/01/24/Linux-kernel-TCP-BBR-better/</id>
     <published>2017-01-24T02:54:44.000Z</published>
-    <updated>2017-01-24T05:00:03.972Z</updated>
+    <updated>2017-01-24T06:26:44.579Z</updated>
     <content type="html"><![CDATA[<center><br><img src="http://7xo9we.com1.z0.glb.clouddn.com/tcp_ip_protocol.gif" alt=""><br></center>
 
 <p>如果你有订阅一些科技新闻，应该会有看过内核在4.9当中加入了一个新的算法，来解决在有一定的丢包率的情况下的带宽稳定的问题，这个是谷歌为我们带来的干货，新的 TCP 拥塞控制算法 BBR (Bottleneck Bandwidth and RTT)，谷歌一向的做法是，先上生产，然后发论文，然后有可能开源，所以这个已经合并到了内核4.9分支当中，算法带来的改变在出的测试报告当中有很详细的数据展示，这个看多了可能反而不知道到底会有什么明显改变，特别是对于我们自己的场景</p>
@@ -44,7 +44,7 @@
 <h4 id="3、默认算法，1%丢包率">3、默认算法，1%丢包率</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget http://<span class="number">192.168</span>.<span class="number">8.106</span>/FreeBSD-<span class="number">10.2</span>-RELEASE-amd64-dvd1.iso</span><br><span class="line"><span class="number">2017</span>-<span class="number">01</span>-<span class="number">24</span> <span class="number">12</span>:<span class="number">38</span>:<span class="number">47</span> (<span class="number">142</span> MB/s) - ‘FreeBSD-<span class="number">10.2</span>-RELEASE-amd64-dvd1.iso’ saved</span><br></pre></td></tr></table></figure>
 <p>可以看到在1%丢包率下，速度已经降为正常的1/6左右了，是一个很大的衰减</p>
 <h4 id="4、BBR算法，1%丢包率">4、BBR算法，1%丢包率</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget http://<span class="number">192.168</span>.<span class="number">8.106</span>/FreeBSD-<span class="number">10.2</span>-RELEASE-amd64-dvd1.iso</span><br><span class="line"><span class="number">2017</span>-<span class="number">01</span>-<span class="number">24</span> <span class="number">12</span>:<span class="number">40</span>:<span class="number">25</span> (<span class="number">896</span> MB/s) - ‘FreeBSD-<span class="number">10.2</span>-RELEASE-amd64-dvd1.iso’</span><br></pre></td></tr></table></figure>
-<p>可以看到在1%丢包率下，还能维持接近900MB/s的下载速度，相对于默认算法，相差了真实非常非常的大，google在很多情况下技术甩了其他公司真的是几条街了</p>
+<p>可以看到在1%丢包率下，还能维持接近900MB/s的下载速度，相对于默认算法，相差了真是非常非常的大，google在很多情况下技术甩了其他公司真的是几条街了</p>
 <h2 id="总结">总结</h2><p>上面的测试通过一个简单的场景来验证了bbr算法对于丢包情况下的带宽的优化，这个对于一些提供下载服务，并且有一定的丢包率的场景的情况下，能够有很大的改善，所以算法对于技术的改变还是非常大的，很多时候就是这种异常情况下的差别，才是真正的差别</p>
 <p>顺便提一句微博的技术经理@来去之间说的一句话：</p>
 <blockquote>
@@ -330,12 +330,12 @@
 </blockquote>
 <p>From <a href="http://docs.ceph.com/docs/master/release-notes/#upgrading-from-infernalis-or-hammer" target="_blank" rel="external">Ceph release notes</a></p>
 <blockquote>
-<p>commit 383185bfbae74797cdb44f50b4bf651422800ff1<br>Author: Sage Weil <a href="&#109;&#x61;&#105;&#108;&#x74;&#111;&#x3a;&#x73;&#97;&#x67;&#101;&#64;&#114;&#x65;&#x64;&#104;&#97;&#x74;&#46;&#x63;&#x6f;&#x6d;">&#x73;&#97;&#x67;&#101;&#64;&#114;&#x65;&#x64;&#104;&#97;&#x74;&#46;&#x63;&#x6f;&#x6d;</a><br>Date: Fri Aug 7 16:14:09 2015 -0400<br>mon/OSDMonitor: osd set/unset sortbitwise<br> Add monitor command to flip the switch on the OSD hobject_t sort<br> order.</p>
+<p>commit 383185bfbae74797cdb44f50b4bf651422800ff1<br>Author: Sage Weil <a href="&#x6d;&#x61;&#105;&#x6c;&#x74;&#x6f;&#x3a;&#115;&#x61;&#x67;&#x65;&#64;&#114;&#x65;&#100;&#104;&#97;&#116;&#x2e;&#99;&#111;&#109;">&#115;&#x61;&#x67;&#x65;&#64;&#114;&#x65;&#100;&#104;&#97;&#116;&#x2e;&#99;&#111;&#109;</a><br>Date: Fri Aug 7 16:14:09 2015 -0400<br>mon/OSDMonitor: osd set/unset sortbitwise<br> Add monitor command to flip the switch on the OSD hobject_t sort<br> order.</p>
 </blockquote>
 <p>From git</p>
 <p>第一次在源码中出现:</p>
 <blockquote>
-<p>commit 138f58493715e386929f152424b70df37843541b<br>Author: John Spray <a href="&#x6d;&#97;&#x69;&#x6c;&#116;&#111;&#x3a;&#106;&#111;&#104;&#110;&#x2e;&#115;&#112;&#114;&#x61;&#x79;&#64;&#114;&#x65;&#x64;&#x68;&#97;&#116;&#46;&#x63;&#x6f;&#x6d;">&#106;&#111;&#104;&#110;&#x2e;&#115;&#112;&#114;&#x61;&#x79;&#64;&#114;&#x65;&#x64;&#x68;&#97;&#116;&#46;&#x63;&#x6f;&#x6d;</a><br>Date: Mon Aug 17 14:40:46 2015 -0400<br>osdc/Objecter: new-style pgls<br> Signed-off-by: John Spray <a href="&#109;&#97;&#x69;&#108;&#x74;&#x6f;&#58;&#106;&#111;&#x68;&#x6e;&#x2e;&#115;&#112;&#x72;&#x61;&#x79;&#64;&#114;&#101;&#100;&#x68;&#97;&#x74;&#46;&#x63;&#111;&#109;">&#106;&#111;&#x68;&#x6e;&#x2e;&#115;&#112;&#x72;&#x61;&#x79;&#64;&#114;&#101;&#100;&#x68;&#97;&#x74;&#46;&#x63;&#111;&#109;</a><br> Signed-off-by: Sage Weil <a href="&#x6d;&#x61;&#x69;&#x6c;&#x74;&#x6f;&#x3a;&#x73;&#x61;&#103;&#x65;&#64;&#x72;&#x65;&#x64;&#x68;&#97;&#116;&#46;&#x63;&#x6f;&#x6d;">&#x73;&#x61;&#103;&#x65;&#64;&#x72;&#x65;&#x64;&#x68;&#97;&#116;&#46;&#x63;&#x6f;&#x6d;</a></p>
+<p>commit 138f58493715e386929f152424b70df37843541b<br>Author: John Spray <a href="&#x6d;&#x61;&#105;&#x6c;&#x74;&#111;&#x3a;&#106;&#x6f;&#x68;&#x6e;&#x2e;&#115;&#x70;&#x72;&#97;&#x79;&#x40;&#114;&#x65;&#100;&#104;&#x61;&#116;&#x2e;&#99;&#x6f;&#x6d;">&#106;&#x6f;&#x68;&#x6e;&#x2e;&#115;&#x70;&#x72;&#97;&#x79;&#x40;&#114;&#x65;&#100;&#104;&#x61;&#116;&#x2e;&#99;&#x6f;&#x6d;</a><br>Date: Mon Aug 17 14:40:46 2015 -0400<br>osdc/Objecter: new-style pgls<br> Signed-off-by: John Spray <a href="&#x6d;&#x61;&#x69;&#108;&#116;&#x6f;&#58;&#x6a;&#111;&#104;&#x6e;&#x2e;&#x73;&#x70;&#114;&#x61;&#121;&#x40;&#x72;&#101;&#100;&#x68;&#97;&#x74;&#46;&#x63;&#111;&#109;">&#x6a;&#111;&#104;&#x6e;&#x2e;&#x73;&#x70;&#114;&#x61;&#121;&#x40;&#x72;&#101;&#100;&#x68;&#97;&#x74;&#46;&#x63;&#111;&#109;</a><br> Signed-off-by: Sage Weil <a href="&#x6d;&#97;&#105;&#x6c;&#x74;&#x6f;&#58;&#x73;&#x61;&#x67;&#x65;&#64;&#x72;&#x65;&#x64;&#x68;&#x61;&#116;&#x2e;&#99;&#111;&#x6d;">&#x73;&#x61;&#x67;&#x65;&#64;&#x72;&#x65;&#x64;&#x68;&#x61;&#116;&#x2e;&#99;&#111;&#x6d;</a></p>
 </blockquote>
 <p>From git</p>
 <p>Related github issue: <a href="https://github.com/ceph/ceph/pull/4919/commits" target="_blank" rel="external">https://github.com/ceph/ceph/pull/4919/commits</a></p>

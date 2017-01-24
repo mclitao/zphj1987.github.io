@@ -247,7 +247,7 @@ var _hmt = _hmt || [];
 <h4 id="3、默认算法，1%丢包率">3、默认算法，1%丢包率</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget http://<span class="number">192.168</span>.<span class="number">8.106</span>/FreeBSD-<span class="number">10.2</span>-RELEASE-amd64-dvd1.iso</span><br><span class="line"><span class="number">2017</span>-<span class="number">01</span>-<span class="number">24</span> <span class="number">12</span>:<span class="number">38</span>:<span class="number">47</span> (<span class="number">142</span> MB/s) - ‘FreeBSD-<span class="number">10.2</span>-RELEASE-amd64-dvd1.iso’ saved</span><br></pre></td></tr></table></figure>
 <p>可以看到在1%丢包率下，速度已经降为正常的1/6左右了，是一个很大的衰减</p>
 <h4 id="4、BBR算法，1%丢包率">4、BBR算法，1%丢包率</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget http://<span class="number">192.168</span>.<span class="number">8.106</span>/FreeBSD-<span class="number">10.2</span>-RELEASE-amd64-dvd1.iso</span><br><span class="line"><span class="number">2017</span>-<span class="number">01</span>-<span class="number">24</span> <span class="number">12</span>:<span class="number">40</span>:<span class="number">25</span> (<span class="number">896</span> MB/s) - ‘FreeBSD-<span class="number">10.2</span>-RELEASE-amd64-dvd1.iso’</span><br></pre></td></tr></table></figure>
-<p>可以看到在1%丢包率下，还能维持接近900MB/s的下载速度，相对于默认算法，相差了真实非常非常的大，google在很多情况下技术甩了其他公司真的是几条街了</p>
+<p>可以看到在1%丢包率下，还能维持接近900MB/s的下载速度，相对于默认算法，相差了真是非常非常的大，google在很多情况下技术甩了其他公司真的是几条街了</p>
 <h2 id="总结">总结</h2><p>上面的测试通过一个简单的场景来验证了bbr算法对于丢包情况下的带宽的优化，这个对于一些提供下载服务，并且有一定的丢包率的场景的情况下，能够有很大的改善，所以算法对于技术的改变还是非常大的，很多时候就是这种异常情况下的差别，才是真正的差别</p>
 <p>顺便提一句微博的技术经理@来去之间说的一句话：</p>
 <blockquote>
