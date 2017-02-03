@@ -228,7 +228,7 @@ var _hmt = _hmt || [];
         <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/octoalien.jpg" alt="此处输入图片的描述"><br></center>
 
 <p>总结了几个小技巧，用于在ceph编译过程中，能够更快一点<br><a id="more"></a></p>
-<h2 id="一、修改clone的地址">一、修改clone的地址</h2><blockquote>
+<h2 id="修改clone的地址">修改clone的地址</h2><blockquote>
 <p>git clone  <a href="https://github.com/ceph/ceph.git" target="_blank" rel="external">https://github.com/ceph/ceph.git</a></p>
 </blockquote>
 <p>可以修改成</p>
@@ -237,19 +237,19 @@ var _hmt = _hmt || [];
 </blockquote>
 <p>某些时候可能可以加快一些<br><img src="http://static.zybuluo.com/zphj1987/1nhwqu5rigkblr4ql9decmv5/1.png" alt="1.png-5.9kB"></p>
 <p><img src="http://static.zybuluo.com/zphj1987/tmcr90ufu6abgmffmikep9sl/2.png" alt="1.png-5."></p>
-<h2 id="二、根据需要下载分支">二、根据需要下载分支</h2><p>假如现在想看10.2.5版本的代码</p>
-<h3 id="2-1_常规做法">2.1 常规做法</h3><p>先下载整个库<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> git://github.com/ceph/ceph.git all</span><br></pre></td></tr></table></figure></p>
+<h2 id="根据需要下载分支">根据需要下载分支</h2><p>假如现在想看10.2.5版本的代码</p>
+<h3 id="常规做法">常规做法</h3><p>先下载整个库<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> git://github.com/ceph/ceph.git all</span><br></pre></td></tr></table></figure></p>
 <p>总共的下载对象数目为46万</p>
 <blockquote>
 <p>Counting objects: 460384</p>
 </blockquote>
 <p>这个是包含所有的分支和分支内的文件的所有版本的<br>我们切换到分支<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 mytest]<span class="comment">#cd all</span></span><br><span class="line">[root@lab8106 all]<span class="comment"># git branch</span></span><br><span class="line">* master</span><br><span class="line">[root@lab8106 all]<span class="comment"># git checkout -b all10.2.5  v10.2.5</span></span><br><span class="line">Switched to a new branch <span class="string">'all10.2.5'</span></span><br><span class="line">[root@lab8106 all]<span class="comment"># git branch</span></span><br><span class="line">* all10.<span class="number">2.5</span></span><br><span class="line">  master</span><br><span class="line">[root@lab8106 all]<span class="comment"># ls -R|wc -l</span></span><br><span class="line"><span class="number">4392</span></span><br><span class="line">可以看到有这么多的文件</span><br></pre></td></tr></table></figure></p>
-<h4 id="2-2_现在只复制一个分支的">2.2 现在只复制一个分支的</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 mytest]<span class="comment"># git clone -b v10.2.5 --single-branch   git://github.com/ceph/ceph.git single</span></span><br></pre></td></tr></table></figure>
+<h3 id="现在只复制一个分支的">现在只复制一个分支的</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 mytest]<span class="comment"># git clone -b v10.2.5 --single-branch   git://github.com/ceph/ceph.git single</span></span><br></pre></td></tr></table></figure>
 <p>总共下载的对象数目为34万</p>
 <blockquote>
 <p>Counting objects: 344026<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 mytest]<span class="comment"># cd single/</span></span><br><span class="line">[root@lab8106 single]<span class="comment"># git checkout -b single10.2.5</span></span><br><span class="line">Switched to a new branch <span class="string">'single10.2.5'</span></span><br><span class="line">[root@lab8106 single]<span class="comment"># git branch</span></span><br><span class="line">* single10.<span class="number">2.5</span></span><br><span class="line">[root@lab8106 single]<span class="comment"># ls -R |wc -l</span></span><br><span class="line"><span class="number">4392</span></span><br></pre></td></tr></table></figure></p>
 </blockquote>
-<h4 id="2-3_现在只复制一个分支的最后一个版本的代码">2.3 现在只复制一个分支的最后一个版本的代码</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 mytest]<span class="comment"># git clone -b v10.2.5 --single-branch --depth 1  git://github.com/ceph/ceph.git singledep1</span></span><br></pre></td></tr></table></figure>
+<h3 id="现在只复制一个分支的最后一个版本的代码">现在只复制一个分支的最后一个版本的代码</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 mytest]<span class="comment"># git clone -b v10.2.5 --single-branch --depth 1  git://github.com/ceph/ceph.git singledep1</span></span><br></pre></td></tr></table></figure>
 <p>总共下载的对象数目为3682</p>
 <blockquote>
 <p>Counting objects: 3682<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 mytest]<span class="comment">#  cd singledep1/</span></span><br><span class="line"> [root@lab8106 singledep1]<span class="comment"># git checkout -b singledep110.2.5</span></span><br><span class="line">Switched to a new branch <span class="string">'singledep110.2.5'</span></span><br><span class="line">[root@lab8106 singledep1]<span class="comment"># git branch</span></span><br><span class="line">* singledep110.<span class="number">2.5</span></span><br><span class="line">[root@lab8106 singledep1]<span class="comment"># ls -R |wc -l</span></span><br><span class="line"><span class="number">4392</span></span><br></pre></td></tr></table></figure></p>

@@ -4,7 +4,7 @@
   <subtitle><![CDATA[但行好事，莫问前程]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2017-01-24T06:26:44.579Z</updated>
+  <updated>2017-02-03T05:08:19.889Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="http://www.zphj1987.com/2017/01/24/Linux-kernel-TCP-BBR-better/"/>
     <id>http://www.zphj1987.com/2017/01/24/Linux-kernel-TCP-BBR-better/</id>
     <published>2017-01-24T02:54:44.000Z</published>
-    <updated>2017-01-24T06:26:44.579Z</updated>
+    <updated>2017-02-03T05:08:19.889Z</updated>
     <content type="html"><![CDATA[<center><br><img src="http://7xo9we.com1.z0.glb.clouddn.com/tcp_ip_protocol.gif" alt=""><br></center>
 
 <p>如果你有订阅一些科技新闻，应该会有看过内核在4.9当中加入了一个新的算法，来解决在有一定的丢包率的情况下的带宽稳定的问题，这个是谷歌为我们带来的干货，新的 TCP 拥塞控制算法 BBR (Bottleneck Bandwidth and RTT)，谷歌一向的做法是，先上生产，然后发论文，然后有可能开源，所以这个已经合并到了内核4.9分支当中，算法带来的改变在出的测试报告当中有很详细的数据展示，这个看多了可能反而不知道到底会有什么明显改变，特别是对于我们自己的场景</p>
@@ -38,12 +38,12 @@
 <p>如果需要恢复成默认的就修改成下面这个值，然后执行sysct -p恢复默认<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">net.ipv4.tcp_congestion_control = cubic</span><br><span class="line">net.core.default_qdisc = pfifo_fast</span><br></pre></td></tr></table></figure></p>
 <h3 id="开始测试">开始测试</h3><p>为了避免磁盘本身的写入速度的影响，我们直接将数据wget到内存当中去<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8107 ~]<span class="comment"># cd /dev/shm</span></span><br></pre></td></tr></table></figure></p>
 <p>写入到这个目录当中的数据就是直接写入内存的<br>我们先来对比下没有丢包的时候的速度</p>
-<h4 id="1、默认算法，无丢包率">1、默认算法，无丢包率</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"> wget http://<span class="number">192.168</span>.<span class="number">8.106</span>/FreeBSD-<span class="number">10.2</span>-RELEASE-amd64-dvd1.iso</span><br><span class="line"><span class="number">2017</span>-<span class="number">01</span>-<span class="number">24</span> <span class="number">12</span>:<span class="number">34</span>:<span class="number">01</span> (<span class="number">909</span> MB/s) - ‘FreeBSD-<span class="number">10.2</span>-RELEASE-amd64-dvd1.iso’ saved</span><br></pre></td></tr></table></figure>
-<h4 id="2、BBR算法，无丢包率">2、BBR算法，无丢包率</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget http://<span class="number">192.168</span>.<span class="number">8.106</span>/FreeBSD-<span class="number">10.2</span>-RELEASE-amd64-dvd1.iso</span><br><span class="line"><span class="number">2017</span>-<span class="number">01</span>-<span class="number">24</span> <span class="number">12</span>:<span class="number">36</span>:<span class="number">21</span> (<span class="number">913</span> MB/s) - ‘FreeBSD-<span class="number">10.2</span>-RELEASE-amd64-dvd1.iso’ saved</span><br></pre></td></tr></table></figure>
+<h4 id="默认算法，无丢包率">默认算法，无丢包率</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"> wget http://<span class="number">192.168</span>.<span class="number">8.106</span>/FreeBSD-<span class="number">10.2</span>-RELEASE-amd64-dvd1.iso</span><br><span class="line"><span class="number">2017</span>-<span class="number">01</span>-<span class="number">24</span> <span class="number">12</span>:<span class="number">34</span>:<span class="number">01</span> (<span class="number">909</span> MB/s) - ‘FreeBSD-<span class="number">10.2</span>-RELEASE-amd64-dvd1.iso’ saved</span><br></pre></td></tr></table></figure>
+<h4 id="BBR算法，无丢包率">BBR算法，无丢包率</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget http://<span class="number">192.168</span>.<span class="number">8.106</span>/FreeBSD-<span class="number">10.2</span>-RELEASE-amd64-dvd1.iso</span><br><span class="line"><span class="number">2017</span>-<span class="number">01</span>-<span class="number">24</span> <span class="number">12</span>:<span class="number">36</span>:<span class="number">21</span> (<span class="number">913</span> MB/s) - ‘FreeBSD-<span class="number">10.2</span>-RELEASE-amd64-dvd1.iso’ saved</span><br></pre></td></tr></table></figure>
 <p>上面的两组数据基本一样，没有什么差别<br>下面的测试将丢包率控制到1%，然后继续测试</p>
-<h4 id="3、默认算法，1%丢包率">3、默认算法，1%丢包率</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget http://<span class="number">192.168</span>.<span class="number">8.106</span>/FreeBSD-<span class="number">10.2</span>-RELEASE-amd64-dvd1.iso</span><br><span class="line"><span class="number">2017</span>-<span class="number">01</span>-<span class="number">24</span> <span class="number">12</span>:<span class="number">38</span>:<span class="number">47</span> (<span class="number">142</span> MB/s) - ‘FreeBSD-<span class="number">10.2</span>-RELEASE-amd64-dvd1.iso’ saved</span><br></pre></td></tr></table></figure>
+<h4 id="默认算法，1%丢包率">默认算法，1%丢包率</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget http://<span class="number">192.168</span>.<span class="number">8.106</span>/FreeBSD-<span class="number">10.2</span>-RELEASE-amd64-dvd1.iso</span><br><span class="line"><span class="number">2017</span>-<span class="number">01</span>-<span class="number">24</span> <span class="number">12</span>:<span class="number">38</span>:<span class="number">47</span> (<span class="number">142</span> MB/s) - ‘FreeBSD-<span class="number">10.2</span>-RELEASE-amd64-dvd1.iso’ saved</span><br></pre></td></tr></table></figure>
 <p>可以看到在1%丢包率下，速度已经降为正常的1/6左右了，是一个很大的衰减</p>
-<h4 id="4、BBR算法，1%丢包率">4、BBR算法，1%丢包率</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget http://<span class="number">192.168</span>.<span class="number">8.106</span>/FreeBSD-<span class="number">10.2</span>-RELEASE-amd64-dvd1.iso</span><br><span class="line"><span class="number">2017</span>-<span class="number">01</span>-<span class="number">24</span> <span class="number">12</span>:<span class="number">40</span>:<span class="number">25</span> (<span class="number">896</span> MB/s) - ‘FreeBSD-<span class="number">10.2</span>-RELEASE-amd64-dvd1.iso’</span><br></pre></td></tr></table></figure>
+<h4 id="BBR算法，1%丢包率">BBR算法，1%丢包率</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget http://<span class="number">192.168</span>.<span class="number">8.106</span>/FreeBSD-<span class="number">10.2</span>-RELEASE-amd64-dvd1.iso</span><br><span class="line"><span class="number">2017</span>-<span class="number">01</span>-<span class="number">24</span> <span class="number">12</span>:<span class="number">40</span>:<span class="number">25</span> (<span class="number">896</span> MB/s) - ‘FreeBSD-<span class="number">10.2</span>-RELEASE-amd64-dvd1.iso’</span><br></pre></td></tr></table></figure>
 <p>可以看到在1%丢包率下，还能维持接近900MB/s的下载速度，相对于默认算法，相差了真是非常非常的大，google在很多情况下技术甩了其他公司真的是几条街了</p>
 <h2 id="总结">总结</h2><p>上面的测试通过一个简单的场景来验证了bbr算法对于丢包情况下的带宽的优化，这个对于一些提供下载服务，并且有一定的丢包率的场景的情况下，能够有很大的改善，所以算法对于技术的改变还是非常大的，很多时候就是这种异常情况下的差别，才是真正的差别</p>
 <p>顺便提一句微博的技术经理@来去之间说的一句话：</p>
@@ -86,7 +86,7 @@
     <link href="http://www.zphj1987.com/2017/01/22/rbd-mirror-configure-onesidebackup/"/>
     <id>http://www.zphj1987.com/2017/01/22/rbd-mirror-configure-onesidebackup/</id>
     <published>2017-01-22T08:35:53.000Z</published>
-    <updated>2017-01-22T09:05:48.148Z</updated>
+    <updated>2017-02-03T05:10:41.622Z</updated>
     <content type="html"><![CDATA[<center><br><img src="http://7xo9we.com1.z0.glb.clouddn.com/mirrorpng.png" alt=""><br></center>
 
 
@@ -122,8 +122,7 @@
 <p>如果出现脑裂的情况，那么rbd-mirror将会停止同步，你自己需要判断哪个是最新的image，然后手动强制去同步<code>rbd mirror image resync</code></p>
 <p>上面基本参照的是sebastien翻译的，原文只是做了简短的说明，下面是我的实践部分</p>
 <hr>
-<h3 id="配置实践部分">配置实践部分</h3><p>先介绍下一些简单的概念</p>
-<h4 id="rbd-mirror_进程">rbd-mirror 进程</h4><p>rbd-mirror进程负责将镜像从一个Ceph集群同步到另一个集群</p>
+<h1 id="配置实践部分">配置实践部分</h1><h2 id="先介绍下一些简单的概念">先介绍下一些简单的概念</h2><h3 id="rbd-mirror_进程">rbd-mirror 进程</h3><p>rbd-mirror进程负责将镜像从一个Ceph集群同步到另一个集群</p>
 <p>根据复制的类型，rbd-mirror可以在单个集群上或者是镜像的两个集群上都运行</p>
 <ul>
 <li>单向备份<ul>
@@ -139,7 +138,7 @@
 <blockquote>
 <p>rbd-mirror的每个实例必须能够同时连接到两个Ceph集群,因为需要同两个集群都进行数据通信<br>每个Ceph集群只运行一个rbd-mirror进程</p>
 </blockquote>
-<h4 id="Mirroring_模式">Mirroring 模式</h4><p>mirroring是基于存储池进行的peer，ceph支持两种模式的镜像，根据镜像来划分有：</p>
+<h3 id="Mirroring_模式">Mirroring 模式</h3><p>mirroring是基于存储池进行的peer，ceph支持两种模式的镜像，根据镜像来划分有：</p>
 <ul>
 <li><p>存储池模式</p>
 <ul>
@@ -153,7 +152,7 @@
 </li>
 </ul>
 <p>本次配置选择的模式是镜像的模式，也就是指定的镜像才会进行备份</p>
-<h4 id="Image_状态">Image 状态</h4><p>做了mirroring的Image的状态有:<br>primary (可以修改)<br>non-primary (不能修改).<br>当第一次对image进行开启mirroring的时候 .Images 自动 promoted 为 primary</p>
+<h3 id="Image_状态">Image 状态</h3><p>做了mirroring的Image的状态有:<br>primary (可以修改)<br>non-primary (不能修改).<br>当第一次对image进行开启mirroring的时候 .Images 自动 promoted 为 primary</p>
 <h2 id="开始配置">开始配置</h2><p>首先配置两个集群，配置的集群都没有更改名称，都是ceph，我们通过配置文件来控制集群的识别，我的环境是单主机集群，lab8106和lab8107两台机器<br>lab8106为local集群，lab8107为remote集群，准备把lab8106的image备份到lab8107的集群上<br>在ceph.conf当中添加：</p>
 <blockquote>
 <p>rbd default features = 125</p>
@@ -163,25 +162,25 @@
 <p>这个是在lab8106上执行，因为我们需要对lab8106进行备份<br>也可以在创建以后开启属性：<br>语法：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rbd feature <span class="built_in">enable</span> &lt;pool-name&gt;/&lt;image-name&gt; &lt;feature-name&gt;</span><br></pre></td></tr></table></figure></p>
 <p>例子：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rbd feature <span class="built_in">enable</span> rbd/image-<span class="number">1</span> exclusive-lock</span><br><span class="line">rbd feature <span class="built_in">enable</span> rbd/image-<span class="number">1</span> journaling</span><br></pre></td></tr></table></figure></p>
 <p>上面有三种方法开启属性，选择习惯或者需要的一种就可以</p>
-<h4 id="一、开启存储池的mirror的模式">一、开启存储池的mirror的模式</h4><p>我们准备开启集群镜像备份模式<br>语法：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rbd mirror pool <span class="built_in">enable</span> &lt;pool-name&gt; &lt;mode&gt;</span><br></pre></td></tr></table></figure></p>
+<h3 id="开启存储池的mirror的模式">开启存储池的mirror的模式</h3><p>我们准备开启集群镜像备份模式<br>语法：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rbd mirror pool <span class="built_in">enable</span> &lt;pool-name&gt; &lt;mode&gt;</span><br></pre></td></tr></table></figure></p>
 <p>在lab8106主机上执行:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rbd mirror pool <span class="built_in">enable</span> rbd image</span><br></pre></td></tr></table></figure></p>
 <p>在lab8107主机上执行：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rbd mirror pool <span class="built_in">enable</span> rbd image</span><br></pre></td></tr></table></figure></p>
 <p>上面的操作是对rbd存储池启动image模式的mirror配置<br>如果需要关闭：<br>语法：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rbd mirror pool <span class="built_in">disable</span> &lt;pool-name&gt; &lt;mode&gt;</span><br></pre></td></tr></table></figure></p>
 <p>执行:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rbd mirror pool <span class="built_in">disable</span> rbd image</span><br></pre></td></tr></table></figure></p>
-<h4 id="二、处理配置文件和kerring">二、处理配置文件和kerring</h4><p>在lab8106上执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># scp /etc/ceph/ceph.conf lab8107:/etc/ceph/local.conf</span></span><br><span class="line">[root@lab8106 ceph]<span class="comment"># scp /etc/ceph/ceph.client.admin.keyring lab8107:/etc/ceph/local.client.admin.keyring</span></span><br><span class="line">[root@lab8106 ceph]<span class="comment">#cp /etc/ceph/ceph.conf /etc/ceph/local.conf</span></span><br><span class="line">[root@lab8106 ceph]<span class="comment">#cp /etc/ceph/ceph.client.admin.keyring /etc/ceph/local.client.admin.keyring</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="处理配置文件和kerring">处理配置文件和kerring</h3><p>在lab8106上执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># scp /etc/ceph/ceph.conf lab8107:/etc/ceph/local.conf</span></span><br><span class="line">[root@lab8106 ceph]<span class="comment"># scp /etc/ceph/ceph.client.admin.keyring lab8107:/etc/ceph/local.client.admin.keyring</span></span><br><span class="line">[root@lab8106 ceph]<span class="comment">#cp /etc/ceph/ceph.conf /etc/ceph/local.conf</span></span><br><span class="line">[root@lab8106 ceph]<span class="comment">#cp /etc/ceph/ceph.client.admin.keyring /etc/ceph/local.client.admin.keyring</span></span><br></pre></td></tr></table></figure></p>
 <p>在lab8107上执行：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8107 ceph]<span class="comment"># scp /etc/ceph/ceph.conf lab8106:/etc/ceph/remote.conf</span></span><br><span class="line">[root@lab8107 ceph]<span class="comment"># scp /etc/ceph/ceph.client.admin.keyring lab8106:/etc/ceph/remote.client.admin.keyring</span></span><br><span class="line">[root@lab8107 ceph]<span class="comment">#cp /etc/ceph/ceph.conf /etc/ceph/remote.conf</span></span><br><span class="line">[root@lab8107 ceph]<span class="comment">#cp /etc/ceph/ceph.client.admin.keyring /etc/ceph/remote.client.admin.keyring</span></span><br></pre></td></tr></table></figure></p>
 <p>执行完了后在两台机器上给予权限<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># chown ceph:ceph -R /etc/ceph</span></span><br><span class="line">[root@lab8107 ceph]<span class="comment"># chown ceph:ceph -R /etc/ceph</span></span><br></pre></td></tr></table></figure></p>
 <p>检验上面设置是否完成<br>在lab8106执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># ceph --cluster local mon stat</span></span><br><span class="line">e1: <span class="number">1</span> mons at &#123;lab8106=<span class="number">192.168</span>.<span class="number">8.106</span>:<span class="number">6789</span>/<span class="number">0</span>&#125;, election epoch <span class="number">3</span>, quorum <span class="number">0</span> lab8106</span><br><span class="line">[root@lab8106 ceph]<span class="comment"># ceph --cluster remote mon stat</span></span><br><span class="line">e1: <span class="number">1</span> mons at &#123;lab8107=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6789</span>/<span class="number">0</span>&#125;, election epoch <span class="number">3</span>, quorum <span class="number">0</span> lab8107</span><br></pre></td></tr></table></figure></p>
 <p>在lab8107执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@lab8107:~/ceph<span class="comment"># ceph --cluster local mon stat</span></span><br><span class="line">e1: <span class="number">1</span> mons at &#123;lab8106=<span class="number">192.168</span>.<span class="number">8.106</span>:<span class="number">6789</span>/<span class="number">0</span>&#125;, election epoch <span class="number">3</span>, quorum <span class="number">0</span> lab8106</span><br><span class="line">root@lab8107:~/ceph<span class="comment"># ceph --cluster remote mon stat</span></span><br><span class="line">e1: <span class="number">1</span> mons at &#123;lab8107=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6789</span>/<span class="number">0</span>&#125;, election epoch <span class="number">3</span>, quorum <span class="number">0</span> lab8107</span><br></pre></td></tr></table></figure></p>
 <p>到这里就是两个集群可以通过local和remote进行通信了</p>
-<h4 id="三、增加peer">三、增加peer</h4><p>我们这里是做单个集群的备份，为了方便我们这里都用admin的keyring<br>语法<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rbd mirror pool peer add &lt;pool-name&gt; &lt;client-name&gt;@&lt;cluster-name&gt;</span><br></pre></td></tr></table></figure></p>
+<h3 id="增加peer">增加peer</h3><p>我们这里是做单个集群的备份，为了方便我们这里都用admin的keyring<br>语法<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rbd mirror pool peer add &lt;pool-name&gt; &lt;client-name&gt;@&lt;cluster-name&gt;</span><br></pre></td></tr></table></figure></p>
 <p>这个是为了让rbd-mirror进程找到它peer的集群的存储池<br>在lab8106上执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># rbd --cluster local mirror pool peer add rbd client.admin@remote</span></span><br><span class="line">[root@lab8106 ceph]<span class="comment"># rbd --cluster remote mirror pool peer add rbd client.admin@local</span></span><br></pre></td></tr></table></figure></p>
 <p>查询peer状态<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># rbd mirror pool info rbd --cluster local</span></span><br><span class="line">Mode: image</span><br><span class="line">Peers: </span><br><span class="line">  UUID                                 NAME   CLIENT       </span><br><span class="line">  a050a0f5-<span class="number">9448</span>-<span class="number">43</span>f2-<span class="number">872</span>f-<span class="number">87</span>c394083871 remote client.admin</span><br><span class="line">[root@lab8106 ceph]<span class="comment"># rbd mirror pool info rbd --cluster remote</span></span><br><span class="line">Mode: image</span><br><span class="line">Peers: </span><br><span class="line">  UUID                                 NAME  CLIENT       </span><br><span class="line">  <span class="number">8</span>d7b3fa4-be44-<span class="number">4</span>e25-b0b7-cf4bdb62bf10 <span class="built_in">local</span> client.admin</span><br></pre></td></tr></table></figure></p>
 <p>如果需要删除peer<br>语法：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rbd mirror pool peer remove &lt;pool-name&gt; &lt;peer-uuid&gt;</span><br></pre></td></tr></table></figure></p>
 <p>查询存储池状态<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># rbd mirror pool status rbd</span></span><br><span class="line">health: OK</span><br><span class="line">images: <span class="number">0</span> total</span><br></pre></td></tr></table></figure></p>
-<h4 id="四、开启image的mirror">四、开启image的mirror</h4><p>在lab8106执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rbd mirror image <span class="built_in">enable</span> rbd/image-<span class="number">1</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="开启image的mirror">开启image的mirror</h3><p>在lab8106执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rbd mirror image <span class="built_in">enable</span> rbd/image-<span class="number">1</span></span><br></pre></td></tr></table></figure></p>
 <p>查询镜像的状态<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># rbd info rbd/image-1</span></span><br><span class="line">rbd image <span class="string">'image-1'</span>:</span><br><span class="line">	size <span class="number">1024</span> MB <span class="keyword">in</span> <span class="number">256</span> objects</span><br><span class="line">	order <span class="number">22</span> (<span class="number">4096</span> kB objects)</span><br><span class="line">	block_name_prefix: rbd_data.<span class="number">102</span>c2ae8944a</span><br><span class="line">	format: <span class="number">2</span></span><br><span class="line">	features: exclusive-lock, journaling</span><br><span class="line">	flags: </span><br><span class="line">	journal: <span class="number">102</span>c2ae8944a</span><br><span class="line">	mirroring state: enabled</span><br><span class="line">	mirroring global id: dabdbbed-<span class="number">7</span>c06-<span class="number">4</span>e1d-b860-<span class="number">8</span>dd104509565</span><br><span class="line">	mirroring primary: <span class="literal">true</span></span><br></pre></td></tr></table></figure></p>
-<h4 id="五、开启rbd-mirror的同步进程">五、开启rbd-mirror的同步进程</h4><p>先用调试模式启动进程看看情况<br>在lab8107的机器上执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8107 ceph]<span class="comment"># rbd-mirror -d --setuser ceph --setgroup ceph --cluster remote -i admin</span></span><br><span class="line"><span class="number">2017</span>-<span class="number">01</span>-<span class="number">22</span> <span class="number">17</span>:<span class="number">43</span>:<span class="number">53.688820</span> <span class="number">7</span><span class="built_in">fc</span>926dc6c40  <span class="number">0</span> <span class="built_in">set</span> uid:gid to <span class="number">167</span>:<span class="number">167</span> (ceph:ceph)</span><br><span class="line"><span class="number">2017</span>-<span class="number">01</span>-<span class="number">22</span> <span class="number">17</span>:<span class="number">43</span>:<span class="number">53.688840</span> <span class="number">7</span><span class="built_in">fc</span>926dc6c40  <span class="number">0</span> ceph version <span class="number">10.2</span>.<span class="number">5</span> (c461ee19ecbc0c5c330aca20f7392c9a00730367), process rbd-mirror, pid <span class="number">32080</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="开启rbd-mirror的同步进程">开启rbd-mirror的同步进程</h3><p>先用调试模式启动进程看看情况<br>在lab8107的机器上执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8107 ceph]<span class="comment"># rbd-mirror -d --setuser ceph --setgroup ceph --cluster remote -i admin</span></span><br><span class="line"><span class="number">2017</span>-<span class="number">01</span>-<span class="number">22</span> <span class="number">17</span>:<span class="number">43</span>:<span class="number">53.688820</span> <span class="number">7</span><span class="built_in">fc</span>926dc6c40  <span class="number">0</span> <span class="built_in">set</span> uid:gid to <span class="number">167</span>:<span class="number">167</span> (ceph:ceph)</span><br><span class="line"><span class="number">2017</span>-<span class="number">01</span>-<span class="number">22</span> <span class="number">17</span>:<span class="number">43</span>:<span class="number">53.688840</span> <span class="number">7</span><span class="built_in">fc</span>926dc6c40  <span class="number">0</span> ceph version <span class="number">10.2</span>.<span class="number">5</span> (c461ee19ecbc0c5c330aca20f7392c9a00730367), process rbd-mirror, pid <span class="number">32080</span></span><br></pre></td></tr></table></figure></p>
 <p>如果确认没问题就用服务来控制启动<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">vim /usr/lib/systemd/system/ceph-rbd-mirror@.service</span><br></pre></td></tr></table></figure></p>
 <p>修改</p>
 <blockquote>
@@ -238,7 +237,7 @@
     <link href="http://www.zphj1987.com/2017/01/19/ceph-rbd-ceph-backup/"/>
     <id>http://www.zphj1987.com/2017/01/19/ceph-rbd-ceph-backup/</id>
     <published>2017-01-19T14:49:33.000Z</published>
-    <updated>2017-01-20T03:20:26.908Z</updated>
+    <updated>2017-02-03T05:14:57.681Z</updated>
     <content type="html"><![CDATA[<center><br><img src="http://7xo9we.com1.z0.glb.clouddn.com/backupmp.png" alt=""><br></center>
 
 <p>teralytics是一家国外的大数据公司，这个是他们开源的ceph的备份的工具，在twitter上搜索相关信息的时候看到，觉得不错就拿来试用一番</p>
@@ -264,11 +263,11 @@
 <h2 id="开始备份">开始备份</h2><h3 id="全量备份配置">全量备份配置</h3><p>上面的配置文件已经写好了，直接执行备份命令就可以了<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># cephbackup</span></span><br><span class="line">Starting backup <span class="keyword">for</span> pool rbd</span><br><span class="line">Full ceph backup</span><br><span class="line">Images to backup:</span><br><span class="line">	rbd/zp</span><br><span class="line">Backup folder: /tmp/</span><br><span class="line">Compression: True</span><br><span class="line">Check mode: False</span><br><span class="line">Taking full backup of images: zp</span><br><span class="line">rbd image <span class="string">'zp'</span>:</span><br><span class="line">	size <span class="number">40960</span> MB <span class="keyword">in</span> <span class="number">10240</span> objects</span><br><span class="line">	order <span class="number">22</span> (<span class="number">4096</span> kB objects)</span><br><span class="line">	block_name_prefix: rbd_data.<span class="number">25496</span>b8b4567</span><br><span class="line">	format: <span class="number">2</span></span><br><span class="line">	features: layering</span><br><span class="line">	flags: </span><br><span class="line">Exporting image zp to /tmp/rbd/zp/zp_UTC20170119T092933.full</span><br><span class="line">Compress mode activated</span><br><span class="line"><span class="comment"># rbd export rbd/zp /tmp/rbd/zp/zp_UTC20170119T092933.full</span></span><br><span class="line">Exporting image: <span class="number">100</span>% complete...done.</span><br><span class="line"><span class="comment"># tar Scvfz /tmp/rbd/zp/zp_UTC20170119T092933.full.tar.gz /tmp/rbd/zp/zp_UTC20170119T092933.full</span></span><br><span class="line">tar: Removing leading `/<span class="string">' from member names</span></span><br></pre></td></tr></table></figure></p>
 <p>压缩的如果开了，正好文件也是稀疏文件的话，需要等很久，压缩的效果很好，dd 生成的文件可以压缩到很小</p>
 <p>检查备份生成的文件<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ll /tmp/rbd/zp/zp_UTC20170119T092933.full*</span></span><br><span class="line">-rw-r--r-- <span class="number">1</span> root root <span class="number">42949672960</span> Jan <span class="number">19</span> <span class="number">17</span>:<span class="number">29</span> /tmp/rbd/zp/zp_UTC20170119T092933.full</span><br><span class="line">-rw-r--r-- <span class="number">1</span> root root           <span class="number">0</span> Jan <span class="number">19</span> <span class="number">17</span>:<span class="number">29</span> /tmp/rbd/zp/zp_UTC20170119T092933.full.tar.gz</span><br></pre></td></tr></table></figure></p>
-<h4 id="全量备份的还原">全量备份的还原</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rbd import /tmp/rbd/zp/zp_UTC20170119T092933.full zpbk</span><br></pre></td></tr></table></figure>
+<h3 id="全量备份的还原">全量备份的还原</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rbd import /tmp/rbd/zp/zp_UTC20170119T092933.full zpbk</span><br></pre></td></tr></table></figure>
 <p>检查数据，没有问题</p>
 <h3 id="增量备份配置">增量备份配置</h3><p>写下增量配置的文件，修改下备份模式的选项<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[rbd]</span><br><span class="line">window size = <span class="number">7</span></span><br><span class="line">window unit = day</span><br><span class="line">destination directory = /tmp/</span><br><span class="line">images = zp</span><br><span class="line">compress = yes</span><br><span class="line">ceph config = /etc/ceph/ceph.conf</span><br><span class="line">backup mode = incremental</span><br><span class="line">check mode = no</span><br></pre></td></tr></table></figure></p>
 <p>执行多次进行增量备份以后是这样的<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"> [root@lab8106 ~]<span class="comment">#ll  /tmp/rbd/zpbk/</span></span><br><span class="line">total <span class="number">146452</span></span><br><span class="line">-rw-r--r-- <span class="number">1</span> root root <span class="number">42949672960</span> Jan <span class="number">19</span> <span class="number">18</span>:<span class="number">04</span> zpbk@UTC20170119T100339.full</span><br><span class="line">-rw-r--r-- <span class="number">1</span> root root       <span class="number">66150</span> Jan <span class="number">19</span> <span class="number">18</span>:<span class="number">05</span> zpbk@UTC20170119T100546.diff_from_UTC20170119T100339</span><br><span class="line">-rw-r--r-- <span class="number">1</span> root root          <span class="number">68</span> Jan <span class="number">19</span> <span class="number">18</span>:<span class="number">05</span> zpbk@UTC20170119T100550.diff_from_UTC20170119T100546</span><br><span class="line">-rw-r--r-- <span class="number">1</span> root root          <span class="number">68</span> Jan <span class="number">19</span> <span class="number">18</span>:<span class="number">06</span> zpbk@UTC20170119T100606.diff_from_UTC20170119T100550</span><br><span class="line">-rw-r--r-- <span class="number">1</span> root root          <span class="number">68</span> Jan <span class="number">19</span> <span class="number">18</span>:<span class="number">06</span> zpbk@UTC20170119T100638.diff_from_UTC20170119T100606</span><br></pre></td></tr></table></figure></p>
-<h4 id="增量备份的还原">增量备份的还原</h4><p>分成多个步骤进行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="number">1</span>、进行全量的恢复</span><br><span class="line"><span class="comment"># rbd import config@UTC20161130T170848.full dest_image</span></span><br><span class="line"><span class="number">2</span>、重新创建基础快照</span><br><span class="line"><span class="comment"># rbd snap create dest_image@UTC20161130T170848</span></span><br><span class="line"><span class="number">3</span>、还原增量的快照(多次执行)</span><br><span class="line"><span class="comment"># rbd import-diff config@UTC20161130T170929.diff_from_UTC20161130T170848 dest_image</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="增量备份的还原">增量备份的还原</h3><p>分成多个步骤进行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="number">1</span>、进行全量的恢复</span><br><span class="line"><span class="comment"># rbd import config@UTC20161130T170848.full dest_image</span></span><br><span class="line"><span class="number">2</span>、重新创建基础快照</span><br><span class="line"><span class="comment"># rbd snap create dest_image@UTC20161130T170848</span></span><br><span class="line"><span class="number">3</span>、还原增量的快照(多次执行)</span><br><span class="line"><span class="comment"># rbd import-diff config@UTC20161130T170929.diff_from_UTC20161130T170848 dest_image</span></span><br></pre></td></tr></table></figure></p>
 <p>本测试用例还原步骤就是<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rbd  import zpbk@UTC20170119T100339.full zpnew</span><br><span class="line">rbd snap create zpnew@UTC20170119T100339</span><br><span class="line">rbd import-diff zpbk@UTC20170119T100546.diff_from_UTC20170119T100339  zpnew</span><br><span class="line">rbd import-diff zpbk@UTC20170119T100550.diff_from_UTC20170119T100546  zpnew</span><br><span class="line">rbd import-diff zpbk@UTC20170119T100606.diff_from_UTC20170119T100550  zpnew</span><br><span class="line">rbd import-diff zpbk@UTC20170119T100638.diff_from_UTC20170119T100606  zpnew</span><br></pre></td></tr></table></figure></p>
 <p>检查数据，没有问题</p>
 <h2 id="总结">总结</h2><p>这个软件基于python的实现，可以说作者的实现逻辑是很清晰的，并且提供了配置文件的方式，基本上是各个细节都考虑的比较到位，很容易上手，可以直接拿来使用，或者集成到自己的平台中去，是一个很好的软件</p>
@@ -319,7 +318,7 @@
     <link href="http://www.zphj1987.com/2017/01/12/sortbitwise-mean/"/>
     <id>http://www.zphj1987.com/2017/01/12/sortbitwise-mean/</id>
     <published>2017-01-12T04:39:24.000Z</published>
-    <updated>2017-01-12T05:46:05.621Z</updated>
+    <updated>2017-02-03T05:17:24.304Z</updated>
     <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/techie.jpg" alt=""><br></center>
 
 <h2 id="问题">问题</h2><p>flag sortbitwise 在ceph中是什么意思,在Jewel版本下可以看到多了这个flags</p>
@@ -330,12 +329,12 @@
 </blockquote>
 <p>From <a href="http://docs.ceph.com/docs/master/release-notes/#upgrading-from-infernalis-or-hammer" target="_blank" rel="external">Ceph release notes</a></p>
 <blockquote>
-<p>commit 383185bfbae74797cdb44f50b4bf651422800ff1<br>Author: Sage Weil <a href="&#x6d;&#x61;&#105;&#x6c;&#x74;&#x6f;&#x3a;&#115;&#x61;&#x67;&#x65;&#64;&#114;&#x65;&#100;&#104;&#97;&#116;&#x2e;&#99;&#111;&#109;">&#115;&#x61;&#x67;&#x65;&#64;&#114;&#x65;&#100;&#104;&#97;&#116;&#x2e;&#99;&#111;&#109;</a><br>Date: Fri Aug 7 16:14:09 2015 -0400<br>mon/OSDMonitor: osd set/unset sortbitwise<br> Add monitor command to flip the switch on the OSD hobject_t sort<br> order.</p>
+<p>commit 383185bfbae74797cdb44f50b4bf651422800ff1<br>Author: Sage Weil <a href="&#109;&#97;&#105;&#x6c;&#116;&#111;&#58;&#115;&#97;&#x67;&#101;&#64;&#x72;&#x65;&#x64;&#104;&#x61;&#116;&#x2e;&#99;&#x6f;&#x6d;">&#115;&#97;&#x67;&#101;&#64;&#x72;&#x65;&#x64;&#104;&#x61;&#116;&#x2e;&#99;&#x6f;&#x6d;</a><br>Date: Fri Aug 7 16:14:09 2015 -0400<br>mon/OSDMonitor: osd set/unset sortbitwise<br> Add monitor command to flip the switch on the OSD hobject_t sort<br> order.</p>
 </blockquote>
 <p>From git</p>
 <p>第一次在源码中出现:</p>
 <blockquote>
-<p>commit 138f58493715e386929f152424b70df37843541b<br>Author: John Spray <a href="&#x6d;&#x61;&#105;&#x6c;&#x74;&#111;&#x3a;&#106;&#x6f;&#x68;&#x6e;&#x2e;&#115;&#x70;&#x72;&#97;&#x79;&#x40;&#114;&#x65;&#100;&#104;&#x61;&#116;&#x2e;&#99;&#x6f;&#x6d;">&#106;&#x6f;&#x68;&#x6e;&#x2e;&#115;&#x70;&#x72;&#97;&#x79;&#x40;&#114;&#x65;&#100;&#104;&#x61;&#116;&#x2e;&#99;&#x6f;&#x6d;</a><br>Date: Mon Aug 17 14:40:46 2015 -0400<br>osdc/Objecter: new-style pgls<br> Signed-off-by: John Spray <a href="&#x6d;&#x61;&#x69;&#108;&#116;&#x6f;&#58;&#x6a;&#111;&#104;&#x6e;&#x2e;&#x73;&#x70;&#114;&#x61;&#121;&#x40;&#x72;&#101;&#100;&#x68;&#97;&#x74;&#46;&#x63;&#111;&#109;">&#x6a;&#111;&#104;&#x6e;&#x2e;&#x73;&#x70;&#114;&#x61;&#121;&#x40;&#x72;&#101;&#100;&#x68;&#97;&#x74;&#46;&#x63;&#111;&#109;</a><br> Signed-off-by: Sage Weil <a href="&#x6d;&#97;&#105;&#x6c;&#x74;&#x6f;&#58;&#x73;&#x61;&#x67;&#x65;&#64;&#x72;&#x65;&#x64;&#x68;&#x61;&#116;&#x2e;&#99;&#111;&#x6d;">&#x73;&#x61;&#x67;&#x65;&#64;&#x72;&#x65;&#x64;&#x68;&#x61;&#116;&#x2e;&#99;&#111;&#x6d;</a></p>
+<p>commit 138f58493715e386929f152424b70df37843541b<br>Author: John Spray <a href="&#x6d;&#x61;&#x69;&#x6c;&#116;&#x6f;&#x3a;&#106;&#111;&#x68;&#x6e;&#x2e;&#115;&#112;&#114;&#x61;&#x79;&#x40;&#x72;&#x65;&#x64;&#x68;&#97;&#x74;&#x2e;&#x63;&#x6f;&#x6d;">&#106;&#111;&#x68;&#x6e;&#x2e;&#115;&#112;&#114;&#x61;&#x79;&#x40;&#x72;&#x65;&#x64;&#x68;&#97;&#x74;&#x2e;&#x63;&#x6f;&#x6d;</a><br>Date: Mon Aug 17 14:40:46 2015 -0400<br>osdc/Objecter: new-style pgls<br> Signed-off-by: John Spray <a href="&#x6d;&#x61;&#x69;&#x6c;&#x74;&#x6f;&#x3a;&#106;&#111;&#104;&#110;&#46;&#115;&#112;&#114;&#97;&#121;&#x40;&#x72;&#x65;&#100;&#x68;&#x61;&#x74;&#x2e;&#99;&#111;&#109;">&#106;&#111;&#104;&#110;&#46;&#115;&#112;&#114;&#97;&#121;&#x40;&#x72;&#x65;&#100;&#x68;&#x61;&#x74;&#x2e;&#99;&#111;&#109;</a><br> Signed-off-by: Sage Weil <a href="&#x6d;&#x61;&#x69;&#108;&#116;&#111;&#x3a;&#x73;&#97;&#103;&#101;&#64;&#114;&#x65;&#100;&#104;&#x61;&#116;&#x2e;&#99;&#x6f;&#x6d;">&#x73;&#97;&#103;&#101;&#64;&#114;&#x65;&#100;&#104;&#x61;&#116;&#x2e;&#99;&#x6f;&#x6d;</a></p>
 </blockquote>
 <p>From git</p>
 <p>Related github issue: <a href="https://github.com/ceph/ceph/pull/4919/commits" target="_blank" rel="external">https://github.com/ceph/ceph/pull/4919/commits</a></p>
@@ -349,6 +348,22 @@
 <p>下载ceph的源码，进入源码目录<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 all]<span class="comment"># git show 968261b11ac30622c0606d1e2ddf422009e7d330</span></span><br><span class="line">commit <span class="number">968261</span>b11ac30622c0606d1e2ddf422009e7d330</span><br><span class="line">Author: Sage Weil &lt;sage@redhat.com&gt;</span><br><span class="line">Date:   Fri Aug <span class="number">7</span> <span class="number">16</span>:<span class="number">01</span>:<span class="number">12</span> <span class="number">2015</span> -<span class="number">0400</span></span><br><span class="line"></span><br><span class="line">    osd/OSDMap: add a SORTBITWISE OSDMap flag</span><br><span class="line"></span><br><span class="line">    This flag will indicate that hobject_t<span class="string">'s shall hence-forth be</span><br><span class="line">    sorted in a bitwise fashion.</span><br><span class="line"></span><br><span class="line">    Signed-off-by: Sage Weil &lt;sage@redhat.com&gt;</span></span><br></pre></td></tr></table></figure></p>
 <p>正如我们在上面给定的提交的描述中所说，该标志将表明hobject_t的将以 bitwise fashion方式排序。<br>现在意味着现在的对象将在OSDs中以按位方式排序，并且此标志默认在Infernalis和Jewel发布版本中启用。</p>
 <h2 id="总结">总结</h2><p>目前来看这个是底层的一个排序的算法的变动，对上层目前还不清楚是有什么可以可见的变化，总之，这个让它默认开启就行，不要去修改它就可以了</p>
+<h2 id="变更记录">变更记录</h2><table>
+<thead>
+<tr>
+<th style="text-align:center">Why</th>
+<th style="text-align:center">Who</th>
+<th style="text-align:center">When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">创建</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2017-01-12</td>
+</tr>
+</tbody>
+</table>
 ]]></content>
     <summary type="html">
     <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/techie.jpg" alt=""><br></center>
@@ -367,30 +382,30 @@
     <link href="http://www.zphj1987.com/2017/01/09/calamari-node-info/"/>
     <id>http://www.zphj1987.com/2017/01/09/calamari-node-info/</id>
     <published>2017-01-09T07:06:51.000Z</published>
-    <updated>2017-01-12T05:46:13.220Z</updated>
+    <updated>2017-02-03T05:18:13.739Z</updated>
     <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/saltstack.png" alt="salt-stack"><br></center>
 
-<h2 id="一、前言">一、前言</h2><p>一直在做calamari的相关的一些打包和安装的工作，都是业余弄的东西，所以并没有仔细的进行功能点的验证测试，正好ceph社区群里面有人问了个问题</p>
+<h2 id="前言">前言</h2><p>一直在做calamari的相关的一些打包和安装的工作，都是业余弄的东西，所以并没有仔细的进行功能点的验证测试，正好ceph社区群里面有人问了个问题</p>
 <blockquote>
 <p>calamari上是不是能看到ceph的version?</p>
 </blockquote>
 <p>对于这个问题，好像确实没有见到过，而之前正好有个页面看到是空的，当时还不清楚这个是什么用的</p>
 <p><img src="http://static.zybuluo.com/zphj1987/mjyvzkd7q9x6eplb538o7ltc/image_1b611hfic17lj15ej1jp1pb31m979.png" alt="origin"></p>
 <p>而另外一位群友贴出了这个地方的是有值的，这个地方是有BUG的，在咨询了相关的问题描述以后，我们来看下，可以如何解决这个问题<br><a id="more"></a></p>
-<h2 id="二、问题解决过程">二、问题解决过程</h2><p>salt的软件版本：</p>
+<h2 id="问题解决过程">问题解决过程</h2><p>salt的软件版本：</p>
 <ul>
 <li>salt-master-2015.8.1-1.el7.noarch</li>
 <li>salt-2015.8.1-1.el7.noarch</li>
 <li>salt-minion-2015.8.1-1.el7.noarch</li>
 </ul>
-<h3 id="2-1_问题描述：">2.1 问题描述：</h3><p>calamari的salt-master节点在读取</p>
+<h3 id="问题描述">问题描述</h3><p>calamari的salt-master节点在读取</p>
 <blockquote>
 <p>/var/cache/salt/master/minions/{minion-hostname}/data.p</p>
 </blockquote>
 <p>的时候有权限问题，在修改权限以后，可以读取到了，但是在重启了salt-minion以后，这个文件会被更新，然后权限又变成无法读取的</p>
-<h3 id="2-2_相关知识补充">2.2 相关知识补充</h3><p>Grains - salt-minion 自身的一些静态信息<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">salt <span class="string">'*'</span> grains.ls       <span class="comment"># 查看 grains 分类</span></span><br><span class="line">salt <span class="string">'*'</span> grains.items    <span class="comment"># 查看 grains 所有信息</span></span><br><span class="line">salt <span class="string">'*'</span> grains.item os  <span class="comment"># 查看 grains 某个信息</span></span><br><span class="line">salt <span class="string">'*'</span> grains.get os</span><br></pre></td></tr></table></figure></p>
+<h3 id="相关知识补充">相关知识补充</h3><p>Grains - salt-minion 自身的一些静态信息<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">salt <span class="string">'*'</span> grains.ls       <span class="comment"># 查看 grains 分类</span></span><br><span class="line">salt <span class="string">'*'</span> grains.items    <span class="comment"># 查看 grains 所有信息</span></span><br><span class="line">salt <span class="string">'*'</span> grains.item os  <span class="comment"># 查看 grains 某个信息</span></span><br><span class="line">salt <span class="string">'*'</span> grains.get os</span><br></pre></td></tr></table></figure></p>
 <p>上面的是salt-minion的静态信息的查询的相关的命令，salt-minion在进行重启的时候会将一些静态的信息推送到salt-master上面去，而这个生成的信息正好就是我们上面提出有权限问题的data.p这个存储的文件的，那么解决问题就是修改这个地方的权限的问题了</p>
-<h3 id="2-3_修改salt-master代码">2.3 修改salt-master代码</h3><p>这个问题通过修改salt-master的master.py代码可以解决</p>
+<h3 id="修改salt-master代码">修改salt-master代码</h3><p>这个问题通过修改salt-master的master.py代码可以解决</p>
 <p>写入这个grains信息的代码在/usr/lib/python2.7/site-packages/salt/master.py这个文件当中，代码段如下：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">  def _pillar(self, load):</span><br><span class="line">···</span><br><span class="line">        <span class="keyword">if</span> self.opts.get(<span class="string">'minion_data_cache'</span>, False):</span><br><span class="line">            cdir = os.path.join(self.opts[<span class="string">'cachedir'</span>], <span class="string">'minions'</span>, load[<span class="string">'id'</span>])</span><br><span class="line">            <span class="keyword">if</span> not os.path.isdir(cdir):</span><br><span class="line">                os.makedirs(cdir)</span><br><span class="line">            datap = os.path.join(cdir, <span class="string">'data.p'</span>)</span><br><span class="line">            tmpfh, tmpfname = tempfile.mkstemp(dir=cdir)</span><br><span class="line">            os.close(tmpfh)</span><br><span class="line">            with salt.utils.fopen(tmpfname, <span class="string">'w+b'</span>) as fp_:</span><br><span class="line">                fp_.write(</span><br><span class="line">                    self.serial.dumps(</span><br><span class="line">                        &#123;<span class="string">'grains'</span>: load[<span class="string">'grains'</span>],</span><br><span class="line">                         <span class="string">'pillar'</span>: data&#125;)</span><br><span class="line">                    )</span><br><span class="line">            <span class="comment"># On Windows, os.rename will fail if the destination file exists.</span></span><br><span class="line">            salt.utils.atomicfile.atomic_rename(tmpfname, datap)</span><br><span class="line">        <span class="built_in">return</span> data</span><br></pre></td></tr></table></figure></p>
 <p>就是这个函数就是负责这个文件写入的，我们只在这个代码里面增加一个文件的权限的控制，在<code>salt.utils.atomicfile.atomic_rename(tmpfname, datap)</code>这行之上增加一行代码<code>os.chmod(tmpfname, 0o644)</code></p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"> def _pillar(self, load):</span><br><span class="line">···</span><br><span class="line">        <span class="keyword">if</span> self.opts.get(<span class="string">'minion_data_cache'</span>, False):</span><br><span class="line">            cdir = os.path.join(self.opts[<span class="string">'cachedir'</span>], <span class="string">'minions'</span>, load[<span class="string">'id'</span>])</span><br><span class="line">            <span class="keyword">if</span> not os.path.isdir(cdir):</span><br><span class="line">                os.makedirs(cdir)</span><br><span class="line">            datap = os.path.join(cdir, <span class="string">'data.p'</span>)</span><br><span class="line">            tmpfh, tmpfname = tempfile.mkstemp(dir=cdir)</span><br><span class="line">            os.close(tmpfh)</span><br><span class="line">            with salt.utils.fopen(tmpfname, <span class="string">'w+b'</span>) as fp_:</span><br><span class="line">                fp_.write(</span><br><span class="line">                    self.serial.dumps(</span><br><span class="line">                        &#123;<span class="string">'grains'</span>: load[<span class="string">'grains'</span>],</span><br><span class="line">                         <span class="string">'pillar'</span>: data&#125;)</span><br><span class="line">                    )</span><br><span class="line">            <span class="comment"># On Windows, os.rename will fail if the destination file exists.</span></span><br><span class="line">            os.chmod(tmpfname, <span class="number">0</span>o644)</span><br><span class="line">            salt.utils.atomicfile.atomic_rename(tmpfname, datap)</span><br><span class="line">        <span class="built_in">return</span> data</span><br></pre></td></tr></table></figure>
@@ -399,12 +414,28 @@
 <p>现在再看下前台页面效果:</p>
 <p><img src="http://static.zybuluo.com/zphj1987/4qkz1xo0kretsrvn8nalmt17/image_1b612ekp81ec0uk140t1b5tdjfm.png" alt="changge"></p>
 <p>问题解决</p>
-<h2 id="三、总结">三、总结</h2><p>calamari有一些各种各样的小问题，总体上还是一款非常简洁漂亮的管理界面，在没有监控系统的情况下，还是一个不错的选择</p>
+<h2 id="总结">总结</h2><p>calamari有一些各种各样的小问题，总体上还是一款非常简洁漂亮的管理界面，在没有监控系统的情况下，还是一个不错的选择</p>
+<h2 id="变更记录">变更记录</h2><table>
+<thead>
+<tr>
+<th style="text-align:center">Why</th>
+<th style="text-align:center">Who</th>
+<th style="text-align:center">When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">创建</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2017-01-09</td>
+</tr>
+</tbody>
+</table>
 ]]></content>
     <summary type="html">
     <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/saltstack.png" alt="salt-stack"><br></center>
 
-<h2 id="一、前言">一、前言</h2><p>一直在做calamari的相关的一些打包和安装的工作，都是业余弄的东西，所以并没有仔细的进行功能点的验证测试，正好ceph社区群里面有人问了个问题</p>
+<h2 id="前言">前言</h2><p>一直在做calamari的相关的一些打包和安装的工作，都是业余弄的东西，所以并没有仔细的进行功能点的验证测试，正好ceph社区群里面有人问了个问题</p>
 <blockquote>
 <p>calamari上是不是能看到ceph的version?</p>
 </blockquote>
@@ -423,11 +454,11 @@
     <link href="http://www.zphj1987.com/2017/01/05/Ceph-compile-speedup/"/>
     <id>http://www.zphj1987.com/2017/01/05/Ceph-compile-speedup/</id>
     <published>2017-01-05T09:46:54.000Z</published>
-    <updated>2017-01-12T05:47:09.044Z</updated>
+    <updated>2017-02-03T05:19:18.556Z</updated>
     <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/octoalien.jpg" alt="此处输入图片的描述"><br></center>
 
 <p>总结了几个小技巧，用于在ceph编译过程中，能够更快一点<br><a id="more"></a></p>
-<h2 id="一、修改clone的地址">一、修改clone的地址</h2><blockquote>
+<h2 id="修改clone的地址">修改clone的地址</h2><blockquote>
 <p>git clone  <a href="https://github.com/ceph/ceph.git" target="_blank" rel="external">https://github.com/ceph/ceph.git</a></p>
 </blockquote>
 <p>可以修改成</p>
@@ -436,19 +467,19 @@
 </blockquote>
 <p>某些时候可能可以加快一些<br><img src="http://static.zybuluo.com/zphj1987/1nhwqu5rigkblr4ql9decmv5/1.png" alt="1.png-5.9kB"></p>
 <p><img src="http://static.zybuluo.com/zphj1987/tmcr90ufu6abgmffmikep9sl/2.png" alt="1.png-5."></p>
-<h2 id="二、根据需要下载分支">二、根据需要下载分支</h2><p>假如现在想看10.2.5版本的代码</p>
-<h3 id="2-1_常规做法">2.1 常规做法</h3><p>先下载整个库<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> git://github.com/ceph/ceph.git all</span><br></pre></td></tr></table></figure></p>
+<h2 id="根据需要下载分支">根据需要下载分支</h2><p>假如现在想看10.2.5版本的代码</p>
+<h3 id="常规做法">常规做法</h3><p>先下载整个库<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> git://github.com/ceph/ceph.git all</span><br></pre></td></tr></table></figure></p>
 <p>总共的下载对象数目为46万</p>
 <blockquote>
 <p>Counting objects: 460384</p>
 </blockquote>
 <p>这个是包含所有的分支和分支内的文件的所有版本的<br>我们切换到分支<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 mytest]<span class="comment">#cd all</span></span><br><span class="line">[root@lab8106 all]<span class="comment"># git branch</span></span><br><span class="line">* master</span><br><span class="line">[root@lab8106 all]<span class="comment"># git checkout -b all10.2.5  v10.2.5</span></span><br><span class="line">Switched to a new branch <span class="string">'all10.2.5'</span></span><br><span class="line">[root@lab8106 all]<span class="comment"># git branch</span></span><br><span class="line">* all10.<span class="number">2.5</span></span><br><span class="line">  master</span><br><span class="line">[root@lab8106 all]<span class="comment"># ls -R|wc -l</span></span><br><span class="line"><span class="number">4392</span></span><br><span class="line">可以看到有这么多的文件</span><br></pre></td></tr></table></figure></p>
-<h4 id="2-2_现在只复制一个分支的">2.2 现在只复制一个分支的</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 mytest]<span class="comment"># git clone -b v10.2.5 --single-branch   git://github.com/ceph/ceph.git single</span></span><br></pre></td></tr></table></figure>
+<h3 id="现在只复制一个分支的">现在只复制一个分支的</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 mytest]<span class="comment"># git clone -b v10.2.5 --single-branch   git://github.com/ceph/ceph.git single</span></span><br></pre></td></tr></table></figure>
 <p>总共下载的对象数目为34万</p>
 <blockquote>
 <p>Counting objects: 344026<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 mytest]<span class="comment"># cd single/</span></span><br><span class="line">[root@lab8106 single]<span class="comment"># git checkout -b single10.2.5</span></span><br><span class="line">Switched to a new branch <span class="string">'single10.2.5'</span></span><br><span class="line">[root@lab8106 single]<span class="comment"># git branch</span></span><br><span class="line">* single10.<span class="number">2.5</span></span><br><span class="line">[root@lab8106 single]<span class="comment"># ls -R |wc -l</span></span><br><span class="line"><span class="number">4392</span></span><br></pre></td></tr></table></figure></p>
 </blockquote>
-<h4 id="2-3_现在只复制一个分支的最后一个版本的代码">2.3 现在只复制一个分支的最后一个版本的代码</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 mytest]<span class="comment"># git clone -b v10.2.5 --single-branch --depth 1  git://github.com/ceph/ceph.git singledep1</span></span><br></pre></td></tr></table></figure>
+<h3 id="现在只复制一个分支的最后一个版本的代码">现在只复制一个分支的最后一个版本的代码</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 mytest]<span class="comment"># git clone -b v10.2.5 --single-branch --depth 1  git://github.com/ceph/ceph.git singledep1</span></span><br></pre></td></tr></table></figure>
 <p>总共下载的对象数目为3682</p>
 <blockquote>
 <p>Counting objects: 3682<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 mytest]<span class="comment">#  cd singledep1/</span></span><br><span class="line"> [root@lab8106 singledep1]<span class="comment"># git checkout -b singledep110.2.5</span></span><br><span class="line">Switched to a new branch <span class="string">'singledep110.2.5'</span></span><br><span class="line">[root@lab8106 singledep1]<span class="comment"># git branch</span></span><br><span class="line">* singledep110.<span class="number">2.5</span></span><br><span class="line">[root@lab8106 singledep1]<span class="comment"># ls -R |wc -l</span></span><br><span class="line"><span class="number">4392</span></span><br></pre></td></tr></table></figure></p>
@@ -485,7 +516,7 @@
     <link href="http://www.zphj1987.com/2017/01/05/ceph-crush-straw/"/>
     <id>http://www.zphj1987.com/2017/01/05/ceph-crush-straw/</id>
     <published>2017-01-05T04:45:23.000Z</published>
-    <updated>2017-01-12T05:46:38.437Z</updated>
+    <updated>2017-02-03T05:20:55.938Z</updated>
     <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/crushmode.jpg" alt=""><br></center>
 
 <p>很多年以前，Sage 在写CRUSH的原始算法的时候，写了不同的Bucket类型，可以选择不同的伪随机选择算法，大部分的模型是基于RJ Honicky写的RUSH algorithms 这个算法，这个在网上可以找到资料，这里面有一个新的特性是sage很引以为豪的，straw算法，也就是我们现在常用的一些算法，这个算法有下面的特性：</p>
@@ -510,20 +541,22 @@
 <p>sage发现问题的一半，然后 sam根据<a href="https://en.wikipedia.org/wiki/Exponential_distribution#Distribution_of_the_minimum_of_exponential_random_variables" target="_blank" rel="external">这个算法</a>解决了问题</p>
 <p>计算ln()函数有点讨厌，因为这个是一个浮点功能，CRUSH是定点运算（整数型），当前的实施方法是128KB的查找表，在做一个小的单元测试的时候比straw慢了25%，单这个可能跟一些缓存和输入也有关系</p>
 <p>以上是2014年sage在开发者邮件列表里面提出来的，相信到现在为止straw2的算法已经改进了很多，目前默认的还是straw算法，内核在kernel4.1以后才支持的这个属性的</p>
-<h2 id="那么我们在0-9x中来看下这个属性,来从实际环境中看下具体有什么区别">那么我们在0.9x中来看下这个属性,来从实际环境中看下具体有什么区别</h2><h2 id="实践过程">实践过程</h2><p><img src="http://static.zybuluo.com/zphj1987/g64ch504j19wcfcfu74fdg8f/%E5%9F%BA%E7%A1%80%E7%8E%AF%E5%A2%83.png" alt="基础环境.png-8.6kB"></p>
+<p>那么我们在0.9x中来看下这个属性,来从实际环境中看下具体有什么区别</p>
+<hr>
+<h1 id="实践过程">实践过程</h1><p><img src="http://static.zybuluo.com/zphj1987/g64ch504j19wcfcfu74fdg8f/%E5%9F%BA%E7%A1%80%E7%8E%AF%E5%A2%83.png" alt="基础环境.png-8.6kB"></p>
 <p>基础的环境为这个，我的机器为8个osd的单机节点，通过修改crush模拟成如上图所示的环境，设置的pg数目为800，保证每个osd上的pg为100左右，这个增加pg的数目，来扩大测试的样本</p>
 <p>straw2和straw的区别在于，straw算法改变一个bucket的权重的时候，因为内部算法的问题，造成了其他机器的item的计算因子也会变化，就会出现其他没修改权重的bucket也会出现pg的相互间的流动，这个跟设计之初的想法是不一致的，造成的后果就是，在增加或者减少存储节点的时候，如果集群比较大，数据比较多，就会造成很大的无关数据的迁移，这个就是上面提到的问题</p>
 <p>为了解决这个问题就新加入了算法straw2，这个算法保证在bucket的crush权重发生变化的时候，只会在变化的bucket有数据流入或者流出，不会出现其他bucket间的数据流动，减少数据的迁移量，下面的测试将会直观的看到这种变化</p>
-<h3 id="一、环境配置">一、环境配置</h3><p>调整tunables 为 hammer，这个里面才支持crush v4(straw2)属性<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@lab8107:~/ceph/crush<span class="comment"># ceph osd crush tunables hammer</span></span><br><span class="line">adjusted tunables profile to hammer</span><br><span class="line">root@lab8107:~/ceph/crush<span class="comment"># ceph osd crush set-tunable straw_calc_version 1</span></span><br><span class="line">adjusted tunable straw_calc_version to <span class="number">1</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="环境配置">环境配置</h2><p>调整tunables 为 hammer，这个里面才支持crush v4(straw2)属性<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@lab8107:~/ceph/crush<span class="comment"># ceph osd crush tunables hammer</span></span><br><span class="line">adjusted tunables profile to hammer</span><br><span class="line">root@lab8107:~/ceph/crush<span class="comment"># ceph osd crush set-tunable straw_calc_version 1</span></span><br><span class="line">adjusted tunable straw_calc_version to <span class="number">1</span></span><br></pre></td></tr></table></figure></p>
 <p>设置完了检查这两个个属性，如果是straw_calc_version 0的时候profile会显示unknow<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@lab8107:~/ceph/crush<span class="comment"># ceph osd crush dump|egrep "allowed_bucket_algs|profile"</span></span><br><span class="line">        <span class="string">"allowed_bucket_algs"</span>: <span class="number">54</span>,</span><br><span class="line">        <span class="string">"profile"</span>: <span class="string">"hammer"</span>,</span><br><span class="line">root@lab8107:~/ceph/crush<span class="comment"># ceph osd crush dump|grep alg</span></span><br><span class="line">            <span class="string">"alg"</span>: <span class="string">"straw"</span>,</span><br><span class="line">            <span class="string">"alg"</span>: <span class="string">"straw"</span>,</span><br><span class="line">            <span class="string">"alg"</span>: <span class="string">"straw"</span>,</span><br><span class="line">            <span class="string">"alg"</span>: <span class="string">"straw"</span>,</span><br><span class="line">            <span class="string">"alg"</span>: <span class="string">"straw"</span>,</span><br><span class="line">            <span class="string">"alg"</span>: <span class="string">"straw"</span>,</span><br></pre></td></tr></table></figure></p>
 <p>设置完了后并不能马上生效的，这个是为了防止集群大的变动,可以用这个触发，或者等待下次crush发生变动的时候会自动触发<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph osd crush reweight-all</span><br></pre></td></tr></table></figure></p>
-<h3 id="二、先来测试straw">二、先来测试straw</h3><p>开始第一步测试，将osd.7从集群中crush改为0，那么变动的就是host4的crush，那么我们来看下数据的变化<br>首先需要记录原始的pg分布<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@lab8107:~ ceph pg dump pgs|awk <span class="string">'&#123;print $1,$15&#125;'</span> &gt; oringin</span><br><span class="line">root@lab8107:~/ceph/crush<span class="comment"># ceph osd crush reweight osd.7 0</span></span><br><span class="line">reweighted item id <span class="number">7</span> name <span class="string">'osd.7'</span> to <span class="number">0</span> <span class="keyword">in</span> crush map</span><br><span class="line">root@lab8107:~ceph pg dump pgs|awk <span class="string">'&#123;print $1,$15&#125;'</span> &gt; rewei70</span><br></pre></td></tr></table></figure></p>
+<h2 id="先来测试straw">先来测试straw</h2><p>开始第一步测试，将osd.7从集群中crush改为0，那么变动的就是host4的crush，那么我们来看下数据的变化<br>首先需要记录原始的pg分布<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@lab8107:~ ceph pg dump pgs|awk <span class="string">'&#123;print $1,$15&#125;'</span> &gt; oringin</span><br><span class="line">root@lab8107:~/ceph/crush<span class="comment"># ceph osd crush reweight osd.7 0</span></span><br><span class="line">reweighted item id <span class="number">7</span> name <span class="string">'osd.7'</span> to <span class="number">0</span> <span class="keyword">in</span> crush map</span><br><span class="line">root@lab8107:~ceph pg dump pgs|awk <span class="string">'&#123;print $1,$15&#125;'</span> &gt; rewei70</span><br></pre></td></tr></table></figure></p>
 <p>现在比较oringin 和rewei70 的变化<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">diff oringin rewei70 -y -W <span class="number">30</span> --suppress-common-lines</span><br></pre></td></tr></table></figure></p>
 <p>查看非调整节点的数据流动<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="number">0.3</span>d [<span class="number">2</span>]      | <span class="number">0.3</span>d [<span class="number">5</span>]</span><br><span class="line"><span class="number">0.316</span> [<span class="number">2</span>]     | <span class="number">0.316</span> [<span class="number">5</span>]</span><br><span class="line"><span class="number">0.26</span>c [<span class="number">5</span>]     | <span class="number">0.26</span>c [<span class="number">1</span>]</span><br><span class="line"><span class="number">0.241</span> [<span class="number">2</span>]     | <span class="number">0.241</span> [<span class="number">0</span>]</span><br><span class="line"><span class="number">0.235</span> [<span class="number">5</span>]     | <span class="number">0.235</span> [<span class="number">2</span>]</span><br><span class="line"><span class="number">0.128</span> [<span class="number">0</span>]     | <span class="number">0.128</span> [<span class="number">3</span>]</span><br></pre></td></tr></table></figure></p>
 <p>再来一次将osd.6的crush weight弄成0<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph osd crush reweight osd.<span class="number">6</span> <span class="number">0</span></span><br></pre></td></tr></table></figure></p>
 <p>再次查看变化<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="number">0</span>.cb [<span class="number">4</span>]      | <span class="number">0</span>.cb [<span class="number">2</span>]</span><br><span class="line"><span class="number">0.30</span>b [<span class="number">4</span>]     | <span class="number">0.30</span>b [<span class="number">2</span>]</span><br><span class="line"><span class="number">0.2</span>e9 [<span class="number">1</span>]     | <span class="number">0.2</span>e9 [<span class="number">4</span>]</span><br><span class="line"><span class="number">0.2</span>d8 [<span class="number">3</span>]     | <span class="number">0.2</span>d8 [<span class="number">1</span>]</span><br><span class="line"><span class="number">0.28</span>e [<span class="number">3</span>]     | <span class="number">0.28</span>e [<span class="number">4</span>]</span><br><span class="line"><span class="number">0.286</span> [<span class="number">1</span>]     | <span class="number">0.286</span> [<span class="number">4</span>]</span><br><span class="line"><span class="number">0.1</span>f7 [<span class="number">3</span>]     | <span class="number">0.1</span>f7 [<span class="number">1</span>]</span><br><span class="line"><span class="number">0.1</span>b6 [<span class="number">1</span>]     | <span class="number">0.1</span>b6 [<span class="number">4</span>]</span><br><span class="line"><span class="number">0.163</span> [<span class="number">0</span>]     | <span class="number">0.163</span> [<span class="number">3</span>]</span><br><span class="line"><span class="number">0.14</span>f [<span class="number">2</span>]     | <span class="number">0.14</span>f [<span class="number">4</span>]</span><br><span class="line"><span class="number">0.10</span>a [<span class="number">0</span>]     | <span class="number">0.10</span>a [<span class="number">3</span>]</span><br></pre></td></tr></table></figure></p>
 <p>上面的两组就是在一个bucket的里面的出现单点和整个bucket的crush weight减少的时候触发的其他节点的数据变动</p>
-<h3 id="三、现在把环境恢复后再来测试straw2">三、现在把环境恢复后再来测试straw2</h3><p>修改crush map 里面的bucket的alg<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@lab8107:~/ceph/crush<span class="comment"># ceph osd getcrushmap -o crushmap.txt</span></span><br><span class="line">got crush map from osdmap epoch <span class="number">390</span></span><br><span class="line">root@lab8107:~/ceph/crush<span class="comment"># crushtool -d crushmap.txt -o crushmap-decompile</span></span><br><span class="line">root@lab8107:~/ceph/crush<span class="comment"># vim crushmap-decompile</span></span><br><span class="line">将文件里面的所有straw修改成straw2</span><br><span class="line">root@lab8107:~/ceph/crush<span class="comment"># crushtool -c crushmap-decompile  -o crushmap-compile</span></span><br><span class="line">root@lab8107:~/ceph/crush<span class="comment"># ceph osd setcrushmap -i crushmap-compile</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="现在把环境恢复后再来测试straw2">现在把环境恢复后再来测试straw2</h2><p>修改crush map 里面的bucket的alg<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@lab8107:~/ceph/crush<span class="comment"># ceph osd getcrushmap -o crushmap.txt</span></span><br><span class="line">got crush map from osdmap epoch <span class="number">390</span></span><br><span class="line">root@lab8107:~/ceph/crush<span class="comment"># crushtool -d crushmap.txt -o crushmap-decompile</span></span><br><span class="line">root@lab8107:~/ceph/crush<span class="comment"># vim crushmap-decompile</span></span><br><span class="line">将文件里面的所有straw修改成straw2</span><br><span class="line">root@lab8107:~/ceph/crush<span class="comment"># crushtool -c crushmap-decompile  -o crushmap-compile</span></span><br><span class="line">root@lab8107:~/ceph/crush<span class="comment"># ceph osd setcrushmap -i crushmap-compile</span></span><br></pre></td></tr></table></figure></p>
 <blockquote>
 <p>如果出现报错就把crushmap里面的straw2_calc_version改成straw_calc_version</p>
 </blockquote>
@@ -535,7 +568,7 @@
 <p>比较调整前后<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">diff oringin rewei70  -y -W <span class="number">30</span> --suppress-common-lines|less</span><br></pre></td></tr></table></figure></p>
 <p>再次调整osd.6<br><figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="title">ceph</span> osd crush reweight osd.<span class="number">6</span> <span class="number">0</span></span><br><span class="line">ceph pg dump pgs|awk <span class="string">'&#123;print <span class="variable">$1</span>,<span class="variable">$15</span>&#125;'</span> &gt; rewei60</span><br></pre></td></tr></table></figure></p>
 <p>已经没有非调整bucket的pg在节点间的变化了</p>
-<h3 id="四、简短的做个总结就是">四、简短的做个总结就是</h3><p>straw算法里面添加节点或者减少节点，其他服务器上的osd之间会有pg的流动<br>straw2算法里面添加节点或者减少节点，只会pg从变化的节点移出或者从其他点移入，其他节点间没有数据流动</p>
+<h2 id="简短的做个总结就是">简短的做个总结就是</h2><p>straw算法里面添加节点或者减少节点，其他服务器上的osd之间会有pg的流动<br>straw2算法里面添加节点或者减少节点，只会pg从变化的节点移出或者从其他点移入，其他节点间没有数据流动</p>
 <h4 id="设置方法">设置方法</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph osd crush tunables hammer</span><br><span class="line">ceph osd crush <span class="built_in">set</span>-tunable straw_calc_version <span class="number">2</span></span><br></pre></td></tr></table></figure>
 <p>开始设置好了 新创建的默认就是会straw2就会省去修改crushmap的操作</p>
 <p>注意librados是服务端支持，客户端就支持，涉及到内核客户端的，就需要内核版本的支持，内核从4.1开始支持，也就是cephfs和rbd的块设备方式需要内核4.1及以上支持，openstack对接的是librados可以默认支持，其他的也都默认可以支持的</p>
@@ -561,17 +594,17 @@
     <link href="http://www.zphj1987.com/2017/01/03/rbd-image-write-objects/"/>
     <id>http://www.zphj1987.com/2017/01/03/rbd-image-write-objects/</id>
     <published>2017-01-03T06:35:53.000Z</published>
-    <updated>2017-01-12T05:47:15.872Z</updated>
+    <updated>2017-02-03T05:22:08.983Z</updated>
     <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/2017.png" alt=""><br></center>
 
-<h2 id="一、前言">一、前言</h2><p>收到一个问题如下：</p>
+<h2 id="前言">前言</h2><p>收到一个问题如下：</p>
 <blockquote>
 <p>一个300TB 的RBD，只有7800万的objects，如果存储小文件的话，感觉不够用</p>
 </blockquote>
 <p>对于这个问题，我原来的理解是：对象默认设置的大小是4M一个，存储下去的数据，如果小于4M，就会占用一个小于4M的对象，如果超过4M，那么存储的数据就会进行拆分成多个4M，这个地方其实是不严谨的</p>
 <p>对于rados接口来说，数据是多大对象put进去就是多大的对象，并没有进行拆分，进行拆分的是再上一层的应用，比如rbd，比如cephfs</p>
 <p>那么对于rbd的image显示的对象数目和文件数目有什么关系呢？本篇将来看看这个问题，到底会不会出现上面的问题<br><a id="more"></a></p>
-<h2 id="二、实践过程">二、实践过程</h2><p>创建一个image<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># rbd create --image zpsize --size 100M</span></span><br><span class="line">[root@lab8106 ~]<span class="comment"># rbd info zpsize</span></span><br><span class="line">rbd image <span class="string">'zpsize'</span>:</span><br><span class="line">	size <span class="number">102400</span> kB <span class="keyword">in</span> <span class="number">25</span> objects</span><br><span class="line">	order <span class="number">22</span> (<span class="number">4096</span> kB objects)</span><br><span class="line">	block_name_prefix: rbd_data.<span class="number">85</span>c66b8b4567</span><br><span class="line">	format: <span class="number">2</span></span><br><span class="line">	features: layering</span><br><span class="line">	flags:</span><br></pre></td></tr></table></figure></p>
+<h2 id="实践过程">实践过程</h2><p>创建一个image<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># rbd create --image zpsize --size 100M</span></span><br><span class="line">[root@lab8106 ~]<span class="comment"># rbd info zpsize</span></span><br><span class="line">rbd image <span class="string">'zpsize'</span>:</span><br><span class="line">	size <span class="number">102400</span> kB <span class="keyword">in</span> <span class="number">25</span> objects</span><br><span class="line">	order <span class="number">22</span> (<span class="number">4096</span> kB objects)</span><br><span class="line">	block_name_prefix: rbd_data.<span class="number">85</span>c66b8b4567</span><br><span class="line">	format: <span class="number">2</span></span><br><span class="line">	features: layering</span><br><span class="line">	flags:</span><br></pre></td></tr></table></figure></p>
 <p>可以看到，这个image从集群中分配到了25个对象，每个对象的大小为4M，假如我们写入1000个小文件看下会是什么情况</p>
 <p>映射到本地并且格式化xfs文件系统<br><figure class="highlight nix"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># rbd map zpsize</span></span><br><span class="line">/dev/rbd0</span><br><span class="line">[root@lab8106 ~]<span class="comment"># mkfs.xfs -f /dev/rbd0 </span></span><br><span class="line"><span class="variable">meta-data=</span>/dev/rbd0              <span class="variable">isize=</span><span class="number">256</span>    <span class="variable">agcount=</span><span class="number">4</span>, <span class="variable">agsize=</span><span class="number">6144</span> <span class="variable">blks</span><br><span class="line">         =</span>                       <span class="variable">sectsz=</span><span class="number">512</span>   <span class="variable">attr=</span><span class="number">2</span>, <span class="variable">projid32bit=</span><span class="number">1</span></span><br><span class="line">         =                       <span class="variable">crc=</span><span class="number">0</span>        <span class="variable">finobt=</span><span class="number">0</span></span><br><span class="line"><span class="variable">data     =</span>                       <span class="variable">bsize=</span><span class="number">4096</span>   <span class="variable">blocks=</span><span class="number">24576</span>, <span class="variable">imaxpct=</span><span class="number">25</span></span><br><span class="line">         =                       <span class="variable">sunit=</span><span class="number">1024</span>   <span class="variable">swidth=</span><span class="number">1024</span> blks</span><br><span class="line"><span class="variable">naming   =</span>version <span class="number">2</span>              <span class="variable">bsize=</span><span class="number">4096</span>   <span class="variable">ascii-ci=</span><span class="number">0</span> <span class="variable">ftype=</span><span class="number">0</span></span><br><span class="line"><span class="variable">log      =</span>internal log           <span class="variable">bsize=</span><span class="number">4096</span>   <span class="variable">blocks=</span><span class="number">624</span>, <span class="variable">version=</span><span class="number">2</span></span><br><span class="line">         =                       <span class="variable">sectsz=</span><span class="number">512</span>   <span class="variable">sunit=</span><span class="number">8</span> blks, <span class="variable">lazy-count=</span><span class="number">1</span></span><br><span class="line"><span class="variable">realtime =</span>none                   <span class="variable">extsz=</span><span class="number">4096</span>   <span class="variable">blocks=</span><span class="number">0</span>, <span class="variable">rtextents=</span><span class="number">0</span></span><br></pre></td></tr></table></figure></p>
 <p>挂载到本地<br>[root@lab8106 ~]# mount /dev/rbd0 /mnt</p>
@@ -584,7 +617,7 @@
     <summary type="html">
     <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/2017.png" alt=""><br></center>
 
-<h2 id="一、前言">一、前言</h2><p>收到一个问题如下：</p>
+<h2 id="前言">前言</h2><p>收到一个问题如下：</p>
 <blockquote>
 <p>一个300TB 的RBD，只有7800万的objects，如果存储小文件的话，感觉不够用</p>
 </blockquote>
@@ -603,12 +636,12 @@
     <link href="http://www.zphj1987.com/2016/12/26/manage-ceph-osd-journal-uuid/"/>
     <id>http://www.zphj1987.com/2016/12/26/manage-ceph-osd-journal-uuid/</id>
     <published>2016-12-26T05:41:14.000Z</published>
-    <updated>2017-01-12T05:47:24.670Z</updated>
+    <updated>2017-02-03T05:25:59.462Z</updated>
     <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/writefor.jpg" alt="write"><br></center>
 
-<p>一、前言<br>之前有一篇文章介绍的是，在centos7的jewel下面如果自己做的分区如何处理自动挂载的问题，当时的环境对journal的地方采取的是文件的形式处理的，这样就没有了重启后journal的磁盘偏移的问题<br><a id="more"></a><br>如果采用的是ceph自带的deploy去做分区的处理的时候，是调用的sgdisk去对磁盘做了一些处理的，然后deploy能够识别一些特殊的标记，然后去做了一些其他的工作，而自己分区的时候，是没有做这些标记的这样就可能会有其他的问题</p>
+<h2 id="前言">前言</h2><p>之前有一篇文章介绍的是，在centos7的jewel下面如果自己做的分区如何处理自动挂载的问题，当时的环境对journal的地方采取的是文件的形式处理的，这样就没有了重启后journal的磁盘偏移的问题<br><a id="more"></a><br>如果采用的是ceph自带的deploy去做分区的处理的时候，是调用的sgdisk去对磁盘做了一些处理的，然后deploy能够识别一些特殊的标记，然后去做了一些其他的工作，而自己分区的时候，是没有做这些标记的这样就可能会有其他的问题</p>
 <p>我们看下如何在部署的时候就处理好journal的uuid的问题</p>
-<h3 id="二、实践">二、实践</h3><h4 id="2-1_按常规流程部署OSD">2.1 按常规流程部署OSD</h4><p>准备测试的自分区磁盘<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">dd <span class="keyword">if</span>=/dev/zero of=/dev/sde bs=<span class="number">4</span>M count=<span class="number">100</span>;</span><br><span class="line">dd <span class="keyword">if</span>=/dev/zero of=/dev/sdf bs=<span class="number">4</span>M count=<span class="number">100</span>; parted /dev/sde mklabel gpt;</span><br><span class="line">parted /dev/sdf mklabel gpt;</span><br><span class="line">parted /dev/sde mkpart primary <span class="number">1</span> <span class="number">100</span>%;</span><br><span class="line">parted /dev/sdf mkpart primary <span class="number">1</span> <span class="number">100</span>%</span><br></pre></td></tr></table></figure></p>
+<h2 id="实践">实践</h2><h3 id="按常规流程部署OSD">按常规流程部署OSD</h3><p>准备测试的自分区磁盘<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">dd <span class="keyword">if</span>=/dev/zero of=/dev/sde bs=<span class="number">4</span>M count=<span class="number">100</span>;</span><br><span class="line">dd <span class="keyword">if</span>=/dev/zero of=/dev/sdf bs=<span class="number">4</span>M count=<span class="number">100</span>; parted /dev/sde mklabel gpt;</span><br><span class="line">parted /dev/sdf mklabel gpt;</span><br><span class="line">parted /dev/sde mkpart primary <span class="number">1</span> <span class="number">100</span>%;</span><br><span class="line">parted /dev/sdf mkpart primary <span class="number">1</span> <span class="number">100</span>%</span><br></pre></td></tr></table></figure></p>
 <p>使用的sde1作为数据盘，使用sdf1作为ssd的独立分区的journal磁盘</p>
 <p>我们线按照常规的步骤去部署下</p>
 <h5 id="做osd的prepare操作">做osd的prepare操作</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># ceph-deploy osd prepare lab8106:/dev/sde1:/dev/sdf1</span></span><br><span class="line">···</span><br><span class="line">[lab8106][WARNIN] adjust_symlink: Creating symlink /var/lib/ceph/tmp/mnt.<span class="number">7</span>HuS8k/journal -&gt; /dev/sdf1</span><br><span class="line">···</span><br></pre></td></tr></table></figure>
@@ -618,20 +651,20 @@
 <p>可以看到成功了</p>
 <h5 id="检查下osd的目录：">检查下osd的目录：</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># ll /var/lib/ceph/osd/ceph-7</span></span><br><span class="line">total <span class="number">56</span></span><br><span class="line">-rw-r--r--   <span class="number">1</span> root root  <span class="number">193</span> Dec <span class="number">26</span> <span class="number">13</span>:<span class="number">15</span> activate.monmap</span><br><span class="line">-rw-r--r--   <span class="number">1</span> ceph ceph    <span class="number">3</span> Dec <span class="number">26</span> <span class="number">13</span>:<span class="number">15</span> active</span><br><span class="line">-rw-r--r--   <span class="number">1</span> ceph ceph   <span class="number">37</span> Dec <span class="number">26</span> <span class="number">13</span>:<span class="number">11</span> ceph_fsid</span><br><span class="line">drwxr-xr-x <span class="number">166</span> ceph ceph <span class="number">4096</span> Dec <span class="number">26</span> <span class="number">13</span>:<span class="number">16</span> current</span><br><span class="line">-rw-r--r--   <span class="number">1</span> ceph ceph   <span class="number">37</span> Dec <span class="number">26</span> <span class="number">13</span>:<span class="number">11</span> fsid</span><br><span class="line">lrwxrwxrwx   <span class="number">1</span> ceph ceph    <span class="number">9</span> Dec <span class="number">26</span> <span class="number">13</span>:<span class="number">11</span> journal -&gt; /dev/sdf1</span><br></pre></td></tr></table></figure>
 <p>可以看到journal链接到了/dev/sdf1，这次的部署是成功了，但是这里就有个问题，如果下次重启的时候，sdf1不是sdf1盘符变了，那么问题就会产生了，osd可能就无法启动了</p>
-<h2 id="2-2_优化下部署流程">2.2 优化下部署流程</h2><p>这里是优化后的流程，解决上面的问题的<br>准备测试的自分区磁盘<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">dd <span class="keyword">if</span>=/dev/zero of=/dev/sde bs=<span class="number">4</span>M count=<span class="number">100</span>;</span><br><span class="line">dd <span class="keyword">if</span>=/dev/zero of=/dev/sdf bs=<span class="number">4</span>M count=<span class="number">100</span>; </span><br><span class="line">parted /dev/sde mklabel gpt;</span><br><span class="line">parted /dev/sdf mklabel gpt;</span><br><span class="line">parted /dev/sde mkpart primary <span class="number">1</span> <span class="number">100</span>%;</span><br><span class="line">parted /dev/sdf mkpart primary <span class="number">1</span> <span class="number">100</span>%</span><br></pre></td></tr></table></figure></p>
+<h3 id="优化下部署流程">优化下部署流程</h3><p>这里是优化后的流程，解决上面的问题的<br>准备测试的自分区磁盘<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">dd <span class="keyword">if</span>=/dev/zero of=/dev/sde bs=<span class="number">4</span>M count=<span class="number">100</span>;</span><br><span class="line">dd <span class="keyword">if</span>=/dev/zero of=/dev/sdf bs=<span class="number">4</span>M count=<span class="number">100</span>; </span><br><span class="line">parted /dev/sde mklabel gpt;</span><br><span class="line">parted /dev/sdf mklabel gpt;</span><br><span class="line">parted /dev/sde mkpart primary <span class="number">1</span> <span class="number">100</span>%;</span><br><span class="line">parted /dev/sdf mkpart primary <span class="number">1</span> <span class="number">100</span>%</span><br></pre></td></tr></table></figure></p>
 <p>给jounral盘做一个标记(特殊标记，下面的字符串不要变动固定写法)<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/usr/sbin/sgdisk  --change-name=<span class="number">1</span>:<span class="string">'ceph journal'</span> --typecode=<span class="number">1</span>:<span class="number">45</span>b0969e-<span class="number">9</span>b03-<span class="number">4</span>f30-b4c6-b4b80ceff106  -- /dev/sdf</span><br></pre></td></tr></table></figure></p>
 <p>给数据盘做一个标记(特殊标记，下面的字符串不要变动固定写法)<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/usr/sbin/sgdisk  --change-name=<span class="number">1</span>:<span class="string">'ceph data'</span> --typecode=<span class="number">1</span>:<span class="number">4</span>fbd7e29-<span class="number">9</span>d25-<span class="number">41</span>b8-afd0-<span class="number">062</span>c0ceff05d -- /dev/sde</span><br></pre></td></tr></table></figure></p>
 <p>检查下当前的分区标记情况<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ceph-disk list</span></span><br><span class="line">/dev/sde :</span><br><span class="line"> /dev/sde1 ceph data, unprepared</span><br><span class="line">/dev/sdf :</span><br><span class="line"> /dev/sdf1 ceph journal</span><br></pre></td></tr></table></figure></p>
-<h3 id="做osd的prepare操作-1">做osd的prepare操作</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph-deploy osd prepare lab8106:/dev/sde1:/dev/sdf1</span><br><span class="line">ceph-deploy osd activate lab8106:/dev/sde1:/dev/sdf1</span><br></pre></td></tr></table></figure>
+<h5 id="做osd的prepare操作-1">做osd的prepare操作</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph-deploy osd prepare lab8106:/dev/sde1:/dev/sdf1</span><br><span class="line">ceph-deploy osd activate lab8106:/dev/sde1:/dev/sdf1</span><br></pre></td></tr></table></figure>
 <p>再次检查下当前的分区标记情况<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># ceph-disk list</span></span><br><span class="line">···</span><br><span class="line">/dev/sde :</span><br><span class="line"> /dev/sde1 ceph data, active, cluster ceph, osd.<span class="number">8</span>, journal /dev/sdf1</span><br><span class="line">/dev/sdf :</span><br><span class="line"> /dev/sdf1 ceph journal, <span class="keyword">for</span> /dev/sde1</span><br></pre></td></tr></table></figure></p>
 <h5 id="查看jounral的数据">查看jounral的数据</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># ll /var/lib/ceph/osd/ceph-8</span></span><br><span class="line">total <span class="number">56</span></span><br><span class="line">-rw-r--r--   <span class="number">1</span> root root  <span class="number">193</span> Dec <span class="number">26</span> <span class="number">13</span>:<span class="number">26</span> activate.monmap</span><br><span class="line">-rw-r--r--   <span class="number">1</span> ceph ceph    <span class="number">3</span> Dec <span class="number">26</span> <span class="number">13</span>:<span class="number">26</span> active</span><br><span class="line">-rw-r--r--   <span class="number">1</span> ceph ceph   <span class="number">37</span> Dec <span class="number">26</span> <span class="number">13</span>:<span class="number">25</span> ceph_fsid</span><br><span class="line">drwxr-xr-x <span class="number">164</span> ceph ceph <span class="number">4096</span> Dec <span class="number">26</span> <span class="number">13</span>:<span class="number">26</span> current</span><br><span class="line">-rw-r--r--   <span class="number">1</span> ceph ceph   <span class="number">37</span> Dec <span class="number">26</span> <span class="number">13</span>:<span class="number">25</span> fsid</span><br><span class="line">lrwxrwxrwx   <span class="number">1</span> ceph ceph   <span class="number">58</span> Dec <span class="number">26</span> <span class="number">13</span>:<span class="number">25</span> journal -&gt; /dev/disk/by-partuuid/<span class="built_in">cd</span>72d6e8-<span class="number">07</span>d0-<span class="number">4</span><span class="built_in">cd</span>3-<span class="number">8</span>c6b<span class="operator">-a</span>33d624cae36</span><br><span class="line">···</span><br></pre></td></tr></table></figure>
 <p>可以看到已经正确的链接了,并且部署过程中也没有了上面的需要进行权限的处理，这个是deploy工具在中间帮做了</p>
-<h2 id="三、总结">三、总结</h2><p>处理的核心在于做的那两个标记，其他的就交给deploy工具自己处理就行了，如果有兴趣可以深入研究，没兴趣的话，就安装上面说的方法进行处理就行</p>
+<h2 id="总结">总结</h2><p>处理的核心在于做的那两个标记，其他的就交给deploy工具自己处理就行了，如果有兴趣可以深入研究，没兴趣的话，就安装上面说的方法进行处理就行</p>
 ]]></content>
     <summary type="html">
     <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/writefor.jpg" alt="write"><br></center>
 
-<p>一、前言<br>之前有一篇文章介绍的是，在centos7的jewel下面如果自己做的分区如何处理自动挂载的问题，当时的环境对journal的地方采取的是文件的形式处理的，这样就没有了重启后journal的磁盘偏移的问题<br>]]>
+<h2 id="前言">前言</h2><p>之前有一篇文章介绍的是，在centos7的jewel下面如果自己做的分区如何处理自动挂载的问题，当时的环境对journal的地方采取的是文件的形式处理的，这样就没有了重启后journal的磁盘偏移的问题<br>]]>
     
     </summary>
     
@@ -726,26 +759,26 @@
     <link href="http://www.zphj1987.com/2016/12/18/cephonebox%E5%8F%91%E5%B8%83/"/>
     <id>http://www.zphj1987.com/2016/12/18/cephonebox发布/</id>
     <published>2016-12-18T14:25:48.000Z</published>
-    <updated>2017-01-12T05:47:57.796Z</updated>
+    <updated>2017-02-03T05:28:09.726Z</updated>
     <content type="html"><![CDATA[<center><br><img src="http://7xo9we.com1.z0.glb.clouddn.com/shipin/cephoneboxpre3.jpg" alt=""><br></center>
 
-<h2 id="一、前言">一、前言</h2><p>现在已经是2016年收官的一个月了，之前一直想做一个calamari的集成版本，之所以有这个想法，是因为，即使在已经打好包的情况下，因为各种软件版本的原因，造成很多人无法配置成功，calamari发布以后，因为版本的更迭，经常出现软件版本引起的BUG<br><a id="more"></a><br>这里直接把需要的软件集成在一起了，按照本篇指导，一步一步是能够很简单的配置起来的，并且提供了一个视频的指导，应该能够很大程度上降低calamari的部署难度，希望能够帮助到更多的人</p>
-<h2 id="二、集成软件版本说明">二、集成软件版本说明</h2><h3 id="操作系统_Centos_7-3">操作系统 Centos 7.3</h3><p>之所以选择这个版本是因为这个是最新发布的，centos小版本的发布能够解决一些BUG，并且不会做很大的改动，并且能够让这个集成系统保持一定的生命周期</p>
+<h2 id="前言">前言</h2><p>现在已经是2016年收官的一个月了，之前一直想做一个calamari的集成版本，之所以有这个想法，是因为，即使在已经打好包的情况下，因为各种软件版本的原因，造成很多人无法配置成功，calamari发布以后，因为版本的更迭，经常出现软件版本引起的BUG<br><a id="more"></a><br>这里直接把需要的软件集成在一起了，按照本篇指导，一步一步是能够很简单的配置起来的，并且提供了一个视频的指导，应该能够很大程度上降低calamari的部署难度，希望能够帮助到更多的人</p>
+<h2 id="集成软件版本说明">集成软件版本说明</h2><h3 id="操作系统_Centos_7-3">操作系统 Centos 7.3</h3><p>之所以选择这个版本是因为这个是最新发布的，centos小版本的发布能够解决一些BUG，并且不会做很大的改动，并且能够让这个集成系统保持一定的生命周期</p>
 <h3 id="ceph">ceph</h3><p>ceph采用的是Jewel版本的10.2.5，这个是最新发布的，因为Jewel版本是一个长期支持版本，并且小版本号已经到5了，已经在一定程度上达到了稳定</p>
 <h3 id="calamari">calamari</h3><p>calamari采用的是1.3版本，因为calamari要做新的接口，基本上这个就是当前系统的最后的一个稳定版本，集成的版本适配Jewel版本接口名称的变化<br>集成版本的diamond解决了无法获取iops的BUG</p>
-<h2 id="三、视频演示教程">三、视频演示教程</h2><div class="video-container"><object><video play="false" poster="http://7xo9we.com1.z0.glb.clouddn.com/shipin/cephoneboxpre2.jpg" src="http://7xo9we.com1.z0.glb.clouddn.com/shipin/cephonebox.mp4" controls="controls"></video></object></div>
+<h2 id="视频演示教程">视频演示教程</h2><div class="video-container"><object><video play="false" poster="http://7xo9we.com1.z0.glb.clouddn.com/shipin/cephoneboxpre2.jpg" src="http://7xo9we.com1.z0.glb.clouddn.com/shipin/cephonebox.mp4" controls="controls"></video></object></div>
 
-<h2 id="四、配置教程">四、配置教程</h2><h3 id="4-1_获取ISO">4.1 获取ISO</h3><p>地址如下：<br>链接：<a href="http://pan.baidu.com/s/1cimGYa" target="_blank" rel="external">http://pan.baidu.com/s/1cimGYa</a> 密码：1bs6<br>大小为811M</p>
+<h2 id="配置教程">配置教程</h2><h3 id="获取ISO">获取ISO</h3><p>地址如下：<br>链接：<a href="http://pan.baidu.com/s/1cimGYa" target="_blank" rel="external">http://pan.baidu.com/s/1cimGYa</a> 密码：1bs6<br>大小为811M</p>
 <p>安装完成后默认：<br>用户名为root ,密码为123456</p>
-<h3 id="4-2_安装操作系统">4.2 安装操作系统</h3><p>本系统是定制的系统，默认本地硬盘启动，选择到第二项进行安装<br>需要配置的地方：</p>
+<h3 id="安装操作系统">安装操作系统</h3><p>本系统是定制的系统，默认本地硬盘启动，选择到第二项进行安装<br>需要配置的地方：</p>
 <ul>
 <li>配置磁盘分区 </li>
 <li>配置主机名和IP</li>
 </ul>
-<h3 id="4-3_进行ceph集群的配置">4.3 进行ceph集群的配置</h3><p>这个地方可以参考网上的教程进行配置，或者已经有的集群就可以直接跳过这步，这里不做过多的讲解</p>
-<h3 id="4-4_配置calamari">4.4 配置calamari</h3><p>安装好机器后，在服务器上进行calamari的初始化<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">calamari-ctl  initialize</span><br></pre></td></tr></table></figure></p>
+<h3 id="进行ceph集群的配置">进行ceph集群的配置</h3><p>这个地方可以参考网上的教程进行配置，或者已经有的集群就可以直接跳过这步，这里不做过多的讲解</p>
+<h3 id="配置calamari">配置calamari</h3><p>安装好机器后，在服务器上进行calamari的初始化<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">calamari-ctl  initialize</span><br></pre></td></tr></table></figure></p>
 <p>输入用户名，和密码 ，这个是用于登录web的用户名密码</p>
-<h3 id="4-5_配置集群到calamari的连接">4.5 配置集群到calamari的连接</h3><p>集群到calamari连接一共有两个地方，一个是diamond来采集一些监控信息，一个是salt-minion来采集集群的一些信息以及接收控制</p>
+<h3 id="配置集群到calamari的连接">配置集群到calamari的连接</h3><p>集群到calamari连接一共有两个地方，一个是diamond来采集一些监控信息，一个是salt-minion来采集集群的一些信息以及接收控制</p>
 <h4 id="修改diamond-conf">修改diamond.conf</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cp /etc/diamond/diamond.conf.example /etc/diamond/diamond.conf</span><br></pre></td></tr></table></figure>
 <p>然后修改/etc/diamond/diamond.conf<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[[GraphiteHandler]]</span><br><span class="line"><span class="comment">### Options for GraphiteHandler</span></span><br><span class="line"><span class="comment"># Graphite server host</span></span><br><span class="line">host = graphite</span><br><span class="line"><span class="comment"># Port to send metrics to</span></span><br><span class="line">port = <span class="number">2003</span></span><br><span class="line"><span class="comment"># Socket timeout (seconds)</span></span><br><span class="line">timeout = <span class="number">15</span></span><br><span class="line"><span class="comment"># Batch size for metrics</span></span><br><span class="line">batch = <span class="number">1</span></span><br></pre></td></tr></table></figure></p>
 <p>修改为：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[[GraphiteHandler]]</span><br><span class="line"><span class="comment">### Options for GraphiteHandler</span></span><br><span class="line"><span class="comment"># Graphite server host</span></span><br><span class="line">host = cephoneweb</span><br><span class="line"><span class="comment"># Port to send metrics to</span></span><br><span class="line">port = <span class="number">2003</span></span><br><span class="line"><span class="comment"># Socket timeout (seconds)</span></span><br><span class="line">timeout = <span class="number">15</span></span><br><span class="line"><span class="comment"># Batch size for metrics</span></span><br><span class="line">batch = <span class="number">1</span></span><br></pre></td></tr></table></figure></p>
@@ -756,15 +789,15 @@
 <p>重启diamond<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">systemctl restart diamond</span><br></pre></td></tr></table></figure></p>
 <h4 id="修改/etc/salt/minion">修改/etc/salt/minion</h4><p>修改下面的master后面字段为cephoneweb的主机名<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Set the location of the salt master server. If the master server cannot be</span></span><br><span class="line"><span class="comment"># resolved, then the minion will fail to start.</span></span><br><span class="line">master: cephoneweb</span><br></pre></td></tr></table></figure></p>
 <p>重启salt-minion<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">systemctl restart salt-minion</span><br></pre></td></tr></table></figure></p>
-<h3 id="4-6_访问WEB">4.6 访问WEB</h3><p>配置已经完成通过web 访问cephoneweb的IP即可</p>
-<h2 id="五、故障处理">五、故障处理</h2><center><br><img src="http://static.zybuluo.com/zphj1987/ui9hlsqffofb26ofgz7zz6i7/%E6%95%85%E9%9A%9C%E4%B8%80%E5%A4%84%E7%90%86.jpg" alt="故障一处理.jpg-42.6kB"><br></center><br><center><br><img src="http://static.zybuluo.com/zphj1987/wwwynt1mzipi2knbkmj8x8w4/%E6%95%85%E9%9A%9C%E4%BA%8C%E5%A4%84%E7%90%86.jpg" alt="故障二处理.jpg-54.8kB"><br></center>
+<h3 id="访问WEB">访问WEB</h3><p>配置已经完成通过web 访问cephoneweb的IP即可</p>
+<h2 id="故障处理">故障处理</h2><center><br><img src="http://static.zybuluo.com/zphj1987/ui9hlsqffofb26ofgz7zz6i7/%E6%95%85%E9%9A%9C%E4%B8%80%E5%A4%84%E7%90%86.jpg" alt="故障一处理.jpg-42.6kB"><br></center><br><center><br><img src="http://static.zybuluo.com/zphj1987/wwwynt1mzipi2knbkmj8x8w4/%E6%95%85%E9%9A%9C%E4%BA%8C%E5%A4%84%E7%90%86.jpg" alt="故障二处理.jpg-54.8kB"><br></center>
 
 
 ]]></content>
     <summary type="html">
     <![CDATA[<center><br><img src="http://7xo9we.com1.z0.glb.clouddn.com/shipin/cephoneboxpre3.jpg" alt=""><br></center>
 
-<h2 id="一、前言">一、前言</h2><p>现在已经是2016年收官的一个月了，之前一直想做一个calamari的集成版本，之所以有这个想法，是因为，即使在已经打好包的情况下，因为各种软件版本的原因，造成很多人无法配置成功，calamari发布以后，因为版本的更迭，经常出现软件版本引起的BUG<br>]]>
+<h2 id="前言">前言</h2><p>现在已经是2016年收官的一个月了，之前一直想做一个calamari的集成版本，之所以有这个想法，是因为，即使在已经打好包的情况下，因为各种软件版本的原因，造成很多人无法配置成功，calamari发布以后，因为版本的更迭，经常出现软件版本引起的BUG<br>]]>
     
     </summary>
     
@@ -1024,7 +1057,7 @@
     <link href="http://www.zphj1987.com/2016/11/29/Cephday%E6%AD%A6%E6%B1%8920161119%E5%88%86%E4%BA%AB%E5%9B%9E%E9%A1%BE/"/>
     <id>http://www.zphj1987.com/2016/11/29/Cephday武汉20161119分享回顾/</id>
     <published>2016-11-29T04:29:37.000Z</published>
-    <updated>2017-01-12T05:48:43.410Z</updated>
+    <updated>2017-02-03T05:30:54.487Z</updated>
     <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/wuhan/wuhan-china.png" alt="image_1b2ne8h4m1vfq1f7b1qgr262dfn9.png-405.3kB"><br></center>
 
 <h2 id="活动地点">活动地点</h2><p>这次的分享活动是由武汉烽火进行赞助的，在烽火创新谷谷咖啡进行的，武汉的高校很多，光一本重点学校就有十所，武大，华科的学生的科研水平在全国也是非常强的，但是与之相匹配的大型企业却不是很多，本土大型企业更是少，这个地方还是一个相对封闭的地方，技术的交流远没有达到北上广深等地的开放程度，光谷也是在近十年成为一个科技飞速发展的地方，这与东湖高新的大力支持以及一些高校参与到企业当中来有很大的关系，未来的发展还是值得期待的<br><a id="more"></a></p>
@@ -1039,28 +1072,28 @@
 <li>使用Bcache为Ceph OSD加速的具体实践-花瑞</li>
 </ul>
 <h2 id="分享解析">分享解析</h2><p>之前在深圳站结束以后我做了一次简单的解析，对于这些分享，我是根据自己所理解的给出自己的解析，这些分享都非常的好，每一个点都值得去挖掘更多的东西</p>
-<h3 id="分享一：CEPH_RBD_MIRRORING-烽火李海静">分享一：CEPH RBD MIRRORING-烽火李海静</h3><center><embed src="http://7xweck.com1.z0.glb.clouddn.com/wuhan/01_CEPH%20RBD%20MIRRORING%20by_%E6%9D%8E%E6%B5%B7%E9%9D%99.pdf" width="850" height="455"></center>
+<h3 id="CEPH_RBD_MIRRORING-烽火李海静">CEPH RBD MIRRORING-烽火李海静</h3><center><embed src="http://7xweck.com1.z0.glb.clouddn.com/wuhan/01_CEPH%20RBD%20MIRRORING%20by_%E6%9D%8E%E6%B5%B7%E9%9D%99.pdf" width="850" height="455"></center>
 
 <p>eph的rbd mirroring功能是在Jewel版本才新引入的一个功能，主要目的是对ceph的rbd进行灾备的作用，在原有的写入模型之上又引入了一个mirror,在实际场景当中采用的是回滚记录的方式实现的数据一致性，这个在mysql数据的主备模式当中也是类似的处理方式，在ceph当中这个回滚所需要的带宽和io相对数据库场景来说，还是有一定的差别的，数据库的本地的io是非常的大，但是数据量很小，在进行一个合并二进制后，很小的传输量就能实现主备数据的一致，而在rbd的使用场景当中，本来就大量的读写，再加一层读写，这个量还是有很大影响的，当然这是提供了一种功能，具体就要看使用场景了</p>
 <p>分享者是李海静，也是这次分享者里面唯一的女生，之前有简单的交流过一些ceph的问题，她就是ceph社区群里面的存储-西安-杀破狼，也是Ceph社区的活跃参与者之一，本篇分享开始详细的介绍了rbd mirroring的相关的配置，中间比较深入的就是在这个功能与openstack相结合以后，在openstack端需要做的一些改动，以及存在的一些问题，有需要这个功能的可以根据文档当中的提示进行实践</p>
 <p>关于这个功能，个人觉得目前还是不适合上生产的功能，生产环境要求的是稳定性，在需要灾备的场景，尽量去做系统级别的灾备，也就是整个系统的备份，备份做的好的情况就是增量备份，并且制定好周期，尽量不去对生产环境有影响，否则可能为了上一个备份系统，反而造成了系统的不稳定，这个是架构师需要去深入研究和定夺的问题，关于rbd 的备份方案，已经就基于快照的增量备份，那个我还是比较推荐的一种方式，这个不在这里展开</p>
-<h3 id="分享二：新的RADOS接口-多对象原子修改操作-麒麟云汪黎">分享二：新的RADOS接口-多对象原子修改操作-麒麟云汪黎</h3><center><embed src="http://7xweck.com1.z0.glb.clouddn.com/wuhan/02_%E6%96%B0%E7%9A%84RADOS%E6%8E%A5%E5%8F%A3-%E5%A4%9A%E5%AF%B9%E8%B1%A1%E5%8E%9F%E5%AD%90%E4%BF%AE%E6%94%B9%E6%93%8D%E4%BD%9C%20by_%E6%B1%AA%E9%BB%8E.pdf" width="850" height="460"></center>
+<h3 id="新的RADOS接口-多对象原子修改操作-麒麟云汪黎">新的RADOS接口-多对象原子修改操作-麒麟云汪黎</h3><center><embed src="http://7xweck.com1.z0.glb.clouddn.com/wuhan/02_%E6%96%B0%E7%9A%84RADOS%E6%8E%A5%E5%8F%A3-%E5%A4%9A%E5%AF%B9%E8%B1%A1%E5%8E%9F%E5%AD%90%E4%BF%AE%E6%94%B9%E6%93%8D%E4%BD%9C%20by_%E6%B1%AA%E9%BB%8E.pdf" width="850" height="460"></center>
 
 <p>汪黎老师这次带来的演讲是源码相关的演讲，汪老师是ceph的开发者之一，他们的团队就是kylin-cloud团队，他本身也是国防科大博士</p>
 <p>这次的分享是他们提出的一个pr，这个会对性能有一定的提升，实现的是对象的原子性操作，这样能够实现并发的去操作对象，并且能在程序中实现一致性，将目前的一致性的保证挪到了raods层面，这个是一个很复杂的开发，目前还在开发阶段，有兴趣的同学可以跟汪黎老师进行交流，共同完成这个功能，对于源码不太会，这里就不做过多的解析</p>
-<h3 id="分享三：When_Ceph_Meets_SPDK_-张和泉">分享三：When Ceph Meets SPDK -张和泉</h3><center><embed src="http://7xweck.com1.z0.glb.clouddn.com/wuhan/03_When%20Ceph%20Meets%20SPDK%20by_%E5%BC%A0%E5%92%8C%E6%B3%89.pdf" width="850" height="530"></center>
+<h3 id="When_Ceph_Meets_SPDK_-张和泉">When Ceph Meets SPDK -张和泉</h3><center><embed src="http://7xweck.com1.z0.glb.clouddn.com/wuhan/03_When%20Ceph%20Meets%20SPDK%20by_%E5%BC%A0%E5%92%8C%E6%B3%89.pdf" width="850" height="530"></center>
 
 <p>本篇来自的是Xsky的张和泉的分享，主要内容讲的是ceph中在加入了spdk以后的好处，这个由于spdk目前来说只是一个开发套件，并且这个里面的一些驱动的开发都是Xsky在引导在，目前大范围的配置还是不能实现的，并且目前来说一些驱动还是私有的，所以我们只能是看到是一个很好的未来，在稳定以后，不知道Intel是否会进行一些标准化的工作，从而能让更改人使用，目前具备开发能力的cepher可以尝试一下</p>
 <p>spdk和dpdk都是比较新的开发套件，实现的功能是将存储的io和网络的io从目前的内核态剥离出来，变成用户态的，这样在高速存储的环境下能够最大化的发挥出硬件的性能，这个在最近的Intel的分享当中可以看到相关的资料，这一块目前我也只能做到将驱动载入，但是跟ceph怎么结合，还目前还是不知道从哪入手</p>
-<h3 id="分享四:Ceph-based_FC_SAN_-宋柏森、付波">分享四:Ceph-based FC SAN -宋柏森、付波</h3><center><embed src="http://7xweck.com1.z0.glb.clouddn.com/wuhan/04_Ceph-based%20FC%20SAN%20by_%E5%AE%8B%E6%9F%8F%E6%A3%AE%E3%80%81%E4%BB%98%E6%B3%A2.pdf" width="850" height="455"></center>
+<h3 id="Ceph-based_FC_SAN_-宋柏森、付波">Ceph-based FC SAN -宋柏森、付波</h3><center><embed src="http://7xweck.com1.z0.glb.clouddn.com/wuhan/04_Ceph-based%20FC%20SAN%20by_%E5%AE%8B%E6%9F%8F%E6%A3%AE%E3%80%81%E4%BB%98%E6%B3%A2.pdf" width="850" height="455"></center>
 
 <p>本篇的分享来自中兴，实现的是基于RBD做的FC SAN,这个方案还是比较有特点的，整个是基于LIO来实现的，LIO是内核态的iscsi类方案，跟stgt还是有区别的，方案采用的是内核态的rbd，这个就屏蔽掉了cache的问题，因为内核的rbd是没有rbd cache的，性能会有一定的下降，在客户端采用多路径的工具来实现高可用和流量负载均衡，从而提高了带宽，提高了可用性，管理上加入了一个管理平台进行控制，配置文件采用的是对象存储存储到集群当中，保证了版本的一致性，这些都是一些很好的点，值得深入实践</p>
 <p>国内ceph研发当中中兴还是比较低调的，背后应该还是做了很多事情的</p>
-<h3 id="分享五：基于Ceph的云存储备份系统的设计与实现-丁刚">分享五：基于Ceph的云存储备份系统的设计与实现-丁刚</h3><center><embed src="http://7xweck.com1.z0.glb.clouddn.com/wuhan/05_%E5%9F%BA%E4%BA%8ECeph%E7%9A%84%E4%BA%91%E5%AD%98%E5%82%A8%E5%A4%87%E4%BB%BD%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E7%8E%B0%20by_%E4%B8%81%E5%88%9A.pdf" width="850" height="455"></center>
+<h3 id="基于Ceph的云存储备份系统的设计与实现-丁刚">基于Ceph的云存储备份系统的设计与实现-丁刚</h3><center><embed src="http://7xweck.com1.z0.glb.clouddn.com/wuhan/05_%E5%9F%BA%E4%BA%8ECeph%E7%9A%84%E4%BA%91%E5%AD%98%E5%82%A8%E5%A4%87%E4%BB%BD%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E7%8E%B0%20by_%E4%B8%81%E5%88%9A.pdf" width="850" height="455"></center>
 
 <p>这篇来自烽火大数据的丁刚的演讲，备份场景是我觉得ceph最适合的一种场景了，一方面对延时没有那么高，另一方面ceph好扩展，并发好，这些都是适用于备份场景的，ceph的io路径较长，本篇就是讲的ceph在大数据下的使用场景</p>
 <p>整个备份系统的处理是中间有一个拉取推送的系统，这是使用的C来写的，并且在拉取数据和推送数据的地方都采用了负载均衡，和高可用，系统的健壮性非常好</p>
-<h3 id="分享六：使用Bcache为Ceph_OSD加速的具体实践-花瑞">分享六：使用Bcache为Ceph OSD加速的具体实践-花瑞</h3><center><embed src="http://7xweck.com1.z0.glb.clouddn.com/wuhan/06_%E4%BD%BF%E7%94%A8Bcache%E4%B8%BACeph%20OSD%E5%8A%A0%E9%80%9F%E7%9A%84%E5%85%B7%E4%BD%93%E5%AE%9E%E8%B7%B5%20by_%E8%8A%B1%E7%91%9E.pdf" width="850" height="460"></center>
+<h3 id="使用Bcache为Ceph_OSD加速的具体实践-花瑞">使用Bcache为Ceph OSD加速的具体实践-花瑞</h3><center><embed src="http://7xweck.com1.z0.glb.clouddn.com/wuhan/06_%E4%BD%BF%E7%94%A8Bcache%E4%B8%BACeph%20OSD%E5%8A%A0%E9%80%9F%E7%9A%84%E5%85%B7%E4%BD%93%E5%AE%9E%E8%B7%B5%20by_%E8%8A%B1%E7%91%9E.pdf" width="850" height="460"></center>
 
 <p>本篇来自杉岩数据的花瑞做的分享，加速方案采用的是bcache，这个方案之前在邮件列表里面有看到国外的cepher有提到他的千兆ceph环境很容易出block，在使用加速方案以后得到了很好的改善，加速方案有很多，bcache，flashcache，EnhanceIO,dm-cache,原理都是相似的，都是采用一个ssd设备进行一个缓存，从而达到加速的，本篇详细的介绍了bcache的优点和原理，这个方案我个人也是很推荐的一种加速方案，选择加速方案的时候，需要进行几种软件的功能点比较，然后选择适合自己使用环境的，缓存方案主要是面向随机写的场景，顺序下大文件的场景，SSD可能看不出很大的优势</p>
 <h2 id="总结">总结</h2><p>本次武汉的社区活动偏方案的要多一些，这些其实对于企业来说都是很好的分享点，面对各种解决方案，如何找到适合自己场景的方案才是最重要的</p>
@@ -1081,7 +1114,7 @@
     <link href="http://www.zphj1987.com/2016/11/23/fio%E6%B5%8B%E8%AF%95ceph%E7%9A%84filestore/"/>
     <id>http://www.zphj1987.com/2016/11/23/fio测试ceph的filestore/</id>
     <published>2016-11-23T15:04:53.000Z</published>
-    <updated>2017-01-12T05:49:01.554Z</updated>
+    <updated>2017-02-03T05:34:23.897Z</updated>
     <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/fio-banner.jpg" alt="fio"><br></center>
 
 <h2 id="前言">前言</h2><p>fio是一个适应性非常强的软件，基本上能够模拟所有的IO请求，是目前最全面的一款测试软件，之前在看德国电信的一篇分享的时候，里面就提到了，如果需要测试存储性能，尽量只用一款软件，这样从上层测试到底层去，才能更好的去比较差别</p>
@@ -1089,12 +1122,10 @@
 <a id="more"></a>
 <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/fiotest.png" alt=""><br></center>
 
-
-
 <p>为什么会有这个，因为在以前，如果你要测试一块磁盘是不是适合ceph使用的时候，都是直接对挂载的磁盘进行一些测试，这个是基于文件系统的，并没有真正的模拟到ceph自己的写入模型，所以在开发人员的努力下，模拟对象的写入的驱动已经完成了，这就是本篇需要讲述的内容</p>
 <h2 id="实践过程">实践过程</h2><p>fio engine for objectstore 这个是在ceph的11.0.2这个版本才正式发布出来的，可以看这个pr(<a href="https://github.com/ceph/ceph/pull/10267" target="_blank" rel="external">pr10267</a>),11.0.2是ceph第一个公开释放的KRAKEN版本的，也说明Jewel版本即将进入比较稳定的情况，新的功能可能会尽量在K版本进行开发</p>
 <h3 id="下载相关代码">下载相关代码</h3><p>创建一个目录用于存储代码<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># mkdir /root/newceph</span></span><br><span class="line">[root@lab8106 ~]<span class="comment"># cd /root/newceph/</span></span><br></pre></td></tr></table></figure></p>
-<h4 id="下载fio的代码">下载fio的代码</h4><p>[root@lab8106 newceph]# git clone git://git.kernel.dk/fio.git</p>
+<h4 id="下载fio的代码">下载fio的代码</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 newceph]<span class="comment"># git clone git://git.kernel.dk/fio.git</span></span><br></pre></td></tr></table></figure>
 <h4 id="下载ceph的代码">下载ceph的代码</h4><p>下载代码并且切换到指定的11.0.2分支，不要用master分支，里面还没有合进去，并且还有bug<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># cd /root/newceph/</span></span><br><span class="line">[root@lab8106 newceph]<span class="comment"># git clone git://github.com/ceph/ceph.git</span></span><br><span class="line">[root@lab8106 newceph]<span class="comment"># cd ceph</span></span><br><span class="line">[root@lab8106 ceph]<span class="comment">#git checkout -b myfenzhi v11.0.2</span></span><br><span class="line">[root@lab8106 ceph]<span class="comment">#git submodule update --init --recursive</span></span><br></pre></td></tr></table></figure></p>
 <h4 id="创建一个cmake编译的目录并且编译">创建一个cmake编译的目录并且编译</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># mkdir /root/newceph/build</span></span><br><span class="line">[root@lab8106 ~]<span class="comment"># cd /root/newceph/build</span></span><br><span class="line">[root@lab8106 build]<span class="comment"># cmake -DWITH_FIO=ON -DFIO_INCLUDE_DIR=/root/newceph/fio/ -DCMAKE_BUILD_TYPE=Release /root/newceph/ceph </span></span><br><span class="line">[root@lab8106 build]<span class="comment"># make install -j 16</span></span><br></pre></td></tr></table></figure>
 <p>安装完成检查是不是生成了这个库文件,fio就是利用这个库作为写入引擎的<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 build]<span class="comment"># ll lib/libfio_ceph_objectstore.so</span></span><br><span class="line">-rwxr-xr-x <span class="number">1</span> root root <span class="number">59090338</span> Nov <span class="number">23</span> <span class="number">22</span>:<span class="number">17</span> lib/libfio_ceph_objectstore.so</span><br></pre></td></tr></table></figure></p>

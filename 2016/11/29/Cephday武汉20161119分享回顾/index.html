@@ -237,28 +237,28 @@ var _hmt = _hmt || [];
 <li>使用Bcache为Ceph OSD加速的具体实践-花瑞</li>
 </ul>
 <h2 id="分享解析">分享解析</h2><p>之前在深圳站结束以后我做了一次简单的解析，对于这些分享，我是根据自己所理解的给出自己的解析，这些分享都非常的好，每一个点都值得去挖掘更多的东西</p>
-<h3 id="分享一：CEPH_RBD_MIRRORING-烽火李海静">分享一：CEPH RBD MIRRORING-烽火李海静</h3><center><embed src="http://7xweck.com1.z0.glb.clouddn.com/wuhan/01_CEPH%20RBD%20MIRRORING%20by_%E6%9D%8E%E6%B5%B7%E9%9D%99.pdf" width="850" height="455"></center>
+<h3 id="CEPH_RBD_MIRRORING-烽火李海静">CEPH RBD MIRRORING-烽火李海静</h3><center><embed src="http://7xweck.com1.z0.glb.clouddn.com/wuhan/01_CEPH%20RBD%20MIRRORING%20by_%E6%9D%8E%E6%B5%B7%E9%9D%99.pdf" width="850" height="455"></center>
 
 <p>eph的rbd mirroring功能是在Jewel版本才新引入的一个功能，主要目的是对ceph的rbd进行灾备的作用，在原有的写入模型之上又引入了一个mirror,在实际场景当中采用的是回滚记录的方式实现的数据一致性，这个在mysql数据的主备模式当中也是类似的处理方式，在ceph当中这个回滚所需要的带宽和io相对数据库场景来说，还是有一定的差别的，数据库的本地的io是非常的大，但是数据量很小，在进行一个合并二进制后，很小的传输量就能实现主备数据的一致，而在rbd的使用场景当中，本来就大量的读写，再加一层读写，这个量还是有很大影响的，当然这是提供了一种功能，具体就要看使用场景了</p>
 <p>分享者是李海静，也是这次分享者里面唯一的女生，之前有简单的交流过一些ceph的问题，她就是ceph社区群里面的存储-西安-杀破狼，也是Ceph社区的活跃参与者之一，本篇分享开始详细的介绍了rbd mirroring的相关的配置，中间比较深入的就是在这个功能与openstack相结合以后，在openstack端需要做的一些改动，以及存在的一些问题，有需要这个功能的可以根据文档当中的提示进行实践</p>
 <p>关于这个功能，个人觉得目前还是不适合上生产的功能，生产环境要求的是稳定性，在需要灾备的场景，尽量去做系统级别的灾备，也就是整个系统的备份，备份做的好的情况就是增量备份，并且制定好周期，尽量不去对生产环境有影响，否则可能为了上一个备份系统，反而造成了系统的不稳定，这个是架构师需要去深入研究和定夺的问题，关于rbd 的备份方案，已经就基于快照的增量备份，那个我还是比较推荐的一种方式，这个不在这里展开</p>
-<h3 id="分享二：新的RADOS接口-多对象原子修改操作-麒麟云汪黎">分享二：新的RADOS接口-多对象原子修改操作-麒麟云汪黎</h3><center><embed src="http://7xweck.com1.z0.glb.clouddn.com/wuhan/02_%E6%96%B0%E7%9A%84RADOS%E6%8E%A5%E5%8F%A3-%E5%A4%9A%E5%AF%B9%E8%B1%A1%E5%8E%9F%E5%AD%90%E4%BF%AE%E6%94%B9%E6%93%8D%E4%BD%9C%20by_%E6%B1%AA%E9%BB%8E.pdf" width="850" height="460"></center>
+<h3 id="新的RADOS接口-多对象原子修改操作-麒麟云汪黎">新的RADOS接口-多对象原子修改操作-麒麟云汪黎</h3><center><embed src="http://7xweck.com1.z0.glb.clouddn.com/wuhan/02_%E6%96%B0%E7%9A%84RADOS%E6%8E%A5%E5%8F%A3-%E5%A4%9A%E5%AF%B9%E8%B1%A1%E5%8E%9F%E5%AD%90%E4%BF%AE%E6%94%B9%E6%93%8D%E4%BD%9C%20by_%E6%B1%AA%E9%BB%8E.pdf" width="850" height="460"></center>
 
 <p>汪黎老师这次带来的演讲是源码相关的演讲，汪老师是ceph的开发者之一，他们的团队就是kylin-cloud团队，他本身也是国防科大博士</p>
 <p>这次的分享是他们提出的一个pr，这个会对性能有一定的提升，实现的是对象的原子性操作，这样能够实现并发的去操作对象，并且能在程序中实现一致性，将目前的一致性的保证挪到了raods层面，这个是一个很复杂的开发，目前还在开发阶段，有兴趣的同学可以跟汪黎老师进行交流，共同完成这个功能，对于源码不太会，这里就不做过多的解析</p>
-<h3 id="分享三：When_Ceph_Meets_SPDK_-张和泉">分享三：When Ceph Meets SPDK -张和泉</h3><center><embed src="http://7xweck.com1.z0.glb.clouddn.com/wuhan/03_When%20Ceph%20Meets%20SPDK%20by_%E5%BC%A0%E5%92%8C%E6%B3%89.pdf" width="850" height="530"></center>
+<h3 id="When_Ceph_Meets_SPDK_-张和泉">When Ceph Meets SPDK -张和泉</h3><center><embed src="http://7xweck.com1.z0.glb.clouddn.com/wuhan/03_When%20Ceph%20Meets%20SPDK%20by_%E5%BC%A0%E5%92%8C%E6%B3%89.pdf" width="850" height="530"></center>
 
 <p>本篇来自的是Xsky的张和泉的分享，主要内容讲的是ceph中在加入了spdk以后的好处，这个由于spdk目前来说只是一个开发套件，并且这个里面的一些驱动的开发都是Xsky在引导在，目前大范围的配置还是不能实现的，并且目前来说一些驱动还是私有的，所以我们只能是看到是一个很好的未来，在稳定以后，不知道Intel是否会进行一些标准化的工作，从而能让更改人使用，目前具备开发能力的cepher可以尝试一下</p>
 <p>spdk和dpdk都是比较新的开发套件，实现的功能是将存储的io和网络的io从目前的内核态剥离出来，变成用户态的，这样在高速存储的环境下能够最大化的发挥出硬件的性能，这个在最近的Intel的分享当中可以看到相关的资料，这一块目前我也只能做到将驱动载入，但是跟ceph怎么结合，还目前还是不知道从哪入手</p>
-<h3 id="分享四:Ceph-based_FC_SAN_-宋柏森、付波">分享四:Ceph-based FC SAN -宋柏森、付波</h3><center><embed src="http://7xweck.com1.z0.glb.clouddn.com/wuhan/04_Ceph-based%20FC%20SAN%20by_%E5%AE%8B%E6%9F%8F%E6%A3%AE%E3%80%81%E4%BB%98%E6%B3%A2.pdf" width="850" height="455"></center>
+<h3 id="Ceph-based_FC_SAN_-宋柏森、付波">Ceph-based FC SAN -宋柏森、付波</h3><center><embed src="http://7xweck.com1.z0.glb.clouddn.com/wuhan/04_Ceph-based%20FC%20SAN%20by_%E5%AE%8B%E6%9F%8F%E6%A3%AE%E3%80%81%E4%BB%98%E6%B3%A2.pdf" width="850" height="455"></center>
 
 <p>本篇的分享来自中兴，实现的是基于RBD做的FC SAN,这个方案还是比较有特点的，整个是基于LIO来实现的，LIO是内核态的iscsi类方案，跟stgt还是有区别的，方案采用的是内核态的rbd，这个就屏蔽掉了cache的问题，因为内核的rbd是没有rbd cache的，性能会有一定的下降，在客户端采用多路径的工具来实现高可用和流量负载均衡，从而提高了带宽，提高了可用性，管理上加入了一个管理平台进行控制，配置文件采用的是对象存储存储到集群当中，保证了版本的一致性，这些都是一些很好的点，值得深入实践</p>
 <p>国内ceph研发当中中兴还是比较低调的，背后应该还是做了很多事情的</p>
-<h3 id="分享五：基于Ceph的云存储备份系统的设计与实现-丁刚">分享五：基于Ceph的云存储备份系统的设计与实现-丁刚</h3><center><embed src="http://7xweck.com1.z0.glb.clouddn.com/wuhan/05_%E5%9F%BA%E4%BA%8ECeph%E7%9A%84%E4%BA%91%E5%AD%98%E5%82%A8%E5%A4%87%E4%BB%BD%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E7%8E%B0%20by_%E4%B8%81%E5%88%9A.pdf" width="850" height="455"></center>
+<h3 id="基于Ceph的云存储备份系统的设计与实现-丁刚">基于Ceph的云存储备份系统的设计与实现-丁刚</h3><center><embed src="http://7xweck.com1.z0.glb.clouddn.com/wuhan/05_%E5%9F%BA%E4%BA%8ECeph%E7%9A%84%E4%BA%91%E5%AD%98%E5%82%A8%E5%A4%87%E4%BB%BD%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E7%8E%B0%20by_%E4%B8%81%E5%88%9A.pdf" width="850" height="455"></center>
 
 <p>这篇来自烽火大数据的丁刚的演讲，备份场景是我觉得ceph最适合的一种场景了，一方面对延时没有那么高，另一方面ceph好扩展，并发好，这些都是适用于备份场景的，ceph的io路径较长，本篇就是讲的ceph在大数据下的使用场景</p>
 <p>整个备份系统的处理是中间有一个拉取推送的系统，这是使用的C来写的，并且在拉取数据和推送数据的地方都采用了负载均衡，和高可用，系统的健壮性非常好</p>
-<h3 id="分享六：使用Bcache为Ceph_OSD加速的具体实践-花瑞">分享六：使用Bcache为Ceph OSD加速的具体实践-花瑞</h3><center><embed src="http://7xweck.com1.z0.glb.clouddn.com/wuhan/06_%E4%BD%BF%E7%94%A8Bcache%E4%B8%BACeph%20OSD%E5%8A%A0%E9%80%9F%E7%9A%84%E5%85%B7%E4%BD%93%E5%AE%9E%E8%B7%B5%20by_%E8%8A%B1%E7%91%9E.pdf" width="850" height="460"></center>
+<h3 id="使用Bcache为Ceph_OSD加速的具体实践-花瑞">使用Bcache为Ceph OSD加速的具体实践-花瑞</h3><center><embed src="http://7xweck.com1.z0.glb.clouddn.com/wuhan/06_%E4%BD%BF%E7%94%A8Bcache%E4%B8%BACeph%20OSD%E5%8A%A0%E9%80%9F%E7%9A%84%E5%85%B7%E4%BD%93%E5%AE%9E%E8%B7%B5%20by_%E8%8A%B1%E7%91%9E.pdf" width="850" height="460"></center>
 
 <p>本篇来自杉岩数据的花瑞做的分享，加速方案采用的是bcache，这个方案之前在邮件列表里面有看到国外的cepher有提到他的千兆ceph环境很容易出block，在使用加速方案以后得到了很好的改善，加速方案有很多，bcache，flashcache，EnhanceIO,dm-cache,原理都是相似的，都是采用一个ssd设备进行一个缓存，从而达到加速的，本篇详细的介绍了bcache的优点和原理，这个方案我个人也是很推荐的一种加速方案，选择加速方案的时候，需要进行几种软件的功能点比较，然后选择适合自己使用环境的，缓存方案主要是面向随机写的场景，顺序下大文件的场景，SSD可能看不出很大的优势</p>
 <h2 id="总结">总结</h2><p>本次武汉的社区活动偏方案的要多一些，这些其实对于企业来说都是很好的分享点，面对各种解决方案，如何找到适合自己场景的方案才是最重要的</p>

@@ -5,36 +5,36 @@
   
   <title>解决calamari无法获取节点信息的bug | zphj1987&#39;Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="一、前言一直在做calamari的相关的一些打包和安装的工作，都是业余弄的东西，所以并没有仔细的进行功能点的验证测试，正好ceph社区群里面有人问了个问题
+  <meta name="description" content="前言一直在做calamari的相关的一些打包和安装的工作，都是业余弄的东西，所以并没有仔细的进行功能点的验证测试，正好ceph社区群里面有人问了个问题
 
 calamari上是不是能看到ceph的version?
 
 对于这个问题，好像确实没有见到过，而之前正好有个页面看到是空的，当时还不清楚这个是什么用的
 
-而另外一位群友贴出了这个地方的是有值的，这个地方是有BUG的，在咨询了相关的问题描述以后">
+而另外一位群友贴出了这个地方的是有值的，这个地方是有BUG的，在咨询了相关的问题描述以后，我">
 <meta property="og:type" content="article">
 <meta property="og:title" content="解决calamari无法获取节点信息的bug">
 <meta property="og:url" content="http://www.zphj1987.com/2017/01/09/calamari-node-info/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
-<meta property="og:description" content="一、前言一直在做calamari的相关的一些打包和安装的工作，都是业余弄的东西，所以并没有仔细的进行功能点的验证测试，正好ceph社区群里面有人问了个问题
+<meta property="og:description" content="前言一直在做calamari的相关的一些打包和安装的工作，都是业余弄的东西，所以并没有仔细的进行功能点的验证测试，正好ceph社区群里面有人问了个问题
 
 calamari上是不是能看到ceph的version?
 
 对于这个问题，好像确实没有见到过，而之前正好有个页面看到是空的，当时还不清楚这个是什么用的
 
-而另外一位群友贴出了这个地方的是有值的，这个地方是有BUG的，在咨询了相关的问题描述以后">
+而另外一位群友贴出了这个地方的是有值的，这个地方是有BUG的，在咨询了相关的问题描述以后，我">
 <meta property="og:image" content="http://7xweck.com1.z0.glb.clouddn.com/saltstack.png">
 <meta property="og:image" content="http://static.zybuluo.com/zphj1987/mjyvzkd7q9x6eplb538o7ltc/image_1b611hfic17lj15ej1jp1pb31m979.png">
 <meta property="og:image" content="http://static.zybuluo.com/zphj1987/4qkz1xo0kretsrvn8nalmt17/image_1b612ekp81ec0uk140t1b5tdjfm.png">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="解决calamari无法获取节点信息的bug">
-<meta name="twitter:description" content="一、前言一直在做calamari的相关的一些打包和安装的工作，都是业余弄的东西，所以并没有仔细的进行功能点的验证测试，正好ceph社区群里面有人问了个问题
+<meta name="twitter:description" content="前言一直在做calamari的相关的一些打包和安装的工作，都是业余弄的东西，所以并没有仔细的进行功能点的验证测试，正好ceph社区群里面有人问了个问题
 
 calamari上是不是能看到ceph的version?
 
 对于这个问题，好像确实没有见到过，而之前正好有个页面看到是空的，当时还不清楚这个是什么用的
 
-而另外一位群友贴出了这个地方的是有值的，这个地方是有BUG的，在咨询了相关的问题描述以后">
+而另外一位群友贴出了这个地方的是有值的，这个地方是有BUG的，在咨询了相关的问题描述以后，我">
   
     <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
   
@@ -245,27 +245,27 @@ var _hmt = _hmt || [];
       
         <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/saltstack.png" alt="salt-stack"><br></center>
 
-<h2 id="一、前言">一、前言</h2><p>一直在做calamari的相关的一些打包和安装的工作，都是业余弄的东西，所以并没有仔细的进行功能点的验证测试，正好ceph社区群里面有人问了个问题</p>
+<h2 id="前言">前言</h2><p>一直在做calamari的相关的一些打包和安装的工作，都是业余弄的东西，所以并没有仔细的进行功能点的验证测试，正好ceph社区群里面有人问了个问题</p>
 <blockquote>
 <p>calamari上是不是能看到ceph的version?</p>
 </blockquote>
 <p>对于这个问题，好像确实没有见到过，而之前正好有个页面看到是空的，当时还不清楚这个是什么用的</p>
 <p><img src="http://static.zybuluo.com/zphj1987/mjyvzkd7q9x6eplb538o7ltc/image_1b611hfic17lj15ej1jp1pb31m979.png" alt="origin"></p>
 <p>而另外一位群友贴出了这个地方的是有值的，这个地方是有BUG的，在咨询了相关的问题描述以后，我们来看下，可以如何解决这个问题<br><a id="more"></a></p>
-<h2 id="二、问题解决过程">二、问题解决过程</h2><p>salt的软件版本：</p>
+<h2 id="问题解决过程">问题解决过程</h2><p>salt的软件版本：</p>
 <ul>
 <li>salt-master-2015.8.1-1.el7.noarch</li>
 <li>salt-2015.8.1-1.el7.noarch</li>
 <li>salt-minion-2015.8.1-1.el7.noarch</li>
 </ul>
-<h3 id="2-1_问题描述：">2.1 问题描述：</h3><p>calamari的salt-master节点在读取</p>
+<h3 id="问题描述">问题描述</h3><p>calamari的salt-master节点在读取</p>
 <blockquote>
 <p>/var/cache/salt/master/minions/{minion-hostname}/data.p</p>
 </blockquote>
 <p>的时候有权限问题，在修改权限以后，可以读取到了，但是在重启了salt-minion以后，这个文件会被更新，然后权限又变成无法读取的</p>
-<h3 id="2-2_相关知识补充">2.2 相关知识补充</h3><p>Grains - salt-minion 自身的一些静态信息<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">salt <span class="string">'*'</span> grains.ls       <span class="comment"># 查看 grains 分类</span></span><br><span class="line">salt <span class="string">'*'</span> grains.items    <span class="comment"># 查看 grains 所有信息</span></span><br><span class="line">salt <span class="string">'*'</span> grains.item os  <span class="comment"># 查看 grains 某个信息</span></span><br><span class="line">salt <span class="string">'*'</span> grains.get os</span><br></pre></td></tr></table></figure></p>
+<h3 id="相关知识补充">相关知识补充</h3><p>Grains - salt-minion 自身的一些静态信息<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">salt <span class="string">'*'</span> grains.ls       <span class="comment"># 查看 grains 分类</span></span><br><span class="line">salt <span class="string">'*'</span> grains.items    <span class="comment"># 查看 grains 所有信息</span></span><br><span class="line">salt <span class="string">'*'</span> grains.item os  <span class="comment"># 查看 grains 某个信息</span></span><br><span class="line">salt <span class="string">'*'</span> grains.get os</span><br></pre></td></tr></table></figure></p>
 <p>上面的是salt-minion的静态信息的查询的相关的命令，salt-minion在进行重启的时候会将一些静态的信息推送到salt-master上面去，而这个生成的信息正好就是我们上面提出有权限问题的data.p这个存储的文件的，那么解决问题就是修改这个地方的权限的问题了</p>
-<h3 id="2-3_修改salt-master代码">2.3 修改salt-master代码</h3><p>这个问题通过修改salt-master的master.py代码可以解决</p>
+<h3 id="修改salt-master代码">修改salt-master代码</h3><p>这个问题通过修改salt-master的master.py代码可以解决</p>
 <p>写入这个grains信息的代码在/usr/lib/python2.7/site-packages/salt/master.py这个文件当中，代码段如下：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">  def _pillar(self, load):</span><br><span class="line">···</span><br><span class="line">        <span class="keyword">if</span> self.opts.get(<span class="string">'minion_data_cache'</span>, False):</span><br><span class="line">            cdir = os.path.join(self.opts[<span class="string">'cachedir'</span>], <span class="string">'minions'</span>, load[<span class="string">'id'</span>])</span><br><span class="line">            <span class="keyword">if</span> not os.path.isdir(cdir):</span><br><span class="line">                os.makedirs(cdir)</span><br><span class="line">            datap = os.path.join(cdir, <span class="string">'data.p'</span>)</span><br><span class="line">            tmpfh, tmpfname = tempfile.mkstemp(dir=cdir)</span><br><span class="line">            os.close(tmpfh)</span><br><span class="line">            with salt.utils.fopen(tmpfname, <span class="string">'w+b'</span>) as fp_:</span><br><span class="line">                fp_.write(</span><br><span class="line">                    self.serial.dumps(</span><br><span class="line">                        &#123;<span class="string">'grains'</span>: load[<span class="string">'grains'</span>],</span><br><span class="line">                         <span class="string">'pillar'</span>: data&#125;)</span><br><span class="line">                    )</span><br><span class="line">            <span class="comment"># On Windows, os.rename will fail if the destination file exists.</span></span><br><span class="line">            salt.utils.atomicfile.atomic_rename(tmpfname, datap)</span><br><span class="line">        <span class="built_in">return</span> data</span><br></pre></td></tr></table></figure></p>
 <p>就是这个函数就是负责这个文件写入的，我们只在这个代码里面增加一个文件的权限的控制，在<code>salt.utils.atomicfile.atomic_rename(tmpfname, datap)</code>这行之上增加一行代码<code>os.chmod(tmpfname, 0o644)</code></p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"> def _pillar(self, load):</span><br><span class="line">···</span><br><span class="line">        <span class="keyword">if</span> self.opts.get(<span class="string">'minion_data_cache'</span>, False):</span><br><span class="line">            cdir = os.path.join(self.opts[<span class="string">'cachedir'</span>], <span class="string">'minions'</span>, load[<span class="string">'id'</span>])</span><br><span class="line">            <span class="keyword">if</span> not os.path.isdir(cdir):</span><br><span class="line">                os.makedirs(cdir)</span><br><span class="line">            datap = os.path.join(cdir, <span class="string">'data.p'</span>)</span><br><span class="line">            tmpfh, tmpfname = tempfile.mkstemp(dir=cdir)</span><br><span class="line">            os.close(tmpfh)</span><br><span class="line">            with salt.utils.fopen(tmpfname, <span class="string">'w+b'</span>) as fp_:</span><br><span class="line">                fp_.write(</span><br><span class="line">                    self.serial.dumps(</span><br><span class="line">                        &#123;<span class="string">'grains'</span>: load[<span class="string">'grains'</span>],</span><br><span class="line">                         <span class="string">'pillar'</span>: data&#125;)</span><br><span class="line">                    )</span><br><span class="line">            <span class="comment"># On Windows, os.rename will fail if the destination file exists.</span></span><br><span class="line">            os.chmod(tmpfname, <span class="number">0</span>o644)</span><br><span class="line">            salt.utils.atomicfile.atomic_rename(tmpfname, datap)</span><br><span class="line">        <span class="built_in">return</span> data</span><br></pre></td></tr></table></figure>
@@ -274,7 +274,23 @@ var _hmt = _hmt || [];
 <p>现在再看下前台页面效果:</p>
 <p><img src="http://static.zybuluo.com/zphj1987/4qkz1xo0kretsrvn8nalmt17/image_1b612ekp81ec0uk140t1b5tdjfm.png" alt="changge"></p>
 <p>问题解决</p>
-<h2 id="三、总结">三、总结</h2><p>calamari有一些各种各样的小问题，总体上还是一款非常简洁漂亮的管理界面，在没有监控系统的情况下，还是一个不错的选择</p>
+<h2 id="总结">总结</h2><p>calamari有一些各种各样的小问题，总体上还是一款非常简洁漂亮的管理界面，在没有监控系统的情况下，还是一个不错的选择</p>
+<h2 id="变更记录">变更记录</h2><table>
+<thead>
+<tr>
+<th style="text-align:center">Why</th>
+<th style="text-align:center">Who</th>
+<th style="text-align:center">When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">创建</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2017-01-09</td>
+</tr>
+</tbody>
+</table>
 
       
     </div>
