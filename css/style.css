@@ -971,6 +971,7 @@ a {
 }
 .article-entry p {
   margin-top: 10px;
+  color: #1a1a1a;
 }
 .article-entry p code,
 .article-entry li code {
@@ -981,6 +982,7 @@ a {
   font-family: Menlo, Monaco, "Andale Mono", "lucida console", "Courier New", monospace;
   word-wrap: break-word;
   font-size: 14px;
+  color: #1a1a1a;
 }
 .article-entry blockquote {
   background: #ddd;

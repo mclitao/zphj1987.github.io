@@ -5,22 +5,22 @@
   
   <title>替换OSD操作的优化与分析 | zphj1987&#39;Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="一、前言之前有写过一篇删除OSD的正确方式，里面只是简单的讲了下删除的方式怎样能减少迁移量，本篇属于一个扩展，讲述了 Ceph 运维当中经常出现的坏盘提换盘的步骤的优化
+  <meta name="description" content="前言之前有写过一篇删除OSD的正确方式，里面只是简单的讲了下删除的方式怎样能减少迁移量，本篇属于一个扩展，讲述了 Ceph 运维当中经常出现的坏盘提换盘的步骤的优化
 基础环境两台主机每台主机8个 OSD，一共 16 个 OSD，副本设置为2，PG 数设置为800，计算下来平均每个 OSD 上的 P G数目为100个，本篇将通过数据来分析不同的处理方法的差别
-开始测试前先把环境设置为 noout">
+开始测试前先把环境设置为 noout，然">
 <meta property="og:type" content="article">
 <meta property="og:title" content="替换OSD操作的优化与分析">
 <meta property="og:url" content="http://www.zphj1987.com/2016/09/19/替换OSD操作的优化与分析/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
-<meta property="og:description" content="一、前言之前有写过一篇删除OSD的正确方式，里面只是简单的讲了下删除的方式怎样能减少迁移量，本篇属于一个扩展，讲述了 Ceph 运维当中经常出现的坏盘提换盘的步骤的优化
+<meta property="og:description" content="前言之前有写过一篇删除OSD的正确方式，里面只是简单的讲了下删除的方式怎样能减少迁移量，本篇属于一个扩展，讲述了 Ceph 运维当中经常出现的坏盘提换盘的步骤的优化
 基础环境两台主机每台主机8个 OSD，一共 16 个 OSD，副本设置为2，PG 数设置为800，计算下来平均每个 OSD 上的 P G数目为100个，本篇将通过数据来分析不同的处理方法的差别
-开始测试前先把环境设置为 noout">
+开始测试前先把环境设置为 noout，然">
 <meta property="og:image" content="http://7xweck.com1.z0.glb.clouddn.com/reolaceosd/terminal.png">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="替换OSD操作的优化与分析">
-<meta name="twitter:description" content="一、前言之前有写过一篇删除OSD的正确方式，里面只是简单的讲了下删除的方式怎样能减少迁移量，本篇属于一个扩展，讲述了 Ceph 运维当中经常出现的坏盘提换盘的步骤的优化
+<meta name="twitter:description" content="前言之前有写过一篇删除OSD的正确方式，里面只是简单的讲了下删除的方式怎样能减少迁移量，本篇属于一个扩展，讲述了 Ceph 运维当中经常出现的坏盘提换盘的步骤的优化
 基础环境两台主机每台主机8个 OSD，一共 16 个 OSD，副本设置为2，PG 数设置为800，计算下来平均每个 OSD 上的 P G数目为100个，本篇将通过数据来分析不同的处理方法的差别
-开始测试前先把环境设置为 noout">
+开始测试前先把环境设置为 noout，然">
   
     <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
   
@@ -219,10 +219,10 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/reolaceosd/terminal.png" alt="replaceosd"><br></center></p>
-<h2 id="一、前言">一、前言</h2><p>之前有写过一篇<a href="http://www.zphj1987.com/2016/01/12/%E5%88%A0%E9%99%A4osd%E7%9A%84%E6%AD%A3%E7%A1%AE%E6%96%B9%E5%BC%8F/" target="_blank" rel="external">删除OSD的正确方式</a>，里面只是简单的讲了下删除的方式怎样能减少迁移量，本篇属于一个扩展，讲述了 Ceph 运维当中经常出现的坏盘提换盘的步骤的优化</p>
+<h2 id="前言">前言</h2><p>之前有写过一篇<a href="http://www.zphj1987.com/2016/01/12/%E5%88%A0%E9%99%A4osd%E7%9A%84%E6%AD%A3%E7%A1%AE%E6%96%B9%E5%BC%8F/" target="_blank" rel="external">删除OSD的正确方式</a>，里面只是简单的讲了下删除的方式怎样能减少迁移量，本篇属于一个扩展，讲述了 Ceph 运维当中经常出现的坏盘提换盘的步骤的优化</p>
 <p>基础环境两台主机每台主机8个 OSD，一共 16 个 OSD，副本设置为2，PG 数设置为800，计算下来平均每个 OSD 上的 P G数目为100个，本篇将通过数据来分析不同的处理方法的差别</p>
 <p>开始测试前先把环境设置为 <code>noout</code>，然后通过停止 OSD 来模拟 OSD 出现了异常，之后进行不同处理方法<br><a id="more"></a></p>
-<h2 id="二、测试三种方法">二、测试三种方法</h2><h3 id="方法一：首先_out_一个_OSD，然后剔除_OSD，然后增加_OSD">方法一：首先 out 一个 OSD，然后剔除 OSD，然后增加 OSD</h3><ol>
+<h2 id="测试三种方法">测试三种方法</h2><h3 id="首先_out_一个_OSD，然后剔除_OSD，然后增加_OSD">首先 out 一个 OSD，然后剔除 OSD，然后增加 OSD</h3><ol>
 <li>停止指定 OSD 进程</li>
 <li>out 指定 OSD</li>
 <li>crush remove 指定 OSD</li>
@@ -249,7 +249,7 @@
 <p>102 +137 +167 = 406</p>
 </blockquote>
 <p>也就是按这个方法的变动为406个 PG，因为是只有双主机，里面可能存在某些放大问题，这里不做深入的讨论，因为我的三组测试环境都是一样的情况，只做横向比较，原理相通，这里是用数据来分析出差别</p>
-<h3 id="方法二：先crush_reweight_0_，然后out，然后再增加osd">方法二：先crush reweight 0 ，然后out，然后再增加osd</h3><p>首先恢复环境为测试前的环境<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ceph pg dump pgs|awk '&#123;print $1,$15&#125;'|grep -v pg   &gt; 2pg1.txt</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="先crush_reweight_0_，然后out，然后再增加osd">先crush reweight 0 ，然后out，然后再增加osd</h3><p>首先恢复环境为测试前的环境<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ceph pg dump pgs|awk '&#123;print $1,$15&#125;'|grep -v pg   &gt; 2pg1.txt</span></span><br></pre></td></tr></table></figure></p>
 <p>记录最原始的 PG 分布情况</p>
 <h4 id="crush_reweight_指定OSD">crush reweight 指定OSD</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ceph osd crush reweight osd.16 0</span></span><br><span class="line">reweighted item id <span class="number">16</span> name <span class="string">'osd.16'</span> to <span class="number">0</span> <span class="keyword">in</span> crush map</span><br></pre></td></tr></table></figure>
 <p>等待平衡了以后记录当前的 PG 分布状态<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ceph pg dump pgs|awk '&#123;print $1,$15&#125;'|grep -v pg   &gt; 2pg2.txt</span></span><br><span class="line">dumped pgs <span class="keyword">in</span> format plain</span><br></pre></td></tr></table></figure></p>
@@ -263,7 +263,7 @@
 <blockquote>
 <p>166+159=325</p>
 </blockquote>
-<h3 id="方法3：开始做norebalance，然后做crush_remove，然后做add">方法3：开始做norebalance，然后做crush remove，然后做add</h3><p>恢复环境为初始环境，然后获取当前的 PG 分布<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ceph pg dump pgs|awk '&#123;print $1,$15&#125;'|grep -v pg   &gt; 3pg1.txt</span></span><br><span class="line">dumped pgs <span class="keyword">in</span> format plain</span><br></pre></td></tr></table></figure></p>
+<h3 id="开始做norebalance，然后做crush_remove，然后做add">开始做norebalance，然后做crush remove，然后做add</h3><p>恢复环境为初始环境，然后获取当前的 PG 分布<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ceph pg dump pgs|awk '&#123;print $1,$15&#125;'|grep -v pg   &gt; 3pg1.txt</span></span><br><span class="line">dumped pgs <span class="keyword">in</span> format plain</span><br></pre></td></tr></table></figure></p>
 <h4 id="给集群做多种标记，防止迁移">给集群做多种标记，防止迁移</h4><p>设置为 norebalance，nobackfill，norecover,后面是有地方会解除这些设置的<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ceph osd set norebalance</span></span><br><span class="line"><span class="built_in">set</span> norebalance</span><br><span class="line">[root@lab8106 ~]<span class="comment"># ceph osd set nobackfill</span></span><br><span class="line"><span class="built_in">set</span> nobackfill</span><br><span class="line">[root@lab8106 ~]<span class="comment"># ceph osd set norecover</span></span><br><span class="line"><span class="built_in">set</span> norecover</span><br></pre></td></tr></table></figure></p>
 <h4 id="crush_reweight_指定_OSD">crush reweight 指定 OSD</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ceph osd crush reweight osd.15 0</span></span><br><span class="line">reweighted item id <span class="number">15</span> name <span class="string">'osd.15'</span> to <span class="number">0</span> <span class="keyword">in</span> crush map</span><br></pre></td></tr></table></figure>
 <p>这个地方因为已经做了上面的标记，所以只会出现状态变化，而没有真正的迁移，我们也先统计一下<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ceph pg dump pgs|awk '&#123;print $1,$15&#125;'|grep -v pg   &gt; 3pg2.txt</span></span><br><span class="line">[root@lab8106 ~]<span class="comment"># diff -y -W 100 3pg1.txt 3pg2.txt --suppress-common-lines|wc -l</span></span><br><span class="line"><span class="number">158</span></span><br></pre></td></tr></table></figure></p>
@@ -279,7 +279,7 @@
 <blockquote>
 <p>195</p>
 </blockquote>
-<h2 id="三、数据汇总">三、数据汇总</h2><p>现在通过表格来对比下三种方法的迁移量的比较(括号内为迁移 PG 数目)</p>
+<h2 id="数据汇总">数据汇总</h2><p>现在通过表格来对比下三种方法的迁移量的比较(括号内为迁移 PG 数目)</p>
 <table>
 <thead>
 <tr>
@@ -305,8 +305,8 @@
 </tbody>
 </table>
 <p>可以很清楚的看到三种不同的方法，最终的触发的迁移量是不同的，处理的好的话，能节约差不多一半的迁移的数据量，这个对于生产环境来说还是很好的，关于这个建议先在测试环境上进行测试，然后再操作，上面的操作只要不对磁盘进行格式化，操作都是可逆的，也就是可以比较放心的做，记住所做的操作，每一步都做完都去检查 PG 的状态是否是正常的</p>
-<h2 id="四、总结">四、总结</h2><p>从我自己的操作经验来看，最开始是用的第一种方法，后面就用第二种方法减少了一部分迁移量，最近看到资料写做剔除OSD的时候可以关闭迁移防止无效的过多的迁移，然后就测试了一下，确实能够减少不少的迁移量，这个减少在某些场景下还是很好的，当然如果不太熟悉，用哪一种都可以，最终能达到的目的是一样的</p>
-<h2 id="五、变更记录">五、变更记录</h2><table>
+<h2 id="总结">总结</h2><p>从我自己的操作经验来看，最开始是用的第一种方法，后面就用第二种方法减少了一部分迁移量，最近看到资料写做剔除OSD的时候可以关闭迁移防止无效的过多的迁移，然后就测试了一下，确实能够减少不少的迁移量，这个减少在某些场景下还是很好的，当然如果不太熟悉，用哪一种都可以，最终能达到的目的是一样的</p>
+<h2 id="变更记录">变更记录</h2><table>
 <thead>
 <tr>
 <th style="text-align:center">Why</th>
@@ -320,9 +320,13 @@
 <td style="text-align:center">武汉-运维-磨渣</td>
 <td style="text-align:center">2016-09-19</td>
 </tr>
+<tr>
+<td style="text-align:center">修改排版，去掉打赏</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2017-02-04</td>
+</tr>
 </tbody>
 </table>
-<h2 id="六、For_me">六、For me</h2><p>如果本文有帮助到你，愿意欢迎进入<a href="http://www.zphj1987.com/payforask" target="_blank" rel="external">打赏</a></p>
 
       
     </div>
