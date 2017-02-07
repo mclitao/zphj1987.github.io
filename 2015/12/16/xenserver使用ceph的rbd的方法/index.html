@@ -270,13 +270,19 @@ https://github.com/mstarikov/rbdsr这个是个第三方的插件，最近才出�
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@xenserver15 rules.d]<span class="comment"># xe pbd-create   sr-uuid=bbfd0739-b0a1-d2e3-986f-10827e4637ea device-config:device=/dev/rbd/rbd/zp host-uuid=91171862-9954-46e1-9210-3cebb55df395</span></span><br><span class="line"><span class="number">51</span>a40dd6-<span class="number">2</span>b91-<span class="number">7590</span>-<span class="number">8</span>a81-<span class="number">04</span>d129aed1ea</span><br></pre></td></tr></table></figure>
 <p>加载存储<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">xe pbd-plug uuid=<span class="number">51</span>a40dd6-<span class="number">2</span>b91-<span class="number">7590</span>-<span class="number">8</span>a81-<span class="number">04</span>d129aed1ea</span><br></pre></td></tr></table></figure></p>
 <p>然后在前台repair下就可以了</p>
-<h2 id="附加">附加</h2><p>xenserver7升级了lvm<br>需要识别rbd的话需要修改</p>
+<h2 id="附加">附加</h2><p>xenserver7升级了lvm</p>
+<h3 id="增加lvm的识别">增加lvm的识别</h3><p>需要识别rbd的话需要修改</p>
 <blockquote>
 <p>/etc/lvm/lvm.conf</p>
 </blockquote>
 <p>在177行增加<br>types = [ “rbd”, 64 ]</p>
 <p>修改<br>metadata_read_only=0<br>为<br>metadata_read_only=1</p>
-<p>然后创建即可</p>
+<p>先用fdisk 将rbd的分区的类型设置为lvm<br>输入t 然后输入15 </p>
+<h3 id="创建卷">创建卷</h3><p>创建pv<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pvcreate /dev/rbd1p1</span><br></pre></td></tr></table></figure></p>
+<p>创建vg<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">vgcreate vgdata /dev/rbd1p1</span><br></pre></td></tr></table></figure></p>
+<p>创建一个逻辑卷<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">lvcreate -L <span class="number">40</span>G -n lvdata1 vgdata</span><br></pre></td></tr></table></figure></p>
+<h3 id="创建sr">创建sr</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">xe sr-create <span class="built_in">type</span>=lvm content-type=user device-config:device=/dev/vgdata/lvdata1 name-label=<span class="string">"ceph"</span></span><br></pre></td></tr></table></figure>
+<p>然后就可以用了</p>
 <h2 id="变更记录">变更记录</h2><table>
 <thead>
 <tr>
