@@ -658,11 +658,11 @@ a {
 #header .header-nav .social a.linkedin:hover {
   border: 1px solid #006b98;
 }
-#header .header-nav .social a.zhihu {
-  background: url("/img/zhihu.png") center no-repeat #0078d8;
+#header .header-nav .social a.weixin {
+  background: url("/img/weixin.png") center no-repeat #0078d8;
   border: 1px solid #0078d8;
 }
-#header .header-nav .social a.zhihu:hover {
+#header .header-nav .social a.weixin:hover {
   border: 1px solid #0078d8;
 }
 #header .header-nav .social a.douban {
