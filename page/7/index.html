@@ -180,6 +180,68 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-rbd的增量备份和恢复" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/06/22/rbd的增量备份和恢复/" class="article-date">
+  	<time datetime="2016-06-21T17:17:24.000Z" itemprop="datePublished">2016-06-22</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/06/22/rbd的增量备份和恢复/">rbd的增量备份和恢复</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="一、前言">一、前言</h3><p>快照的功能一般是基于时间点做一个标记，然后在某些需要的时候，将状态恢复到标记的那个点，这个有一个前提是底层的东西没用破坏，举个简单的例子，<strong>Vmware</strong> 里面对虚拟机做了一个快照，然后做了一些系统的操作，想恢复快照，前提是存储快照的存储系统没用破坏，一旦破坏了是无法恢复的</p>
+<p>ceph里面也有快照的功能，同样的，在这里的快照是用来保存存储系统上的状态的，数据的快照能成功恢复的前提是存储系统是好的，而一旦存储系统坏了，快照同时会失效的，本篇文章利用ceph的快照去实现一个增量的备份功能，网上也有很多这个脚本，这里主要是对里面细节做一个实践，具体集成到一套系统里面去，自己去做一个策略就行了，总之多备份一下，以备不时之需，并且也可以实现跨机房的增量备份，这个在某些云计算公司已经实现了，这样一旦发生故障的时候，能够把损失减到最小</p>
+<h3 id="二、快照的创建和数据的导出">二、快照的创建和数据的导出</h3><p><img src="http://static.zybuluo.com/zphj1987/t933vz49n801mowt0gj3mbts/image_1alqs3lm81ss11n1vg7k1mle1eq39.png" alt=""></p>
+<p>上图是一个快照的创建和导出的过程，这里详细的描述下这些操作<br>创建快照<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rbd snap create testimage@v1</span><br><span class="line">rbd snap create testimage@v2</span><br></pre></td></tr></table></figure></p>
+<p>这两个命令是在时间点v1和时间点v2分别做了两个快照<br>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2016/06/22/rbd的增量备份和恢复/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-rgw实现nfs的首测" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -710,71 +772,6 @@
       
         <p class="article-more-link">
           <a  href="/2016/05/21/磨磨自动问答系统上线/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-ceph的jewel新支持的rbd-nbd" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/05/19/ceph的jewel新支持的rbd-nbd/" class="article-date">
-  	<time datetime="2016-05-19T04:41:11.000Z" itemprop="datePublished">2016-05-19</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/05/19/ceph的jewel新支持的rbd-nbd/">ceph的jewel新支持的rbd-nbd</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>jewel版本新增加了一个驱动NBD，允许librbd实现一个内核级别的rbd</p>
-<p>NBD相比较于kernel rbd：</p>
-<ul>
-<li>rbd-ko是根据内核主线走的，升级kernel</li>
-<li>rbd需要升级到相应的内核，改动太大</li>
-<li>rbd-ko的开发要慢于librbd，需要很多的时间才能追赶上librbd</li>
-</ul>
-<p>rbd-nbd是通过librbd这个用户空间通过nbd的内核模块实现了内核级别的驱动，稳定性和性能都有保障<br>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2016/05/19/ceph的jewel新支持的rbd-nbd/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>

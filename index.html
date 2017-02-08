@@ -180,6 +180,67 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-预估ceph的迁移数据量" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/02/08/预估ceph的迁移数据量/" class="article-date">
+  	<time datetime="2017-02-08T15:52:02.000Z" itemprop="datePublished">2017-02-08</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/02/08/预估ceph的迁移数据量/">预估ceph的迁移数据量</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/calculator.png" alt="cal"><br></center>
+
+<h2 id="引言">引言</h2><p>我们在进行 ceph 的 osd 的增加和减少的维护的时候，会碰到迁移数据，但是我们平时会怎么去回答关于迁移数据量的问题，一般来说，都是说很多，或者说根据环境来看，有没有精确的一个说法，到底要迁移多少数据?这个我以前也有思考过这个问题，当时想是对比前后的pg的分布，然后进行计算，正好在翻一些资料的时候，看到有alram写的一篇博客，alram是Inktank的程序员，也就是sage所在的公司，程序是一个python脚本，本篇会分析下这个对比的思路，以及运行效果</p>
+<p>计算迁移量只需要一个修改后的crushmap就可以了，这个是离线计算的，所以不会对集群有什么影响<br>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2017/02/08/预估ceph的迁移数据量/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-Linux-kernel-TCP-BBR-better" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -745,66 +806,6 @@
       
         <p class="article-more-link">
           <a  href="/2016/12/26/manage-ceph-osd-journal-uuid/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-如何避免Cephfs被完全毁掉" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/12/23/如何避免Cephfs被完全毁掉/" class="article-date">
-  	<time datetime="2016-12-23T14:46:35.000Z" itemprop="datePublished">2016-12-23</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/12/23/如何避免Cephfs被完全毁掉/">如何避免Cephfs被完全毁掉</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/kulesza-215.jpg" alt="rollback"><br></center>
-
-<h2 id="前提">前提</h2><p>一套系统的最低要求是可恢复，也就是数据不丢失，但是在各种各样的原因下，整套系统都有被毁掉的可能，一直以来有个观点就是存储是需要两套的，一般情况下很难实现，但是如何把故障发生的概率降低到最低，这个是我们需要考虑的问题<br>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2016/12/23/如何避免Cephfs被完全毁掉/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>
