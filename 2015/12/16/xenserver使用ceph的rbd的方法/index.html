@@ -273,16 +273,13 @@ https://github.com/mstarikov/rbdsr这个是个第三方的插件，最近才出�
 <h2 id="附加">附加</h2><p>xenserver7升级了lvm</p>
 <h3 id="增加lvm的识别">增加lvm的识别</h3><p>需要识别rbd的话需要修改</p>
 <blockquote>
-<p>/etc/lvm/lvm.conf</p>
+<p>/etc/lvm/lvm.conf和/etc/lvm/master/lvm.conf</p>
 </blockquote>
 <p>在177行增加<br>types = [ “rbd”, 64 ]</p>
 <p>修改<br>metadata_read_only=0<br>为<br>metadata_read_only=1</p>
-<p>先用fdisk 将rbd的分区的类型设置为lvm<br>输入t 然后输入15 </p>
-<h3 id="创建卷">创建卷</h3><p>创建pv<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pvcreate /dev/rbd1p1</span><br></pre></td></tr></table></figure></p>
-<p>创建vg<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">vgcreate vgdata /dev/rbd1p1</span><br></pre></td></tr></table></figure></p>
-<p>创建一个逻辑卷<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">lvcreate -L <span class="number">40</span>G -n lvdata1 vgdata</span><br></pre></td></tr></table></figure></p>
-<h3 id="创建sr">创建sr</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">xe sr-create <span class="built_in">type</span>=lvm content-type=user device-config:device=/dev/vgdata/lvdata1 name-label=<span class="string">"ceph"</span></span><br></pre></td></tr></table></figure>
+<h3 id="创建sr">创建sr</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">xe sr-create <span class="built_in">type</span>=lvm content-type=user device-config:device=/dev/rbd1 name-label=<span class="string">"ceph"</span></span><br></pre></td></tr></table></figure>
 <p>然后就可以用了</p>
+<h3 id="相关文件路径">相关文件路径</h3><p>/var/log/SMlog 存储创建日志路径<br>/opt/xensource/sm/lvutil.py  创建lv的代码</p>
 <h2 id="变更记录">变更记录</h2><table>
 <thead>
 <tr>
