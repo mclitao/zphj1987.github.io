@@ -112,7 +112,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/ceph/" style="font-size: 20px;">ceph</a><a href="/tags/instagram/" style="font-size: 10px;">instagram</a><a href="/tags/iptables/" style="font-size: 10px;">iptables</a><a href="/tags/linux/" style="font-size: 18.33px;">linux</a><a href="/tags/momotan/" style="font-size: 10px;">momotan</a><a href="/tags/nginx/" style="font-size: 13.33px;">nginx</a><a href="/tags/samba/" style="font-size: 10px;">samba</a><a href="/tags/ubuntu/" style="font-size: 16.67px;">ubuntu</a><a href="/tags/windows/" style="font-size: 10px;">windows</a><a href="/tags/zabbix/" style="font-size: 10px;">zabbix</a><a href="/tags/其他/" style="font-size: 10px;">其他</a><a href="/tags/内核/" style="font-size: 13.33px;">内核</a><a href="/tags/操作系统/" style="font-size: 11.67px;">操作系统</a><a href="/tags/杂七杂八/" style="font-size: 13.33px;">杂七杂八</a><a href="/tags/注册码/" style="font-size: 10px;">注册码</a><a href="/tags/测试工具/" style="font-size: 11.67px;">测试工具</a><a href="/tags/监控/" style="font-size: 10px;">监控</a><a href="/tags/网卡/" style="font-size: 13.33px;">网卡</a><a href="/tags/脚本/" style="font-size: 15px;">脚本</a><a href="/tags/高可用/" style="font-size: 10px;">高可用</a>
+						<a href="/tags/ceph/" style="font-size: 20px;">ceph</a><a href="/tags/instagram/" style="font-size: 10px;">instagram</a><a href="/tags/iptables/" style="font-size: 10px;">iptables</a><a href="/tags/linux/" style="font-size: 18.57px;">linux</a><a href="/tags/momotan/" style="font-size: 10px;">momotan</a><a href="/tags/nginx/" style="font-size: 12.86px;">nginx</a><a href="/tags/samba/" style="font-size: 10px;">samba</a><a href="/tags/ubuntu/" style="font-size: 17.14px;">ubuntu</a><a href="/tags/windows/" style="font-size: 10px;">windows</a><a href="/tags/zabbix/" style="font-size: 10px;">zabbix</a><a href="/tags/其他/" style="font-size: 10px;">其他</a><a href="/tags/内核/" style="font-size: 12.86px;">内核</a><a href="/tags/操作系统/" style="font-size: 11.43px;">操作系统</a><a href="/tags/杂七杂八/" style="font-size: 14.29px;">杂七杂八</a><a href="/tags/注册码/" style="font-size: 10px;">注册码</a><a href="/tags/测试工具/" style="font-size: 11.43px;">测试工具</a><a href="/tags/监控/" style="font-size: 10px;">监控</a><a href="/tags/网卡/" style="font-size: 12.86px;">网卡</a><a href="/tags/脚本/" style="font-size: 15.71px;">脚本</a><a href="/tags/高可用/" style="font-size: 10px;">高可用</a>
 					</div>
 				</section>
 				
@@ -179,6 +179,68 @@
 	</div>
 </nav>
       <div class="body-wrap">
+  
+    <article id="post-du查看的目录大小与df查看的大小不同的时候用lsof查找" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/03/22/du查看的目录大小与df查看的大小不同的时候用lsof查找/" class="article-date">
+  	<time datetime="2015-03-22T06:21:07.000Z" itemprop="datePublished">2015-03-22</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/03/22/du查看的目录大小与df查看的大小不同的时候用lsof查找/">du查看的目录大小与df查看的大小不同的时候用lsof查找</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>首先MAN一下两个命令,看一下解释的区别:<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">du - estimate file space usage&#10;df - report file system disk space usage</span><br></pre></td></tr></table></figure></p>
+<p>du估计文件空间占用情况,df报告文件系统磁盘空间使用情况。两个命令所要获取的对象时不同的。在linux下,几乎所有东西都可以称为文件,常规文件,二进制文件,socket流。所以,通常情况下,使用du得到到的根路径文件空间占用情况应当与df得到的文件系统磁盘占用的情况是一致的或者说相差无几。但是在某些情况下却会出现du得到的空间占用情况要远小于df得到的。</p>
+<p>后通过查询,发现问题出现在deleted文件上。</p>
+<p>root下 lsof | grep deleted会发现多多少少有些文件状态出于deleted状态。<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">[root@eb152 ~]# lsof |grep deleted&#10;&#36827;&#31243;&#21517;   PID       USER    FD   &#25991;&#20214;&#31867;&#22411;        &#22823;&#23567;(&#23383;&#33410;)  &#32034;&#24341;&#33410;&#28857;  &#25991;&#20214;&#21517;  [(&#29366;&#24577;)]&#10;java       3311    AuSP    8w      REG              253,0         778   10879268 ***.log (deleted)&#10;java       3311    AuSP    9w      REG              253,0        3275   10879269 ***.log (deleted)&#10;java       3311    AuSP   10w      REG              253,0           0   10879815 ***.log (deleted)&#10;java       3311    AuSP   11w      REG              253,0           0   10879816 ***.log (deleted)&#10;oracle     4195  oracle    7u      REG              253,0           0   14254321 *** (deleted)</span><br></pre></td></tr></table></figure></p>
+<p>状态为deleted为标记被删除,其实该文件并没有从磁盘中删除,类似windows下的回收站状态。</p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2015/03/22/du查看的目录大小与df查看的大小不同的时候用lsof查找/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
   
     <article id="post-遍历指定目录并且从子目录开始将目录输出到指定文件" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -686,66 +748,6 @@
         <p class="article-more-link">
           <a  href="/2015/03/21/ubuntu配置bonding/#more">more >></a>
         </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-利用移动硬盘安装windows7系统" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/03/21/利用移动硬盘安装windows7系统/" class="article-date">
-  	<time datetime="2015-03-21T10:34:02.000Z" itemprop="datePublished">2015-03-21</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/03/21/利用移动硬盘安装windows7系统/">利用移动硬盘安装windows7系统</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>首先把win7系统镜像的iso文件解压到移动硬盘中<br>将移动硬盘设置为活动分区<br>设置活动分区的方法<br>Diskpart程序实现U盘安装WIN7的方法: </p>
-<p>将Win7安装盘中的所有文件拷贝到硬盘文件夹中,我们这里选择D盘win7back。<br>在开始菜单程序栏中输入cmd进入命令行模式，敲入diskpart进入磁盘分区管理程序,逐行输入<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">select disk 1 (&#36873;&#25321;&#30913;&#30424;&#12290;&#27492;&#20026;disk 0&#30828;&#30424;,disk 1 U&#30424;&#24773;&#20917;&#19979;,&#22810;&#30828;&#30424;&#26102;&#21487;&#36755;&#20837;list disk&#26597;&#35810;) &#10;clean (&#28165;&#38500;&#35813;&#30913;&#30424;) &#10;create partition primary (&#21019;&#24314;&#20027;&#20998;&#21306;) &#10;select partition 1 (&#36873;&#25321;&#21018;&#21018;&#21019;&#24314;&#30340;1&#21495;&#20998;&#21306;) &#10;active (&#28608;&#27963;&#35813;&#20998;&#21306;) &#10;format fs=fat32 (&#26684;&#24335;&#21270;&#20026;FAT32&#65292;8GB&#38378;&#30424;&#30340;&#26684;&#24335;&#21270;&#38656;&#35201;&#36739;&#38271;&#26102;&#38388;) &#10;assign (&#20026;&#35813;&#20998;&#21306;&#27880;&#20876;&#30424;&#31526;) &#10;exit (&#36864;&#20986;diskpart&#31243;&#24207;)</span><br></pre></td></tr></table></figure></p>
-<p>注:以上操作必须在Vista/Win7下完成，XP虽然也带有diskpart程序,但无法格式化U盘。</p>
-<p>这里我们只使用上面的active选项 或者在win7的磁盘管理中将移动硬盘标记为活动分区<br>假设你的移动硬盘的活动分区的盘符为G盘<br>在win7运行cmd<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">G:&#10;cd boot&#10;bootsect /nt60 G</span><br></pre></td></tr></table></figure></p>
-<p>命令将引导区写进你的移动硬盘G盘符<br>在开机启动项中选择移动设备启动就可以了</p>
-<p>写于:2011年12月16日<br>更新于:2015年03月21日</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/操作系统/">操作系统</a></li></ul>
-	</div>
-
-      
-
       
       <div class="clearfix"></div>
     </div>

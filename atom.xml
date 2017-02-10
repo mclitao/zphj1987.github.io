@@ -4,7 +4,7 @@
   <subtitle><![CDATA[但行好事，莫问前程]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2017-02-08T15:54:20.970Z</updated>
+  <updated>2017-02-10T08:31:11.309Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -13,6 +13,46 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[根据一段话判断情绪]]></title>
+    <link href="http://www.zphj1987.com/2017/02/10/word-to-motion/"/>
+    <id>http://www.zphj1987.com/2017/02/10/word-to-motion/</id>
+    <published>2017-02-10T06:15:22.000Z</published>
+    <updated>2017-02-10T08:31:11.309Z</updated>
+    <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/gre.jpg" alt="emotion"><br></center>
+
+<h2 id="引言">引言</h2><p>看到一个好玩的项目，<a href="https://www.anotherhome.net/2920" target="_blank" rel="external">女朋友的微博情绪监控</a>,这个是根据一段话来判断情绪的，记得之前有在哪里看到过，未来的一切都是API，也就是很多东西会被封装好，你只需要去用就可以了，这个就是一个很好的例子，你可以不懂语意分析，不懂分词，这些都不要紧，只要你给出你的素材，后面就交给api去处理<br><a id="more"></a></p>
+<h2 id="代码">代码</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># -*- coding: UTF-8 -*-</span></span><br><span class="line">import sys</span><br><span class="line">import json</span><br><span class="line">import requests</span><br><span class="line">def main():</span><br><span class="line">    <span class="keyword">if</span> len(sys.argv) != <span class="number">2</span>:</span><br><span class="line">        <span class="built_in">help</span>()</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        printpromotion(sys.argv[<span class="number">1</span>])</span><br><span class="line">def <span class="built_in">help</span>():</span><br><span class="line">    <span class="built_in">print</span> <span class="string">""</span><span class="string">"Usage : qingxu.py [-h] [word]</span><br><span class="line">        情绪鉴定 - 判断一段话的情绪</span><br><span class="line">        OPTIONS</span><br><span class="line">        ========</span><br><span class="line">        sample:</span><br><span class="line">        [root@host ~]# python  qingxu.py 开心</span><br><span class="line">        说的话: word</span><br><span class="line">        正面情绪: 98.3%</span><br><span class="line">        负面情绪: 1.7%</span><br><span class="line">        ========</span><br><span class="line">        "</span><span class="string">""</span></span><br><span class="line">def printpromotion(word):</span><br><span class="line">    weburl=<span class="string">'https://api.prprpr.me/emotion/wenzhi?password=DIYgod&amp;text='</span>+word</span><br><span class="line">    r = requests.get(<span class="string">'%s'</span> %weburl)</span><br><span class="line">    json_str = json.loads(r.text)</span><br><span class="line">    <span class="built_in">print</span> <span class="string">"说的话:"</span>,<span class="string">"%s"</span> %word</span><br><span class="line">    <span class="built_in">print</span> <span class="string">"正面情绪:"</span>,(format(json_str[<span class="string">"positive"</span>],<span class="string">'0.1%'</span>))</span><br><span class="line">    <span class="built_in">print</span> <span class="string">"负面情绪:"</span>,(format(json_str[<span class="string">"negative"</span>],<span class="string">'0.1%'</span>))</span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
+<h2 id="运行效果">运行效果</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># python qingxu.py 很高兴</span></span><br><span class="line">说的话: 很高兴</span><br><span class="line">正面情绪: <span class="number">92.4</span>%</span><br><span class="line">负面情绪: <span class="number">7.6</span>%</span><br><span class="line">[root@lab8106 ~]<span class="comment"># python qingxu.py 被坑了</span></span><br><span class="line">说的话: 被坑了</span><br><span class="line">正面情绪: <span class="number">5.7</span>%</span><br><span class="line">负面情绪: <span class="number">94.3</span>%</span><br></pre></td></tr></table></figure>
+<h2 id="总结">总结</h2><p>内部的语义分析的准确度有多少还不清楚，但是也是一个很好玩的东西，程序员的想法还是挺多的</p>
+<h2 id="变更记录">变更记录</h2><table>
+<thead>
+<tr>
+<th style="text-align:center">Why</th>
+<th style="text-align:center">Who</th>
+<th style="text-align:center">When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">创建</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2017-02-10</td>
+</tr>
+</tbody>
+</table>
+]]></content>
+    <summary type="html">
+    <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/gre.jpg" alt="emotion"><br></center>
+
+<h2 id="引言">引言</h2><p>看到一个好玩的项目，<a href="https://www.anotherhome.net/2920">女朋友的微博情绪监控</a>,这个是根据一段话来判断情绪的，记得之前有在哪里看到过，未来的一切都是API，也就是很多东西会被封装好，你只需要去用就可以了，这个就是一个很好的例子，你可以不懂语意分析，不懂分词，这些都不要紧，只要你给出你的素材，后面就交给api去处理<br>]]>
+    
+    </summary>
+    
+      <category term="杂七杂八" scheme="http://www.zphj1987.com/tags/%E6%9D%82%E4%B8%83%E6%9D%82%E5%85%AB/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[预估ceph的迁移数据量]]></title>
@@ -391,12 +431,12 @@
 </blockquote>
 <p>From <a href="http://docs.ceph.com/docs/master/release-notes/#upgrading-from-infernalis-or-hammer" target="_blank" rel="external">Ceph release notes</a></p>
 <blockquote>
-<p>commit 383185bfbae74797cdb44f50b4bf651422800ff1<br>Author: Sage Weil <a href="&#x6d;&#x61;&#105;&#108;&#x74;&#111;&#58;&#x73;&#97;&#x67;&#101;&#64;&#x72;&#x65;&#x64;&#x68;&#97;&#x74;&#46;&#x63;&#x6f;&#109;">&#x73;&#97;&#x67;&#101;&#64;&#x72;&#x65;&#x64;&#x68;&#97;&#x74;&#46;&#x63;&#x6f;&#109;</a><br>Date: Fri Aug 7 16:14:09 2015 -0400<br>mon/OSDMonitor: osd set/unset sortbitwise<br> Add monitor command to flip the switch on the OSD hobject_t sort<br> order.</p>
+<p>commit 383185bfbae74797cdb44f50b4bf651422800ff1<br>Author: Sage Weil <a href="&#x6d;&#x61;&#105;&#x6c;&#116;&#x6f;&#58;&#115;&#x61;&#x67;&#101;&#64;&#x72;&#x65;&#100;&#x68;&#97;&#x74;&#46;&#x63;&#111;&#x6d;">&#115;&#x61;&#x67;&#101;&#64;&#x72;&#x65;&#100;&#x68;&#97;&#x74;&#46;&#x63;&#111;&#x6d;</a><br>Date: Fri Aug 7 16:14:09 2015 -0400<br>mon/OSDMonitor: osd set/unset sortbitwise<br> Add monitor command to flip the switch on the OSD hobject_t sort<br> order.</p>
 </blockquote>
 <p>From git</p>
 <p>第一次在源码中出现:</p>
 <blockquote>
-<p>commit 138f58493715e386929f152424b70df37843541b<br>Author: John Spray <a href="&#x6d;&#x61;&#105;&#108;&#116;&#x6f;&#x3a;&#x6a;&#x6f;&#104;&#x6e;&#x2e;&#115;&#112;&#x72;&#x61;&#121;&#64;&#114;&#x65;&#100;&#104;&#x61;&#x74;&#46;&#x63;&#x6f;&#109;">&#x6a;&#x6f;&#104;&#x6e;&#x2e;&#115;&#112;&#x72;&#x61;&#121;&#64;&#114;&#x65;&#100;&#104;&#x61;&#x74;&#46;&#x63;&#x6f;&#109;</a><br>Date: Mon Aug 17 14:40:46 2015 -0400<br>osdc/Objecter: new-style pgls<br> Signed-off-by: John Spray <a href="&#109;&#x61;&#x69;&#x6c;&#116;&#111;&#58;&#x6a;&#111;&#104;&#110;&#46;&#x73;&#x70;&#x72;&#x61;&#121;&#x40;&#x72;&#101;&#100;&#x68;&#x61;&#x74;&#46;&#99;&#x6f;&#109;">&#x6a;&#111;&#104;&#110;&#46;&#x73;&#x70;&#x72;&#x61;&#121;&#x40;&#x72;&#101;&#100;&#x68;&#x61;&#x74;&#46;&#99;&#x6f;&#109;</a><br> Signed-off-by: Sage Weil <a href="&#109;&#97;&#x69;&#108;&#116;&#x6f;&#58;&#115;&#97;&#103;&#x65;&#x40;&#114;&#x65;&#100;&#104;&#97;&#116;&#x2e;&#x63;&#111;&#x6d;">&#115;&#97;&#103;&#x65;&#x40;&#114;&#x65;&#100;&#104;&#97;&#116;&#x2e;&#x63;&#111;&#x6d;</a></p>
+<p>commit 138f58493715e386929f152424b70df37843541b<br>Author: John Spray <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#106;&#111;&#104;&#110;&#x2e;&#115;&#112;&#x72;&#97;&#121;&#x40;&#114;&#x65;&#x64;&#x68;&#97;&#x74;&#46;&#x63;&#111;&#x6d;">&#106;&#111;&#104;&#110;&#x2e;&#115;&#112;&#x72;&#97;&#121;&#x40;&#114;&#x65;&#x64;&#x68;&#97;&#x74;&#46;&#x63;&#111;&#x6d;</a><br>Date: Mon Aug 17 14:40:46 2015 -0400<br>osdc/Objecter: new-style pgls<br> Signed-off-by: John Spray <a href="&#109;&#97;&#105;&#x6c;&#116;&#111;&#58;&#106;&#x6f;&#104;&#110;&#x2e;&#115;&#x70;&#x72;&#x61;&#121;&#64;&#114;&#101;&#100;&#104;&#97;&#116;&#x2e;&#99;&#x6f;&#109;">&#106;&#x6f;&#104;&#110;&#x2e;&#115;&#x70;&#x72;&#x61;&#121;&#64;&#114;&#101;&#100;&#104;&#97;&#116;&#x2e;&#99;&#x6f;&#109;</a><br> Signed-off-by: Sage Weil <a href="&#x6d;&#x61;&#105;&#108;&#116;&#x6f;&#x3a;&#115;&#x61;&#103;&#x65;&#x40;&#x72;&#101;&#100;&#104;&#97;&#x74;&#x2e;&#x63;&#x6f;&#x6d;">&#115;&#x61;&#103;&#x65;&#x40;&#x72;&#101;&#100;&#104;&#97;&#x74;&#x2e;&#x63;&#x6f;&#x6d;</a></p>
 </blockquote>
 <p>From git</p>
 <p>Related github issue: <a href="https://github.com/ceph/ceph/pull/4919/commits" target="_blank" rel="external">https://github.com/ceph/ceph/pull/4919/commits</a></p>
@@ -1168,49 +1208,6 @@
     <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/wuhan/wuhan-china.png" alt="image_1b2ne8h4m1vfq1f7b1qgr262dfn9.png-405.3kB"><br></center>
 
 <h2 id="活动地点">活动地点</h2><p>这次的分享活动是由武汉烽火进行赞助的，在烽火创新谷谷咖啡进行的，武汉的高校很多，光一本重点学校就有十所，武大，华科的学生的科研水平在全国也是非常强的，但是与之相匹配的大型企业却不是很多，本土大型企业更是少，这个地方还是一个相对封闭的地方，技术的交流远没有达到北上广深等地的开放程度，光谷也是在近十年成为一个科技飞速发展的地方，这与东湖高新的大力支持以及一些高校参与到企业当中来有很大的关系，未来的发展还是值得期待的<br>]]>
-    
-    </summary>
-    
-      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[fio测试ceph的filestore]]></title>
-    <link href="http://www.zphj1987.com/2016/11/23/fio%E6%B5%8B%E8%AF%95ceph%E7%9A%84filestore/"/>
-    <id>http://www.zphj1987.com/2016/11/23/fio测试ceph的filestore/</id>
-    <published>2016-11-23T15:04:53.000Z</published>
-    <updated>2017-02-03T05:34:23.897Z</updated>
-    <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/fio-banner.jpg" alt="fio"><br></center>
-
-<h2 id="前言">前言</h2><p>fio是一个适应性非常强的软件，基本上能够模拟所有的IO请求，是目前最全面的一款测试软件，之前在看德国电信的一篇分享的时候，里面就提到了，如果需要测试存储性能，尽量只用一款软件，这样从上层测试到底层去，才能更好的去比较差别</p>
-<p>fio对于ceph来说，可以测试文件系统，基于文件系统之上测试，可以测试内核rbd，将rbdmap到本地格式化以后进行测试，或者基于librbd直接对rbd进行测试，这个是目前都已经有的测试场景，这些不在本篇的讨论的范围内，今天讲的是一种新的测试场景，直接对ceph的底层存储进行测试</p>
-<a id="more"></a>
-<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/fiotest.png" alt=""><br></center>
-
-<p>为什么会有这个，因为在以前，如果你要测试一块磁盘是不是适合ceph使用的时候，都是直接对挂载的磁盘进行一些测试，这个是基于文件系统的，并没有真正的模拟到ceph自己的写入模型，所以在开发人员的努力下，模拟对象的写入的驱动已经完成了，这就是本篇需要讲述的内容</p>
-<h2 id="实践过程">实践过程</h2><p>fio engine for objectstore 这个是在ceph的11.0.2这个版本才正式发布出来的，可以看这个pr(<a href="https://github.com/ceph/ceph/pull/10267" target="_blank" rel="external">pr10267</a>),11.0.2是ceph第一个公开释放的KRAKEN版本的，也说明Jewel版本即将进入比较稳定的情况，新的功能可能会尽量在K版本进行开发</p>
-<h3 id="下载相关代码">下载相关代码</h3><p>创建一个目录用于存储代码<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># mkdir /root/newceph</span></span><br><span class="line">[root@lab8106 ~]<span class="comment"># cd /root/newceph/</span></span><br></pre></td></tr></table></figure></p>
-<h4 id="下载fio的代码">下载fio的代码</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 newceph]<span class="comment"># git clone git://git.kernel.dk/fio.git</span></span><br></pre></td></tr></table></figure>
-<h4 id="下载ceph的代码">下载ceph的代码</h4><p>下载代码并且切换到指定的11.0.2分支，不要用master分支，里面还没有合进去，并且还有bug<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># cd /root/newceph/</span></span><br><span class="line">[root@lab8106 newceph]<span class="comment"># git clone git://github.com/ceph/ceph.git</span></span><br><span class="line">[root@lab8106 newceph]<span class="comment"># cd ceph</span></span><br><span class="line">[root@lab8106 ceph]<span class="comment">#git checkout -b myfenzhi v11.0.2</span></span><br><span class="line">[root@lab8106 ceph]<span class="comment">#git submodule update --init --recursive</span></span><br></pre></td></tr></table></figure></p>
-<h4 id="创建一个cmake编译的目录并且编译">创建一个cmake编译的目录并且编译</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># mkdir /root/newceph/build</span></span><br><span class="line">[root@lab8106 ~]<span class="comment"># cd /root/newceph/build</span></span><br><span class="line">[root@lab8106 build]<span class="comment"># cmake -DWITH_FIO=ON -DFIO_INCLUDE_DIR=/root/newceph/fio/ -DCMAKE_BUILD_TYPE=Release /root/newceph/ceph </span></span><br><span class="line">[root@lab8106 build]<span class="comment"># make install -j 16</span></span><br></pre></td></tr></table></figure>
-<p>安装完成检查是不是生成了这个库文件,fio就是利用这个库作为写入引擎的<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 build]<span class="comment"># ll lib/libfio_ceph_objectstore.so</span></span><br><span class="line">-rwxr-xr-x <span class="number">1</span> root root <span class="number">59090338</span> Nov <span class="number">23</span> <span class="number">22</span>:<span class="number">17</span> lib/libfio_ceph_objectstore.so</span><br></pre></td></tr></table></figure></p>
-<p>将库路径让系统识别<br>export LD_LIBRARY_PATH=/root/newceph/build/lib/</p>
-<p>编译fio<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># cd /root/newceph/fio/</span></span><br><span class="line">[root@lab8106 fio]<span class="comment">#./configure</span></span><br><span class="line">[root@lab8106 fio]<span class="comment"># make</span></span><br></pre></td></tr></table></figure></p>
-<p>如果显示下面的，就可以了<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 fio]<span class="comment"># ./fio --enghelp=libfio_ceph_objectstore.so</span></span><br><span class="line">conf                    : Path to a ceph configuration file</span><br></pre></td></tr></table></figure></p>
-<h3 id="配置测试">配置测试</h3><p>下面需要准备两个配置文件，一个是ceph自身的，一个是fio配置文件，我们看下我的环境下这个配置文件如何写的<br>写fio的测试文件<br>vim filestore.fio<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[global]</span><br><span class="line">ioengine=libfio_ceph_objectstore.so <span class="comment"># must be found in your LD_LIBRARY_PATH</span></span><br><span class="line"></span><br><span class="line">conf=/etc/ceph/ceph-filestore.conf <span class="comment"># must point to a valid ceph configuration file</span></span><br><span class="line">directory=/var/lib/ceph/osd/ceph-<span class="number">8</span> <span class="comment"># directory for osd_data</span></span><br><span class="line"></span><br><span class="line">rw=randwrite</span><br><span class="line">iodepth=<span class="number">16</span></span><br><span class="line"></span><br><span class="line">time_based=<span class="number">1</span></span><br><span class="line">runtime=<span class="number">20</span>s</span><br><span class="line"></span><br><span class="line">[filestore]</span><br><span class="line">nr_files=<span class="number">64</span></span><br><span class="line">size=<span class="number">256</span>m</span><br><span class="line">bs=<span class="number">64</span>k</span><br></pre></td></tr></table></figure></p>
-<p>上面的指定了一个配置文件和一个目录，这个目录是你需要测试的集群的存储的目录，里面不需要数据<br>写ceph的配置文件<br>vim /etc/ceph/ceph-filestore.conf<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[global]</span><br><span class="line">    debug filestore = <span class="number">0</span>/<span class="number">0</span></span><br><span class="line">    debug journal = <span class="number">0</span>/<span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># spread objects over 8 collections</span></span><br><span class="line">    osd pool default pg num = <span class="number">8</span></span><br><span class="line">    <span class="comment"># increasing shards can help when scaling number of collections</span></span><br><span class="line">    osd op num shards = <span class="number">5</span></span><br><span class="line"></span><br><span class="line">    filestore fd cache size = <span class="number">32</span></span><br><span class="line"></span><br><span class="line">[osd]</span><br><span class="line">    osd objectstore = filestore</span><br><span class="line"></span><br><span class="line">    <span class="comment"># use directory= option from fio job file</span></span><br><span class="line">    osd data =  /var/lib/ceph/osd/ceph-<span class="number">8</span>/</span><br><span class="line"></span><br><span class="line">    <span class="comment"># journal inside fio_dir</span></span><br><span class="line">    osd journal =  /var/lib/ceph/osd/ceph-<span class="number">8</span>/journal</span><br><span class="line">    osd journal size = <span class="number">5000</span></span><br><span class="line">    journal force aio = <span class="number">1</span></span><br></pre></td></tr></table></figure></p>
-<p>配置文件指定数据目录，和journal路径</p>
-<p>开始测试</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 fio]<span class="comment"># ./fio  filestore.fio </span></span><br><span class="line">filestore: (g=<span class="number">0</span>): rw=randwrite, bs=<span class="number">64</span>K-<span class="number">64</span>K/<span class="number">64</span>K-<span class="number">64</span>K/<span class="number">64</span>K-<span class="number">64</span>K, ioengine=ceph-os, iodepth=<span class="number">16</span></span><br><span class="line">fio-<span class="number">2.15</span>-<span class="number">11</span>-g42f1</span><br><span class="line">Starting <span class="number">1</span> process</span><br><span class="line"><span class="number">2016</span>-<span class="number">11</span>-<span class="number">23</span> <span class="number">22</span>:<span class="number">32</span>:<span class="number">17.713473</span> <span class="number">7</span>f7536d56780  <span class="number">0</span> filestore(/var/lib/ceph/osd/ceph-<span class="number">8</span>/) backend xfs (magic <span class="number">0</span>x58465342)</span><br><span class="line"><span class="number">2016</span>-<span class="number">11</span>-<span class="number">23</span> <span class="number">22</span>:<span class="number">32</span>:<span class="number">17.804601</span> <span class="number">7</span>f7536d56780  <span class="number">0</span> filestore(/var/lib/ceph/osd/ceph-<span class="number">8</span>/) backend xfs (magic <span class="number">0</span>x58465342)</span><br><span class="line"><span class="number">2016</span>-<span class="number">11</span>-<span class="number">23</span> <span class="number">22</span>:<span class="number">32</span>:<span class="number">17.805003</span> <span class="number">7</span>f7536d56780  <span class="number">0</span> genericfilestorebackend(/var/lib/ceph/osd/ceph-<span class="number">8</span>/) detect_features: FIEMAP ioctl is disabled via <span class="string">'filestore fiemap'</span> config option</span><br><span class="line"><span class="number">2016</span>-<span class="number">11</span>-<span class="number">23</span> <span class="number">22</span>:<span class="number">32</span>:<span class="number">17.805018</span> <span class="number">7</span>f7536d56780  <span class="number">0</span> genericfilestorebackend(/var/lib/ceph/osd/ceph-<span class="number">8</span>/) detect_features: SEEK_DATA/SEEK_HOLE is disabled via <span class="string">'filestore seek data hole'</span> config option</span><br><span class="line"><span class="number">2016</span>-<span class="number">11</span>-<span class="number">23</span> <span class="number">22</span>:<span class="number">32</span>:<span class="number">17.805020</span> <span class="number">7</span>f7536d56780  <span class="number">0</span> genericfilestorebackend(/var/lib/ceph/osd/ceph-<span class="number">8</span>/) detect_features: splice() is disabled via <span class="string">'filestore splice'</span> config option</span><br><span class="line"><span class="number">2016</span>-<span class="number">11</span>-<span class="number">23</span> <span class="number">22</span>:<span class="number">32</span>:<span class="number">17.864962</span> <span class="number">7</span>f7536d56780  <span class="number">0</span> genericfilestorebackend(/var/lib/ceph/osd/ceph-<span class="number">8</span>/) detect_features: syncfs(<span class="number">2</span>) syscall fully supported (by glibc and kernel)</span><br><span class="line"><span class="number">2016</span>-<span class="number">11</span>-<span class="number">23</span> <span class="number">22</span>:<span class="number">32</span>:<span class="number">17.865056</span> <span class="number">7</span>f7536d56780  <span class="number">0</span> xfsfilestorebackend(/var/lib/ceph/osd/ceph-<span class="number">8</span>/) detect_feature: extsize is disabled by conf</span><br><span class="line"><span class="number">2016</span>-<span class="number">11</span>-<span class="number">23</span> <span class="number">22</span>:<span class="number">32</span>:<span class="number">17.865643</span> <span class="number">7</span>f7536d56780  <span class="number">0</span> filestore(/var/lib/ceph/osd/ceph-<span class="number">8</span>/) start omap initiation</span><br><span class="line"><span class="number">2016</span>-<span class="number">11</span>-<span class="number">23</span> <span class="number">22</span>:<span class="number">32</span>:<span class="number">17.926589</span> <span class="number">7</span>f7536d56780  <span class="number">0</span> filestore(/var/lib/ceph/osd/ceph-<span class="number">8</span>/) mount: enabling WRITEAHEAD journal mode: checkpoint is not enabled</span><br></pre></td></tr></table></figure>
-<p>可以看到，已经开始以对象存储的IO模型去生成测试了，根据自己的需要对不同的存储设备和组合进行测试就可以了</p>
-<h2 id="总结">总结</h2><p>作为一个新的测试模型的出现，更加完善了ceph的整体体系，也给磁盘的选型增加更好的测试工具</p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/fio-banner.jpg" alt="fio"><br></center>
-
-<h2 id="前言">前言</h2><p>fio是一个适应性非常强的软件，基本上能够模拟所有的IO请求，是目前最全面的一款测试软件，之前在看德国电信的一篇分享的时候，里面就提到了，如果需要测试存储性能，尽量只用一款软件，这样从上层测试到底层去，才能更好的去比较差别</p>
-<p>fio对于ceph来说，可以测试文件系统，基于文件系统之上测试，可以测试内核rbd，将rbdmap到本地格式化以后进行测试，或者基于librbd直接对rbd进行测试，这个是目前都已经有的测试场景，这些不在本篇的讨论的范围内，今天讲的是一种新的测试场景，直接对ceph的底层存储进行测试</p>]]>
     
     </summary>
     
