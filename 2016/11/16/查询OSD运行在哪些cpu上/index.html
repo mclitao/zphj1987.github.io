@@ -233,6 +233,32 @@
 
 
 <p>看上去确实有些CPU上面运行了多个OSD，这里不讨论CPU绑定的好坏，只是展示现象，具体有什么效果，是需要用数据取分析的，这个以后再看下</p>
+<h2 id="补充">补充</h2><p>如果你发现你运行的脚本没有结果，这个不是脚本的问题，是因为没有生成pid文件，在配置文件/etc/ceph/ceph.conf当中增加:</p>
+<blockquote>
+<p>pid_file = /var/run/ceph/$type.$id.pid</p>
+</blockquote>
+<p>然后重启osd进程，检查生成了pid没有<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ll /var/run/ceph/*.pid</span><br></pre></td></tr></table></figure></p>
+<h2 id="变更记录">变更记录</h2><table>
+<thead>
+<tr>
+<th style="text-align:center">Why</th>
+<th style="text-align:center">Who</th>
+<th style="text-align:center">When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">创建</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2016-11-16</td>
+</tr>
+<tr>
+<td style="text-align:center">解决无pid</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2017-02-21</td>
+</tr>
+</tbody>
+</table>
 
       
     </div>
