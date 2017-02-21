@@ -234,7 +234,7 @@
 <p>3、处理monmap，去掉损坏的mon3的map信息<br>在mon1机器上执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">monmaptool /tmp/monmap --rm mon3</span><br></pre></td></tr></table></figure></p>
 <p>在mon2机器上执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">monmaptool /tmp/monmap --rm mon3</span><br></pre></td></tr></table></figure></p>
 <p>4、导入修改后的monmap信息<br>在mon1机器上执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph-mon -i mon1 --inject-monmap /tmp/monmap</span><br></pre></td></tr></table></figure></p>
-<p>在mon2机器上执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph-mon -i mon1 --inject-monmap /tmp/monmap</span><br></pre></td></tr></table></figure></p>
+<p>在mon2机器上执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph-mon -i mon2 --inject-monmap /tmp/monmap</span><br></pre></td></tr></table></figure></p>
 <p>5、启动mon进程<br>在mon1机器上执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/etc/init.d/ceph start mon</span><br></pre></td></tr></table></figure></p>
 <p>在mon2机器上执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/etc/init.d/ceph start mon</span><br></pre></td></tr></table></figure></p>
 <p>6、检查当前的mon信息，应该显示的是只有两个mon,再新加mon即可<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph <span class="operator">-s</span></span><br></pre></td></tr></table></figure></p>
