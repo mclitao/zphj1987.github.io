@@ -180,6 +180,64 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-福昕pdf加载慢崩溃的解决办法" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/04/23/福昕pdf加载慢崩溃的解决办法/" class="article-date">
+  	<time datetime="2016-04-23T03:01:48.000Z" itemprop="datePublished">2016-04-23</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/04/23/福昕pdf加载慢崩溃的解决办法/">福昕pdf加载慢崩溃的解决办法</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>以前使用福昕pdf阅读器一直没有问题，但是最近打开网上下载的各种pdf都出现了崩溃的情况，并且我的办公电脑和家里的电脑都出现了情况，只能说软件开发的越来越大，最基本的功能反而保证不了了，那么就自己来找解决办法了，通过网上的一些搜寻，终于找到了办法，这里做下记录以备不时之需，对于其他做软件的都有这个问题，我们不要忘了我们为了什么出发，一切都是为了解决问题</p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/其他/">其他</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2016/04/23/福昕pdf加载慢崩溃的解决办法/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-inkscope完整安装配置" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -718,67 +776,6 @@
       
         <p class="article-more-link">
           <a  href="/2016/03/03/丢了ceph-mon-kerying解决办法/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-快速增加osdmap的epoch" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/03/03/快速增加osdmap的epoch/" class="article-date">
-  	<time datetime="2016-03-03T13:57:26.000Z" itemprop="datePublished">2016-03-03</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/03/03/快速增加osdmap的epoch/">快速增加osdmap的epoch</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>最近因为一个实验需要用到一个功能，需要快速的增加 ceph 的 osdmap 的 epoch 编号</p>
-<h3 id="查询osd的epoch编号">查询osd的epoch编号</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@lab8107:~<span class="comment"># ceph osd stat</span></span><br><span class="line">     osdmap e4686: <span class="number">8</span> osds: <span class="number">8</span> up, <span class="number">8</span> <span class="keyword">in</span></span><br></pre></td></tr></table></figure>
-<p>上面显示的 <code>e4686</code> 即为osdmap的epoch的编号</p>
-<h3 id="增加epoch">增加epoch</h3><p>现在需要增加1000<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph osd thrash <span class="number">1000</span></span><br></pre></td></tr></table></figure></p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2016/03/03/快速增加osdmap的epoch/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>

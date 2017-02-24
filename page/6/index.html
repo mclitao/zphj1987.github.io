@@ -180,6 +180,69 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-Ceph中的Copyset概念和使用方法" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/09/06/Ceph中的Copyset概念和使用方法/" class="article-date">
+  	<time datetime="2016-09-06T09:39:15.000Z" itemprop="datePublished">2016-09-06</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/09/06/Ceph中的Copyset概念和使用方法/">Ceph中的Copyset概念和使用方法</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/copyset/octo-guitar.gif" alt="ceph"><br></center></p>
+<h2 id="一、前言">一、前言</h2><p>copyset运用好能带来什么好处</p>
+<ul>
+<li>降低故障情况下的数据丢失概率（增加可用性）</li>
+<li>降低资源占用，从而降低负载</li>
+</ul>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2016/09/06/Ceph中的Copyset概念和使用方法/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-Proftp最简匿名访问配置" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -730,68 +793,6 @@
       
         <p class="article-more-link">
           <a  href="/2016/07/14/通过ceph-deploy安装不同版本ceph/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-重构rbd镜像的元数据" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/07/02/重构rbd镜像的元数据/" class="article-date">
-  	<time datetime="2016-07-01T18:52:33.000Z" itemprop="datePublished">2016-07-02</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/07/02/重构rbd镜像的元数据/">重构rbd镜像的元数据</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>这个已经很久之前已经实践成功了，现在正好有时间就来写一写，目前并没有在其他地方有类似的分享，虽然我们自己的业务并没有涉及到云计算的场景，之前还是对rbd镜像这一块做了一些基本的了解，因为一直比较关注故障恢复这一块，东西并不难，总之一切不要等到出了问题再去想办法，提前准备总是好的，如果你有集群的问题，生产环境需要恢复的欢迎找我</p>
-<h3 id="一、前言">一、前言</h3><p>rbd的镜像的元数据，这个是什么？这里所提到的元数据信息，是指跟这个image信息有关的元数据信息，就是image的大小名称等等一系列的信息，本篇将讲述怎么去重构这些信息，重构的前提就是做好了信息的记录，然后做重构</p>
-<h3 id="二、记录元数据信息">二、记录元数据信息</h3><h4 id="1、创建一个image">1、创建一个image</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># rbd -p rbd create zp --size 40000</span></span><br></pre></td></tr></table></figure>
-<p>这里是在rbd存储池当中创建的一个名称为zp的，大小为40G的image文件</p>
-<p>如果没有其他的image的情况下，我们来查看下对象信息<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># rados -p rbd ls</span></span><br><span class="line">rbd_header.<span class="number">60276</span>b8b4567</span><br><span class="line">rbd_directory</span><br><span class="line">rbd_id.zp</span><br></pre></td></tr></table></figure></p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2016/07/02/重构rbd镜像的元数据/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>
