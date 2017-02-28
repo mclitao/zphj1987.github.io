@@ -4,7 +4,7 @@
   <subtitle><![CDATA[但行好事，莫问前程]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2017-02-28T15:58:36.490Z</updated>
+  <updated>2017-02-28T16:07:00.766Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -19,12 +19,19 @@
     <link href="http://www.zphj1987.com/2017/02/28/python%E6%89%A7%E8%A1%8Crados%E5%91%BD%E4%BB%A4%E4%BE%8B%E5%AD%90/"/>
     <id>http://www.zphj1987.com/2017/02/28/python执行rados命令例子/</id>
     <published>2017-02-28T15:48:15.000Z</published>
-    <updated>2017-02-28T15:58:36.490Z</updated>
+    <updated>2017-02-28T16:07:00.766Z</updated>
     <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/we-love-python-800-600.png" alt="python"><br></center>
 
 <h2 id="前言">前言</h2><p>我们以前的管理平台在python平台下面做的，内部做的一些操作采用的是命令执行，然后解析的方式去做的，ceph自身有python的rados接口，可以直接调用原生接口，然后直接解析json的方式，这样更靠近底层<br><a id="more"></a><br>在看ceph-dash内部的实现的时候，发现里面的获取集群信息的代码可以留存备用</p>
 <h2 id="代码实例">代码实例</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># -*- coding: UTF-8 -*-</span></span><br><span class="line">import json</span><br><span class="line"></span><br><span class="line">from rados import Rados</span><br><span class="line">from rados import Error as RadosError</span><br><span class="line"></span><br><span class="line">class CephClusterCommand(dict):</span><br><span class="line">    <span class="string">""</span><span class="string">"</span><br><span class="line">    Issue a ceph command on the given cluster and provide the returned json</span><br><span class="line">    "</span><span class="string">""</span></span><br><span class="line"></span><br><span class="line">    def __init__(self, cluster, **kwargs):</span><br><span class="line">        dict.__init__(self)</span><br><span class="line">        ret, buf, err = cluster.mon_<span class="built_in">command</span>(json.dumps(kwargs), <span class="string">''</span>, timeout=<span class="number">5</span>)</span><br><span class="line">        <span class="keyword">if</span> ret != <span class="number">0</span>:</span><br><span class="line">            self[<span class="string">'err'</span>] = err</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            self.update(json.loads(buf))</span><br><span class="line"></span><br><span class="line">config=&#123;<span class="string">'conffile'</span>: <span class="string">'/etc/ceph/ceph.conf'</span>, <span class="string">'conf'</span>: &#123;&#125;&#125;</span><br><span class="line">with Rados(**config) as cluster:</span><br><span class="line">    cluster_status = CephClusterCommand(cluster, prefix=<span class="string">'status'</span>, format=<span class="string">'json'</span>)</span><br><span class="line">    <span class="built_in">print</span> cluster_status</span><br></pre></td></tr></table></figure>
 <h2 id="总结">总结</h2><p>调用原生接口的好处在于,只需要很少的库就可以取得监控系统所需要的值</p>
+<p>最近在研究系统的时候发现一个问题</p>
+<blockquote>
+<p>跟着错误的文档实践只会掉进同一个坑</p>
+</blockquote>
+<p>在遇到一个小的错误的时候，翻到了一个github的Issue，然后看到一个人把自己的配置过程和配置文件详详细细的都写在Issue下面，然后就跟着他的过程走了一遍，发现不论怎么弄都是同样的错误</p>
+<p>而返回去根据另一个正确的文档又走一遍的时候，发现终于跑通了，回顾了一遍，发现是那个错误的过程里面的配置文件里面是有配置项目，不兼容的，而软件也没有抛出相关的错误，然后在同一个地方找了两天</p>
+<p>所以如果有碰到无法解决的操作步骤文档的时候，就尽量不要去根据那个文档操作了，除非自己对细节弄的很清楚了</p>
 <h2 id="变更记录">变更记录</h2><table>
 <thead>
 <tr>
@@ -550,12 +557,12 @@
 </blockquote>
 <p>From <a href="http://docs.ceph.com/docs/master/release-notes/#upgrading-from-infernalis-or-hammer" target="_blank" rel="external">Ceph release notes</a></p>
 <blockquote>
-<p>commit 383185bfbae74797cdb44f50b4bf651422800ff1<br>Author: Sage Weil <a href="&#x6d;&#97;&#x69;&#x6c;&#116;&#111;&#x3a;&#115;&#x61;&#103;&#x65;&#64;&#114;&#x65;&#100;&#104;&#97;&#x74;&#46;&#99;&#x6f;&#x6d;">&#115;&#x61;&#103;&#x65;&#64;&#114;&#x65;&#100;&#104;&#97;&#x74;&#46;&#99;&#x6f;&#x6d;</a><br>Date: Fri Aug 7 16:14:09 2015 -0400<br>mon/OSDMonitor: osd set/unset sortbitwise<br> Add monitor command to flip the switch on the OSD hobject_t sort<br> order.</p>
+<p>commit 383185bfbae74797cdb44f50b4bf651422800ff1<br>Author: Sage Weil <a href="&#x6d;&#x61;&#105;&#x6c;&#116;&#111;&#x3a;&#x73;&#x61;&#103;&#101;&#64;&#114;&#101;&#100;&#104;&#x61;&#116;&#46;&#x63;&#111;&#x6d;">&#x73;&#x61;&#103;&#101;&#64;&#114;&#101;&#100;&#104;&#x61;&#116;&#46;&#x63;&#111;&#x6d;</a><br>Date: Fri Aug 7 16:14:09 2015 -0400<br>mon/OSDMonitor: osd set/unset sortbitwise<br> Add monitor command to flip the switch on the OSD hobject_t sort<br> order.</p>
 </blockquote>
 <p>From git</p>
 <p>第一次在源码中出现:</p>
 <blockquote>
-<p>commit 138f58493715e386929f152424b70df37843541b<br>Author: John Spray <a href="&#109;&#97;&#105;&#x6c;&#x74;&#111;&#x3a;&#106;&#111;&#104;&#110;&#x2e;&#x73;&#x70;&#x72;&#97;&#x79;&#64;&#114;&#x65;&#100;&#104;&#x61;&#x74;&#46;&#x63;&#111;&#109;">&#106;&#111;&#104;&#110;&#x2e;&#x73;&#x70;&#x72;&#97;&#x79;&#64;&#114;&#x65;&#100;&#104;&#x61;&#x74;&#46;&#x63;&#111;&#109;</a><br>Date: Mon Aug 17 14:40:46 2015 -0400<br>osdc/Objecter: new-style pgls<br> Signed-off-by: John Spray <a href="&#109;&#97;&#x69;&#108;&#x74;&#x6f;&#58;&#x6a;&#x6f;&#104;&#110;&#46;&#x73;&#112;&#x72;&#97;&#x79;&#x40;&#114;&#101;&#100;&#x68;&#97;&#x74;&#46;&#99;&#111;&#x6d;">&#x6a;&#x6f;&#104;&#110;&#46;&#x73;&#112;&#x72;&#97;&#x79;&#x40;&#114;&#101;&#100;&#x68;&#97;&#x74;&#46;&#99;&#111;&#x6d;</a><br> Signed-off-by: Sage Weil <a href="&#109;&#97;&#x69;&#x6c;&#x74;&#x6f;&#x3a;&#115;&#97;&#x67;&#x65;&#x40;&#114;&#101;&#100;&#x68;&#x61;&#x74;&#x2e;&#99;&#111;&#x6d;">&#115;&#97;&#x67;&#x65;&#x40;&#114;&#101;&#100;&#x68;&#x61;&#x74;&#x2e;&#99;&#111;&#x6d;</a></p>
+<p>commit 138f58493715e386929f152424b70df37843541b<br>Author: John Spray <a href="&#109;&#x61;&#105;&#108;&#116;&#x6f;&#x3a;&#106;&#111;&#104;&#x6e;&#46;&#x73;&#x70;&#x72;&#97;&#121;&#x40;&#114;&#x65;&#x64;&#104;&#x61;&#x74;&#x2e;&#x63;&#x6f;&#109;">&#106;&#111;&#104;&#x6e;&#46;&#x73;&#x70;&#x72;&#97;&#121;&#x40;&#114;&#x65;&#x64;&#104;&#x61;&#x74;&#x2e;&#x63;&#x6f;&#109;</a><br>Date: Mon Aug 17 14:40:46 2015 -0400<br>osdc/Objecter: new-style pgls<br> Signed-off-by: John Spray <a href="&#109;&#97;&#105;&#x6c;&#116;&#111;&#x3a;&#106;&#111;&#104;&#110;&#x2e;&#x73;&#x70;&#x72;&#x61;&#x79;&#64;&#x72;&#101;&#x64;&#104;&#x61;&#x74;&#46;&#99;&#111;&#109;">&#106;&#111;&#104;&#110;&#x2e;&#x73;&#x70;&#x72;&#x61;&#x79;&#64;&#x72;&#101;&#x64;&#104;&#x61;&#x74;&#46;&#99;&#111;&#109;</a><br> Signed-off-by: Sage Weil <a href="&#x6d;&#x61;&#x69;&#108;&#116;&#111;&#x3a;&#115;&#x61;&#x67;&#x65;&#64;&#114;&#101;&#x64;&#104;&#97;&#x74;&#x2e;&#99;&#111;&#x6d;">&#115;&#x61;&#x67;&#x65;&#64;&#114;&#101;&#x64;&#104;&#97;&#x74;&#x2e;&#99;&#111;&#x6d;</a></p>
 </blockquote>
 <p>From git</p>
 <p>Related github issue: <a href="https://github.com/ceph/ceph/pull/4919/commits" target="_blank" rel="external">https://github.com/ceph/ceph/pull/4919/commits</a></p>
