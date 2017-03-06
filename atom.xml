@@ -4,7 +4,7 @@
   <subtitle><![CDATA[但行好事，莫问前程]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2017-03-06T10:26:40.970Z</updated>
+  <updated>2017-03-06T10:28:35.755Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -19,8 +19,9 @@
     <link href="http://www.zphj1987.com/2017/03/06/online-change-ulimit/"/>
     <id>http://www.zphj1987.com/2017/03/06/online-change-ulimit/</id>
     <published>2017-03-06T10:20:26.000Z</published>
-    <updated>2017-03-06T10:26:40.970Z</updated>
-    <content type="html"><![CDATA[<p><img src="http://7xweck.com1.z0.glb.clouddn.com/limit.jpg" alt="limit"></p>
+    <updated>2017-03-06T10:28:35.755Z</updated>
+    <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/limit.jpg" alt="limit"><br></center>
+
 <h2 id="前言">前言</h2><p>系统中有些地方会进行资源的限制，其中的一个就是open file的限制，操作系统默认限制的是1024,这个值可以通过各种方式修改，本篇主要讲的是如何在线修改，生产上是不可能随便重启进程的<br><a id="more"></a></p>
 <h2 id="实践">实践</h2><h3 id="查看系统默认的限制">查看系统默认的限制</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ulimit -a|grep open</span></span><br><span class="line">open files                      (-n) <span class="number">1024</span></span><br></pre></td></tr></table></figure>
 <p>默认的打开文件是1024<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ps -ef|grep ceph-osd</span></span><br><span class="line">ceph     <span class="number">28176</span>     <span class="number">1</span>  <span class="number">0</span> <span class="number">18</span>:<span class="number">08</span> ?        <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> /usr/bin/ceph-osd <span class="operator">-f</span> --cluster ceph --id <span class="number">0</span> --setuser ceph --setgroup ceph</span><br><span class="line">root     <span class="number">28619</span> <span class="number">26901</span>  <span class="number">0</span> <span class="number">18</span>:<span class="number">10</span> pts/<span class="number">3</span>    <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> grep --color=auto ceph-osd</span><br><span class="line">[root@lab8106 ~]<span class="comment"># cat /proc/28176/limits |grep open</span></span><br><span class="line">Max open files            <span class="number">1048576</span>              <span class="number">1048576</span>              files</span><br></pre></td></tr></table></figure></p>
@@ -49,7 +50,8 @@
 </table>
 ]]></content>
     <summary type="html">
-    <![CDATA[<p><img src="http://7xweck.com1.z0.glb.clouddn.com/limit.jpg" alt="limit"></p>
+    <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/limit.jpg" alt="limit"><br></center>
+
 <h2 id="前言">前言</h2><p>系统中有些地方会进行资源的限制，其中的一个就是open file的限制，操作系统默认限制的是1024,这个值可以通过各种方式修改，本篇主要讲的是如何在线修改，生产上是不可能随便重启进程的<br>]]>
     
     </summary>
@@ -617,12 +619,12 @@
 </blockquote>
 <p>From <a href="http://docs.ceph.com/docs/master/release-notes/#upgrading-from-infernalis-or-hammer" target="_blank" rel="external">Ceph release notes</a></p>
 <blockquote>
-<p>commit 383185bfbae74797cdb44f50b4bf651422800ff1<br>Author: Sage Weil <a href="&#109;&#x61;&#105;&#x6c;&#x74;&#x6f;&#58;&#115;&#97;&#103;&#x65;&#64;&#114;&#101;&#x64;&#x68;&#97;&#116;&#46;&#99;&#x6f;&#x6d;">&#115;&#97;&#103;&#x65;&#64;&#114;&#101;&#x64;&#x68;&#97;&#116;&#46;&#99;&#x6f;&#x6d;</a><br>Date: Fri Aug 7 16:14:09 2015 -0400<br>mon/OSDMonitor: osd set/unset sortbitwise<br> Add monitor command to flip the switch on the OSD hobject_t sort<br> order.</p>
+<p>commit 383185bfbae74797cdb44f50b4bf651422800ff1<br>Author: Sage Weil <a href="&#109;&#97;&#x69;&#x6c;&#116;&#x6f;&#58;&#x73;&#97;&#103;&#x65;&#64;&#x72;&#x65;&#x64;&#104;&#x61;&#116;&#46;&#x63;&#x6f;&#109;">&#x73;&#97;&#103;&#x65;&#64;&#x72;&#x65;&#x64;&#104;&#x61;&#116;&#46;&#x63;&#x6f;&#109;</a><br>Date: Fri Aug 7 16:14:09 2015 -0400<br>mon/OSDMonitor: osd set/unset sortbitwise<br> Add monitor command to flip the switch on the OSD hobject_t sort<br> order.</p>
 </blockquote>
 <p>From git</p>
 <p>第一次在源码中出现:</p>
 <blockquote>
-<p>commit 138f58493715e386929f152424b70df37843541b<br>Author: John Spray <a href="&#109;&#97;&#x69;&#108;&#116;&#111;&#x3a;&#x6a;&#111;&#104;&#110;&#46;&#115;&#x70;&#x72;&#x61;&#x79;&#x40;&#114;&#101;&#100;&#x68;&#97;&#116;&#46;&#99;&#x6f;&#x6d;">&#x6a;&#111;&#104;&#110;&#46;&#115;&#x70;&#x72;&#x61;&#x79;&#x40;&#114;&#101;&#100;&#x68;&#97;&#116;&#46;&#99;&#x6f;&#x6d;</a><br>Date: Mon Aug 17 14:40:46 2015 -0400<br>osdc/Objecter: new-style pgls<br> Signed-off-by: John Spray <a href="&#x6d;&#97;&#x69;&#108;&#116;&#x6f;&#x3a;&#106;&#111;&#104;&#x6e;&#x2e;&#x73;&#112;&#114;&#x61;&#x79;&#x40;&#x72;&#101;&#100;&#x68;&#97;&#x74;&#46;&#99;&#111;&#x6d;">&#106;&#111;&#104;&#x6e;&#x2e;&#x73;&#112;&#114;&#x61;&#x79;&#x40;&#x72;&#101;&#100;&#x68;&#97;&#x74;&#46;&#99;&#111;&#x6d;</a><br> Signed-off-by: Sage Weil <a href="&#109;&#97;&#x69;&#108;&#116;&#111;&#x3a;&#115;&#x61;&#x67;&#x65;&#x40;&#114;&#101;&#100;&#104;&#97;&#116;&#x2e;&#x63;&#111;&#x6d;">&#115;&#x61;&#x67;&#x65;&#x40;&#114;&#101;&#100;&#104;&#97;&#116;&#x2e;&#x63;&#111;&#x6d;</a></p>
+<p>commit 138f58493715e386929f152424b70df37843541b<br>Author: John Spray <a href="&#x6d;&#x61;&#105;&#108;&#116;&#x6f;&#58;&#x6a;&#x6f;&#104;&#110;&#x2e;&#115;&#x70;&#x72;&#97;&#x79;&#x40;&#114;&#x65;&#100;&#104;&#97;&#116;&#46;&#99;&#x6f;&#x6d;">&#x6a;&#x6f;&#104;&#110;&#x2e;&#115;&#x70;&#x72;&#97;&#x79;&#x40;&#114;&#x65;&#100;&#104;&#97;&#116;&#46;&#99;&#x6f;&#x6d;</a><br>Date: Mon Aug 17 14:40:46 2015 -0400<br>osdc/Objecter: new-style pgls<br> Signed-off-by: John Spray <a href="&#109;&#x61;&#105;&#108;&#116;&#111;&#58;&#x6a;&#x6f;&#x68;&#110;&#x2e;&#x73;&#x70;&#114;&#x61;&#121;&#64;&#114;&#x65;&#x64;&#x68;&#x61;&#116;&#x2e;&#x63;&#x6f;&#109;">&#x6a;&#x6f;&#x68;&#110;&#x2e;&#x73;&#x70;&#114;&#x61;&#121;&#64;&#114;&#x65;&#x64;&#x68;&#x61;&#116;&#x2e;&#x63;&#x6f;&#109;</a><br> Signed-off-by: Sage Weil <a href="&#109;&#97;&#105;&#108;&#x74;&#111;&#58;&#x73;&#97;&#x67;&#101;&#x40;&#x72;&#101;&#100;&#x68;&#x61;&#x74;&#x2e;&#99;&#x6f;&#109;">&#x73;&#97;&#x67;&#101;&#x40;&#x72;&#101;&#100;&#x68;&#x61;&#x74;&#x2e;&#99;&#x6f;&#109;</a></p>
 </blockquote>
 <p>From git</p>
 <p>Related github issue: <a href="https://github.com/ceph/ceph/pull/4919/commits" target="_blank" rel="external">https://github.com/ceph/ceph/pull/4919/commits</a></p>
