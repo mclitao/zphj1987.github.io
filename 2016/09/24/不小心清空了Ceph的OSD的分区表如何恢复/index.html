@@ -5,16 +5,16 @@
   
   <title>不小心清空了Ceph的OSD的分区表如何恢复 | zphj1987&#39;Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="一、前言如果你是新手，应该出现过敲盘符的时候，敲错的情况，有些操作可能没什么问题，查询类的操作都没问题，但是写入的情况，就可能比较麻烦了，当然老手也可能有误操作，本篇将讲述在误操作把分区表给弄丢了的情况，来看看我们应该如何恢复">
+  <meta name="description" content="前言如果你是新手，应该出现过敲盘符的时候，敲错的情况，有些操作可能没什么问题，查询类的操作都没问题，但是写入的情况，就可能比较麻烦了，当然老手也可能有误操作，本篇将讲述在误操作把分区表给弄丢了的情况，来看看我们应该如何恢复">
 <meta property="og:type" content="article">
 <meta property="og:title" content="不小心清空了Ceph的OSD的分区表如何恢复">
 <meta property="og:url" content="http://www.zphj1987.com/2016/09/24/不小心清空了Ceph的OSD的分区表如何恢复/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
-<meta property="og:description" content="一、前言如果你是新手，应该出现过敲盘符的时候，敲错的情况，有些操作可能没什么问题，查询类的操作都没问题，但是写入的情况，就可能比较麻烦了，当然老手也可能有误操作，本篇将讲述在误操作把分区表给弄丢了的情况，来看看我们应该如何恢复">
+<meta property="og:description" content="前言如果你是新手，应该出现过敲盘符的时候，敲错的情况，有些操作可能没什么问题，查询类的操作都没问题，但是写入的情况，就可能比较麻烦了，当然老手也可能有误操作，本篇将讲述在误操作把分区表给弄丢了的情况，来看看我们应该如何恢复">
 <meta property="og:image" content="http://7xweck.com1.z0.glb.clouddn.com/recovery/recuvaicon.png">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="不小心清空了Ceph的OSD的分区表如何恢复">
-<meta name="twitter:description" content="一、前言如果你是新手，应该出现过敲盘符的时候，敲错的情况，有些操作可能没什么问题，查询类的操作都没问题，但是写入的情况，就可能比较麻烦了，当然老手也可能有误操作，本篇将讲述在误操作把分区表给弄丢了的情况，来看看我们应该如何恢复">
+<meta name="twitter:description" content="前言如果你是新手，应该出现过敲盘符的时候，敲错的情况，有些操作可能没什么问题，查询类的操作都没问题，但是写入的情况，就可能比较麻烦了，当然老手也可能有误操作，本篇将讲述在误操作把分区表给弄丢了的情况，来看看我们应该如何恢复">
   
     <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
   
@@ -217,18 +217,18 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/recovery/recuvaicon.png" alt="disk"><br></center></p>
-<h2 id="一、前言">一、前言</h2><p>如果你是新手，应该出现过敲盘符的时候，敲错的情况，有些操作可能没什么问题，查询类的操作都没问题，但是写入的情况，就可能比较麻烦了，当然老手也可能有误操作，本篇将讲述在误操作把分区表给弄丢了的情况，来看看我们应该如何恢复<br><a id="more"></a></p>
-<h2 id="二、实践过程">二、实践过程</h2><p>我们现在有一个正常的集群，我们假设这些分区都是一致的，用的是默认的分区的方式，我们先来看看默认的分区方式是怎样的</p>
-<h3 id="2-1_破坏环境">2.1 破坏环境</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># ceph-disk  list</span></span><br><span class="line">···</span><br><span class="line">/dev/sdb :</span><br><span class="line"> /dev/sdb1 ceph data, active, cluster ceph, osd.<span class="number">0</span>, journal /dev/sdb2</span><br><span class="line"> /dev/sdb2 ceph journal, <span class="keyword">for</span> /dev/sdb1</span><br><span class="line">···</span><br></pre></td></tr></table></figure>
+<h2 id="前言">前言</h2><p>如果你是新手，应该出现过敲盘符的时候，敲错的情况，有些操作可能没什么问题，查询类的操作都没问题，但是写入的情况，就可能比较麻烦了，当然老手也可能有误操作，本篇将讲述在误操作把分区表给弄丢了的情况，来看看我们应该如何恢复<br><a id="more"></a></p>
+<h2 id="实践过程">实践过程</h2><p>我们现在有一个正常的集群，我们假设这些分区都是一致的，用的是默认的分区的方式，我们先来看看默认的分区方式是怎样的</p>
+<h3 id="破坏环境">破坏环境</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># ceph-disk  list</span></span><br><span class="line">···</span><br><span class="line">/dev/sdb :</span><br><span class="line"> /dev/sdb1 ceph data, active, cluster ceph, osd.<span class="number">0</span>, journal /dev/sdb2</span><br><span class="line"> /dev/sdb2 ceph journal, <span class="keyword">for</span> /dev/sdb1</span><br><span class="line">···</span><br></pre></td></tr></table></figure>
 <p>查看分区情况<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># parted -s /dev/sdb print</span></span><br><span class="line">Model: SEAGATE ST3300657SS (scsi)</span><br><span class="line">Disk /dev/sdb: <span class="number">300</span>GB</span><br><span class="line">Sector size (logical/physical): <span class="number">512</span>B/<span class="number">512</span>B</span><br><span class="line">Partition Table: gpt</span><br><span class="line">Disk Flags: </span><br><span class="line"></span><br><span class="line">Number  Start   End     Size    File system  Name          Flags</span><br><span class="line"> <span class="number">2</span>      <span class="number">1049</span>kB  <span class="number">1074</span>MB  <span class="number">1073</span>MB               ceph journal</span><br><span class="line"> <span class="number">1</span>      <span class="number">1075</span>MB  <span class="number">300</span>GB   <span class="number">299</span>GB   xfs          ceph data</span><br></pre></td></tr></table></figure></p>
 <p>来一个破坏，这里是破坏 <code>osd.0</code>，对应盘符 <code>/dev/sdb</code><br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># ceph-deploy disk zap lab8106:/dev/sdb</span></span><br><span class="line">[ceph_deploy.conf][DEBUG ] found configuration file at: /root/.cephdeploy.conf</span><br><span class="line">[ceph_deploy.cli][INFO  ] Invoked (<span class="number">1.5</span>.<span class="number">34</span>): /usr/bin/ceph-deploy disk zap lab8106:/dev/sdb</span><br><span class="line">···</span><br><span class="line">[lab8106][DEBUG ] Warning: The kernel is still using the old partition table.</span><br><span class="line">[lab8106][DEBUG ] The new table will be used at the next reboot.</span><br><span class="line">[lab8106][DEBUG ] GPT data structures destroyed! You may now partition the disk using fdisk or</span><br><span class="line">[lab8106][DEBUG ] other utilities.</span><br><span class="line">···</span><br></pre></td></tr></table></figure></p>
 <p>即使这个 osd 被使用在，还是被破坏了，这里假设上面的就是一个误操作，我们看下带来了哪些变化<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># ll /var/lib/ceph/osd/ceph-0/journal</span></span><br><span class="line">lrwxrwxrwx <span class="number">1</span> root root <span class="number">58</span> Sep <span class="number">24</span> <span class="number">00</span>:<span class="number">02</span> /var/lib/ceph/osd/ceph-<span class="number">0</span>/journal -&gt; /dev/disk/by-partuuid/bd81471d-<span class="number">13</span>ff-<span class="number">44</span>ce-<span class="number">8</span>a33-<span class="number">92</span>a8df9e8eee</span><br></pre></td></tr></table></figure></p>
 <p>如果你用命令行看，就可以看到上面的链接已经变红了，分区没有了<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># ceph-disk  list </span></span><br><span class="line">/dev/sdb :</span><br><span class="line"> /dev/sdb1 other, xfs, mounted on /var/lib/ceph/osd/ceph-<span class="number">0</span></span><br><span class="line"> /dev/sdb2 other</span><br></pre></td></tr></table></figure></p>
 <p>已经跟上面有变化了，没有ceph的相关信息了<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># parted -s /dev/sdb print</span></span><br><span class="line">Model: SEAGATE ST3300657SS (scsi)</span><br><span class="line">Disk /dev/sdb: <span class="number">300</span>GB</span><br><span class="line">Sector size (logical/physical): <span class="number">512</span>B/<span class="number">512</span>B</span><br><span class="line">Partition Table: gpt</span><br><span class="line">Disk Flags: </span><br><span class="line"></span><br><span class="line">Number  Start  End  Size  File system  Name  Flags</span><br></pre></td></tr></table></figure></p>
 <p>分区表完全没有信息了，到这我们可以确定分区表完全没了，如果现在重启将会发生什么？重启以后这个磁盘就是一个裸盘，没有分区的裸盘</p>
-<h4 id="2-2_处理办法">2.2 处理办法</h4><p>首先一个办法就是当这个OSD坏了，然后直接按照删除节点，添加节点就可以了，这个应该是最主流，最通用的处理办法，但是这个在生产环境环境当中造成的数据迁移还是非常大的，我们尝试做恢复，这就是本篇主要讲的东西</p>
-<h5 id="关闭迁移">关闭迁移</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># ceph osd set noout</span></span><br></pre></td></tr></table></figure>
-<h5 id="停止OSD">停止OSD</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># systemctl stop ceph-osd@0</span></span><br></pre></td></tr></table></figure>
+<h3 id="处理办法">处理办法</h3><p>首先一个办法就是当这个OSD坏了，然后直接按照删除节点，添加节点就可以了，这个应该是最主流，最通用的处理办法，但是这个在生产环境环境当中造成的数据迁移还是非常大的，我们尝试做恢复，这就是本篇主要讲的东西</p>
+<h4 id="关闭迁移">关闭迁移</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># ceph osd set noout</span></span><br></pre></td></tr></table></figure>
+<h4 id="停止OSD">停止OSD</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># systemctl stop ceph-osd@0</span></span><br></pre></td></tr></table></figure>
 <p>现在的OSD还是有进程的，所以需要停止掉再做处理<br>通过其他节点查看分区的信息<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># parted -s /dev/sdc  unit s print</span></span><br><span class="line">Model: SEAGATE ST3300657SS (scsi)</span><br><span class="line">Disk /dev/sdc: <span class="number">585937500</span>s</span><br><span class="line">Sector size (logical/physical): <span class="number">512</span>B/<span class="number">512</span>B</span><br><span class="line">Partition Table: gpt</span><br><span class="line">Disk Flags: </span><br><span class="line"></span><br><span class="line">Number  Start     End         Size        File system  Name          Flags</span><br><span class="line"> <span class="number">2</span>      <span class="number">2048</span>s     <span class="number">2097152</span>s    <span class="number">2095105</span>s                 ceph journal</span><br><span class="line"> <span class="number">1</span>      <span class="number">2099200</span>s  <span class="number">585937466</span>s  <span class="number">583838267</span>s  xfs          ceph data</span><br></pre></td></tr></table></figure></p>
 <p>我们现在进行分区表的恢复，记住上面的数值，我print的时候是加了unit s这个是要精确的值的,下面的创建会用到的</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># parted -s /dev/sdb  mkpart  primary  2099200s 585937466s</span></span><br><span class="line">[root@lab8106 ceph]<span class="comment"># parted -s /dev/sdb  mkpart  primary  2048s 2097152s</span></span><br></pre></td></tr></table></figure>
@@ -240,8 +240,8 @@
 <p>也就是这个链接的这一串，这个防止盘符串了情况下journal无法找到的问题</p>
 <h4 id="启动osd">启动osd</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph-<span class="number">0</span>]<span class="comment"># systemctl start ceph-osd@0</span></span><br></pre></td></tr></table></figure>
 <p>检查下，到这osd就正常的恢复了</p>
-<h2 id="三、为什么有这篇">三、为什么有这篇</h2><p>一直都知道分区表是可以恢复的，也一直知道会有误操作，但是一直没有去把ceph中完整流程走下来，前两天一个哥们环境副本一，然后自己给搞错了，出现不得不恢复的情况，正好自己一直想把这个问题的处理办法给记录下来，所以就有了这篇，万一哪天有人碰到了，就把这篇发给他</p>
-<h2 id="四、变更记录">四、变更记录</h2><table>
+<h2 id="为什么有这篇">为什么有这篇</h2><p>一直都知道分区表是可以恢复的，也一直知道会有误操作，但是一直没有去把ceph中完整流程走下来，前两天一个哥们环境副本一，然后自己给搞错了，出现不得不恢复的情况，正好自己一直想把这个问题的处理办法给记录下来，所以就有了这篇，万一哪天有人碰到了，就把这篇发给他</p>
+<h2 id="变更记录">变更记录</h2><table>
 <thead>
 <tr>
 <th style="text-align:center">Why</th>
@@ -255,9 +255,14 @@
 <td style="text-align:center">武汉-运维-磨渣</td>
 <td style="text-align:center">2016-09-24</td>
 </tr>
+<tr>
+<td style="text-align:center">修改排版</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2017-03-09</td>
+</tr>
 </tbody>
 </table>
-<h2 id="五、For_me">五、For me</h2><p>如果本文有帮助到你，愿意欢迎进入<a href="http://www.zphj1987.com/payforask" target="_blank" rel="external">打赏</a></p>
+<h2 id="For_me">For me</h2><p>如果本文有帮助到你，愿意欢迎进入<a href="http://www.zphj1987.com/payforask" target="_blank" rel="external">打赏</a></p>
 
       
     </div>
