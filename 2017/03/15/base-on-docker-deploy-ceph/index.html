@@ -250,8 +250,8 @@
 <p>查询我们最后运行的容器，我们把容器修改提交到基础image<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># docker ps -l</span></span><br><span class="line">CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                      PORTS               NAMES</span><br><span class="line"><span class="number">9</span>b269bf751f9        ceph/daemon         <span class="string">"/bin/bash"</span>         <span class="number">2</span> minutes ago       Exited (<span class="number">0</span>) <span class="number">15</span> seconds ago                       angry_hawking</span><br><span class="line"></span><br><span class="line">[root@lab8106 ceph]<span class="comment"># docker commit 9b269bf751f9 ceph/daemon</span></span><br></pre></td></tr></table></figure></p>
 <p>再次启动容器,并且检查内容，可以看到已经修改好了<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># docker run -i -t --entrypoint /bin/bash ceph/daemon</span></span><br><span class="line">root@<span class="number">65</span>b538fdc61e:/<span class="comment"># cat /etc/passwd|grep ceph</span></span><br><span class="line">ceph:x:<span class="number">0</span>:<span class="number">0</span>:Ceph storage service:/var/lib/ceph:/bin/<span class="literal">false</span></span><br></pre></td></tr></table></figure></p>
 <p>如果需要做其他的改动，这样改下就行</p>
-<h2 id="总结">总结</h2><p>本篇</p>
-<h2 id="相关资料">相关资料</h2><p><a href="http://www.sebastien-han.fr/blog/2015/06/23/bootstrap-your-ceph-cluster-in-docker/" target="_blank" rel="external">http://www.sebastien-han.fr/blog/2015/06/23/bootstrap-your-ceph-cluster-in-docker/</a></p>
+<h2 id="总结">总结</h2><p>本篇主要是根据sebastien的镜像做的部署，并且给出一些常用的命令，以及如何进入固化的容器的内部进行修改，方便自己调试环境</p>
+<h2 id="相关资料">相关资料</h2><p><a href="http://www.sebastien-han.fr/blog/2015/06/23/bootstrap-your-ceph-cluster-in-docker/" target="_blank" rel="external">bootstrap-your-ceph-cluster-in-docker/</a></p>
 <h2 id="变更记录">变更记录</h2><table>
 <thead>
 <tr>

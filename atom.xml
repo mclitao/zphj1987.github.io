@@ -4,7 +4,7 @@
   <subtitle><![CDATA[但行好事，莫问前程]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2017-03-15T04:11:49.827Z</updated>
+  <updated>2017-03-15T04:14:40.999Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="http://www.zphj1987.com/2017/03/15/base-on-docker-deploy-ceph/"/>
     <id>http://www.zphj1987.com/2017/03/15/base-on-docker-deploy-ceph/</id>
     <published>2017-03-15T04:05:35.000Z</published>
-    <updated>2017-03-15T04:11:49.827Z</updated>
+    <updated>2017-03-15T04:14:40.999Z</updated>
     <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/docker.png" alt="docker"><br></center>
 
 <h2 id="前言">前言</h2><p>容器和ceph的结合已经在一些生产环境当中做了尝试，容器的好处就是对运行环境的一个封装，传统的方式是集成为ISO，这个需要一定的维护量，而容器的相关操作会简单很多，也就有了一些尝试，个人觉得如果玩的转容器可以考虑，当然得懂ceph，不然两套系统在一起，问题都不知道是哪个的，就比较麻烦了</p>
@@ -51,8 +51,8 @@
 <p>查询我们最后运行的容器，我们把容器修改提交到基础image<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># docker ps -l</span></span><br><span class="line">CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                      PORTS               NAMES</span><br><span class="line"><span class="number">9</span>b269bf751f9        ceph/daemon         <span class="string">"/bin/bash"</span>         <span class="number">2</span> minutes ago       Exited (<span class="number">0</span>) <span class="number">15</span> seconds ago                       angry_hawking</span><br><span class="line"></span><br><span class="line">[root@lab8106 ceph]<span class="comment"># docker commit 9b269bf751f9 ceph/daemon</span></span><br></pre></td></tr></table></figure></p>
 <p>再次启动容器,并且检查内容，可以看到已经修改好了<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># docker run -i -t --entrypoint /bin/bash ceph/daemon</span></span><br><span class="line">root@<span class="number">65</span>b538fdc61e:/<span class="comment"># cat /etc/passwd|grep ceph</span></span><br><span class="line">ceph:x:<span class="number">0</span>:<span class="number">0</span>:Ceph storage service:/var/lib/ceph:/bin/<span class="literal">false</span></span><br></pre></td></tr></table></figure></p>
 <p>如果需要做其他的改动，这样改下就行</p>
-<h2 id="总结">总结</h2><p>本篇</p>
-<h2 id="相关资料">相关资料</h2><p><a href="http://www.sebastien-han.fr/blog/2015/06/23/bootstrap-your-ceph-cluster-in-docker/" target="_blank" rel="external">http://www.sebastien-han.fr/blog/2015/06/23/bootstrap-your-ceph-cluster-in-docker/</a></p>
+<h2 id="总结">总结</h2><p>本篇主要是根据sebastien的镜像做的部署，并且给出一些常用的命令，以及如何进入固化的容器的内部进行修改，方便自己调试环境</p>
+<h2 id="相关资料">相关资料</h2><p><a href="http://www.sebastien-han.fr/blog/2015/06/23/bootstrap-your-ceph-cluster-in-docker/" target="_blank" rel="external">bootstrap-your-ceph-cluster-in-docker/</a></p>
 <h2 id="变更记录">变更记录</h2><table>
 <thead>
 <tr>
@@ -687,12 +687,12 @@
 </blockquote>
 <p>From <a href="http://docs.ceph.com/docs/master/release-notes/#upgrading-from-infernalis-or-hammer" target="_blank" rel="external">Ceph release notes</a></p>
 <blockquote>
-<p>commit 383185bfbae74797cdb44f50b4bf651422800ff1<br>Author: Sage Weil <a href="&#x6d;&#x61;&#x69;&#x6c;&#x74;&#111;&#58;&#115;&#97;&#x67;&#101;&#64;&#114;&#101;&#100;&#104;&#97;&#x74;&#46;&#x63;&#111;&#109;">&#115;&#97;&#x67;&#101;&#64;&#114;&#101;&#100;&#104;&#97;&#x74;&#46;&#x63;&#111;&#109;</a><br>Date: Fri Aug 7 16:14:09 2015 -0400<br>mon/OSDMonitor: osd set/unset sortbitwise<br> Add monitor command to flip the switch on the OSD hobject_t sort<br> order.</p>
+<p>commit 383185bfbae74797cdb44f50b4bf651422800ff1<br>Author: Sage Weil <a href="&#x6d;&#97;&#105;&#x6c;&#116;&#x6f;&#x3a;&#x73;&#x61;&#x67;&#x65;&#64;&#x72;&#101;&#100;&#104;&#97;&#x74;&#46;&#x63;&#x6f;&#109;">&#x73;&#x61;&#x67;&#x65;&#64;&#x72;&#101;&#100;&#104;&#97;&#x74;&#46;&#x63;&#x6f;&#109;</a><br>Date: Fri Aug 7 16:14:09 2015 -0400<br>mon/OSDMonitor: osd set/unset sortbitwise<br> Add monitor command to flip the switch on the OSD hobject_t sort<br> order.</p>
 </blockquote>
 <p>From git</p>
 <p>第一次在源码中出现:</p>
 <blockquote>
-<p>commit 138f58493715e386929f152424b70df37843541b<br>Author: John Spray <a href="&#109;&#x61;&#x69;&#x6c;&#116;&#111;&#58;&#106;&#111;&#104;&#110;&#x2e;&#115;&#x70;&#114;&#97;&#x79;&#64;&#114;&#x65;&#x64;&#104;&#x61;&#x74;&#46;&#99;&#x6f;&#x6d;">&#106;&#111;&#104;&#110;&#x2e;&#115;&#x70;&#114;&#97;&#x79;&#64;&#114;&#x65;&#x64;&#104;&#x61;&#x74;&#46;&#99;&#x6f;&#x6d;</a><br>Date: Mon Aug 17 14:40:46 2015 -0400<br>osdc/Objecter: new-style pgls<br> Signed-off-by: John Spray <a href="&#109;&#x61;&#x69;&#x6c;&#116;&#x6f;&#x3a;&#106;&#x6f;&#104;&#x6e;&#46;&#x73;&#x70;&#x72;&#x61;&#121;&#64;&#x72;&#x65;&#x64;&#104;&#97;&#116;&#46;&#x63;&#111;&#109;">&#106;&#x6f;&#104;&#x6e;&#46;&#x73;&#x70;&#x72;&#x61;&#121;&#64;&#x72;&#x65;&#x64;&#104;&#97;&#116;&#46;&#x63;&#111;&#109;</a><br> Signed-off-by: Sage Weil <a href="&#x6d;&#x61;&#x69;&#108;&#116;&#x6f;&#x3a;&#115;&#97;&#103;&#x65;&#64;&#x72;&#x65;&#x64;&#104;&#x61;&#x74;&#x2e;&#x63;&#111;&#109;">&#115;&#97;&#103;&#x65;&#64;&#x72;&#x65;&#x64;&#104;&#x61;&#x74;&#x2e;&#x63;&#111;&#109;</a></p>
+<p>commit 138f58493715e386929f152424b70df37843541b<br>Author: John Spray <a href="&#x6d;&#x61;&#105;&#108;&#x74;&#x6f;&#x3a;&#x6a;&#111;&#x68;&#110;&#46;&#115;&#x70;&#114;&#x61;&#x79;&#x40;&#114;&#101;&#100;&#104;&#x61;&#116;&#46;&#x63;&#x6f;&#x6d;">&#x6a;&#111;&#x68;&#110;&#46;&#115;&#x70;&#114;&#x61;&#x79;&#x40;&#114;&#101;&#100;&#104;&#x61;&#116;&#46;&#x63;&#x6f;&#x6d;</a><br>Date: Mon Aug 17 14:40:46 2015 -0400<br>osdc/Objecter: new-style pgls<br> Signed-off-by: John Spray <a href="&#x6d;&#97;&#105;&#x6c;&#116;&#x6f;&#58;&#106;&#111;&#104;&#110;&#46;&#115;&#x70;&#114;&#x61;&#121;&#x40;&#114;&#101;&#100;&#x68;&#x61;&#116;&#x2e;&#99;&#111;&#x6d;">&#106;&#111;&#104;&#110;&#46;&#115;&#x70;&#114;&#x61;&#121;&#x40;&#114;&#101;&#100;&#x68;&#x61;&#116;&#x2e;&#99;&#111;&#x6d;</a><br> Signed-off-by: Sage Weil <a href="&#x6d;&#x61;&#x69;&#108;&#x74;&#x6f;&#58;&#115;&#x61;&#103;&#x65;&#x40;&#x72;&#101;&#100;&#104;&#x61;&#116;&#46;&#x63;&#x6f;&#109;">&#115;&#x61;&#103;&#x65;&#x40;&#x72;&#101;&#100;&#104;&#x61;&#116;&#46;&#x63;&#x6f;&#109;</a></p>
 </blockquote>
 <p>From git</p>
 <p>Related github issue: <a href="https://github.com/ceph/ceph/pull/4919/commits" target="_blank" rel="external">https://github.com/ceph/ceph/pull/4919/commits</a></p>
