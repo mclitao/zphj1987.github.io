@@ -4,7 +4,7 @@
   <subtitle><![CDATA[但行好事，莫问前程]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2017-03-16T10:13:52.703Z</updated>
+  <updated>2017-03-16T10:18:33.594Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -19,10 +19,10 @@
     <link href="http://www.zphj1987.com/2017/03/16/base-on-docker-ui-deploy-ceph/"/>
     <id>http://www.zphj1987.com/2017/03/16/base-on-docker-ui-deploy-ceph/</id>
     <published>2017-03-16T10:08:16.000Z</published>
-    <updated>2017-03-16T10:13:52.703Z</updated>
+    <updated>2017-03-16T10:18:33.594Z</updated>
     <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/docker2.png" alt=""><br></center>
 
-<h2 id="前言">前言</h2><p>前一篇介绍了docker在命令行下面进行的ceph部署，本篇用docker的UI进行ceph的部署，目前来说市面上还没有一款能够比较简单就能直接在OS上面去部署Ceph，这是因为OS的环境差异化太大，并且包的版本，以及各种软件的适配都可能造成失败，而docker比较固化环境，因此即使一个通用的UI也能很方便的部署出一个Cpeh集群</p>
+<h2 id="前言">前言</h2><p>前一篇介绍了docker在命令行下面进行的ceph部署，本篇用docker的UI进行ceph的部署，目前来说市面上还没有一款能够比较简单就能直接在OS上面去部署Ceph的管理平台，这是因为OS的环境差异化太大，并且包的版本，以及各种软件的适配都可能造成失败，而docker比较固化环境，因此即使一个通用的UI也能很方便的部署出一个Cpeh集群</p>
 <p>本篇就是对Docker UI部署集群做一个实践，对ceph了解，对docker了解，对dokcer的UI操作进行一定的了解的情况下，再做实践会比较好，总体上还是比较简单的<br><a id="more"></a></p>
 <h2 id="安装并运行portainer">安装并运行portainer</h2><h3 id="安装软件">安装软件</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> /opt</span><br><span class="line">wget https://github.com/portainer/portainer/releases/download/<span class="number">1.12</span>.<span class="number">1</span>/portainer-<span class="number">1.12</span>.<span class="number">1</span>-linux-amd64.tar.gz</span><br><span class="line">tar xvpfz portainer-<span class="number">1.12</span>.<span class="number">1</span>-linux-amd64.tar.gz</span><br><span class="line"><span class="built_in">cd</span> portainer</span><br></pre></td></tr></table></figure>
 <h3 id="运行软件">运行软件</h3><figure class="highlight coffeescript"><table><tr><td class="code"><pre><span class="line">.<span class="regexp">/portainer -H unix:/</span><span class="regexp">//</span><span class="reserved">var</span>/run/docker.sock  -p <span class="string">":9999"</span></span><br></pre></td></tr></table></figure>
@@ -122,7 +122,7 @@
     <summary type="html">
     <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/docker2.png" alt=""><br></center>
 
-<h2 id="前言">前言</h2><p>前一篇介绍了docker在命令行下面进行的ceph部署，本篇用docker的UI进行ceph的部署，目前来说市面上还没有一款能够比较简单就能直接在OS上面去部署Ceph，这是因为OS的环境差异化太大，并且包的版本，以及各种软件的适配都可能造成失败，而docker比较固化环境，因此即使一个通用的UI也能很方便的部署出一个Cpeh集群</p>
+<h2 id="前言">前言</h2><p>前一篇介绍了docker在命令行下面进行的ceph部署，本篇用docker的UI进行ceph的部署，目前来说市面上还没有一款能够比较简单就能直接在OS上面去部署Ceph的管理平台，这是因为OS的环境差异化太大，并且包的版本，以及各种软件的适配都可能造成失败，而docker比较固化环境，因此即使一个通用的UI也能很方便的部署出一个Cpeh集群</p>
 <p>本篇就是对Docker UI部署集群做一个实践，对ceph了解，对docker了解，对dokcer的UI操作进行一定的了解的情况下，再做实践会比较好，总体上还是比较简单的<br>]]>
     
     </summary>
@@ -804,12 +804,12 @@
 </blockquote>
 <p>From <a href="http://docs.ceph.com/docs/master/release-notes/#upgrading-from-infernalis-or-hammer" target="_blank" rel="external">Ceph release notes</a></p>
 <blockquote>
-<p>commit 383185bfbae74797cdb44f50b4bf651422800ff1<br>Author: Sage Weil <a href="&#x6d;&#97;&#105;&#108;&#116;&#x6f;&#x3a;&#x73;&#97;&#103;&#x65;&#x40;&#114;&#x65;&#x64;&#104;&#97;&#x74;&#46;&#99;&#111;&#x6d;">&#x73;&#97;&#103;&#x65;&#x40;&#114;&#x65;&#x64;&#104;&#97;&#x74;&#46;&#99;&#111;&#x6d;</a><br>Date: Fri Aug 7 16:14:09 2015 -0400<br>mon/OSDMonitor: osd set/unset sortbitwise<br> Add monitor command to flip the switch on the OSD hobject_t sort<br> order.</p>
+<p>commit 383185bfbae74797cdb44f50b4bf651422800ff1<br>Author: Sage Weil <a href="&#x6d;&#x61;&#x69;&#108;&#116;&#111;&#58;&#115;&#97;&#103;&#101;&#64;&#114;&#x65;&#x64;&#x68;&#x61;&#116;&#x2e;&#99;&#111;&#109;">&#115;&#97;&#103;&#101;&#64;&#114;&#x65;&#x64;&#x68;&#x61;&#116;&#x2e;&#99;&#111;&#109;</a><br>Date: Fri Aug 7 16:14:09 2015 -0400<br>mon/OSDMonitor: osd set/unset sortbitwise<br> Add monitor command to flip the switch on the OSD hobject_t sort<br> order.</p>
 </blockquote>
 <p>From git</p>
 <p>第一次在源码中出现:</p>
 <blockquote>
-<p>commit 138f58493715e386929f152424b70df37843541b<br>Author: John Spray <a href="&#x6d;&#97;&#105;&#x6c;&#116;&#111;&#58;&#106;&#111;&#104;&#x6e;&#x2e;&#115;&#112;&#x72;&#x61;&#x79;&#64;&#114;&#101;&#x64;&#x68;&#x61;&#x74;&#46;&#99;&#x6f;&#109;">&#106;&#111;&#104;&#x6e;&#x2e;&#115;&#112;&#x72;&#x61;&#x79;&#64;&#114;&#101;&#x64;&#x68;&#x61;&#x74;&#46;&#99;&#x6f;&#109;</a><br>Date: Mon Aug 17 14:40:46 2015 -0400<br>osdc/Objecter: new-style pgls<br> Signed-off-by: John Spray <a href="&#x6d;&#97;&#105;&#x6c;&#x74;&#x6f;&#x3a;&#x6a;&#x6f;&#x68;&#x6e;&#x2e;&#x73;&#112;&#x72;&#97;&#121;&#64;&#114;&#x65;&#x64;&#x68;&#97;&#116;&#46;&#99;&#111;&#x6d;">&#x6a;&#x6f;&#x68;&#x6e;&#x2e;&#x73;&#112;&#x72;&#97;&#121;&#64;&#114;&#x65;&#x64;&#x68;&#97;&#116;&#46;&#99;&#111;&#x6d;</a><br> Signed-off-by: Sage Weil <a href="&#x6d;&#97;&#x69;&#x6c;&#x74;&#x6f;&#58;&#115;&#97;&#103;&#x65;&#x40;&#114;&#x65;&#x64;&#x68;&#97;&#116;&#46;&#x63;&#x6f;&#109;">&#115;&#97;&#103;&#x65;&#x40;&#114;&#x65;&#x64;&#x68;&#97;&#116;&#46;&#x63;&#x6f;&#109;</a></p>
+<p>commit 138f58493715e386929f152424b70df37843541b<br>Author: John Spray <a href="&#x6d;&#x61;&#105;&#108;&#x74;&#111;&#58;&#106;&#x6f;&#x68;&#110;&#x2e;&#115;&#112;&#x72;&#x61;&#121;&#64;&#114;&#101;&#x64;&#104;&#97;&#x74;&#46;&#99;&#x6f;&#109;">&#106;&#x6f;&#x68;&#110;&#x2e;&#115;&#112;&#x72;&#x61;&#121;&#64;&#114;&#101;&#x64;&#104;&#97;&#x74;&#46;&#99;&#x6f;&#109;</a><br>Date: Mon Aug 17 14:40:46 2015 -0400<br>osdc/Objecter: new-style pgls<br> Signed-off-by: John Spray <a href="&#109;&#x61;&#105;&#x6c;&#116;&#x6f;&#58;&#106;&#111;&#x68;&#110;&#46;&#115;&#x70;&#114;&#x61;&#x79;&#x40;&#x72;&#x65;&#x64;&#104;&#97;&#116;&#46;&#99;&#111;&#109;">&#106;&#111;&#x68;&#110;&#46;&#115;&#x70;&#114;&#x61;&#x79;&#x40;&#x72;&#x65;&#x64;&#104;&#97;&#116;&#46;&#99;&#111;&#109;</a><br> Signed-off-by: Sage Weil <a href="&#x6d;&#97;&#x69;&#x6c;&#116;&#x6f;&#x3a;&#115;&#x61;&#x67;&#x65;&#64;&#x72;&#x65;&#100;&#104;&#x61;&#116;&#46;&#99;&#x6f;&#x6d;">&#115;&#x61;&#x67;&#x65;&#64;&#x72;&#x65;&#100;&#104;&#x61;&#116;&#46;&#99;&#x6f;&#x6d;</a></p>
 </blockquote>
 <p>From git</p>
 <p>Related github issue: <a href="https://github.com/ceph/ceph/pull/4919/commits" target="_blank" rel="external">https://github.com/ceph/ceph/pull/4919/commits</a></p>

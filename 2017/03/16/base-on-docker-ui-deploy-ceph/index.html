@@ -5,14 +5,14 @@
   
   <title>基于Docker UI 配置ceph集群 | zphj1987&#39;Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="前言前一篇介绍了docker在命令行下面进行的ceph部署，本篇用docker的UI进行ceph的部署，目前来说市面上还没有一款能够比较简单就能直接在OS上面去部署Ceph，这是因为OS的环境差异化太大，并且包的版本，以及各种软件的适配都可能造成失败，而docker比较固化环境，因此即使一个通用的UI也能很方便的部署出一个Cpeh集群
-本篇就是对Docker UI部署集群做一个实践，对ceph了解">
+  <meta name="description" content="前言前一篇介绍了docker在命令行下面进行的ceph部署，本篇用docker的UI进行ceph的部署，目前来说市面上还没有一款能够比较简单就能直接在OS上面去部署Ceph的管理平台，这是因为OS的环境差异化太大，并且包的版本，以及各种软件的适配都可能造成失败，而docker比较固化环境，因此即使一个通用的UI也能很方便的部署出一个Cpeh集群
+本篇就是对Docker UI部署集群做一个实践，对c">
 <meta property="og:type" content="article">
 <meta property="og:title" content="基于Docker UI 配置ceph集群">
 <meta property="og:url" content="http://www.zphj1987.com/2017/03/16/base-on-docker-ui-deploy-ceph/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
-<meta property="og:description" content="前言前一篇介绍了docker在命令行下面进行的ceph部署，本篇用docker的UI进行ceph的部署，目前来说市面上还没有一款能够比较简单就能直接在OS上面去部署Ceph，这是因为OS的环境差异化太大，并且包的版本，以及各种软件的适配都可能造成失败，而docker比较固化环境，因此即使一个通用的UI也能很方便的部署出一个Cpeh集群
-本篇就是对Docker UI部署集群做一个实践，对ceph了解">
+<meta property="og:description" content="前言前一篇介绍了docker在命令行下面进行的ceph部署，本篇用docker的UI进行ceph的部署，目前来说市面上还没有一款能够比较简单就能直接在OS上面去部署Ceph的管理平台，这是因为OS的环境差异化太大，并且包的版本，以及各种软件的适配都可能造成失败，而docker比较固化环境，因此即使一个通用的UI也能很方便的部署出一个Cpeh集群
+本篇就是对Docker UI部署集群做一个实践，对c">
 <meta property="og:image" content="http://7xweck.com1.z0.glb.clouddn.com/docker2.png">
 <meta property="og:image" content="http://static.zybuluo.com/zphj1987/0qlepujxmrt4wqadoa01zfg1/image_1bbb4ogmqu1ir8049n1okfq4j9.png">
 <meta property="og:image" content="http://static.zybuluo.com/zphj1987/6grz7nooae5smur1bcb54lb6/image_1bbb4r1eb1qnj0pcjmsbf1ucgm.png">
@@ -32,8 +32,8 @@
 <meta property="og:image" content="http://static.zybuluo.com/zphj1987/hwganai6phk6q2x5xrowfozc/image_1bbb7ufgk12nj1unpoq5taa1iah9.png">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="基于Docker UI 配置ceph集群">
-<meta name="twitter:description" content="前言前一篇介绍了docker在命令行下面进行的ceph部署，本篇用docker的UI进行ceph的部署，目前来说市面上还没有一款能够比较简单就能直接在OS上面去部署Ceph，这是因为OS的环境差异化太大，并且包的版本，以及各种软件的适配都可能造成失败，而docker比较固化环境，因此即使一个通用的UI也能很方便的部署出一个Cpeh集群
-本篇就是对Docker UI部署集群做一个实践，对ceph了解">
+<meta name="twitter:description" content="前言前一篇介绍了docker在命令行下面进行的ceph部署，本篇用docker的UI进行ceph的部署，目前来说市面上还没有一款能够比较简单就能直接在OS上面去部署Ceph的管理平台，这是因为OS的环境差异化太大，并且包的版本，以及各种软件的适配都可能造成失败，而docker比较固化环境，因此即使一个通用的UI也能很方便的部署出一个Cpeh集群
+本篇就是对Docker UI部署集群做一个实践，对c">
   
     <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
   
@@ -237,7 +237,7 @@
       
         <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/docker2.png" alt=""><br></center>
 
-<h2 id="前言">前言</h2><p>前一篇介绍了docker在命令行下面进行的ceph部署，本篇用docker的UI进行ceph的部署，目前来说市面上还没有一款能够比较简单就能直接在OS上面去部署Ceph，这是因为OS的环境差异化太大，并且包的版本，以及各种软件的适配都可能造成失败，而docker比较固化环境，因此即使一个通用的UI也能很方便的部署出一个Cpeh集群</p>
+<h2 id="前言">前言</h2><p>前一篇介绍了docker在命令行下面进行的ceph部署，本篇用docker的UI进行ceph的部署，目前来说市面上还没有一款能够比较简单就能直接在OS上面去部署Ceph的管理平台，这是因为OS的环境差异化太大，并且包的版本，以及各种软件的适配都可能造成失败，而docker比较固化环境，因此即使一个通用的UI也能很方便的部署出一个Cpeh集群</p>
 <p>本篇就是对Docker UI部署集群做一个实践，对ceph了解，对docker了解，对dokcer的UI操作进行一定的了解的情况下，再做实践会比较好，总体上还是比较简单的<br><a id="more"></a></p>
 <h2 id="安装并运行portainer">安装并运行portainer</h2><h3 id="安装软件">安装软件</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> /opt</span><br><span class="line">wget https://github.com/portainer/portainer/releases/download/<span class="number">1.12</span>.<span class="number">1</span>/portainer-<span class="number">1.12</span>.<span class="number">1</span>-linux-amd64.tar.gz</span><br><span class="line">tar xvpfz portainer-<span class="number">1.12</span>.<span class="number">1</span>-linux-amd64.tar.gz</span><br><span class="line"><span class="built_in">cd</span> portainer</span><br></pre></td></tr></table></figure>
 <h3 id="运行软件">运行软件</h3><figure class="highlight coffeescript"><table><tr><td class="code"><pre><span class="line">.<span class="regexp">/portainer -H unix:/</span><span class="regexp">//</span><span class="reserved">var</span>/run/docker.sock  -p <span class="string">":9999"</span></span><br></pre></td></tr></table></figure>
