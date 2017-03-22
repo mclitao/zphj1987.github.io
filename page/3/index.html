@@ -180,6 +180,70 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-rbd的image快照与Pool快照" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/12/14/rbd的image快照与Pool快照/" class="article-date">
+  	<time datetime="2016-12-14T01:55:51.000Z" itemprop="datePublished">2016-12-14</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/12/14/rbd的image快照与Pool快照/">rbd的image快照与Pool快照</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/storagead.jpg" alt=""><br></center>
+
+<h2 id="前言">前言</h2><p>这个问题是不久前在ceph社区群里看到的，创建image的时候，当时的报错如下：</p>
+<blockquote>
+<p>2016-12-13 23:13:10.266865 7efbfb7fe700 -1 librbd::image::CreateRequest: pool not configured for self-managed RBD snapshot support<br>rbd: create error: (22) Invalid argument</p>
+</blockquote>
+<p>这个错我之前也没见过，并且因为很少用到快照，所以可能也就没有触发这个问题,在查看了一些资料以后，明白了原因，这里就梳理一下<br>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2016/12/14/rbd的image快照与Pool快照/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-Cephfs的快照功能" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -707,66 +771,6 @@
       
         <p class="article-more-link">
           <a  href="/2016/11/14/yum安装Ceph指定Jewel版本/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-预估Ceph集群恢复时间" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/11/10/预估Ceph集群恢复时间/" class="article-date">
-  	<time datetime="2016-11-10T06:52:46.000Z" itemprop="datePublished">2016-11-10</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/11/10/预估Ceph集群恢复时间/">预估Ceph集群恢复时间</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/time-and-money.gif" alt=""><br></center>
-
-<h2 id="一、前言">一、前言</h2><p>本章很简单，就是预估集群恢复的时间,这个地方是简单的通过计算来预估需要恢复的实际，动态的显示<br>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2016/11/10/预估Ceph集群恢复时间/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>
