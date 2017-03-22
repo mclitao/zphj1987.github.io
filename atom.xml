@@ -4,7 +4,7 @@
   <subtitle><![CDATA[但行好事，莫问前程]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2017-03-22T08:33:29.340Z</updated>
+  <updated>2017-03-22T08:37:55.044Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="http://www.zphj1987.com/2017/03/22/ceph-no-distribute-all/"/>
     <id>http://www.zphj1987.com/2017/03/22/ceph-no-distribute-all/</id>
     <published>2017-03-22T07:49:16.000Z</published>
-    <updated>2017-03-22T08:33:29.340Z</updated>
+    <updated>2017-03-22T08:37:55.044Z</updated>
     <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/octopus.png" alt="oct"><br></center>
 
 <h2 id="前言">前言</h2><p>之前看过一个朋友一篇文章，讲述的是Vsan为什么使用的是两副本，而ceph则大多数情况下需要三副本，当时个人观点是这个并不是关键点，但是在仔细考虑了问题的出发点以后，这个也可以说是其中的一个点<br><a id="more"></a><br>一个集群数据丢失可以从多方面去看</p>
@@ -59,6 +59,22 @@
 <p>3、如何扩容<br>扩容就增加条带即可，并且可以把老的存储池规则指定到新的磁盘的条带上面</p>
 <p>4、这个方法还可以用故障域增加可用性么<br>可以的，可以从每个故障域里面抽出OSD即可，只要保证底层的数据不重叠，实际是两个不同的需求</p>
 <h2 id="总结">总结</h2><p>本篇是提供了一种可能性，在实际运行环境当中，可以根据自己的环境进行设计，设计的方法就是，假设一个数据的全部副本都丢了的情况，允许的数据波及范围是多少，如果拆分两份就是波及二分之一，我的测试环境是分成了四个条带，也就是只影响四分之一的数据</p>
+<h2 id="变更记录">变更记录</h2><table>
+<thead>
+<tr>
+<th style="text-align:center">Why</th>
+<th style="text-align:center">Who</th>
+<th style="text-align:center">When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">创建</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2017-03-22</td>
+</tr>
+</tbody>
+</table>
 ]]></content>
     <summary type="html">
     <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/octopus.png" alt="oct"><br></center>
@@ -861,12 +877,12 @@
 </blockquote>
 <p>From <a href="http://docs.ceph.com/docs/master/release-notes/#upgrading-from-infernalis-or-hammer" target="_blank" rel="external">Ceph release notes</a></p>
 <blockquote>
-<p>commit 383185bfbae74797cdb44f50b4bf651422800ff1<br>Author: Sage Weil <a href="&#109;&#97;&#x69;&#108;&#116;&#111;&#x3a;&#x73;&#97;&#103;&#101;&#64;&#114;&#101;&#x64;&#104;&#97;&#116;&#46;&#99;&#111;&#109;">&#x73;&#97;&#103;&#101;&#64;&#114;&#101;&#x64;&#104;&#97;&#116;&#46;&#99;&#111;&#109;</a><br>Date: Fri Aug 7 16:14:09 2015 -0400<br>mon/OSDMonitor: osd set/unset sortbitwise<br> Add monitor command to flip the switch on the OSD hobject_t sort<br> order.</p>
+<p>commit 383185bfbae74797cdb44f50b4bf651422800ff1<br>Author: Sage Weil <a href="&#109;&#x61;&#105;&#108;&#x74;&#111;&#x3a;&#x73;&#x61;&#103;&#x65;&#x40;&#x72;&#101;&#100;&#104;&#97;&#116;&#46;&#99;&#111;&#109;">&#x73;&#x61;&#103;&#x65;&#x40;&#x72;&#101;&#100;&#104;&#97;&#116;&#46;&#99;&#111;&#109;</a><br>Date: Fri Aug 7 16:14:09 2015 -0400<br>mon/OSDMonitor: osd set/unset sortbitwise<br> Add monitor command to flip the switch on the OSD hobject_t sort<br> order.</p>
 </blockquote>
 <p>From git</p>
 <p>第一次在源码中出现:</p>
 <blockquote>
-<p>commit 138f58493715e386929f152424b70df37843541b<br>Author: John Spray <a href="&#109;&#x61;&#x69;&#x6c;&#116;&#x6f;&#58;&#106;&#111;&#104;&#x6e;&#46;&#x73;&#112;&#114;&#97;&#121;&#64;&#114;&#101;&#x64;&#x68;&#x61;&#116;&#46;&#99;&#111;&#x6d;">&#106;&#111;&#104;&#x6e;&#46;&#x73;&#112;&#114;&#97;&#121;&#64;&#114;&#101;&#x64;&#x68;&#x61;&#116;&#46;&#99;&#111;&#x6d;</a><br>Date: Mon Aug 17 14:40:46 2015 -0400<br>osdc/Objecter: new-style pgls<br> Signed-off-by: John Spray <a href="&#x6d;&#97;&#x69;&#x6c;&#x74;&#111;&#58;&#x6a;&#x6f;&#104;&#110;&#46;&#x73;&#112;&#114;&#97;&#121;&#64;&#114;&#101;&#x64;&#x68;&#x61;&#116;&#46;&#x63;&#111;&#x6d;">&#x6a;&#x6f;&#104;&#110;&#46;&#x73;&#112;&#114;&#97;&#121;&#64;&#114;&#101;&#x64;&#x68;&#x61;&#116;&#46;&#x63;&#111;&#x6d;</a><br> Signed-off-by: Sage Weil <a href="&#x6d;&#97;&#105;&#108;&#116;&#x6f;&#58;&#x73;&#97;&#103;&#101;&#64;&#x72;&#101;&#100;&#104;&#97;&#x74;&#x2e;&#99;&#x6f;&#x6d;">&#x73;&#97;&#103;&#101;&#64;&#x72;&#101;&#100;&#104;&#97;&#x74;&#x2e;&#99;&#x6f;&#x6d;</a></p>
+<p>commit 138f58493715e386929f152424b70df37843541b<br>Author: John Spray <a href="&#x6d;&#97;&#x69;&#x6c;&#x74;&#111;&#58;&#106;&#x6f;&#104;&#x6e;&#46;&#x73;&#112;&#x72;&#x61;&#121;&#64;&#x72;&#x65;&#100;&#104;&#97;&#x74;&#x2e;&#99;&#111;&#x6d;">&#106;&#x6f;&#104;&#x6e;&#46;&#x73;&#112;&#x72;&#x61;&#121;&#64;&#x72;&#x65;&#100;&#104;&#97;&#x74;&#x2e;&#99;&#111;&#x6d;</a><br>Date: Mon Aug 17 14:40:46 2015 -0400<br>osdc/Objecter: new-style pgls<br> Signed-off-by: John Spray <a href="&#x6d;&#97;&#105;&#x6c;&#116;&#111;&#x3a;&#x6a;&#111;&#x68;&#x6e;&#46;&#115;&#x70;&#114;&#97;&#121;&#x40;&#x72;&#x65;&#100;&#104;&#97;&#116;&#x2e;&#x63;&#x6f;&#109;">&#x6a;&#111;&#x68;&#x6e;&#46;&#115;&#x70;&#114;&#97;&#121;&#x40;&#x72;&#x65;&#100;&#104;&#97;&#116;&#x2e;&#x63;&#x6f;&#109;</a><br> Signed-off-by: Sage Weil <a href="&#109;&#97;&#105;&#108;&#x74;&#x6f;&#58;&#115;&#x61;&#x67;&#x65;&#64;&#x72;&#x65;&#x64;&#104;&#x61;&#116;&#x2e;&#99;&#111;&#x6d;">&#115;&#x61;&#x67;&#x65;&#64;&#x72;&#x65;&#x64;&#104;&#x61;&#116;&#x2e;&#99;&#111;&#x6d;</a></p>
 </blockquote>
 <p>From git</p>
 <p>Related github issue: <a href="https://github.com/ceph/ceph/pull/4919/commits" target="_blank" rel="external">https://github.com/ceph/ceph/pull/4919/commits</a></p>

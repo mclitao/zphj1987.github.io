@@ -256,6 +256,22 @@
 <p>3、如何扩容<br>扩容就增加条带即可，并且可以把老的存储池规则指定到新的磁盘的条带上面</p>
 <p>4、这个方法还可以用故障域增加可用性么<br>可以的，可以从每个故障域里面抽出OSD即可，只要保证底层的数据不重叠，实际是两个不同的需求</p>
 <h2 id="总结">总结</h2><p>本篇是提供了一种可能性，在实际运行环境当中，可以根据自己的环境进行设计，设计的方法就是，假设一个数据的全部副本都丢了的情况，允许的数据波及范围是多少，如果拆分两份就是波及二分之一，我的测试环境是分成了四个条带，也就是只影响四分之一的数据</p>
+<h2 id="变更记录">变更记录</h2><table>
+<thead>
+<tr>
+<th style="text-align:center">Why</th>
+<th style="text-align:center">Who</th>
+<th style="text-align:center">When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">创建</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2017-03-22</td>
+</tr>
+</tbody>
+</table>
 
       
     </div>
