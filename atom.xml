@@ -4,7 +4,7 @@
   <subtitle><![CDATA[但行好事，莫问前程]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2017-03-22T09:02:35.391Z</updated>
+  <updated>2017-03-23T15:08:10.520Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -13,6 +13,66 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[编译的Ceph二进制文件过大问题]]></title>
+    <link href="http://www.zphj1987.com/2017/03/23/compile-ceph-binary-big/"/>
+    <id>http://www.zphj1987.com/2017/03/23/compile-ceph-binary-big/</id>
+    <published>2017-03-23T15:01:23.000Z</published>
+    <updated>2017-03-23T15:08:10.520Z</updated>
+    <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/codebug.jpg" alt="binary"><br></center>
+
+<h2 id="前言">前言</h2><p>在ceph的研发群里看到一个cepher提出一个问题，编译的ceph的二进制文件过大，因为我一直用的打包好的rpm包，没有关注这个问题，重新编译了一遍发现确实有这个问题</p>
+<p>本篇就是记录如何解决这个问题的<br><a id="more"></a></p>
+<h2 id="打rpm包的方式">打rpm包的方式</h2><p>用我自己的环境编译的时候发现一个问题，编译出来的rpm包还是很大，开始怀疑是机器的原因，换了一台发现二进制包就很小了，然后查询了很多资料以后，找到了问题所在</p>
+<p>在打rpm包的时候可以通过宏变量去控制是否打出一个的debug的包，这个包的作用就是把二进制文件当中包含的debug的相关的全部抽离出来形成一个新的rpm包，而我的环境不知道什么时候在/root/.rpmmacros添加进去了一个<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">d%ebug_package      %&#123;nil&#125;</span><br></pre></td></tr></table></figure></p>
+<p>搜寻资料后确定就是这个的问题,这个变量添加了以后，在打包的时候就不会进行debug相关包的剥离，然后打出的包就是巨大的，可以这样检查自己的rpmbuild的宏变量信息<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@host1 ceph-<span class="number">10.2</span>.<span class="number">6</span>]<span class="comment">#  rpmbuild --showrc|grep debug_package</span></span><br><span class="line">    %&#123;!?__debug_package:</span><br><span class="line">    %&#123;?__debug_package:%&#123;__debug_install_post&#125;&#125;</span><br><span class="line">-<span class="number">14</span>: _<span class="built_in">enable</span>_debug_packages	<span class="number">1</span></span><br><span class="line">-<span class="number">14</span>: debug_package	</span><br><span class="line">%global __debug_package <span class="number">1</span></span><br><span class="line">-<span class="number">14</span>: install	%&#123;?_<span class="built_in">enable</span>_debug_packages:%&#123;?buildsubdir:%&#123;debug_package&#125;&#125;&#125;</span><br></pre></td></tr></table></figure></p>
+<p>如果开启了debug包抽离（默认就是开启的），那么rpmbuild在打包的过程中会有个调用<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/usr/lib/rpm/find-debuginfo.sh --strict-build-id -m --run-dwz --dwz-low-mem-die-limit <span class="number">10000000</span> --dwz-max-die-limit <span class="number">110000000</span> /root/rpmbuild/BUILD/ceph-<span class="number">10.2</span>.<span class="number">5</span></span><br></pre></td></tr></table></figure></p>
+<p>这个就是rpmbuild过程中，进行抽离debug信息的操作，也就是缩小二进制的过程，这个并不能直接执行命令，需要用rpmbuild -bb ceph.spec 打包的时候内部自动进行调用的</p>
+<p>上面是rpm打包过程中进行的二进制缩小，那么如果我们是源码编译安装时候，如何缩小这个二进制，答案当然是可以的</p>
+<h2 id="源码编译安装的方式">源码编译安装的方式</h2><p>./configure 后make生成的二进制文件就在./src下面了<br>我们以ceph-mon为例进行抽离</p>
+<p>这个-O3并没有影响到太多的生成的二进制的大小，—with-debug会有一定的影响，关键还是strip的这个操作<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./configure --with-debug  CXXFLAGS=-O3 CFLAGS=-O3 CCASFLAGS=-O3</span><br></pre></td></tr></table></figure></p>
+<p>所以默认的就行</p>
+<p>如果整体进行安装就使用make install-strip安装即可<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@host1 ceph-<span class="number">10.2</span>.<span class="number">6</span>]<span class="comment"># make install-strip</span></span><br><span class="line">[root@host1 ceph-<span class="number">10.2</span>.<span class="number">6</span>]<span class="comment"># ll /usr/local/bin/ceph-osd</span></span><br><span class="line">-rwxr-xr-x <span class="number">1</span> root root <span class="number">14266576</span> Mar <span class="number">23</span> <span class="number">17</span>:<span class="number">57</span> /usr/<span class="built_in">local</span>/bin/ceph-osd</span><br><span class="line">[root@host1 ceph-<span class="number">10.2</span>.<span class="number">6</span>]<span class="comment"># ll /usr/local/bin/ceph-osd -hl</span></span><br><span class="line">-rwxr-xr-x <span class="number">1</span> root root <span class="number">14</span>M Mar <span class="number">23</span> <span class="number">17</span>:<span class="number">57</span> /usr/<span class="built_in">local</span>/bin/ceph-osd</span><br><span class="line">[root@host1 ceph-<span class="number">10.2</span>.<span class="number">6</span>]<span class="comment"># ll src/ceph-osd -hl</span></span><br><span class="line">-rwxr-xr-x <span class="number">1</span> root root <span class="number">248</span>M Mar <span class="number">23</span> <span class="number">17</span>:<span class="number">54</span> src/ceph-osd</span><br></pre></td></tr></table></figure></p>
+<h2 id="关键的strip的用法">关键的strip的用法</h2><p>gcc编译的时候带上-g参数,就是添加了debug的信息</p>
+<blockquote>
+<p>gcc -g -o</p>
+</blockquote>
+<h3 id="分离debug_information">分离debug information</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@host1 ceph-<span class="number">10.2</span>.<span class="number">6</span>]<span class="comment">#objcopy --only-keep-debug src/ceph-osd src/ceph-osd.debug</span></span><br><span class="line">[root@host1 ceph-<span class="number">10.2</span>.<span class="number">6</span>]<span class="comment"># ll src/ceph-osd -hl</span></span><br><span class="line">-rwxr-xr-x <span class="number">1</span> root root <span class="number">248</span>M Mar <span class="number">23</span> <span class="number">17</span>:<span class="number">54</span> src/ceph-osd</span><br><span class="line">[root@host1 ceph-<span class="number">10.2</span>.<span class="number">6</span>]<span class="comment"># ll src/ceph-osd.debug -hl</span></span><br><span class="line">-rwxr-xr-x <span class="number">1</span> root root <span class="number">235</span>M Mar <span class="number">23</span> <span class="number">18</span>:<span class="number">08</span> src/ceph-osd.debug</span><br></pre></td></tr></table></figure>
+<p>另外一种方法：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@host1 ceph-<span class="number">10.2</span>.<span class="number">6</span>]<span class="comment"># cp src/ceph-osd src/ceph-osd.debug</span></span><br><span class="line">[root@host1 ceph-<span class="number">10.2</span>.<span class="number">6</span>]<span class="comment"># strip --only-keep-debug src/ceph-osd.debug</span></span><br><span class="line">[root@host1 ceph-<span class="number">10.2</span>.<span class="number">6</span>]<span class="comment"># ll src/ceph-osd.debug -hl</span></span><br><span class="line">-rwxr-xr-x <span class="number">1</span> root root <span class="number">235</span>M Mar <span class="number">23</span> <span class="number">18</span>:<span class="number">10</span> src/ceph-osd.debug</span><br></pre></td></tr></table></figure></p>
+<h3 id="从原始文件去掉_debug_information">从原始文件去掉 debug information</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@host1 ceph-<span class="number">10.2</span>.<span class="number">6</span>]<span class="comment"># objcopy --strip-debug src/ceph-osd</span></span><br><span class="line">[root@host1 ceph-<span class="number">10.2</span>.<span class="number">6</span>]<span class="comment"># ll src/ceph-osd -hl</span></span><br><span class="line">-rwxr-xr-x <span class="number">1</span> root root <span class="number">18</span>M Mar <span class="number">23</span> <span class="number">18</span>:<span class="number">11</span> src/ceph-osd</span><br><span class="line">objcopy --strip-debug main</span><br></pre></td></tr></table></figure>
+<p>另外一种方法：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@host1 ceph-<span class="number">10.2</span>.<span class="number">6</span>]<span class="comment"># strip --strip-debug --strip-unneeded src/ceph-osd</span></span><br><span class="line">[root@host1 ceph-<span class="number">10.2</span>.<span class="number">6</span>]<span class="comment"># ll src/ceph-osd -hl</span></span><br><span class="line">-rwxr-xr-x <span class="number">1</span> root root <span class="number">14</span>M Mar <span class="number">23</span> <span class="number">18</span>:<span class="number">12</span> src/ceph-osd</span><br></pre></td></tr></table></figure></p>
+<h3 id="启用debuglink模式">启用debuglink模式</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@host1 ceph-<span class="number">10.2</span>.<span class="number">6</span>]<span class="comment"># objcopy --add-gnu-debuglink  src/ceph-osd.debug src/ceph-osd</span></span><br><span class="line">[root@host1 ceph-<span class="number">10.2</span>.<span class="number">6</span>]<span class="comment"># gdb src/ceph-osd</span></span><br></pre></td></tr></table></figure>
+<p>或者<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@host1 ceph-<span class="number">10.2</span>.<span class="number">6</span>]<span class="comment"># gdb -s src/ceph-osd.debug -e src/ceph-osd</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="总结">总结</h2><p>二进制包里面包含了debug的一些相关信息，可以通过strip的方式将内部的debug内容清理掉，这样就可以得到比较小的二进制包了</p>
+<h2 id="变更记录">变更记录</h2><table>
+<thead>
+<tr>
+<th style="text-align:center">Why</th>
+<th style="text-align:center">Who</th>
+<th style="text-align:center">When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">创建</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2017-03-23</td>
+</tr>
+</tbody>
+</table>
+]]></content>
+    <summary type="html">
+    <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/codebug.jpg" alt="binary"><br></center>
+
+<h2 id="前言">前言</h2><p>在ceph的研发群里看到一个cepher提出一个问题，编译的ceph的二进制文件过大，因为我一直用的打包好的rpm包，没有关注这个问题，重新编译了一遍发现确实有这个问题</p>
+<p>本篇就是记录如何解决这个问题的<br>]]>
+    
+    </summary>
+    
+      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[Ceph实现数据的'不拆分']]></title>
@@ -877,12 +937,12 @@
 </blockquote>
 <p>From <a href="http://docs.ceph.com/docs/master/release-notes/#upgrading-from-infernalis-or-hammer" target="_blank" rel="external">Ceph release notes</a></p>
 <blockquote>
-<p>commit 383185bfbae74797cdb44f50b4bf651422800ff1<br>Author: Sage Weil <a href="&#109;&#x61;&#105;&#108;&#116;&#111;&#58;&#x73;&#x61;&#x67;&#101;&#x40;&#x72;&#x65;&#x64;&#104;&#97;&#x74;&#x2e;&#99;&#111;&#109;">&#x73;&#x61;&#x67;&#101;&#x40;&#x72;&#x65;&#x64;&#104;&#97;&#x74;&#x2e;&#99;&#111;&#109;</a><br>Date: Fri Aug 7 16:14:09 2015 -0400<br>mon/OSDMonitor: osd set/unset sortbitwise<br> Add monitor command to flip the switch on the OSD hobject_t sort<br> order.</p>
+<p>commit 383185bfbae74797cdb44f50b4bf651422800ff1<br>Author: Sage Weil <a href="&#109;&#97;&#x69;&#108;&#x74;&#111;&#58;&#x73;&#x61;&#103;&#x65;&#x40;&#x72;&#101;&#x64;&#104;&#97;&#x74;&#46;&#99;&#111;&#109;">&#x73;&#x61;&#103;&#x65;&#x40;&#x72;&#101;&#x64;&#104;&#97;&#x74;&#46;&#99;&#111;&#109;</a><br>Date: Fri Aug 7 16:14:09 2015 -0400<br>mon/OSDMonitor: osd set/unset sortbitwise<br> Add monitor command to flip the switch on the OSD hobject_t sort<br> order.</p>
 </blockquote>
 <p>From git</p>
 <p>第一次在源码中出现:</p>
 <blockquote>
-<p>commit 138f58493715e386929f152424b70df37843541b<br>Author: John Spray <a href="&#x6d;&#97;&#105;&#108;&#116;&#x6f;&#x3a;&#x6a;&#x6f;&#104;&#x6e;&#x2e;&#115;&#x70;&#x72;&#97;&#x79;&#64;&#114;&#x65;&#x64;&#104;&#97;&#x74;&#46;&#99;&#111;&#x6d;">&#x6a;&#x6f;&#104;&#x6e;&#x2e;&#115;&#x70;&#x72;&#97;&#x79;&#64;&#114;&#x65;&#x64;&#104;&#97;&#x74;&#46;&#99;&#111;&#x6d;</a><br>Date: Mon Aug 17 14:40:46 2015 -0400<br>osdc/Objecter: new-style pgls<br> Signed-off-by: John Spray <a href="&#x6d;&#x61;&#x69;&#x6c;&#x74;&#x6f;&#x3a;&#x6a;&#x6f;&#x68;&#x6e;&#x2e;&#115;&#112;&#114;&#x61;&#x79;&#64;&#114;&#x65;&#100;&#104;&#x61;&#x74;&#46;&#99;&#111;&#109;">&#x6a;&#x6f;&#x68;&#x6e;&#x2e;&#115;&#112;&#114;&#x61;&#x79;&#64;&#114;&#x65;&#100;&#104;&#x61;&#x74;&#46;&#99;&#111;&#109;</a><br> Signed-off-by: Sage Weil <a href="&#109;&#97;&#x69;&#x6c;&#x74;&#x6f;&#x3a;&#115;&#x61;&#x67;&#x65;&#64;&#114;&#101;&#100;&#x68;&#97;&#116;&#46;&#99;&#x6f;&#109;">&#115;&#x61;&#x67;&#x65;&#64;&#114;&#101;&#100;&#x68;&#97;&#116;&#46;&#99;&#x6f;&#109;</a></p>
+<p>commit 138f58493715e386929f152424b70df37843541b<br>Author: John Spray <a href="&#109;&#x61;&#x69;&#x6c;&#x74;&#x6f;&#x3a;&#x6a;&#x6f;&#104;&#110;&#46;&#115;&#112;&#x72;&#x61;&#121;&#x40;&#x72;&#x65;&#100;&#x68;&#x61;&#116;&#46;&#x63;&#111;&#x6d;">&#x6a;&#x6f;&#104;&#110;&#46;&#115;&#112;&#x72;&#x61;&#121;&#x40;&#x72;&#x65;&#100;&#x68;&#x61;&#116;&#46;&#x63;&#111;&#x6d;</a><br>Date: Mon Aug 17 14:40:46 2015 -0400<br>osdc/Objecter: new-style pgls<br> Signed-off-by: John Spray <a href="&#x6d;&#97;&#105;&#x6c;&#x74;&#111;&#x3a;&#x6a;&#111;&#104;&#x6e;&#x2e;&#x73;&#112;&#x72;&#97;&#x79;&#64;&#114;&#x65;&#x64;&#104;&#x61;&#116;&#x2e;&#x63;&#x6f;&#109;">&#x6a;&#111;&#104;&#x6e;&#x2e;&#x73;&#112;&#x72;&#97;&#x79;&#64;&#114;&#x65;&#x64;&#104;&#x61;&#116;&#x2e;&#x63;&#x6f;&#109;</a><br> Signed-off-by: Sage Weil <a href="&#x6d;&#x61;&#105;&#108;&#x74;&#111;&#x3a;&#x73;&#x61;&#x67;&#101;&#64;&#x72;&#101;&#x64;&#104;&#x61;&#116;&#x2e;&#99;&#x6f;&#x6d;">&#x73;&#x61;&#x67;&#101;&#64;&#x72;&#101;&#x64;&#104;&#x61;&#116;&#x2e;&#99;&#x6f;&#x6d;</a></p>
 </blockquote>
 <p>From git</p>
 <p>Related github issue: <a href="https://github.com/ceph/ceph/pull/4919/commits" target="_blank" rel="external">https://github.com/ceph/ceph/pull/4919/commits</a></p>
@@ -1295,57 +1355,6 @@
 
 <h2 id="前言">前言</h2><p>在Centos7 下，现在采用了 systemctl来控制服务，这个刚开始用起来可能不太习惯，不过这个服务比之前的服务控制要强大的多，可以做更多的控制，本节将来介绍下关于 Ceph的 osd 磁盘挂载的问题</p>
 <p>很多人部署以后，发现在Centos7下用Jewel的时候没有去写fstab也没有写配置文件，重启服务器一样能够挂载起来了，关于这个有另外一篇文章：「<a href="http://www.zphj1987.com/2016/03/31/ceph%E5%9C%A8centos7%E4%B8%8B%E4%B8%80%E4%B8%AA%E4%B8%8D%E5%AE%B9%E6%98%93%E5%8F%91%E7%8E%B0%E7%9A%84%E6%94%B9%E5%8F%98/">ceph在centos7下一个不容易发现的改变</a>」<br>]]>
-    
-    </summary>
-    
-      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[cephonebox发布]]></title>
-    <link href="http://www.zphj1987.com/2016/12/18/cephonebox%E5%8F%91%E5%B8%83/"/>
-    <id>http://www.zphj1987.com/2016/12/18/cephonebox发布/</id>
-    <published>2016-12-18T14:25:48.000Z</published>
-    <updated>2017-02-03T05:28:09.726Z</updated>
-    <content type="html"><![CDATA[<center><br><img src="http://7xo9we.com1.z0.glb.clouddn.com/shipin/cephoneboxpre3.jpg" alt=""><br></center>
-
-<h2 id="前言">前言</h2><p>现在已经是2016年收官的一个月了，之前一直想做一个calamari的集成版本，之所以有这个想法，是因为，即使在已经打好包的情况下，因为各种软件版本的原因，造成很多人无法配置成功，calamari发布以后，因为版本的更迭，经常出现软件版本引起的BUG<br><a id="more"></a><br>这里直接把需要的软件集成在一起了，按照本篇指导，一步一步是能够很简单的配置起来的，并且提供了一个视频的指导，应该能够很大程度上降低calamari的部署难度，希望能够帮助到更多的人</p>
-<h2 id="集成软件版本说明">集成软件版本说明</h2><h3 id="操作系统_Centos_7-3">操作系统 Centos 7.3</h3><p>之所以选择这个版本是因为这个是最新发布的，centos小版本的发布能够解决一些BUG，并且不会做很大的改动，并且能够让这个集成系统保持一定的生命周期</p>
-<h3 id="ceph">ceph</h3><p>ceph采用的是Jewel版本的10.2.5，这个是最新发布的，因为Jewel版本是一个长期支持版本，并且小版本号已经到5了，已经在一定程度上达到了稳定</p>
-<h3 id="calamari">calamari</h3><p>calamari采用的是1.3版本，因为calamari要做新的接口，基本上这个就是当前系统的最后的一个稳定版本，集成的版本适配Jewel版本接口名称的变化<br>集成版本的diamond解决了无法获取iops的BUG</p>
-<h2 id="视频演示教程">视频演示教程</h2><div class="video-container"><object><video play="false" poster="http://7xo9we.com1.z0.glb.clouddn.com/shipin/cephoneboxpre2.jpg" src="http://7xo9we.com1.z0.glb.clouddn.com/shipin/cephonebox.mp4" controls="controls"></video></object></div>
-
-<h2 id="配置教程">配置教程</h2><h3 id="获取ISO">获取ISO</h3><p>地址如下：<br>链接：<a href="http://pan.baidu.com/s/1cimGYa" target="_blank" rel="external">http://pan.baidu.com/s/1cimGYa</a> 密码：1bs6<br>大小为811M</p>
-<p>安装完成后默认：<br>用户名为root ,密码为123456</p>
-<h3 id="安装操作系统">安装操作系统</h3><p>本系统是定制的系统，默认本地硬盘启动，选择到第二项进行安装<br>需要配置的地方：</p>
-<ul>
-<li>配置磁盘分区 </li>
-<li>配置主机名和IP</li>
-</ul>
-<h3 id="进行ceph集群的配置">进行ceph集群的配置</h3><p>这个地方可以参考网上的教程进行配置，或者已经有的集群就可以直接跳过这步，这里不做过多的讲解</p>
-<h3 id="配置calamari">配置calamari</h3><p>安装好机器后，在服务器上进行calamari的初始化<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">calamari-ctl  initialize</span><br></pre></td></tr></table></figure></p>
-<p>输入用户名，和密码 ，这个是用于登录web的用户名密码</p>
-<h3 id="配置集群到calamari的连接">配置集群到calamari的连接</h3><p>集群到calamari连接一共有两个地方，一个是diamond来采集一些监控信息，一个是salt-minion来采集集群的一些信息以及接收控制</p>
-<h4 id="修改diamond-conf">修改diamond.conf</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cp /etc/diamond/diamond.conf.example /etc/diamond/diamond.conf</span><br></pre></td></tr></table></figure>
-<p>然后修改/etc/diamond/diamond.conf<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[[GraphiteHandler]]</span><br><span class="line"><span class="comment">### Options for GraphiteHandler</span></span><br><span class="line"><span class="comment"># Graphite server host</span></span><br><span class="line">host = graphite</span><br><span class="line"><span class="comment"># Port to send metrics to</span></span><br><span class="line">port = <span class="number">2003</span></span><br><span class="line"><span class="comment"># Socket timeout (seconds)</span></span><br><span class="line">timeout = <span class="number">15</span></span><br><span class="line"><span class="comment"># Batch size for metrics</span></span><br><span class="line">batch = <span class="number">1</span></span><br></pre></td></tr></table></figure></p>
-<p>修改为：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[[GraphiteHandler]]</span><br><span class="line"><span class="comment">### Options for GraphiteHandler</span></span><br><span class="line"><span class="comment"># Graphite server host</span></span><br><span class="line">host = cephoneweb</span><br><span class="line"><span class="comment"># Port to send metrics to</span></span><br><span class="line">port = <span class="number">2003</span></span><br><span class="line"><span class="comment"># Socket timeout (seconds)</span></span><br><span class="line">timeout = <span class="number">15</span></span><br><span class="line"><span class="comment"># Batch size for metrics</span></span><br><span class="line">batch = <span class="number">1</span></span><br></pre></td></tr></table></figure></p>
-<p>修改集群节点的这个配置文件当中的上面的host字段的主机名为运行calamariweb机器的主机名</p>
-<blockquote>
-<p>注意要在集群节点的hosts文件当中配置好calamari的web的主机名和IP的对应关系</p>
-</blockquote>
-<p>重启diamond<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">systemctl restart diamond</span><br></pre></td></tr></table></figure></p>
-<h4 id="修改/etc/salt/minion">修改/etc/salt/minion</h4><p>修改下面的master后面字段为cephoneweb的主机名<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Set the location of the salt master server. If the master server cannot be</span></span><br><span class="line"><span class="comment"># resolved, then the minion will fail to start.</span></span><br><span class="line">master: cephoneweb</span><br></pre></td></tr></table></figure></p>
-<p>重启salt-minion<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">systemctl restart salt-minion</span><br></pre></td></tr></table></figure></p>
-<h3 id="访问WEB">访问WEB</h3><p>配置已经完成通过web 访问cephoneweb的IP即可</p>
-<h2 id="故障处理">故障处理</h2><center><br><img src="http://static.zybuluo.com/zphj1987/ui9hlsqffofb26ofgz7zz6i7/%E6%95%85%E9%9A%9C%E4%B8%80%E5%A4%84%E7%90%86.jpg" alt="故障一处理.jpg-42.6kB"><br></center><br><center><br><img src="http://static.zybuluo.com/zphj1987/wwwynt1mzipi2knbkmj8x8w4/%E6%95%85%E9%9A%9C%E4%BA%8C%E5%A4%84%E7%90%86.jpg" alt="故障二处理.jpg-54.8kB"><br></center>
-
-
-]]></content>
-    <summary type="html">
-    <![CDATA[<center><br><img src="http://7xo9we.com1.z0.glb.clouddn.com/shipin/cephoneboxpre3.jpg" alt=""><br></center>
-
-<h2 id="前言">前言</h2><p>现在已经是2016年收官的一个月了，之前一直想做一个calamari的集成版本，之所以有这个想法，是因为，即使在已经打好包的情况下，因为各种软件版本的原因，造成很多人无法配置成功，calamari发布以后，因为版本的更迭，经常出现软件版本引起的BUG<br>]]>
     
     </summary>
     
