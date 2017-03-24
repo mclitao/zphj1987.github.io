@@ -176,6 +176,65 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-linux绑定盘符" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/03/24/linux绑定盘符/" class="article-date">
+  	<time datetime="2015-03-24T05:25:22.000Z" itemprop="datePublished">2015-03-24</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/03/24/linux绑定盘符/">linux绑定盘符</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@centos6 ~]<span class="comment"># udevadm info -q path -n /dev/sdb</span></span><br><span class="line">[root@centos6 ~]<span class="comment"># udevadm info -q path -n /dev/sdc</span></span><br><span class="line">/devices/pci0000:<span class="number">00</span>/<span class="number">0000</span>:<span class="number">00</span>:<span class="number">10.0</span>/host2/target2:<span class="number">0</span>:<span class="number">1</span>/<span class="number">2</span>:<span class="number">0</span>:<span class="number">1</span>:<span class="number">0</span>/block/sdc</span><br></pre></td></tr></table></figure>
+<p>拿到编号<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@centos6 ~]<span class="comment"># vim /etc/udev/rules.d/80-mydisk.rules</span></span><br></pre></td></tr></table></figure></p>
+<p>增加<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">DEVPATH==<span class="string">"/devices/pci0000:00/0000:00:10.0/host2/target2:0:2/2:0:2:0/block/sd*"</span>, NAME=<span class="string">"sdc"</span>, MODE=<span class="string">"0660"</span></span><br></pre></td></tr></table></figure></p>
+<p>这样对应的插槽的第二个就会一直对应盘符sdc 而不会出现跳盘符的问题了</p>
+<p>写于: 2014年11月07日<br>更新于: 2015年03月24日</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-让磁盘硬盘灯常闪定位盘" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -681,65 +740,6 @@
       
 	<div class="article-tag tagcloud">
 		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ubuntu/">ubuntu</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-nginx开启目录浏览" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/03/24/nginx开启目录浏览/" class="article-date">
-  	<time datetime="2015-03-24T00:04:52.000Z" itemprop="datePublished">2015-03-24</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/03/24/nginx开启目录浏览/">nginx开启目录浏览</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>使用nginx作为下载站点,开启目录浏览的功能<br>在/etc/nginx/sites-enabled/default中添加:<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">autoindex on ;&#10;autoindex_exact_size off;&#10;autoindex_localtime on;</span><br></pre></td></tr></table></figure></p>
-<p>说明:</p>
-<p>第一个为目录浏览功能开始<br>第二个为不精确计算文件大小<br>第三个为取时间为服务器本地的时间</p>
-<p>删除location相关的内容<br>修改完成重启nginx服务</p>
-<p>写于: 2014年07月16日<br>更新于: 2015年03月24日</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nginx/">nginx</a></li></ul>
 	</div>
 
       
