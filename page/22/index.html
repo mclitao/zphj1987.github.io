@@ -176,6 +176,63 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-alias重启终端失效的问题" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/03/21/alias重启终端失效的问题/" class="article-date">
+  	<time datetime="2015-03-21T10:26:09.000Z" itemprop="datePublished">2015-03-21</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/03/21/alias重启终端失效的问题/">alias重启终端失效的问题</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>如果使用命令:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">alias</span> xx=<span class="string">'xxxx'</span></span><br></pre></td></tr></table></figure></p>
+<p>那么登出以后,别名就会失效。下次登入的时候就不能用了。<br>为了保持别名可以把它写入 /root/.bashrc<br>在.bashrc的最后写入想要的别名,比如:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">alias</span> zp=<span class="string">'ll -al'</span></span><br></pre></td></tr></table></figure>
+<p>然后退出,重新登入的时候就可以用了。<br>或者直接运行命令</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">source</span> ~/.bashrc</span><br></pre></td></tr></table></figure>
+<p>这样不用重新登入就可以使用了。</p>
+<p>写于: 2011年12月22日<br>更新于: 2015年03月21日</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-CTDB与LVS搭建集群" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">

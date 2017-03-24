@@ -176,6 +176,67 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-from-hammerto-jewel-update-by-qinmuyang" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/03/24/from-hammerto-jewel-update-by-qinmuyang/" class="article-date">
+  	<time datetime="2017-03-24T08:11:03.000Z" itemprop="datePublished">2017-03-24</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/03/24/from-hammerto-jewel-update-by-qinmuyang/">从hammer到jewel的RGW升级实战-by秦牧羊</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/update.gif" alt=""><br></center>
+
+<h2 id="前言">前言</h2><p>本篇来自秦牧羊的一篇分享，讲述的是从hammer升级到jewel的过程，以及其中的一些故障的处理，是一篇非常详细的实战分享</p>
+<h2 id="初始状态">初始状态</h2><h3 id="pool状态">pool状态</h3><figure class="highlight asciidoc"><table><tr><td class="code"><pre><span class="line">root@demo:/home/demouser# rados lspools</span><br><span class="line">rbd</span><br><span class="line"><span class="title">.cn.rgw.root</span></span><br><span class="line"><span class="title">.cn-zone1.rgw.root</span></span><br><span class="line"><span class="title">.cn-zone1.rgw.domain</span></span><br><span class="line"><span class="title">.cn-zone1.rgw.control</span></span><br><span class="line"><span class="title">.cn-zone1.rgw.gc</span></span><br><span class="line"><span class="title">.cn-zone1.rgw.buckets.index</span></span><br><span class="line"><span class="title">.cn-zone1.rgw.buckets.extra</span></span><br><span class="line"><span class="title">.cn-zone1.rgw.buckets</span></span><br><span class="line"><span class="title">.cn-zone1.log</span></span><br><span class="line"><span class="title">.cn-zone1.intent-log</span></span><br><span class="line"><span class="title">.cn-zone1.usage</span></span><br><span class="line"><span class="title">.cn-zone1.users</span></span><br><span class="line"><span class="title">.cn-zone1.users.email</span></span><br><span class="line"><span class="title">.cn-zone1.users.swift</span></span><br><span class="line"><span class="title">.cn-zone1.users.uid</span></span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2017/03/24/from-hammerto-jewel-update-by-qinmuyang/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-small-file-test-prepare" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -702,67 +763,6 @@
       
         <p class="article-more-link">
           <a  href="/2017/02/10/word-to-motion/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-预估ceph的迁移数据量" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/02/08/预估ceph的迁移数据量/" class="article-date">
-  	<time datetime="2017-02-08T15:52:02.000Z" itemprop="datePublished">2017-02-08</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/02/08/预估ceph的迁移数据量/">预估ceph的迁移数据量</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/calculator.png" alt="cal"><br></center>
-
-<h2 id="引言">引言</h2><p>我们在进行 ceph 的 osd 的增加和减少的维护的时候，会碰到迁移数据，但是我们平时会怎么去回答关于迁移数据量的问题，一般来说，都是说很多，或者说根据环境来看，有没有精确的一个说法，到底要迁移多少数据?这个我以前也有思考过这个问题，当时想是对比前后的pg的分布，然后进行计算，正好在翻一些资料的时候，看到有alram写的一篇博客，alram是Inktank的程序员，也就是sage所在的公司，程序是一个python脚本，本篇会分析下这个对比的思路，以及运行效果</p>
-<p>计算迁移量只需要一个修改后的crushmap就可以了，这个是离线计算的，所以不会对集群有什么影响<br>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2017/02/08/预估ceph的迁移数据量/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>
