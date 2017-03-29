@@ -3,21 +3,18 @@
 <head>
   <meta charset="utf-8">
   
-  <title>&#39;sortbitwise&#39;是什么意思 | zphj1987&#39;Blog</title>
+  <title>Ceph如何实现文件系统的横向扩展 | zphj1987&#39;Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="问题flag sortbitwise 在ceph中是什么意思,在Jewel版本下可以看到多了这个flags
-[root@lab8106 current]# ceph -s    cluster ffe7a8db-c671-4b45-a784-ddb41e633905     health HEALTH_OK     monmap e1: 1 mons at &amp;#123;lab8106=192.16">
+  <meta name="description" content="前言在跟一个朋友聊天的时候，聊到一个技术问题，他们的一个环境上面小文件巨多，是我目前知道的集群里面规模算非常大的了，但是目前有个问题，一方面会进行一倍的硬件的扩容，而文件的数量也在剧烈的增长着，所以有没有什么办法来 缓解这个增长的压力">
 <meta property="og:type" content="article">
-<meta property="og:title" content="'sortbitwise'是什么意思">
-<meta property="og:url" content="http://www.zphj1987.com/2017/01/12/sortbitwise-mean/index.html">
+<meta property="og:title" content="Ceph如何实现文件系统的横向扩展">
+<meta property="og:url" content="http://www.zphj1987.com/2017/03/29/Ceph-filesystem-scaleout/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
-<meta property="og:description" content="问题flag sortbitwise 在ceph中是什么意思,在Jewel版本下可以看到多了这个flags
-[root@lab8106 current]# ceph -s    cluster ffe7a8db-c671-4b45-a784-ddb41e633905     health HEALTH_OK     monmap e1: 1 mons at &amp;#123;lab8106=192.16">
-<meta property="og:image" content="http://7xweck.com1.z0.glb.clouddn.com/techie.jpg">
+<meta property="og:description" content="前言在跟一个朋友聊天的时候，聊到一个技术问题，他们的一个环境上面小文件巨多，是我目前知道的集群里面规模算非常大的了，但是目前有个问题，一方面会进行一倍的硬件的扩容，而文件的数量也在剧烈的增长着，所以有没有什么办法来 缓解这个增长的压力">
+<meta property="og:image" content="http://static.zybuluo.com/zphj1987/uzqsgxsxm5wo4q1u142sv9ou/box.jpg">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="'sortbitwise'是什么意思">
-<meta name="twitter:description" content="问题flag sortbitwise 在ceph中是什么意思,在Jewel版本下可以看到多了这个flags
-[root@lab8106 current]# ceph -s    cluster ffe7a8db-c671-4b45-a784-ddb41e633905     health HEALTH_OK     monmap e1: 1 mons at &amp;#123;lab8106=192.16">
+<meta name="twitter:title" content="Ceph如何实现文件系统的横向扩展">
+<meta name="twitter:description" content="前言在跟一个朋友聊天的时候，聊到一个技术问题，他们的一个环境上面小文件巨多，是我目前知道的集群里面规模算非常大的了，但是目前有个问题，一方面会进行一倍的硬件的扩容，而文件的数量也在剧烈的增长着，所以有没有什么办法来 缓解这个增长的压力">
   
     <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
   
@@ -178,11 +175,11 @@
 		</header>				
 	</div>
 </nav>
-      <div class="body-wrap"><article id="post-sortbitwise-mean" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-Ceph-filesystem-scaleout" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/01/12/sortbitwise-mean/" class="article-date">
-  	<time datetime="2017-01-12T04:39:24.000Z" itemprop="datePublished">2017-01-12</time>
+      <a href="/2017/03/29/Ceph-filesystem-scaleout/" class="article-date">
+  	<time datetime="2017-03-29T15:56:13.000Z" itemprop="datePublished">2017-03-29</time>
 </a>
     </div>
   
@@ -195,7 +192,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      &#39;sortbitwise&#39;是什么意思
+      Ceph如何实现文件系统的横向扩展
     </h1>
   
 
@@ -203,10 +200,6 @@
       
       <div class="article-info article-info-post">
         
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
         
 
         <div class="clearfix"></div>
@@ -215,35 +208,31 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/techie.jpg" alt=""><br></center>
+        <center><br><img src="http://static.zybuluo.com/zphj1987/uzqsgxsxm5wo4q1u142sv9ou/box.jpg" alt="box"><br></center>
 
-<h2 id="问题">问题</h2><p>flag sortbitwise 在ceph中是什么意思,在Jewel版本下可以看到多了这个flags</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 current]<span class="comment"># ceph -s</span></span><br><span class="line">    cluster ffe7a8db-c671-<span class="number">4</span>b45<span class="operator">-a</span>784-ddb41e633905</span><br><span class="line">     health HEALTH_OK</span><br><span class="line">     monmap e1: <span class="number">1</span> mons at &#123;lab8106=<span class="number">192.168</span>.<span class="number">8.106</span>:<span class="number">6789</span>/<span class="number">0</span>&#125;</span><br><span class="line">            election epoch <span class="number">4</span>, quorum <span class="number">0</span> lab8106</span><br><span class="line">      fsmap e4: <span class="number">1</span>/<span class="number">1</span>/<span class="number">1</span> up &#123;<span class="number">0</span>=lab8106=up:active&#125;</span><br><span class="line">     osdmap e132: <span class="number">8</span> osds: <span class="number">8</span> up, <span class="number">8</span> <span class="keyword">in</span></span><br><span class="line">            flags sortbitwise</span><br><span class="line">      pgmap v206294: <span class="number">201</span> pgs, <span class="number">5</span> pools, <span class="number">4684</span> MB data, <span class="number">1214</span> objects</span><br><span class="line">            <span class="number">9669</span> MB used, <span class="number">2216</span> GB / <span class="number">2226</span> GB avail</span><br><span class="line">                 <span class="number">201</span> active+clean</span><br></pre></td></tr></table></figure>
-<a id="more"></a>
-<h2 id="找到的相关资料">找到的相关资料</h2><blockquote>
-<p>After upgrading, users should set the ‘sortbitwise’ flag to enable the new internal object sort order: ceph osd set sortbitwise<br>This flag is important for the new object enumeration API and for new backends like BlueStore.</p>
-</blockquote>
-<p>From <a href="http://docs.ceph.com/docs/master/release-notes/#upgrading-from-infernalis-or-hammer" target="_blank" rel="external">Ceph release notes</a></p>
-<blockquote>
-<p>commit 383185bfbae74797cdb44f50b4bf651422800ff1<br>Author: Sage Weil <a href="&#109;&#x61;&#105;&#108;&#x74;&#111;&#x3a;&#115;&#97;&#x67;&#x65;&#x40;&#114;&#x65;&#x64;&#x68;&#97;&#116;&#46;&#99;&#111;&#x6d;">&#115;&#97;&#x67;&#x65;&#x40;&#114;&#x65;&#x64;&#x68;&#97;&#116;&#46;&#99;&#111;&#x6d;</a><br>Date: Fri Aug 7 16:14:09 2015 -0400<br>mon/OSDMonitor: osd set/unset sortbitwise<br> Add monitor command to flip the switch on the OSD hobject_t sort<br> order.</p>
-</blockquote>
-<p>From git</p>
-<p>第一次在源码中出现:</p>
-<blockquote>
-<p>commit 138f58493715e386929f152424b70df37843541b<br>Author: John Spray <a href="&#x6d;&#97;&#105;&#108;&#x74;&#x6f;&#58;&#x6a;&#x6f;&#x68;&#x6e;&#46;&#x73;&#x70;&#114;&#x61;&#121;&#64;&#114;&#x65;&#100;&#104;&#97;&#x74;&#46;&#99;&#x6f;&#x6d;">&#x6a;&#x6f;&#x68;&#x6e;&#46;&#x73;&#x70;&#114;&#x61;&#121;&#64;&#114;&#x65;&#100;&#104;&#97;&#x74;&#46;&#99;&#x6f;&#x6d;</a><br>Date: Mon Aug 17 14:40:46 2015 -0400<br>osdc/Objecter: new-style pgls<br> Signed-off-by: John Spray <a href="&#109;&#97;&#105;&#x6c;&#116;&#x6f;&#x3a;&#x6a;&#x6f;&#104;&#110;&#46;&#115;&#x70;&#x72;&#x61;&#x79;&#x40;&#114;&#x65;&#x64;&#x68;&#x61;&#x74;&#x2e;&#x63;&#x6f;&#109;">&#x6a;&#x6f;&#104;&#110;&#46;&#115;&#x70;&#x72;&#x61;&#x79;&#x40;&#114;&#x65;&#x64;&#x68;&#x61;&#x74;&#x2e;&#x63;&#x6f;&#109;</a><br> Signed-off-by: Sage Weil <a href="&#x6d;&#x61;&#105;&#108;&#x74;&#111;&#x3a;&#115;&#97;&#x67;&#x65;&#x40;&#x72;&#x65;&#100;&#x68;&#97;&#x74;&#46;&#x63;&#111;&#109;">&#115;&#97;&#x67;&#x65;&#x40;&#x72;&#x65;&#100;&#x68;&#97;&#x74;&#46;&#x63;&#111;&#109;</a></p>
-</blockquote>
-<p>From git</p>
-<p>Related github issue: <a href="https://github.com/ceph/ceph/pull/4919/commits" target="_blank" rel="external">https://github.com/ceph/ceph/pull/4919/commits</a></p>
-<p>初步结论: sortbitwise 内部排序算法的一个变化.之所以暴露出来是因为要兼容一些pre-jewel版本.在新的版本中应该保持开启状态.</p>
-<p>以上转载自博客：<a href="https://medium.com/@george.shuklin/what-is-sortbitwise-flag-means-in-ceph-b4176748da42#.dfaw54rpf" target="_blank" rel="external">What ‘sortbitwise’ flag means in Ceph?</a></p>
-<h2 id="红帽的官方回答">红帽的官方回答</h2><ul>
-<li>如果你使用dev版本Infernalis或仍在开发中的LTS版本的Ceph的Jewel版本，你会看到这个标志在ceph状态输出默认启用</li>
-<li>这个标志sortbitwise在Infernalis版本中引入</li>
-<li>这个标志是在这个版本提交的upstream commit 968261b11ac30622c0606d1e2ddf422009e7d330</li>
+<h2 id="前言">前言</h2><p>在跟一个朋友聊天的时候，聊到一个技术问题，他们的一个环境上面小文件巨多，是我目前知道的集群里面规模算非常大的了，但是目前有个问题，一方面会进行一倍的硬件的扩容，而文件的数量也在剧烈的增长着，所以有没有什么办法来 缓解这个增长的压力<br><a id="more"></a><br>当时也没想到太多的办法,只是觉得这么用下去风险太大</p>
+<p>后来在思考了一段时间后，大概有了一个想法，这个就要看是否能把方案做下去，如果是我自己在用的集群，而非客户，我会这么去用的</p>
+<h2 id="方案介绍">方案介绍</h2><h3 id="方案一">方案一</h3><p>也就是默认的方案，一般来说就是一个主MDS，然后几个备用MDS，整个一个挂载点，全局混用的空间</p>
+<p>存在问题：</p>
+<ul>
+<li>扩容以后，有大量的数据迁移</li>
+<li>所有的元数据请求，只有一个MDS服务，到了巨型数据的时候，可能出现卡顿或MDS卡掉的问题</li>
 </ul>
-<p>下载ceph的源码，进入源码目录<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 all]<span class="comment"># git show 968261b11ac30622c0606d1e2ddf422009e7d330</span></span><br><span class="line">commit <span class="number">968261</span>b11ac30622c0606d1e2ddf422009e7d330</span><br><span class="line">Author: Sage Weil &lt;sage@redhat.com&gt;</span><br><span class="line">Date:   Fri Aug <span class="number">7</span> <span class="number">16</span>:<span class="number">01</span>:<span class="number">12</span> <span class="number">2015</span> -<span class="number">0400</span></span><br><span class="line"></span><br><span class="line">    osd/OSDMap: add a SORTBITWISE OSDMap flag</span><br><span class="line"></span><br><span class="line">    This flag will indicate that hobject_t<span class="string">'s shall hence-forth be</span><br><span class="line">    sorted in a bitwise fashion.</span><br><span class="line"></span><br><span class="line">    Signed-off-by: Sage Weil &lt;sage@redhat.com&gt;</span></span><br></pre></td></tr></table></figure></p>
-<p>正如我们在上面给定的提交的描述中所说，该标志将表明hobject_t的将以 bitwise fashion方式排序。<br>现在意味着现在的对象将在OSDs中以按位方式排序，并且此标志默认在Infernalis和Jewel发布版本中启用。</p>
-<h2 id="总结">总结</h2><p>目前来看这个是底层的一个排序的算法的变动，对上层目前还不清楚是有什么可以可见的变化，总之，这个让它默认开启就行，不要去修改它就可以了</p>
+<p>优点：<br>全局统一命名空间</p>
+<h3 id="方案二：">方案二：</h3><p>采用分存储池的结构，也就是将集群内的目录树分配到整个集群的多个相互独立的空间里面</p>
+<p>存在问题：<br>同样是所有的元数据请求，只有一个MDS服务，到了巨型数据的时候，可能出现卡顿或MDS卡掉的问题</p>
+<p>优点：<br>全局统一命名空间下面对应目录到不同的存储池当中，在进行扩容的时候，不会影响原有的数据，基本是没有迁移数据</p>
+<h3 id="方案三：">方案三：</h3><p>物理分存储池的结构并没有解决元数据压力过大的问题，而元数据的处理能力并非横向扩展的，而文件数量和集群规模都是在横向增长，所以必然是一个瓶颈点</p>
+<p>这个方案其实很简单，相当于方案二的扩展，我们在方案二中进行了物理存储池的分离，然后把空间映射到子目录，来实现数据的分离，既然规模能够大到分物理空间，那么我们可以考虑部署多套集群，并且来真正的实现了数据处理能力的横向扩展，因为MDS，可以是多个的了，那么比较重要的问题就是统一命名空间的问题了，怎么实现，这个也简单，主要是跟客户沟通好，让客户接受提出的方案</p>
+<p>我们在一些商业系统上面可以看到一些限制，比如单卷的大小最大支持多大，在这里我们需要跟客户沟通好，无限的扩展，会带来一些压力的风险，有方案能够解决这种问题，而这种数据量在之前是没有太多的案例可借鉴的，所以需要人为控制一个目录的最大空间，也就是单套集群的大小，下面举例来说明下</p>
+<p>假设我们的空间一期规模为2P，二期规模要4P，三期规模6P<br>那么我们的命名空间上就分离出三个逻辑空间，也就是对应三套集群</p>
+<p>弄清楚客户的存储的目录结构，一般来说客户并不太关心目录的设计，如果能够引导的情况下，可以引导客户，我们需要弄清楚目录可变化的那个点在哪里，举例说明，假如客户的数据可以去按年进行分类的话，数据就可以是<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">2014</span><br><span class="line">2015 </span><br><span class="line">2016</span><br><span class="line">2017</span><br></pre></td></tr></table></figure></p>
+<p>这样的增长趋势，并且数据量之前的肯定已知，未来可大概估计，并且集群准备存储多少年的数据，也是可大概预估的，那么这个环境我们就先认为到2017的数据我们放在集群一内，2017年以后的数据放在集群二内，那么挂载点是这样的<br><figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="number">192.168</span>.<span class="number">10.101</span><span class="symbol">:/</span><span class="number">2014</span></span><br><span class="line"><span class="number">192.168</span>.<span class="number">10.101</span><span class="symbol">:/</span><span class="number">2015</span></span><br><span class="line"><span class="number">192.168</span>.<span class="number">10.101</span><span class="symbol">:/</span><span class="number">2016</span></span><br><span class="line"><span class="number">192.168</span>.<span class="number">10.101</span><span class="symbol">:/</span><span class="number">2017</span></span><br><span class="line"></span><br><span class="line"><span class="number">192.168</span>.<span class="number">10.102</span><span class="symbol">:/</span><span class="number">2018</span></span><br><span class="line"><span class="number">192.168</span>.<span class="number">10.102</span><span class="symbol">:/</span><span class="number">2019</span></span><br><span class="line"><span class="number">192.168</span>.<span class="number">10.102</span><span class="symbol">:/</span><span class="number">2020</span></span><br><span class="line"><span class="number">192.168</span>.<span class="number">10.102</span><span class="symbol">:/</span><span class="number">2021</span></span><br></pre></td></tr></table></figure></p>
+<p>挂载到本地的服务的机器上<br>本地创建好目录<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/share/<span class="number">2014</span></span><br><span class="line">/share/<span class="number">2015</span></span><br><span class="line">/share/<span class="number">2016</span></span><br><span class="line">/share/<span class="number">2017</span></span><br><span class="line">/share/<span class="number">2018</span></span><br><span class="line">/share/<span class="number">2019</span></span><br><span class="line">/share/<span class="number">2020</span></span><br><span class="line">/share/<span class="number">2021</span></span><br></pre></td></tr></table></figure></p>
+<p>然后把上面的集群挂载点按名称挂载到本地的这些目录上面</p>
+<p>本地的共享就把/share共享出去，那么用户看到的就是一个全局命名空间了，这个是用本地子目录映射的方式来实现统一命名空间，技术难度小，难点在于跟客户沟通好数据的层级结构，如果客户能够自己随意增加目录，那么更好实现了，随意的将目录分配到两个集群即可，最终能达到满意的效果就行</p>
+<p>当然主要还是需要客户能够接受你的方案，海量小文件的情况下，分开到多个集群当然会更好些，并且集群万一崩溃，也是只会影响局部的集群了</p>
+<h2 id="总结">总结</h2><p>我们在利用一些新的技术的时候我们很多时候关注的是他最好的那个点，而这个点有的时候反而阻碍了我们的想法，比如集群，那就是把所有硬盘管理起来，搞成一个集群，那么为什么不能往上再走一层，我用管理的方式把多套集群在管理的层面组合成一个集群池呢？然后从多个集群里面来分配我们需要的资源即可</p>
 <h2 id="变更记录">变更记录</h2><table>
 <thead>
 <tr>
@@ -256,7 +245,7 @@
 <tr>
 <td style="text-align:center">创建</td>
 <td style="text-align:center">武汉-运维-磨渣</td>
-<td style="text-align:center">2017-01-12</td>
+<td style="text-align:center">2017-03-29</td>
 </tr>
 </tbody>
 </table>
@@ -269,18 +258,9 @@
     
 <nav id="article-nav">
   
-    <a href="/2017/01/19/ceph-rbd-ceph-backup/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption"><</strong>
-      <div class="article-nav-title">
-        
-          ceph的rbd备份软件ceph-backup
-        
-      </div>
-    </a>
   
-  
-    <a href="/2017/01/09/calamari-node-info/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">解决calamari无法获取节点信息的bug</div>
+    <a href="/2017/03/24/from-hammerto-jewel-update-by-qinmuyang/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">从hammer到jewel的RGW升级实战-by秦牧羊</div>
       <strong class="article-nav-caption">></strong>
     </a>
   
@@ -309,7 +289,7 @@
 
 <div class="duoshuo">
 	<!-- 多说评论框 start -->
-	<div class="ds-thread" data-thread-key="sortbitwise-mean" data-title="&#39;sortbitwise&#39;是什么意思" data-url="http://www.zphj1987.com/2017/01/12/sortbitwise-mean/"></div>
+	<div class="ds-thread" data-thread-key="Ceph-filesystem-scaleout" data-title="Ceph如何实现文件系统的横向扩展" data-url="http://www.zphj1987.com/2017/03/29/Ceph-filesystem-scaleout/"></div>
 	<!-- 多说评论框 end -->
 	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 	<script type="text/javascript">

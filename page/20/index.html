@@ -176,6 +176,63 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-Check-Host-实时监控网站或者服务器是否可以访问" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/03/22/Check-Host-实时监控网站或者服务器是否可以访问/" class="article-date">
+  	<time datetime="2015-03-22T08:15:10.000Z" itemprop="datePublished">2015-03-22</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/03/22/Check-Host-实时监控网站或者服务器是否可以访问/">Check Host:实时监控网站或者服务器是否可以访问</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>如果你拥有一个网站，那么最重要的事情就是要保证它24小时都能够访问。不过国内的虚拟主机服务非常糟糕，经常会出现各种状况,所以我们需要一个软件,可以让我们第一时间知道网站出现了无法访问的情况,从而通知售后人员解决。而Check Host就是这么一个windows下的免费网站时时监控工具。</p>
+<p>服务器无法访问,那么对网站是非常不利的,而搜索引擎也会知道这个状况,因为蜘蛛不能爬行你的网页了。所以对访客以及搜索引擎排名都是不利的。不过这个事情肯定会发生,我们能做的就是提高反应速度,让这样的情况在最短的时间内解决。</p>
+<p>如此一来,对于网站的实时监控就非常有必要的,但是我们又不能每隔一段时间就手动打开网站一次,这样太过于麻烦,甚至是愚蠢的,所以我们必须要使用一个软件,让其代劳，当发生状况的时候还会给你发出警告，而Check Host就可以满足你的愿望。</p>
+<p>Check Host是一个windows下的小软件，只有2.2M,十分的小巧,它的原理是每隔一段时间就自动ping一下你设定的网址。如果无法ping通的话,那么就会通过几种方法告诉你。</p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2015/03/22/Check-Host-实时监控网站或者服务器是否可以访问/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-清理win7注册表后，没有了右键新建选项处理办法" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -662,68 +719,6 @@
       
         <p class="article-more-link">
           <a  href="/2015/03/22/监控磁盘读写状况/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-du查看的目录大小与df查看的大小不同的时候用lsof查找" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/03/22/du查看的目录大小与df查看的大小不同的时候用lsof查找/" class="article-date">
-  	<time datetime="2015-03-22T06:21:07.000Z" itemprop="datePublished">2015-03-22</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/03/22/du查看的目录大小与df查看的大小不同的时候用lsof查找/">du查看的目录大小与df查看的大小不同的时候用lsof查找</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>首先MAN一下两个命令,看一下解释的区别:<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">du - estimate file space usage&#10;df - report file system disk space usage</span><br></pre></td></tr></table></figure></p>
-<p>du估计文件空间占用情况,df报告文件系统磁盘空间使用情况。两个命令所要获取的对象时不同的。在linux下,几乎所有东西都可以称为文件,常规文件,二进制文件,socket流。所以,通常情况下,使用du得到到的根路径文件空间占用情况应当与df得到的文件系统磁盘占用的情况是一致的或者说相差无几。但是在某些情况下却会出现du得到的空间占用情况要远小于df得到的。</p>
-<p>后通过查询,发现问题出现在deleted文件上。</p>
-<p>root下 lsof | grep deleted会发现多多少少有些文件状态出于deleted状态。<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">[root@eb152 ~]# lsof |grep deleted&#10;&#36827;&#31243;&#21517;   PID       USER    FD   &#25991;&#20214;&#31867;&#22411;        &#22823;&#23567;(&#23383;&#33410;)  &#32034;&#24341;&#33410;&#28857;  &#25991;&#20214;&#21517;  [(&#29366;&#24577;)]&#10;java       3311    AuSP    8w      REG              253,0         778   10879268 ***.log (deleted)&#10;java       3311    AuSP    9w      REG              253,0        3275   10879269 ***.log (deleted)&#10;java       3311    AuSP   10w      REG              253,0           0   10879815 ***.log (deleted)&#10;java       3311    AuSP   11w      REG              253,0           0   10879816 ***.log (deleted)&#10;oracle     4195  oracle    7u      REG              253,0           0   14254321 *** (deleted)</span><br></pre></td></tr></table></figure></p>
-<p>状态为deleted为标记被删除,其实该文件并没有从磁盘中删除,类似windows下的回收站状态。</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/03/22/du查看的目录大小与df查看的大小不同的时候用lsof查找/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>
