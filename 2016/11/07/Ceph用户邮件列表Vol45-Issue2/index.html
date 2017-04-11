@@ -5,26 +5,26 @@
   
   <title>Ceph用户邮件列表Vol45-Issue2 | zphj1987&#39;Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="ceph Vol 45 Issue 21.CephFS: No space left on device
+  <meta name="description" content="ceph Vol 45 Issue 2CephFS: No space left on device
 After upgrading to 10.2.3 we frequently see messages like
 ‘rm: cannot remove ‘…’: No space left on device
-The folders we are trying to delete conta">
+The folders we are trying to delete contain">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Ceph用户邮件列表Vol45-Issue2">
 <meta property="og:url" content="http://www.zphj1987.com/2016/11/07/Ceph用户邮件列表Vol45-Issue2/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
-<meta property="og:description" content="ceph Vol 45 Issue 21.CephFS: No space left on device
+<meta property="og:description" content="ceph Vol 45 Issue 2CephFS: No space left on device
 After upgrading to 10.2.3 we frequently see messages like
 ‘rm: cannot remove ‘…’: No space left on device
-The folders we are trying to delete conta">
+The folders we are trying to delete contain">
 <meta property="og:image" content="http://7xweck.com1.z0.glb.clouddn.com/number/daytwo.jpg">
 <meta property="og:image" content="http://7xweck.com1.z0.glb.clouddn.com/cache.png">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Ceph用户邮件列表Vol45-Issue2">
-<meta name="twitter:description" content="ceph Vol 45 Issue 21.CephFS: No space left on device
+<meta name="twitter:description" content="ceph Vol 45 Issue 2CephFS: No space left on device
 After upgrading to 10.2.3 we frequently see messages like
 ‘rm: cannot remove ‘…’: No space left on device
-The folders we are trying to delete conta">
+The folders we are trying to delete contain">
   
     <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
   
@@ -224,7 +224,7 @@ The folders we are trying to delete conta">
       
         <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/number/daytwo.jpg" alt=""><br></center>
 
-<h2 id="ceph_Vol_45_Issue_2">ceph Vol 45 Issue 2</h2><h3 id="1-CephFS:_No_space_left_on_device">1.CephFS: No space left on device</h3><blockquote>
+<h2 id="ceph_Vol_45_Issue_2">ceph Vol 45 Issue 2</h2><h3 id="CephFS:_No_space_left_on_device">CephFS: No space left on device</h3><blockquote>
 <p>After upgrading to 10.2.3 we frequently see messages like</p>
 <p>‘rm: cannot remove ‘…’: No space left on device</p>
 <p>The folders we are trying to delete contain approx. 50K files 193 KB each.</p>
@@ -237,7 +237,7 @@ The folders we are trying to delete conta">
 </blockquote>
 <p>这个问题是作者在升级了一个集群以后（jewel 10.2.3），做删除的时候，发现提示了 No space left on device，按正常的理解做删除不会出现提示空间不足</p>
 <p>这个地方的原因是，有一个参数会对目录的entry做一个最大值的控制<code>mds_bal_fragment_size_max</code>,而这个参数实际上在做删除操作的时候，当文件被unlink的时候，被放入待删除区的时候，这个也是被限制住的，所以需要调整这个参数，如果有上百万的文件被等待删除的时候，可能就会出现这个情况,并且出现 <code>failing to respond to cache pressure</code> 我们根据自己的需要去设置这个值</p>
-<p>默认的 mds_bal_fragment_size_max=100000，也就是单个文件10万文件，如果不调整，单目录写入10万文件就能出现上面的问题</p>
+<p>默认的 mds_bal_fragment_size_max=100000，也就是单个目录10万文件，如果不调整，单目录写入10万文件就能出现上面的问题，根据需要调大这个值</p>
 <p>这个地方可以用命令来监控mds的当前状态<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 mnt]<span class="comment"># ceph daemonperf mds.lab8106</span></span><br><span class="line">-----mds------ --mds_server-- ---objecter--- -----mds_cache----- ---mds_<span class="built_in">log</span>---- </span><br><span class="line">rlat inos caps|hsr  hcs  hcr |writ <span class="built_in">read</span> actv|recd recy stry purg|segs evts subm|</span><br><span class="line">  <span class="number">0</span>  <span class="number">163</span>k   <span class="number">5</span> |  <span class="number">0</span>    <span class="number">0</span>    <span class="number">0</span> |  <span class="number">0</span>    <span class="number">0</span>   <span class="number">36</span> |  <span class="number">0</span>    <span class="number">0</span>  <span class="number">145</span>k   <span class="number">0</span> | <span class="number">33</span>   <span class="number">29</span>k   <span class="number">0</span> </span><br><span class="line">  <span class="number">0</span>  <span class="number">163</span>k   <span class="number">5</span> |  <span class="number">0</span>    <span class="number">0</span>    <span class="number">0</span> |  <span class="number">6</span>    <span class="number">0</span>   <span class="number">34</span> |  <span class="number">0</span>    <span class="number">0</span>  <span class="number">145</span>k   <span class="number">6</span> | <span class="number">33</span>   <span class="number">29</span>k   <span class="number">6</span> </span><br><span class="line">  <span class="number">0</span>  <span class="number">163</span>k   <span class="number">5</span> |  <span class="number">0</span>    <span class="number">0</span>    <span class="number">0</span> | <span class="number">24</span>    <span class="number">0</span>   <span class="number">32</span> |  <span class="number">0</span>    <span class="number">0</span>  <span class="number">145</span>k  <span class="number">24</span> | <span class="number">32</span>   <span class="number">29</span>k  <span class="number">24</span> </span><br><span class="line">  <span class="number">0</span>  <span class="number">163</span>k   <span class="number">5</span> |  <span class="number">0</span>    <span class="number">0</span>    <span class="number">0</span> | <span class="number">42</span>    <span class="number">0</span>   <span class="number">32</span> |  <span class="number">0</span>    <span class="number">0</span>  <span class="number">145</span>k  <span class="number">42</span> | <span class="number">32</span>   <span class="number">29</span>k  <span class="number">42</span> </span><br><span class="line">  <span class="number">0</span>  <span class="number">159</span>k   <span class="number">5</span> |  <span class="number">0</span>    <span class="number">0</span>    <span class="number">0</span> |<span class="number">972</span>    <span class="number">0</span>   <span class="number">32</span> |  <span class="number">0</span>    <span class="number">0</span>  <span class="number">144</span>k <span class="number">970</span> | <span class="number">33</span>   <span class="number">27</span>k <span class="number">971</span> </span><br><span class="line">  <span class="number">0</span>  <span class="number">159</span>k   <span class="number">5</span> |  <span class="number">0</span>    <span class="number">0</span>    <span class="number">0</span> |<span class="number">905</span>    <span class="number">0</span>   <span class="number">32</span> |  <span class="number">0</span>    <span class="number">0</span>  <span class="number">143</span>k <span class="number">905</span> | <span class="number">31</span>   <span class="number">28</span>k <span class="number">906</span> </span><br><span class="line">  <span class="number">0</span>  <span class="number">159</span>k   <span class="number">5</span> |  <span class="number">0</span>    <span class="number">0</span>    <span class="number">0</span> |<span class="number">969</span>    <span class="number">0</span>   <span class="number">32</span> |  <span class="number">0</span>    <span class="number">0</span>  <span class="number">142</span>k <span class="number">969</span> | <span class="number">32</span>   <span class="number">29</span>k <span class="number">970</span> </span><br><span class="line">  <span class="number">0</span>  <span class="number">159</span>k   <span class="number">5</span> |  <span class="number">0</span>    <span class="number">0</span>    <span class="number">0</span> |<span class="number">601</span>    <span class="number">0</span>   <span class="number">31</span> |  <span class="number">0</span>    <span class="number">0</span>  <span class="number">141</span>k <span class="number">601</span> | <span class="number">33</span>   <span class="number">29</span>k <span class="number">602</span></span><br></pre></td></tr></table></figure></p>
 <p>这个地方还有一个硬链接删除以后没有释放stry的问题，最新版的master里面已经合进去了代码（<a href="https://github.com/ukernel/ceph/commit/edc84d905a1f0e3c504f427cc4693c7a98561e7c" target="_blank" rel="external">scan_link</a>）</p>
 <p>修复过程如下<br>执行flush MDS journal<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph daemon mds.xxx flush journal</span><br></pre></td></tr></table></figure></p>
