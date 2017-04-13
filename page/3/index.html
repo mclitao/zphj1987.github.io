@@ -176,6 +176,72 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-rbd-image-write-objects" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/01/03/rbd-image-write-objects/" class="article-date">
+  	<time datetime="2017-01-03T06:35:53.000Z" itemprop="datePublished">2017-01-03</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/01/03/rbd-image-write-objects/">rbd的image对象数与能写入文件数的关系</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/2017.png" alt=""><br></center>
+
+<h2 id="前言">前言</h2><p>收到一个问题如下：</p>
+<blockquote>
+<p>一个300TB 的RBD，只有7800万的objects，如果存储小文件的话，感觉不够用</p>
+</blockquote>
+<p>对于这个问题，我原来的理解是：对象默认设置的大小是4M一个，存储下去的数据，如果小于4M，就会占用一个小于4M的对象，如果超过4M，那么存储的数据就会进行拆分成多个4M，这个地方其实是不严谨的</p>
+<p>对于rados接口来说，数据是多大对象put进去就是多大的对象，并没有进行拆分，进行拆分的是再上一层的应用，比如rbd，比如cephfs</p>
+<p>那么对于rbd的image显示的对象数目和文件数目有什么关系呢？本篇将来看看这个问题，到底会不会出现上面的问题<br>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2017/01/03/rbd-image-write-objects/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-manage-ceph-osd-journal-uuid" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -701,66 +767,6 @@
       
         <p class="article-more-link">
           <a  href="/2016/11/29/The-Dos-and-Don-ts-for-Ceph-for-OpenStack/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Cephday武汉20161119分享回顾" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/11/29/Cephday武汉20161119分享回顾/" class="article-date">
-  	<time datetime="2016-11-29T04:29:37.000Z" itemprop="datePublished">2016-11-29</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/11/29/Cephday武汉20161119分享回顾/">Cephday武汉20161119分享回顾</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/wuhan/wuhan-china.png" alt="image_1b2ne8h4m1vfq1f7b1qgr262dfn9.png-405.3kB"><br></center>
-
-<h2 id="活动地点">活动地点</h2><p>这次的分享活动是由武汉烽火进行赞助的，在烽火创新谷谷咖啡进行的，武汉的高校很多，光一本重点学校就有十所，武大，华科的学生的科研水平在全国也是非常强的，但是与之相匹配的大型企业却不是很多，本土大型企业更是少，这个地方还是一个相对封闭的地方，技术的交流远没有达到北上广深等地的开放程度，光谷也是在近十年成为一个科技飞速发展的地方，这与东湖高新的大力支持以及一些高校参与到企业当中来有很大的关系，未来的发展还是值得期待的<br>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2016/11/29/Cephday武汉20161119分享回顾/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>

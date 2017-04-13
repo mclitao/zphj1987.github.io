@@ -4,7 +4,7 @@
   <subtitle><![CDATA[但行好事，莫问前程]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2017-03-29T16:02:01.812Z</updated>
+  <updated>2017-04-13T06:19:48.464Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -13,6 +13,53 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[查看ceph集群被哪些客户端连接]]></title>
+    <link href="http://www.zphj1987.com/2017/04/13/ceph-cluster-connect-by-which-client/"/>
+    <id>http://www.zphj1987.com/2017/04/13/ceph-cluster-connect-by-which-client/</id>
+    <published>2017-04-13T06:18:34.000Z</published>
+    <updated>2017-04-13T06:19:48.464Z</updated>
+    <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/earth.png" alt="connect"><br></center>
+
+<h2 id="前言">前言</h2><p>我们在使用集群的时候，一般来说比较关注的是后台的集群的状态，但是在做一些更人性化的管理功能的时候，就需要考虑到更多的细节</p>
+<p>本篇就是其中的一个点，查询ceph被哪些客户端使用了<br><a id="more"></a></p>
+<h2 id="实践">实践</h2><p>从接口上来说，ceph提供了文件，块，和对象的接口，所以不同的接口需要不同的查询方式，以为内接触文件和块比较多，并且文件和块存储属于长连接类型，对象属于请求类型，所以主要关注文件和块存储的连接信息查询</p>
+<p>我的集群状态如下<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ceph -s</span></span><br><span class="line">    cluster <span class="number">3</span>daaf51a-eeba-<span class="number">43</span>a6-<span class="number">9</span>f58-c26c5796f928</span><br><span class="line">     health HEALTH_WARN</span><br><span class="line">            mon.lab8106 low disk space</span><br><span class="line">     monmap e1: <span class="number">1</span> mons at &#123;lab8106=<span class="number">192.168</span>.<span class="number">8.106</span>:<span class="number">6789</span>/<span class="number">0</span>&#125;</span><br><span class="line">            election epoch <span class="number">6</span>, quorum <span class="number">0</span> lab8106</span><br><span class="line">      fsmap e20: <span class="number">1</span>/<span class="number">1</span>/<span class="number">1</span> up &#123;<span class="number">0</span>=lab8106=up:active&#125;</span><br><span class="line">     osdmap e52: <span class="number">2</span> osds: <span class="number">2</span> up, <span class="number">2</span> <span class="keyword">in</span></span><br><span class="line">            flags sortbitwise,require_jewel_osds</span><br><span class="line">      pgmap v27223: <span class="number">96</span> pgs, <span class="number">3</span> pools, <span class="number">2579</span> MB data, <span class="number">4621</span> objects</span><br><span class="line">            <span class="number">2666</span> MB used, <span class="number">545</span> GB / <span class="number">548</span> GB avail</span><br><span class="line">                  <span class="number">96</span> active+clean</span><br></pre></td></tr></table></figure></p>
+<h3 id="文件接口的连接信息查询">文件接口的连接信息查询</h3><p>文件接口的连接信息是保存在MDS的，所以需要通过跟MDS进行交互查询,我的0h环境的MDS在lab8106，登陆到lab8106这台机器执行下面命令</p>
+<figure class="highlight mel"><table><tr><td class="code"><pre><span class="line">[root<span class="variable">@lab8106</span> ~]# ceph daemon mds.lab8106 session <span class="keyword">ls</span>|grep <span class="string">'inst\|hostname\|kernel_version'</span></span><br><span class="line">        <span class="string">"inst"</span>: <span class="string">"client.34157 192.168.8.106:0\/3325402310"</span>,</span><br><span class="line">            <span class="string">"hostname"</span>: <span class="string">"lab8106"</span>,</span><br><span class="line">            <span class="string">"kernel_version"</span>: <span class="string">"4.9.5-1.el7.elrepo.x86_64"</span>,</span><br><span class="line">        <span class="string">"inst"</span>: <span class="string">"client.14118 192.168.8.107:0\/2202227749"</span>,</span><br><span class="line">            <span class="string">"hostname"</span>: <span class="string">"lab8107"</span>,</span><br><span class="line">            <span class="string">"kernel_version"</span>: <span class="string">"4.1.12-37.5.1.el7uek.x86_64"</span></span><br></pre></td></tr></table></figure>
+<p>输出结果我做了过滤，主要信息是机器的IP，主机名，和内核版本</p>
+<h3 id="块接口的连接信息查询">块接口的连接信息查询</h3><p>块接口也就是rbd的接口的</p>
+<p>首先在一台机器上map<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># rbd map rbd/zp1</span></span><br></pre></td></tr></table></figure></p>
+<p>执行查询<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># rbd status zp1</span></span><br><span class="line">Watchers:</span><br><span class="line">	watcher=<span class="number">192.168</span>.<span class="number">8.106</span>:<span class="number">0</span>/<span class="number">1837592013</span> client.<span class="number">34246</span> cookie=<span class="number">1844646259873284096</span></span><br></pre></td></tr></table></figure></p>
+<p>可以看到是被192.168.8.106使用了，也就是watcher</p>
+<h2 id="总结">总结</h2><p>命令都比较简单，如果做成一个监控平台，这种连接信息还是有个地方进行查询比较好</p>
+<h2 id="变更记录">变更记录</h2><table>
+<thead>
+<tr>
+<th style="text-align:center">Why</th>
+<th style="text-align:center">Who</th>
+<th style="text-align:center">When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">创建</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2017-04-13</td>
+</tr>
+</tbody>
+</table>
+]]></content>
+    <summary type="html">
+    <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/earth.png" alt="connect"><br></center>
+
+<h2 id="前言">前言</h2><p>我们在使用集群的时候，一般来说比较关注的是后台的集群的状态，但是在做一些更人性化的管理功能的时候，就需要考虑到更多的细节</p>
+<p>本篇就是其中的一个点，查询ceph被哪些客户端使用了<br>]]>
+    
+    </summary>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[Ceph如何实现文件系统的横向扩展]]></title>
@@ -1101,12 +1148,12 @@
 </blockquote>
 <p>From <a href="http://docs.ceph.com/docs/master/release-notes/#upgrading-from-infernalis-or-hammer" target="_blank" rel="external">Ceph release notes</a></p>
 <blockquote>
-<p>commit 383185bfbae74797cdb44f50b4bf651422800ff1<br>Author: Sage Weil <a href="&#x6d;&#x61;&#105;&#x6c;&#116;&#111;&#x3a;&#115;&#x61;&#x67;&#x65;&#x40;&#114;&#x65;&#x64;&#x68;&#97;&#x74;&#46;&#x63;&#111;&#x6d;">&#115;&#x61;&#x67;&#x65;&#x40;&#114;&#x65;&#x64;&#x68;&#97;&#x74;&#46;&#x63;&#111;&#x6d;</a><br>Date: Fri Aug 7 16:14:09 2015 -0400<br>mon/OSDMonitor: osd set/unset sortbitwise<br> Add monitor command to flip the switch on the OSD hobject_t sort<br> order.</p>
+<p>commit 383185bfbae74797cdb44f50b4bf651422800ff1<br>Author: Sage Weil <a href="&#x6d;&#x61;&#105;&#108;&#x74;&#111;&#x3a;&#115;&#x61;&#x67;&#x65;&#x40;&#114;&#x65;&#x64;&#x68;&#97;&#x74;&#46;&#99;&#111;&#109;">&#115;&#x61;&#x67;&#x65;&#x40;&#114;&#x65;&#x64;&#x68;&#97;&#x74;&#46;&#99;&#111;&#109;</a><br>Date: Fri Aug 7 16:14:09 2015 -0400<br>mon/OSDMonitor: osd set/unset sortbitwise<br> Add monitor command to flip the switch on the OSD hobject_t sort<br> order.</p>
 </blockquote>
 <p>From git</p>
 <p>第一次在源码中出现:</p>
 <blockquote>
-<p>commit 138f58493715e386929f152424b70df37843541b<br>Author: John Spray <a href="&#109;&#97;&#105;&#108;&#116;&#x6f;&#x3a;&#106;&#111;&#x68;&#x6e;&#46;&#x73;&#112;&#x72;&#x61;&#x79;&#x40;&#x72;&#101;&#100;&#104;&#97;&#116;&#x2e;&#x63;&#x6f;&#109;">&#106;&#111;&#x68;&#x6e;&#46;&#x73;&#112;&#x72;&#x61;&#x79;&#x40;&#x72;&#101;&#100;&#104;&#97;&#116;&#x2e;&#x63;&#x6f;&#109;</a><br>Date: Mon Aug 17 14:40:46 2015 -0400<br>osdc/Objecter: new-style pgls<br> Signed-off-by: John Spray <a href="&#x6d;&#x61;&#x69;&#108;&#x74;&#x6f;&#x3a;&#106;&#x6f;&#104;&#110;&#x2e;&#x73;&#112;&#x72;&#x61;&#121;&#x40;&#114;&#101;&#100;&#104;&#x61;&#x74;&#46;&#x63;&#x6f;&#109;">&#106;&#x6f;&#104;&#110;&#x2e;&#x73;&#112;&#x72;&#x61;&#121;&#x40;&#114;&#101;&#100;&#104;&#x61;&#x74;&#46;&#x63;&#x6f;&#109;</a><br> Signed-off-by: Sage Weil <a href="&#109;&#97;&#105;&#x6c;&#x74;&#111;&#58;&#115;&#97;&#x67;&#101;&#x40;&#114;&#x65;&#x64;&#x68;&#x61;&#116;&#46;&#x63;&#x6f;&#109;">&#115;&#97;&#x67;&#101;&#x40;&#114;&#x65;&#x64;&#x68;&#x61;&#116;&#46;&#x63;&#x6f;&#109;</a></p>
+<p>commit 138f58493715e386929f152424b70df37843541b<br>Author: John Spray <a href="&#109;&#97;&#x69;&#108;&#x74;&#111;&#x3a;&#x6a;&#111;&#104;&#x6e;&#x2e;&#115;&#112;&#114;&#97;&#121;&#64;&#114;&#101;&#x64;&#x68;&#x61;&#116;&#x2e;&#x63;&#x6f;&#109;">&#x6a;&#111;&#104;&#x6e;&#x2e;&#115;&#112;&#114;&#97;&#121;&#64;&#114;&#101;&#x64;&#x68;&#x61;&#116;&#x2e;&#x63;&#x6f;&#109;</a><br>Date: Mon Aug 17 14:40:46 2015 -0400<br>osdc/Objecter: new-style pgls<br> Signed-off-by: John Spray <a href="&#x6d;&#x61;&#x69;&#108;&#116;&#111;&#x3a;&#x6a;&#111;&#x68;&#x6e;&#46;&#115;&#112;&#x72;&#97;&#x79;&#64;&#x72;&#x65;&#x64;&#x68;&#97;&#116;&#x2e;&#x63;&#111;&#x6d;">&#x6a;&#111;&#x68;&#x6e;&#46;&#115;&#112;&#x72;&#97;&#x79;&#64;&#x72;&#x65;&#x64;&#x68;&#97;&#116;&#x2e;&#x63;&#111;&#x6d;</a><br> Signed-off-by: Sage Weil <a href="&#x6d;&#97;&#x69;&#108;&#116;&#111;&#x3a;&#x73;&#97;&#x67;&#101;&#x40;&#x72;&#x65;&#100;&#104;&#x61;&#x74;&#46;&#99;&#111;&#x6d;">&#x73;&#97;&#x67;&#101;&#x40;&#x72;&#x65;&#100;&#104;&#x61;&#x74;&#46;&#99;&#111;&#x6d;</a></p>
 </blockquote>
 <p>From git</p>
 <p>Related github issue: <a href="https://github.com/ceph/ceph/pull/4919/commits" target="_blank" rel="external">https://github.com/ceph/ceph/pull/4919/commits</a></p>
@@ -1354,48 +1401,6 @@
 <li>items 可以有任意的weight</li>
 <li>选择一个项目的算法复杂度是O(n)</li>
 <li>如果一个item的weight调高或者调低，只会在调整了的item直接变动，而没有调整的item是不会变动的]]>
-    
-    </summary>
-    
-      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[rbd的image对象数与能写入文件数的关系]]></title>
-    <link href="http://www.zphj1987.com/2017/01/03/rbd-image-write-objects/"/>
-    <id>http://www.zphj1987.com/2017/01/03/rbd-image-write-objects/</id>
-    <published>2017-01-03T06:35:53.000Z</published>
-    <updated>2017-02-03T05:22:08.983Z</updated>
-    <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/2017.png" alt=""><br></center>
-
-<h2 id="前言">前言</h2><p>收到一个问题如下：</p>
-<blockquote>
-<p>一个300TB 的RBD，只有7800万的objects，如果存储小文件的话，感觉不够用</p>
-</blockquote>
-<p>对于这个问题，我原来的理解是：对象默认设置的大小是4M一个，存储下去的数据，如果小于4M，就会占用一个小于4M的对象，如果超过4M，那么存储的数据就会进行拆分成多个4M，这个地方其实是不严谨的</p>
-<p>对于rados接口来说，数据是多大对象put进去就是多大的对象，并没有进行拆分，进行拆分的是再上一层的应用，比如rbd，比如cephfs</p>
-<p>那么对于rbd的image显示的对象数目和文件数目有什么关系呢？本篇将来看看这个问题，到底会不会出现上面的问题<br><a id="more"></a></p>
-<h2 id="实践过程">实践过程</h2><p>创建一个image<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># rbd create --image zpsize --size 100M</span></span><br><span class="line">[root@lab8106 ~]<span class="comment"># rbd info zpsize</span></span><br><span class="line">rbd image <span class="string">'zpsize'</span>:</span><br><span class="line">	size <span class="number">102400</span> kB <span class="keyword">in</span> <span class="number">25</span> objects</span><br><span class="line">	order <span class="number">22</span> (<span class="number">4096</span> kB objects)</span><br><span class="line">	block_name_prefix: rbd_data.<span class="number">85</span>c66b8b4567</span><br><span class="line">	format: <span class="number">2</span></span><br><span class="line">	features: layering</span><br><span class="line">	flags:</span><br></pre></td></tr></table></figure></p>
-<p>可以看到，这个image从集群中分配到了25个对象，每个对象的大小为4M，假如我们写入1000个小文件看下会是什么情况</p>
-<p>映射到本地并且格式化xfs文件系统<br><figure class="highlight nix"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># rbd map zpsize</span></span><br><span class="line">/dev/rbd0</span><br><span class="line">[root@lab8106 ~]<span class="comment"># mkfs.xfs -f /dev/rbd0 </span></span><br><span class="line"><span class="variable">meta-data=</span>/dev/rbd0              <span class="variable">isize=</span><span class="number">256</span>    <span class="variable">agcount=</span><span class="number">4</span>, <span class="variable">agsize=</span><span class="number">6144</span> <span class="variable">blks</span><br><span class="line">         =</span>                       <span class="variable">sectsz=</span><span class="number">512</span>   <span class="variable">attr=</span><span class="number">2</span>, <span class="variable">projid32bit=</span><span class="number">1</span></span><br><span class="line">         =                       <span class="variable">crc=</span><span class="number">0</span>        <span class="variable">finobt=</span><span class="number">0</span></span><br><span class="line"><span class="variable">data     =</span>                       <span class="variable">bsize=</span><span class="number">4096</span>   <span class="variable">blocks=</span><span class="number">24576</span>, <span class="variable">imaxpct=</span><span class="number">25</span></span><br><span class="line">         =                       <span class="variable">sunit=</span><span class="number">1024</span>   <span class="variable">swidth=</span><span class="number">1024</span> blks</span><br><span class="line"><span class="variable">naming   =</span>version <span class="number">2</span>              <span class="variable">bsize=</span><span class="number">4096</span>   <span class="variable">ascii-ci=</span><span class="number">0</span> <span class="variable">ftype=</span><span class="number">0</span></span><br><span class="line"><span class="variable">log      =</span>internal log           <span class="variable">bsize=</span><span class="number">4096</span>   <span class="variable">blocks=</span><span class="number">624</span>, <span class="variable">version=</span><span class="number">2</span></span><br><span class="line">         =                       <span class="variable">sectsz=</span><span class="number">512</span>   <span class="variable">sunit=</span><span class="number">8</span> blks, <span class="variable">lazy-count=</span><span class="number">1</span></span><br><span class="line"><span class="variable">realtime =</span>none                   <span class="variable">extsz=</span><span class="number">4096</span>   <span class="variable">blocks=</span><span class="number">0</span>, <span class="variable">rtextents=</span><span class="number">0</span></span><br></pre></td></tr></table></figure></p>
-<p>挂载到本地<br>[root@lab8106 ~]# mount /dev/rbd0 /mnt</p>
-<p>写入1000个1K小文件<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># seq 1000|xargs -i dd if=/dev/zero of=/mnt/a&#123;&#125; bs=1K count=1</span></span><br></pre></td></tr></table></figure></p>
-<p>没有报错提示，正常写入了，我们看下写入了多少对象<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># rados  -p rbd ls|grep rbd_data.85c66b8b4567</span></span><br><span class="line">rbd_data.<span class="number">85</span>c66b8b4567.<span class="number">0000000000000018</span></span><br><span class="line">rbd_data.<span class="number">85</span>c66b8b4567.<span class="number">0000000000000000</span></span><br><span class="line">rbd_data.<span class="number">85</span>c66b8b4567.<span class="number">0000000000000006</span></span><br><span class="line">rbd_data.<span class="number">85</span>c66b8b4567.<span class="number">0000000000000001</span></span><br><span class="line">rbd_data.<span class="number">85</span>c66b8b4567.<span class="number">0000000000000017</span></span><br><span class="line">rbd_data.<span class="number">85</span>c66b8b4567.<span class="number">000000000000000</span>c</span><br><span class="line">rbd_data.<span class="number">85</span>c66b8b4567.<span class="number">0000000000000012</span></span><br><span class="line">rbd_data.<span class="number">85</span>c66b8b4567.<span class="number">0000000000000002</span></span><br></pre></td></tr></table></figure></p>
-<p>只写入了少量的对象，我们尝试下载下来看看<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ll -hl rbd_data.85c66b8b4567.0000000000000018</span></span><br><span class="line">-rw-r--r-- <span class="number">1</span> root root <span class="number">4.0</span>M Jan  <span class="number">3</span> <span class="number">14</span>:<span class="number">27</span> rbd_data.<span class="number">85</span>c66b8b4567.<span class="number">0000000000000018</span></span><br><span class="line">[root@lab8106 ~]<span class="comment"># rados  -p rbd get rbd_data.85c66b8b4567.0000000000000000 rbd_data.85c66b8b4567.0000000000000000</span></span><br><span class="line">[root@lab8106 ~]<span class="comment"># ll -hl rbd_data.85c66b8b4567.0000000000000000</span></span><br><span class="line">-rw-r--r-- <span class="number">1</span> root root <span class="number">4.0</span>M Jan  <span class="number">3</span> <span class="number">14</span>:<span class="number">27</span> rbd_data.<span class="number">85</span>c66b8b4567.<span class="number">0000000000000000</span></span><br></pre></td></tr></table></figure></p>
-<p>可以看到还是4M的对象，实际上写入的小文件已经进行了合并了，在底层已经是一个4M的对象文件了</p>
-<h2 id="总结">总结</h2><p>本篇的结论就是，rbd层之上的写入的文件的个数与底层的对象数目是没有关系的，对象数目和对象大小是底层处理的，再上一层就是文件系统去处理的了，总空间占用上是一致的</p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/2017.png" alt=""><br></center>
-
-<h2 id="前言">前言</h2><p>收到一个问题如下：</p>
-<blockquote>
-<p>一个300TB 的RBD，只有7800万的objects，如果存储小文件的话，感觉不够用</p>
-</blockquote>
-<p>对于这个问题，我原来的理解是：对象默认设置的大小是4M一个，存储下去的数据，如果小于4M，就会占用一个小于4M的对象，如果超过4M，那么存储的数据就会进行拆分成多个4M，这个地方其实是不严谨的</p>
-<p>对于rados接口来说，数据是多大对象put进去就是多大的对象，并没有进行拆分，进行拆分的是再上一层的应用，比如rbd，比如cephfs</p>
-<p>那么对于rbd的image显示的对象数目和文件数目有什么关系呢？本篇将来看看这个问题，到底会不会出现上面的问题<br>]]>
     
     </summary>
     

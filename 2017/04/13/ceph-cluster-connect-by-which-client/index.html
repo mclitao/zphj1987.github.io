@@ -3,21 +3,21 @@
 <head>
   <meta charset="utf-8">
   
-  <title>&#39;sortbitwise&#39;是什么意思 | zphj1987&#39;Blog</title>
+  <title>查看ceph集群被哪些客户端连接 | zphj1987&#39;Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="问题flag sortbitwise 在ceph中是什么意思,在Jewel版本下可以看到多了这个flags
-[root@lab8106 current]# ceph -s    cluster ffe7a8db-c671-4b45-a784-ddb41e633905     health HEALTH_OK     monmap e1: 1 mons at &amp;#123;lab8106=192.16">
+  <meta name="description" content="前言我们在使用集群的时候，一般来说比较关注的是后台的集群的状态，但是在做一些更人性化的管理功能的时候，就需要考虑到更多的细节
+本篇就是其中的一个点，查询ceph被哪些客户端使用了">
 <meta property="og:type" content="article">
-<meta property="og:title" content="'sortbitwise'是什么意思">
-<meta property="og:url" content="http://www.zphj1987.com/2017/01/12/sortbitwise-mean/index.html">
+<meta property="og:title" content="查看ceph集群被哪些客户端连接">
+<meta property="og:url" content="http://www.zphj1987.com/2017/04/13/ceph-cluster-connect-by-which-client/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
-<meta property="og:description" content="问题flag sortbitwise 在ceph中是什么意思,在Jewel版本下可以看到多了这个flags
-[root@lab8106 current]# ceph -s    cluster ffe7a8db-c671-4b45-a784-ddb41e633905     health HEALTH_OK     monmap e1: 1 mons at &amp;#123;lab8106=192.16">
-<meta property="og:image" content="http://7xweck.com1.z0.glb.clouddn.com/techie.jpg">
+<meta property="og:description" content="前言我们在使用集群的时候，一般来说比较关注的是后台的集群的状态，但是在做一些更人性化的管理功能的时候，就需要考虑到更多的细节
+本篇就是其中的一个点，查询ceph被哪些客户端使用了">
+<meta property="og:image" content="http://7xweck.com1.z0.glb.clouddn.com/earth.png">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="'sortbitwise'是什么意思">
-<meta name="twitter:description" content="问题flag sortbitwise 在ceph中是什么意思,在Jewel版本下可以看到多了这个flags
-[root@lab8106 current]# ceph -s    cluster ffe7a8db-c671-4b45-a784-ddb41e633905     health HEALTH_OK     monmap e1: 1 mons at &amp;#123;lab8106=192.16">
+<meta name="twitter:title" content="查看ceph集群被哪些客户端连接">
+<meta name="twitter:description" content="前言我们在使用集群的时候，一般来说比较关注的是后台的集群的状态，但是在做一些更人性化的管理功能的时候，就需要考虑到更多的细节
+本篇就是其中的一个点，查询ceph被哪些客户端使用了">
   
     <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
   
@@ -178,11 +178,11 @@
 		</header>				
 	</div>
 </nav>
-      <div class="body-wrap"><article id="post-sortbitwise-mean" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-ceph-cluster-connect-by-which-client" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/01/12/sortbitwise-mean/" class="article-date">
-  	<time datetime="2017-01-12T04:39:24.000Z" itemprop="datePublished">2017-01-12</time>
+      <a href="/2017/04/13/ceph-cluster-connect-by-which-client/" class="article-date">
+  	<time datetime="2017-04-13T06:18:34.000Z" itemprop="datePublished">2017-04-13</time>
 </a>
     </div>
   
@@ -195,7 +195,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      &#39;sortbitwise&#39;是什么意思
+      查看ceph集群被哪些客户端连接
     </h1>
   
 
@@ -203,10 +203,6 @@
       
       <div class="article-info article-info-post">
         
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
         
 
         <div class="clearfix"></div>
@@ -215,35 +211,20 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/techie.jpg" alt=""><br></center>
+        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/earth.png" alt="connect"><br></center>
 
-<h2 id="问题">问题</h2><p>flag sortbitwise 在ceph中是什么意思,在Jewel版本下可以看到多了这个flags</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 current]<span class="comment"># ceph -s</span></span><br><span class="line">    cluster ffe7a8db-c671-<span class="number">4</span>b45<span class="operator">-a</span>784-ddb41e633905</span><br><span class="line">     health HEALTH_OK</span><br><span class="line">     monmap e1: <span class="number">1</span> mons at &#123;lab8106=<span class="number">192.168</span>.<span class="number">8.106</span>:<span class="number">6789</span>/<span class="number">0</span>&#125;</span><br><span class="line">            election epoch <span class="number">4</span>, quorum <span class="number">0</span> lab8106</span><br><span class="line">      fsmap e4: <span class="number">1</span>/<span class="number">1</span>/<span class="number">1</span> up &#123;<span class="number">0</span>=lab8106=up:active&#125;</span><br><span class="line">     osdmap e132: <span class="number">8</span> osds: <span class="number">8</span> up, <span class="number">8</span> <span class="keyword">in</span></span><br><span class="line">            flags sortbitwise</span><br><span class="line">      pgmap v206294: <span class="number">201</span> pgs, <span class="number">5</span> pools, <span class="number">4684</span> MB data, <span class="number">1214</span> objects</span><br><span class="line">            <span class="number">9669</span> MB used, <span class="number">2216</span> GB / <span class="number">2226</span> GB avail</span><br><span class="line">                 <span class="number">201</span> active+clean</span><br></pre></td></tr></table></figure>
-<a id="more"></a>
-<h2 id="找到的相关资料">找到的相关资料</h2><blockquote>
-<p>After upgrading, users should set the ‘sortbitwise’ flag to enable the new internal object sort order: ceph osd set sortbitwise<br>This flag is important for the new object enumeration API and for new backends like BlueStore.</p>
-</blockquote>
-<p>From <a href="http://docs.ceph.com/docs/master/release-notes/#upgrading-from-infernalis-or-hammer" target="_blank" rel="external">Ceph release notes</a></p>
-<blockquote>
-<p>commit 383185bfbae74797cdb44f50b4bf651422800ff1<br>Author: Sage Weil <a href="&#x6d;&#x61;&#105;&#108;&#x74;&#111;&#x3a;&#115;&#x61;&#x67;&#x65;&#x40;&#114;&#x65;&#x64;&#x68;&#97;&#x74;&#46;&#99;&#111;&#109;">&#115;&#x61;&#x67;&#x65;&#x40;&#114;&#x65;&#x64;&#x68;&#97;&#x74;&#46;&#99;&#111;&#109;</a><br>Date: Fri Aug 7 16:14:09 2015 -0400<br>mon/OSDMonitor: osd set/unset sortbitwise<br> Add monitor command to flip the switch on the OSD hobject_t sort<br> order.</p>
-</blockquote>
-<p>From git</p>
-<p>第一次在源码中出现:</p>
-<blockquote>
-<p>commit 138f58493715e386929f152424b70df37843541b<br>Author: John Spray <a href="&#109;&#97;&#x69;&#108;&#x74;&#111;&#x3a;&#x6a;&#111;&#104;&#x6e;&#x2e;&#115;&#112;&#114;&#97;&#121;&#64;&#114;&#101;&#x64;&#x68;&#x61;&#116;&#x2e;&#x63;&#x6f;&#109;">&#x6a;&#111;&#104;&#x6e;&#x2e;&#115;&#112;&#114;&#97;&#121;&#64;&#114;&#101;&#x64;&#x68;&#x61;&#116;&#x2e;&#x63;&#x6f;&#109;</a><br>Date: Mon Aug 17 14:40:46 2015 -0400<br>osdc/Objecter: new-style pgls<br> Signed-off-by: John Spray <a href="&#x6d;&#x61;&#x69;&#108;&#116;&#111;&#x3a;&#x6a;&#111;&#x68;&#x6e;&#46;&#115;&#112;&#x72;&#97;&#x79;&#64;&#x72;&#x65;&#x64;&#x68;&#97;&#116;&#x2e;&#x63;&#111;&#x6d;">&#x6a;&#111;&#x68;&#x6e;&#46;&#115;&#112;&#x72;&#97;&#x79;&#64;&#x72;&#x65;&#x64;&#x68;&#97;&#116;&#x2e;&#x63;&#111;&#x6d;</a><br> Signed-off-by: Sage Weil <a href="&#x6d;&#97;&#x69;&#108;&#116;&#111;&#x3a;&#x73;&#97;&#x67;&#101;&#x40;&#x72;&#x65;&#100;&#104;&#x61;&#x74;&#46;&#99;&#111;&#x6d;">&#x73;&#97;&#x67;&#101;&#x40;&#x72;&#x65;&#100;&#104;&#x61;&#x74;&#46;&#99;&#111;&#x6d;</a></p>
-</blockquote>
-<p>From git</p>
-<p>Related github issue: <a href="https://github.com/ceph/ceph/pull/4919/commits" target="_blank" rel="external">https://github.com/ceph/ceph/pull/4919/commits</a></p>
-<p>初步结论: sortbitwise 内部排序算法的一个变化.之所以暴露出来是因为要兼容一些pre-jewel版本.在新的版本中应该保持开启状态.</p>
-<p>以上转载自博客：<a href="https://medium.com/@george.shuklin/what-is-sortbitwise-flag-means-in-ceph-b4176748da42#.dfaw54rpf" target="_blank" rel="external">What ‘sortbitwise’ flag means in Ceph?</a></p>
-<h2 id="红帽的官方回答">红帽的官方回答</h2><ul>
-<li>如果你使用dev版本Infernalis或仍在开发中的LTS版本的Ceph的Jewel版本，你会看到这个标志在ceph状态输出默认启用</li>
-<li>这个标志sortbitwise在Infernalis版本中引入</li>
-<li>这个标志是在这个版本提交的upstream commit 968261b11ac30622c0606d1e2ddf422009e7d330</li>
-</ul>
-<p>下载ceph的源码，进入源码目录<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 all]<span class="comment"># git show 968261b11ac30622c0606d1e2ddf422009e7d330</span></span><br><span class="line">commit <span class="number">968261</span>b11ac30622c0606d1e2ddf422009e7d330</span><br><span class="line">Author: Sage Weil &lt;sage@redhat.com&gt;</span><br><span class="line">Date:   Fri Aug <span class="number">7</span> <span class="number">16</span>:<span class="number">01</span>:<span class="number">12</span> <span class="number">2015</span> -<span class="number">0400</span></span><br><span class="line"></span><br><span class="line">    osd/OSDMap: add a SORTBITWISE OSDMap flag</span><br><span class="line"></span><br><span class="line">    This flag will indicate that hobject_t<span class="string">'s shall hence-forth be</span><br><span class="line">    sorted in a bitwise fashion.</span><br><span class="line"></span><br><span class="line">    Signed-off-by: Sage Weil &lt;sage@redhat.com&gt;</span></span><br></pre></td></tr></table></figure></p>
-<p>正如我们在上面给定的提交的描述中所说，该标志将表明hobject_t的将以 bitwise fashion方式排序。<br>现在意味着现在的对象将在OSDs中以按位方式排序，并且此标志默认在Infernalis和Jewel发布版本中启用。</p>
-<h2 id="总结">总结</h2><p>目前来看这个是底层的一个排序的算法的变动，对上层目前还不清楚是有什么可以可见的变化，总之，这个让它默认开启就行，不要去修改它就可以了</p>
+<h2 id="前言">前言</h2><p>我们在使用集群的时候，一般来说比较关注的是后台的集群的状态，但是在做一些更人性化的管理功能的时候，就需要考虑到更多的细节</p>
+<p>本篇就是其中的一个点，查询ceph被哪些客户端使用了<br><a id="more"></a></p>
+<h2 id="实践">实践</h2><p>从接口上来说，ceph提供了文件，块，和对象的接口，所以不同的接口需要不同的查询方式，以为内接触文件和块比较多，并且文件和块存储属于长连接类型，对象属于请求类型，所以主要关注文件和块存储的连接信息查询</p>
+<p>我的集群状态如下<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ceph -s</span></span><br><span class="line">    cluster <span class="number">3</span>daaf51a-eeba-<span class="number">43</span>a6-<span class="number">9</span>f58-c26c5796f928</span><br><span class="line">     health HEALTH_WARN</span><br><span class="line">            mon.lab8106 low disk space</span><br><span class="line">     monmap e1: <span class="number">1</span> mons at &#123;lab8106=<span class="number">192.168</span>.<span class="number">8.106</span>:<span class="number">6789</span>/<span class="number">0</span>&#125;</span><br><span class="line">            election epoch <span class="number">6</span>, quorum <span class="number">0</span> lab8106</span><br><span class="line">      fsmap e20: <span class="number">1</span>/<span class="number">1</span>/<span class="number">1</span> up &#123;<span class="number">0</span>=lab8106=up:active&#125;</span><br><span class="line">     osdmap e52: <span class="number">2</span> osds: <span class="number">2</span> up, <span class="number">2</span> <span class="keyword">in</span></span><br><span class="line">            flags sortbitwise,require_jewel_osds</span><br><span class="line">      pgmap v27223: <span class="number">96</span> pgs, <span class="number">3</span> pools, <span class="number">2579</span> MB data, <span class="number">4621</span> objects</span><br><span class="line">            <span class="number">2666</span> MB used, <span class="number">545</span> GB / <span class="number">548</span> GB avail</span><br><span class="line">                  <span class="number">96</span> active+clean</span><br></pre></td></tr></table></figure></p>
+<h3 id="文件接口的连接信息查询">文件接口的连接信息查询</h3><p>文件接口的连接信息是保存在MDS的，所以需要通过跟MDS进行交互查询,我的0h环境的MDS在lab8106，登陆到lab8106这台机器执行下面命令</p>
+<figure class="highlight mel"><table><tr><td class="code"><pre><span class="line">[root<span class="variable">@lab8106</span> ~]# ceph daemon mds.lab8106 session <span class="keyword">ls</span>|grep <span class="string">'inst\|hostname\|kernel_version'</span></span><br><span class="line">        <span class="string">"inst"</span>: <span class="string">"client.34157 192.168.8.106:0\/3325402310"</span>,</span><br><span class="line">            <span class="string">"hostname"</span>: <span class="string">"lab8106"</span>,</span><br><span class="line">            <span class="string">"kernel_version"</span>: <span class="string">"4.9.5-1.el7.elrepo.x86_64"</span>,</span><br><span class="line">        <span class="string">"inst"</span>: <span class="string">"client.14118 192.168.8.107:0\/2202227749"</span>,</span><br><span class="line">            <span class="string">"hostname"</span>: <span class="string">"lab8107"</span>,</span><br><span class="line">            <span class="string">"kernel_version"</span>: <span class="string">"4.1.12-37.5.1.el7uek.x86_64"</span></span><br></pre></td></tr></table></figure>
+<p>输出结果我做了过滤，主要信息是机器的IP，主机名，和内核版本</p>
+<h3 id="块接口的连接信息查询">块接口的连接信息查询</h3><p>块接口也就是rbd的接口的</p>
+<p>首先在一台机器上map<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># rbd map rbd/zp1</span></span><br></pre></td></tr></table></figure></p>
+<p>执行查询<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># rbd status zp1</span></span><br><span class="line">Watchers:</span><br><span class="line">	watcher=<span class="number">192.168</span>.<span class="number">8.106</span>:<span class="number">0</span>/<span class="number">1837592013</span> client.<span class="number">34246</span> cookie=<span class="number">1844646259873284096</span></span><br></pre></td></tr></table></figure></p>
+<p>可以看到是被192.168.8.106使用了，也就是watcher</p>
+<h2 id="总结">总结</h2><p>命令都比较简单，如果做成一个监控平台，这种连接信息还是有个地方进行查询比较好</p>
 <h2 id="变更记录">变更记录</h2><table>
 <thead>
 <tr>
@@ -256,7 +237,7 @@
 <tr>
 <td style="text-align:center">创建</td>
 <td style="text-align:center">武汉-运维-磨渣</td>
-<td style="text-align:center">2017-01-12</td>
+<td style="text-align:center">2017-04-13</td>
 </tr>
 </tbody>
 </table>
@@ -269,18 +250,9 @@
     
 <nav id="article-nav">
   
-    <a href="/2017/01/19/ceph-rbd-ceph-backup/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption"><</strong>
-      <div class="article-nav-title">
-        
-          ceph的rbd备份软件ceph-backup
-        
-      </div>
-    </a>
   
-  
-    <a href="/2017/01/09/calamari-node-info/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">解决calamari无法获取节点信息的bug</div>
+    <a href="/2017/03/29/Ceph-filesystem-scaleout/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Ceph如何实现文件系统的横向扩展</div>
       <strong class="article-nav-caption">></strong>
     </a>
   
@@ -309,7 +281,7 @@
 
 <div class="duoshuo">
 	<!-- 多说评论框 start -->
-	<div class="ds-thread" data-thread-key="sortbitwise-mean" data-title="&#39;sortbitwise&#39;是什么意思" data-url="http://www.zphj1987.com/2017/01/12/sortbitwise-mean/"></div>
+	<div class="ds-thread" data-thread-key="ceph-cluster-connect-by-which-client" data-title="查看ceph集群被哪些客户端连接" data-url="http://www.zphj1987.com/2017/04/13/ceph-cluster-connect-by-which-client/"></div>
 	<!-- 多说评论框 end -->
 	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 	<script type="text/javascript">
