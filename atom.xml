@@ -4,7 +4,7 @@
   <subtitle><![CDATA[但行好事，莫问前程]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2017-04-19T06:15:03.228Z</updated>
+  <updated>2017-04-19T06:18:23.297Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="http://www.zphj1987.com/2017/04/19/ceph-delete-an-error-object/"/>
     <id>http://www.zphj1987.com/2017/04/19/ceph-delete-an-error-object/</id>
     <published>2017-04-19T06:12:59.000Z</published>
-    <updated>2017-04-19T06:15:03.228Z</updated>
+    <updated>2017-04-19T06:18:23.297Z</updated>
     <content type="html"><![CDATA[<p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/delete.png" alt="delete"><br></center></p>
 <h2 id="前言">前言</h2><p>ceph里面的数据是以对象的形式存储在OSD当中的，有的时候因为磁盘的损坏或者其它的一些特殊情况，会引起集群当中的某一个对象的异常，那么我们需要对这个对象进行处理</p>
 <p>在对象损坏的情况下，启动OSD有的时候都会有问题，那么通过rados rm的方式是没法发送到这个无法启动的OSD的，也就无法删除，所以需要用其他的办法来处理这个情况<br><a id="more"></a></p>
@@ -29,9 +29,10 @@
 <p>这个是为了防止osd的停止产生不必要的删除</p>
 <h3 id="停止OSD">停止OSD</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ]<span class="comment">#systemctl stop ceph-osd@1</span></span><br></pre></td></tr></table></figure>
 <p>如果osd已经是停止的状态就不需要做这一步</p>
-<h4 id="使用ceph-objectstore-tool工具删除单个对象">使用ceph-objectstore-tool工具删除单个对象</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ]<span class="comment">#ceph-objectstore-tool --data-path /var/lib/ceph/osd/ceph-1/ --journal-path /var/lib/ceph/osd/ceph-1/journal --pgid 0.3a  rbd_data.857e6b8b4567.00000000000000ba remove</span></span><br></pre></td></tr></table></figure>
+<h3 id="使用ceph-objectstore-tool工具删除单个对象">使用ceph-objectstore-tool工具删除单个对象</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ]<span class="comment">#ceph-objectstore-tool --data-path /var/lib/ceph/osd/ceph-1/ --journal-path /var/lib/ceph/osd/ceph-1/journal --pgid 0.3a  rbd_data.857e6b8b4567.00000000000000ba remove</span></span><br></pre></td></tr></table></figure>
 <p>如果有多个副本的情况下，最好都删除掉，影响的数据就是包含这个对象的数据，这个操作的前提是这个对象数据已经被破坏了，如果是部分破坏，可以用集群的repair进行修复，这个是无法修复的情况下的删除对象，来实现启动OSD而不影响其它的数据的</p>
-<h4 id="启动OSD">启动OSD</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ]<span class="comment"># systemctl start ceph-osd@1</span></span><br></pre></td></tr></table></figure>
+<h3 id="启动OSD">启动OSD</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ]<span class="comment"># systemctl start ceph-osd@1</span></span><br></pre></td></tr></table></figure>
+<h3 id="解除noout">解除noout</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment">#ceph osd unset noout</span></span><br></pre></td></tr></table></figure>
 <h2 id="总结">总结</h2><p>一般情况下比较少出现这个情况，如果有这样的删除损坏的对象的需求，就可以这么处理</p>
 <h2 id="变更记录">变更记录</h2><table>
 <thead>
@@ -1195,12 +1196,12 @@
 </blockquote>
 <p>From <a href="http://docs.ceph.com/docs/master/release-notes/#upgrading-from-infernalis-or-hammer" target="_blank" rel="external">Ceph release notes</a></p>
 <blockquote>
-<p>commit 383185bfbae74797cdb44f50b4bf651422800ff1<br>Author: Sage Weil <a href="&#x6d;&#97;&#105;&#108;&#116;&#x6f;&#58;&#x73;&#97;&#103;&#101;&#64;&#x72;&#x65;&#100;&#x68;&#x61;&#x74;&#x2e;&#x63;&#x6f;&#109;">&#x73;&#97;&#103;&#101;&#64;&#x72;&#x65;&#100;&#x68;&#x61;&#x74;&#x2e;&#x63;&#x6f;&#109;</a><br>Date: Fri Aug 7 16:14:09 2015 -0400<br>mon/OSDMonitor: osd set/unset sortbitwise<br> Add monitor command to flip the switch on the OSD hobject_t sort<br> order.</p>
+<p>commit 383185bfbae74797cdb44f50b4bf651422800ff1<br>Author: Sage Weil <a href="&#109;&#x61;&#105;&#108;&#x74;&#111;&#58;&#115;&#97;&#103;&#101;&#64;&#114;&#101;&#100;&#104;&#97;&#116;&#46;&#99;&#111;&#x6d;">&#115;&#97;&#103;&#101;&#64;&#114;&#101;&#100;&#104;&#97;&#116;&#46;&#99;&#111;&#x6d;</a><br>Date: Fri Aug 7 16:14:09 2015 -0400<br>mon/OSDMonitor: osd set/unset sortbitwise<br> Add monitor command to flip the switch on the OSD hobject_t sort<br> order.</p>
 </blockquote>
 <p>From git</p>
 <p>第一次在源码中出现:</p>
 <blockquote>
-<p>commit 138f58493715e386929f152424b70df37843541b<br>Author: John Spray <a href="&#109;&#97;&#x69;&#108;&#x74;&#x6f;&#x3a;&#106;&#111;&#x68;&#110;&#46;&#x73;&#x70;&#114;&#97;&#121;&#64;&#x72;&#101;&#x64;&#x68;&#97;&#x74;&#x2e;&#99;&#x6f;&#x6d;">&#106;&#111;&#x68;&#110;&#46;&#x73;&#x70;&#114;&#97;&#121;&#64;&#x72;&#101;&#x64;&#x68;&#97;&#x74;&#x2e;&#99;&#x6f;&#x6d;</a><br>Date: Mon Aug 17 14:40:46 2015 -0400<br>osdc/Objecter: new-style pgls<br> Signed-off-by: John Spray <a href="&#109;&#97;&#105;&#108;&#116;&#x6f;&#58;&#106;&#111;&#104;&#x6e;&#x2e;&#x73;&#x70;&#x72;&#97;&#x79;&#x40;&#x72;&#101;&#100;&#x68;&#x61;&#116;&#x2e;&#99;&#x6f;&#x6d;">&#106;&#111;&#104;&#x6e;&#x2e;&#x73;&#x70;&#x72;&#97;&#x79;&#x40;&#x72;&#101;&#100;&#x68;&#x61;&#116;&#x2e;&#99;&#x6f;&#x6d;</a><br> Signed-off-by: Sage Weil <a href="&#x6d;&#97;&#x69;&#108;&#x74;&#111;&#x3a;&#115;&#97;&#x67;&#x65;&#x40;&#x72;&#101;&#100;&#104;&#x61;&#116;&#46;&#x63;&#x6f;&#x6d;">&#115;&#97;&#x67;&#x65;&#x40;&#x72;&#101;&#100;&#104;&#x61;&#116;&#46;&#x63;&#x6f;&#x6d;</a></p>
+<p>commit 138f58493715e386929f152424b70df37843541b<br>Author: John Spray <a href="&#x6d;&#97;&#x69;&#108;&#x74;&#111;&#58;&#106;&#111;&#104;&#x6e;&#x2e;&#115;&#112;&#114;&#97;&#121;&#64;&#114;&#101;&#100;&#104;&#x61;&#116;&#x2e;&#99;&#x6f;&#x6d;">&#106;&#111;&#104;&#x6e;&#x2e;&#115;&#112;&#114;&#97;&#121;&#64;&#114;&#101;&#100;&#104;&#x61;&#116;&#x2e;&#99;&#x6f;&#x6d;</a><br>Date: Mon Aug 17 14:40:46 2015 -0400<br>osdc/Objecter: new-style pgls<br> Signed-off-by: John Spray <a href="&#x6d;&#97;&#105;&#108;&#116;&#x6f;&#58;&#x6a;&#x6f;&#x68;&#x6e;&#46;&#x73;&#x70;&#114;&#97;&#121;&#x40;&#x72;&#x65;&#100;&#x68;&#97;&#x74;&#x2e;&#99;&#111;&#x6d;">&#x6a;&#x6f;&#x68;&#x6e;&#46;&#x73;&#x70;&#114;&#97;&#121;&#x40;&#x72;&#x65;&#100;&#x68;&#97;&#x74;&#x2e;&#99;&#111;&#x6d;</a><br> Signed-off-by: Sage Weil <a href="&#x6d;&#97;&#105;&#x6c;&#x74;&#111;&#x3a;&#x73;&#97;&#x67;&#x65;&#64;&#114;&#101;&#100;&#104;&#97;&#116;&#46;&#99;&#111;&#109;">&#x73;&#97;&#x67;&#x65;&#64;&#114;&#101;&#100;&#104;&#97;&#116;&#46;&#99;&#111;&#109;</a></p>
 </blockquote>
 <p>From git</p>
 <p>Related github issue: <a href="https://github.com/ceph/ceph/pull/4919/commits" target="_blank" rel="external">https://github.com/ceph/ceph/pull/4919/commits</a></p>

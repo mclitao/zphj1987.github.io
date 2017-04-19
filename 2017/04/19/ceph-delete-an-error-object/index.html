@@ -224,9 +224,10 @@
 <p>这个是为了防止osd的停止产生不必要的删除</p>
 <h3 id="停止OSD">停止OSD</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ]<span class="comment">#systemctl stop ceph-osd@1</span></span><br></pre></td></tr></table></figure>
 <p>如果osd已经是停止的状态就不需要做这一步</p>
-<h4 id="使用ceph-objectstore-tool工具删除单个对象">使用ceph-objectstore-tool工具删除单个对象</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ]<span class="comment">#ceph-objectstore-tool --data-path /var/lib/ceph/osd/ceph-1/ --journal-path /var/lib/ceph/osd/ceph-1/journal --pgid 0.3a  rbd_data.857e6b8b4567.00000000000000ba remove</span></span><br></pre></td></tr></table></figure>
+<h3 id="使用ceph-objectstore-tool工具删除单个对象">使用ceph-objectstore-tool工具删除单个对象</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ]<span class="comment">#ceph-objectstore-tool --data-path /var/lib/ceph/osd/ceph-1/ --journal-path /var/lib/ceph/osd/ceph-1/journal --pgid 0.3a  rbd_data.857e6b8b4567.00000000000000ba remove</span></span><br></pre></td></tr></table></figure>
 <p>如果有多个副本的情况下，最好都删除掉，影响的数据就是包含这个对象的数据，这个操作的前提是这个对象数据已经被破坏了，如果是部分破坏，可以用集群的repair进行修复，这个是无法修复的情况下的删除对象，来实现启动OSD而不影响其它的数据的</p>
-<h4 id="启动OSD">启动OSD</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ]<span class="comment"># systemctl start ceph-osd@1</span></span><br></pre></td></tr></table></figure>
+<h3 id="启动OSD">启动OSD</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ]<span class="comment"># systemctl start ceph-osd@1</span></span><br></pre></td></tr></table></figure>
+<h3 id="解除noout">解除noout</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment">#ceph osd unset noout</span></span><br></pre></td></tr></table></figure>
 <h2 id="总结">总结</h2><p>一般情况下比较少出现这个情况，如果有这样的删除损坏的对象的需求，就可以这么处理</p>
 <h2 id="变更记录">变更记录</h2><table>
 <thead>
