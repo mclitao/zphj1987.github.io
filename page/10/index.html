@@ -176,6 +176,77 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-backfill和recovery的最优值" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/04/24/backfill和recovery的最优值/" class="article-date">
+  	<time datetime="2016-04-24T15:37:21.000Z" itemprop="datePublished">2016-04-24</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/04/24/backfill和recovery的最优值/">backfill和recovery的最优值</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>ceph在增加osd的时候会触发backfill，让数据得到平均，触发数据的迁移<br>ceph在移除osd的时候需要在节点上进行数据的恢复，也有数据的迁移和生成</p>
+<p>只要是集群里面有数据的变动就会有网卡流量，cpu，内存等资源的占用，并且最重要的是还有磁盘的占用，这个客户端也是需要对磁盘进行访问的，当请求出现碰撞的时候，肯定会比正常的情况下要慢很多，而且还有可能因为资源方面的原因而引起机器down机等异常状况的出现</p>
+<p>主要引起的问题可能：</p>
+<ul>
+<li>在peering的时候 block 了IO请求</li>
+<li>在backfill的引起了slow requests</li>
+<li>上面的两个情况会引起客户端的降速和出现soft lockup</li>
+</ul>
+<p>这个在一般情况下会出现不同的需求：</p>
+<ol>
+<li>慢点可以一定不能出问题，不能中断业务</li>
+<li>越快迁移完越好，早点结束维护服务</li>
+<li>需要又快又不能影响业务</li>
+</ol>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2016/04/24/backfill和recovery的最优值/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-福昕pdf加载慢崩溃的解决办法" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -710,68 +781,6 @@
       
         <p class="article-more-link">
           <a  href="/2016/03/12/ceph的书/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-丢了ceph-mon-kerying解决办法" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/03/03/丢了ceph-mon-kerying解决办法/" class="article-date">
-  	<time datetime="2016-03-03T15:38:47.000Z" itemprop="datePublished">2016-03-03</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/03/03/丢了ceph-mon-kerying解决办法/">丢了ceph.mon.keying解决办法</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>在linux操作系统下，可能因为一些很小的误操作，都会造成非常重要的文件的丢失，而文件的备份并不是每时每刻都会注意到，一般是等到文件丢失了才会去想办法，这里讲下ceph.mon.keyring丢失的解决办法</p>
-<h3 id="1、没有启用部署认证的">1、没有启用部署认证的</h3><blockquote>
-<p>auth_cluster_required =none</p>
-</blockquote>
-<p>在进行部署的时候 ceph-deploy new 以后会生成ceph.mon.keyring文件,内容如下<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[mon.]</span><br><span class="line">key = AQBnutdWAAAAABAAPmLaAd9CeKaCRj1CIrztyA==</span><br><span class="line">caps mon = allow *</span><br></pre></td></tr></table></figure></p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2016/03/03/丢了ceph-mon-kerying解决办法/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>

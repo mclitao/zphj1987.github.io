@@ -4,7 +4,7 @@
   <subtitle><![CDATA[但行好事，莫问前程]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2017-04-13T06:28:39.211Z</updated>
+  <updated>2017-04-19T06:15:03.228Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -13,6 +13,53 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[Ceph删除OSD上一个异常object]]></title>
+    <link href="http://www.zphj1987.com/2017/04/19/ceph-delete-an-error-object/"/>
+    <id>http://www.zphj1987.com/2017/04/19/ceph-delete-an-error-object/</id>
+    <published>2017-04-19T06:12:59.000Z</published>
+    <updated>2017-04-19T06:15:03.228Z</updated>
+    <content type="html"><![CDATA[<p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/delete.png" alt="delete"><br></center></p>
+<h2 id="前言">前言</h2><p>ceph里面的数据是以对象的形式存储在OSD当中的，有的时候因为磁盘的损坏或者其它的一些特殊情况，会引起集群当中的某一个对象的异常，那么我们需要对这个对象进行处理</p>
+<p>在对象损坏的情况下，启动OSD有的时候都会有问题，那么通过rados rm的方式是没法发送到这个无法启动的OSD的，也就无法删除，所以需要用其他的办法来处理这个情况<br><a id="more"></a></p>
+<h2 id="处理步骤">处理步骤</h2><h3 id="查找对象的路径">查找对象的路径</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ceph osd map rbd  rbd_data.857e6b8b4567.00000000000000ba</span></span><br><span class="line">osdmap e53 pool <span class="string">'rbd'</span> (<span class="number">0</span>) object <span class="string">'rbd_data.857e6b8b4567.00000000000000ba'</span> -&gt; pg <span class="number">0.2</span>daee1ba (<span class="number">0.3</span>a) -&gt; up ([<span class="number">1</span>], p1) acting ([<span class="number">1</span>], p1)</span><br></pre></td></tr></table></figure>
+<p>先找到这个对象所在的OSD以及PG</p>
+<h3 id="设置集群的noout">设置集群的noout</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment">#ceph osd set noout</span></span><br></pre></td></tr></table></figure>
+<p>这个是为了防止osd的停止产生不必要的删除</p>
+<h3 id="停止OSD">停止OSD</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ]<span class="comment">#systemctl stop ceph-osd@1</span></span><br></pre></td></tr></table></figure>
+<p>如果osd已经是停止的状态就不需要做这一步</p>
+<h4 id="使用ceph-objectstore-tool工具删除单个对象">使用ceph-objectstore-tool工具删除单个对象</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ]<span class="comment">#ceph-objectstore-tool --data-path /var/lib/ceph/osd/ceph-1/ --journal-path /var/lib/ceph/osd/ceph-1/journal --pgid 0.3a  rbd_data.857e6b8b4567.00000000000000ba remove</span></span><br></pre></td></tr></table></figure>
+<p>如果有多个副本的情况下，最好都删除掉，影响的数据就是包含这个对象的数据，这个操作的前提是这个对象数据已经被破坏了，如果是部分破坏，可以用集群的repair进行修复，这个是无法修复的情况下的删除对象，来实现启动OSD而不影响其它的数据的</p>
+<h4 id="启动OSD">启动OSD</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ]<span class="comment"># systemctl start ceph-osd@1</span></span><br></pre></td></tr></table></figure>
+<h2 id="总结">总结</h2><p>一般情况下比较少出现这个情况，如果有这样的删除损坏的对象的需求，就可以这么处理</p>
+<h2 id="变更记录">变更记录</h2><table>
+<thead>
+<tr>
+<th style="text-align:center">Why</th>
+<th style="text-align:center">Who</th>
+<th style="text-align:center">When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">创建</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2017-04-19</td>
+</tr>
+</tbody>
+</table>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/delete.png" alt="delete"><br></center></p>
+<h2 id="前言">前言</h2><p>ceph里面的数据是以对象的形式存储在OSD当中的，有的时候因为磁盘的损坏或者其它的一些特殊情况，会引起集群当中的某一个对象的异常，那么我们需要对这个对象进行处理</p>
+<p>在对象损坏的情况下，启动OSD有的时候都会有问题，那么通过rados rm的方式是没法发送到这个无法启动的OSD的，也就无法删除，所以需要用其他的办法来处理这个情况<br>]]>
+    
+    </summary>
+    
+      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[查看ceph集群被哪些客户端连接]]></title>
@@ -1148,12 +1195,12 @@
 </blockquote>
 <p>From <a href="http://docs.ceph.com/docs/master/release-notes/#upgrading-from-infernalis-or-hammer" target="_blank" rel="external">Ceph release notes</a></p>
 <blockquote>
-<p>commit 383185bfbae74797cdb44f50b4bf651422800ff1<br>Author: Sage Weil <a href="&#x6d;&#97;&#105;&#x6c;&#x74;&#x6f;&#58;&#x73;&#x61;&#x67;&#101;&#64;&#114;&#101;&#x64;&#x68;&#97;&#116;&#x2e;&#99;&#111;&#x6d;">&#x73;&#x61;&#x67;&#101;&#64;&#114;&#101;&#x64;&#x68;&#97;&#116;&#x2e;&#99;&#111;&#x6d;</a><br>Date: Fri Aug 7 16:14:09 2015 -0400<br>mon/OSDMonitor: osd set/unset sortbitwise<br> Add monitor command to flip the switch on the OSD hobject_t sort<br> order.</p>
+<p>commit 383185bfbae74797cdb44f50b4bf651422800ff1<br>Author: Sage Weil <a href="&#x6d;&#97;&#105;&#108;&#116;&#x6f;&#58;&#x73;&#97;&#103;&#101;&#64;&#x72;&#x65;&#100;&#x68;&#x61;&#x74;&#x2e;&#x63;&#x6f;&#109;">&#x73;&#97;&#103;&#101;&#64;&#x72;&#x65;&#100;&#x68;&#x61;&#x74;&#x2e;&#x63;&#x6f;&#109;</a><br>Date: Fri Aug 7 16:14:09 2015 -0400<br>mon/OSDMonitor: osd set/unset sortbitwise<br> Add monitor command to flip the switch on the OSD hobject_t sort<br> order.</p>
 </blockquote>
 <p>From git</p>
 <p>第一次在源码中出现:</p>
 <blockquote>
-<p>commit 138f58493715e386929f152424b70df37843541b<br>Author: John Spray <a href="&#109;&#x61;&#105;&#x6c;&#x74;&#x6f;&#58;&#x6a;&#x6f;&#104;&#x6e;&#x2e;&#115;&#x70;&#x72;&#x61;&#121;&#64;&#114;&#101;&#x64;&#104;&#x61;&#116;&#46;&#99;&#111;&#x6d;">&#x6a;&#x6f;&#104;&#x6e;&#x2e;&#115;&#x70;&#x72;&#x61;&#121;&#64;&#114;&#101;&#x64;&#104;&#x61;&#116;&#46;&#99;&#111;&#x6d;</a><br>Date: Mon Aug 17 14:40:46 2015 -0400<br>osdc/Objecter: new-style pgls<br> Signed-off-by: John Spray <a href="&#x6d;&#97;&#105;&#x6c;&#x74;&#111;&#58;&#x6a;&#x6f;&#104;&#110;&#x2e;&#115;&#x70;&#x72;&#x61;&#121;&#64;&#114;&#x65;&#100;&#104;&#97;&#116;&#x2e;&#x63;&#x6f;&#x6d;">&#x6a;&#x6f;&#104;&#110;&#x2e;&#115;&#x70;&#x72;&#x61;&#121;&#64;&#114;&#x65;&#100;&#104;&#97;&#116;&#x2e;&#x63;&#x6f;&#x6d;</a><br> Signed-off-by: Sage Weil <a href="&#x6d;&#x61;&#105;&#x6c;&#116;&#x6f;&#58;&#115;&#x61;&#103;&#x65;&#64;&#x72;&#101;&#x64;&#104;&#x61;&#x74;&#46;&#x63;&#111;&#x6d;">&#115;&#x61;&#103;&#x65;&#64;&#x72;&#101;&#x64;&#104;&#x61;&#x74;&#46;&#x63;&#111;&#x6d;</a></p>
+<p>commit 138f58493715e386929f152424b70df37843541b<br>Author: John Spray <a href="&#109;&#97;&#x69;&#108;&#x74;&#x6f;&#x3a;&#106;&#111;&#x68;&#110;&#46;&#x73;&#x70;&#114;&#97;&#121;&#64;&#x72;&#101;&#x64;&#x68;&#97;&#x74;&#x2e;&#99;&#x6f;&#x6d;">&#106;&#111;&#x68;&#110;&#46;&#x73;&#x70;&#114;&#97;&#121;&#64;&#x72;&#101;&#x64;&#x68;&#97;&#x74;&#x2e;&#99;&#x6f;&#x6d;</a><br>Date: Mon Aug 17 14:40:46 2015 -0400<br>osdc/Objecter: new-style pgls<br> Signed-off-by: John Spray <a href="&#109;&#97;&#105;&#108;&#116;&#x6f;&#58;&#106;&#111;&#104;&#x6e;&#x2e;&#x73;&#x70;&#x72;&#97;&#x79;&#x40;&#x72;&#101;&#100;&#x68;&#x61;&#116;&#x2e;&#99;&#x6f;&#x6d;">&#106;&#111;&#104;&#x6e;&#x2e;&#x73;&#x70;&#x72;&#97;&#x79;&#x40;&#x72;&#101;&#100;&#x68;&#x61;&#116;&#x2e;&#99;&#x6f;&#x6d;</a><br> Signed-off-by: Sage Weil <a href="&#x6d;&#97;&#x69;&#108;&#x74;&#111;&#x3a;&#115;&#97;&#x67;&#x65;&#x40;&#x72;&#101;&#100;&#104;&#x61;&#116;&#46;&#x63;&#x6f;&#x6d;">&#115;&#97;&#x67;&#x65;&#x40;&#x72;&#101;&#100;&#104;&#x61;&#116;&#46;&#x63;&#x6f;&#x6d;</a></p>
 </blockquote>
 <p>From git</p>
 <p>Related github issue: <a href="https://github.com/ceph/ceph/pull/4919/commits" target="_blank" rel="external">https://github.com/ceph/ceph/pull/4919/commits</a></p>
@@ -1323,84 +1370,6 @@
     <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/octoalien.jpg" alt="此处输入图片的描述"><br></center>
 
 <p>总结了几个小技巧，用于在ceph编译过程中，能够更快一点<br>]]>
-    
-    </summary>
-    
-      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[ceph 的crush算法 straw]]></title>
-    <link href="http://www.zphj1987.com/2017/01/05/ceph-crush-straw/"/>
-    <id>http://www.zphj1987.com/2017/01/05/ceph-crush-straw/</id>
-    <published>2017-01-05T04:45:23.000Z</published>
-    <updated>2017-02-03T05:20:55.938Z</updated>
-    <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/crushmode.jpg" alt=""><br></center>
-
-<p>很多年以前，Sage 在写CRUSH的原始算法的时候，写了不同的Bucket类型，可以选择不同的伪随机选择算法，大部分的模型是基于RJ Honicky写的RUSH algorithms 这个算法，这个在网上可以找到资料，这里面有一个新的特性是sage很引以为豪的，straw算法，也就是我们现在常用的一些算法，这个算法有下面的特性：</p>
-<ul>
-<li>items 可以有任意的weight</li>
-<li>选择一个项目的算法复杂度是O(n)</li>
-<li>如果一个item的weight调高或者调低，只会在调整了的item直接变动，而没有调整的item是不会变动的<a id="more"></a>
-</li>
-</ul>
-<blockquote>
-<p>O(n)找到一个数组里面最大的一个数，你要把n个变量都扫描一遍，操作次数为n，那么算法复杂度是O(n)<br>冒泡法的算法复杂度是O(n²)</p>
-</blockquote>
-<p>这个过程的算法基本动机看起来像画画的颜料吸管，最长的一个将会获胜，每个item 基于weight有自己的随机straw长度</p>
-<p>这些看上去都很好，但是第三个属性实际上是不成立的，这个straw 长度是基于bucket中的其他的weights来进行的一个复杂的算法的，虽然iteam的PG的计算方法是很独立的，但是一个iteam的权重变化实际上影响了其他的iteam的比例因子，这意味着一个iteam的变化可能会影响其他的iteam</p>
-<p>这个看起来是显而易见的，但是事实上证明，8年都没有人去仔细研究底层的代码或者算法，这个影响就是用户做了一个很小的权重变化，但是看到了一个很大的数据变动过程，sage 在做的时候写过一个很好的测试，来验证了第三个属性是真的，但是当时的测试只用了几个比较少的组合，如果大量测试是会发现这个问题的</p>
-<p>sage注意到这个问题也是很多人抱怨在迁移的数据超过了预期的数据，但是这个很难量化和验证，所以被忽视了很久</p>
-<p>无论如何，这是个坏消息</p>
-<p>好消息是，sage找到了如何解决分布算法来的实现这三个属性，新的算法被称为 ‘straw2’,下面是不同的算法<br>straw的算法<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">max_x = -<span class="number">1</span></span><br><span class="line">max_item = -<span class="number">1</span></span><br><span class="line"><span class="keyword">for</span> each item:</span><br><span class="line">    x = random value from <span class="number">0</span>..<span class="number">65535</span></span><br><span class="line">    x *= scaling factor</span><br><span class="line">    <span class="keyword">if</span> x &gt; max_x:</span><br><span class="line">       max_x = x</span><br><span class="line">       max_item = item</span><br><span class="line"><span class="built_in">return</span> item</span><br></pre></td></tr></table></figure></p>
-<p>这个就有问题了scaling factor(比例因子) 是其他iteam的权重所有的，这个就意味着改变A的权重，可能会影响到B和C的权重了</p>
-<p>新的straw2的算法是这样的<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">max_x = -<span class="number">1</span></span><br><span class="line">max_item = -<span class="number">1</span></span><br><span class="line"><span class="keyword">for</span> each item:</span><br><span class="line">   x = random value from <span class="number">0</span>..<span class="number">65535</span></span><br><span class="line">   x = ln(x / <span class="number">65536</span>) / weight</span><br><span class="line">   <span class="keyword">if</span> x &gt; max_x:</span><br><span class="line">      max_x = x</span><br><span class="line">      max_item = item</span><br><span class="line"><span class="built_in">return</span> item</span><br></pre></td></tr></table></figure></p>
-<p>可以看到这个是一个weight的简单的函数，这个意味着改变一个item的权重不会影响到其他的项目</p>
-<p>sage发现问题的一半，然后 sam根据<a href="https://en.wikipedia.org/wiki/Exponential_distribution#Distribution_of_the_minimum_of_exponential_random_variables" target="_blank" rel="external">这个算法</a>解决了问题</p>
-<p>计算ln()函数有点讨厌，因为这个是一个浮点功能，CRUSH是定点运算（整数型），当前的实施方法是128KB的查找表，在做一个小的单元测试的时候比straw慢了25%，单这个可能跟一些缓存和输入也有关系</p>
-<p>以上是2014年sage在开发者邮件列表里面提出来的，相信到现在为止straw2的算法已经改进了很多，目前默认的还是straw算法，内核在kernel4.1以后才支持的这个属性的</p>
-<p>那么我们在0.9x中来看下这个属性,来从实际环境中看下具体有什么区别</p>
-<hr>
-<h1 id="实践过程">实践过程</h1><p><img src="http://static.zybuluo.com/zphj1987/g64ch504j19wcfcfu74fdg8f/%E5%9F%BA%E7%A1%80%E7%8E%AF%E5%A2%83.png" alt="基础环境.png-8.6kB"></p>
-<p>基础的环境为这个，我的机器为8个osd的单机节点，通过修改crush模拟成如上图所示的环境，设置的pg数目为800，保证每个osd上的pg为100左右，这个增加pg的数目，来扩大测试的样本</p>
-<p>straw2和straw的区别在于，straw算法改变一个bucket的权重的时候，因为内部算法的问题，造成了其他机器的item的计算因子也会变化，就会出现其他没修改权重的bucket也会出现pg的相互间的流动，这个跟设计之初的想法是不一致的，造成的后果就是，在增加或者减少存储节点的时候，如果集群比较大，数据比较多，就会造成很大的无关数据的迁移，这个就是上面提到的问题</p>
-<p>为了解决这个问题就新加入了算法straw2，这个算法保证在bucket的crush权重发生变化的时候，只会在变化的bucket有数据流入或者流出，不会出现其他bucket间的数据流动，减少数据的迁移量，下面的测试将会直观的看到这种变化</p>
-<h2 id="环境配置">环境配置</h2><p>调整tunables 为 hammer，这个里面才支持crush v4(straw2)属性<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@lab8107:~/ceph/crush<span class="comment"># ceph osd crush tunables hammer</span></span><br><span class="line">adjusted tunables profile to hammer</span><br><span class="line">root@lab8107:~/ceph/crush<span class="comment"># ceph osd crush set-tunable straw_calc_version 1</span></span><br><span class="line">adjusted tunable straw_calc_version to <span class="number">1</span></span><br></pre></td></tr></table></figure></p>
-<p>设置完了检查这两个个属性，如果是straw_calc_version 0的时候profile会显示unknow<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@lab8107:~/ceph/crush<span class="comment"># ceph osd crush dump|egrep "allowed_bucket_algs|profile"</span></span><br><span class="line">        <span class="string">"allowed_bucket_algs"</span>: <span class="number">54</span>,</span><br><span class="line">        <span class="string">"profile"</span>: <span class="string">"hammer"</span>,</span><br><span class="line">root@lab8107:~/ceph/crush<span class="comment"># ceph osd crush dump|grep alg</span></span><br><span class="line">            <span class="string">"alg"</span>: <span class="string">"straw"</span>,</span><br><span class="line">            <span class="string">"alg"</span>: <span class="string">"straw"</span>,</span><br><span class="line">            <span class="string">"alg"</span>: <span class="string">"straw"</span>,</span><br><span class="line">            <span class="string">"alg"</span>: <span class="string">"straw"</span>,</span><br><span class="line">            <span class="string">"alg"</span>: <span class="string">"straw"</span>,</span><br><span class="line">            <span class="string">"alg"</span>: <span class="string">"straw"</span>,</span><br></pre></td></tr></table></figure></p>
-<p>设置完了后并不能马上生效的，这个是为了防止集群大的变动,可以用这个触发，或者等待下次crush发生变动的时候会自动触发<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph osd crush reweight-all</span><br></pre></td></tr></table></figure></p>
-<h2 id="先来测试straw">先来测试straw</h2><p>开始第一步测试，将osd.7从集群中crush改为0，那么变动的就是host4的crush，那么我们来看下数据的变化<br>首先需要记录原始的pg分布<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@lab8107:~ ceph pg dump pgs|awk <span class="string">'&#123;print $1,$15&#125;'</span> &gt; oringin</span><br><span class="line">root@lab8107:~/ceph/crush<span class="comment"># ceph osd crush reweight osd.7 0</span></span><br><span class="line">reweighted item id <span class="number">7</span> name <span class="string">'osd.7'</span> to <span class="number">0</span> <span class="keyword">in</span> crush map</span><br><span class="line">root@lab8107:~ceph pg dump pgs|awk <span class="string">'&#123;print $1,$15&#125;'</span> &gt; rewei70</span><br></pre></td></tr></table></figure></p>
-<p>现在比较oringin 和rewei70 的变化<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">diff oringin rewei70 -y -W <span class="number">30</span> --suppress-common-lines</span><br></pre></td></tr></table></figure></p>
-<p>查看非调整节点的数据流动<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="number">0.3</span>d [<span class="number">2</span>]      | <span class="number">0.3</span>d [<span class="number">5</span>]</span><br><span class="line"><span class="number">0.316</span> [<span class="number">2</span>]     | <span class="number">0.316</span> [<span class="number">5</span>]</span><br><span class="line"><span class="number">0.26</span>c [<span class="number">5</span>]     | <span class="number">0.26</span>c [<span class="number">1</span>]</span><br><span class="line"><span class="number">0.241</span> [<span class="number">2</span>]     | <span class="number">0.241</span> [<span class="number">0</span>]</span><br><span class="line"><span class="number">0.235</span> [<span class="number">5</span>]     | <span class="number">0.235</span> [<span class="number">2</span>]</span><br><span class="line"><span class="number">0.128</span> [<span class="number">0</span>]     | <span class="number">0.128</span> [<span class="number">3</span>]</span><br></pre></td></tr></table></figure></p>
-<p>再来一次将osd.6的crush weight弄成0<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph osd crush reweight osd.<span class="number">6</span> <span class="number">0</span></span><br></pre></td></tr></table></figure></p>
-<p>再次查看变化<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="number">0</span>.cb [<span class="number">4</span>]      | <span class="number">0</span>.cb [<span class="number">2</span>]</span><br><span class="line"><span class="number">0.30</span>b [<span class="number">4</span>]     | <span class="number">0.30</span>b [<span class="number">2</span>]</span><br><span class="line"><span class="number">0.2</span>e9 [<span class="number">1</span>]     | <span class="number">0.2</span>e9 [<span class="number">4</span>]</span><br><span class="line"><span class="number">0.2</span>d8 [<span class="number">3</span>]     | <span class="number">0.2</span>d8 [<span class="number">1</span>]</span><br><span class="line"><span class="number">0.28</span>e [<span class="number">3</span>]     | <span class="number">0.28</span>e [<span class="number">4</span>]</span><br><span class="line"><span class="number">0.286</span> [<span class="number">1</span>]     | <span class="number">0.286</span> [<span class="number">4</span>]</span><br><span class="line"><span class="number">0.1</span>f7 [<span class="number">3</span>]     | <span class="number">0.1</span>f7 [<span class="number">1</span>]</span><br><span class="line"><span class="number">0.1</span>b6 [<span class="number">1</span>]     | <span class="number">0.1</span>b6 [<span class="number">4</span>]</span><br><span class="line"><span class="number">0.163</span> [<span class="number">0</span>]     | <span class="number">0.163</span> [<span class="number">3</span>]</span><br><span class="line"><span class="number">0.14</span>f [<span class="number">2</span>]     | <span class="number">0.14</span>f [<span class="number">4</span>]</span><br><span class="line"><span class="number">0.10</span>a [<span class="number">0</span>]     | <span class="number">0.10</span>a [<span class="number">3</span>]</span><br></pre></td></tr></table></figure></p>
-<p>上面的两组就是在一个bucket的里面的出现单点和整个bucket的crush weight减少的时候触发的其他节点的数据变动</p>
-<h2 id="现在把环境恢复后再来测试straw2">现在把环境恢复后再来测试straw2</h2><p>修改crush map 里面的bucket的alg<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@lab8107:~/ceph/crush<span class="comment"># ceph osd getcrushmap -o crushmap.txt</span></span><br><span class="line">got crush map from osdmap epoch <span class="number">390</span></span><br><span class="line">root@lab8107:~/ceph/crush<span class="comment"># crushtool -d crushmap.txt -o crushmap-decompile</span></span><br><span class="line">root@lab8107:~/ceph/crush<span class="comment"># vim crushmap-decompile</span></span><br><span class="line">将文件里面的所有straw修改成straw2</span><br><span class="line">root@lab8107:~/ceph/crush<span class="comment"># crushtool -c crushmap-decompile  -o crushmap-compile</span></span><br><span class="line">root@lab8107:~/ceph/crush<span class="comment"># ceph osd setcrushmap -i crushmap-compile</span></span><br></pre></td></tr></table></figure></p>
-<blockquote>
-<p>如果出现报错就把crushmap里面的straw2_calc_version改成straw_calc_version</p>
-</blockquote>
-<p>并且设置算法(最关键的一步，否则即使设置straw2也不生效)<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph osd crush <span class="built_in">set</span>-tunable straw_calc_version <span class="number">2</span></span><br></pre></td></tr></table></figure></p>
-<p>查询当前的crush算法<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@lab8107:~/ceph/crush<span class="comment"># ceph osd crush dump|grep alg</span></span><br><span class="line">            <span class="string">"alg"</span>: <span class="string">"straw2"</span>,</span><br><span class="line">            <span class="string">"alg"</span>: <span class="string">"straw2"</span>,</span><br><span class="line">            <span class="string">"alg"</span>: <span class="string">"straw2"</span>,</span><br><span class="line">            <span class="string">"alg"</span>: <span class="string">"straw2"</span>,</span><br><span class="line">            <span class="string">"alg"</span>: <span class="string">"straw2"</span>,</span><br><span class="line">            <span class="string">"alg"</span>: <span class="string">"straw2"</span>,</span><br><span class="line">        <span class="string">"allowed_bucket_algs"</span>: <span class="number">54</span>,</span><br></pre></td></tr></table></figure></p>
-<p>做一次重新内部算法<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph osd crush reweight-all</span><br></pre></td></tr></table></figure></p>
-<p>可以重复上面的测试了</p>
-<p>获取当前的pg分布<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 pgf]<span class="comment"># ceph pg dump pgs|awk '&#123;print $1,$15&#125;' &gt; oringin</span></span><br><span class="line">root@lab8107:~/ceph/crush<span class="comment"># ceph osd crush reweight osd.7 0</span></span><br><span class="line">[root@lab8106 pgf]<span class="comment"># ceph pg dump pgs|awk '&#123;print $1,$15&#125;' &gt; rewei70</span></span><br></pre></td></tr></table></figure></p>
-<p>比较调整前后<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">diff oringin rewei70  -y -W <span class="number">30</span> --suppress-common-lines|less</span><br></pre></td></tr></table></figure></p>
-<p>再次调整osd.6<br><figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="title">ceph</span> osd crush reweight osd.<span class="number">6</span> <span class="number">0</span></span><br><span class="line">ceph pg dump pgs|awk <span class="string">'&#123;print <span class="variable">$1</span>,<span class="variable">$15</span>&#125;'</span> &gt; rewei60</span><br></pre></td></tr></table></figure></p>
-<p>已经没有非调整bucket的pg在节点间的变化了</p>
-<h2 id="简短的做个总结就是">简短的做个总结就是</h2><p>straw算法里面添加节点或者减少节点，其他服务器上的osd之间会有pg的流动<br>straw2算法里面添加节点或者减少节点，只会pg从变化的节点移出或者从其他点移入，其他节点间没有数据流动</p>
-<h4 id="设置方法">设置方法</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph osd crush tunables hammer</span><br><span class="line">ceph osd crush <span class="built_in">set</span>-tunable straw_calc_version <span class="number">2</span></span><br></pre></td></tr></table></figure>
-<p>开始设置好了 新创建的默认就是会straw2就会省去修改crushmap的操作</p>
-<p>注意librados是服务端支持，客户端就支持，涉及到内核客户端的，就需要内核版本的支持，内核从4.1开始支持，也就是cephfs和rbd的块设备方式需要内核4.1及以上支持，openstack对接的是librados可以默认支持，其他的也都默认可以支持的</p>
-<h2 id="相关链接">相关链接</h2><p><a href="https://en.wikipedia.org/wiki/Exponential_distribution#Distribution_of_the_minimum_of_exponential_random_variables" target="_blank" rel="external">https://en.wikipedia.org/wiki/Exponential_distribution#Distribution_of_the_minimum_of_exponential_random_variables</a></p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/crushmode.jpg" alt=""><br></center>
-
-<p>很多年以前，Sage 在写CRUSH的原始算法的时候，写了不同的Bucket类型，可以选择不同的伪随机选择算法，大部分的模型是基于RJ Honicky写的RUSH algorithms 这个算法，这个在网上可以找到资料，这里面有一个新的特性是sage很引以为豪的，straw算法，也就是我们现在常用的一些算法，这个算法有下面的特性：</p>
-<ul>
-<li>items 可以有任意的weight</li>
-<li>选择一个项目的算法复杂度是O(n)</li>
-<li>如果一个item的weight调高或者调低，只会在调整了的item直接变动，而没有调整的item是不会变动的]]>
     
     </summary>
     

@@ -176,6 +176,61 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-正确用DD测试磁盘读写速度" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/03/22/正确用DD测试磁盘读写速度/" class="article-date">
+  	<time datetime="2015-03-22T08:36:15.000Z" itemprop="datePublished">2015-03-22</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/03/22/正确用DD测试磁盘读写速度/">正确用DD测试磁盘读写速度</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>问: 以下几种方式测试磁盘读写速度有什么区别?<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">dd <span class="keyword">if</span>=/dev/zero of=<span class="built_in">test</span> bs=<span class="number">1</span>M count=<span class="number">128</span> </span><br><span class="line">dd <span class="keyword">if</span>=/dev/zero of=<span class="built_in">test</span> bs=<span class="number">1</span>M count=<span class="number">128</span> ; sync</span><br><span class="line">dd <span class="keyword">if</span>=/dev/zero of=<span class="built_in">test</span> bs=<span class="number">1</span>M count=<span class="number">128</span> conv=fdatasync</span><br><span class="line">dd <span class="keyword">if</span>=/dev/zero of=<span class="built_in">test</span> bs=<span class="number">1</span>M count=<span class="number">128</span> oflag=dsync</span><br></pre></td></tr></table></figure></p>
+<p>答:区别在于内存中写缓存的处理方式。</p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2015/03/22/正确用DD测试磁盘读写速度/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-西数WD2T硬盘分区对齐的方法" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -662,65 +717,6 @@
       
         <p class="article-more-link">
           <a  href="/2015/03/22/卸载python安装的软件/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-常用linux源列表" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/03/22/常用linux源列表/" class="article-date">
-  	<time datetime="2015-03-22T07:16:16.000Z" itemprop="datePublished">2015-03-22</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/03/22/常用linux源列表/">常用linux源列表</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>centos6 源:</p>
-<p>epel源:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget  http://mirrors.aliyun.com/epel/<span class="number">6</span>/x86_64/epel-release-<span class="number">6</span>-<span class="number">8</span>.noarch.rpm</span><br></pre></td></tr></table></figure></p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/03/22/常用linux源列表/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>
