@@ -4,7 +4,7 @@
   <subtitle><![CDATA[但行好事，莫问前程]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2017-04-19T06:18:23.297Z</updated>
+  <updated>2017-04-19T07:13:41.549Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -13,6 +13,60 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[为什么删除的Ceph对象还能get]]></title>
+    <link href="http://www.zphj1987.com/2017/04/19/why-rm-object-can-get/"/>
+    <id>http://www.zphj1987.com/2017/04/19/why-rm-object-can-get/</id>
+    <published>2017-04-19T07:12:42.000Z</published>
+    <updated>2017-04-19T07:13:41.549Z</updated>
+    <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/rm.jpg" alt="rm"><br></center>
+
+<h2 id="前言">前言</h2><p>在很久以前在研究一套文件系统的时候，当时发现一个比较奇怪的现象，没有文件存在，磁盘容量还在增加，在研究了一段时间后，发现这里面有一种比较奇特的处理逻辑</p>
+<p>这套文件系统在处理一个文件的时候放入的是一个临时目录，最开始在发送第一个写请求后，在操作系统层面马上进行了一个delete操作，而写还在继续，并且需要处理这个数据的进程一直 占着的，然后一旦使用完这个文件，不需要做处理，这个文件就会自动释放掉，而无需担心临时文件占用空间的问题</p>
+<p>有人碰到了去后台直接rm一个对象后，在前端通过rados还能get到，而不能rados ls到，我猜测是一个原因，我们来看下怎么验证这个问题<br><a id="more"></a></p>
+<h2 id="验证步骤">验证步骤</h2><h3 id="准备测试数据，并且put进去集群">准备测试数据，并且put进去集群</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># cat zp1 </span></span><br><span class="line">sdasdasd</span><br><span class="line">[root@lab8106 ~]<span class="comment"># rados  -p rbd put zp1 zp1</span></span><br><span class="line">[root@lab8106 ~]<span class="comment"># rados -p rbd ls</span></span><br><span class="line">zp1</span><br></pre></td></tr></table></figure>
+<h3 id="找到测试数据并且直接_rm_删除">找到测试数据并且直接 rm 删除</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ceph osd map rbd zp1</span></span><br><span class="line">osdmap e90 pool <span class="string">'rbd'</span> (<span class="number">3</span>) object <span class="string">'zp1'</span> -&gt; pg <span class="number">3.43</span>eb7bdb (<span class="number">3.1</span>b) -&gt; up ([<span class="number">0</span>], p0) acting ([<span class="number">0</span>], p0)</span><br><span class="line">[root@lab8106 ~]<span class="comment"># ll /var/lib/ceph/osd/ceph-0/current/3.1b_head/DIR_B/DIR_D/zp1__head_43EB7BDB__3 </span></span><br><span class="line">-rw-r--r-- <span class="number">1</span> ceph ceph <span class="number">9</span> Apr <span class="number">19</span> <span class="number">14</span>:<span class="number">46</span> /var/lib/ceph/osd/ceph-<span class="number">0</span>/current/<span class="number">3.1</span>b_head/DIR_B/DIR_D/zp1__head_43EB7BDB__3</span><br><span class="line">[root@lab8106 ~]<span class="comment"># rm -rf /var/lib/ceph/osd/ceph-0/current/3.1b_head/DIR_B/DIR_D/zp1__head_43EB7BDB__3</span></span><br></pre></td></tr></table></figure>
+<h3 id="尝试查询数据，get数据">尝试查询数据，get数据</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 tmp]<span class="comment"># rados  -p rbd ls</span></span><br><span class="line">[root@lab8106 tmp]<span class="comment"># rados  -p rbd get zp1 zp1</span></span><br><span class="line">[root@lab8106 tmp]<span class="comment"># cat zp1</span></span><br><span class="line">sdasdasd</span><br></pre></td></tr></table></figure>
+<p>可以看到数据确实可以查询不到，但是能get下来，并且数据是完整的</p>
+<h3 id="验证我的猜测">验证我的猜测</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 tmp]<span class="comment"># lsof |grep zp1</span></span><br><span class="line">ms_pipe_w  <span class="number">4737</span>  <span class="number">5620</span>           ceph   <span class="number">86</span>u      REG               <span class="number">8</span>,<span class="number">33</span>          <span class="number">9</span>  <span class="number">201496748</span> /var/lib/ceph/osd/ceph-<span class="number">0</span>/current/<span class="number">3.1</span>b_head/DIR_B/DIR_D/zp1__head_43EB7BDB__3 (deleted)</span><br><span class="line">···</span><br></pre></td></tr></table></figure>
+<p>可以看到这个标记为delete的对象就是我们删除的zp1，这个输出的意思是，进程4737上面删除了一个文件，文件描述符为86的</p>
+<p>我们直接去拷贝下这个数据看下<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 tmp]<span class="comment"># cp  /proc/4737/fd/86 /tmp/zp_save</span></span><br><span class="line">[root@lab8106 tmp]<span class="comment"># cat /tmp/zp_save </span></span><br><span class="line">sdasdasd</span><br></pre></td></tr></table></figure></p>
+<p>可以看到这个数据确实是存在的，还没有释放，所有可以get的到</p>
+<p>我们试下重启下这个进程，看下delete的文件是不是会释放<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 tmp]<span class="comment"># systemctl restart ceph-osd@0</span></span><br></pre></td></tr></table></figure></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 tmp]<span class="comment"># lsof |grep zp1</span></span><br></pre></td></tr></table></figure>
+<p>可以看到已经没有这个delete了，现在我们尝试下get<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 tmp]<span class="comment"># rados  -p rbd get zp1 zp1</span></span><br><span class="line">error getting rbd/zp1: (<span class="number">2</span>) No such file or directory</span><br></pre></td></tr></table></figure></p>
+<p>可以看到文件释放掉了，问题确实跟我猜测的是一致的，当然这并不是什么问题</p>
+<h2 id="总结">总结</h2><p>本篇是对删除了的对象还能get的现象进行了解释</p>
+<h2 id="变更记录">变更记录</h2><table>
+<thead>
+<tr>
+<th style="text-align:center">Why</th>
+<th style="text-align:center">Who</th>
+<th style="text-align:center">When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">创建</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2017-04-19</td>
+</tr>
+</tbody>
+</table>
+]]></content>
+    <summary type="html">
+    <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/rm.jpg" alt="rm"><br></center>
+
+<h2 id="前言">前言</h2><p>在很久以前在研究一套文件系统的时候，当时发现一个比较奇怪的现象，没有文件存在，磁盘容量还在增加，在研究了一段时间后，发现这里面有一种比较奇特的处理逻辑</p>
+<p>这套文件系统在处理一个文件的时候放入的是一个临时目录，最开始在发送第一个写请求后，在操作系统层面马上进行了一个delete操作，而写还在继续，并且需要处理这个数据的进程一直 占着的，然后一旦使用完这个文件，不需要做处理，这个文件就会自动释放掉，而无需担心临时文件占用空间的问题</p>
+<p>有人碰到了去后台直接rm一个对象后，在前端通过rados还能get到，而不能rados ls到，我猜测是一个原因，我们来看下怎么验证这个问题<br>]]>
+    
+    </summary>
+    
+      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[Ceph删除OSD上一个异常object]]></title>
@@ -1196,12 +1250,12 @@
 </blockquote>
 <p>From <a href="http://docs.ceph.com/docs/master/release-notes/#upgrading-from-infernalis-or-hammer" target="_blank" rel="external">Ceph release notes</a></p>
 <blockquote>
-<p>commit 383185bfbae74797cdb44f50b4bf651422800ff1<br>Author: Sage Weil <a href="&#109;&#x61;&#105;&#108;&#x74;&#111;&#58;&#115;&#97;&#103;&#101;&#64;&#114;&#101;&#100;&#104;&#97;&#116;&#46;&#99;&#111;&#x6d;">&#115;&#97;&#103;&#101;&#64;&#114;&#101;&#100;&#104;&#97;&#116;&#46;&#99;&#111;&#x6d;</a><br>Date: Fri Aug 7 16:14:09 2015 -0400<br>mon/OSDMonitor: osd set/unset sortbitwise<br> Add monitor command to flip the switch on the OSD hobject_t sort<br> order.</p>
+<p>commit 383185bfbae74797cdb44f50b4bf651422800ff1<br>Author: Sage Weil <a href="&#x6d;&#x61;&#105;&#108;&#116;&#111;&#58;&#x73;&#97;&#103;&#101;&#64;&#114;&#101;&#100;&#x68;&#x61;&#x74;&#46;&#99;&#111;&#109;">&#x73;&#97;&#103;&#101;&#64;&#114;&#101;&#100;&#x68;&#x61;&#x74;&#46;&#99;&#111;&#109;</a><br>Date: Fri Aug 7 16:14:09 2015 -0400<br>mon/OSDMonitor: osd set/unset sortbitwise<br> Add monitor command to flip the switch on the OSD hobject_t sort<br> order.</p>
 </blockquote>
 <p>From git</p>
 <p>第一次在源码中出现:</p>
 <blockquote>
-<p>commit 138f58493715e386929f152424b70df37843541b<br>Author: John Spray <a href="&#x6d;&#97;&#x69;&#108;&#x74;&#111;&#58;&#106;&#111;&#104;&#x6e;&#x2e;&#115;&#112;&#114;&#97;&#121;&#64;&#114;&#101;&#100;&#104;&#x61;&#116;&#x2e;&#99;&#x6f;&#x6d;">&#106;&#111;&#104;&#x6e;&#x2e;&#115;&#112;&#114;&#97;&#121;&#64;&#114;&#101;&#100;&#104;&#x61;&#116;&#x2e;&#99;&#x6f;&#x6d;</a><br>Date: Mon Aug 17 14:40:46 2015 -0400<br>osdc/Objecter: new-style pgls<br> Signed-off-by: John Spray <a href="&#x6d;&#97;&#105;&#108;&#116;&#x6f;&#58;&#x6a;&#x6f;&#x68;&#x6e;&#46;&#x73;&#x70;&#114;&#97;&#121;&#x40;&#x72;&#x65;&#100;&#x68;&#97;&#x74;&#x2e;&#99;&#111;&#x6d;">&#x6a;&#x6f;&#x68;&#x6e;&#46;&#x73;&#x70;&#114;&#97;&#121;&#x40;&#x72;&#x65;&#100;&#x68;&#97;&#x74;&#x2e;&#99;&#111;&#x6d;</a><br> Signed-off-by: Sage Weil <a href="&#x6d;&#97;&#105;&#x6c;&#x74;&#111;&#x3a;&#x73;&#97;&#x67;&#x65;&#64;&#114;&#101;&#100;&#104;&#97;&#116;&#46;&#99;&#111;&#109;">&#x73;&#97;&#x67;&#x65;&#64;&#114;&#101;&#100;&#104;&#97;&#116;&#46;&#99;&#111;&#109;</a></p>
+<p>commit 138f58493715e386929f152424b70df37843541b<br>Author: John Spray <a href="&#x6d;&#x61;&#x69;&#108;&#116;&#x6f;&#x3a;&#x6a;&#x6f;&#104;&#110;&#46;&#x73;&#112;&#x72;&#x61;&#121;&#x40;&#114;&#x65;&#100;&#x68;&#97;&#116;&#x2e;&#x63;&#111;&#x6d;">&#x6a;&#x6f;&#104;&#110;&#46;&#x73;&#112;&#x72;&#x61;&#121;&#x40;&#114;&#x65;&#100;&#x68;&#97;&#116;&#x2e;&#x63;&#111;&#x6d;</a><br>Date: Mon Aug 17 14:40:46 2015 -0400<br>osdc/Objecter: new-style pgls<br> Signed-off-by: John Spray <a href="&#x6d;&#97;&#105;&#x6c;&#x74;&#111;&#x3a;&#x6a;&#x6f;&#104;&#110;&#x2e;&#x73;&#x70;&#x72;&#97;&#x79;&#x40;&#x72;&#101;&#x64;&#104;&#x61;&#116;&#46;&#x63;&#111;&#x6d;">&#x6a;&#x6f;&#104;&#110;&#x2e;&#x73;&#x70;&#x72;&#97;&#x79;&#x40;&#x72;&#101;&#x64;&#104;&#x61;&#116;&#46;&#x63;&#111;&#x6d;</a><br> Signed-off-by: Sage Weil <a href="&#109;&#x61;&#x69;&#x6c;&#116;&#111;&#58;&#x73;&#x61;&#x67;&#101;&#x40;&#114;&#x65;&#x64;&#x68;&#x61;&#x74;&#46;&#x63;&#x6f;&#109;">&#x73;&#x61;&#x67;&#101;&#x40;&#114;&#x65;&#x64;&#x68;&#x61;&#x74;&#46;&#x63;&#x6f;&#109;</a></p>
 </blockquote>
 <p>From git</p>
 <p>Related github issue: <a href="https://github.com/ceph/ceph/pull/4919/commits" target="_blank" rel="external">https://github.com/ceph/ceph/pull/4919/commits</a></p>
@@ -1309,68 +1363,6 @@
 <p>对于这个问题，好像确实没有见到过，而之前正好有个页面看到是空的，当时还不清楚这个是什么用的</p>
 <p><img src="http://static.zybuluo.com/zphj1987/mjyvzkd7q9x6eplb538o7ltc/image_1b611hfic17lj15ej1jp1pb31m979.png" alt="origin"></p>
 <p>而另外一位群友贴出了这个地方的是有值的，这个地方是有BUG的，在咨询了相关的问题描述以后，我们来看下，可以如何解决这个问题<br>]]>
-    
-    </summary>
-    
-      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[Ceph编译加速的小技巧]]></title>
-    <link href="http://www.zphj1987.com/2017/01/05/Ceph-compile-speedup/"/>
-    <id>http://www.zphj1987.com/2017/01/05/Ceph-compile-speedup/</id>
-    <published>2017-01-05T09:46:54.000Z</published>
-    <updated>2017-02-03T05:19:18.556Z</updated>
-    <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/octoalien.jpg" alt="此处输入图片的描述"><br></center>
-
-<p>总结了几个小技巧，用于在ceph编译过程中，能够更快一点<br><a id="more"></a></p>
-<h2 id="修改clone的地址">修改clone的地址</h2><blockquote>
-<p>git clone  <a href="https://github.com/ceph/ceph.git" target="_blank" rel="external">https://github.com/ceph/ceph.git</a></p>
-</blockquote>
-<p>可以修改成</p>
-<blockquote>
-<p>git clone  git://github.com/ceph/ceph.git</p>
-</blockquote>
-<p>某些时候可能可以加快一些<br><img src="http://static.zybuluo.com/zphj1987/1nhwqu5rigkblr4ql9decmv5/1.png" alt="1.png-5.9kB"></p>
-<p><img src="http://static.zybuluo.com/zphj1987/tmcr90ufu6abgmffmikep9sl/2.png" alt="1.png-5."></p>
-<h2 id="根据需要下载分支">根据需要下载分支</h2><p>假如现在想看10.2.5版本的代码</p>
-<h3 id="常规做法">常规做法</h3><p>先下载整个库<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> git://github.com/ceph/ceph.git all</span><br></pre></td></tr></table></figure></p>
-<p>总共的下载对象数目为46万</p>
-<blockquote>
-<p>Counting objects: 460384</p>
-</blockquote>
-<p>这个是包含所有的分支和分支内的文件的所有版本的<br>我们切换到分支<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 mytest]<span class="comment">#cd all</span></span><br><span class="line">[root@lab8106 all]<span class="comment"># git branch</span></span><br><span class="line">* master</span><br><span class="line">[root@lab8106 all]<span class="comment"># git checkout -b all10.2.5  v10.2.5</span></span><br><span class="line">Switched to a new branch <span class="string">'all10.2.5'</span></span><br><span class="line">[root@lab8106 all]<span class="comment"># git branch</span></span><br><span class="line">* all10.<span class="number">2.5</span></span><br><span class="line">  master</span><br><span class="line">[root@lab8106 all]<span class="comment"># ls -R|wc -l</span></span><br><span class="line"><span class="number">4392</span></span><br><span class="line">可以看到有这么多的文件</span><br></pre></td></tr></table></figure></p>
-<h3 id="现在只复制一个分支的">现在只复制一个分支的</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 mytest]<span class="comment"># git clone -b v10.2.5 --single-branch   git://github.com/ceph/ceph.git single</span></span><br></pre></td></tr></table></figure>
-<p>总共下载的对象数目为34万</p>
-<blockquote>
-<p>Counting objects: 344026<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 mytest]<span class="comment"># cd single/</span></span><br><span class="line">[root@lab8106 single]<span class="comment"># git checkout -b single10.2.5</span></span><br><span class="line">Switched to a new branch <span class="string">'single10.2.5'</span></span><br><span class="line">[root@lab8106 single]<span class="comment"># git branch</span></span><br><span class="line">* single10.<span class="number">2.5</span></span><br><span class="line">[root@lab8106 single]<span class="comment"># ls -R |wc -l</span></span><br><span class="line"><span class="number">4392</span></span><br></pre></td></tr></table></figure></p>
-</blockquote>
-<h3 id="现在只复制一个分支的最后一个版本的代码">现在只复制一个分支的最后一个版本的代码</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 mytest]<span class="comment"># git clone -b v10.2.5 --single-branch --depth 1  git://github.com/ceph/ceph.git singledep1</span></span><br></pre></td></tr></table></figure>
-<p>总共下载的对象数目为3682</p>
-<blockquote>
-<p>Counting objects: 3682<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 mytest]<span class="comment">#  cd singledep1/</span></span><br><span class="line"> [root@lab8106 singledep1]<span class="comment"># git checkout -b singledep110.2.5</span></span><br><span class="line">Switched to a new branch <span class="string">'singledep110.2.5'</span></span><br><span class="line">[root@lab8106 singledep1]<span class="comment"># git branch</span></span><br><span class="line">* singledep110.<span class="number">2.5</span></span><br><span class="line">[root@lab8106 singledep1]<span class="comment"># ls -R |wc -l</span></span><br><span class="line"><span class="number">4392</span></span><br></pre></td></tr></table></figure></p>
-</blockquote>
-<p>从上面的可以看到三个版本的代码是一致的，那么区别在哪里</p>
-<ul>
-<li>clone：包含所有分支和分支的所有文件版本</li>
-<li>clone single-branch：包含指定分支和指定分支的所有文件的版本</li>
-<li>clone single-branch depth 1 ：包含指定分支和指定分支的最后一个版本的文件</li>
-</ul>
-<h2 id="准备编译前的install-deps慢">准备编译前的install-deps慢</h2><p>提前准备好epel<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum install http://mirrors.aliyun.com/epel/<span class="number">7</span>/x86_64/e/epel-release-<span class="number">7</span>-<span class="number">8</span>.noarch.rpm</span><br><span class="line">rm -rf /etc/yum.repos.d/epel*</span><br></pre></td></tr></table></figure></p>
-<p>装完了删除，这个是为了绕过包验证<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget -O /etc/yum.repos.d/epel.repo http://mirrors.aliyun.com/repo/epel-<span class="number">7</span>.repo</span><br></pre></td></tr></table></figure></p>
-<p>删除慢速的 aliyuncs<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sed -i <span class="string">'/aliyuncs/d'</span> /etc/yum.repos.d/epel.repo</span><br></pre></td></tr></table></figure></p>
-<p>install-deps.sh第72行的需要修改</p>
-<blockquote>
-<p>yum-config-manager —add-repo <a href="https://dl.fedoraproject.org/pub/epel/$MAJOR_VERSION/x86_64/" target="_blank" rel="external">https://dl.fedoraproject.org/pub/epel/$MAJOR_VERSION/x86_64/</a><br>执行下面的命令<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sed -i <span class="string">'s/https:\/\/dl.fedoraproject.org\/pub\//http:\/\/mirrors.aliyun.com\//g'</span> install-deps.sh</span><br></pre></td></tr></table></figure></p>
-</blockquote>
-<p>然后执行install-deps.sh，这样会快很多的</p>
-<h2 id="总结">总结</h2><p>目前就这么多，后续有更多的影响速度的地方会增加上去</p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/octoalien.jpg" alt="此处输入图片的描述"><br></center>
-
-<p>总结了几个小技巧，用于在ceph编译过程中，能够更快一点<br>]]>
     
     </summary>
     
