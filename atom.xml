@@ -4,7 +4,7 @@
   <subtitle><![CDATA[但行好事，莫问前程]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2017-04-20T02:35:07.836Z</updated>
+  <updated>2017-04-26T08:01:51.060Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -13,6 +13,70 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[rados put striper功能的调试]]></title>
+    <link href="http://www.zphj1987.com/2017/04/26/rados-put-strip-debug/"/>
+    <id>http://www.zphj1987.com/2017/04/26/rados-put-strip-debug/</id>
+    <published>2017-04-26T08:00:40.000Z</published>
+    <updated>2017-04-26T08:01:51.060Z</updated>
+    <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/strip.jpg" alt="strip"><br></center>
+
+<h2 id="前言">前言</h2><p>之前对于striper这个地方的功能并没研究太多，只是知道这个里面可以以条带方式并行的去写对象，从而加大并发性来提高性能，而默认的条带数目为1，也就是以对象大小去写，并没有条带，所以不是很好感觉到差别，今天就尝试下用rados命令来看下这个条带是怎么回事<br><a id="more"></a></p>
+<h2 id="实践过程">实践过程</h2><p>最开始我的集群是用rpm包进行安装的，这个可以做一些常规的测试，如果需要改动一些代码的话，就比较麻烦了，本文后面会讲述怎么改动一点点代码，然后进行测试</p>
+<p>我们一般来说用rados put操作就是一个完整的文件，并不会进行拆分，我们尝试下看下<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># dd if=/dev/zero of=16M bs=4M count=4</span></span><br><span class="line">[root@lab8106 ~]<span class="comment"># rados  -p rbd put 16M 16M</span></span><br><span class="line">[root@lab8106 ~]<span class="comment"># rados  -p rbd stat 16M</span></span><br><span class="line">rbd/<span class="number">16</span>M mtime <span class="number">2017</span>-<span class="number">04</span>-<span class="number">26</span> <span class="number">15</span>:<span class="number">08</span>:<span class="number">14.000000</span>, size <span class="number">16777216</span></span><br></pre></td></tr></table></figure></p>
+<p>可以看到我们put 16M的文件，在后台就是一个16M的对象</p>
+<p>这个rados命令还有个参数是striper<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># rados  --help|grep stri</span></span><br><span class="line">   --striper</span><br><span class="line">        Use radostriper interface rather than pure rados</span><br></pre></td></tr></table></figure></p>
+<p>我们来用这个命令试一下<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># dd if=/dev/zero of=strip16M bs=4M count=4</span></span><br><span class="line">[root@lab8106 ~]<span class="comment"># rados  -p rbd put strip16M strip16M --striper</span></span><br><span class="line">[root@lab8106 ~]<span class="comment"># rados  -p rbd ls |grep strip</span></span><br><span class="line">strip16M.<span class="number">0000000000000002</span></span><br><span class="line">strip16M.<span class="number">0000000000000003</span></span><br><span class="line">strip16M.<span class="number">0000000000000000</span></span><br><span class="line">strip16M.<span class="number">0000000000000001</span></span><br><span class="line">[root@lab8106 ~]<span class="comment"># rados  -p rbd  --striper ls |grep strip</span></span><br><span class="line">strip16M</span><br><span class="line">[root@lab8106 ~]<span class="comment">#  rados  -p rbd stat strip16M.0000000000000002</span></span><br><span class="line">rbd/strip16M.<span class="number">0000000000000002</span> mtime <span class="number">2017</span>-<span class="number">04</span>-<span class="number">26</span> <span class="number">15</span>:<span class="number">11</span>:<span class="number">06.000000</span>, size <span class="number">4194304</span></span><br></pre></td></tr></table></figure></p>
+<p>可以看到这个16M的文件是被拆分成了4M一个的对象，存储到了后台的,我们开启下日志后看下有没有什么详细的信息，因为在rados参数当中确实没有找到可配置的选项<br>在/etc/ceph/ceph.conf当中添加<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">debug_rados=<span class="number">20</span></span><br><span class="line">debug_striper=<span class="number">20</span></span><br></pre></td></tr></table></figure></p>
+<p>再次测试<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># dd if=/dev/zero of=strip116M bs=4M count=4</span></span><br><span class="line">[root@lab8106 ~]<span class="comment"># rados  -p rbd put strip116M strip116M --striper</span></span><br><span class="line">···</span><br><span class="line">sc is one, reset su to os</span><br><span class="line">su <span class="number">4194304</span> sc <span class="number">1</span> os <span class="number">4194304</span> stripes_per_object <span class="number">1</span></span><br><span class="line">···</span><br></pre></td></tr></table></figure></p>
+<p>这个地方解释下意思</p>
+<blockquote>
+<p>strip count is 1,重置strip unit为object size ，也就是4M<br>strip unit 4194304 ，strip count 1，object size 4194304,每个对象的条带为1</p>
+</blockquote>
+<p>这个代码里面写了<br><a href="https://github.com/ceph/ceph/blob/master/src/tools/rados/rados.cc" target="_blank" rel="external">https://github.com/ceph/ceph/blob/master/src/tools/rados/rados.cc</a><br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">--striper</span><br><span class="line">       Use radostriper interface rather than pure rados</span><br></pre></td></tr></table></figure></p>
+<p>也就是这个rados在加了参数之后是调用了radostriper interface这个接口的，所以猜测这个条带的相关参数应该是在接口里面写死了的<br><a href="https://github.com/ceph/ceph/blob/master/src/libradosstriper/RadosStriperImpl.cc" target="_blank" rel="external">https://github.com/ceph/ceph/blob/master/src/libradosstriper/RadosStriperImpl.cc</a><br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/// default object layout</span><br><span class="line">struct ceph_file_layout default_file_layout = &#123;</span><br><span class="line"> fl_stripe_unit: init_le32(<span class="number">1</span>&lt;&lt;<span class="number">22</span>),</span><br><span class="line"> fl_stripe_count: init_le32(<span class="number">1</span>),</span><br><span class="line"> fl_object_size: init_le32(<span class="number">1</span>&lt;&lt;<span class="number">22</span>),</span><br><span class="line"> fl_cas_<span class="built_in">hash</span>: init_le32(<span class="number">0</span>),</span><br><span class="line"> fl_object_stripe_unit: init_le32(<span class="number">0</span>),</span><br><span class="line"> fl_unused: init_le32(-<span class="number">1</span>),</span><br><span class="line"> fl_pg_pool : init_le32(-<span class="number">1</span>),</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>下面开始看下调试模式下改下这几个数值</p>
+<h3 id="下载代码">下载代码</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/ceph/ceph.git</span><br><span class="line">git checkout -b myceph2 v10.<span class="number">2.3</span></span><br><span class="line">git submodule update --init --recursive</span><br></pre></td></tr></table></figure>
+<p>切换到10.2.3版本,用的make模式，没用cmake<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> ceph</span><br><span class="line">./install-deps.sh</span><br><span class="line">./autogen.sh</span><br><span class="line">./configure</span><br><span class="line">make -j <span class="number">12</span></span><br></pre></td></tr></table></figure></p>
+<p>启动开发模式服务<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> src</span><br><span class="line">./vstart.sh --mon_num <span class="number">1</span> --osd_num <span class="number">3</span> --mds_num <span class="number">1</span>  --short -n <span class="operator">-d</span></span><br></pre></td></tr></table></figure></p>
+<p>这样，dev cluster就起来了。修改部分源码重新make之后，需要关闭cluster，重启让代码生效，当然最好的是，你修改哪个模块，就重启那个模块就行，这里使用重启集群<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./stop.sh all</span><br><span class="line">./vstart.sh --mon_num <span class="number">1</span> --osd_num <span class="number">3</span> --mds_num <span class="number">1</span> --short  <span class="operator">-d</span></span><br></pre></td></tr></table></figure></p>
+<p>查看状态<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 src]<span class="comment"># ./ceph -s -c ./ceph.conf</span></span><br></pre></td></tr></table></figure></p>
+<p>我们修改下代码<br>vim libradosstriper/RadosStriperImpl.cc<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/// default object layout</span><br><span class="line">struct ceph_file_layout default_file_layout = &#123;</span><br><span class="line"> fl_stripe_unit: init_le32(<span class="number">1</span>&lt;&lt;<span class="number">21</span>),</span><br><span class="line"> fl_stripe_count: init_le32(<span class="number">2</span>),</span><br><span class="line"> fl_object_size: init_le32(<span class="number">1</span>&lt;&lt;<span class="number">22</span>),</span><br><span class="line"> fl_cas_<span class="built_in">hash</span>: init_le32(<span class="number">0</span>),</span><br><span class="line"> fl_object_stripe_unit: init_le32(<span class="number">0</span>),</span><br><span class="line"> fl_unused: init_le32(-<span class="number">1</span>),</span><br><span class="line"> fl_pg_pool : init_le32(-<span class="number">1</span>),</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>修改的是stripe_unit为2M，stripe_count为2，object_size为4M，也就是条带为2<br>修改完了后重新make<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./stop.sh all</span><br><span class="line">./vstart.sh --mon_num <span class="number">1</span> --osd_num <span class="number">3</span> --mds_num <span class="number">1</span> --short  <span class="operator">-d</span></span><br></pre></td></tr></table></figure></p>
+<p>初始化集群，修改下配置文件增加调试信息<br>vim ./ceph.conf<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">debug_rados=<span class="number">20</span></span><br><span class="line">debug_striper=<span class="number">20</span></span><br></pre></td></tr></table></figure></p>
+<p>创建文件<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># dd if=/dev/zero of=debugstrip16M bs=4M count=4</span></span><br><span class="line">[root@lab8106 src]<span class="comment"># ./rados -c ./ceph.conf --striper  -p rbd  put  debugstrip16M debugstrip16M</span></span><br><span class="line">[root@lab8106 src]<span class="comment">#./rados -c ./ceph.conf  -p rbd  stat debugstrip16M.0000000000000001</span></span><br><span class="line">rbd/debugstrip16M.<span class="number">0000000000000001</span> mtime <span class="number">2017</span>-<span class="number">04</span>-<span class="number">26</span> <span class="number">15</span>:<span class="number">38</span>:<span class="number">41.483464</span> </span><br><span class="line"><span class="number">2017</span>-<span class="number">04</span>-<span class="number">26</span> <span class="number">15</span>:<span class="number">37</span>:<span class="number">27.000000</span>, size <span class="number">4194304</span></span><br></pre></td></tr></table></figure></p>
+<p>可以看到对象还是4M<br>我们截取下日志分析<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">su <span class="number">2097152</span> sc <span class="number">2</span> os <span class="number">4194304</span> stripes_per_object <span class="number">2</span></span><br><span class="line">off <span class="number">0</span> blockno <span class="number">0</span> stripeno <span class="number">0</span> stripepos <span class="number">0</span> objectsetno <span class="number">0</span> objectno <span class="number">0</span> block_start <span class="number">0</span></span><br><span class="line">added new extent(debugstrip16M.<span class="number">0000000000000000</span> (<span class="number">0</span>) </span><br><span class="line">off <span class="number">2097152</span> blockno <span class="number">1</span> stripeno <span class="number">0</span> stripepos <span class="number">1</span> objectsetno <span class="number">0</span> objectno <span class="number">1</span> block_start <span class="number">0</span> </span><br><span class="line">added new extent(debugstrip16M.<span class="number">0000000000000001</span> (<span class="number">1</span>) </span><br><span class="line">off <span class="number">4194304</span> blockno <span class="number">2</span> stripeno <span class="number">1</span> stripepos <span class="number">0</span> objectsetno <span class="number">0</span> objectno <span class="number">0</span> block_start <span class="number">2097152</span></span><br><span class="line">added new extent(debugstrip16M.<span class="number">0000000000000000</span> (<span class="number">0</span>)   </span><br><span class="line">off <span class="number">6291456</span> blockno <span class="number">3</span> stripeno <span class="number">1</span> stripepos <span class="number">1</span> objectsetno <span class="number">0</span> objectno <span class="number">1</span> block_start <span class="number">2097152</span></span><br><span class="line">added new extent(debugstrip16M.<span class="number">0000000000000001</span> (<span class="number">1</span>)</span><br><span class="line">off <span class="number">8388608</span> blockno <span class="number">4</span> stripeno <span class="number">2</span> stripepos <span class="number">0</span> objectsetno <span class="number">1</span> objectno <span class="number">2</span> block_start <span class="number">0</span></span><br><span class="line">added new extent(debugstrip16M.<span class="number">0000000000000002</span> (<span class="number">2</span>) </span><br><span class="line">off <span class="number">10485760</span> blockno <span class="number">5</span> stripeno <span class="number">2</span> stripepos <span class="number">1</span> objectsetno <span class="number">1</span> objectno <span class="number">3</span> block_start <span class="number">0</span></span><br><span class="line">added new extent(debugstrip16M.<span class="number">0000000000000003</span> (<span class="number">3</span>) </span><br><span class="line">off <span class="number">12582912</span> blockno <span class="number">6</span> stripeno <span class="number">3</span> stripepos <span class="number">0</span> objectsetno <span class="number">1</span> objectno <span class="number">2</span> block_start <span class="number">2097152</span> </span><br><span class="line">added new extent(debugstrip16M.<span class="number">0000000000000002</span> (<span class="number">2</span>)</span><br><span class="line">off <span class="number">14680064</span> blockno <span class="number">7</span> stripeno <span class="number">3</span> stripepos <span class="number">1</span> objectsetno <span class="number">1</span> objectno <span class="number">3</span> block_start <span class="number">2097152</span> </span><br><span class="line">added new extent(debugstrip16M.<span class="number">0000000000000003</span> (<span class="number">3</span>)</span><br></pre></td></tr></table></figure></p>
+<p>从上面可以看到先在debugstrip16M.0000000000000000写了2M，在debugstrip16M.0000000000000001写了2M，<br>然后在debugstrip16M.0000000000000000追加写了2M，并且是从block_start 2097152开始的，每个对象是写了两次的并且每次写的就是条带的大小的2M，跟修改上面的条带大小和对象大小是一致的，并且可以很清楚的看到写对象的过程</p>
+<h2 id="总结">总结</h2><p>本篇尝试了用rados来测试strip功能，并且顺带讲了下怎么在开发模式下修改代码并测试，如果自己写客户端的话，利用librados的时候，可以考虑使用libradosstriper条带来增加一定的性能</p>
+<h2 id="参考文档">参考文档</h2><p><a href="http://ivanjobs.github.io/2016/05/11/prepare-ceph-dev-env/" target="_blank" rel="external">准备Ceph开发环境</a></p>
+<h2 id="变更记录">变更记录</h2><table>
+<thead>
+<tr>
+<th style="text-align:center">Why</th>
+<th style="text-align:center">Who</th>
+<th style="text-align:center">When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">创建</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2017-04-26</td>
+</tr>
+</tbody>
+</table>
+]]></content>
+    <summary type="html">
+    <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/strip.jpg" alt="strip"><br></center>
+
+<h2 id="前言">前言</h2><p>之前对于striper这个地方的功能并没研究太多，只是知道这个里面可以以条带方式并行的去写对象，从而加大并发性来提高性能，而默认的条带数目为1，也就是以对象大小去写，并没有条带，所以不是很好感觉到差别，今天就尝试下用rados命令来看下这个条带是怎么回事<br>]]>
+    
+    </summary>
+    
+      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[Cephfs的文件存到哪里了]]></title>
@@ -1285,70 +1349,6 @@
 <li>支持备份窗口设置</li>
 <li>支持压缩选项</li>
 <li>支持增量和全量备份的配置]]>
-    
-    </summary>
-    
-      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA['sortbitwise'是什么意思]]></title>
-    <link href="http://www.zphj1987.com/2017/01/12/sortbitwise-mean/"/>
-    <id>http://www.zphj1987.com/2017/01/12/sortbitwise-mean/</id>
-    <published>2017-01-12T04:39:24.000Z</published>
-    <updated>2017-02-03T05:17:24.304Z</updated>
-    <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/techie.jpg" alt=""><br></center>
-
-<h2 id="问题">问题</h2><p>flag sortbitwise 在ceph中是什么意思,在Jewel版本下可以看到多了这个flags</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 current]<span class="comment"># ceph -s</span></span><br><span class="line">    cluster ffe7a8db-c671-<span class="number">4</span>b45<span class="operator">-a</span>784-ddb41e633905</span><br><span class="line">     health HEALTH_OK</span><br><span class="line">     monmap e1: <span class="number">1</span> mons at &#123;lab8106=<span class="number">192.168</span>.<span class="number">8.106</span>:<span class="number">6789</span>/<span class="number">0</span>&#125;</span><br><span class="line">            election epoch <span class="number">4</span>, quorum <span class="number">0</span> lab8106</span><br><span class="line">      fsmap e4: <span class="number">1</span>/<span class="number">1</span>/<span class="number">1</span> up &#123;<span class="number">0</span>=lab8106=up:active&#125;</span><br><span class="line">     osdmap e132: <span class="number">8</span> osds: <span class="number">8</span> up, <span class="number">8</span> <span class="keyword">in</span></span><br><span class="line">            flags sortbitwise</span><br><span class="line">      pgmap v206294: <span class="number">201</span> pgs, <span class="number">5</span> pools, <span class="number">4684</span> MB data, <span class="number">1214</span> objects</span><br><span class="line">            <span class="number">9669</span> MB used, <span class="number">2216</span> GB / <span class="number">2226</span> GB avail</span><br><span class="line">                 <span class="number">201</span> active+clean</span><br></pre></td></tr></table></figure>
-<a id="more"></a>
-<h2 id="找到的相关资料">找到的相关资料</h2><blockquote>
-<p>After upgrading, users should set the ‘sortbitwise’ flag to enable the new internal object sort order: ceph osd set sortbitwise<br>This flag is important for the new object enumeration API and for new backends like BlueStore.</p>
-</blockquote>
-<p>From <a href="http://docs.ceph.com/docs/master/release-notes/#upgrading-from-infernalis-or-hammer" target="_blank" rel="external">Ceph release notes</a></p>
-<blockquote>
-<p>commit 383185bfbae74797cdb44f50b4bf651422800ff1<br>Author: Sage Weil <a href="&#109;&#x61;&#105;&#108;&#x74;&#x6f;&#x3a;&#115;&#97;&#103;&#101;&#x40;&#114;&#101;&#x64;&#x68;&#97;&#116;&#46;&#99;&#111;&#x6d;">&#115;&#97;&#103;&#101;&#x40;&#114;&#101;&#x64;&#x68;&#97;&#116;&#46;&#99;&#111;&#x6d;</a><br>Date: Fri Aug 7 16:14:09 2015 -0400<br>mon/OSDMonitor: osd set/unset sortbitwise<br> Add monitor command to flip the switch on the OSD hobject_t sort<br> order.</p>
-</blockquote>
-<p>From git</p>
-<p>第一次在源码中出现:</p>
-<blockquote>
-<p>commit 138f58493715e386929f152424b70df37843541b<br>Author: John Spray <a href="&#109;&#x61;&#x69;&#x6c;&#116;&#x6f;&#58;&#106;&#x6f;&#104;&#x6e;&#46;&#x73;&#112;&#x72;&#x61;&#121;&#x40;&#114;&#x65;&#100;&#104;&#97;&#x74;&#x2e;&#99;&#x6f;&#109;">&#106;&#x6f;&#104;&#x6e;&#46;&#x73;&#112;&#x72;&#x61;&#121;&#x40;&#114;&#x65;&#100;&#104;&#97;&#x74;&#x2e;&#99;&#x6f;&#109;</a><br>Date: Mon Aug 17 14:40:46 2015 -0400<br>osdc/Objecter: new-style pgls<br> Signed-off-by: John Spray <a href="&#109;&#x61;&#x69;&#x6c;&#x74;&#x6f;&#58;&#x6a;&#111;&#104;&#110;&#x2e;&#x73;&#x70;&#114;&#97;&#121;&#64;&#114;&#x65;&#x64;&#104;&#x61;&#116;&#46;&#x63;&#111;&#x6d;">&#x6a;&#111;&#104;&#110;&#x2e;&#x73;&#x70;&#114;&#97;&#121;&#64;&#114;&#x65;&#x64;&#104;&#x61;&#116;&#46;&#x63;&#111;&#x6d;</a><br> Signed-off-by: Sage Weil <a href="&#x6d;&#97;&#105;&#108;&#116;&#111;&#x3a;&#x73;&#97;&#103;&#x65;&#x40;&#x72;&#101;&#x64;&#104;&#x61;&#x74;&#x2e;&#x63;&#x6f;&#x6d;">&#x73;&#97;&#103;&#x65;&#x40;&#x72;&#101;&#x64;&#104;&#x61;&#x74;&#x2e;&#x63;&#x6f;&#x6d;</a></p>
-</blockquote>
-<p>From git</p>
-<p>Related github issue: <a href="https://github.com/ceph/ceph/pull/4919/commits" target="_blank" rel="external">https://github.com/ceph/ceph/pull/4919/commits</a></p>
-<p>初步结论: sortbitwise 内部排序算法的一个变化.之所以暴露出来是因为要兼容一些pre-jewel版本.在新的版本中应该保持开启状态.</p>
-<p>以上转载自博客：<a href="https://medium.com/@george.shuklin/what-is-sortbitwise-flag-means-in-ceph-b4176748da42#.dfaw54rpf" target="_blank" rel="external">What ‘sortbitwise’ flag means in Ceph?</a></p>
-<h2 id="红帽的官方回答">红帽的官方回答</h2><ul>
-<li>如果你使用dev版本Infernalis或仍在开发中的LTS版本的Ceph的Jewel版本，你会看到这个标志在ceph状态输出默认启用</li>
-<li>这个标志sortbitwise在Infernalis版本中引入</li>
-<li>这个标志是在这个版本提交的upstream commit 968261b11ac30622c0606d1e2ddf422009e7d330</li>
-</ul>
-<p>下载ceph的源码，进入源码目录<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 all]<span class="comment"># git show 968261b11ac30622c0606d1e2ddf422009e7d330</span></span><br><span class="line">commit <span class="number">968261</span>b11ac30622c0606d1e2ddf422009e7d330</span><br><span class="line">Author: Sage Weil &lt;sage@redhat.com&gt;</span><br><span class="line">Date:   Fri Aug <span class="number">7</span> <span class="number">16</span>:<span class="number">01</span>:<span class="number">12</span> <span class="number">2015</span> -<span class="number">0400</span></span><br><span class="line"></span><br><span class="line">    osd/OSDMap: add a SORTBITWISE OSDMap flag</span><br><span class="line"></span><br><span class="line">    This flag will indicate that hobject_t<span class="string">'s shall hence-forth be</span><br><span class="line">    sorted in a bitwise fashion.</span><br><span class="line"></span><br><span class="line">    Signed-off-by: Sage Weil &lt;sage@redhat.com&gt;</span></span><br></pre></td></tr></table></figure></p>
-<p>正如我们在上面给定的提交的描述中所说，该标志将表明hobject_t的将以 bitwise fashion方式排序。<br>现在意味着现在的对象将在OSDs中以按位方式排序，并且此标志默认在Infernalis和Jewel发布版本中启用。</p>
-<h2 id="总结">总结</h2><p>目前来看这个是底层的一个排序的算法的变动，对上层目前还不清楚是有什么可以可见的变化，总之，这个让它默认开启就行，不要去修改它就可以了</p>
-<h2 id="变更记录">变更记录</h2><table>
-<thead>
-<tr>
-<th style="text-align:center">Why</th>
-<th style="text-align:center">Who</th>
-<th style="text-align:center">When</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">创建</td>
-<td style="text-align:center">武汉-运维-磨渣</td>
-<td style="text-align:center">2017-01-12</td>
-</tr>
-</tbody>
-</table>
-]]></content>
-    <summary type="html">
-    <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/techie.jpg" alt=""><br></center>
-
-<h2 id="问题">问题</h2><p>flag sortbitwise 在ceph中是什么意思,在Jewel版本下可以看到多了这个flags</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 current]<span class="comment"># ceph -s</span></span><br><span class="line">    cluster ffe7a8db-c671-<span class="number">4</span>b45<span class="operator">-a</span>784-ddb41e633905</span><br><span class="line">     health HEALTH_OK</span><br><span class="line">     monmap e1: <span class="number">1</span> mons at &#123;lab8106=<span class="number">192.168</span>.<span class="number">8.106</span>:<span class="number">6789</span>/<span class="number">0</span>&#125;</span><br><span class="line">            election epoch <span class="number">4</span>, quorum <span class="number">0</span> lab8106</span><br><span class="line">      fsmap e4: <span class="number">1</span>/<span class="number">1</span>/<span class="number">1</span> up &#123;<span class="number">0</span>=lab8106=up:active&#125;</span><br><span class="line">     osdmap e132: <span class="number">8</span> osds: <span class="number">8</span> up, <span class="number">8</span> <span class="keyword">in</span></span><br><span class="line">            flags sortbitwise</span><br><span class="line">      pgmap v206294: <span class="number">201</span> pgs, <span class="number">5</span> pools, <span class="number">4684</span> MB data, <span class="number">1214</span> objects</span><br><span class="line">            <span class="number">9669</span> MB used, <span class="number">2216</span> GB / <span class="number">2226</span> GB avail</span><br><span class="line">                 <span class="number">201</span> active+clean</span><br></pre></td></tr></table></figure>]]>
     
     </summary>
     
