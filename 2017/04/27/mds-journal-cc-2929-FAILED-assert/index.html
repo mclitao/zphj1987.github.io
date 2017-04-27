@@ -3,17 +3,18 @@
 <head>
   <meta charset="utf-8">
   
-  <title>zphj1987&#39;Blog</title>
+  <title>mds/journal.cc: 2929: FAILED assert解决 | zphj1987&#39;Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description">
-<meta property="og:type" content="website">
-<meta property="og:title" content="zphj1987'Blog">
-<meta property="og:url" content="http://www.zphj1987.com/tags/ceph/page/11/index.html">
+  <meta name="description" content="前言在处理一个其他双活MDS无法启动环境的时候，查看mds的日志看到了这个错误mds/journal.cc: 2929: FAILED assert(mds-&amp;gt;sessionmap.get_version() == cmapv)，在查询资料以后，暂时得到了解决,在生产环境下还是不建议使用双活MDS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mds/journal.cc: 2929: FAILED assert解决">
+<meta property="og:url" content="http://www.zphj1987.com/2017/04/27/mds-journal-cc-2929-FAILED-assert/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
-<meta property="og:description">
+<meta property="og:description" content="前言在处理一个其他双活MDS无法启动环境的时候，查看mds的日志看到了这个错误mds/journal.cc: 2929: FAILED assert(mds-&amp;gt;sessionmap.get_version() == cmapv)，在查询资料以后，暂时得到了解决,在生产环境下还是不建议使用双活MDS">
+<meta property="og:image" content="http://7xweck.com1.z0.glb.clouddn.com/session.png">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="zphj1987'Blog">
-<meta name="twitter:description">
+<meta name="twitter:title" content="mds/journal.cc: 2929: FAILED assert解决">
+<meta name="twitter:description" content="前言在处理一个其他双活MDS无法启动环境的时候，查看mds的日志看到了这个错误mds/journal.cc: 2929: FAILED assert(mds-&amp;gt;sessionmap.get_version() == cmapv)，在查询资料以后，暂时得到了解决,在生产环境下还是不建议使用双活MDS">
   
     <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
   
@@ -174,150 +175,120 @@
 		</header>				
 	</div>
 </nav>
-      <div class="body-wrap">
+      <div class="body-wrap"><article id="post-mds-journal-cc-2929-FAILED-assert" class="article article-type-post" itemscope itemprop="blogPost">
   
+    <div class="article-meta">
+      <a href="/2017/04/27/mds-journal-cc-2929-FAILED-assert/" class="article-date">
+  	<time datetime="2017-04-27T01:24:39.000Z" itemprop="datePublished">2017-04-27</time>
+</a>
+    </div>
   
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
     
     
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      mds/journal.cc: 2929: FAILED assert解决
+    </h1>
+  
+
+      </header>
       
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+        
+
+        <div class="clearfix"></div>
+      </div>
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2015" class="archive-year">2015</a>
-        </div>
-        <div class="archives">
     
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2015/10/04/查询osd上的pg数/" class="archive-article-date">
-  	<time datetime="2015-10-03T16:02:06.000Z" itemprop="datePublished">Oct 4</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2015/10/04/查询osd上的pg数/">查询osd上的pg数</a>
-    </h1>
-  
+    <div class="article-entry" itemprop="articleBody">
+      
+        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/session.png" alt=""><br></center>
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
+<h2 id="前言">前言</h2><p>在处理一个其他双活MDS无法启动环境的时候，查看mds的日志看到了这个错误mds/journal.cc: 2929: FAILED assert(mds-&gt;sessionmap.get_version() == cmapv)，在查询资料以后，暂时得到了解决,在生产环境下还是不建议使用双活MDS<br><a id="more"></a></p>
+<h2 id="处理步骤">处理步骤</h2><p>这个是双MDS多活情况下出现的一个问题，在什么情况下出现还无法判断，目前只看到是有这个问题，并且有其他人也出现了 <a href="http://tracker.ceph.com/issues/17113" target="_blank" rel="external">issue17113</a><br>按照<a href="http://docs.ceph.com/docs/master/cephfs/disaster-recovery/" target="_blank" rel="external">disaster-recovery</a>建议的步骤做了如下处理：</p>
+<h3 id="备份下journal">备份下journal</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cephfs-journal-tool journal <span class="built_in">export</span> backup.bin</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cephfs-journal-tool journal reset</span><br><span class="line">cephfs-table-tool all reset session</span><br></pre></td></tr></table></figure>
+<p>做了上两步后环境并没有恢复,还有个下面的操作没有做，这个操作会引起数据的丢失， MDS ranks other than 0 will be ignored: as a result it is possible for this to result in data loss，所以暂缓操作<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph fs reset &lt;fs name&gt; --yes-i-really-mean-it</span><br></pre></td></tr></table></figure></p>
+<p>再次启动后还是，看到日志提示的是sessionmap的问题，正常情况下这个地方重置了session应该是可以好的</p>
+<p>Yan, Zheng 2014年的时候在<a href="https://www.mail-archive.com/ceph-devel@vger.kernel.org/msg18629.html" target="_blank" rel="external">邮件列表</a>里面提过一个配置<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mds wipe_sessions = <span class="number">1</span></span><br></pre></td></tr></table></figure></p>
+<p>当时解决一个replay的问题，尝试加入这个参数，然后启动mds</p>
+<p>环境恢复了变成了双active，提示还有damage，但是数据属于可访问了</p>
+<h3 id="后续操作">后续操作</h3><p>建议是导出数据，重新配置为主备MDS集群，然后倒入数据</p>
+<h2 id="变更记录">变更记录</h2><table>
+<thead>
+<tr>
+<th style="text-align:center">Why</th>
+<th style="text-align:center">Who</th>
+<th style="text-align:center">When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">创建</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2017-04-27</td>
+</tr>
+</tbody>
+</table>
 
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
+      
+    </div>
+    
   </div>
-</article>
   
     
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2015/09/28/rbd的数据在哪里/" class="archive-article-date">
-  	<time datetime="2015-09-28T08:06:29.000Z" itemprop="datePublished">Sep 28</time>
-</a>
-        </div>
-    	 
+<nav id="article-nav">
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2015/09/28/rbd的数据在哪里/">rbd的数据在哪里</a>
-    </h1>
   
+    <a href="/2017/04/26/rados-put-strip-debug/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">rados put striper功能的调试</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+  
+</article>
+
+
+<div class="share">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到：</span>
+		<a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+		<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
 	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
 
-          
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2015/09/24/删除ceph集群mds/" class="archive-article-date">
-  	<time datetime="2015-09-24T03:10:49.000Z" itemprop="datePublished">Sep 24</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2015/09/24/删除ceph集群mds/">删除ceph集群mds</a>
-    </h1>
-  
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
 
-          
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2015/09/18/ceph客户端服务端属性匹配关系/" class="archive-article-date">
-  	<time datetime="2015-09-18T03:24:08.000Z" itemprop="datePublished">Sep 18</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2015/09/18/ceph客户端服务端属性匹配关系/">ceph客户端服务端属性匹配关系</a>
-    </h1>
-  
+    <!-- UY BEGIN -->
+    <section id="comments">
+        <div id="uyan_frame"></div>
+        <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2131550"></script>
+    </section>
+    <!-- UY END -->
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
 
-          
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
-
-    
-    <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/tags/ceph/page/10/">&laquo; Prev</a><a class="page-number" href="/tags/ceph/">1</a><span class="space">&hellip;</span><a class="page-number" href="/tags/ceph/page/9/">9</a><a class="page-number" href="/tags/ceph/page/10/">10</a><span class="page-number current">11</span>
-    </nav>
-  
 
 </div>
       <footer id="footer">
@@ -364,7 +335,7 @@ show_date_time();
 		mathjax: undefined,
 		animate: true,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,

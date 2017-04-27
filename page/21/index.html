@@ -176,6 +176,64 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-win7安装系统出现“安装程序无法创建新的系统分区，也无法定位现有的系统分区”解决方法" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/03/22/win7安装系统出现“安装程序无法创建新的系统分区，也无法定位现有的系统分区”解决方法/" class="article-date">
+  	<time datetime="2015-03-22T07:52:01.000Z" itemprop="datePublished">2015-03-22</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/03/22/win7安装系统出现“安装程序无法创建新的系统分区，也无法定位现有的系统分区”解决方法/">win7安装系统出现“安装程序无法创建新的系统分区，也无法定位现有的系统分区”解决方法</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>原来服务器上的系统是debian的系统，现在需要在原系统和机器不动的基础上在这台服务器上安装一个win7系统,在安装过程中出现了标题中所说的问题,上网搜索了一下,发现最有效的解决办法就是修改bios中的磁盘的启动项:</p>
+<p>由于原来的系统盘插在第一个sata口,应该是占据着磁盘0,那么在热插拔的机器上插入的一块新的硬盘应该是占据着磁盘1</p>
+<p>而实际情况是在开机进行磁盘选择启动时 原来的debian系统盘是占据这第一启动项,后插入的硬盘占据着第二启动项,在进入到win7的安装程序的时候,会发现,后插入的那个硬盘居然占据着磁盘0,由于这个地方的显示跟bios启动看到的启动顺序对不上,所以就出现了安装程序无法创建新的系统分区,也无法定位现有系统。</p>
+<p>所以需要进入bios进行小的修改<br>进入bios修改界面<br>选择boot选项<br>选择Hard Disk Drivers<br>可以看到1st drive  对应的是原系统盘,在这里修改为后插入的那块硬盘<br>然后保存设置 重启<br>然后安装系统就不会有问题了<br>新插入的硬盘现在应该占据着磁盘1的位子了,安装win7到磁盘1 即可</p>
+<p>写于:2012年4月20日<br>更新于:2015年03月22日</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+
+  
     <article id="post-系统运行后修改linux系统时区" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -704,69 +762,6 @@
         <p class="article-more-link">
           <a  href="/2015/03/22/利用脚本自动下载ftp列表中的文件/#more">more >></a>
         </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-linux修改网卡的mac地址" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/03/22/linux修改网卡的mac地址/" class="article-date">
-  	<time datetime="2015-03-22T04:55:25.000Z" itemprop="datePublished">2015-03-22</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/03/22/linux修改网卡的mac地址/">linux修改网卡的mac地址</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>linux在安装一些软件的时候可能会用到修改主机的mac地址的问题,在网卡配置文件<code>/etc/network/interface</code>中添加mac地址的方式我在修改重启机器后没有生效,所以采用其他方式</p>
-<p>在这里推荐使用脚本修改,将脚本写在开机启动配置文件中,这样开机后就能生成你需要的mac地址<br>在/etc/rc.local 中添加<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ifconfig eth0 down</span><br><span class="line">ifconfig eth0 hw ether  <span class="number">00</span>:e0:<span class="number">34</span>:<span class="number">5</span>b:b4:i8</span><br><span class="line">ifconfig eth0 up</span><br></pre></td></tr></table></figure></p>
-<p>这样修改后重启机器的mac地址就是你设置的地址了<br>这个时候会出现连不上外网的问题,使用命令route查看你会发现default默认网关路由项不见了,所以这个时候需要添加默认路由</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">route add default gw <span class="number">192.168</span>.<span class="number">1.1</span></span><br></pre></td></tr></table></figure>
-<p>将这句加在/etc/rc.local 中的 ifconfig eth0 up 后面让他开机启动,这样就完成了机器网卡mac地址的修改了</p>
-<p>写于: 2012年1月14日<br>更新于: 2015年03月22日</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/网卡/">网卡</a></li></ul>
-	</div>
-
-      
-
       
       <div class="clearfix"></div>
     </div>
