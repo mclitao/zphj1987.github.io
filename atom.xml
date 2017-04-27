@@ -4,7 +4,7 @@
   <subtitle><![CDATA[但行好事，莫问前程]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2017-04-27T02:30:01.182Z</updated>
+  <updated>2017-04-27T02:31:18.735Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -19,10 +19,10 @@
     <link href="http://www.zphj1987.com/2017/04/27/about-backfill-conf/"/>
     <id>http://www.zphj1987.com/2017/04/27/about-backfill-conf/</id>
     <published>2017-04-27T01:36:17.000Z</published>
-    <updated>2017-04-27T02:30:01.182Z</updated>
+    <updated>2017-04-27T02:31:18.735Z</updated>
     <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/fill.gif" alt=""><br></center>
 
-<h2 id="前言">前言</h2><p>在做一个比较满的集群的扩容的时候，遇到了一些问题，在这里做下总结，一般来说很难遇到，扩容要趁早，不然出的问题都是稀奇古怪的一些问题</p>
+<h2 id="前言">前言</h2><p>在做一个比较满的集群的扩容的时候，遇到了一些问题，在这里做下总结，一般来说很难遇到，扩容要趁早，不然出的问题都是稀奇古怪的一些问题<br><a id="more"></a></p>
 <h2 id="建议">建议</h2><p>环境一般来说在70%左右就需要考虑扩容了，这个时候的扩容数据迁移的少，遇到的问题自然会少很多，所谓的参数设置并不是一个单纯的参数的设置，所以一般来说在调优参数的时候，个人觉得只有适配硬件进行调优，所以本篇的参数同样是一个组合形式的</p>
 <p>首先罗列出本篇涉及的所有参数</p>
 <blockquote>
@@ -58,7 +58,8 @@
     <summary type="html">
     <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/fill.gif" alt=""><br></center>
 
-<h2 id="前言">前言</h2><p>在做一个比较满的集群的扩容的时候，遇到了一些问题，在]]>
+<h2 id="前言">前言</h2><p>在做一个比较满的集群的扩容的时候，遇到了一些问题，在这里做下总结，一般来说很难遇到，扩容要趁早，不然出的问题都是稀奇古怪的一些问题<br>]]>
+    
     </summary>
     
       <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
