@@ -176,6 +176,97 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-about-backfill-conf" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/04/27/about-backfill-conf/" class="article-date">
+  	<time datetime="2017-04-27T01:36:17.000Z" itemprop="datePublished">2017-04-27</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/04/27/about-backfill-conf/">关于backfill参数建议</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/fill.gif" alt=""><br></center>
+
+<h2 id="前言">前言</h2><p>在做一个比较满的集群的扩容的时候，遇到了一些问题，在这里做下总结，一般来说很难遇到，扩容要趁早，不然出的问题都是稀奇古怪的一些问题</p>
+<h2 id="建议">建议</h2><p>环境一般来说在70%左右就需要考虑扩容了，这个时候的扩容数据迁移的少，遇到的问题自然会少很多，所谓的参数设置并不是一个单纯的参数的设置，所以一般来说在调优参数的时候，个人觉得只有适配硬件进行调优，所以本篇的参数同样是一个组合形式的</p>
+<p>首先罗列出本篇涉及的所有参数</p>
+<blockquote>
+<p>mon_osd_full_ratio = 0.95<br>osd_backfill_full_ratio = 0.85<br>osd_max_backfills = 1</p>
+</blockquote>
+<p>最少的OSD的PG数目</p>
+<blockquote>
+<p>min_pg=`ceph osd df|awk ‘{print $9}’|awk ‘NF’|grep -v PGS|sort|head -n 1`</p>
+</blockquote>
+<p>那么最好满足</p>
+<blockquote>
+<p>(osd_max_backfills/min_pg)+osd_backfill_full_ratio &lt; mon_osd_full_ratio</p>
+</blockquote>
+<p>这个在老版本里面进行backfill full的检测的时候，只在启动backfill的时候做了检测，如果设置的backfill足够大，而迁移的又足够多的时候，就会一下涌过去，直径把OSD给弄full然后挂掉了，新版本还没验证是否做了实时控制，但是如果遵循了上面的设置，即使没控制一样不会出问题</p>
+<h2 id="总结">总结</h2><p>有的参数不光对速度有控制，对量上面同样可能有影响，所以在设置的时候，需要尽量综合考虑</p>
+<h2 id="变更记录">变更记录</h2><table>
+<thead>
+<tr>
+<th style="text-align:center">Why</th>
+<th style="text-align:center">Who</th>
+<th style="text-align:center">When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">创建</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2017-04-27</td>
+</tr>
+</tbody>
+</table>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+
+  
     <article id="post-mds-journal-cc-2929-FAILED-assert" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -720,70 +811,6 @@
       
         <p class="article-more-link">
           <a  href="/2017/03/24/small-file-test-prepare/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-compile-ceph-binary-big" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/03/23/compile-ceph-binary-big/" class="article-date">
-  	<time datetime="2017-03-23T15:01:23.000Z" itemprop="datePublished">2017-03-23</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/03/23/compile-ceph-binary-big/">编译的Ceph二进制文件过大问题</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/codebug.jpg" alt="binary"><br></center>
-
-<h2 id="前言">前言</h2><p>在ceph的研发群里看到一个cepher提出一个问题，编译的ceph的二进制文件过大，因为我一直用的打包好的rpm包，没有关注这个问题，重新编译了一遍发现确实有这个问题</p>
-<p>本篇就是记录如何解决这个问题的<br>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2017/03/23/compile-ceph-binary-big/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>

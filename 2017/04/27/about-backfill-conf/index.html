@@ -3,17 +3,24 @@
 <head>
   <meta charset="utf-8">
   
-  <title>zphj1987&#39;Blog</title>
+  <title>关于backfill参数建议 | zphj1987&#39;Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description">
-<meta property="og:type" content="website">
-<meta property="og:title" content="zphj1987'Blog">
-<meta property="og:url" content="http://www.zphj1987.com/tags/ceph/page/11/index.html">
+  <meta name="description" content="前言在做一个比较满的集群的扩容的时候，遇到了一些问题，在这里做下总结，一般来说很难遇到，扩容要趁早，不然出的问题都是稀奇古怪的一些问题
+建议环境一般来说在70%左右就需要考虑扩容了，这个时候的扩容数据迁移的少，遇到的问题自然会少很多，所谓的参数设置并不是一个单纯的参数的设置，所以一般来说在调优参数的时候，个人觉得只有适配硬件进行调优，所以本篇的参数同样是一个组合形式的
+首先罗列出本篇涉及的所有参数">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关于backfill参数建议">
+<meta property="og:url" content="http://www.zphj1987.com/2017/04/27/about-backfill-conf/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
-<meta property="og:description">
+<meta property="og:description" content="前言在做一个比较满的集群的扩容的时候，遇到了一些问题，在这里做下总结，一般来说很难遇到，扩容要趁早，不然出的问题都是稀奇古怪的一些问题
+建议环境一般来说在70%左右就需要考虑扩容了，这个时候的扩容数据迁移的少，遇到的问题自然会少很多，所谓的参数设置并不是一个单纯的参数的设置，所以一般来说在调优参数的时候，个人觉得只有适配硬件进行调优，所以本篇的参数同样是一个组合形式的
+首先罗列出本篇涉及的所有参数">
+<meta property="og:image" content="http://7xweck.com1.z0.glb.clouddn.com/fill.gif">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="zphj1987'Blog">
-<meta name="twitter:description">
+<meta name="twitter:title" content="关于backfill参数建议">
+<meta name="twitter:description" content="前言在做一个比较满的集群的扩容的时候，遇到了一些问题，在这里做下总结，一般来说很难遇到，扩容要趁早，不然出的问题都是稀奇古怪的一些问题
+建议环境一般来说在70%左右就需要考虑扩容了，这个时候的扩容数据迁移的少，遇到的问题自然会少很多，所谓的参数设置并不是一个单纯的参数的设置，所以一般来说在调优参数的时候，个人觉得只有适配硬件进行调优，所以本篇的参数同样是一个组合形式的
+首先罗列出本篇涉及的所有参数">
   
     <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
   
@@ -174,181 +181,126 @@
 		</header>				
 	</div>
 </nav>
-      <div class="body-wrap">
+      <div class="body-wrap"><article id="post-about-backfill-conf" class="article article-type-post" itemscope itemprop="blogPost">
   
+    <div class="article-meta">
+      <a href="/2017/04/27/about-backfill-conf/" class="article-date">
+  	<time datetime="2017-04-27T01:36:17.000Z" itemprop="datePublished">2017-04-27</time>
+</a>
+    </div>
   
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
     
     
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      关于backfill参数建议
+    </h1>
+  
+
+      </header>
       
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+        
+
+        <div class="clearfix"></div>
+      </div>
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2015" class="archive-year">2015</a>
-        </div>
-        <div class="archives">
     
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2015/10/12/inkscope管理平台试用/" class="archive-article-date">
-  	<time datetime="2015-10-12T13:28:22.000Z" itemprop="datePublished">Oct 12</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2015/10/12/inkscope管理平台试用/">inkscope管理平台试用</a>
-    </h1>
-  
+    <div class="article-entry" itemprop="articleBody">
+      
+        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/fill.gif" alt=""><br></center>
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
+<h2 id="前言">前言</h2><p>在做一个比较满的集群的扩容的时候，遇到了一些问题，在这里做下总结，一般来说很难遇到，扩容要趁早，不然出的问题都是稀奇古怪的一些问题</p>
+<h2 id="建议">建议</h2><p>环境一般来说在70%左右就需要考虑扩容了，这个时候的扩容数据迁移的少，遇到的问题自然会少很多，所谓的参数设置并不是一个单纯的参数的设置，所以一般来说在调优参数的时候，个人觉得只有适配硬件进行调优，所以本篇的参数同样是一个组合形式的</p>
+<p>首先罗列出本篇涉及的所有参数</p>
+<blockquote>
+<p>mon_osd_full_ratio = 0.95<br>osd_backfill_full_ratio = 0.85<br>osd_max_backfills = 1</p>
+</blockquote>
+<p>最少的OSD的PG数目</p>
+<blockquote>
+<p>min_pg=`ceph osd df|awk ‘{print $9}’|awk ‘NF’|grep -v PGS|sort|head -n 1`</p>
+</blockquote>
+<p>那么最好满足</p>
+<blockquote>
+<p>(osd_max_backfills/min_pg)+osd_backfill_full_ratio &lt; mon_osd_full_ratio</p>
+</blockquote>
+<p>这个在老版本里面进行backfill full的检测的时候，只在启动backfill的时候做了检测，如果设置的backfill足够大，而迁移的又足够多的时候，就会一下涌过去，直径把OSD给弄full然后挂掉了，新版本还没验证是否做了实时控制，但是如果遵循了上面的设置，即使没控制一样不会出问题</p>
+<h2 id="总结">总结</h2><p>有的参数不光对速度有控制，对量上面同样可能有影响，所以在设置的时候，需要尽量综合考虑</p>
+<h2 id="变更记录">变更记录</h2><table>
+<thead>
+<tr>
+<th style="text-align:center">Why</th>
+<th style="text-align:center">Who</th>
+<th style="text-align:center">When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">创建</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2017-04-27</td>
+</tr>
+</tbody>
+</table>
 
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
+      
+    </div>
+    
   </div>
-</article>
   
     
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2015/10/04/查询osd上的pg数/" class="archive-article-date">
-  	<time datetime="2015-10-03T16:02:06.000Z" itemprop="datePublished">Oct 4</time>
-</a>
-        </div>
-    	 
+<nav id="article-nav">
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2015/10/04/查询osd上的pg数/">查询osd上的pg数</a>
-    </h1>
   
+    <a href="/2017/04/27/mds-journal-cc-2929-FAILED-assert/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">mds/journal.cc: 2929: FAILED assert解决</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+  
+</article>
+
+
+<div class="share">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到：</span>
+		<a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+		<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
 	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
 
-          
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2015/09/28/rbd的数据在哪里/" class="archive-article-date">
-  	<time datetime="2015-09-28T08:06:29.000Z" itemprop="datePublished">Sep 28</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2015/09/28/rbd的数据在哪里/">rbd的数据在哪里</a>
-    </h1>
-  
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
 
-          
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2015/09/24/删除ceph集群mds/" class="archive-article-date">
-  	<time datetime="2015-09-24T03:10:49.000Z" itemprop="datePublished">Sep 24</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2015/09/24/删除ceph集群mds/">删除ceph集群mds</a>
-    </h1>
-  
+    <!-- UY BEGIN -->
+    <section id="comments">
+        <div id="uyan_frame"></div>
+        <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2131550"></script>
+    </section>
+    <!-- UY END -->
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
 
-          
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2015/09/18/ceph客户端服务端属性匹配关系/" class="archive-article-date">
-  	<time datetime="2015-09-18T03:24:08.000Z" itemprop="datePublished">Sep 18</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2015/09/18/ceph客户端服务端属性匹配关系/">ceph客户端服务端属性匹配关系</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
-
-    
-    <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/tags/ceph/page/10/">&laquo; Prev</a><a class="page-number" href="/tags/ceph/">1</a><span class="space">&hellip;</span><a class="page-number" href="/tags/ceph/page/9/">9</a><a class="page-number" href="/tags/ceph/page/10/">10</a><span class="page-number current">11</span>
-    </nav>
-  
 
 </div>
       <footer id="footer">
@@ -395,7 +347,7 @@ show_date_time();
 		mathjax: undefined,
 		animate: true,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,
