@@ -110,7 +110,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/ceph/" style="font-size: 20px;">ceph</a><a href="/tags/instagram/" style="font-size: 10px;">instagram</a><a href="/tags/iptables/" style="font-size: 10px;">iptables</a><a href="/tags/linux/" style="font-size: 18.57px;">linux</a><a href="/tags/momotan/" style="font-size: 10px;">momotan</a><a href="/tags/nginx/" style="font-size: 12.86px;">nginx</a><a href="/tags/samba/" style="font-size: 10px;">samba</a><a href="/tags/ubuntu/" style="font-size: 17.14px;">ubuntu</a><a href="/tags/windows/" style="font-size: 10px;">windows</a><a href="/tags/zabbix/" style="font-size: 10px;">zabbix</a><a href="/tags/其他/" style="font-size: 10px;">其他</a><a href="/tags/内核/" style="font-size: 12.86px;">内核</a><a href="/tags/操作系统/" style="font-size: 11.43px;">操作系统</a><a href="/tags/杂七杂八/" style="font-size: 14.29px;">杂七杂八</a><a href="/tags/注册码/" style="font-size: 10px;">注册码</a><a href="/tags/测试工具/" style="font-size: 11.43px;">测试工具</a><a href="/tags/监控/" style="font-size: 10px;">监控</a><a href="/tags/网卡/" style="font-size: 12.86px;">网卡</a><a href="/tags/脚本/" style="font-size: 15.71px;">脚本</a><a href="/tags/高可用/" style="font-size: 10px;">高可用</a>
+						<a href="/tags/ceph/" style="font-size: 20px;">ceph</a><a href="/tags/freebsd/" style="font-size: 10px;">freebsd</a><a href="/tags/instagram/" style="font-size: 10px;">instagram</a><a href="/tags/iptables/" style="font-size: 10px;">iptables</a><a href="/tags/linux/" style="font-size: 18.57px;">linux</a><a href="/tags/momotan/" style="font-size: 10px;">momotan</a><a href="/tags/nginx/" style="font-size: 12.86px;">nginx</a><a href="/tags/samba/" style="font-size: 10px;">samba</a><a href="/tags/ubuntu/" style="font-size: 17.14px;">ubuntu</a><a href="/tags/windows/" style="font-size: 10px;">windows</a><a href="/tags/zabbix/" style="font-size: 10px;">zabbix</a><a href="/tags/其他/" style="font-size: 10px;">其他</a><a href="/tags/内核/" style="font-size: 12.86px;">内核</a><a href="/tags/操作系统/" style="font-size: 11.43px;">操作系统</a><a href="/tags/杂七杂八/" style="font-size: 14.29px;">杂七杂八</a><a href="/tags/注册码/" style="font-size: 10px;">注册码</a><a href="/tags/测试工具/" style="font-size: 11.43px;">测试工具</a><a href="/tags/监控/" style="font-size: 10px;">监控</a><a href="/tags/网卡/" style="font-size: 12.86px;">网卡</a><a href="/tags/脚本/" style="font-size: 15.71px;">脚本</a><a href="/tags/高可用/" style="font-size: 10px;">高可用</a>
 					</div>
 				</section>
 				
@@ -175,6 +175,69 @@
 	</div>
 </nav>
       <div class="body-wrap">
+  
+    <article id="post-验证rbd的缓存是否开启" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/11/16/验证rbd的缓存是否开启/" class="article-date">
+  	<time datetime="2015-11-16T08:49:16.000Z" itemprop="datePublished">2015-11-16</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/11/16/验证rbd的缓存是否开启/">验证rbd的缓存是否开启</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>简单快速的在客户端验证rbd的cache是否开启<br>首先修改配置文件<br>在ceph.conf中添加：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[client]</span><br><span class="line">rbd cache = <span class="literal">true</span></span><br><span class="line">rbd cache writethrough until flush = <span class="literal">true</span></span><br></pre></td></tr></table></figure></p>
+<p>开启以后，在这台机器上进行测试<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@node8109 ~]<span class="comment"># rbd -p rbd bench-write zp  --io-size 4096 --io-threads 256  --io-total 102400000   --io-pattern seq</span></span><br><span class="line">bench-write  io_size <span class="number">4096</span> io_threads <span class="number">256</span> bytes <span class="number">102400000</span> pattern seq</span><br><span class="line">  SEC       OPS   OPS/SEC   BYTES/SEC</span><br><span class="line">elapsed:     <span class="number">0</span>  ops:    <span class="number">25000</span>  ops/sec: <span class="number">26830.05</span>  bytes/sec: <span class="number">109895890.09</span></span><br></pre></td></tr></table></figure></p>
+<p>可以看到io达到了26830每秒<br>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2015/11/16/验证rbd的缓存是否开启/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+
   
     <article id="post-如何删除一台OSD主机" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -767,67 +830,6 @@
 
       
 
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-nginx配置代理缓存" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/07/14/nginx配置代理缓存/" class="article-date">
-  	<time datetime="2015-07-14T01:57:21.000Z" itemprop="datePublished">2015-07-14</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/07/14/nginx配置代理缓存/">nginx配置代理缓存</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>nginx可以实现反向代理的配置，并且可以使用缓存来加速，本文是简单的实现功能的配置，暂时没有做其他的优化的部分的配置，从网上的资料来看，很多配置都是没有讲哪些是必须配置的，我自己在配置过程中就发现没有生成缓存文件，下面来记录下配置的内容<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">upstream test&#123;&#10;            server 127.0.0.1:8080;&#10;        &#125;&#10;&#10;proxy_cache_path /var/cache/nginx/proxy_cache keys_zone=cache_zone:2000m max_size=1000m;&#10;&#10;server &#123;&#10;    listen       80;&#10;    server_name  localhost;&#10;    location / &#123;&#10;        proxy_pass http://127.0.0.1:8080;&#10;        proxy_cache cache_zone;&#10;        proxy_cache_valid  200 304 302 24h;&#10;    &#125;&#10;&#10;    error_page   500 502 503 504  /50x.html;&#10;&#10;    location = /50x.html &#123;&#10;        root   /usr/share/nginx/html;&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure></p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nginx/">nginx</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/07/14/nginx配置代理缓存/#more">more >></a>
-        </p>
       
       <div class="clearfix"></div>
     </div>

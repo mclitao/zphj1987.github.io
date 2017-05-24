@@ -110,7 +110,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/ceph/" style="font-size: 20px;">ceph</a><a href="/tags/instagram/" style="font-size: 10px;">instagram</a><a href="/tags/iptables/" style="font-size: 10px;">iptables</a><a href="/tags/linux/" style="font-size: 18.57px;">linux</a><a href="/tags/momotan/" style="font-size: 10px;">momotan</a><a href="/tags/nginx/" style="font-size: 12.86px;">nginx</a><a href="/tags/samba/" style="font-size: 10px;">samba</a><a href="/tags/ubuntu/" style="font-size: 17.14px;">ubuntu</a><a href="/tags/windows/" style="font-size: 10px;">windows</a><a href="/tags/zabbix/" style="font-size: 10px;">zabbix</a><a href="/tags/其他/" style="font-size: 10px;">其他</a><a href="/tags/内核/" style="font-size: 12.86px;">内核</a><a href="/tags/操作系统/" style="font-size: 11.43px;">操作系统</a><a href="/tags/杂七杂八/" style="font-size: 14.29px;">杂七杂八</a><a href="/tags/注册码/" style="font-size: 10px;">注册码</a><a href="/tags/测试工具/" style="font-size: 11.43px;">测试工具</a><a href="/tags/监控/" style="font-size: 10px;">监控</a><a href="/tags/网卡/" style="font-size: 12.86px;">网卡</a><a href="/tags/脚本/" style="font-size: 15.71px;">脚本</a><a href="/tags/高可用/" style="font-size: 10px;">高可用</a>
+						<a href="/tags/ceph/" style="font-size: 20px;">ceph</a><a href="/tags/freebsd/" style="font-size: 10px;">freebsd</a><a href="/tags/instagram/" style="font-size: 10px;">instagram</a><a href="/tags/iptables/" style="font-size: 10px;">iptables</a><a href="/tags/linux/" style="font-size: 18.57px;">linux</a><a href="/tags/momotan/" style="font-size: 10px;">momotan</a><a href="/tags/nginx/" style="font-size: 12.86px;">nginx</a><a href="/tags/samba/" style="font-size: 10px;">samba</a><a href="/tags/ubuntu/" style="font-size: 17.14px;">ubuntu</a><a href="/tags/windows/" style="font-size: 10px;">windows</a><a href="/tags/zabbix/" style="font-size: 10px;">zabbix</a><a href="/tags/其他/" style="font-size: 10px;">其他</a><a href="/tags/内核/" style="font-size: 12.86px;">内核</a><a href="/tags/操作系统/" style="font-size: 11.43px;">操作系统</a><a href="/tags/杂七杂八/" style="font-size: 14.29px;">杂七杂八</a><a href="/tags/注册码/" style="font-size: 10px;">注册码</a><a href="/tags/测试工具/" style="font-size: 11.43px;">测试工具</a><a href="/tags/监控/" style="font-size: 10px;">监控</a><a href="/tags/网卡/" style="font-size: 12.86px;">网卡</a><a href="/tags/脚本/" style="font-size: 15.71px;">脚本</a><a href="/tags/高可用/" style="font-size: 10px;">高可用</a>
 					</div>
 				</section>
 				
@@ -175,6 +175,71 @@
 	</div>
 </nav>
       <div class="body-wrap">
+  
+    <article id="post-重构rbd镜像的元数据" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/07/02/重构rbd镜像的元数据/" class="article-date">
+  	<time datetime="2016-07-01T18:52:33.000Z" itemprop="datePublished">2016-07-02</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/07/02/重构rbd镜像的元数据/">重构rbd镜像的元数据</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>这个已经很久之前已经实践成功了，现在正好有时间就来写一写，目前并没有在其他地方有类似的分享，虽然我们自己的业务并没有涉及到云计算的场景，之前还是对rbd镜像这一块做了一些基本的了解，因为一直比较关注故障恢复这一块，东西并不难，总之一切不要等到出了问题再去想办法，提前准备总是好的，如果你有集群的问题，生产环境需要恢复的欢迎找我</p>
+<h3 id="一、前言">一、前言</h3><p>rbd的镜像的元数据，这个是什么？这里所提到的元数据信息，是指跟这个image信息有关的元数据信息，就是image的大小名称等等一系列的信息，本篇将讲述怎么去重构这些信息，重构的前提就是做好了信息的记录，然后做重构</p>
+<h3 id="二、记录元数据信息">二、记录元数据信息</h3><h4 id="1、创建一个image">1、创建一个image</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># rbd -p rbd create zp --size 40000</span></span><br></pre></td></tr></table></figure>
+<p>这里是在rbd存储池当中创建的一个名称为zp的，大小为40G的image文件</p>
+<p>如果没有其他的image的情况下，我们来查看下对象信息<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># rados -p rbd ls</span></span><br><span class="line">rbd_header.<span class="number">60276</span>b8b4567</span><br><span class="line">rbd_directory</span><br><span class="line">rbd_id.zp</span><br></pre></td></tr></table></figure></p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2016/07/02/重构rbd镜像的元数据/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+
   
     <article id="post-parted分区对齐" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -729,72 +794,6 @@
       
         <p class="article-more-link">
           <a  href="/2016/06/04/利用虚拟化环境虚拟nvme盘/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-mon到底能坏几个" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/05/26/mon到底能坏几个/" class="article-date">
-  	<time datetime="2016-05-25T16:28:21.000Z" itemprop="datePublished">2016-05-26</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/05/26/mon到底能坏几个/">mon到底能坏几个</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>如果是在做ceph的配置，我们会经常遇到这几个问题</p>
-<ol>
-<li>问：ceph需要配置几个mon<br>答：配置一个可以，但是坏了一个就不行了，需要配置只是三个mon，并且需要是奇数个</li>
-<li>问：ceph的mon能跟osd放在一起么，需要配置很好么？<br>答：能跟放在一起，但是建议在环境允许的情况下一定独立机器，并且mon的配置能好尽量好，能上ssd就上ssd</li>
-</ol>
-<p>这两个问题的答案不能说是错的，但是为什么这么说，这么说有没有问题，这篇文章将根据实际的数据来告诉你，到底mon的极限在哪里，为什么都说要奇数，偶数难道就不行么</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2016/05/26/mon到底能坏几个/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>

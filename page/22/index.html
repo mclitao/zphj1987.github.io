@@ -110,7 +110,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/ceph/" style="font-size: 20px;">ceph</a><a href="/tags/instagram/" style="font-size: 10px;">instagram</a><a href="/tags/iptables/" style="font-size: 10px;">iptables</a><a href="/tags/linux/" style="font-size: 18.57px;">linux</a><a href="/tags/momotan/" style="font-size: 10px;">momotan</a><a href="/tags/nginx/" style="font-size: 12.86px;">nginx</a><a href="/tags/samba/" style="font-size: 10px;">samba</a><a href="/tags/ubuntu/" style="font-size: 17.14px;">ubuntu</a><a href="/tags/windows/" style="font-size: 10px;">windows</a><a href="/tags/zabbix/" style="font-size: 10px;">zabbix</a><a href="/tags/其他/" style="font-size: 10px;">其他</a><a href="/tags/内核/" style="font-size: 12.86px;">内核</a><a href="/tags/操作系统/" style="font-size: 11.43px;">操作系统</a><a href="/tags/杂七杂八/" style="font-size: 14.29px;">杂七杂八</a><a href="/tags/注册码/" style="font-size: 10px;">注册码</a><a href="/tags/测试工具/" style="font-size: 11.43px;">测试工具</a><a href="/tags/监控/" style="font-size: 10px;">监控</a><a href="/tags/网卡/" style="font-size: 12.86px;">网卡</a><a href="/tags/脚本/" style="font-size: 15.71px;">脚本</a><a href="/tags/高可用/" style="font-size: 10px;">高可用</a>
+						<a href="/tags/ceph/" style="font-size: 20px;">ceph</a><a href="/tags/freebsd/" style="font-size: 10px;">freebsd</a><a href="/tags/instagram/" style="font-size: 10px;">instagram</a><a href="/tags/iptables/" style="font-size: 10px;">iptables</a><a href="/tags/linux/" style="font-size: 18.57px;">linux</a><a href="/tags/momotan/" style="font-size: 10px;">momotan</a><a href="/tags/nginx/" style="font-size: 12.86px;">nginx</a><a href="/tags/samba/" style="font-size: 10px;">samba</a><a href="/tags/ubuntu/" style="font-size: 17.14px;">ubuntu</a><a href="/tags/windows/" style="font-size: 10px;">windows</a><a href="/tags/zabbix/" style="font-size: 10px;">zabbix</a><a href="/tags/其他/" style="font-size: 10px;">其他</a><a href="/tags/内核/" style="font-size: 12.86px;">内核</a><a href="/tags/操作系统/" style="font-size: 11.43px;">操作系统</a><a href="/tags/杂七杂八/" style="font-size: 14.29px;">杂七杂八</a><a href="/tags/注册码/" style="font-size: 10px;">注册码</a><a href="/tags/测试工具/" style="font-size: 11.43px;">测试工具</a><a href="/tags/监控/" style="font-size: 10px;">监控</a><a href="/tags/网卡/" style="font-size: 12.86px;">网卡</a><a href="/tags/脚本/" style="font-size: 15.71px;">脚本</a><a href="/tags/高可用/" style="font-size: 10px;">高可用</a>
 					</div>
 				</section>
 				
@@ -175,6 +175,64 @@
 	</div>
 </nav>
       <div class="body-wrap">
+  
+    <article id="post-监控磁盘读写状况" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/03/22/监控磁盘读写状况/" class="article-date">
+  	<time datetime="2015-03-22T06:41:09.000Z" itemprop="datePublished">2015-03-22</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/03/22/监控磁盘读写状况/">监控磁盘读写状况</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>您有没有碰到过:没有运行任何程序，磁盘却不断执行读写动作,io指示灯常亮,各种操作迟缓甚至卡顿。碰到这种状况往往会感到束手无策,因为并不是 cpu 居高不下,可以立即结束相关进程。而突然结束进程中断磁盘 io 操作甚至可能导致正在写入的数据丢失。</p>
+<h4 id="什么进程在读写磁盘?">什么进程在读写磁盘?</h4><p>可能是 firefox,可能是 updatedb,也可能是正在运行的 pacman -Syu,一切皆有可能 ……<br>怎么查看是什么进程在不断的读写磁盘呢?<br>请使用 iotop 命令查看:<br>通过输出结果我们可以清楚地知晓是什么程序在读写磁盘，速度以及命令行, pid 等信息。</p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2015/03/22/监控磁盘读写状况/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+
   
     <article id="post-du查看的目录大小与df查看的大小不同的时候用lsof查找" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -704,72 +762,6 @@
       
         <p class="article-more-link">
           <a  href="/2015/03/22/linux下内存释放/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-ubuntu配置bonding" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/03/21/ubuntu配置bonding/" class="article-date">
-  	<time datetime="2015-03-21T13:16:33.000Z" itemprop="datePublished">2015-03-21</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/03/21/ubuntu配置bonding/">ubuntu配置bonding</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>如果节点上有多个网络接口时可以通过bonding将多个网络接口虚拟为一个网络接口，bonding可以提供高可用及负载均衡功能，从而提高节点的网络接口性能及可用性。</p>
-<p>一、使用如下命令安装</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">T01-MON11:~<span class="comment"># apt-get install ifenslave-2.6</span></span><br></pre></td></tr></table></figure>
-<p>二、配置bonding</p>
-<p>修改网络接口配置文件/etc/network/interfaces</p>
-<p>配置一个bond<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">auto lo&#10;iface lo inet loopback&#10; &#10;auto eth8&#10;iface eth8 inet manual&#10;bond-master bond0&#10; &#10;auto eth7&#10;iface eth7 inet manual&#10;bond-master bond0&#10; &#10;auto eth6&#10;iface eth6 inet manual&#10;bond-master bond0&#10; &#10;auto eth5&#10;iface eth5 inet manual&#10;bond-master bond0&#10; &#10;auto eth0&#10;iface eth0 inet static&#10;address 192.168.8.102&#10;netmask 255.255.0.0&#10;gateway 192.168.1.1&#10;dns-nameservers 8.8.8.8&#10; &#10;auto bond0&#10;iface bond0 inet static&#10;address 10.0.0.102&#10;netmask 255.255.0.0&#10; &#10;bond-slaves none&#10;bond-miimon 100&#10;bond-mode balance-alb</span><br></pre></td></tr></table></figure></p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/网卡/">网卡</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/03/21/ubuntu配置bonding/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>

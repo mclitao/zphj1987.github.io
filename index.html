@@ -110,7 +110,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/ceph/" style="font-size: 20px;">ceph</a><a href="/tags/instagram/" style="font-size: 10px;">instagram</a><a href="/tags/iptables/" style="font-size: 10px;">iptables</a><a href="/tags/linux/" style="font-size: 18.57px;">linux</a><a href="/tags/momotan/" style="font-size: 10px;">momotan</a><a href="/tags/nginx/" style="font-size: 12.86px;">nginx</a><a href="/tags/samba/" style="font-size: 10px;">samba</a><a href="/tags/ubuntu/" style="font-size: 17.14px;">ubuntu</a><a href="/tags/windows/" style="font-size: 10px;">windows</a><a href="/tags/zabbix/" style="font-size: 10px;">zabbix</a><a href="/tags/其他/" style="font-size: 10px;">其他</a><a href="/tags/内核/" style="font-size: 12.86px;">内核</a><a href="/tags/操作系统/" style="font-size: 11.43px;">操作系统</a><a href="/tags/杂七杂八/" style="font-size: 14.29px;">杂七杂八</a><a href="/tags/注册码/" style="font-size: 10px;">注册码</a><a href="/tags/测试工具/" style="font-size: 11.43px;">测试工具</a><a href="/tags/监控/" style="font-size: 10px;">监控</a><a href="/tags/网卡/" style="font-size: 12.86px;">网卡</a><a href="/tags/脚本/" style="font-size: 15.71px;">脚本</a><a href="/tags/高可用/" style="font-size: 10px;">高可用</a>
+						<a href="/tags/ceph/" style="font-size: 20px;">ceph</a><a href="/tags/freebsd/" style="font-size: 10px;">freebsd</a><a href="/tags/instagram/" style="font-size: 10px;">instagram</a><a href="/tags/iptables/" style="font-size: 10px;">iptables</a><a href="/tags/linux/" style="font-size: 18.57px;">linux</a><a href="/tags/momotan/" style="font-size: 10px;">momotan</a><a href="/tags/nginx/" style="font-size: 12.86px;">nginx</a><a href="/tags/samba/" style="font-size: 10px;">samba</a><a href="/tags/ubuntu/" style="font-size: 17.14px;">ubuntu</a><a href="/tags/windows/" style="font-size: 10px;">windows</a><a href="/tags/zabbix/" style="font-size: 10px;">zabbix</a><a href="/tags/其他/" style="font-size: 10px;">其他</a><a href="/tags/内核/" style="font-size: 12.86px;">内核</a><a href="/tags/操作系统/" style="font-size: 11.43px;">操作系统</a><a href="/tags/杂七杂八/" style="font-size: 14.29px;">杂七杂八</a><a href="/tags/注册码/" style="font-size: 10px;">注册码</a><a href="/tags/测试工具/" style="font-size: 11.43px;">测试工具</a><a href="/tags/监控/" style="font-size: 10px;">监控</a><a href="/tags/网卡/" style="font-size: 12.86px;">网卡</a><a href="/tags/脚本/" style="font-size: 15.71px;">脚本</a><a href="/tags/高可用/" style="font-size: 10px;">高可用</a>
 					</div>
 				</section>
 				
@@ -175,6 +175,104 @@
 	</div>
 </nav>
       <div class="body-wrap">
+  
+    <article id="post-Freebsd-pkg-destroy" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/05/24/Freebsd-pkg-destroy/" class="article-date">
+  	<time datetime="2017-05-24T02:40:34.000Z" itemprop="datePublished">2017-05-24</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/05/24/Freebsd-pkg-destroy/">Freebsd10.2安装包升级pkg引起环境破坏的解决</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/brock.png?imageMogr2/thumbnail/!75p" alt=""><br></center>
+
+
+<h2 id="前言">前言</h2><p>freebsd10.2环境在安装一个新软件包的时候提示升级pkg到1.10.1，然后点击了升级，然后整个pkg环境就无法使用了</p>
+<h2 id="记录">记录</h2><p>升级完了软件包以后第一个错误提示</p>
+<blockquote>
+<p>FreeBSD: /usr/local/lib/libpkg.so.3: Undefined symbol “utimensat” </p>
+</blockquote>
+<p>这个是因为这个库是在freebsd的10.3当中才有的库，而我的环境是10.2的环境</p>
+<h3 id="网上有一个解决办法">网上有一个解决办法</h3><p>更新源<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># cat /usr/local/etc/pkg/repos/FreeBSD.conf</span></span><br><span class="line">FreeBSD: &#123;</span><br><span class="line">  url: <span class="string">"pkg+http://pkg.FreeBSD.org/<span class="variable">$&#123;ABI&#125;</span>/release_2"</span>,</span><br><span class="line">  enabled: yes</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>检查当前版本<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># pkg --version</span></span><br><span class="line"><span class="number">1.10</span>.<span class="number">1</span></span><br></pre></td></tr></table></figure></p>
+<p>更新缓存<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># pkg update</span></span><br></pre></td></tr></table></figure></p>
+<p>卸载<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># pkg delete -f pkg</span></span><br></pre></td></tr></table></figure></p>
+<p>重新安装<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># pkg install -y pkg</span></span><br><span class="line"><span class="comment"># pkg2ng</span></span><br></pre></td></tr></table></figure></p>
+<p>检查版本<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># pkg --version</span></span><br><span class="line"><span class="number">1.5</span>.<span class="number">4</span></span><br></pre></td></tr></table></figure></p>
+<p>这个在我的环境下没有生效</p>
+<h3 id="还有一个办法">还有一个办法</h3><p>有个pkg-static命令可以使用，，然后/var/cache/pkg里边缓存的包。执行命令：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># pkg-static install -f /var/cache/pkg/pkg-1.5.4.txz</span></span><br><span class="line">``` </span><br><span class="line"></span><br><span class="line">这个在我的环境下报错</span><br><span class="line">```bash</span><br><span class="line">root@mkiso:/usr/ports/ports-mgmt/pkg <span class="comment"># pkg info sqlite3</span></span><br><span class="line">pkg: warning: database version <span class="number">34</span> is newer than libpkg(<span class="number">3</span>) version <span class="number">33</span>, but still compatible</span><br><span class="line">pkg: sqlite error <span class="keyword">while</span> executing INSERT OR ROLLBACK INTO pkg_search(id, name, origin) VALUES (?<span class="number">1</span>, ?<span class="number">2</span> || <span class="string">'-'</span> || ?<span class="number">3</span>, ?<span class="number">4</span>); <span class="keyword">in</span> file pkgdb.c:<span class="number">1544</span>: no such table: pkg_search</span><br></pre></td></tr></table></figure></p>
+<p>这个在网上看到有很多人出现了</p>
+<h3 id="最终解决的办法">最终解决的办法</h3><p>在邮件列表里面看到一个解决办法，我是用的这个办法解决了的<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#pkg shell</span></span><br></pre></td></tr></table></figure></p>
+<p>进入交互模式,执行下面的操作<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">CREATE VIRTUAL TABLE pkg_search USING fts4(id, name, origin);</span><br><span class="line">pragma user_version=<span class="number">33</span>;</span><br></pre></td></tr></table></figure></p>
+<p>执行完了以后pkg 环境可用了</p>
+<h2 id="避免这个问题">避免这个问题</h2><p>锁定本机的pkg版本<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pkg lock pkg</span><br></pre></td></tr></table></figure></p>
+<p>如果需要手动找包就是这个路径<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">http://pkg.freebsd.org/FreeBSD:<span class="number">10</span>:amd64/</span><br></pre></td></tr></table></figure></p>
+<p>我的机器最终版本是<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#pkg -v</span></span><br><span class="line"><span class="number">1.8</span>.<span class="number">7</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="参考资料">参考资料</h2><p><a href="http://www.07net01.com/2017/02/1816847.html" target="_blank" rel="external">freebsd pkg升级问题报错</a><br><a href="http://glasz.org/sheeplog/2017/02/freebsd-usrlocalliblibpkgso3-undefined-symbol-utimensat.html" target="_blank" rel="external">FreeBSD: /usr/local/lib/libpkg.so.3: Undefined symbol “utimensat” </a><br><a href="http://bbs.chinaunix.net/thread-4260263-1-1.html" target="_blank" rel="external">升级pkg失败, 安装低版本pkg失败</a><br><a href="https://lists.freebsd.org/pipermail/freebsd-ports/2017-January/106799.html" target="_blank" rel="external">pkg database issue: database version 34 is newer than libpkg(3) version 33 ?</a></p>
+<h2 id="变更记录">变更记录</h2><table>
+<thead>
+<tr>
+<th style="text-align:center">Why</th>
+<th style="text-align:center">Who</th>
+<th style="text-align:center">When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">创建</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2017-05-24</td>
+</tr>
+</tbody>
+</table>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/freebsd/">freebsd</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+
   
     <article id="post-Ceph-filestore-to-bluestore" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -725,66 +823,6 @@
       
         <p class="article-more-link">
           <a  href="/2017/04/19/ceph-delete-an-error-object/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-ceph-cluster-connect-by-which-client" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/04/13/ceph-cluster-connect-by-which-client/" class="article-date">
-  	<time datetime="2017-04-13T06:18:34.000Z" itemprop="datePublished">2017-04-13</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/04/13/ceph-cluster-connect-by-which-client/">查看ceph集群被哪些客户端连接</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/earth.png" alt="connect"><br></center>
-
-<h2 id="前言">前言</h2><p>我们在使用集群的时候，一般来说比较关注的是后台的集群的状态，但是在做一些更人性化的管理功能的时候，就需要考虑到更多的细节</p>
-<p>本篇就是其中的一个点，查询ceph被哪些客户端连接了<br>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2017/04/13/ceph-cluster-connect-by-which-client/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>
