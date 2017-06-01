@@ -3,33 +3,30 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Freebsd10.2安装包升级pkg引起环境破坏的解决 | zphj1987&#39;Blog</title>
+  <title>Centos7升级内核后无法启动解决办法 | zphj1987&#39;Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="前言freebsd10.2环境在安装一个新软件包的时候提示升级pkg到1.10.1，然后点击了升级，然后整个pkg环境就无法使用了
-记录升级完了软件包以后第一个错误提示
+  <meta name="description" content="前言这个问题存在有一段时间了，之前做的centos7的ISO，在进行内核的升级以后就存在这个问题：
 
-FreeBSD: /usr/local/lib/libpkg.so.3: Undefined symbol “utimensat” 
-
-这个是因为这个库是在freebsd的10.3当中才有的库，而我的环境是10.2的环境">
+系统盘在板载sata口上是可以正常启动新内核并且能识别面板硬盘
+系统盘插在面板口上新内核无法启动，调试发现无法找到系统盘
+系统盘插在面板上默认的3.10内核可以正常启动">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Freebsd10.2安装包升级pkg引起环境破坏的解决">
-<meta property="og:url" content="http://www.zphj1987.com/2017/05/24/Freebsd-pkg-destroy/index.html">
+<meta property="og:title" content="Centos7升级内核后无法启动解决办法">
+<meta property="og:url" content="http://www.zphj1987.com/2017/06/01/centos7-update-kernel-can-not-boot/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
-<meta property="og:description" content="前言freebsd10.2环境在安装一个新软件包的时候提示升级pkg到1.10.1，然后点击了升级，然后整个pkg环境就无法使用了
-记录升级完了软件包以后第一个错误提示
+<meta property="og:description" content="前言这个问题存在有一段时间了，之前做的centos7的ISO，在进行内核的升级以后就存在这个问题：
 
-FreeBSD: /usr/local/lib/libpkg.so.3: Undefined symbol “utimensat” 
-
-这个是因为这个库是在freebsd的10.3当中才有的库，而我的环境是10.2的环境">
-<meta property="og:image" content="http://7xweck.com1.z0.glb.clouddn.com/brock.png?imageMogr2/thumbnail/!75p">
+系统盘在板载sata口上是可以正常启动新内核并且能识别面板硬盘
+系统盘插在面板口上新内核无法启动，调试发现无法找到系统盘
+系统盘插在面板上默认的3.10内核可以正常启动">
+<meta property="og:image" content="http://7xweck.com1.z0.glb.clouddn.com/newkernel.png?imageMogr2/thumbnail/!75p">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Freebsd10.2安装包升级pkg引起环境破坏的解决">
-<meta name="twitter:description" content="前言freebsd10.2环境在安装一个新软件包的时候提示升级pkg到1.10.1，然后点击了升级，然后整个pkg环境就无法使用了
-记录升级完了软件包以后第一个错误提示
+<meta name="twitter:title" content="Centos7升级内核后无法启动解决办法">
+<meta name="twitter:description" content="前言这个问题存在有一段时间了，之前做的centos7的ISO，在进行内核的升级以后就存在这个问题：
 
-FreeBSD: /usr/local/lib/libpkg.so.3: Undefined symbol “utimensat” 
-
-这个是因为这个库是在freebsd的10.3当中才有的库，而我的环境是10.2的环境">
+系统盘在板载sata口上是可以正常启动新内核并且能识别面板硬盘
+系统盘插在面板口上新内核无法启动，调试发现无法找到系统盘
+系统盘插在面板上默认的3.10内核可以正常启动">
   
     <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
   
@@ -190,11 +187,11 @@ FreeBSD: /usr/local/lib/libpkg.so.3: Undefined symbol “utimensat”
 		</header>				
 	</div>
 </nav>
-      <div class="body-wrap"><article id="post-Freebsd-pkg-destroy" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-centos7-update-kernel-can-not-boot" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/05/24/Freebsd-pkg-destroy/" class="article-date">
-  	<time datetime="2017-05-24T02:40:34.000Z" itemprop="datePublished">2017-05-24</time>
+      <a href="/2017/06/01/centos7-update-kernel-can-not-boot/" class="article-date">
+  	<time datetime="2017-06-01T06:09:39.000Z" itemprop="datePublished">2017-06-01</time>
 </a>
     </div>
   
@@ -207,7 +204,7 @@ FreeBSD: /usr/local/lib/libpkg.so.3: Undefined symbol “utimensat”
         
   
     <h1 class="article-title" itemprop="name">
-      Freebsd10.2安装包升级pkg引起环境破坏的解决
+      Centos7升级内核后无法启动解决办法
     </h1>
   
 
@@ -216,7 +213,7 @@ FreeBSD: /usr/local/lib/libpkg.so.3: Undefined symbol “utimensat”
       <div class="article-info article-info-post">
         
 	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/freebsd/">freebsd</a></li></ul>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
 	</div>
 
         
@@ -227,34 +224,31 @@ FreeBSD: /usr/local/lib/libpkg.so.3: Undefined symbol “utimensat”
     
     <div class="article-entry" itemprop="articleBody">
       
-        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/brock.png?imageMogr2/thumbnail/!75p" alt=""><br></center>
+        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/newkernel.png?imageMogr2/thumbnail/!75p" alt="kernel"><br></center>
 
-
-<h2 id="前言">前言</h2><p>freebsd10.2环境在安装一个新软件包的时候提示升级pkg到1.10.1，然后点击了升级，然后整个pkg环境就无法使用了</p>
-<h2 id="记录">记录</h2><p>升级完了软件包以后第一个错误提示</p>
+<h2 id="前言">前言</h2><p>这个问题存在有一段时间了，之前做的centos7的ISO，在进行内核的升级以后就存在这个问题：</p>
+<ul>
+<li>系统盘在板载sata口上是可以正常启动新内核并且能识别面板硬盘</li>
+<li>系统盘插在面板口上新内核无法启动，调试发现无法找到系统盘</li>
+<li>系统盘插在面板上默认的3.10内核可以正常启动<a id="more"></a>
+暂时的解决办法就是让系统插在板载的sata口上，因为当时没找到具体的解决办法，在这个问题持续了一段时间后，最近再次搜索资料的时候，把问题定位在了initramfs内的驱动的问题，并且对问题进行了解决</li>
+</ul>
+<h2 id="解决过程">解决过程</h2><p>查询initramfs的驱动<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab103 lab103]<span class="comment"># lsinitrd -k 3.10.0-327.el7.x86_64|grep mpt[23]sas</span></span><br><span class="line">drwxr-xr-x   <span class="number">2</span> root     root            <span class="number">0</span> Apr <span class="number">17</span> <span class="number">12</span>:<span class="number">05</span> usr/lib/modules/<span class="number">3.10</span>.<span class="number">0</span>-<span class="number">327</span>.el7.x86_64/kernel/drivers/scsi/mpt2sas</span><br><span class="line">-rw-r--r--   <span class="number">1</span> root     root       <span class="number">337793</span> Nov <span class="number">20</span>  <span class="number">2015</span> usr/lib/modules/<span class="number">3.10</span>.<span class="number">0</span>-<span class="number">327</span>.el7.x86_64/kernel/drivers/scsi/mpt2sas/mpt2sas.ko</span><br></pre></td></tr></table></figure></p>
+<p>可以看到在3.10内核的时候是mpt2sas驱动</p>
+<p>可以在4.x内核中看到<br>新版的内核已经把mpt2sas升级为mpt3sas<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/lib/modules/<span class="number">4.4</span>.<span class="number">46</span>/kernel/drivers/scsi/mpt3sas/mpt3sas.ko</span><br></pre></td></tr></table></figure></p>
+<p>查询initramfs内的模块<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">lsinitrd -k  <span class="number">4.4</span>.<span class="number">46</span>|grep mpt[<span class="number">23</span>]sas</span><br></pre></td></tr></table></figure></p>
+<p>可以看到并没有输出，说明initramfs并没有把这个驱动打进去</p>
+<p>这个地方有两种方式来解决</p>
+<h3 id="方法一：">方法一：</h3><p>修改 /etc/dracut.conf文件，增加字段</p>
 <blockquote>
-<p>FreeBSD: /usr/local/lib/libpkg.so.3: Undefined symbol “utimensat” </p>
+<p>add_drivers+=”mpt3sas”</p>
 </blockquote>
-<p>这个是因为这个库是在freebsd的10.3当中才有的库，而我的环境是10.2的环境<br><a id="more"></a></p>
-<h3 id="网上有一个解决办法">网上有一个解决办法</h3><p>更新源<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># cat /usr/local/etc/pkg/repos/FreeBSD.conf</span></span><br><span class="line">FreeBSD: &#123;</span><br><span class="line">  url: <span class="string">"pkg+http://pkg.FreeBSD.org/<span class="variable">$&#123;ABI&#125;</span>/release_2"</span>,</span><br><span class="line">  enabled: yes</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>检查当前版本<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># pkg --version</span></span><br><span class="line"><span class="number">1.10</span>.<span class="number">1</span></span><br></pre></td></tr></table></figure></p>
-<p>更新缓存<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># pkg update</span></span><br></pre></td></tr></table></figure></p>
-<p>卸载<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># pkg delete -f pkg</span></span><br></pre></td></tr></table></figure></p>
-<p>重新安装<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># pkg install -y pkg</span></span><br><span class="line"><span class="comment"># pkg2ng</span></span><br></pre></td></tr></table></figure></p>
-<p>检查版本<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># pkg --version</span></span><br><span class="line"><span class="number">1.5</span>.<span class="number">4</span></span><br></pre></td></tr></table></figure></p>
-<p>这个在我的环境下没有生效</p>
-<h3 id="还有一个办法">还有一个办法</h3><p>有个pkg-static命令可以使用，，然后/var/cache/pkg里边缓存的包。执行命令： </p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># pkg-static install -f /var/cache/pkg/pkg-1.5.4.txz</span></span><br></pre></td></tr></table></figure>
-<p>这个在我的环境下报错</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@mkiso:/usr/ports/ports-mgmt/pkg <span class="comment"># pkg info sqlite3</span></span><br><span class="line">pkg: warning: database version <span class="number">34</span> is newer than libpkg(<span class="number">3</span>) version <span class="number">33</span>, but still compatible</span><br><span class="line">pkg: sqlite error <span class="keyword">while</span> executing INSERT OR ROLLBACK INTO pkg_search(id, name, origin) VALUES (?<span class="number">1</span>, ?<span class="number">2</span> || <span class="string">'-'</span> || ?<span class="number">3</span>, ?<span class="number">4</span>); <span class="keyword">in</span> file pkgdb.c:<span class="number">1544</span>: no such table: pkg_search</span><br></pre></td></tr></table></figure>
-<p>这个在网上看到有很多人出现了</p>
-<h3 id="最终解决的办法">最终解决的办法</h3><p>在邮件列表里面看到一个解决办法，我是用的这个办法解决了的<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#pkg shell</span></span><br></pre></td></tr></table></figure></p>
-<p>进入交互模式,执行下面的操作<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">CREATE VIRTUAL TABLE pkg_search USING fts4(id, name, origin);</span><br><span class="line">pragma user_version=<span class="number">33</span>;</span><br></pre></td></tr></table></figure></p>
-<p>执行完了以后pkg 环境可用了</p>
-<h2 id="避免这个问题">避免这个问题</h2><p>锁定本机的pkg版本<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pkg lock pkg</span><br></pre></td></tr></table></figure></p>
-<p>如果需要手动找包就是这个路径<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">http://pkg.freebsd.org/FreeBSD:<span class="number">10</span>:amd64/</span><br></pre></td></tr></table></figure></p>
-<p>我的机器最终版本是<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#pkg -v</span></span><br><span class="line"><span class="number">1.8</span>.<span class="number">7</span></span><br></pre></td></tr></table></figure></p>
-<h2 id="参考资料">参考资料</h2><p><a href="http://www.07net01.com/2017/02/1816847.html" target="_blank" rel="external">freebsd pkg升级问题报错</a><br><a href="http://glasz.org/sheeplog/2017/02/freebsd-usrlocalliblibpkgso3-undefined-symbol-utimensat.html" target="_blank" rel="external">FreeBSD: /usr/local/lib/libpkg.so.3: Undefined symbol “utimensat” </a><br><a href="http://bbs.chinaunix.net/thread-4260263-1-1.html" target="_blank" rel="external">升级pkg失败, 安装低版本pkg失败</a><br><a href="https://lists.freebsd.org/pipermail/freebsd-ports/2017-January/106799.html" target="_blank" rel="external">pkg database issue: database version 34 is newer than libpkg(3) version 33 ?</a></p>
+<p>重新生成initramfs<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">dracut <span class="operator">-f</span> /boot/initramfs-<span class="number">4.4</span>.<span class="number">46</span>.img <span class="number">4.4</span>.<span class="number">46</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="方法二：">方法二：</h3><p>强制加载驱动<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">dracut --force --add-drivers mpt3sas --kver=<span class="number">4.4</span>.<span class="number">46</span></span><br></pre></td></tr></table></figure></p>
+<p>以上方法二选一做下驱动的集成，然后做下面的检查<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">lsinitrd -k  <span class="number">4.4</span>.<span class="number">46</span>|grep mpt[<span class="number">23</span>]sas</span><br></pre></td></tr></table></figure></p>
+<p>如果有输出就是正常了的</p>
+<p>然后重启操作系统即可</p>
+<h2 id="总结">总结</h2><p>目前出现这个问题的原因不清楚来自内核还是dracut生成的地方，如果遇到这个问题就按照上面的方法进行处理下即可解决，问题能找到解决办法后就会发现只是小问题，没找到的时候，完全不知道问题在哪里</p>
 <h2 id="变更记录">变更记录</h2><table>
 <thead>
 <tr>
@@ -267,7 +261,7 @@ FreeBSD: /usr/local/lib/libpkg.so.3: Undefined symbol “utimensat”
 <tr>
 <td style="text-align:center">创建</td>
 <td style="text-align:center">武汉-运维-磨渣</td>
-<td style="text-align:center">2017-05-24</td>
+<td style="text-align:center">2017-06-01</td>
 </tr>
 </tbody>
 </table>
@@ -280,18 +274,9 @@ FreeBSD: /usr/local/lib/libpkg.so.3: Undefined symbol “utimensat”
     
 <nav id="article-nav">
   
-    <a href="/2017/06/01/centos7-update-kernel-can-not-boot/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption"><</strong>
-      <div class="article-nav-title">
-        
-          Centos7升级内核后无法启动解决办法
-        
-      </div>
-    </a>
   
-  
-    <a href="/2017/05/03/Ceph-filestore-to-bluestore/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">Ceph OSD从filestore 转换到 bluestore的方法</div>
+    <a href="/2017/05/24/Freebsd-pkg-destroy/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Freebsd10.2安装包升级pkg引起环境破坏的解决</div>
       <strong class="article-nav-caption">></strong>
     </a>
   

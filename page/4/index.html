@@ -176,6 +176,73 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-ceph-crush-straw" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/01/05/ceph-crush-straw/" class="article-date">
+  	<time datetime="2017-01-05T04:45:23.000Z" itemprop="datePublished">2017-01-05</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/01/05/ceph-crush-straw/">ceph 的crush算法 straw</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/crushmode.jpg" alt=""><br></center>
+
+<p>很多年以前，Sage 在写CRUSH的原始算法的时候，写了不同的Bucket类型，可以选择不同的伪随机选择算法，大部分的模型是基于RJ Honicky写的RUSH algorithms 这个算法，这个在网上可以找到资料，这里面有一个新的特性是sage很引以为豪的，straw算法，也就是我们现在常用的一些算法，这个算法有下面的特性：</p>
+<ul>
+<li>items 可以有任意的weight</li>
+<li>选择一个项目的算法复杂度是O(n)</li>
+<li>如果一个item的weight调高或者调低，只会在调整了的item直接变动，而没有调整的item是不会变动的
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2017/01/05/ceph-crush-straw/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+
+  
     <article id="post-rbd-image-write-objects" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -731,69 +798,6 @@
       
         <p class="article-more-link">
           <a  href="/2016/12/07/基于发行版本内核打造自己的内核/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-The-Dos-and-Don-ts-for-Ceph-for-OpenStack" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/11/29/The-Dos-and-Don-ts-for-Ceph-for-OpenStack/" class="article-date">
-  	<time datetime="2016-11-29T15:59:07.000Z" itemprop="datePublished">2016-11-29</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/11/29/The-Dos-and-Don-ts-for-Ceph-for-OpenStack/">The Dos and Don&#39;ts for Ceph for OpenStack</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/dos-and-dons.png" alt=""><br></center>
-
-<p>Ceph和OpenStack是一个非常有用和非常受欢迎的组合。 不过，部署Ceph / OpenStack经常会有一些容易避免的缺点 - 我们将帮助你解决它们</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2016/11/29/The-Dos-and-Don-ts-for-Ceph-for-OpenStack/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>

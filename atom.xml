@@ -4,7 +4,7 @@
   <subtitle><![CDATA[但行好事，莫问前程]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2017-05-24T07:25:57.560Z</updated>
+  <updated>2017-06-01T06:46:57.628Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -15,11 +15,74 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title><![CDATA[Centos7升级内核后无法启动解决办法]]></title>
+    <link href="http://www.zphj1987.com/2017/06/01/centos7-update-kernel-can-not-boot/"/>
+    <id>http://www.zphj1987.com/2017/06/01/centos7-update-kernel-can-not-boot/</id>
+    <published>2017-06-01T06:09:39.000Z</published>
+    <updated>2017-06-01T06:46:57.628Z</updated>
+    <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/newkernel.png?imageMogr2/thumbnail/!75p" alt="kernel"><br></center>
+
+<h2 id="前言">前言</h2><p>这个问题存在有一段时间了，之前做的centos7的ISO，在进行内核的升级以后就存在这个问题：</p>
+<ul>
+<li>系统盘在板载sata口上是可以正常启动新内核并且能识别面板硬盘</li>
+<li>系统盘插在面板口上新内核无法启动，调试发现无法找到系统盘</li>
+<li>系统盘插在面板上默认的3.10内核可以正常启动<a id="more"></a>
+暂时的解决办法就是让系统插在板载的sata口上，因为当时没找到具体的解决办法，在这个问题持续了一段时间后，最近再次搜索资料的时候，把问题定位在了initramfs内的驱动的问题，并且对问题进行了解决</li>
+</ul>
+<h2 id="解决过程">解决过程</h2><p>查询initramfs的驱动<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab103 lab103]<span class="comment"># lsinitrd -k 3.10.0-327.el7.x86_64|grep mpt[23]sas</span></span><br><span class="line">drwxr-xr-x   <span class="number">2</span> root     root            <span class="number">0</span> Apr <span class="number">17</span> <span class="number">12</span>:<span class="number">05</span> usr/lib/modules/<span class="number">3.10</span>.<span class="number">0</span>-<span class="number">327</span>.el7.x86_64/kernel/drivers/scsi/mpt2sas</span><br><span class="line">-rw-r--r--   <span class="number">1</span> root     root       <span class="number">337793</span> Nov <span class="number">20</span>  <span class="number">2015</span> usr/lib/modules/<span class="number">3.10</span>.<span class="number">0</span>-<span class="number">327</span>.el7.x86_64/kernel/drivers/scsi/mpt2sas/mpt2sas.ko</span><br></pre></td></tr></table></figure></p>
+<p>可以看到在3.10内核的时候是mpt2sas驱动</p>
+<p>可以在4.x内核中看到<br>新版的内核已经把mpt2sas升级为mpt3sas<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/lib/modules/<span class="number">4.4</span>.<span class="number">46</span>/kernel/drivers/scsi/mpt3sas/mpt3sas.ko</span><br></pre></td></tr></table></figure></p>
+<p>查询initramfs内的模块<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">lsinitrd -k  <span class="number">4.4</span>.<span class="number">46</span>|grep mpt[<span class="number">23</span>]sas</span><br></pre></td></tr></table></figure></p>
+<p>可以看到并没有输出，说明initramfs并没有把这个驱动打进去</p>
+<p>这个地方有两种方式来解决</p>
+<h3 id="方法一：">方法一：</h3><p>修改 /etc/dracut.conf文件，增加字段</p>
+<blockquote>
+<p>add_drivers+=”mpt3sas”</p>
+</blockquote>
+<p>重新生成initramfs<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">dracut <span class="operator">-f</span> /boot/initramfs-<span class="number">4.4</span>.<span class="number">46</span>.img <span class="number">4.4</span>.<span class="number">46</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="方法二：">方法二：</h3><p>强制加载驱动<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">dracut --force --add-drivers mpt3sas --kver=<span class="number">4.4</span>.<span class="number">46</span></span><br></pre></td></tr></table></figure></p>
+<p>以上方法二选一做下驱动的集成，然后做下面的检查<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">lsinitrd -k  <span class="number">4.4</span>.<span class="number">46</span>|grep mpt[<span class="number">23</span>]sas</span><br></pre></td></tr></table></figure></p>
+<p>如果有输出就是正常了的</p>
+<p>然后重启操作系统即可</p>
+<h2 id="总结">总结</h2><p>目前出现这个问题的原因不清楚来自内核还是dracut生成的地方，如果遇到这个问题就按照上面的方法进行处理下即可解决，问题能找到解决办法后就会发现只是小问题，没找到的时候，完全不知道问题在哪里</p>
+<h2 id="变更记录">变更记录</h2><table>
+<thead>
+<tr>
+<th style="text-align:center">Why</th>
+<th style="text-align:center">Who</th>
+<th style="text-align:center">When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">创建</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2017-06-01</td>
+</tr>
+</tbody>
+</table>
+]]></content>
+    <summary type="html">
+    <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/newkernel.png?imageMogr2/thumbnail/!75p" alt="kernel"><br></center>
+
+<h2 id="前言">前言</h2><p>这个问题存在有一段时间了，之前做的centos7的ISO，在进行内核的升级以后就存在这个问题：</p>
+<ul>
+<li>系统盘在板载sata口上是可以正常启动新内核并且能识别面板硬盘</li>
+<li>系统盘插在面板口上新内核无法启动，调试发现无法找到系统盘</li>
+<li>系统盘插在面板上默认的3.10内核可以正常启动]]>
+    
+    </summary>
+    
+      <category term="linux" scheme="http://www.zphj1987.com/tags/linux/"/>
+    
+  </entry>
+  
+  <entry>
     <title><![CDATA[Freebsd10.2安装包升级pkg引起环境破坏的解决]]></title>
     <link href="http://www.zphj1987.com/2017/05/24/Freebsd-pkg-destroy/"/>
     <id>http://www.zphj1987.com/2017/05/24/Freebsd-pkg-destroy/</id>
     <published>2017-05-24T02:40:34.000Z</published>
-    <updated>2017-05-24T07:25:57.560Z</updated>
+    <updated>2017-06-01T06:46:51.484Z</updated>
     <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/brock.png?imageMogr2/thumbnail/!75p" alt=""><br></center>
 
 
@@ -28,7 +91,7 @@
 <blockquote>
 <p>FreeBSD: /usr/local/lib/libpkg.so.3: Undefined symbol “utimensat” </p>
 </blockquote>
-<p>这个是因为这个库是在freebsd的10.3当中才有的库，而我的环境是10.2的环境</p>
+<p>这个是因为这个库是在freebsd的10.3当中才有的库，而我的环境是10.2的环境<br><a id="more"></a></p>
 <h3 id="网上有一个解决办法">网上有一个解决办法</h3><p>更新源<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># cat /usr/local/etc/pkg/repos/FreeBSD.conf</span></span><br><span class="line">FreeBSD: &#123;</span><br><span class="line">  url: <span class="string">"pkg+http://pkg.FreeBSD.org/<span class="variable">$&#123;ABI&#125;</span>/release_2"</span>,</span><br><span class="line">  enabled: yes</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>检查当前版本<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># pkg --version</span></span><br><span class="line"><span class="number">1.10</span>.<span class="number">1</span></span><br></pre></td></tr></table></figure></p>
 <p>更新缓存<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># pkg update</span></span><br></pre></td></tr></table></figure></p>
@@ -69,7 +132,13 @@
     <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/brock.png?imageMogr2/thumbnail/!75p" alt=""><br></center>
 
 
-<h2 id="前言">前言</h2><]]>
+<h2 id="前言">前言</h2><p>freebsd10.2环境在安装一个新软件包的时候提示升级pkg到1.10.1，然后点击了升级，然后整个pkg环境就无法使用了</p>
+<h2 id="记录">记录</h2><p>升级完了软件包以后第一个错误提示</p>
+<blockquote>
+<p>FreeBSD: /usr/local/lib/libpkg.so.3: Undefined symbol “utimensat” </p>
+</blockquote>
+<p>这个是因为这个库是在freebsd的10.3当中才有的库，而我的环境是10.2的环境<br>]]>
+    
     </summary>
     
       <category term="freebsd" scheme="http://www.zphj1987.com/tags/freebsd/"/>
@@ -1127,52 +1196,6 @@
     </summary>
     
       <category term="linux" scheme="http://www.zphj1987.com/tags/linux/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[python执行rados命令例子]]></title>
-    <link href="http://www.zphj1987.com/2017/02/28/python-command-rados-sample/"/>
-    <id>http://www.zphj1987.com/2017/02/28/python-command-rados-sample/</id>
-    <published>2017-02-28T15:48:15.000Z</published>
-    <updated>2017-02-28T16:07:00.766Z</updated>
-    <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/we-love-python-800-600.png" alt="python"><br></center>
-
-<h2 id="前言">前言</h2><p>我们以前的管理平台在python平台下面做的，内部做的一些操作采用的是命令执行，然后解析的方式去做的，ceph自身有python的rados接口，可以直接调用原生接口，然后直接解析json的方式，这样更靠近底层<br><a id="more"></a><br>在看ceph-dash内部的实现的时候，发现里面的获取集群信息的代码可以留存备用</p>
-<h2 id="代码实例">代码实例</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># -*- coding: UTF-8 -*-</span></span><br><span class="line">import json</span><br><span class="line"></span><br><span class="line">from rados import Rados</span><br><span class="line">from rados import Error as RadosError</span><br><span class="line"></span><br><span class="line">class CephClusterCommand(dict):</span><br><span class="line">    <span class="string">""</span><span class="string">"</span><br><span class="line">    Issue a ceph command on the given cluster and provide the returned json</span><br><span class="line">    "</span><span class="string">""</span></span><br><span class="line"></span><br><span class="line">    def __init__(self, cluster, **kwargs):</span><br><span class="line">        dict.__init__(self)</span><br><span class="line">        ret, buf, err = cluster.mon_<span class="built_in">command</span>(json.dumps(kwargs), <span class="string">''</span>, timeout=<span class="number">5</span>)</span><br><span class="line">        <span class="keyword">if</span> ret != <span class="number">0</span>:</span><br><span class="line">            self[<span class="string">'err'</span>] = err</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            self.update(json.loads(buf))</span><br><span class="line"></span><br><span class="line">config=&#123;<span class="string">'conffile'</span>: <span class="string">'/etc/ceph/ceph.conf'</span>, <span class="string">'conf'</span>: &#123;&#125;&#125;</span><br><span class="line">with Rados(**config) as cluster:</span><br><span class="line">    cluster_status = CephClusterCommand(cluster, prefix=<span class="string">'status'</span>, format=<span class="string">'json'</span>)</span><br><span class="line">    <span class="built_in">print</span> cluster_status</span><br></pre></td></tr></table></figure>
-<h2 id="总结">总结</h2><p>调用原生接口的好处在于,只需要很少的库就可以取得监控系统所需要的值</p>
-<p>最近在研究系统的时候发现一个问题</p>
-<blockquote>
-<p>跟着错误的文档实践只会掉进同一个坑</p>
-</blockquote>
-<p>在遇到一个小的错误的时候，翻到了一个github的Issue，然后看到一个人把自己的配置过程和配置文件详详细细的都写在Issue下面，然后就跟着他的过程走了一遍，发现不论怎么弄都是同样的错误</p>
-<p>而返回去根据另一个正确的文档又走一遍的时候，发现终于跑通了，回顾了一遍，发现是那个错误的过程里面的配置文件里面是有配置项目，不兼容的，而软件也没有抛出相关的错误，然后在同一个地方找了两天</p>
-<p>所以如果有碰到无法解决的操作步骤文档的时候，就尽量不要去根据那个文档操作了，除非自己对细节弄的很清楚了</p>
-<h2 id="变更记录">变更记录</h2><table>
-<thead>
-<tr>
-<th style="text-align:center">Why</th>
-<th style="text-align:center">Who</th>
-<th style="text-align:center">When</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">创建</td>
-<td style="text-align:center">武汉-运维-磨渣</td>
-<td style="text-align:center">2017-02-28</td>
-</tr>
-</tbody>
-</table>
-]]></content>
-    <summary type="html">
-    <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/we-love-python-800-600.png" alt="python"><br></center>
-
-<h2 id="前言">前言</h2><p>我们以前的管理平台在python平台下面做的，内部做的一些操作采用的是命令执行，然后解析的方式去做的，ceph自身有python的rados接口，可以直接调用原生接口，然后直接解析json的方式，这样更靠近底层<br>]]>
-    
-    </summary>
-    
-      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
     
   </entry>
   
