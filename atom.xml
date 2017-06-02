@@ -4,7 +4,7 @@
   <subtitle><![CDATA[但行好事，莫问前程]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2017-06-01T06:46:57.628Z</updated>
+  <updated>2017-06-01T07:03:17.481Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="http://www.zphj1987.com/2017/06/01/centos7-update-kernel-can-not-boot/"/>
     <id>http://www.zphj1987.com/2017/06/01/centos7-update-kernel-can-not-boot/</id>
     <published>2017-06-01T06:09:39.000Z</published>
-    <updated>2017-06-01T06:46:57.628Z</updated>
+    <updated>2017-06-01T07:03:17.481Z</updated>
     <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/newkernel.png?imageMogr2/thumbnail/!75p" alt="kernel"><br></center>
 
 <h2 id="前言">前言</h2><p>这个问题存在有一段时间了，之前做的centos7的ISO，在进行内核的升级以后就存在这个问题：</p>
@@ -44,7 +44,7 @@
 <p>以上方法二选一做下驱动的集成，然后做下面的检查<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">lsinitrd -k  <span class="number">4.4</span>.<span class="number">46</span>|grep mpt[<span class="number">23</span>]sas</span><br></pre></td></tr></table></figure></p>
 <p>如果有输出就是正常了的</p>
 <p>然后重启操作系统即可</p>
-<h2 id="总结">总结</h2><p>目前出现这个问题的原因不清楚来自内核还是dracut生成的地方，如果遇到这个问题就按照上面的方法进行处理下即可解决，问题能找到解决办法后就会发现只是小问题，没找到的时候，完全不知道问题在哪里</p>
+<h2 id="总结">总结</h2><p>目前出现这个问题的原因不清楚来自内核还是dracut生成的地方，如果遇到这个问题就按照上面的方法进行处理下即可，问题能找到解决办法后就会发现只是小问题，没找到的时候，完全不知道问题在哪里</p>
 <h2 id="变更记录">变更记录</h2><table>
 <thead>
 <tr>

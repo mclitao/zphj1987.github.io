@@ -248,7 +248,7 @@
 <p>以上方法二选一做下驱动的集成，然后做下面的检查<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">lsinitrd -k  <span class="number">4.4</span>.<span class="number">46</span>|grep mpt[<span class="number">23</span>]sas</span><br></pre></td></tr></table></figure></p>
 <p>如果有输出就是正常了的</p>
 <p>然后重启操作系统即可</p>
-<h2 id="总结">总结</h2><p>目前出现这个问题的原因不清楚来自内核还是dracut生成的地方，如果遇到这个问题就按照上面的方法进行处理下即可解决，问题能找到解决办法后就会发现只是小问题，没找到的时候，完全不知道问题在哪里</p>
+<h2 id="总结">总结</h2><p>目前出现这个问题的原因不清楚来自内核还是dracut生成的地方，如果遇到这个问题就按照上面的方法进行处理下即可，问题能找到解决办法后就会发现只是小问题，没找到的时候，完全不知道问题在哪里</p>
 <h2 id="变更记录">变更记录</h2><table>
 <thead>
 <tr>
@@ -305,15 +305,20 @@
 
 
 
-    <!-- UY BEGIN -->
-    <section id="comments">
-        <div id="uyan_frame"></div>
-        <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2131550"></script>
-    </section>
-    <!-- UY END -->
-
-
-
+    <!-- WY BEGIN -->
+<div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+<script src="https://img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script>
+<script>
+var cloudTieConfig = {
+  url: document.location.href, 
+  sourceId: "",
+  productKey: "e8565dbbfcc547bfacab81ca841c15d1",
+  target: "cloud-tie-wrapper"
+};
+var yunManualLoad = true;
+Tie.loader("aHR0cHM6Ly9hcGkuZ2VudGllLjE2My5jb20vcGMvbGl2ZXNjcmlwdC5odG1s", true);
+</script>
+    <!-- WY END -->
 
 </div>
       <footer id="footer">
