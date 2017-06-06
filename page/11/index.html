@@ -176,6 +176,71 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-mon的稳定性问题" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/04/25/mon的稳定性问题/" class="article-date">
+  	<time datetime="2016-04-25T15:36:28.000Z" itemprop="datePublished">2016-04-25</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/04/25/mon的稳定性问题/">mon的稳定性问题</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="MON的稳定性问题：">MON的稳定性问题：</h3><ul>
+<li>mon的选举风暴影响客户端IO</li>
+<li>LevelDB的暴涨</li>
+<li>频繁的客户端请求的DDOS</li>
+</ul>
+<h4 id="mon选举风暴：">mon选举风暴：</h4><p>monmap会因为mon之间或者mon与客户端之间网络的影响或者消息传递的异常发生变化,从而触发选举<br>会造成客户端的请求变慢或者锁住</p>
+<h4 id="LevelDB的暴涨：">LevelDB的暴涨：</h4><p>LevelDB的大小会涨到几十GB然后影响了osd的请求<br>会造成客户端的请求变慢或者锁住</p>
+<h4 id="频繁的客户端请求的DDOS：">频繁的客户端请求的DDOS：</h4><p>mon的响应因为levelDB变慢或者选举风暴，都会造成客户端发出大量的消息流<br>让客户端操作失效，包括卷创建，rbd的连接</p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2016/04/25/mon的稳定性问题/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-backfill和recovery的最优值" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -722,65 +787,6 @@
       
         <p class="article-more-link">
           <a  href="/2016/03/24/ceph查询rbd的使用容量（快速）/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-ceph的书" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/03/12/ceph的书/" class="article-date">
-  	<time datetime="2016-03-12T15:50:34.000Z" itemprop="datePublished">2016-03-12</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/03/12/ceph的书/">ceph的书</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>以下是最新的一本ceph英文书的目录，我会学习里面的内容，并且翻译成中文的读书笔记，接触ceph也有几年了，还记得那个夏天毕业的时候辞掉了一份实施的工作，转而换了一份测试工程师的工作，然后就接触了现在非常火的ceph<br>现在在接触的越多的相关知识后，越发发现自己还需要学的东西很多，只有掌握的越多，越能对你所做的事情能后有确定的信心，所以抓住一切能成长的机会，在技术上，我是很喜欢遇到问题的，遇到的问题越多，能够学到的东西越多，所以在ceph的中国社区里面，在一段时间内，我都尽力去回答每一个我知道的问题，但是我们毕竟是一家商业的公司，自己的技术不是都能够去无私的告诉别人，所以在某些时候，还是需要有所保留的。在公司没有涉及的领域，技术方面是可以共同学习成长的，这个也能够认识一些技术圈的朋友，之前有录过几段小的视频教程，之所以停止下来，发现那个太耗时间了，并且能够之前传递的知识面比较小，在这里感谢之前支持的朋友<br>在ceph这套系统里面，在跟一些朋友有过技术的交流后，发现真的是不知者不惧，在没有深入了解运行机制的情况下，做着一些非常危险的操作，很多操作可能会直接弄崩掉集群，我们应该对未知的东西充满敬畏之心，小心小心再小心<br>在任何情况下，如果有条件允许，ceph的集群一定要部署两套，一个作为备份，这个是我一直坚持的观点，因为系统级别的故障是你永远无法预料的，副本只能解决系统内的故障，你的修复能力也只能将损失降到最低</p>
-<p>好吧那么开始下面的学习之旅了！<br>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2016/03/12/ceph的书/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>

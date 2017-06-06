@@ -176,6 +176,66 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-Ceph-deploymon-with-error-address" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/06/06/Ceph-deploymon-with-error-address/" class="article-date">
+  	<time datetime="2017-06-06T09:42:22.000Z" itemprop="datePublished">2017-06-06</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/06/06/Ceph-deploymon-with-error-address/">Ceph部署mon出现0.0.0.0地址</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/monitor.png" alt="monitor"><br></center>
+
+<h2 id="前言">前言</h2><p>最近在群里两次看到出现mon地址不对的问题，都是显示0.0.0.0:0地址，如下所示：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># ceph -s</span></span><br><span class="line">    cluster <span class="number">3137</span>d009<span class="operator">-e</span>41e-<span class="number">41</span>f0-b8f8-<span class="number">5</span>cb574502572</span><br><span class="line">     health HEALTH_ERR</span><br><span class="line">            <span class="number">1</span> mons down, quorum <span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span> lab8106,node8107,lab104</span><br><span class="line">     monmap e2: <span class="number">4</span> mons at &#123;lab104=<span class="number">192.168</span>.<span class="number">10.4</span>:<span class="number">6789</span>/<span class="number">0</span>,lab8106=<span class="number">192.168</span>.<span class="number">8.106</span>:<span class="number">6789</span>/<span class="number">0</span>,lab8107=<span class="number">0.0</span>.<span class="number">0.0</span>:<span class="number">0</span>/<span class="number">2</span>,node8107=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6789</span>/<span class="number">0</span>&#125;</span><br></pre></td></tr></table></figure></p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2017/06/06/Ceph-deploymon-with-error-address/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-centos7-update-kernel-can-not-boot" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -709,68 +769,6 @@
       
         <p class="article-more-link">
           <a  href="/2017/04/20/where-is-cephfs-data-store/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-why-rm-object-can-get" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/04/19/why-rm-object-can-get/" class="article-date">
-  	<time datetime="2017-04-19T07:12:42.000Z" itemprop="datePublished">2017-04-19</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/04/19/why-rm-object-can-get/">为什么删除的Ceph对象还能get</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/rm.jpg" alt="rm"><br></center>
-
-<h2 id="前言">前言</h2><p>在很久以前在研究一套文件系统的时候，当时发现一个比较奇怪的现象，没有文件存在，磁盘容量还在增加，在研究了一段时间后，发现这里面有一种比较奇特的处理逻辑</p>
-<p>这套文件系统在处理一个文件的时候放入的是一个临时目录，最开始在发送第一个写请求后，在操作系统层面马上进行了一个delete操作，而写还在继续，并且需要处理这个数据的进程一直占着的，一旦使用完这个文件，不需要做处理，这个文件就会自动释放掉，而无需担心临时文件占用空间的问题</p>
-<p>在Ceph集群当中，有人碰到了去后台的OSD直接rm一个对象后，在前端通过rados还能get到这个删除的对象，而不能rados ls到，我猜测就是这个原因，我们来看下怎么验证这个问题<br>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2017/04/19/why-rm-object-can-get/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>

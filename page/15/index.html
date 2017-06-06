@@ -176,6 +176,68 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-删除ceph集群mds" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/09/24/删除ceph集群mds/" class="article-date">
+  	<time datetime="2015-09-24T03:10:49.000Z" itemprop="datePublished">2015-09-24</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/09/24/删除ceph集群mds/">删除ceph集群mds</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>ceph集群新搭建以后是只有一个默认的存储池rbd的池</p>
+<h2 id="创建文件接口集群">创建文件接口集群</h2><h3 id="1-创建一个元数据池">1.创建一个元数据池</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@mytest ~]<span class="comment"># ceph osd pool create metadata  20 20</span></span><br><span class="line">pool <span class="string">'metadata'</span> created</span><br></pre></td></tr></table></figure>
+<h3 id="2-创建一个数据池">2.创建一个数据池</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@mytest ~]<span class="comment"># ceph osd pool create data   20 20</span></span><br><span class="line">pool <span class="string">'data'</span> created</span><br></pre></td></tr></table></figure>
+<h3 id="3-创建一个文件系统">3.创建一个文件系统</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@mytest ~]<span class="comment"># ceph fs new ceph  metadata data</span></span><br><span class="line">new fs with metadata pool <span class="number">4</span> and data pool <span class="number">5</span></span><br></pre></td></tr></table></figure>
+<h3 id="4-创建一个mds">4.创建一个mds</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@mytest ~]<span class="comment"># ceph-deploy mds create mytest</span></span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2015/09/24/删除ceph集群mds/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-ceph客户端服务端属性匹配关系" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -727,61 +789,6 @@
     <div class="article-info article-info-index">
       
       
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-压缩css与js" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/03/25/压缩css与js/" class="article-date">
-  	<time datetime="2015-03-25T04:52:01.000Z" itemprop="datePublished">2015-03-25</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/03/25/压缩css与js/">压缩css与js</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>使用yuicompressor 进行css和js的压缩</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="shebang">#! /bin/sh	</span></span><br><span class="line">yasuocss=<span class="string">"java -jar /root/yuicompressor-2.4.8.jar --type css  --charset utf-8"</span></span><br><span class="line">yasuojs=<span class="string">"java -jar /root/yuicompressor-2.4.8.jar --type js  --charset utf-8"</span></span><br><span class="line"><span class="comment">######################css</span></span><br><span class="line"><span class="keyword">for</span> file <span class="keyword">in</span>  ./SGMag/sites/media/css/sgmag/*.css ./SGMag/sites/media/css/*.css</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"<span class="variable">$file</span>"</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"<span class="variable">$file</span>"</span>bk</span><br><span class="line">mv <span class="variable">$file</span>  <span class="string">"<span class="variable">$file</span>"</span>bk</span><br><span class="line"><span class="variable">$yasuocss</span>  <span class="variable">$file</span><span class="string">"bk"</span> &gt;  <span class="variable">$file</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"<span class="variable">$file</span>"</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"><span class="comment">#######################js</span></span><br><span class="line"><span class="keyword">for</span> file <span class="keyword">in</span>  ./SGMag/sites/media/component/*.js ./SGMag/sites/media/*.js  ./SGMag/sites/media/pagejs/*.js  </span><br><span class="line"><span class="keyword">do</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"<span class="variable">$file</span>"</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"<span class="variable">$file</span>"</span>bk</span><br><span class="line">mv <span class="variable">$file</span>  <span class="string">"<span class="variable">$file</span>"</span>bk</span><br><span class="line"><span class="variable">$yasuojs</span>  <span class="variable">$file</span><span class="string">"bk"</span> &gt;  <span class="variable">$file</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"<span class="variable">$file</span>"</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"><span class="comment">########################报错处理</span></span><br><span class="line">cp -rf  ./SGMag/sites/media/pagejs/cluster/hosttools.jsbk  ./SGMag/sites/media/pagejs/cluster/hosttools.js</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/杂七杂八/">杂七杂八</a></li></ul>
-	</div>
-
       
 
       
