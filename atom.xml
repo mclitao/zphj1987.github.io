@@ -4,7 +4,7 @@
   <subtitle><![CDATA[但行好事，莫问前程]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2017-06-09T08:43:16.061Z</updated>
+  <updated>2017-06-09T09:04:23.697Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="http://www.zphj1987.com/2017/06/09/use-graylog-get-Ceph-status/"/>
     <id>http://www.zphj1987.com/2017/06/09/use-graylog-get-Ceph-status/</id>
     <published>2017-06-09T08:30:56.000Z</published>
-    <updated>2017-06-09T08:43:16.061Z</updated>
+    <updated>2017-06-09T09:04:23.697Z</updated>
     <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/graylog.png" alt=""><br></center>
 
 <h2 id="前言">前言</h2><p>在看集群的配置文件的时候看到ceph里面有一个graylog的输出选择，目前看到的是可以收集mon日志和clog，osd单个的日志没有看到，Elasticsearch有整套的日志收集系统，可以很方便的将所有日志汇总到一起，这个graylog的收集采用的是自有的udp协议，从配置上来说可以很快的完成，这里只做一个最基本的实践<br><a id="more"></a></p>
@@ -82,7 +82,7 @@
 <p><img src="http://static.zybuluo.com/zphj1987/haiphagvwq5fwgpe8cls2bm0/image.png" alt="image.png-199.9kB"></p>
 <p>可以看到ceph -w的输出都可以在这个里面查询了</p>
 <h3 id="配置告警">配置告警</h3><p><img src="http://static.zybuluo.com/zphj1987/niv3p6tq44rv7xif0ao62ykg/image.png" alt="image.png-128.7kB"><br>出现异常的时候<br><img src="http://static.zybuluo.com/zphj1987/cz7qz8qdi0if4ddvtb60nike/image.png" alt="image.png-62.2kB"></p>
-<h2 id="总结">总结</h2><p>这个系统通过原生的支持把日志输出到这个日志系统，未来这个原生的日志应该可以输出更多的日志信息到这套系统当中，这样相当于有了一个日志搜索系统了，当然还有很多其他的方案，从功能完整性来说Elasticsearch要比这个强大，这个目前来看配置是非常的简单</p>
+<h2 id="总结">总结</h2><p>这个系统支持原生的接口接入，未来应该可以支持更多类型的日志倒入，这样相当于很容易就部署了一个日志搜索系统了，当然还有很多其他的方案，从功能完整性来说Elasticsearch要比这个强大，这套系统目前来看配置是非常的简单，也是一个优势</p>
 <h2 id="变更记录">变更记录</h2><table>
 <thead>
 <tr>
