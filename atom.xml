@@ -4,7 +4,7 @@
   <subtitle><![CDATA[但行好事，莫问前程]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2017-06-06T09:48:16.851Z</updated>
+  <updated>2017-06-09T08:43:16.061Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -13,6 +13,103 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[使用日志系统graylog获取Ceph集群状态]]></title>
+    <link href="http://www.zphj1987.com/2017/06/09/use-graylog-get-Ceph-status/"/>
+    <id>http://www.zphj1987.com/2017/06/09/use-graylog-get-Ceph-status/</id>
+    <published>2017-06-09T08:30:56.000Z</published>
+    <updated>2017-06-09T08:43:16.061Z</updated>
+    <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/graylog.png" alt=""><br></center>
+
+<h2 id="前言">前言</h2><p>在看集群的配置文件的时候看到ceph里面有一个graylog的输出选择，目前看到的是可以收集mon日志和clog，osd单个的日志没有看到，Elasticsearch有整套的日志收集系统，可以很方便的将所有日志汇总到一起，这个graylog的收集采用的是自有的udp协议，从配置上来说可以很快的完成，这里只做一个最基本的实践<br><a id="more"></a></p>
+<h2 id="系统实践">系统实践</h2><p>graylog日志系统主要由三个组件组成的</p>
+<ul>
+<li>MongoDB – 存储配置信息和一些元数据信息的，MongoDB (&gt;= 2.4)</li>
+<li>Elasticsearch – 用来存储Graylog server收取的log messages的，Elasticsearch (&gt;= 2.x)</li>
+<li>Graylog server – 用来解析日志的并且提供内置的web的访问接口</li>
+</ul>
+<p>配置好基础源文件</p>
+<blockquote>
+<p>CentOS-Base.repo<br>epel.repo</p>
+</blockquote>
+<h3 id="安装java">安装java</h3><p>要求版本Java (&gt;= 8)<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum install java-<span class="number">1.8</span>.<span class="number">0</span>-openjdk</span><br></pre></td></tr></table></figure></p>
+<h3 id="安装MongoDB">安装MongoDB</h3><p>安装软件<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum install mongodb mongodb-server</span><br></pre></td></tr></table></figure></p>
+<p>启动服务并且加入自启动<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">systemctl restart mongod</span><br><span class="line">systemctl <span class="built_in">enable</span> mongod</span><br></pre></td></tr></table></figure></p>
+<p>安装完成检查服务启动端口<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab102 ~]<span class="comment"># netstat -tunlp|grep 27017</span></span><br><span class="line">tcp        <span class="number">0</span>      <span class="number">0</span> <span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">27017</span>         <span class="number">0.0</span>.<span class="number">0.0</span>:*               LISTEN      <span class="number">151840</span>/mongod</span><br></pre></td></tr></table></figure></p>
+<h3 id="安装Elasticsearch">安装Elasticsearch</h3><p>倒入认证文件<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rpm --import https://packages.elastic.co/GPG-KEY-elasticsearch</span><br></pre></td></tr></table></figure></p>
+<p>添加源文件<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">vim /etc/yum.repos.d/elasticsearch.repo</span><br><span class="line">添加</span><br><span class="line">[elasticsearch-<span class="number">2</span>.x]</span><br><span class="line">name=Elasticsearch repository <span class="keyword">for</span> <span class="number">2</span>.x packages</span><br><span class="line">baseurl=https://packages.elastic.co/elasticsearch/<span class="number">2</span>.x/centos</span><br><span class="line">gpgcheck=<span class="number">1</span></span><br><span class="line">gpgkey=https://packages.elastic.co/GPG-KEY-elasticsearch</span><br><span class="line">enabled=<span class="number">1</span></span><br></pre></td></tr></table></figure></p>
+<p>安装elasticsearch包<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum install elasticsearch</span><br></pre></td></tr></table></figure></p>
+<p>配置自启动<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">systemctl <span class="built_in">enable</span> elasticsearch</span><br></pre></td></tr></table></figure></p>
+<p>修改配置文件<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># vim /etc/elasticsearch/elasticsearch.yml</span></span><br><span class="line"></span><br><span class="line">cluster.name: graylog</span><br></pre></td></tr></table></figure></p>
+<p>重启服务<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">systemctl restart  elasticsearch</span><br></pre></td></tr></table></figure></p>
+<p>检查运行服务端口<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab102 ~]<span class="comment"># netstat -tunlp|grep java</span></span><br><span class="line">tcp        <span class="number">0</span>      <span class="number">0</span> <span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">9200</span>          <span class="number">0.0</span>.<span class="number">0.0</span>:*               LISTEN      <span class="number">154116</span>/java </span><br><span class="line">tcp        <span class="number">0</span>      <span class="number">0</span> <span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">9300</span>          <span class="number">0.0</span>.<span class="number">0.0</span>:*               LISTEN      <span class="number">154116</span>/java</span><br></pre></td></tr></table></figure></p>
+<p>检查elasticsearch状态<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab102 ~]<span class="comment">#  curl -X GET http://localhost:9200</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">"name"</span> : <span class="string">"Vibro"</span>,</span><br><span class="line">  <span class="string">"cluster_name"</span> : <span class="string">"graylog"</span>,</span><br><span class="line">  <span class="string">"cluster_uuid"</span> : <span class="string">"11Y2GOTmQ9ynNbTlruFcyA"</span>,</span><br><span class="line">  <span class="string">"version"</span> : &#123;</span><br><span class="line">    <span class="string">"number"</span> : <span class="string">"2.4.5"</span>,</span><br><span class="line">    <span class="string">"build_hash"</span> : <span class="string">"c849dd13904f53e63e88efc33b2ceeda0b6a1276"</span>,</span><br><span class="line">    <span class="string">"build_timestamp"</span> : <span class="string">"2017-04-24T16:18:17Z"</span>,</span><br><span class="line">    <span class="string">"build_snapshot"</span> : <span class="literal">false</span>,</span><br><span class="line">    <span class="string">"lucene_version"</span> : <span class="string">"5.5.4"</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="string">"tagline"</span> : <span class="string">"You Know, for Search"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab102 ~]<span class="comment"># curl -XGET 'http://localhost:9200/_cluster/health?pretty=true'</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">"cluster_name"</span> : <span class="string">"graylog"</span>,</span><br><span class="line">  <span class="string">"status"</span> : <span class="string">"green"</span>,</span><br></pre></td></tr></table></figure>
+<p>状态应该是green</p>
+<h3 id="安装graylog">安装graylog</h3><p>安装源<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rpm -Uvh https://packages.graylog2.org/repo/packages/graylog-<span class="number">2.2</span>-repository_latest.rpm</span><br></pre></td></tr></table></figure></p>
+<p>安装软件包<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum install graylog-server pwgen</span><br></pre></td></tr></table></figure></p>
+<p>生成password_secret<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab102 ~]<span class="comment"># pwgen -N 1 -s 96</span></span><br><span class="line">DoqTYuvQPHaNW6XGFj5jru3FH8qxMjehj7Xk9OaVxhxaLYphF871CyiCMOKuAsHsJc0DtUUkK3ioFeqYo73mkMDUN7YklqgS</span><br></pre></td></tr></table></figure></p>
+<p>在配置文件/etc/graylog/server/server.conf中password_secret填上上面的输出</p>
+<p>生成root_password_sha2（后面生成的-不需要）<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab102 ~]<span class="comment"># echo -n 123456 |shasum -a 256</span></span><br><span class="line"><span class="number">8</span>d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92  -</span><br></pre></td></tr></table></figure></p>
+<p>123456是我设置的密码<br>在配置文件/etc/graylog/server/server.conf中root_password_sha2填上上面的输出</p>
+<p>设置时区<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root_timezone = Asia/Shanghai</span><br></pre></td></tr></table></figure></p>
+<p>配置web监听端口<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rest_listen_uri = http://<span class="number">192.168</span>.<span class="number">10.2</span>:<span class="number">9000</span>/api/</span><br><span class="line">web_listen_uri = http://<span class="number">192.168</span>.<span class="number">10.2</span>:<span class="number">9000</span>/</span><br></pre></td></tr></table></figure></p>
+<p>这里注意写上你的web准备使用的那个网卡的IP地址，不要全局监听</p>
+<p>启动服务并配置自启动<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab102 ~]<span class="comment"># systemctl restart graylog-server</span></span><br><span class="line">[root@lab102 ~]<span class="comment"># systemctl enable graylog-server</span></span><br></pre></td></tr></table></figure></p>
+<p>检查服务端口<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab102 ~]<span class="comment"># netstat -tunlp|grep 9000</span></span><br><span class="line">tcp        <span class="number">0</span>      <span class="number">0</span> <span class="number">192.168</span>.<span class="number">10.2</span>:<span class="number">9000</span>       <span class="number">0.0</span>.<span class="number">0.0</span>:*               LISTEN      <span class="number">160129</span>/java</span><br></pre></td></tr></table></figure></p>
+<h3 id="使用web进行访问">使用web进行访问</h3><p>使用地址<a href="http://192.168.10.2:9000进行访问" target="_blank" rel="external">http://192.168.10.2:9000进行访问</a><br><img src="http://static.zybuluo.com/zphj1987/c07fkvdhinqn3ewzg0slxc44/image.png" alt="image.png-312kB"><br>用户名admin<br>密码123456</p>
+<p><img src="http://static.zybuluo.com/zphj1987/6nvvez8axru9djfrn4iyx4hj/image.png" alt="image.png-69.9kB"><br>进来就是引导界面，这个地方是<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">1、把日志发送到graylog</span><br><span class="line">2、对收集到的数据做点搜索</span><br><span class="line">3、创建一个图表</span><br><span class="line">4、创建告警</span><br></pre></td></tr></table></figure></p>
+<p>到这里配置graylog平台的基础工作就完成了，现在看下怎么跟ceph对接</p>
+<p><img src="http://static.zybuluo.com/zphj1987/d2rbv3q5mfwvhkrqrf0bfyvc/image.png" alt="image.png-38.6kB"></p>
+<h2 id="配置ceph的支持">配置ceph的支持</h2><p>日志从ceph里面输出是采用的GELF UDP方式的</p>
+<p>GELF is Graylog2 的json格式的数据，内部采用键值对的方式，ceoh内部传输出来的数据不光有message还有下面的</p>
+<ul>
+<li>hostname</li>
+<li>thread id</li>
+<li>priority</li>
+<li>subsystem name and id</li>
+<li>fsid</li>
+</ul>
+<p><img src="http://static.zybuluo.com/zphj1987/0p2lgnam8tq0mn9ebcturx6i/image.png" alt="image.png-68.5kB"></p>
+<p>选择GELF UDP协议 </p>
+<p><img src="http://static.zybuluo.com/zphj1987/r5yibecnxsp04vo5hw8iboj2/image.png" alt="image.png-77.1kB"></p>
+<p>选择节点，配置监听端口为12291，保存</p>
+<p>在lab102上检查端口的监听情况<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab102 ~]<span class="comment"># netstat -tunlp|grep 12201</span></span><br><span class="line">udp        <span class="number">0</span>      <span class="number">0</span> <span class="number">0.0</span>.<span class="number">0.0</span>:<span class="number">12201</span>           <span class="number">0.0</span>.<span class="number">0.0</span>:*                           <span class="number">160129</span>/java</span><br></pre></td></tr></table></figure></p>
+<p>可以看到已经监听好了</p>
+<p>修改ceph的配置文件<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#log_to_graylog = true</span></span><br><span class="line"><span class="comment">#err_to_graylog = true</span></span><br><span class="line"><span class="comment">#log_graylog_host = 192.168.10.2</span></span><br><span class="line"><span class="comment">#log_graylog_port = 12201</span></span><br><span class="line">clog_to_graylog = <span class="literal">true</span></span><br><span class="line">clog_to_graylog_host = <span class="number">192.168</span>.<span class="number">10.2</span></span><br><span class="line">clog_to_graylog_port = <span class="number">12201</span></span><br><span class="line">mon_cluster_<span class="built_in">log</span>_to_graylog = <span class="literal">true</span></span><br><span class="line">mon_cluster_<span class="built_in">log</span>_to_graylog_host = <span class="number">192.168</span>.<span class="number">10.2</span></span><br><span class="line">mon_cluster_<span class="built_in">log</span>_to_graylog_port = <span class="number">12201</span></span><br></pre></td></tr></table></figure></p>
+<p>ceph.conf当中跟graylog有关的就是这些配置文件了，配置好端口是刚刚监听的那个udp端口，然后重启ceph服务，这里我只需要mon_cluster日志和clog，这个根据自己的需要选择</p>
+<p><img src="http://static.zybuluo.com/zphj1987/haiphagvwq5fwgpe8cls2bm0/image.png" alt="image.png-199.9kB"></p>
+<p>可以看到ceph -w的输出都可以在这个里面查询了</p>
+<h3 id="配置告警">配置告警</h3><p><img src="http://static.zybuluo.com/zphj1987/niv3p6tq44rv7xif0ao62ykg/image.png" alt="image.png-128.7kB"><br>出现异常的时候<br><img src="http://static.zybuluo.com/zphj1987/cz7qz8qdi0if4ddvtb60nike/image.png" alt="image.png-62.2kB"></p>
+<h2 id="总结">总结</h2><p>这个系统通过原生的支持把日志输出到这个日志系统，未来这个原生的日志应该可以输出更多的日志信息到这套系统当中，这样相当于有了一个日志搜索系统了，当然还有很多其他的方案，从功能完整性来说Elasticsearch要比这个强大，这个目前来看配置是非常的简单</p>
+<h2 id="变更记录">变更记录</h2><table>
+<thead>
+<tr>
+<th style="text-align:center">Why</th>
+<th style="text-align:center">Who</th>
+<th style="text-align:center">When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">创建</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2017-06-09</td>
+</tr>
+</tbody>
+</table>
+]]></content>
+    <summary type="html">
+    <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/graylog.png" alt=""><br></center>
+
+<h2 id="前言">前言</h2><p>在看集群的配置文件的时候看到ceph里面有一个graylog的输出选择，目前看到的是可以收集mon日志和clog，osd单个的日志没有看到，Elasticsearch有整套的日志收集系统，可以很方便的将所有日志汇总到一起，这个graylog的收集采用的是自有的udp协议，从配置上来说可以很快的完成，这里只做一个最基本的实践<br>]]>
+    
+    </summary>
+    
+      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[Ceph部署mon出现0.0.0.0地址]]></title>
@@ -1122,74 +1219,6 @@
 
 <h2 id="前言">前言</h2><p>前一篇介绍了docker在命令行下面进行的ceph部署，本篇用docker的UI进行ceph的部署，目前来说市面上还没有一款能够比较简单就能直接在OS上面去部署Ceph的管理平台，这是因为OS的环境差异化太大，并且包的版本，以及各种软件的适配都可能造成失败，而docker比较固化环境，因此即使一个通用的UI也能很方便的部署出一个Cpeh集群</p>
 <p>本篇就是对Docker UI部署集群做一个实践，对ceph了解，对docker了解，对dokcer的UI操作进行一定的了解的情况下，再做实践会比较好，总体上还是比较简单的<br>]]>
-    
-    </summary>
-    
-      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[基于docker部署ceph以及修改docker image]]></title>
-    <link href="http://www.zphj1987.com/2017/03/15/base-on-docker-deploy-ceph/"/>
-    <id>http://www.zphj1987.com/2017/03/15/base-on-docker-deploy-ceph/</id>
-    <published>2017-03-15T04:05:35.000Z</published>
-    <updated>2017-03-16T03:42:01.873Z</updated>
-    <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/docker.png" alt="docker"><br></center>
-
-<h2 id="前言">前言</h2><p>容器和ceph的结合已经在一些生产环境当中做了尝试，容器的好处就是对运行环境的一个封装，传统的方式是集成为ISO，这个需要一定的维护量，而容器的相关操作会简单很多，也就有了一些尝试，个人觉得如果玩的转容器可以考虑，当然得懂ceph，不然两套系统在一起，问题都不知道是哪个的，就比较麻烦了</p>
-<p>本篇是基于之前我的填坑群里面的牛鹏举的一个问题，他的环境出现了创建osd的时候权限问题，我这边没遇到，现在实践了一遍，感觉应该是之前目录提前创建了的问题<br><a id="more"></a></p>
-<h2 id="实践步骤">实践步骤</h2><h3 id="安装docker">安装docker</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum install docker</span><br></pre></td></tr></table></figure>
-<h3 id="下载ceph镜像">下载ceph镜像</h3><p>这个镜像是sebastien维护的，他是redhat的ceph工程师，ceph-ansible的负责人,很多一线的资料都是来自他的分享，这个是一个集成好的镜像<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker pull ceph/daemon</span><br></pre></td></tr></table></figure></p>
-<p>准备好一些目录<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkdir -p /etc/ceph</span><br><span class="line">mkdir -p /var/lib/ceph/</span><br></pre></td></tr></table></figure></p>
-<p>注意只需要做这个两个目录，不要创建子目录，docker内部有相关的操作</p>
-<h3 id="创建一个mon">创建一个mon</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo docker run <span class="operator">-d</span> --net=host  --name=mon \</span><br><span class="line">-v /etc/ceph:/etc/ceph \</span><br><span class="line">-v /var/lib/ceph/:/var/lib/ceph \</span><br><span class="line"><span class="operator">-e</span> MON_IP=<span class="number">192.168</span>.<span class="number">8.106</span> \</span><br><span class="line"><span class="operator">-e</span> CEPH_PUBLIC_NETWORK=<span class="number">192.168</span>.<span class="number">0.0</span>/<span class="number">16</span> \</span><br><span class="line">ceph/daemon mon</span><br></pre></td></tr></table></figure>
-<p>MON_IP就是宿主机的IP地址</p>
-<p>执行完了后<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment">#  docker ps -l</span></span><br><span class="line">CONTAINER ID        IMAGE               COMMAND                CREATED              STATUS              PORTS               NAMES</span><br><span class="line"><span class="number">86</span>ed05173432        ceph/daemon         <span class="string">"/entrypoint.sh mon"</span>   About a minute ago   Up <span class="number">59</span> seconds                           mon</span><br></pre></td></tr></table></figure></p>
-<p>可以看到退出了，我们来docker logs -f mon看下日志的输出<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># docker logs -f mon</span></span><br><span class="line">/sbin/ip</span><br><span class="line">creating /etc/ceph/ceph.client.admin.keyring</span><br><span class="line">creating /etc/ceph/ceph.mon.keyring</span><br><span class="line">creating /var/lib/ceph/bootstrap-osd/ceph.keyring</span><br><span class="line">creating /var/lib/ceph/bootstrap-mds/ceph.keyring</span><br><span class="line">creating /var/lib/ceph/bootstrap-rgw/ceph.keyring</span><br><span class="line">monmaptool: monmap file /etc/ceph/monmap-ceph</span><br><span class="line">monmaptool: <span class="built_in">set</span> fsid to cb5df106-<span class="number">25</span>b3-<span class="number">4</span>f93-<span class="number">9</span>f54-baca2976a47b</span><br><span class="line">monmaptool: writing epoch <span class="number">0</span> to /etc/ceph/monmap-ceph (<span class="number">1</span> monitors)</span><br><span class="line">creating /tmp/ceph.mon.keyring</span><br><span class="line">importing contents of /etc/ceph/ceph.client.admin.keyring into /tmp/ceph.mon.keyring</span><br><span class="line">importing contents of /var/lib/ceph/bootstrap-osd/ceph.keyring into /tmp/ceph.mon.keyring</span><br><span class="line">importing contents of /var/lib/ceph/bootstrap-mds/ceph.keyring into /tmp/ceph.mon.keyring</span><br><span class="line">importing contents of /var/lib/ceph/bootstrap-rgw/ceph.keyring into /tmp/ceph.mon.keyring</span><br><span class="line">importing contents of /etc/ceph/ceph.mon.keyring into /tmp/ceph.mon.keyring</span><br><span class="line">ceph-mon: <span class="built_in">set</span> fsid to cb5df106-<span class="number">25</span>b3-<span class="number">4</span>f93-<span class="number">9</span>f54-baca2976a47b</span><br><span class="line">ceph-mon: created monfs at /var/lib/ceph/mon/ceph-lab8106 <span class="keyword">for</span> mon.lab81</span><br></pre></td></tr></table></figure></p>
-<p>提示成功了</p>
-<p>我们看下生成的文件<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># ll /etc/ceph</span></span><br><span class="line">total <span class="number">16</span></span><br><span class="line">-rw------- <span class="number">1</span> root  root  <span class="number">137</span> Mar <span class="number">14</span> <span class="number">17</span>:<span class="number">53</span> ceph.client.admin.keyring</span><br><span class="line">-rw-r--r-- <span class="number">1</span> root  root  <span class="number">285</span> Mar <span class="number">14</span> <span class="number">17</span>:<span class="number">53</span> ceph.conf</span><br><span class="line">-rw------- <span class="number">1</span> <span class="number">64045</span> <span class="number">64045</span>  <span class="number">77</span> Mar <span class="number">14</span> <span class="number">17</span>:<span class="number">53</span> ceph.mon.keyring</span><br><span class="line">-rw-r--r-- <span class="number">1</span> <span class="number">64045</span> <span class="number">64045</span> <span class="number">187</span> Mar <span class="number">14</span> <span class="number">17</span>:<span class="number">53</span> monmap-ceph</span><br></pre></td></tr></table></figure></p>
-<p>从这里可以看到内部的cpeh的用户的id是64045，所以在docker宿主机不要随便去给ceph权限，可能id不匹配，容器内部还是无法操作</p>
-<h3 id="创建一个osd">创建一个osd</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo docker run <span class="operator">-d</span> --net=host --name=myosd1 \</span><br><span class="line">--privileged=<span class="literal">true</span> \</span><br><span class="line">-v /etc/ceph:/etc/ceph \</span><br><span class="line">-v /var/lib/ceph/:/var/lib/ceph \</span><br><span class="line">-v /dev/:/dev/ \</span><br><span class="line"><span class="operator">-e</span> OSD_DEVICE=/dev/sdb \</span><br><span class="line">ceph/daemon osd_ceph_disk</span><br></pre></td></tr></table></figure>
-<p>如果查询日志<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker logs <span class="operator">-f</span> myosd1</span><br></pre></td></tr></table></figure></p>
-<p>如果执行命令<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker <span class="built_in">exec</span> -it mon ceph <span class="operator">-s</span></span><br></pre></td></tr></table></figure></p>
-<p>如果想进入容器内部<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker <span class="built_in">exec</span> -it mon  /bin/bash</span><br></pre></td></tr></table></figure></p>
-<p>修改集群的副本数<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker <span class="built_in">exec</span> -it mon  ceph osd pool <span class="built_in">set</span> rbd size <span class="number">1</span></span><br></pre></td></tr></table></figure></p>
-<p>查看集群状态<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># docker exec -it mon  ceph -s</span></span><br><span class="line">    cluster cb5df106-<span class="number">25</span>b3-<span class="number">4</span>f93-<span class="number">9</span>f54-baca2976a47b</span><br><span class="line">     health HEALTH_WARN</span><br><span class="line">            mon.lab8106 low disk space</span><br><span class="line">     monmap e2: <span class="number">1</span> mons at &#123;lab8106=<span class="number">192.168</span>.<span class="number">8.106</span>:<span class="number">6789</span>/<span class="number">0</span>&#125;</span><br><span class="line">            election epoch <span class="number">4</span>, quorum <span class="number">0</span> lab8106</span><br><span class="line">        mgr no daemons active </span><br><span class="line">     osdmap e7: <span class="number">1</span> osds: <span class="number">1</span> up, <span class="number">1</span> <span class="keyword">in</span></span><br><span class="line">            flags sortbitwise,require_jewel_osds,require_kraken_osds</span><br><span class="line">      pgmap v15: <span class="number">64</span> pgs, <span class="number">1</span> pools, <span class="number">0</span> bytes data, <span class="number">0</span> objects</span><br><span class="line">            <span class="number">34288</span> kB used, <span class="number">279</span> GB / <span class="number">279</span> GB avail</span><br><span class="line">                  <span class="number">64</span> active+clean</span><br></pre></td></tr></table></figure></p>
-<p>上面的操作都很顺利，但是某些情况可能出现异常情况，或者镜像内部本身就有问题需要自己修改，这个怎么处理</p>
-<h2 id="碰上问题想修改image">碰上问题想修改image</h2><p>我们看下我们运行的docker<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># docker ps </span></span><br><span class="line">CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS               NAMES</span><br><span class="line"><span class="number">874</span>d78ccae55        ceph/daemon         <span class="string">"/entrypoint.sh osd_c"</span>   <span class="number">14</span> hours ago        Up <span class="number">14</span> hours                             myosd1</span><br><span class="line"><span class="number">86</span>ed05173432        ceph/daemon         <span class="string">"/entrypoint.sh mon"</span>     <span class="number">15</span> hours ago        Up <span class="number">15</span> hours                             mon</span><br></pre></td></tr></table></figure></p>
-<p>COMMAND这里有个/entrypoint.sh</p>
-<p>如果存在ENTRYPOINT和CMD，那么CMD就是ENTRYPOINT的参数，如果没有ENTRYPOINT，则CMD就是默认执行指令<br>也就是容器启动的时候默认是会去执行/entrypoint.sh 这个了</p>
-<p>我们不需要他执行这个，就需要加参数了<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># docker run -i -t --entrypoint /bin/bash ceph/daemon</span></span><br></pre></td></tr></table></figure></p>
-<p>比如我上次做的一个操作，把ceph用户绑定到root的id<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@<span class="number">9</span>b269bf751f9:/<span class="comment"># cat /etc/passwd|grep ceph</span></span><br><span class="line">ceph:x:<span class="number">64045</span>:<span class="number">64045</span>:Ceph storage service:/var/lib/ceph:/bin/<span class="literal">false</span></span><br><span class="line">root@<span class="number">9</span>b269bf751f9:/<span class="comment"># sed -i 's/64045/0/g' /etc/passwd</span></span><br><span class="line">root@<span class="number">9</span>b269bf751f9:/<span class="comment"># cat /etc/passwd|grep ceph</span></span><br><span class="line">ceph:x:<span class="number">0</span>:<span class="number">0</span>:Ceph storage service:/var/lib/ceph:/bin/<span class="literal">false</span></span><br></pre></td></tr></table></figure></p>
-<p>退出容器<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@<span class="number">9</span>b269bf751f9:/<span class="comment"># exit</span></span><br></pre></td></tr></table></figure></p>
-<p>查询我们最后运行的容器，修改回entrypoint我们再把容器修改提交到基础image<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># docker ps -l</span></span><br><span class="line">CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                      PORTS               NAMES</span><br><span class="line"><span class="number">9</span>b269bf751f9        ceph/daemon         <span class="string">"/bin/bash"</span>         <span class="number">2</span> minutes ago       Exited (<span class="number">0</span>) <span class="number">15</span> seconds ago                       angry_hawking</span><br><span class="line"></span><br><span class="line">[root@lab8106 ceph]<span class="comment">#  docker commit 9b269bf751f9 ceph/daemon</span></span><br><span class="line"></span><br><span class="line">[root@lab8106 ~]<span class="comment"># docker run -i -t --entrypoint /entrypoint.sh ceph/daemon</span></span><br><span class="line">[root@lab8106 ~]<span class="comment"># docker ps -l</span></span><br><span class="line">CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                     PORTS               NAMES</span><br><span class="line">c2ea602c18ac        ceph/daemon         <span class="string">"/entrypoint.sh"</span>    <span class="number">10</span> seconds ago      Exited (<span class="number">1</span>) <span class="number">7</span> seconds ago                       ecstatic_bartik</span><br><span class="line"></span><br><span class="line">[root@lab8106 ceph]<span class="comment"># docker commit c2ea602c18ac ceph/daemon</span></span><br></pre></td></tr></table></figure></p>
-<p>再次启动容器,并且检查内容，可以看到已经修改好了<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># docker run -i -t --entrypoint /bin/bash ceph/daemon</span></span><br><span class="line">root@<span class="number">65</span>b538fdc61e:/<span class="comment"># cat /etc/passwd|grep ceph</span></span><br><span class="line">ceph:x:<span class="number">0</span>:<span class="number">0</span>:Ceph storage service:/var/lib/ceph:/bin/<span class="literal">false</span></span><br></pre></td></tr></table></figure></p>
-<p>如果需要做其他的改动，这样改下就行</p>
-<h2 id="总结">总结</h2><p>本篇主要是根据sebastien的镜像做的部署，并且给出一些常用的命令，以及如何进入固化的容器的内部进行修改，方便自己调试环境</p>
-<h2 id="相关资料">相关资料</h2><p><a href="http://www.sebastien-han.fr/blog/2015/06/23/bootstrap-your-ceph-cluster-in-docker/" target="_blank" rel="external">bootstrap-your-ceph-cluster-in-docker/</a></p>
-<h2 id="变更记录">变更记录</h2><table>
-<thead>
-<tr>
-<th style="text-align:center">Why</th>
-<th style="text-align:center">Who</th>
-<th style="text-align:center">When</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">创建</td>
-<td style="text-align:center">武汉-运维-磨渣</td>
-<td style="text-align:center">2017-03-15</td>
-</tr>
-</tbody>
-</table>
-]]></content>
-    <summary type="html">
-    <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/docker.png" alt="docker"><br></center>
-
-<h2 id="前言">前言</h2><p>容器和ceph的结合已经在一些生产环境当中做了尝试，容器的好处就是对运行环境的一个封装，传统的方式是集成为ISO，这个需要一定的维护量，而容器的相关操作会简单很多，也就有了一些尝试，个人觉得如果玩的转容器可以考虑，当然得懂ceph，不然两套系统在一起，问题都不知道是哪个的，就比较麻烦了</p>
-<p>本篇是基于之前我的填坑群里面的牛鹏举的一个问题，他的环境出现了创建osd的时候权限问题，我这边没遇到，现在实践了一遍，感觉应该是之前目录提前创建了的问题<br>]]>
     
     </summary>
     
