@@ -4,7 +4,7 @@
   <subtitle><![CDATA[但行好事，莫问前程]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2017-06-14T05:41:18.539Z</updated>
+  <updated>2017-06-25T16:11:37.681Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -13,6 +13,66 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[ceph luminous 新功能之内置dashboard]]></title>
+    <link href="http://www.zphj1987.com/2017/06/25/ceph-luminous-new-dashboard/"/>
+    <id>http://www.zphj1987.com/2017/06/25/ceph-luminous-new-dashboard/</id>
+    <published>2017-06-25T15:59:44.000Z</published>
+    <updated>2017-06-25T16:11:37.681Z</updated>
+    <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/dashboard.jpg" alt=""><br></center>
+
+<h2 id="前言">前言</h2><p>ceph luminous版本新增加了很多有意思的功能，这个也是一个长期支持版本，所以这些新功能的特性还是很值得期待的，从底层的存储改造，消息方式的改变，以及一些之前未实现的功能的完成，都让ceph变得更强，这里面有很多核心模块来自中国的开发者，在这里准备用一系列的文章对这些新功能进行一个简单的介绍，也是自己的一个学习的过程</p>
+<a id="more"></a>
+<h2 id="相关配置">相关配置</h2><h3 id="配置ceph国内源">配置ceph国内源</h3><p>修改 /etc/yum.repos.d/ceph.repo文件<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[ceph]</span><br><span class="line">name=ceph</span><br><span class="line">baseurl=http://mirrors.<span class="number">163</span>.com/ceph/rpm-luminous/el7/x86_64/</span><br><span class="line">gpgcheck=<span class="number">0</span></span><br><span class="line">[ceph-noarch]</span><br><span class="line">name=cephnoarch</span><br><span class="line">baseurl=http://mirrors.<span class="number">163</span>.com/ceph/rpm-luminous/el7/noarch/</span><br><span class="line">gpgcheck=<span class="number">0</span></span><br></pre></td></tr></table></figure></p>
+<p>添加完更新下缓存<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum makecache</span><br></pre></td></tr></table></figure></p>
+<p>前一段时间163源上的ceph没有了，可能是误操作的，现在的163源已经恢复，上面添加的是最新的luminous版本源，本篇实践的功能是在这个版本才加入的</p>
+<h3 id="安装ceph相关软件包">安装ceph相关软件包</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># yum install ceph-deploy ceph</span></span><br></pre></td></tr></table></figure>
+<p>检查版本<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ceph -v</span></span><br><span class="line">ceph version <span class="number">12.1</span>.<span class="number">0</span> (<span class="number">262617</span>c9f16c55e863693258061c5b25dea5b086) luminous (dev)</span><br></pre></td></tr></table></figure></p>
+<h3 id="搭建一个集群">搭建一个集群</h3><p>这个就不描述配置集群的步骤，这个网上很多资料，也是很基础的操作<br>这里提几个luminous重要的变化</p>
+<ul>
+<li>默认的消息处理从simple变成了async了（ms_type = async+posix）</li>
+<li>默认的后端存储从filestore变成了bluestore了</li>
+<li>ceph-s的命令的输出发生了改变(显示如下)</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># ceph -s</span></span><br><span class="line">  cluster:</span><br><span class="line">    id:     <span class="number">49</span>ee8a7f-fb7c-<span class="number">4239</span><span class="operator">-a</span>4b7-acf0bc37430d</span><br><span class="line">    health: HEALTH_OK</span><br><span class="line"> </span><br><span class="line">  services:</span><br><span class="line">    mon: <span class="number">1</span> daemons, quorum lab8106</span><br><span class="line">    mgr: lab8106(active)</span><br><span class="line">    osd: <span class="number">2</span> osds: <span class="number">2</span> up, <span class="number">2</span> <span class="keyword">in</span></span><br><span class="line"> </span><br><span class="line">  data:</span><br><span class="line">    pools:   <span class="number">1</span> pools, <span class="number">64</span> pgs</span><br><span class="line">    objects: <span class="number">0</span> objects, <span class="number">0</span> bytes</span><br><span class="line">    usage:   <span class="number">2110</span> MB used, <span class="number">556</span> GB / <span class="number">558</span> GB avail</span><br><span class="line">    pgs:     <span class="number">64</span> active+clean</span><br></pre></td></tr></table></figure>
+<h3 id="开启监控模块">开启监控模块</h3><p>在/etc/ceph/ceph.conf中添加<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[mgr]</span><br><span class="line">mgr modules = dashboard</span><br></pre></td></tr></table></figure></p>
+<p>设置dashboard的ip和端口<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph config-key put mgr/dashboard/server_addr <span class="number">192.168</span>.<span class="number">8.106</span></span><br><span class="line">ceph config-key put mgr/dashboard/server_port <span class="number">7000</span></span><br></pre></td></tr></table></figure></p>
+<p>这个从代码上看应该是可以支持配置文件方式的设置，目前还没看到具体的文档，先按这个设置即可，默认的端口是7000</p>
+<p>重启mgr服务<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># systemctl restart ceph-mgr@lab8106</span></span><br></pre></td></tr></table></figure></p>
+<p>检查端口<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># netstat -tunlp|grep 7000</span></span><br><span class="line">tcp        <span class="number">0</span>      <span class="number">0</span> <span class="number">192.168</span>.<span class="number">8.106</span>:<span class="number">7000</span>      <span class="number">0.0</span>.<span class="number">0.0</span>:*               LISTEN      <span class="number">31485</span>/ceph-mgr</span><br></pre></td></tr></table></figure></p>
+<h3 id="访问界面">访问界面</h3><p><img src="http://static.zybuluo.com/zphj1987/i7i3e911qxjqvw8pqnieyb27/image.png" alt="dashboard"><br>这个是首页的信息</p>
+<p><img src="http://static.zybuluo.com/zphj1987/a729siz4lhuhgufycx354dqx/image.png" alt="image.png-137.3kB"><br>如果配置了cephfs文件系统后，会有这个文件系统相关的监控</p>
+<p><img src="http://static.zybuluo.com/zphj1987/l5qwg9wwkhdh7rfcznl1zvjv/image.png" alt="servers"><br>这个界面是显示的主机的信息的</p>
+<h2 id="总结">总结</h2><p>从部署方便性来说，这个部署还是非常的方便的，而且走的是ceph原生接口，ceph通过增加一个mgr模块，可以把一些管理的功能独立出来，从而让mon自己做最重要的一些事情</p>
+<p>目前的监控功能还比较少，主要是监控功能，未来应该会慢慢增加更多的功能，从产品角度来看，一个原生的UI监控使得ceph整个模块更加的完整了</p>
+<p>有的时候也许 simple is the best</p>
+<h2 id="参考资料">参考资料</h2><p>/usr/lib64/ceph/mgr/dashboard/README.rst</p>
+<h2 id="变更记录">变更记录</h2><table>
+<thead>
+<tr>
+<th style="text-align:center">Why</th>
+<th style="text-align:center">Who</th>
+<th style="text-align:center">When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">创建</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2017-06-26</td>
+</tr>
+</tbody>
+</table>
+]]></content>
+    <summary type="html">
+    <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/dashboard.jpg" alt=""><br></center>
+
+<h2 id="前言">前言</h2><p>ceph luminous版本新增加了很多有意思的功能，这个也是一个长期支持版本，所以这些新功能的特性还是很值得期待的，从底层的存储改造，消息方式的改变，以及一些之前未实现的功能的完成，都让ceph变得更强，这里面有很多核心模块来自中国的开发者，在这里准备用一系列的文章对这些新功能进行一个简单的介绍，也是自己的一个学习的过程</p>]]>
+    
+    </summary>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[调整PG分多次调整和一次到位的迁移差别分析]]></title>
@@ -1164,85 +1224,6 @@
 
 <h2 id="前言">前言</h2><p>在ceph的研发群里看到一个cepher提出一个问题，编译的ceph的二进制文件过大，因为我一直用的打包好的rpm包，没有关注这个问题，重新编译了一遍发现确实有这个问题</p>
 <p>本篇就是记录如何解决这个问题的<br>]]>
-    
-    </summary>
-    
-      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[Ceph实现数据的'不拆分']]></title>
-    <link href="http://www.zphj1987.com/2017/03/22/ceph-no-distribute-all/"/>
-    <id>http://www.zphj1987.com/2017/03/22/ceph-no-distribute-all/</id>
-    <published>2017-03-22T07:49:16.000Z</published>
-    <updated>2017-04-19T07:34:02.464Z</updated>
-    <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/octopus.png" alt="oct"><br></center>
-
-<h2 id="前言">前言</h2><p>之前看过一个朋友一篇文章，讲述的是Vsan为什么使用的是两副本，而ceph则大多数情况下需要三副本，当时个人观点是这个并不是关键点，但是在仔细考虑了问题的出发点以后，这个也可以说是其中的一个点<br><a id="more"></a><br>一个集群数据丢失可以从多方面去看</p>
-<ul>
-<li>发生丢失数据的事件，这个来说，出现这个事件的概率是一致的，同等硬件情况下没有谁的系统能够说在两副本情况下把这个出现坏盘概率做的比其他系统更低</li>
-<li>发生坏盘事件以后，数据丢失波及的范围，这个就是那个朋友提出的一个观点，对于Vsan来说因为文件的不拆分，也就是在丢了的情况下，只是局部数据的丢失，而ceph的数据因为拆分到整个集群，基本上说就是全军覆没了，这一点没有什么争议</li>
-</ul>
-<p>一般来说，ceph都是配置的分布式文件系统，也就是数据以PG为组合，以对象为最小单元的形式分布到整个集群当中去，通过控制crush能够增加一定的可用概率，但是有没有办法实现真的丢盘的情况下，数据波及没有那么广，答案当然是有的，只是需要做一些更细微的控制，前端的使用的接口也需要做一定的改动，本篇将讲述这个如何去实现，以及前端可能需要的变动</p>
-<h2 id="方案实现">方案实现</h2><p>首先来一张示意图，来介绍大致的实现方式，下面再给出操作步骤</p>
-<center><br><img src="http://static.zybuluo.com/zphj1987/doeql98mri7dues48uf8hk5y/osd%E4%B8%8D%E6%8B%86%E5%88%86.png" alt="osd不拆分.png-15.7kB"><br></center>
-
-<p>主要包括三步</p>
-<ul>
-<li>横向划条带 </li>
-<li>创建对应规则 </li>
-<li>根据规则创建相关存储池</li>
-</ul>
-<h3 id="横向划条带">横向划条带</h3><p>创建虚拟根<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph osd crush add-bucket default<span class="operator">-a</span> root</span><br><span class="line">ceph osd crush add-bucket default-b root</span><br><span class="line">ceph osd crush add-bucket default-c root</span><br><span class="line">ceph osd crush add-bucket default<span class="operator">-d</span> root</span><br></pre></td></tr></table></figure></p>
-<p>创建虚拟主机<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph  osd crush add-bucket host1<span class="operator">-a</span> host</span><br><span class="line">ceph  osd crush add-bucket host2<span class="operator">-a</span> host</span><br><span class="line">ceph  osd crush add-bucket host3<span class="operator">-a</span> host</span><br><span class="line">ceph  osd crush add-bucket host1-b host</span><br><span class="line">ceph  osd crush add-bucket host2-b host</span><br><span class="line">ceph  osd crush add-bucket host3-b host</span><br><span class="line">ceph  osd crush add-bucket host1-c host</span><br><span class="line">ceph  osd crush add-bucket host2-c host</span><br><span class="line">ceph  osd crush add-bucket host3-c host</span><br><span class="line">ceph  osd crush add-bucket host1<span class="operator">-d</span> host</span><br><span class="line">ceph  osd crush add-bucket host2<span class="operator">-d</span> host</span><br><span class="line">ceph  osd crush add-bucket host3<span class="operator">-d</span> host</span><br></pre></td></tr></table></figure></p>
-<p>将虚拟主机挪到虚拟根里面<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph osd crush move host1<span class="operator">-a</span> root=default<span class="operator">-a</span></span><br><span class="line">ceph osd crush move host2<span class="operator">-a</span> root=default<span class="operator">-a</span></span><br><span class="line">ceph osd crush move host3<span class="operator">-a</span> root=default<span class="operator">-a</span></span><br><span class="line">ceph osd crush move host1-b root=default-b</span><br><span class="line">ceph osd crush move host2-b root=default-b</span><br><span class="line">ceph osd crush move host3-b root=default-b</span><br><span class="line">ceph osd crush move host1-c root=default-c</span><br><span class="line">ceph osd crush move host2-c root=default-c</span><br><span class="line">ceph osd crush move host3-c root=default-c</span><br><span class="line">ceph osd crush move host1<span class="operator">-d</span> root=default<span class="operator">-d</span></span><br><span class="line">ceph osd crush move host2<span class="operator">-d</span> root=default<span class="operator">-d</span></span><br><span class="line">ceph osd crush move host3<span class="operator">-d</span> root=default<span class="operator">-d</span></span><br></pre></td></tr></table></figure></p>
-<p>将osd塞入到指定的bucker内<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph osd  crush create-or-move  osd.<span class="number">0</span> <span class="number">1.83</span>  host=host1<span class="operator">-a</span></span><br><span class="line">ceph osd  crush create-or-move  osd.<span class="number">4</span> <span class="number">1.83</span>  host=host2<span class="operator">-a</span></span><br><span class="line">ceph osd  crush create-or-move  osd.<span class="number">8</span> <span class="number">1.83</span>  host=host3<span class="operator">-a</span></span><br><span class="line">ceph osd  crush create-or-move  osd.<span class="number">1</span> <span class="number">1.83</span>  host=host1-b</span><br><span class="line">ceph osd  crush create-or-move  osd.<span class="number">5</span> <span class="number">1.83</span>  host=host2-b</span><br><span class="line">ceph osd  crush create-or-move  osd.<span class="number">9</span> <span class="number">1.83</span>  host=host3-b</span><br><span class="line">ceph osd  crush create-or-move  osd.<span class="number">2</span> <span class="number">1.83</span>  host=host1-c</span><br><span class="line">ceph osd  crush create-or-move  osd.<span class="number">6</span> <span class="number">1.83</span>  host=host2-c</span><br><span class="line">ceph osd  crush create-or-move  osd.<span class="number">10</span> <span class="number">1.83</span>  host=host3-c</span><br><span class="line">ceph osd  crush create-or-move  osd.<span class="number">3</span> <span class="number">1.83</span>  host=host1<span class="operator">-d</span></span><br><span class="line">ceph osd  crush create-or-move  osd.<span class="number">7</span> <span class="number">1.83</span>  host=host2<span class="operator">-d</span></span><br><span class="line">ceph osd  crush create-or-move  osd.<span class="number">11</span> <span class="number">1.83</span>  host=host3<span class="operator">-d</span></span><br></pre></td></tr></table></figure></p>
-<p>以上的这么多的操作可以用比较简单的命令实现<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph osd crush <span class="built_in">set</span> osd.<span class="number">0</span> <span class="number">1.83</span>  host=host1<span class="operator">-a</span> root=default<span class="operator">-a</span></span><br><span class="line">ceph osd crush <span class="built_in">set</span> osd.<span class="number">1</span> <span class="number">1.83</span>  host=host1-b root=default-b</span><br><span class="line">ceph osd crush <span class="built_in">set</span> osd.<span class="number">2</span> <span class="number">1.83</span>  host=host1-c root=default-c</span><br><span class="line">ceph osd crush <span class="built_in">set</span> osd.<span class="number">3</span> <span class="number">1.83</span>  host=host1<span class="operator">-d</span> root=default<span class="operator">-d</span></span><br><span class="line">ceph osd crush <span class="built_in">set</span> osd.<span class="number">4</span> <span class="number">1.83</span>  host=host2<span class="operator">-a</span> root=default<span class="operator">-a</span></span><br><span class="line">ceph osd crush <span class="built_in">set</span> osd.<span class="number">5</span> <span class="number">1.83</span>  host=host2-b root=default-b</span><br><span class="line">ceph osd crush <span class="built_in">set</span> osd.<span class="number">6</span> <span class="number">1.83</span>  host=host2-c root=default-c</span><br><span class="line">ceph osd crush <span class="built_in">set</span> osd.<span class="number">7</span> <span class="number">1.83</span>  host=host2<span class="operator">-d</span> root=default<span class="operator">-d</span></span><br><span class="line">ceph osd crush <span class="built_in">set</span> osd.<span class="number">8</span> <span class="number">1.83</span>  host=host3<span class="operator">-a</span> root=default<span class="operator">-a</span></span><br><span class="line">ceph osd crush <span class="built_in">set</span> osd.<span class="number">9</span> <span class="number">1.83</span>  host=host3-b root=default-b</span><br><span class="line">ceph osd crush <span class="built_in">set</span> osd.<span class="number">10</span> <span class="number">1.83</span> host=host3-c root=default-c</span><br><span class="line">ceph osd crush <span class="built_in">set</span> osd.<span class="number">11</span> <span class="number">1.83</span> host=host3<span class="operator">-d</span> root=default<span class="operator">-d</span></span><br></pre></td></tr></table></figure></p>
-<p>查看现在的树<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@host1 ceph]<span class="comment"># ceph osd tree</span></span><br><span class="line">ID  WEIGHT  TYPE NAME        UP/DOWN REWEIGHT PRIMARY-AFFINITY </span><br><span class="line"> -<span class="number">8</span> <span class="number">5.44080</span> root default<span class="operator">-d</span>                                     </span><br><span class="line">-<span class="number">18</span> <span class="number">1.81360</span>     host host1<span class="operator">-d</span>                                   </span><br><span class="line">  <span class="number">3</span> <span class="number">1.81360</span>         osd.<span class="number">3</span>         up  <span class="number">1.00000</span>          <span class="number">1.00000</span> </span><br><span class="line">-<span class="number">19</span> <span class="number">1.81360</span>     host host2<span class="operator">-d</span>                                   </span><br><span class="line">  <span class="number">7</span> <span class="number">1.81360</span>         osd.<span class="number">7</span>         up  <span class="number">1.00000</span>          <span class="number">1.00000</span> </span><br><span class="line">-<span class="number">20</span> <span class="number">1.81360</span>     host host3<span class="operator">-d</span>                                   </span><br><span class="line"> <span class="number">11</span> <span class="number">1.81360</span>         osd.<span class="number">11</span>        up  <span class="number">1.00000</span>          <span class="number">1.00000</span> </span><br><span class="line"> -<span class="number">7</span> <span class="number">5.44080</span> root default-c                                     </span><br><span class="line">-<span class="number">15</span> <span class="number">1.81360</span>     host host1-c                                   </span><br><span class="line">  <span class="number">2</span> <span class="number">1.81360</span>         osd.<span class="number">2</span>         up  <span class="number">1.00000</span>          <span class="number">1.00000</span> </span><br><span class="line">-<span class="number">16</span> <span class="number">1.81360</span>     host host2-c                                   </span><br><span class="line">  <span class="number">6</span> <span class="number">1.81360</span>         osd.<span class="number">6</span>         up  <span class="number">1.00000</span>          <span class="number">1.00000</span> </span><br><span class="line">-<span class="number">17</span> <span class="number">1.81360</span>     host host3-c                                   </span><br><span class="line"> <span class="number">10</span> <span class="number">1.81360</span>         osd.<span class="number">10</span>        up  <span class="number">1.00000</span>          <span class="number">1.00000</span> </span><br><span class="line"> -<span class="number">6</span> <span class="number">5.44080</span> root default-b                                     </span><br><span class="line">-<span class="number">12</span> <span class="number">1.81360</span>     host host1-b                                   </span><br><span class="line">  <span class="number">1</span> <span class="number">1.81360</span>         osd.<span class="number">1</span>         up  <span class="number">1.00000</span>          <span class="number">1.00000</span> </span><br><span class="line">-<span class="number">13</span> <span class="number">1.81360</span>     host host2-b                                   </span><br><span class="line">  <span class="number">5</span> <span class="number">1.81360</span>         osd.<span class="number">5</span>         up  <span class="number">1.00000</span>          <span class="number">1.00000</span> </span><br><span class="line">-<span class="number">14</span> <span class="number">1.81360</span>     host host3-b                                   </span><br><span class="line">  <span class="number">9</span> <span class="number">1.81360</span>         osd.<span class="number">9</span>         up  <span class="number">1.00000</span>          <span class="number">1.00000</span> </span><br><span class="line"> -<span class="number">5</span> <span class="number">5.44080</span> root default<span class="operator">-a</span>                                     </span><br><span class="line"> -<span class="number">9</span> <span class="number">1.81360</span>     host host1<span class="operator">-a</span>                                   </span><br><span class="line">  <span class="number">0</span> <span class="number">1.81360</span>         osd.<span class="number">0</span>         up  <span class="number">1.00000</span>          <span class="number">1.00000</span> </span><br><span class="line">-<span class="number">10</span> <span class="number">1.81360</span>     host host2<span class="operator">-a</span>                                   </span><br><span class="line">  <span class="number">4</span> <span class="number">1.81360</span>         osd.<span class="number">4</span>         up  <span class="number">1.00000</span>          <span class="number">1.00000</span> </span><br><span class="line">-<span class="number">11</span> <span class="number">1.81360</span>     host host3<span class="operator">-a</span>                                   </span><br><span class="line">  <span class="number">8</span> <span class="number">1.81360</span>         osd.<span class="number">8</span>         up  <span class="number">1.00000</span>          <span class="number">1.00000</span> </span><br><span class="line"> -<span class="number">1</span>       <span class="number">0</span> root default                                       </span><br><span class="line"> -<span class="number">2</span>       <span class="number">0</span>     host host1                                     </span><br><span class="line"> -<span class="number">3</span>       <span class="number">0</span>     host host2                                     </span><br><span class="line"> -<span class="number">4</span>       <span class="number">0</span>     host host3</span><br></pre></td></tr></table></figure></p>
-<p>下面老的一些bucket可以清理掉<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph osd pool delete rbd rbd  --yes-i-really-really-mean-it</span><br><span class="line">ceph osd crush rule rm replicated_ruleset</span><br><span class="line">ceph osd crush remove host1</span><br><span class="line">ceph osd crush remove host2</span><br><span class="line">ceph osd crush remove host3</span><br><span class="line">ceph osd crush remove default</span><br></pre></td></tr></table></figure></p>
-<h3 id="创建对应规则">创建对应规则</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph osd crush rule create-simple rule048  default<span class="operator">-a</span> host</span><br><span class="line">ceph osd crush rule create-simple rule159  default-b host</span><br><span class="line">ceph osd crush rule create-simple rule2610  default-c host</span><br><span class="line">ceph osd crush rule create-simple rule3711  default<span class="operator">-d</span> host</span><br></pre></td></tr></table></figure>
-<p>检查下规则<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@host1 ceph]<span class="comment"># ceph osd crush rule dump|grep "rule_name\|item_name"</span></span><br><span class="line">        <span class="string">"rule_name"</span>: <span class="string">"rule048"</span>,</span><br><span class="line">                <span class="string">"item_name"</span>: <span class="string">"default-a"</span></span><br><span class="line">        <span class="string">"rule_name"</span>: <span class="string">"rule159"</span>,</span><br><span class="line">                <span class="string">"item_name"</span>: <span class="string">"default-b"</span></span><br><span class="line">        <span class="string">"rule_name"</span>: <span class="string">"rule2610"</span>,</span><br><span class="line">                <span class="string">"item_name"</span>: <span class="string">"default-c"</span></span><br><span class="line">        <span class="string">"rule_name"</span>: <span class="string">"rule3711"</span>,</span><br><span class="line">                <span class="string">"item_name"</span>: <span class="string">"default-d"</span></span><br></pre></td></tr></table></figure></p>
-<h3 id="根据规则创建相关存储池">根据规则创建相关存储池</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@host1 ceph]<span class="comment"># ceph osd pool create poola048 64 64 replicated rule048</span></span><br><span class="line">pool <span class="string">'poola048'</span> created</span><br><span class="line">[root@host1 ceph]<span class="comment"># ceph osd pool create poolb159 64 64 replicated rule159</span></span><br><span class="line">pool <span class="string">'poolb159'</span> created</span><br><span class="line">[root@host1 ceph]<span class="comment"># ceph osd pool create poolc2610 64 64 replicated rule2610</span></span><br><span class="line">pool <span class="string">'poolc2610'</span> created</span><br><span class="line">[root@host1 ceph]<span class="comment"># ceph osd pool create poold3711 64 64 replicated rule3711</span></span><br><span class="line">pool <span class="string">'poold3711'</span> created</span><br></pre></td></tr></table></figure>
-<p>检查存储池<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@host1 ceph]<span class="comment"># ceph osd dump|grep pool</span></span><br><span class="line">pool <span class="number">1</span> <span class="string">'poola048'</span> replicated size <span class="number">2</span> min_size <span class="number">1</span> crush_ruleset <span class="number">0</span> object_<span class="built_in">hash</span> rjenkins pg_num <span class="number">64</span> pgp_num <span class="number">64</span> last_change <span class="number">145</span> flags hashpspool stripe_width <span class="number">0</span></span><br><span class="line">pool <span class="number">2</span> <span class="string">'poolb159'</span> replicated size <span class="number">2</span> min_size <span class="number">1</span> crush_ruleset <span class="number">1</span> object_<span class="built_in">hash</span> rjenkins pg_num <span class="number">64</span> pgp_num <span class="number">64</span> last_change <span class="number">147</span> flags hashpspool stripe_width <span class="number">0</span></span><br><span class="line">pool <span class="number">3</span> <span class="string">'poolc2610'</span> replicated size <span class="number">2</span> min_size <span class="number">1</span> crush_ruleset <span class="number">2</span> object_<span class="built_in">hash</span> rjenkins pg_num <span class="number">64</span> pgp_num <span class="number">64</span> last_change <span class="number">149</span> flags hashpspool stripe_width <span class="number">0</span></span><br><span class="line">pool <span class="number">4</span> <span class="string">'poold3711'</span> replicated size <span class="number">2</span> min_size <span class="number">1</span> crush_ruleset <span class="number">3</span> object_<span class="built_in">hash</span> rjenkins pg_num <span class="number">64</span> pgp_num <span class="number">64</span> last_change <span class="number">151</span> flags hashpspool stripe_width <span class="number">0</span></span><br></pre></td></tr></table></figure></p>
-<p>到这里基本的环境就配置好了，采用的是副本2，但是虚拟组里面留了三个osd，这个后面会解释</p>
-<h2 id="如何使用">如何使用</h2><p>假设现在前端需要8个image用来使用了，那么我们创建的时候，就将这个8个平均分布到上面的四个存储里面去，这里是因为是划成了四个条带，在实际环境当中，可以根据需要进行划分，在选择用哪个存储的时候可以去用轮询的算法，进行轮询，也可以自定义去选择在哪个存储池创建，这个都是可以控制的</p>
-<h3 id="创建image">创建image</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rbd -p poola048 create image1 --size <span class="number">1</span>G</span><br><span class="line">rbd -p poola048 create image2 --size <span class="number">1</span>G</span><br><span class="line">rbd -p poolb159 create image3 --size <span class="number">1</span>G</span><br><span class="line">rbd -p poolb159 create image4 --size <span class="number">1</span>G</span><br><span class="line">rbd -p poolc2610 create image6 --size <span class="number">1</span>G</span><br><span class="line">rbd -p poolc2610 create image7 --size <span class="number">1</span>G</span><br><span class="line">rbd -p poold3711 create image8 --size <span class="number">1</span>G</span><br><span class="line">rbd -p poold3711 create image9 --size <span class="number">1</span>G</span><br></pre></td></tr></table></figure>
-<h3 id="如何跟virsh对接">如何跟virsh对接</h3><p>如果你熟悉virsh配置文件的话，可以看到rbd相关的配置文件是这样的<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&lt;<span class="built_in">source</span> protocol=<span class="string">'rbd'</span> name=<span class="string">'volumes/volume-f20fd994-e600-41da-a6d8-6e216044dbb1'</span>&gt;</span><br><span class="line">        &lt;host name=<span class="string">'192.168.10.4'</span> port=<span class="string">'6789'</span>/&gt;</span><br><span class="line">&lt;/<span class="built_in">source</span>&gt;</span><br></pre></td></tr></table></figure></p>
-<p>在cinder的相关配置当中虽然我们指定了volume这个存储池值是一个定值，在这个配置文件当中也就读取了这个值，那么需要改造的接口就是在创建云盘的时候，不去将cinder的存储池固定死，volumes/volume-f20fd994-e600-41da-a6d8-6e216044dbb1这样的值可以是上面的poola048/image1,也可以是poolc2610/image6,这个地方就是需要改动的地方，将整个值包含存储池的值作为一个变量，这个改动应该属于可改的</p>
-<h2 id="分析">分析</h2><p>按上面的进行处理以后，那么再出现同时坏了两个盘的情况下，数据丢失的波及范围跟Vsan已经是一致了，因为数据打散也只是在这个三个里面打散了，真的出现磁盘损坏波及的也是局部的数据了</p>
-<p>问题：<br>1、分布范围小了性能怎么样<br>比完全分布来说性能肯定降低了一些，但是如果说对于负载比较高的情况，每个盘都在跑的情况下，这个性能是一定的，底层的磁盘提供的带宽是一定的，这个跟VSAN一样的</p>
-<p>并且这个上面所示的是极端的情况下的，缩小到3个OSD一组条带，也可以自行放宽到6个一个条带，这个只是提供了一种方法，缩小了波及范围</p>
-<p>2、副本2为什么留3个osd一个条带<br>比副本数多1的话，这样在坏了一个盘也可以迁移，所以一般来说，至少比副本数多1的故障域</p>
-<p>3、如何扩容<br>扩容就增加条带即可，并且可以把老的存储池规则指定到新的磁盘的条带上面</p>
-<p>4、这个方法还可以用故障域增加可用性么<br>可以的，可以从每个故障域里面抽出OSD即可，只要保证底层的数据不重叠，实际是两个不同的需求</p>
-<h2 id="总结">总结</h2><p>本篇是提供了一种可能性，在实际运行环境当中，可以根据自己的环境进行设计，设计的方法就是，假设一个数据的全部副本都丢了的情况，允许的数据波及范围是多少，如果拆分两份就是波及二分之一，我的测试环境是分成了四个条带，也就是只影响四分之一的数据</p>
-<h2 id="变更记录">变更记录</h2><table>
-<thead>
-<tr>
-<th style="text-align:center">Why</th>
-<th style="text-align:center">Who</th>
-<th style="text-align:center">When</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">创建</td>
-<td style="text-align:center">武汉-运维-磨渣</td>
-<td style="text-align:center">2017-03-22</td>
-</tr>
-<tr>
-<td style="text-align:center">补充OSD设置crush的简单方法</td>
-<td style="text-align:center">武汉-运维-磨渣</td>
-<td style="text-align:center">2017-04-19</td>
-</tr>
-</tbody>
-</table>
-]]></content>
-    <summary type="html">
-    <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/octopus.png" alt="oct"><br></center>
-
-<h2 id="前言">前言</h2><p>之前看过一个朋友一篇文章，讲述的是Vsan为什么使用的是两副本，而ceph则大多数情况下需要三副本，当时个人观点是这个并不是关键点，但是在仔细考虑了问题的出发点以后，这个也可以说是其中的一个点<br>]]>
     
     </summary>
     
