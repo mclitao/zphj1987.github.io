@@ -176,6 +176,62 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-使用Ganglia监控系统监控集群-debian" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/03/22/使用Ganglia监控系统监控集群-debian/" class="article-date">
+  	<time datetime="2015-03-22T09:20:06.000Z" itemprop="datePublished">2015-03-22</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/03/22/使用Ganglia监控系统监控集群-debian/">使用Ganglia监控系统监控集群(debian)</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>anglia是一个集群监控软件,底层使用RRDTool获得数据。<br>Ganglia分为ganglia-monitor和gmetad两部分,前者运行在集群每个节点上(被监控机器)收集RRDTool产生的数据,后者运行在监控服务器上,收集每个ganglia-monitor的数据,通过Web UI可以看到直观的各种图表。</p>
+<p>在debian上安装Ganglia非常简单,首先安装下面三个包。因为要使用Web服务器才能看到图表,所以如果没有安装apache的话,会自动安装apache服务器。<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">&#9;apt-get installganglia-monitor  #&#36825;&#20010;&#21253;&#23433;&#35013;&#22312;&#34987;&#30417;&#25511;&#26426;&#22120;&#21363;&#21487;&#10;&#9;apt-get install ganglia-webfront gmetad  #&#36825;&#20004;&#20010;&#21253;&#23433;&#35013;&#22312;&#30417;&#25511;&#26381;&#21153;&#22120;&#65292;&#21069;&#32773;&#25552;&#20379;web&#39029;&#38754;&#65292;&#21518;&#32773;&#25910;&#38598;&#20854;&#20182;&#26426;&#22120;&#30340;&#30417;&#25511;&#25968;&#25454;&#10;```   &#10;     &#10;&#34987;&#30417;&#25511;&#23433;&#35013;&#23436;&#25104;&#20043;&#21518;&#65292;gmond&#26381;&#21153;&#20250;&#36816;&#34892;&#36215;&#26469;&#65292;&#20351;&#29992;&#19979;&#38754;&#30340;&#21629;&#20196;&#21487;&#20197;&#21551;&#21160;&#36825;&#20010;&#26381;&#21153;&#12290;&#10;```raw&#10;&#9;/etc/init.d/ganglia-monitor restart</span><br></pre></td></tr></table></figure></p>
+<p>(配置文件的路径在/etc/ganglia/gmond.conf)基本不用配置就可以启用</p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2015/03/22/使用Ganglia监控系统监控集群-debian/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-Linux下如何创建loop-device" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -667,63 +723,6 @@
       
       
 
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-关于nginx-upstream的几种配置方式" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/03/22/关于nginx-upstream的几种配置方式/" class="article-date">
-  	<time datetime="2015-03-22T07:55:56.000Z" itemprop="datePublished">2015-03-22</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/03/22/关于nginx-upstream的几种配置方式/">关于nginx upstream的几种配置方式</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>平时一直依赖硬件来作load blance,最近研究Nginx来做负载设备,记录下upstream的几种配置方式。</p>
-<p>第一种:轮询<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">upstream test&#123;&#10;    server 192.168.0.1:3000;&#10;    server 192.168.0.1:3001;&#10;&#125;</span><br></pre></td></tr></table></figure></p>
-<p>第二种:权重<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">upstream test&#123;&#10;    server 192.168.0.1 weight=2;&#10;    server 192.168.0.2 weight=3;&#10;&#125;</span><br></pre></td></tr></table></figure></p>
-<p>这种模式可解决服务器性能不等的情况下轮询比率的调配</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/03/22/关于nginx-upstream的几种配置方式/#more">more >></a>
-        </p>
       
       <div class="clearfix"></div>
     </div>

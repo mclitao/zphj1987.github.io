@@ -176,6 +176,64 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-利用脚本自动下载ftp列表中的文件" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/03/22/利用脚本自动下载ftp列表中的文件/" class="article-date">
+  	<time datetime="2015-03-22T05:09:35.000Z" itemprop="datePublished">2015-03-22</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/03/22/利用脚本自动下载ftp列表中的文件/">利用脚本自动下载ftp列表中的文件</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>我们可能会遇到这种场景，在某个机构订阅了一个邮件列表,然后这个机构会定期的发送带有ftp目录的url地址到你的邮件,现在你想在你的服务器上能够方便的下载这个列表上的文件,而不是手动的一个个去下,那么我们可以用脚本来完成这个功能,我将这个过程分为两部分,第一步获取到ftp页面的所有文件名称,第二步是通过获得的文件名来下载文件<br>下面以一个卫星数据的下载为例:</p>
+<p>ftp://oceans.gsfc.nasa.gov/subscriptions/1227</p>
+<p>这个是邮件中收到的url地址,在浏览器中可以查看到文件名,由于这个数据是0,这个是这样设计的.</p>
+<h3 id="第一步:我们只需要获取他的文件名,用下面这个脚本">第一步:我们只需要获取他的文件名,用下面这个脚本</h3><figure class="highlight"><table><tr><td class="code"><pre><span class="line">#! /bin/sh&#10;echo &#34;&#35831;&#36755;&#20837;&#20320;&#30340;FTP&#30446;&#24405;&#32534;&#21495;&#34;&#10;read -e id&#10;wget -r  ftp://oceans.gsfc.nasa.gov/subscriptions/$id&#10;ls  /usr/src/oceans.gsfc.nasa.gov/subscriptions/$id/ &#62; /usr/src/filename.txt</span><br></pre></td></tr></table></figure>
+<p>这样文件名就被下载到了/usr/src/filename.txt中了</p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2015/03/22/利用脚本自动下载ftp列表中的文件/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-linux修改网卡的mac地址" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -693,67 +751,6 @@
       
         <p class="article-more-link">
           <a  href="/2015/03/21/CTDB与LVS搭建集群/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-单独编译一个ext4模块" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/03/20/单独编译一个ext4模块/" class="article-date">
-  	<time datetime="2015-03-20T09:49:26.000Z" itemprop="datePublished">2015-03-20</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/03/20/单独编译一个ext4模块/">单独编译一个ext4模块</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>当我们需要使用一个内核模块的时候,在当前使用版本内核编译的时候又没有加进去,在不改变内核版本的时候,再编译整个内核,可能会覆盖原来的内核,导致系统无法启动</p>
-<p>现在我们能够单独选择需要的模块,然后加载进内核</p>
-<h3 id="准备工作">准备工作</h3><p>首先进入你当前使用的系统查看当前的使用内核版本,在这里是 2.3.39</p>
-<p>下载对应内核源码包 linux-2.6.39.tar.bz2 将源码包放入 /usr/src/ 下<br>解压源码包<br>更新编译工具包</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/内核/">内核</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/03/20/单独编译一个ext4模块/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>
