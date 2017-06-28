@@ -4,7 +4,7 @@
   <subtitle><![CDATA[但行好事，莫问前程]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2017-06-28T08:04:36.785Z</updated>
+  <updated>2017-06-28T08:09:36.743Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="http://www.zphj1987.com/2017/06/28/ceph-luminous-new-osd-class/"/>
     <id>http://www.zphj1987.com/2017/06/28/ceph-luminous-new-osd-class/</id>
     <published>2017-06-28T07:51:07.000Z</published>
-    <updated>2017-06-28T08:04:36.785Z</updated>
+    <updated>2017-06-28T08:09:36.743Z</updated>
     <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/ssd.png" alt=""><br></center>
 
 <h2 id="前言">前言</h2><p>本篇是luminous一个新功能介绍，关于磁盘智能分组的，这个在ceph里面叫crush class，这个我自己起名叫磁盘智能分组，因为这个实现的功能就是根据磁盘类型进行属性关联，然后进行分类，减少了很多的人为操作</p>
@@ -41,7 +41,7 @@
 <p>检查创建的rule规则：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 build]<span class="comment"># ceph   osd  crush rule  dump ssd</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="string">"rule_id"</span>: <span class="number">1</span>,</span><br><span class="line">    <span class="string">"rule_name"</span>: <span class="string">"ssd"</span>,</span><br><span class="line">    <span class="string">"ruleset"</span>: <span class="number">1</span>,</span><br><span class="line">    <span class="string">"type"</span>: <span class="number">1</span>,</span><br><span class="line">    <span class="string">"min_size"</span>: <span class="number">1</span>,</span><br><span class="line">    <span class="string">"max_size"</span>: <span class="number">10</span>,</span><br><span class="line">    <span class="string">"steps"</span>: [</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="string">"op"</span>: <span class="string">"take"</span>,</span><br><span class="line">            <span class="string">"item"</span>: -<span class="number">4</span>,</span><br><span class="line">            <span class="string">"item_name"</span>: <span class="string">"default~ssd"</span></span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="string">"op"</span>: <span class="string">"chooseleaf_firstn"</span>,</span><br><span class="line">            <span class="string">"num"</span>: <span class="number">0</span>,</span><br><span class="line">            <span class="string">"type"</span>: <span class="string">"host"</span></span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="string">"op"</span>: <span class="string">"emit"</span></span><br><span class="line">        &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <h3 id="根据rule创建存储池">根据rule创建存储池</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph  osd pool create testpool <span class="number">64</span> <span class="number">64</span> ssd</span><br><span class="line">ceph   osd dump|grep pool</span><br><span class="line">pool <span class="number">3</span> <span class="string">'testpool'</span> replicated size <span class="number">3</span> min_size <span class="number">1</span> crush_rule <span class="number">1</span> object_<span class="built_in">hash</span> rjenkins pg_num <span class="number">64</span> pgp_num <span class="number">64</span> last_change <span class="number">27</span> flags hashpspool stripe_width <span class="number">0</span></span><br></pre></td></tr></table></figure>
 <p>这里有个验证规则的小bug  代码在src/mon/MonCommands.h<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"> COMMAND(<span class="string">"osd crush rule create-simple "</span> \</span><br><span class="line"><span class="string">"name=name,type=CephString,goodchars=[A-Za-z0-9-_.] "</span> \</span><br><span class="line"><span class="string">"name=root,type=CephString,goodchars=[A-Za-z0-9-_.] "</span> \</span><br><span class="line"><span class="string">"name=type,type=CephString,goodchars=[A-Za-z0-9-_.] "</span> \</span><br></pre></td></tr></table></figure></p>
-<p>默认的goodchars不包含’~’,这里不清楚社区是准备去改创建的逻辑去掉这个特殊符号，还是去改创建rule相关的规则，我已经提交了issue，等待社区的修改方案</p>
+<p>默认的goodchars不包含’~’,这里不清楚社区是准备去改创建的逻辑去掉这个特殊符号，还是去改创建rule相关的规则，我已经提交了<a href="http://tracker.ceph.com/issues/20446" target="_blank" rel="external">issue#20446</a>，等待社区的修改方案</p>
 <h2 id="功能逻辑">功能逻辑</h2><h3 id="现在方法">现在方法</h3><p>创建一个磁盘类型的class，给磁盘标记class的统一标签，自动会根据class的类型创建一个树，根据树创建rule，根据rule创建存储池，整个操作没有动crushmap的操作</p>
 <p>增加或修改盘的时候，设置下属性即可</p>
 <h3 id="以前的方法">以前的方法</h3><p>先添加盘，手动创建树，新加的osd要找下原来的树的名称，然后把osd放到这个树里面去，然后创建规则，根据rule创建存储池</p>
