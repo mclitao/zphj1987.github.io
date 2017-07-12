@@ -231,6 +231,16 @@
 <p>真正的对象名称为：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment">#realobjectback=$objectname.$objectbackname</span></span><br></pre></td></tr></table></figure></p>
 <p>打印出所有对象名称<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># for num in `seq  0 $objectnum` ;do backname=`printf "%.8x\n" $num`;echo $objectname.$backname;done;</span></span><br><span class="line"><span class="number">1000000118</span>b.<span class="number">00000000</span></span><br><span class="line"><span class="number">1000000118</span>b.<span class="number">00000001</span></span><br><span class="line"><span class="number">1000000118</span>b.<span class="number">00000002</span></span><br><span class="line"><span class="number">1000000118</span>b.<span class="number">00000003</span></span><br><span class="line"><span class="number">1000000118</span>b.<span class="number">00000004</span></span><br><span class="line"><span class="number">1000000118</span>b.<span class="number">00000005</span></span><br><span class="line"><span class="number">1000000118</span>b.<span class="number">00000006</span></span><br><span class="line"><span class="number">1000000118</span>b.<span class="number">00000007</span></span><br><span class="line"><span class="number">1000000118</span>b.<span class="number">00000008</span></span><br></pre></td></tr></table></figure></p>
 <p>可以看到用算法进行定位的时候，整个过程都没有跟集群ceph进行查询交互，只用到了获取文件的stat的信息，所以根据算法就可以完全定位到具体的对象名称了</p>
+<h2 id="根据对象名称查找文件所在的位置">根据对象名称查找文件所在的位置</h2><p>假如一个对象名称如下：</p>
+<blockquote>
+<p>10000000010.00000003</p>
+</blockquote>
+<p>对象名称取10000000010前面加上0x,并且去掉.后面的，得到:</p>
+<blockquote>
+<p>0x10000000010</p>
+</blockquote>
+<p>计算出inode:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 mnt]<span class="comment">#printf "%d\n" 0x10000000010</span></span><br><span class="line"><span class="number">1099511627792</span></span><br></pre></td></tr></table></figure></p>
+<p>根据inode查找文件路径<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 mnt]<span class="comment"># find /mnt/  -inum 1099511627792 -printf "%i %p\n"</span></span><br><span class="line"><span class="number">1099511627792</span> /mnt/testfile</span><br></pre></td></tr></table></figure></p>
 <h2 id="总结">总结</h2><p>本篇是介绍了cephfs中文件跟后台具体对象对应的关系，这个对于系统的可恢复性上面还是有很大的作用的，在cephfs当中只要对象还在，数据就还在，哪怕所有的服务全挂掉，这个在之前的某个别人的生产环境当中已经实践过一次，当然那个是rbd的相对来说要简单一些，当然文件系统的恢复也可以用OSD重构集群的方式进行恢复，本篇的对于元数据丢失的情况下文件恢复会有一定的指导作用</p>
 <h2 id="变更记录">变更记录</h2><table>
 <thead>
@@ -245,6 +255,11 @@
 <td style="text-align:center">创建</td>
 <td style="text-align:center">武汉-运维-磨渣</td>
 <td style="text-align:center">2017-04-20</td>
+</tr>
+<tr>
+<td style="text-align:center">增加根据对象查找文件位置</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2017-07-12</td>
 </tr>
 </tbody>
 </table>

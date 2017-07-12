@@ -4,7 +4,7 @@
   <subtitle><![CDATA[但行好事，莫问前程]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2017-06-28T08:09:36.743Z</updated>
+  <updated>2017-06-28T08:50:13.483Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="http://www.zphj1987.com/2017/06/28/ceph-luminous-new-osd-class/"/>
     <id>http://www.zphj1987.com/2017/06/28/ceph-luminous-new-osd-class/</id>
     <published>2017-06-28T07:51:07.000Z</published>
-    <updated>2017-06-28T08:09:36.743Z</updated>
+    <updated>2017-06-28T08:50:13.483Z</updated>
     <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/ssd.png" alt=""><br></center>
 
 <h2 id="前言">前言</h2><p>本篇是luminous一个新功能介绍，关于磁盘智能分组的，这个在ceph里面叫crush class，这个我自己起名叫磁盘智能分组，因为这个实现的功能就是根据磁盘类型进行属性关联，然后进行分类，减少了很多的人为操作</p>
@@ -34,7 +34,7 @@
 <p>也就是一个名称，这里我认为是ssd的分组就创建名词为ssd</p>
 <p>再创建一个hdd的分组<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># ceph osd crush class create  hdd</span></span><br><span class="line">created class hdd with id <span class="number">1</span> to crush map</span><br></pre></td></tr></table></figure></p>
 <h3 id="查询分组规则">查询分组规则</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># ceph osd crush class ls</span></span><br><span class="line">[</span><br><span class="line">    <span class="string">"ssd"</span>,</span><br><span class="line">    <span class="string">"hdd"</span></span><br><span class="line">]</span><br></pre></td></tr></table></figure>
-<h3 id="把osd绑定不同的属性(属性名称就是上面的分类)">把osd绑定不同的属性(属性名称就是上面的分类)</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># ceph osd crush set-device-class osd.0  ssd</span></span><br><span class="line"><span class="built_in">set</span>-device-class item id <span class="number">0</span> name <span class="string">'osd.0'</span> device_class ssd</span><br><span class="line">[root@lab8106 ceph]<span class="comment"># ceph osd crush set-device-class osd.2  ssd</span></span><br><span class="line"><span class="built_in">set</span>-device-class item id <span class="number">2</span> name <span class="string">'osd.2'</span> device_class ssd</span><br><span class="line">[root@lab8106 ceph]<span class="comment"># ceph osd crush set-device-class osd.1  hdd</span></span><br><span class="line"><span class="built_in">set</span>-device-class item id <span class="number">1</span> name <span class="string">'osd.1'</span> device_class hdd</span><br><span class="line">[root@lab8106 ceph]<span class="comment"># ceph osd crush set-device-class osd.3  hdd</span></span><br><span class="line">Error ENOENT: osd.<span class="number">4</span> does not exist.  create it before updating the crush map</span><br></pre></td></tr></table></figure>
+<h3 id="把osd绑定不同的属性(属性名称就是上面的分类)">把osd绑定不同的属性(属性名称就是上面的分类)</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># ceph osd crush set-device-class osd.0  ssd</span></span><br><span class="line"><span class="built_in">set</span>-device-class item id <span class="number">0</span> name <span class="string">'osd.0'</span> device_class ssd</span><br><span class="line">[root@lab8106 ceph]<span class="comment"># ceph osd crush set-device-class osd.2  ssd</span></span><br><span class="line"><span class="built_in">set</span>-device-class item id <span class="number">2</span> name <span class="string">'osd.2'</span> device_class ssd</span><br><span class="line">[root@lab8106 ceph]<span class="comment"># ceph osd crush set-device-class osd.1  hdd</span></span><br><span class="line"><span class="built_in">set</span>-device-class item id <span class="number">1</span> name <span class="string">'osd.1'</span> device_class hdd</span><br><span class="line">[root@lab8106 ceph]<span class="comment"># ceph osd crush set-device-class osd.3  hdd</span></span><br><span class="line"><span class="built_in">set</span>-device-class item id <span class="number">3</span> name <span class="string">'osd.3'</span> device_class hdd</span><br></pre></td></tr></table></figure>
 <p>查询设置以后的效果<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># ceph osd tree</span></span><br><span class="line">ID WEIGHT  TYPE NAME            UP/DOWN REWEIGHT PRIMARY-AFFINITY </span><br><span class="line">-<span class="number">6</span> <span class="number">0.54559</span> root default~hdd                                       </span><br><span class="line">-<span class="number">5</span> <span class="number">0.54559</span>     host lab8106~hdd                                   </span><br><span class="line"> <span class="number">1</span> <span class="number">0.27280</span>         osd.<span class="number">1</span>             up  <span class="number">1.00000</span>          <span class="number">1.00000</span> </span><br><span class="line"> <span class="number">3</span> <span class="number">0.27280</span>         osd.<span class="number">3</span>             up  <span class="number">1.00000</span>          <span class="number">1.00000</span> </span><br><span class="line">-<span class="number">4</span> <span class="number">0.54559</span> root default~ssd                                       </span><br><span class="line">-<span class="number">3</span> <span class="number">0.54559</span>     host lab8106~ssd                                   </span><br><span class="line"> <span class="number">0</span> <span class="number">0.27280</span>         osd.<span class="number">0</span>             up  <span class="number">1.00000</span>          <span class="number">1.00000</span> </span><br><span class="line"> <span class="number">2</span> <span class="number">0.27280</span>         osd.<span class="number">2</span>             up  <span class="number">1.00000</span>          <span class="number">1.00000</span> </span><br><span class="line">-<span class="number">1</span> <span class="number">1.09119</span> root default                                           </span><br><span class="line">-<span class="number">2</span> <span class="number">1.09119</span>     host lab8106                                       </span><br><span class="line"> <span class="number">0</span> <span class="number">0.27280</span>         osd.<span class="number">0</span>             up  <span class="number">1.00000</span>          <span class="number">1.00000</span> </span><br><span class="line"> <span class="number">1</span> <span class="number">0.27280</span>         osd.<span class="number">1</span>             up  <span class="number">1.00000</span>          <span class="number">1.00000</span> </span><br><span class="line"> <span class="number">2</span> <span class="number">0.27280</span>         osd.<span class="number">2</span>             up  <span class="number">1.00000</span>          <span class="number">1.00000</span> </span><br><span class="line"> <span class="number">3</span> <span class="number">0.27280</span>         osd.<span class="number">3</span>             up  <span class="number">1.00000</span>          <span class="number">1.00000</span></span><br></pre></td></tr></table></figure></p>
 <p>这个就是这个功能比较核心的地方，会根据磁盘类型不同，自动的创建了不同的树，并且把磁盘放入到了树里面去了</p>
 <h3 id="根据根创建规则（这个地方有bug，下面会提及）">根据根创建规则（这个地方有bug，下面会提及）</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># ceph osd crush rule create-simple ssd default~ssd host firstn</span></span><br></pre></td></tr></table></figure>
@@ -47,6 +47,7 @@
 <h3 id="以前的方法">以前的方法</h3><p>先添加盘，手动创建树，新加的osd要找下原来的树的名称，然后把osd放到这个树里面去，然后创建规则，根据rule创建存储池</p>
 <p>增加盘或修改盘的时候，需要查找下，然后根据查找的规则进行相关操作</p>
 <h2 id="总结">总结</h2><p>现在方法对用户操作来说更透明，直接对磁盘进行分类打标签即可，减少了一些复杂的操作逻辑，是一个很不错的功能</p>
+<h2 id="更新">更新</h2><p>后面会在crush rule创建的时候指定一个class的选项，就可以不改规则，也不改命令了<br><a href="https://www.spinics.net/lists/ceph-devel/msg37343.html，下个版本的rc应该会解决" target="_blank" rel="external">https://www.spinics.net/lists/ceph-devel/msg37343.html，下个版本的rc应该会解决</a></p>
 <h2 id="变更记录">变更记录</h2><table>
 <thead>
 <tr>
@@ -58,6 +59,11 @@
 <tbody>
 <tr>
 <td style="text-align:center">创建</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2017-06-28</td>
+</tr>
+<tr>
+<td style="text-align:center">更新进度</td>
 <td style="text-align:center">武汉-运维-磨渣</td>
 <td style="text-align:center">2017-06-28</td>
 </tr>
@@ -873,7 +879,7 @@
     <link href="http://www.zphj1987.com/2017/04/20/where-is-cephfs-data-store/"/>
     <id>http://www.zphj1987.com/2017/04/20/where-is-cephfs-data-store/</id>
     <published>2017-04-20T02:22:17.000Z</published>
-    <updated>2017-04-20T02:35:07.836Z</updated>
+    <updated>2017-07-12T09:55:18.668Z</updated>
     <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/file.png" alt="file"><br></center>
 
 <h2 id="前言">前言</h2><p>在ceph里面使用rbd接口的时候，存储的数据在后台是以固定的prifix的对象存在的，这样就能根据相同的前缀对象去对image文件进行拼接或者修复</p>
@@ -890,6 +896,16 @@
 <p>真正的对象名称为：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment">#realobjectback=$objectname.$objectbackname</span></span><br></pre></td></tr></table></figure></p>
 <p>打印出所有对象名称<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># for num in `seq  0 $objectnum` ;do backname=`printf "%.8x\n" $num`;echo $objectname.$backname;done;</span></span><br><span class="line"><span class="number">1000000118</span>b.<span class="number">00000000</span></span><br><span class="line"><span class="number">1000000118</span>b.<span class="number">00000001</span></span><br><span class="line"><span class="number">1000000118</span>b.<span class="number">00000002</span></span><br><span class="line"><span class="number">1000000118</span>b.<span class="number">00000003</span></span><br><span class="line"><span class="number">1000000118</span>b.<span class="number">00000004</span></span><br><span class="line"><span class="number">1000000118</span>b.<span class="number">00000005</span></span><br><span class="line"><span class="number">1000000118</span>b.<span class="number">00000006</span></span><br><span class="line"><span class="number">1000000118</span>b.<span class="number">00000007</span></span><br><span class="line"><span class="number">1000000118</span>b.<span class="number">00000008</span></span><br></pre></td></tr></table></figure></p>
 <p>可以看到用算法进行定位的时候，整个过程都没有跟集群ceph进行查询交互，只用到了获取文件的stat的信息，所以根据算法就可以完全定位到具体的对象名称了</p>
+<h2 id="根据对象名称查找文件所在的位置">根据对象名称查找文件所在的位置</h2><p>假如一个对象名称如下：</p>
+<blockquote>
+<p>10000000010.00000003</p>
+</blockquote>
+<p>对象名称取10000000010前面加上0x,并且去掉.后面的，得到:</p>
+<blockquote>
+<p>0x10000000010</p>
+</blockquote>
+<p>计算出inode:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 mnt]<span class="comment">#printf "%d\n" 0x10000000010</span></span><br><span class="line"><span class="number">1099511627792</span></span><br></pre></td></tr></table></figure></p>
+<p>根据inode查找文件路径<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 mnt]<span class="comment"># find /mnt/  -inum 1099511627792 -printf "%i %p\n"</span></span><br><span class="line"><span class="number">1099511627792</span> /mnt/testfile</span><br></pre></td></tr></table></figure></p>
 <h2 id="总结">总结</h2><p>本篇是介绍了cephfs中文件跟后台具体对象对应的关系，这个对于系统的可恢复性上面还是有很大的作用的，在cephfs当中只要对象还在，数据就还在，哪怕所有的服务全挂掉，这个在之前的某个别人的生产环境当中已经实践过一次，当然那个是rbd的相对来说要简单一些，当然文件系统的恢复也可以用OSD重构集群的方式进行恢复，本篇的对于元数据丢失的情况下文件恢复会有一定的指导作用</p>
 <h2 id="变更记录">变更记录</h2><table>
 <thead>
@@ -904,6 +920,11 @@
 <td style="text-align:center">创建</td>
 <td style="text-align:center">武汉-运维-磨渣</td>
 <td style="text-align:center">2017-04-20</td>
+</tr>
+<tr>
+<td style="text-align:center">增加根据对象查找文件位置</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2017-07-12</td>
 </tr>
 </tbody>
 </table>
