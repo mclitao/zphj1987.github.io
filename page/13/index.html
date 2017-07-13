@@ -176,6 +176,64 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-内核参数比较" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/02/23/内核参数比较/" class="article-date">
+  	<time datetime="2016-02-23T05:14:19.000Z" itemprop="datePublished">2016-02-23</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/02/23/内核参数比较/">内核参数比较</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>使用sysctl -a &gt; file1.log<br>取出系统的内核参数，拷贝到同一个目录下面<br>然后用下面的脚本打印出不同的值<br>然后分析差异<br>diff只能按行比较，而这个文件有错行，所以用一个简单的办法实现<br>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2016/02/23/内核参数比较/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-nginx状态监控统计" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -738,69 +796,6 @@
       
         <p class="article-more-link">
           <a  href="/2016/01/12/删除osd的正确方式/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-ceph写osd的配置文件-etc-ceph-ceph-conf" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/01/11/ceph写osd的配置文件-etc-ceph-ceph-conf/" class="article-date">
-  	<time datetime="2016-01-11T08:38:25.000Z" itemprop="datePublished">2016-01-11</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/01/11/ceph写osd的配置文件-etc-ceph-ceph-conf/">ceph写osd的配置文件/etc/ceph/ceph.conf</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>ceph在部署过程中是先进行部署，再去写配置文件的，而一些新手在部署完了后，并没有写配置文件，在重启服务器后，因为挂载点没有挂载，所以服务无法启动，所以需要写好配置文件<br>还有一种情况是集群有几百个osd，在新加入或者修改的时候，再去进行变更配置文件就是一个很麻烦的事情，所以写配置文件这个如果脚本来处理，就可以节约很多时间，所以写了一个脚本如下，这个地方如果熟悉python的可以用python写，我这个是自己使用，并且使用的频率不会太高，因此，怎么方便怎么来</p>
-<p>脚本里面用了一个二进制文件是解析json用的，这个拷贝到运行的机器上就可以了</p>
-<p>解析的二进制文件在这里下载：<br><a href="http://stedolan.github.io/jq/">http://stedolan.github.io/jq/</a></p>
-<p>备用下载地址：<br><a href="http://pan.baidu.com/s/1pKgefmr">http://pan.baidu.com/s/1pKgefmr</a></p>
-<p>下载后拷贝到linux机器的/sbin/下面，为了方便重命名为 /sbin/jq</p>
-<p>后面的输出可以方便的修改，原理是获取当前的osd状态，然后去osd上获取信息</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2016/01/11/ceph写osd的配置文件-etc-ceph-ceph-conf/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>
