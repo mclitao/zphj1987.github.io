@@ -121,7 +121,7 @@
 				
 				<section class="switch-part switch-part3">
 				
-					<div id="js-aboutme">1987 武汉 存储行业 QQ:199383004</div>
+					<div id="js-aboutme">1987 武汉 存储行业 QQ:199383004 MAIL:zphj1987@gmail.com</div>
 				</section>
 				
 			</div>
@@ -175,6 +175,64 @@
 	</div>
 </nav>
       <div class="body-wrap">
+  
+    <article id="post-nginx配置代理缓存" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/07/14/nginx配置代理缓存/" class="article-date">
+  	<time datetime="2015-07-14T01:57:21.000Z" itemprop="datePublished">2015-07-14</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/07/14/nginx配置代理缓存/">nginx配置代理缓存</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>nginx可以实现反向代理的配置，并且可以使用缓存来加速，本文是简单的实现功能的配置，暂时没有做其他的优化的部分的配置，从网上的资料来看，很多配置都是没有讲哪些是必须配置的，我自己在配置过程中就发现没有生成缓存文件，下面来记录下配置的内容<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">upstream test&#123;&#10;            server 127.0.0.1:8080;&#10;        &#125;&#10;&#10;proxy_cache_path /var/cache/nginx/proxy_cache keys_zone=cache_zone:2000m max_size=1000m;&#10;&#10;server &#123;&#10;    listen       80;&#10;    server_name  localhost;&#10;    location / &#123;&#10;        proxy_pass http://127.0.0.1:8080;&#10;        proxy_cache cache_zone;&#10;        proxy_cache_valid  200 304 302 24h;&#10;    &#125;&#10;&#10;    error_page   500 502 503 504  /50x.html;&#10;&#10;    location = /50x.html &#123;&#10;        root   /usr/share/nginx/html;&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure></p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nginx/">nginx</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2015/07/14/nginx配置代理缓存/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
   
     <article id="post-linux服务器远程网络开机（wake-on-lan）" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -694,66 +752,6 @@
       
         <p class="article-more-link">
           <a  href="/2015/03/24/ubuntu配置简单的DNS服务器/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-mdtest测试工具" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/03/24/mdtest测试工具/" class="article-date">
-  	<time datetime="2015-03-24T05:33:52.000Z" itemprop="datePublished">2015-03-24</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/03/24/mdtest测试工具/">mdtest测试工具</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>软件介绍</p>
-<p> mdstest是软件的元数据操作基准测试工具，用来模拟对文件或者目录的open、stat、close操作，然后报告性能</p>
-<p>下载软件压缩包：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum install openmpi openmpi-devel -y</span><br><span class="line">在/root/.bashrc中添加（注意也要添加mdtest的路径）</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:/usr/lib64/openmpi/bin/</span><br><span class="line"></span><br><span class="line"><span class="built_in">source</span> /root/.bashrc</span><br><span class="line">下载</span><br><span class="line">[root@lab8105 ~]<span class="comment"># wget http://sourceforge.net/projects/mdtest/files/latest/download</span></span><br><span class="line">解压</span><br><span class="line">[root@lab8105 ~]<span class="comment"># tar -xvf mdtest-1.9.3.tgz</span></span><br><span class="line">修改makefile：</span><br><span class="line">mdtest: mdtest.c</span><br><span class="line">       mpicc -Wall -D $(OS) $(LARGE_FILE) $(MDTEST_FLAGS) -g -o mdtest mdtest.c -lm</span><br></pre></td></tr></table></figure></p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/测试工具/">测试工具</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/03/24/mdtest测试工具/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>

@@ -121,7 +121,7 @@
 				
 				<section class="switch-part switch-part3">
 				
-					<div id="js-aboutme">1987 武汉 存储行业 QQ:199383004</div>
+					<div id="js-aboutme">1987 武汉 存储行业 QQ:199383004 MAIL:zphj1987@gmail.com</div>
 				</section>
 				
 			</div>
@@ -175,6 +175,62 @@
 	</div>
 </nav>
       <div class="body-wrap">
+  
+    <article id="post-centos下多网卡做bond脚本" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/03/22/centos下多网卡做bond脚本/" class="article-date">
+  	<time datetime="2015-03-22T14:54:52.000Z" itemprop="datePublished">2015-03-22</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/03/22/centos下多网卡做bond脚本/">centos下多网卡做bond脚本</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>多网卡或者单网卡形式下的网卡bonding<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">&#9;#! /bin/sh&#10;&#9;#&#33719;&#21462;&#24403;&#21069;&#32593;&#21345;&#25968;&#10;&#9;ethnum=`lspci | grep Ethernet | wc -l`&#10;&#9;echo $ethnum&#10;&#9;#&#22914;&#26524;&#32593;&#21345;&#25968;&#23567;&#20110;&#31561;&#20110;1&#21017;&#20160;&#20040;&#37117;&#19981;&#20570;&#10;&#9;if [ $ethnum -le 1 ]&#10;&#9;        then&#10;&#9;        echo &#34;do nothing!&#34;&#10;&#9;fi&#10;&#9;#&#22914;&#26524;&#32593;&#21345;&#25968;&#22823;&#20110;&#31561;&#20110;2&#21017;&#10;&#9;if [ $ethnum -ge 2 ]&#10;&#9;        then&#10;&#10;&#60;!--more--&#62;&#10;&#9; &#10;&#9;#-------  &#28155;&#21152;&#19968;&#20010;bond0&#30340;&#32593;&#21345;&#10;&#9;    echo &#34;DEVICE=bond0&#34; &#62; /etc/sysconfig/network-scripts/ifcfg-bond0&#10;&#9;    echo &#34;ONBOOT=yes&#34; &#62;&#62; /etc/sysconfig/network-scripts/ifcfg-bond0&#10;&#9;    echo &#34;IPADDR=192.168.3.104&#34; &#62;&#62; /etc/sysconfig/network-scripts/ifcfg-bond0&#10;&#9;    echo &#34;NETMASK=255.255.0.0&#34; &#62;&#62; /etc/sysconfig/network-scripts/ifcfg-bond0&#10;&#9;    echo &#34;GATEWAY=192.168.1.1&#34; &#62;&#62; /etc/sysconfig/network-scripts/ifcfg-bond0&#10;&#9;    echo &#34;BOOTPROTO=static&#34; &#62;&#62; /etc/sysconfig/network-scripts/ifcfg-bond0&#10;&#9;    echo &#34;USERCTL=no&#34; &#62;&#62; /etc/sysconfig/network-scripts/ifcfg-bond0&#10;&#9;#--------&#10;&#9;    echo &#34;ifenslave bond0&#34; &#62;&#62; /etc/rc.local&#10;&#9;#--------&#20889;&#20854;&#20182;&#32593;&#21345;&#30340;&#37197;&#32622;&#25991;&#20214;&#10;&#9;    for i in $(seq $ethnum);&#10;&#9;    do&#10;&#9;num=`expr $i - 1`&#10;&#9;     echo &#34;BOOTPROTO=none&#34; &#62;  /etc/sysconfig/network-scripts/ifcfg-eth$num&#10;&#9;     echo &#34;DEVICE=eth$num&#34; &#62;&#62;  /etc/sysconfig/network-scripts/ifcfg-eth$num&#10;&#9;     echo &#34;ONBOOT=yes&#34; &#62;&#62;  /etc/sysconfig/network-scripts/ifcfg-eth$num&#10;&#9;     echo &#34;MASTER=bond0&#34; &#62;&#62;  /etc/sysconfig/network-scripts/ifcfg-eth$num&#10;&#9;     echo &#34;USERCTL=no&#34; &#62;&#62;  /etc/sysconfig/network-scripts/ifcfg-eth$num&#10;&#9;     echo &#34;SLAVE=yes&#34; &#62;&#62;  /etc/sysconfig/network-scripts/ifcfg-eth$num&#10;&#9;     sed -i &#39;s/ifenslave.*/&#38; eth&#39;&#34;$num&#34;&#39;/g&#39; /etc/rc.local&#10;&#9;    done;&#10;&#9;echo &#34;alias bond0 bonding&#34; &#62; /etc/modprobe.d/modprobe.conf&#10;&#9;echo &#34;options bond0 miimon=100 mode=balance-rr&#34; &#62;&#62; /etc/modprobe.d/modprobe.conf&#10;&#9;        modprobe bonding&#10;&#9;    /etc/init.d/network   restart&#10;&#9;fi</span><br></pre></td></tr></table></figure></p>
+<p>写于: 2013年08月06日<br>更新于: 2015年03月22日</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/网卡/">网卡</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
   
     <article id="post-ubuntu12-10安装sun-java-jdk" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -702,63 +758,6 @@
       
         <p class="article-more-link">
           <a  href="/2015/03/22/Ubuntu-12-10设置root用户登录图形界面/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Vmware-Tools-is-currently-being-installed-on-your-system" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/03/22/Vmware-Tools-is-currently-being-installed-on-your-system/" class="article-date">
-  	<time datetime="2015-03-22T13:47:15.000Z" itemprop="datePublished">2015-03-22</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/03/22/Vmware-Tools-is-currently-being-installed-on-your-system/">Vmware Tools is currently being installed on your system</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>问题描述:<br>使用虚拟机安装Ubuntu过程中一直停留在“PLEASE WAIT! Vmware Tools is currently<br>being installed on your system”如下图:</p>
-<p><img src="http://7xi6lo.com1.z0.glb.clouddn.com/vmware1.jpg" alt="">]</p>
-<p>软件环境<br>VMWare 8<br>Ubuntu 12.10</p>
-<p>解决方案如下</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/03/22/Vmware-Tools-is-currently-being-installed-on-your-system/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>
