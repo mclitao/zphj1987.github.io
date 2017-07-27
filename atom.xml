@@ -4,7 +4,7 @@
   <subtitle><![CDATA[但行好事，莫问前程]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2017-07-27T14:26:51.288Z</updated>
+  <updated>2017-07-27T14:30:14.699Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -19,10 +19,10 @@
     <link href="http://www.zphj1987.com/2017/07/27/RBD-fast-remove/"/>
     <id>http://www.zphj1987.com/2017/07/27/RBD-fast-remove/</id>
     <published>2017-07-27T14:20:37.000Z</published>
-    <updated>2017-07-27T14:26:51.288Z</updated>
+    <updated>2017-07-27T14:30:14.699Z</updated>
     <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/deleting.gif?imageMogr2/thumbnail/!75p" alt="delete"><br></center>
 
-<h2 id="前言">前言</h2><p>这个问题在很久以前就有一篇文章进行过讨论，<a href="http://cephnotes.ksperis.com/blog/2014/07/04/remove-big-rbd-image" target="_blank" rel="external">remove-big-rbd</a>,这个文章写的比较清楚了，并且对不同的方法做了分析，这里先把结论说下</p>
+<h2 id="前言">前言</h2><p>这个问题在很久以前就有一篇文章进行过讨论 <a href="http://cephnotes.ksperis.com/blog/2014/07/04/remove-big-rbd-image" target="_blank" rel="external">remove-big-rbd</a>,这个文章写的比较清楚了，并且对不同的方法做了分析，这里先把结论说下</p>
 <table>
 <thead>
 <tr>
@@ -62,9 +62,10 @@
 <p>删除的fastremove.sh脚本如下：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="shebang">#!/bin/bash</span><br><span class="line"></span></span><br><span class="line"><span class="comment">#####config</span></span><br><span class="line">process=<span class="number">5</span></span><br><span class="line">objectlistfile=<span class="string">"./delobject"</span></span><br><span class="line">deletepool=rbd</span><br><span class="line"><span class="comment">#####</span></span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="title">delete_fun</span></span>()</span><br><span class="line">  &#123;</span><br><span class="line">      date <span class="string">"+%Y-%m-%d %H:%M:%S"</span></span><br><span class="line">      rados -p <span class="variable">$deletepool</span> rm <span class="variable">$1</span></span><br><span class="line">	  <span class="comment">#sleep 1</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="title">concurrent</span></span>()</span><br><span class="line"> &#123;</span><br><span class="line">     start=<span class="variable">$1</span> &amp;&amp; end=<span class="variable">$2</span> &amp;&amp; cur_num=<span class="variable">$3</span></span><br><span class="line">     mkfifo   ./fifo.$$ &amp;&amp;  <span class="built_in">exec</span> <span class="number">4</span>&lt;&gt; ./fifo.$$ &amp;&amp; rm <span class="operator">-f</span> ./fifo.$$</span><br><span class="line">     <span class="keyword">for</span> ((i=<span class="variable">$start</span>; i&lt;<span class="variable">$cur_num</span>+<span class="variable">$start</span>; i++)); <span class="keyword">do</span></span><br><span class="line">         <span class="built_in">echo</span> <span class="string">"init  start delete process <span class="variable">$i</span>"</span> &gt;&amp;<span class="number">4</span></span><br><span class="line">     <span class="keyword">done</span></span><br><span class="line"></span><br><span class="line">     <span class="keyword">for</span>((i=<span class="variable">$start</span>; i&lt;=<span class="variable">$end</span>; i++)); <span class="keyword">do</span></span><br><span class="line">         <span class="built_in">read</span> -u <span class="number">4</span></span><br><span class="line">         &#123;</span><br><span class="line">             <span class="built_in">echo</span> <span class="operator">-e</span> <span class="string">"-- current delete: [:delete <span class="variable">$i</span>/<span class="variable">$objectnum</span>  <span class="variable">$REPLY</span>]"</span></span><br><span class="line">             delob=`sed -n <span class="string">"<span class="variable">$&#123;i&#125;</span>p"</span> <span class="variable">$objectlistfile</span>`</span><br><span class="line">             delete_fun <span class="variable">$delob</span></span><br><span class="line">             <span class="built_in">echo</span> <span class="string">"delete <span class="variable">$delob</span> done"</span>  <span class="number">1</span>&gt;&amp;<span class="number">4</span> <span class="comment"># write to $ff_file</span></span><br><span class="line">         &#125; &amp;</span><br><span class="line">     <span class="keyword">done</span></span><br><span class="line">     <span class="built_in">wait</span></span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line">objectnum=`cat <span class="variable">$objectlistfile</span>|wc <span class="operator">-l</span>`</span><br><span class="line">concurrent <span class="number">1</span> <span class="variable">$objectnum</span> <span class="variable">$process</span></span><br></pre></td></tr></table></figure></p>
 <p>上面直接把配置写到脚本里面了，根据需要进行修改<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#####config</span></span><br><span class="line">process=<span class="number">10</span></span><br><span class="line">objectlistfile=<span class="string">"./delobject"</span></span><br><span class="line">deletepool=rbd</span><br><span class="line"><span class="comment">#####</span></span><br></pre></td></tr></table></figure></p>
 <p>指定并发数目，指定准备删除的对象的list文件，指定对象所在的存储池</p>
-<p>然后执行即可<br>本次测试删除的性能差别<br>准备对象数据<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rbd map testrbd</span><br><span class="line">dd <span class="keyword">if</span>=/dev/zero of=/dev/rbd2 bs=<span class="number">4</span>M count=<span class="number">1200</span></span><br></pre></td></tr></table></figure></p>
+<p>然后执行即可</p>
+<h2 id="本次测试删除的性能差别">本次测试删除的性能差别</h2><p>准备对象数据<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rbd map testrbd</span><br><span class="line">dd <span class="keyword">if</span>=/dev/zero of=/dev/rbd2 bs=<span class="number">4</span>M count=<span class="number">1200</span></span><br></pre></td></tr></table></figure></p>
 <p>获取列表<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 put]<span class="comment"># rados -p rbd ls |grep rbd_data.32c0f6b8b4567 &gt; delobject</span></span><br></pre></td></tr></table></figure></p>
-<p>[root@lab8106 put]# sh fastremove.sh</p>
+<p>执行删除脚本<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 put]<span class="comment"># sh fastremove.sh</span></span><br></pre></td></tr></table></figure></p>
 <p>测试结果如下：</p>
 <table>
 <thead>
@@ -125,7 +126,7 @@
     <summary type="html">
     <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/deleting.gif?imageMogr2/thumbnail/!75p" alt="delete"><br></center>
 
-<h2 id="前言">前言</h2><p>这个问题在很久以前就有一篇文章进行过讨论，<a href="http://cephnotes.ksperis.com/blog/2014/07/04/remove-big-rbd-image">remove-big-rbd</a>,这个文章写的比较清楚了，并且对不同的方法做了分析，这里先把结论说下</p>
+<h2 id="前言">前言</h2><p>这个问题在很久以前就有一篇文章进行过讨论 <a href="http://cephnotes.ksperis.com/blog/2014/07/04/remove-big-rbd-image">remove-big-rbd</a>,这个文章写的比较清楚了，并且对不同的方法做了分析，这里先把结论说下</p>
 <table>
 <thead>
 <tr>
