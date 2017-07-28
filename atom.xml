@@ -4,7 +4,7 @@
   <subtitle><![CDATA[但行好事，莫问前程]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2017-07-28T03:38:44.557Z</updated>
+  <updated>2017-07-28T03:42:06.471Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="http://www.zphj1987.com/2017/07/27/RBD-fast-remove/"/>
     <id>http://www.zphj1987.com/2017/07/27/RBD-fast-remove/</id>
     <published>2017-07-27T14:20:37.000Z</published>
-    <updated>2017-07-28T03:38:44.557Z</updated>
+    <updated>2017-07-28T03:42:06.471Z</updated>
     <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/deleting.gif?imageMogr2/thumbnail/!75p" alt="delete"><br></center>
 
 <h2 id="前言">前言</h2><p>这个问题在很久以前就有一篇文章进行过讨论 <a href="http://cephnotes.ksperis.com/blog/2014/07/04/remove-big-rbd-image" target="_blank" rel="external">remove-big-rbd</a>,这个文章写的比较清楚了，并且对不同的方法做了分析，这里先把结论说下</p>
@@ -122,6 +122,11 @@
 <td style="text-align:center">创建</td>
 <td style="text-align:center">武汉-运维-磨渣</td>
 <td style="text-align:center">2017-07-27</td>
+</tr>
+<tr>
+<td style="text-align:center">增加前台调试信息的屏蔽</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2017-07-28</td>
 </tr>
 </tbody>
 </table>
