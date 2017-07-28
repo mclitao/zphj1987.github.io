@@ -293,6 +293,9 @@ rados -p rm方法
 <a id="more"></a>
 <p>在rbd进行删除的时候，即使内部没有对象数据，也一样需要一个个对象去发请求，即使对象不存在，这个可以开日志看到</p>
 <h2 id="实验过程">实验过程</h2><h3 id="开启日志的方法">开启日志的方法</h3><p>在/etc/ceph/ceph.conf中添加<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[client]</span><br><span class="line">debug_ms=<span class="number">1</span></span><br><span class="line"><span class="built_in">log</span>_file=/var/<span class="built_in">log</span>/ceph/rados.log</span><br></pre></td></tr></table></figure></p>
+<p>这个默认也会在执行命令的时候打印到前台，所以处理下比较好，最简单的办法就是做alias<br>添加下面内容到 /etc/bashrc<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">alias</span> ceph=<span class="string">'ceph  --debug-ms=0'</span></span><br><span class="line"><span class="built_in">alias</span> rados=<span class="string">'rados  --debug-ms=0'</span></span><br></pre></td></tr></table></figure></p>
+<p>然后命令行执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">source</span> /etc/bashrc</span><br></pre></td></tr></table></figure></p>
+<p>在做操作的时候就只会记录日志，前台不会打印调试信息了</p>
 <p>然后执行操作后，去分析每秒钟的操作数目即可,类似下面的这个，也可以用日志系统进行分析，这里不赘述<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cat  /var/<span class="built_in">log</span>/ceph/rados.log|grep delete|grep -v <span class="string">"&gt;"</span>|grep <span class="number">13</span>:<span class="number">29</span>:<span class="number">46</span>|wc <span class="operator">-l</span></span><br></pre></td></tr></table></figure></p>
 <p>原始的快速删除方法<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rados -p rbd ls | grep <span class="string">'^rbd_data.25ae86b8b4567'</span> | xargs -n <span class="number">200</span>  rados -p rbd rm</span><br></pre></td></tr></table></figure></p>
 <h2 id="开启多进程删除的方法">开启多进程删除的方法</h2><p>这个比上面那种方法好的是：</p>
