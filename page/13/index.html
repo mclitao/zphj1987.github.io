@@ -176,6 +176,186 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-ceph查询rbd的使用容量（快速）" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/03/24/ceph查询rbd的使用容量（快速）/" class="article-date">
+  	<time datetime="2016-03-24T13:42:59.000Z" itemprop="datePublished">2016-03-24</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/03/24/ceph查询rbd的使用容量（快速）/">ceph查询rbd的使用容量（快速）</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>ceph在Infernalis加入了一个功能是查询rbd的块设备的使用的大小，默认是可以查询的，但是无法快速查询，那么我们来看看这个功能是怎么开启的</p>
+<h3 id="ceph版本">ceph版本</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@lab8107:~/ceph<span class="comment"># ceph -v</span></span><br><span class="line">ceph version <span class="number">9.2</span>.<span class="number">0</span> (bb2ecea240f3a1d525bcb35670cb07bd1f0ca299)</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2016/03/24/ceph查询rbd的使用容量（快速）/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-ceph的书" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/03/12/ceph的书/" class="article-date">
+  	<time datetime="2016-03-12T15:50:34.000Z" itemprop="datePublished">2016-03-12</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/03/12/ceph的书/">ceph的书</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>以下是最新的一本ceph英文书的目录，我会学习里面的内容，并且翻译成中文的读书笔记，接触ceph也有几年了，还记得那个夏天毕业的时候辞掉了一份实施的工作，转而换了一份测试工程师的工作，然后就接触了现在非常火的ceph<br>现在在接触的越多的相关知识后，越发发现自己还需要学的东西很多，只有掌握的越多，越能对你所做的事情能后有确定的信心，所以抓住一切能成长的机会，在技术上，我是很喜欢遇到问题的，遇到的问题越多，能够学到的东西越多，所以在ceph的中国社区里面，在一段时间内，我都尽力去回答每一个我知道的问题，但是我们毕竟是一家商业的公司，自己的技术不是都能够去无私的告诉别人，所以在某些时候，还是需要有所保留的。在公司没有涉及的领域，技术方面是可以共同学习成长的，这个也能够认识一些技术圈的朋友，之前有录过几段小的视频教程，之所以停止下来，发现那个太耗时间了，并且能够之前传递的知识面比较小，在这里感谢之前支持的朋友<br>在ceph这套系统里面，在跟一些朋友有过技术的交流后，发现真的是不知者不惧，在没有深入了解运行机制的情况下，做着一些非常危险的操作，很多操作可能会直接弄崩掉集群，我们应该对未知的东西充满敬畏之心，小心小心再小心<br>在任何情况下，如果有条件允许，ceph的集群一定要部署两套，一个作为备份，这个是我一直坚持的观点，因为系统级别的故障是你永远无法预料的，副本只能解决系统内的故障，你的修复能力也只能将损失降到最低</p>
+<p>好吧那么开始下面的学习之旅了！<br>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2016/03/12/ceph的书/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-丢了ceph-mon-kerying解决办法" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/03/03/丢了ceph-mon-kerying解决办法/" class="article-date">
+  	<time datetime="2016-03-03T15:38:47.000Z" itemprop="datePublished">2016-03-03</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/03/03/丢了ceph-mon-kerying解决办法/">丢了ceph.mon.keying解决办法</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在linux操作系统下，可能因为一些很小的误操作，都会造成非常重要的文件的丢失，而文件的备份并不是每时每刻都会注意到，一般是等到文件丢失了才会去想办法，这里讲下ceph.mon.keyring丢失的解决办法</p>
+<h3 id="1、没有启用部署认证的">1、没有启用部署认证的</h3><blockquote>
+<p>auth_cluster_required =none</p>
+</blockquote>
+<p>在进行部署的时候 ceph-deploy new 以后会生成ceph.mon.keyring文件,内容如下<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[mon.]</span><br><span class="line">key = AQBnutdWAAAAABAAPmLaAd9CeKaCRj1CIrztyA==</span><br><span class="line">caps mon = allow *</span><br></pre></td></tr></table></figure></p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2016/03/03/丢了ceph-mon-kerying解决办法/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-快速增加osdmap的epoch" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -592,185 +772,6 @@
       
         <p class="article-more-link">
           <a  href="/2016/01/27/ubuntu安装软件自动交互/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-磨磨谈-ceph-users-邮件列表之Vol-1-Issue-1" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/01/25/磨磨谈-ceph-users-邮件列表之Vol-1-Issue-1/" class="article-date">
-  	<time datetime="2016-01-24T16:06:58.000Z" itemprop="datePublished">2016-01-25</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/01/25/磨磨谈-ceph-users-邮件列表之Vol-1-Issue-1/">磨磨谈 ceph-users 邮件列表之Vol-1-Issue-1(完结)</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>关于归档方式本来开始准备采用邮件列表的vol和issue的方式，但是因为issue里面是以天为单位，而里面的问题可能是重复的，这个不好进行规整了，那么在我这里，准备以Thread的方式，每个Issue里面包含5个问题，每10个issue为一个vol，进行规整，以2016年开始为起点，前后去收集，会记录问题提问者和发起问题的时间</p>
-<h2 id="前言：">前言：</h2><p>一个技术的邮件列表其实是个大宝藏，看你怎么去挖掘它了，里面有太多的灵光一现，太多的大牛的引导，而我等也只能在某些出现问题的时候，去搜索的时候，才发现这些问题是很多人遇到过的，最近看到一个技术人说的一句话深有同感,意思是说，很多时候我们花精力重复解决问题</p>
-<ul>
-<li>一流的公司在从整体上去解决一批的问题</li>
-<li>二流的公司在一次又一次解决相同的问题</li>
-</ul>
-<p>与其等待别人去整理，还不如自己去做这个事情，没有压力，没有人催促，最后自己还能有所收获，何乐而不为，这个系列我会去将邮件列表的里面的内容进行整理，提出我个人的处理办法或者方式，或者总结一下里面别人的经验，这个系列将以现在的时间线往前和往后的方式进行整理，这个会是一个很长的过程，希望尽量的获取更多的东西，文档格式尽量保持一致</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/momotan/">momotan</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2016/01/25/磨磨谈-ceph-users-邮件列表之Vol-1-Issue-1/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-关于ceph的rbd属性设置研究" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/01/20/关于ceph的rbd属性设置研究/" class="article-date">
-  	<time datetime="2016-01-20T14:57:53.000Z" itemprop="datePublished">2016-01-20</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/01/20/关于ceph的rbd属性设置研究/">关于ceph的rbd属性设置研究</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>一个rbd在存储到后台以后,在后台是对象存储的，对象</p>
-<p>[root@lab8106 rbdre]# rados -p rbd  listomapvals  rbd_directory<br>id_399a456aa808<br>value (6 bytes) :<br>0000 : 02 00 00 00 7a 70                               : ….zp</p>
-<p>name_zp<br>value (16 bytes) :<br>0000 : 0c 00 00 00 33 39 39 61 34 35 36 61 61 38 30 38 : ….399a456aa808</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-ceph单机多mon的实现" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/01/14/ceph单机多mon的实现/" class="article-date">
-  	<time datetime="2016-01-14T09:03:56.000Z" itemprop="datePublished">2016-01-14</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/01/14/ceph单机多mon的实现/">ceph单机多mon的实现</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>ceph默认情况下是以主机名来作为mon的识别的，所以这个情况下用部署工具是无法创建多个mon的，这个地方使用手动的方式可以很方便的创建多个mon</p>
-<h3 id="1、创建mon的数据存储目录">1、创建mon的数据存储目录</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkdir /var/lib/ceph/mon/ceph-<span class="number">1</span></span><br></pre></td></tr></table></figure>
-<h3 id="2、获取当前的monmap">2、获取当前的monmap</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph mon getmap -o /tmp/monmap</span><br></pre></td></tr></table></figure>
-<h3 id="3、根据当前的monmap生成mon的数据">3、根据当前的monmap生成mon的数据</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph-mon -i <span class="number">1</span>  --mkfs --monmap /tmp/monmap</span><br></pre></td></tr></table></figure>
-<h3 id="4、启动进程（后面指定端口）">4、启动进程（后面指定端口）</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph-mon -i <span class="number">1</span>  --public-addr  <span class="number">192.168</span>.<span class="number">8.106</span>:<span class="number">6791</span></span><br></pre></td></tr></table></figure>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2016/01/14/ceph单机多mon的实现/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>

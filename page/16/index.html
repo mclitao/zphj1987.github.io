@@ -176,6 +176,219 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-批量下载instagram图片" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/09/28/批量下载instagram图片/" class="article-date">
+  	<time datetime="2015-09-28T05:54:09.000Z" itemprop="datePublished">2015-09-28</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/09/28/批量下载instagram图片/">批量下载instagram图片</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="下载图片：">下载图片：</h3><p>通过下面的网址可以批量下载图片，需要翻墙</p>
+<p><a href="http://instrport.me/" target="_blank" rel="external">http://instrport.me/</a></p>
+<h3 id="处理图片到blog可用">处理图片到blog可用</h3><p>使用脚本运行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="shebang">#! /bin/sh</span></span><br><span class="line"><span class="keyword">for</span> file <span class="keyword">in</span> `ls ./ins`</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">year=`<span class="built_in">echo</span> <span class="variable">$file</span>|cut <span class="operator">-f</span> <span class="number">1</span> <span class="operator">-d</span> -`</span><br><span class="line">mouth=`<span class="built_in">echo</span> <span class="variable">$file</span>|cut <span class="operator">-f</span> <span class="number">2</span> <span class="operator">-d</span> -`</span><br><span class="line">	</span><br><span class="line"><span class="built_in">echo</span> <span class="operator">-e</span> <span class="string">"&#123;\"src\":\"https://scontent.cdninstagram.com/hphotos-xfa1/t51.2885-15/e15/<span class="variable">$file</span>\",\"text\":\"\",\"y\":<span class="variable">$year</span>,\"m\":<span class="variable">$mouth</span>&#125;,\c"</span></span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure></p>
+<p>替换instagram中的相应字段即可</p>
+<p>本地修改：themes\yilia\source\js</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/instagram/">instagram</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-删除ceph集群mds" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/09/24/删除ceph集群mds/" class="article-date">
+  	<time datetime="2015-09-24T03:10:49.000Z" itemprop="datePublished">2015-09-24</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/09/24/删除ceph集群mds/">删除ceph集群mds</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>ceph集群新搭建以后是只有一个默认的存储池rbd的池</p>
+<h2 id="创建文件接口集群">创建文件接口集群</h2><h3 id="1-创建一个元数据池">1.创建一个元数据池</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@mytest ~]<span class="comment"># ceph osd pool create metadata  20 20</span></span><br><span class="line">pool <span class="string">'metadata'</span> created</span><br></pre></td></tr></table></figure>
+<h3 id="2-创建一个数据池">2.创建一个数据池</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@mytest ~]<span class="comment"># ceph osd pool create data   20 20</span></span><br><span class="line">pool <span class="string">'data'</span> created</span><br></pre></td></tr></table></figure>
+<h3 id="3-创建一个文件系统">3.创建一个文件系统</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@mytest ~]<span class="comment"># ceph fs new ceph  metadata data</span></span><br><span class="line">new fs with metadata pool <span class="number">4</span> and data pool <span class="number">5</span></span><br></pre></td></tr></table></figure>
+<h3 id="4-创建一个mds">4.创建一个mds</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@mytest ~]<span class="comment"># ceph-deploy mds create mytest</span></span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2015/09/24/删除ceph集群mds/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-ceph客户端服务端属性匹配关系" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/09/18/ceph客户端服务端属性匹配关系/" class="article-date">
+  	<time datetime="2015-09-18T03:24:08.000Z" itemprop="datePublished">2015-09-18</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/09/18/ceph客户端服务端属性匹配关系/">ceph客户端服务端属性匹配关系</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>ceph的server是定期会发布版本，而它的客户端是放到linux 内核当中的，一些属性的支持是依赖于内核版本的，这样就存在一些问题，一些功能后端支持，而客户端旧了；还有可能是客户端用的很新的内核，而后端比较旧不支持，所以查看了下内核中的 <code>features</code> 文件，可以看到这个对应关系，总结了下就是下面的列表</p>
+<p>注意表中：</p>
+<ul>
+<li><strong>S</strong>=SUPPORTED_DEFAULT     代表客户端支持这个属性</li>
+<li><strong>R</strong>=REQUIRED_DEFAULT      代表需要服务端支持这个属性</li>
+</ul>
+<p><img src="http://7xi6lo.com1.z0.glb.clouddn.com/属性匹配的问题.png" alt=""></p>
+<p><code>missing 2040000</code> 意思是 <code>CEPH_FEATURE_CRUSH_TUNABLES (40000)</code> 和 <code>CEPH_FEATURE_CRUSH_TUNABLES2 (2000000)</code> 不被当前客户端支持，一般要么关闭新的server端的这个属性，或者升级到支持的版本的内核.</p>
+<p>内核代码查看地址：<a href="http://lxr.free-electrons.com/source/include/linux/ceph/ceph_features.h" target="_blank" rel="external">http://lxr.free-electrons.com/source/include/linux/ceph/ceph_features.h</a></p>
+<hr>
+<p>Some examples of errors that can be encountered :<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mon0 <span class="number">192.168</span>.<span class="number">0.1</span>:<span class="number">6789</span> feature <span class="built_in">set</span> mismatch, my XXXXXX &lt; server<span class="string">'s XXXXXX, missing 2040000</span></span><br></pre></td></tr></table></figure></p>
+<p>—&gt; Upgrade kernel client up to 3.9 or set tunables to legacy : ceph osd crush tunables legacy<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mon0 <span class="number">192.168</span>.<span class="number">0.1</span>:<span class="number">6789</span> feature <span class="built_in">set</span> mismatch, my XXXXXX &lt; server<span class="string">'s XXXXXX, missing 40000000</span></span><br></pre></td></tr></table></figure></p>
+<p>—&gt; Upgrade kernel client up to 3.9 or unset hashpspool : ceph osd pool set rbd hashpspool false<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mon0 <span class="number">192.168</span>.<span class="number">0.1</span>:<span class="number">6789</span> feature <span class="built_in">set</span> mismatch, my XXXXXX &lt; server<span class="string">'s XXXXXX, missing 800000000</span></span><br></pre></td></tr></table></figure></p>
+<p>—&gt; Remove cache pool and reload monitors or upgrade kernel client up to 3.14<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mon0 <span class="number">192.168</span>.<span class="number">0.1</span>:<span class="number">6789</span> feature <span class="built_in">set</span> mismatch, my XXXXXX &lt; server<span class="string">'s XXXXXX, missing 1000000000</span></span><br></pre></td></tr></table></figure></p>
+<p>—&gt; Upgrade kernel client up to 3.14<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mon0 <span class="number">192.168</span>.<span class="number">0.1</span>:<span class="number">6789</span> feature <span class="built_in">set</span> mismatch, my <span class="number">4</span>a042a42 &lt; server<span class="string">'s 2004a042a42, missing 20000000000</span></span><br></pre></td></tr></table></figure></p>
+<p>—&gt; Upgrade kernel client up to 3.15 or disable tunable 3 features</p>
+<h2 id="变更记录">变更记录</h2><table>
+<thead>
+<tr>
+<th style="text-align:center">Why</th>
+<th style="text-align:center">Who</th>
+<th style="text-align:center">When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">创建</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2015-09-18</td>
+</tr>
+<tr>
+<td style="text-align:center">增加解决方案</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2017-01-12</td>
+</tr>
+</tbody>
+</table>
+<p>参考文档：<a href="http://cephnotes.ksperis.com/blog/2014/01/21/feature-set-mismatch-error-on-ceph-kernel-client/" target="_blank" rel="external">http://cephnotes.ksperis.com/blog/2014/01/21/feature-set-mismatch-error-on-ceph-kernel-client/</a></p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-nginx配置代理缓存" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -575,184 +788,6 @@
 
       
 
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-history命令的优化" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/03/31/history命令的优化/" class="article-date">
-  	<time datetime="2015-03-31T08:53:28.000Z" itemprop="datePublished">2015-03-31</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/03/31/history命令的优化/">history命令的优化</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>现在在项目中遇到这个情况比较多，在执行了一系列的命令后，想去翻历史记录的时候，翻不到历史记录，不同终端的命令，没有汇总，也不清楚那条命令是什么时候执行的，所以需要对默认的命令进行下面两个优化：</p>
-<ul>
-<li>让历史记录里面带有时间</li>
-<li>让所有终端命令都记录到history当中去</li>
-</ul>
-<h3 id="添加日期">添加日期</h3><p>在 /etc/bashrc 末尾添加：<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">HISTTIMEFORMAT=&#34;%F %T &#34;&#10;export HISTTIMEFORMAT</span><br></pre></td></tr></table></figure></p>
-<p>然后执行:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">source</span> /etc/bashrc</span><br></pre></td></tr></table></figure></p>
-<p>新开终端，history就已经带有日期</p>
-<h3 id="汇总命令，并且不同的终端可以通过上翻查询到命令">汇总命令，并且不同的终端可以通过上翻查询到命令</h3><p>在 /etc/bashrc 末尾添加：<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line"># Avoid duplicates&#10;export HISTCONTROL=ignoredups:erasedups&#10;# When the shell exits, append to the history file instead of overwriting it&#10;shopt -s histappend&#10;&#10;# After each command, append to the history file and reread it&#10;export PROMPT_COMMAND=&#34;$&#123;PROMPT_COMMAND:+$PROMPT_COMMAND$&#39;\n&#39;&#125;history -a; history -c; history -r&#34;</span><br></pre></td></tr></table></figure></p>
-<p>然后执行:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">source</span> /etc/bashrc</span><br></pre></td></tr></table></figure></p>
-<h3 id="调整大小，增加到10000条">调整大小，增加到10000条</h3><p>在 /etc/bashrc 末尾添加：<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">export HISTSIZE=10000</span><br></pre></td></tr></table></figure></p>
-<p>然后执行:<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">source /etc/bashrc</span><br></pre></td></tr></table></figure></p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-压缩css与js" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/03/25/压缩css与js/" class="article-date">
-  	<time datetime="2015-03-25T04:52:01.000Z" itemprop="datePublished">2015-03-25</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/03/25/压缩css与js/">压缩css与js</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>使用yuicompressor 进行css和js的压缩</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="shebang">#! /bin/sh	</span></span><br><span class="line">yasuocss=<span class="string">"java -jar /root/yuicompressor-2.4.8.jar --type css  --charset utf-8"</span></span><br><span class="line">yasuojs=<span class="string">"java -jar /root/yuicompressor-2.4.8.jar --type js  --charset utf-8"</span></span><br><span class="line"><span class="comment">######################css</span></span><br><span class="line"><span class="keyword">for</span> file <span class="keyword">in</span>  ./SGMag/sites/media/css/sgmag/*.css ./SGMag/sites/media/css/*.css</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"<span class="variable">$file</span>"</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"<span class="variable">$file</span>"</span>bk</span><br><span class="line">mv <span class="variable">$file</span>  <span class="string">"<span class="variable">$file</span>"</span>bk</span><br><span class="line"><span class="variable">$yasuocss</span>  <span class="variable">$file</span><span class="string">"bk"</span> &gt;  <span class="variable">$file</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"<span class="variable">$file</span>"</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"><span class="comment">#######################js</span></span><br><span class="line"><span class="keyword">for</span> file <span class="keyword">in</span>  ./SGMag/sites/media/component/*.js ./SGMag/sites/media/*.js  ./SGMag/sites/media/pagejs/*.js  </span><br><span class="line"><span class="keyword">do</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"<span class="variable">$file</span>"</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"<span class="variable">$file</span>"</span>bk</span><br><span class="line">mv <span class="variable">$file</span>  <span class="string">"<span class="variable">$file</span>"</span>bk</span><br><span class="line"><span class="variable">$yasuojs</span>  <span class="variable">$file</span><span class="string">"bk"</span> &gt;  <span class="variable">$file</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"<span class="variable">$file</span>"</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"><span class="comment">########################报错处理</span></span><br><span class="line">cp -rf  ./SGMag/sites/media/pagejs/cluster/hosttools.jsbk  ./SGMag/sites/media/pagejs/cluster/hosttools.js</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/杂七杂八/">杂七杂八</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-ubuntu配置简单的DNS服务器" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/03/24/ubuntu配置简单的DNS服务器/" class="article-date">
-  	<time datetime="2015-03-24T05:39:44.000Z" itemprop="datePublished">2015-03-24</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/03/24/ubuntu配置简单的DNS服务器/">ubuntu配置简单的DNS服务器</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>之所以说是简单的服务器，实现的功能很简单，通过这个dns server 查询制定域名的时候，能够根据设置的值来返回IP，当前的需求是需要轮询的返回IP</p>
-<p>DNS 轮询机制会受到多方面的影响，如：A记录的TTL时间长短的影响；别的 DNS 服务器 Cache 的影响；windows 客户端也有一个DNS Cache。这些都会影响 DNS 轮询的效果。</p>
-<p>下面的配置就是实现解析test.zp.com到不同的IP地址</p>
-<h3 id="安装dns_server软件包">安装dns server软件包</h3><p>ubuntu下是通过安装bind9软件包来配置dns-server的<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab5106 ~]<span class="comment"># apt-get install bind9</span></span><br></pre></td></tr></table></figure></p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ubuntu/">ubuntu</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/03/24/ubuntu配置简单的DNS服务器/#more">more >></a>
-        </p>
       
       <div class="clearfix"></div>
     </div>

@@ -176,6 +176,178 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-更新租约和检测数据完整性脚本" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/03/22/更新租约和检测数据完整性脚本/" class="article-date">
+  	<time datetime="2015-03-22T07:37:55.000Z" itemprop="datePublished">2015-03-22</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/03/22/更新租约和检测数据完整性脚本/">更新租约和检测数据完整性脚本</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>这个是针对tahoe这个文件系统做的一个更新租约和检查数据完整性的脚本,并且把结果保存下来,先要把所有的caps保存到一个文本当中<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">#! /bin/sh&#10;   a=$(cat /home/cap-list.txt |wc -l)&#10;   c=`date`&#10;   echo $a&#10;   for((i=1;i&#60;=a;i++))&#10;   do&#10;       b=$( head -$i /home/cap-list.txt |tail -1)&#10;       echo $b &#62;&#62; /home/checktime.txt&#10;       echo &#34;start time:&#34; &#62;&#62; /home/checktime.txt&#10;       echo `date` &#62;&#62; /home/checktime.txt&#10;       tahoe deep-check --add-lease --repair --dir-cap=$b &#62;&#62; /home/checktime.txt&#10;       echo &#34;end time:&#34; &#62;&#62; /home/checktime.txt&#10;       echo `date` &#62;&#62; /home/checktime.txt&#10;   done&#10;   d=`date`&#10;   echo $c &#62;&#62; /home/checktime.txt&#10;   echo $d &#62;&#62; /home/checktime.txt</span><br></pre></td></tr></table></figure></p>
+<p>写于: 2012年4月14日<br>更新于: 2015年03月22日</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/脚本/">脚本</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-卸载python安装的软件" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/03/22/卸载python安装的软件/" class="article-date">
+  	<time datetime="2015-03-22T07:26:12.000Z" itemprop="datePublished">2015-03-22</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/03/22/卸载python安装的软件/">卸载python安装的软件</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>python源码安装的软件是无法通过命令卸载的,这个可以通过记录安装过程的形式来卸载安装的软件</p>
+<p>以 python2.7.2 为例,在这个目录中有一个 setup.py 的文件,很显然这是安装程序,还是python写的,用 python 写 python 到安装程序,大开眼界了。在这里,需要写一个 shell 脚本,把在重新安装中提到的安装位置全部删除,就实现了卸载到目的了</p>
+<h3 id="一、创建del-sh脚本内容(在源码目录):">一、创建del.sh脚本内容(在源码目录):</h3><figure class="highlight"><table><tr><td class="code"><pre><span class="line">#!/bin/bash  &#10;for i in $(less files.txt)  &#10;do  rm -rf $i  &#10;done</span><br></pre></td></tr></table></figure>
+<p>脚本说明: files.txt 是需要事先在目录下创建的文件,目的是记录安装过程中提到到路径。脚本很简单,详细的就不说了,学过 shell 编程到肯定没问题,没学过到有其他语言编程基础的,仔细看看也可以看懂。</p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2015/03/22/卸载python安装的软件/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-常用linux源列表" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/03/22/常用linux源列表/" class="article-date">
+  	<time datetime="2015-03-22T07:16:16.000Z" itemprop="datePublished">2015-03-22</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/03/22/常用linux源列表/">常用linux源列表</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>centos6 源:</p>
+<p>epel源:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget  http://mirrors.aliyun.com/epel/<span class="number">6</span>/x86_64/epel-release-<span class="number">6</span>-<span class="number">8</span>.noarch.rpm</span><br></pre></td></tr></table></figure></p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2015/03/22/常用linux源列表/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-监控磁盘读写状况" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -563,179 +735,6 @@
       
       
 
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-symbol-lookup-error-usr-lib-x86-64-linux-gnu-libstdc-so-6错误的解决办法" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/03/22/symbol-lookup-error-usr-lib-x86-64-linux-gnu-libstdc-so-6错误的解决办法/" class="article-date">
-  	<time datetime="2015-03-22T04:46:35.000Z" itemprop="datePublished">2015-03-22</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/03/22/symbol-lookup-error-usr-lib-x86-64-linux-gnu-libstdc-so-6错误的解决办法/">symbol lookup error: /usr/lib/x86_64-linux-gnu/libstdc++.so.6错误的解决办法</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>当出现<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ apt-get: symbol lookup error: /usr/lib/x86_64-linux-gnu/libstdc++.so.<span class="number">6</span>: undefined symbol: _ZNSt8messagesIcE2idE, version GLIBCXX_3.<span class="number">4</span>的时候</span><br></pre></td></tr></table></figure></p>
-<p>需要重新配置下一个包</p>
-<p>Fixed by manually downloading testing version of libc6 from here<br><a href="http://packages.debian.org/wheezy/libc6" target="_blank" rel="external">http://packages.debian.org/wheezy/libc6</a> and installed it</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ dpkg -i --auto-deconfigure libc6_2.<span class="number">13</span>-<span class="number">16</span>_amd64.deb</span><br></pre></td></tr></table></figure>
-<p>重新配置下libc6_2.13-16_amd64.deb就可以了</p>
-<pre><code class="bash">strings /usr/lib/libstdc++.so.<span class="number">6</span>| grep GLIBC
-</code></pre>
-<p>查看版本,然后安装 libstdc++6 即可</p>
-<p>写于: 2011年12月31日<br>更新于: 2015年03月22日</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-error-while-loading-shared-libraries的解決方法" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/03/22/error-while-loading-shared-libraries的解決方法/" class="article-date">
-  	<time datetime="2015-03-22T04:33:15.000Z" itemprop="datePublished">2015-03-22</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/03/22/error-while-loading-shared-libraries的解決方法/">error while loading shared libraries的解決方法</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>在linux下运行程序时,发现了error while loading shared libraries这种错误,一时间不知道解决办法,在网上搜索,终于解决了.<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">error while loading shared libraries: xxx.so.0:cannot open shared object file: No such file or directory</span><br></pre></td></tr></table></figure></p>
-<p>出现这类错误表示,系统不知道xxx.so放在哪个目录下,这时候就要在/etc/ld.so.conf中加入xxx.so所在的目录。<br>一般而言,有很多的so会存放在/usr/local/lib这个目录底下,去这个目录底下找，果然发现自己所需要的.so文件。<br>所以在/etc/ld.so.conf中加入/usr/local/lib这一行,保存之后,再运行,/sbin/ldconfig –v更新一下配置即可。<br>centos下安装qt时出现/usr/lib/libstdc++.so.6: version `GLIBCXX_3.4.9’ not found<br>在安装qt-creator的时候运行这个IDE就出现了这个问题,是由于libstdc++.so.6的版本过低,需要下载个新的重新建立软连接</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/03/22/error-while-loading-shared-libraries的解決方法/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-linux下内存释放" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/03/22/linux下内存释放/" class="article-date">
-  	<time datetime="2015-03-22T04:24:24.000Z" itemprop="datePublished">2015-03-22</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/03/22/linux下内存释放/">linux下内存释放</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>细心的朋友会注意到,当你在linux下频繁存取文件后,物理内存会很快被用光,当程序结束后,内存不会被正常释放,而是一直作为caching.这个问题,貌似有不少人在问,不过都没有看到有什么很好解决的办法.那么我来谈谈这个问题.<br>先来说说free命令<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@server ~]<span class="comment"># free -m </span></span><br><span class="line">             total       used       free     shared    buffers     cached </span><br><span class="line">Mem:           <span class="number">249</span>        <span class="number">163</span>         <span class="number">86</span>          <span class="number">0</span>         <span class="number">10</span>         <span class="number">94</span> </span><br><span class="line">-/+ buffers/cache:         <span class="number">58</span>        <span class="number">191</span> </span><br><span class="line">Swap:          <span class="number">511</span>          <span class="number">0</span>        <span class="number">511</span></span><br></pre></td></tr></table></figure></p>
-<p>其中:<br>total 内存总数<br>used 已经使用的内存数<br>free 空闲的内存数<br>shared 多个进程共享的内存总额<br>buffers Buffer Cache和cached Page Cache 磁盘缓存的大小<br>-buffers/cache 的内存数:used - buffers - cached<br>+buffers/cache 的内存数:free + buffers + cached<br>可用的memory=free memory+buffers+cached<br>有了这个基础后,可以得知,我现在used为163MB,free为86,buffer和cached分别为10,94<br>那么我们来看看,如果我执行复制文件,内存会发生什么变化. </p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/03/22/linux下内存释放/#more">more >></a>
-        </p>
       
       <div class="clearfix"></div>
     </div>

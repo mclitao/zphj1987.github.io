@@ -176,6 +176,194 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-配置Ceph的IPV6集群" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/10/17/配置Ceph的IPV6集群/" class="article-date">
+  	<time datetime="2016-10-17T08:19:22.000Z" itemprop="datePublished">2016-10-17</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/10/17/配置Ceph的IPV6集群/">配置Ceph的IPV6集群</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/ceph/ipv6.jpeg" alt="ipv6"><br></center><br>一、前言<br>对于IPV6实在是非常的陌生，所以本篇开始会讲一下最基本的网络配置，首先让网络能通起来，最开始就是因为不熟悉IPV6,而直接使用了link local地址，造成了mon部署的时候进程无法绑定到IP，从而端口没有启动，这个是在ceph社区群友 <code>ceph-长沙-柠檬</code> 同学的帮助下才发现问题的</p>
+<p>IPV6是会有个link local地址的，在一个接口可以配置很多IPv6地址，所以学习路由就有可能出现很多下一跳。所以出现Link Local地址唯一标识一个节点。在本地链路看到下一跳都是对端的Link Local地址。这个地址一般是以fe80开头的，子网掩码为64，这个地方需要给机器配置一个唯一的全局单播地址</p>
+<blockquote>
+<p>However, with IPv6, all (IPv6) interfaces will have a link local address. This address is intended to allow communications over the attached links and so is defined to be usable only on that link.</p>
+</blockquote>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2016/10/17/配置Ceph的IPV6集群/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-Ceph技能树" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/10/17/Ceph技能树/" class="article-date">
+  	<time datetime="2016-10-17T06:32:50.000Z" itemprop="datePublished">2016-10-17</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/10/17/Ceph技能树/">Ceph技能树</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/cephskill/cephskill.png" alt="cephskill"><br></center></p>
+<h2 id="一、前言">一、前言</h2><p>之前在ceph中国社区看到有一个ceph的技能树，因为是一个图片，所以没法编辑，修改，所以完全copy了一份，方便查看，如果有侵犯到原作者的版权，欢迎沟通，从内容来看，感觉出自有云的一位工程师</p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2016/10/17/Ceph技能树/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-Ceph中国社区QQ群数据分析" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/10/13/Ceph中国社区QQ群数据分析/" class="article-date">
+  	<time datetime="2016-10-13T15:59:58.000Z" itemprop="datePublished">2016-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/10/13/Ceph中国社区QQ群数据分析/">Ceph中国社区QQ群数据分析</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="一、前言">一、前言</h2><p>最近对数据比较感兴趣，正好想练下手，看下从给定的数据当中能提取到多少信息，数据分析主要借助的是可视化的工具，这个在一般进行性能测试当中是很有用的，当然数据的采集，数据的提取，数据的展现，都是非常细的活</p>
+<blockquote>
+<p>状态：本篇未完成，进行中</p>
+</blockquote>
+<h2 id="二、数据来源">二、数据来源</h2><p>本次数据来源来自Ceph中国社区QQ群，是基于群成员填写的信息来进行分析，这中间就不对填写的信息进行真伪的辨别，基于能提取到的数据进行数据处理</p>
+<p>目前实现下面的数据</p>
+<ul>
+<li>性别分布</li>
+<li>Q龄分布</li>
+<li><p>年龄分布</p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2016/10/13/Ceph中国社区QQ群数据分析/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-Ceph的参数mon-osd-down-out-subtree-limit细解" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -574,187 +762,6 @@
       
         <p class="article-more-link">
           <a  href="/2016/09/20/Ceph的Mon数据重新构建工具/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-替换OSD操作的优化与分析" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/09/19/替换OSD操作的优化与分析/" class="article-date">
-  	<time datetime="2016-09-19T02:56:54.000Z" itemprop="datePublished">2016-09-19</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/09/19/替换OSD操作的优化与分析/">替换OSD操作的优化与分析</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/reolaceosd/terminal.png" alt="replaceosd"><br></center></p>
-<h2 id="前言">前言</h2><p>之前有写过一篇<a href="http://www.zphj1987.com/2016/01/12/%E5%88%A0%E9%99%A4osd%E7%9A%84%E6%AD%A3%E7%A1%AE%E6%96%B9%E5%BC%8F/">删除OSD的正确方式</a>，里面只是简单的讲了下删除的方式怎样能减少迁移量，本篇属于一个扩展，讲述了 Ceph 运维当中经常出现的坏盘提换盘的步骤的优化</p>
-<p>基础环境两台主机每台主机8个 OSD，一共 16 个 OSD，副本设置为2，PG 数设置为800，计算下来平均每个 OSD 上的 P G数目为100个，本篇将通过数据来分析不同的处理方法的差别</p>
-<p>开始测试前先把环境设置为 <code>noout</code>，然后通过停止 OSD 来模拟 OSD 出现了异常，之后进行不同处理方法<br>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2016/09/19/替换OSD操作的优化与分析/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Centos7下Jewel版本radosgw服务启动" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/09/12/Centos7下Jewel版本radosgw服务启动/" class="article-date">
-  	<time datetime="2016-09-12T05:47:47.000Z" itemprop="datePublished">2016-09-12</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/09/12/Centos7下Jewel版本radosgw服务启动/">Centos7下Jewel版本radosgw服务启动</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/radosgw/gateway1.png" alt="rgw"><br></center></p>
-<h2 id="一、前言">一、前言</h2><p>本篇介绍了centos7下jewel版本的radosgw配置，这里的配置是指将服务能够正常起来，不涉及到S3的配置，以及其他的更多的配置,radosgw后面的gw就是gateway的意思，也就是我们说的网关的意思，本篇中所提及的实例也就是网关的意思，说实例是将每个单独的网关更细化一点的说法</p>
-<p>很多人不清楚在centos7下面怎么去控制这个radosgw网关的服务的控制，这个地方是会去读取配置文件的，所以配置文件得写正确</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2016/09/12/Centos7下Jewel版本radosgw服务启动/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-如何统计Ceph的RBD真实使用容量" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/09/08/如何统计Ceph的RBD真实使用容量/" class="article-date">
-  	<time datetime="2016-09-08T09:17:08.000Z" itemprop="datePublished">2016-09-08</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/09/08/如何统计Ceph的RBD真实使用容量/">如何统计Ceph的RBD真实使用容量</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/rbdtongji/storage.png" alt="storage"><br></center></p>
-<h2 id="一、前言">一、前言</h2><p>ceph的rbd一直有个问题就是无法清楚的知道这个分配的空间里面到底使用了多少，这个在Jewel里面提供了一个新的接口去查询，对于老版本来说可能同样有这个需求，本篇将详细介绍如何解决这个问题</p>
-<h2 id="二、查询的各种方法">二、查询的各种方法</h2><p>目前已知的有三种方法<br>1、使用rbd du查询（Jewel才支持）<br>2、使用rbd diff<br>3、根据对象统计的方法进行统计</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2016/09/08/如何统计Ceph的RBD真实使用容量/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>

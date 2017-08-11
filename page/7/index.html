@@ -176,6 +176,199 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-Ceph用户邮件列表Vol45-Issue3" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/11/08/Ceph用户邮件列表Vol45-Issue3/" class="article-date">
+  	<time datetime="2016-11-08T09:26:01.000Z" itemprop="datePublished">2016-11-08</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/11/08/Ceph用户邮件列表Vol45-Issue3/">Ceph用户邮件列表Vol45-Issue3</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/number/daythree.png" alt=""><br></center>
+
+<h2 id="ceph_Vol_45_Issue_3">ceph Vol 45 Issue 3</h2><h3 id="1-Crash_in_ceph_readdir-">1.Crash in ceph_readdir.</h3><blockquote>
+<p>Hello, </p>
+<p>I’ve been investigating the following crash with cephfs:<br>···<br>According to the state of the ceph_inoide_info this means that<br>ceph_dir_is_complete_ordered would return true and the second condition<br>should also be true since ptr_pos is held in r12 and the dir size is 26496.<br>So the dentry being passed should be the 2953 % 512 = 393 in the<br>cache_ctl.dentries array.<br>Unfortunately my crashdump excldues the page cache pages and I cannot really see<br>what are the contents of the dentries array. </p>
+</blockquote>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2016/11/08/Ceph用户邮件列表Vol45-Issue3/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-Ceph用户邮件列表Vol45-Issue2" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/11/07/Ceph用户邮件列表Vol45-Issue2/" class="article-date">
+  	<time datetime="2016-11-07T05:26:01.000Z" itemprop="datePublished">2016-11-07</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/11/07/Ceph用户邮件列表Vol45-Issue2/">Ceph用户邮件列表Vol45-Issue2</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/number/daytwo.jpg" alt=""><br></center>
+
+<h2 id="ceph_Vol_45_Issue_2">ceph Vol 45 Issue 2</h2><h3 id="CephFS:_No_space_left_on_device">CephFS: No space left on device</h3><blockquote>
+<p>After upgrading to 10.2.3 we frequently see messages like</p>
+<p>‘rm: cannot remove ‘…’: No space left on device</p>
+<p>The folders we are trying to delete contain approx. 50K files 193 KB each.</p>
+<p>The cluster state and storage available are both OK:</p>
+<p>   cluster 98d72518-6619-4b5c-b148-9a781ef13bcb<br>     health HEALTH_WARN<br>            mds0: Client XXX.XXX.XXX.XXX failing to respond to cache pressure<br>            mds0: Client XXX.XXX.XXX.XXX failing to respond to cache pressure<br>            mds0: Client XXX.XXX.XXX.XXX failing to respond to cache pressure<br>            mds0: Client XXX.XXX.XXX.XXX failing to respond to cache pressure<br>            mds0: Client XXX.XXX.XXX.XXX failing to respond to cache pressure<br>     monmap e1: 1 mons at {000-s-ragnarok=XXX.XXX.XXX.XXX:6789/0}<br>            election epoch 11, quorum 0 000-s-ragnarok<br>      fsmap e62643: 1/1/1 up {0=000-s-ragnarok=up:active}<br>     osdmap e20203: 16 osds: 16 up, 16 in<br>            flags sortbitwise<br>      pgmap v15284654: 1088 pgs, 2 pools, 11263 GB data, 40801 kobjects<br>            23048 GB used, 6745 GB / 29793 GB avail<br>                1085 active+clean<br>                   2 active+clean+scrubbing<br>                   1 active+clean+scrubbing+deep</p>
+</blockquote>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2016/11/07/Ceph用户邮件列表Vol45-Issue2/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-Ceph用户邮件列表Vol45-Issue1" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/11/04/Ceph用户邮件列表Vol45-Issue1/" class="article-date">
+  	<time datetime="2016-11-04T03:57:25.000Z" itemprop="datePublished">2016-11-04</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/11/04/Ceph用户邮件列表Vol45-Issue1/">Ceph用户邮件列表Vol45-Issue1</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/number/dayone.png" alt=""><br></center>
+
+<h2 id="ceph_Vol_45_Issue_1">ceph Vol 45 Issue 1</h2><h3 id="1-unfound_objects_blocking_cluster,_need_help!(原文)">1.unfound objects blocking cluster, need help!(<a href="https://www.mail-archive.com/ceph-users@lists.ceph.com/msg32804.html">原文</a>)</h3><blockquote>
+<p>Hi,</p>
+<p>I have a production cluster on which 1 OSD on a failing disk was slowing the whole cluster down. I removed the OSD (osd.87) like usual in such case but this time it resulted in 17 unfound objects. I no longer have the files from osd.87. I was able to call “ceph pg PGID mark_unfound_lost delete” on 10 of those objects.</p>
+<p>On the remaining objects 7 the command blocks. When I try to do “ceph pg PGID query” on this PG it also blocks. I suspect this is same reason why mark_unfound blocks.</p>
+<p>Other client IO to PGs that have unfound objects are also blocked. When trying to query the OSDs which has the PG with unfound objects, “ceph tell” blocks.<br>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2016/11/04/Ceph用户邮件列表Vol45-Issue1/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-Ceph日历格子之2016年10月-Vol45" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -590,194 +783,6 @@
       
         <p class="article-more-link">
           <a  href="/2016/10/19/Ceph中PG和PGP的区别/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-配置Ceph的IPV6集群" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/10/17/配置Ceph的IPV6集群/" class="article-date">
-  	<time datetime="2016-10-17T08:19:22.000Z" itemprop="datePublished">2016-10-17</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/10/17/配置Ceph的IPV6集群/">配置Ceph的IPV6集群</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/ceph/ipv6.jpeg" alt="ipv6"><br></center><br>一、前言<br>对于IPV6实在是非常的陌生，所以本篇开始会讲一下最基本的网络配置，首先让网络能通起来，最开始就是因为不熟悉IPV6,而直接使用了link local地址，造成了mon部署的时候进程无法绑定到IP，从而端口没有启动，这个是在ceph社区群友 <code>ceph-长沙-柠檬</code> 同学的帮助下才发现问题的</p>
-<p>IPV6是会有个link local地址的，在一个接口可以配置很多IPv6地址，所以学习路由就有可能出现很多下一跳。所以出现Link Local地址唯一标识一个节点。在本地链路看到下一跳都是对端的Link Local地址。这个地址一般是以fe80开头的，子网掩码为64，这个地方需要给机器配置一个唯一的全局单播地址</p>
-<blockquote>
-<p>However, with IPv6, all (IPv6) interfaces will have a link local address. This address is intended to allow communications over the attached links and so is defined to be usable only on that link.</p>
-</blockquote>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2016/10/17/配置Ceph的IPV6集群/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Ceph技能树" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/10/17/Ceph技能树/" class="article-date">
-  	<time datetime="2016-10-17T06:32:50.000Z" itemprop="datePublished">2016-10-17</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/10/17/Ceph技能树/">Ceph技能树</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/cephskill/cephskill.png" alt="cephskill"><br></center></p>
-<h2 id="一、前言">一、前言</h2><p>之前在ceph中国社区看到有一个ceph的技能树，因为是一个图片，所以没法编辑，修改，所以完全copy了一份，方便查看，如果有侵犯到原作者的版权，欢迎沟通，从内容来看，感觉出自有云的一位工程师</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2016/10/17/Ceph技能树/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Ceph中国社区QQ群数据分析" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/10/13/Ceph中国社区QQ群数据分析/" class="article-date">
-  	<time datetime="2016-10-13T15:59:58.000Z" itemprop="datePublished">2016-10-13</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/10/13/Ceph中国社区QQ群数据分析/">Ceph中国社区QQ群数据分析</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="一、前言">一、前言</h2><p>最近对数据比较感兴趣，正好想练下手，看下从给定的数据当中能提取到多少信息，数据分析主要借助的是可视化的工具，这个在一般进行性能测试当中是很有用的，当然数据的采集，数据的提取，数据的展现，都是非常细的活</p>
-<blockquote>
-<p>状态：本篇未完成，进行中</p>
-</blockquote>
-<h2 id="二、数据来源">二、数据来源</h2><p>本次数据来源来自Ceph中国社区QQ群，是基于群成员填写的信息来进行分析，这中间就不对填写的信息进行真伪的辨别，基于能提取到的数据进行数据处理</p>
-<p>目前实现下面的数据</p>
-<ul>
-<li>性别分布</li>
-<li>Q龄分布</li>
-<li><p>年龄分布</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2016/10/13/Ceph中国社区QQ群数据分析/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>

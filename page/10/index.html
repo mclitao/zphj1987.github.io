@@ -176,6 +176,191 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-modprobe-FATAL-Module-ceph-not-found解决办法" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/07/24/modprobe-FATAL-Module-ceph-not-found解决办法/" class="article-date">
+  	<time datetime="2016-07-24T14:48:23.000Z" itemprop="datePublished">2016-07-24</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/07/24/modprobe-FATAL-Module-ceph-not-found解决办法/">modprobe: FATAL: Module ceph not found解决办法</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="一、问题">一、问题</h3><p>有可能你在进行 Ceph 文件系统挂载的时候出现下面的提示：</p>
+<blockquote>
+<p>modprobe: FATAL: Module ceph not found.<br>mount.ceph: modprobe failed, exit status 1<br>mount error: ceph filesystem not supported by the system</p>
+</blockquote>
+<p>这个是因为你的内核当中没有cephfs的相关模块，这个 centos6 下面比较常见，因为 centos6 的内核是 2.6.32,这个版本的内核中还没有集成cephfs的内核模块，而在 centos7 默认内核 3.10中已经默认集成了这个模块，我们看下集成的模块是怎样的显示</p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2016/07/24/modprobe-FATAL-Module-ceph-not-found解决办法/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-解决自动安装Freebsd系统盘符无法确定问题" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/07/19/解决自动安装Freebsd系统盘符无法确定问题/" class="article-date">
+  	<time datetime="2016-07-18T16:35:37.000Z" itemprop="datePublished">2016-07-19</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/07/19/解决自动安装Freebsd系统盘符无法确定问题/">解决自动安装Freebsd系统盘符无法确定问题</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>最近因为需要用到Freebsd，所以研究了打包的一些方法，这个没什么太大问题，通过网上的一些资料可以解决，但是由于确实不太熟悉这套系统，还是碰上了一些比较麻烦的地方，目前也没看到有人写如何处理，那就自己总结一下，以免以后再用忘记如何处理</p>
+<h3 id="一、问题来源">一、问题来源</h3><p>在linux下的iso自动安装的时候，在无法确定盘符的情况下，可以不写盘符，从而在遇到任何奇怪的磁盘的时候也是能安装的，比如 sda,xvda，vda,这些都可以通过不精确盘符的方式解决</p>
+<p>而在freebsd当中处理就不一样了<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cat ./etc/installerconfig</span><br><span class="line">PARTITIONS=<span class="string">"da0 &#123; 512K freebsd-boot, auto freebsd-ufs / &#125;"</span></span><br><span class="line">DISTRIBUTIONS=<span class="string">"custom_kernel.txz base.txz lib32.txz custom_files.txz"</span></span><br><span class="line"><span class="shebang">#!/bin/sh</span></span><br><span class="line">···</span><br></pre></td></tr></table></figure></p>
+<p>这个地方写配置文件的第一句就要告诉安装环境需要安装到哪里，这个地方是写死的一个数据，而碰上ada为系统盘就没法解决了，得不断的适配这个盘符</p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2016/07/19/解决自动安装Freebsd系统盘符无法确定问题/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-通过ceph-deploy安装不同版本ceph" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/07/14/通过ceph-deploy安装不同版本ceph/" class="article-date">
+  	<time datetime="2016-07-14T15:28:33.000Z" itemprop="datePublished">2016-07-14</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/07/14/通过ceph-deploy安装不同版本ceph/">通过ceph-deploy安装不同版本ceph</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>之前有在论坛写了怎么用 yum 安装 ceph，但是看到ceph社区的群里还是有人经常用 ceph-deploy 进行安装，然后会出现各种不可控的情况，虽然不建议用ceph-deploy安装，但是既然想用，那就研究下怎么用好</p>
+<p>先给一个连接： <a href="http://bbs.ceph.org.cn/article/49">centos7通过yum安装ceph</a></p>
+<p>首先机器需要安装 ceph-deploy 这个工具，机器上应该安装好 epel 源和 base 源，这个可以参考上面的那个连接，也可以自己准备好</p>
+<h3 id="一、安装ceph-deploy">一、安装ceph-deploy</h3><p>使用yum直接安装<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 yum.repos.d]<span class="comment"># yum install ceph-deploy</span></span><br><span class="line">Loaded plugins: fastestmirror, langpacks, priorities</span><br><span class="line">Loading mirror speeds from cached hostfile</span><br><span class="line">Resolving Dependencies</span><br><span class="line">--&gt; Running transaction check</span><br><span class="line">---&gt; Package ceph-deploy.noarch <span class="number">0</span>:<span class="number">1.5</span>.<span class="number">25</span>-<span class="number">1</span>.el7 will be installed</span><br><span class="line">···</span><br><span class="line">===================================================================================================</span><br><span class="line"> Package            Arch            Version             Repository                    Size</span><br><span class="line">===================================================================================================</span><br><span class="line">Installing:</span><br><span class="line"> ceph-deploy        noarch          <span class="number">1.5</span>.<span class="number">25</span>-<span class="number">1</span>.el7         epel                         <span class="number">156</span> k</span><br><span class="line">···</span><br><span class="line">Installed:</span><br><span class="line">  ceph-deploy.noarch <span class="number">0</span>:<span class="number">1.5</span>.<span class="number">25</span>-<span class="number">1</span>.el7</span><br><span class="line">Complete!</span><br></pre></td></tr></table></figure></p>
+<p>可以看到是从 epel 的 repo 里面下载的版本为1.5.25，如果从ceph源里面下载的这个版本可能会更高一点，这个没什么问题</p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2016/07/14/通过ceph-deploy安装不同版本ceph/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-重构rbd镜像的元数据" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -588,185 +773,6 @@
       
         <p class="article-more-link">
           <a  href="/2016/06/13/推荐一本性能相关的书/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-加速OSD的启动" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/06/07/加速OSD的启动/" class="article-date">
-  	<time datetime="2016-06-07T14:50:02.000Z" itemprop="datePublished">2016-06-07</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/06/07/加速OSD的启动/">加速OSD的启动</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>ceph是目前开源分布式存储里面最好的一个，但是在高负载下会有很多异常的情况会发生，有些问题无法完全避免，但是可以进行一定的控制，比如：在虚拟化场景下，重启osd会让虚拟机挂起的情况</p>
-<p>重新启动osd会给这个osd进程所在的磁盘带来额外的负载，随着前面业务的需求的增长，会增加对存储的I/O的需求，虽然这个对于整个业务系统来说是好事，但是在某些情况下，会越来越接近存储吞吐量的极限，通常情况下没有异常发生的时候，都是正常的，一旦发生异常，集群超过了临界值，性能会变得剧烈的抖动</p>
-<p>对于这种情况，一般会升级硬件来避免集群从一个高负载的集群变成一个过载的集群。本章节的重点在重启osd进程这个问题<br>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2016/06/07/加速OSD的启动/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-rbd无法map-rbd-feature-disable" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/06/07/rbd无法map-rbd-feature-disable/" class="article-date">
-  	<time datetime="2016-06-07T05:02:44.000Z" itemprop="datePublished">2016-06-07</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/06/07/rbd无法map-rbd-feature-disable/">rbd无法map(rbd feature disable)</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>在jewel版本下默认开启了rbd的一些属性<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ceph --show-config|grep rbd|grep features </span></span><br><span class="line">rbd_default_features = <span class="number">61</span></span><br></pre></td></tr></table></figure></p>
-<p>RBD属性表：<br><img src="http://static.zybuluo.com/zphj1987/1amw9dopkoohq90dfwme7z6p/%E5%B1%9E%E6%80%A7.png" alt="此处输入图片的描述"><br>61的意思是上面图中的bit码相加得到的值<br>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2016/06/07/rbd无法map-rbd-feature-disable/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-利用虚拟化环境虚拟nvme盘" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/06/04/利用虚拟化环境虚拟nvme盘/" class="article-date">
-  	<time datetime="2016-06-03T16:02:50.000Z" itemprop="datePublished">2016-06-04</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/06/04/利用虚拟化环境虚拟nvme盘/">利用虚拟化环境虚拟nvme盘</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="前情介绍">前情介绍</h2><h3 id="SPDK">SPDK</h3><p>SPDK的全称为Storage Performance Development Kit ，是Intel发起的一个开源驱动项目，这个是一个开发套件，可以让应用程序在用户态去访问存储资源，具体做能做什么可以去官网看一下 <a href="https://software.intel.com/en-us/articles/introduction-to-the-storage-performance-development-kit-spdk">SPDK官网</a></p>
-<h3 id="NVME">NVME</h3><p>NVMe其实与AHCI一样都是逻辑设备接口标准，NVMe全称Non-Volatile Memory Express，非易失性存储器标准，是使用PCI-E通道的SSD一种规范，NVMe的设计之初就有充分利用到PCI-E SSD的低延时以及并行性，还有当代处理器、平台与应用的并行性。SSD的并行性可以充分被主机的硬件与软件充分利用，相比与现在的AHCI标准，NVMe标准可以带来多方面的性能提升。</p>
-<h3 id="Bluestore">Bluestore</h3><p>BlueStore 是用来存储ceph的数据的地方，提供了一种在块设备上直接写入方式的存储。这个是因为之前ceph社区尝试做了一个kvstore，但是性能达不到想要的效果，然后基于rocksdb的原型，重新开发了一套存储系统，BlueStore直接消耗原始分区。还有一个分区是存储元数据的，实际上就是一个RocksDB键/值数据库存储，这个比之前的filestore最大的优势就是去掉了journal，从而提供了更平滑的IO</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2016/06/04/利用虚拟化环境虚拟nvme盘/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>

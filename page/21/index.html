@@ -176,6 +176,191 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-samba配置独立访问配置方法" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/03/22/samba配置独立访问配置方法/" class="article-date">
+  	<time datetime="2015-03-22T14:07:59.000Z" itemprop="datePublished">2015-03-22</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/03/22/samba配置独立访问配置方法/">samba配置独立访问配置方法</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="配置目的:">配置目的:</h3><p>为了给指定用户一个独立访问目录</p>
+<p>首先在samba服务器安装samba软件</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ apt-get install samba</span><br></pre></td></tr></table></figure>
+<p>然后配置独立访问用户<br>配置samba用户前提需要是linux的用户,所以要创建linux用户</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ useradd    zp</span><br><span class="line">$ passwd     zp</span><br></pre></td></tr></table></figure>
+<p>用户创建完了以后<br>需要创建samba用户</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ smbpasswd <span class="operator">-a</span>  zp</span><br></pre></td></tr></table></figure>
+<p>然后输入密码,记住密码,这个是客户端访问samba的密码<br>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/samba/">samba</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2015/03/22/samba配置独立访问配置方法/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-Ubuntu12-10-设置默认命令行启动" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/03/22/Ubuntu12-10-设置默认命令行启动/" class="article-date">
+  	<time datetime="2015-03-22T14:00:27.000Z" itemprop="datePublished">2015-03-22</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/03/22/Ubuntu12-10-设置默认命令行启动/">Ubuntu12.10 设置默认命令行启动</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在虚拟机当中安装ubuntu12.10的时候默认把图形界面给装上了,由于不需要使用桌面,所以为了省去每次进入到图形界面然后再用ctrl+F1的方式切换到命令行的步骤,希望能够默认进入的是命令行模式,那么设置的方法如下:<br>终端执行:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">vim /etc/default/grub</span><br></pre></td></tr></table></figure></p>
+<p>将 GRUB_CMDLINE_LINUX_DEFAULT=”quiet splash” 改为:<br>GRUB_CMDLINE_LINUX_DEFAULT=”quiet splash text”</p>
+<p>然后执行:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">update-grub</span><br></pre></td></tr></table></figure></p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ubuntu/">ubuntu</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2015/03/22/Ubuntu12-10-设置默认命令行启动/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-Ubuntu-12-10设置root用户登录图形界面" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/03/22/Ubuntu-12-10设置root用户登录图形界面/" class="article-date">
+  	<time datetime="2015-03-22T13:53:06.000Z" itemprop="datePublished">2015-03-22</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/03/22/Ubuntu-12-10设置root用户登录图形界面/">Ubuntu 12.10设置root用户登录图形界面</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Ubuntu 12.04默认是不允许root登录的,在登录窗口只能看到普通用户和访客登录。以普通身份登陆Ubuntu后我们需要做一些修改,普通用户登录后,修改系统配置文件需要切换到超级用户模式,在终端窗口里面输入:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo  <span class="operator">-s</span></span><br></pre></td></tr></table></figure></p>
+<p>然后输入普通用户登陆的密码,回车即可进入 root用户权限模式。<br>启用root用户的前提是需要先给root设置一个密码:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo passwd root</span><br></pre></td></tr></table></figure></p>
+<p>输入root 密码即可</p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ubuntu/">ubuntu</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2015/03/22/Ubuntu-12-10设置root用户登录图形界面/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-Vmware-Tools-is-currently-being-installed-on-your-system" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -558,173 +743,6 @@
       
         <p class="article-more-link">
           <a  href="/2015/03/22/用rsync备份一台linux服务器上的数据/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-修改ssh的默认22端口，并使用scp的方法" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/03/22/修改ssh的默认22端口，并使用scp的方法/" class="article-date">
-  	<time datetime="2015-03-22T08:49:01.000Z" itemprop="datePublished">2015-03-22</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/03/22/修改ssh的默认22端口，并使用scp的方法/">修改ssh的默认22端口，并使用scp的方法</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>修改默认的22的ssh端口只需要修改 /etc/ssh/sshd_config 中的 port 字段为你想要的端口就可以了<br>以后用其他机器ssh登录这台机器只需要:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ssh -p (port)  (ip)</span><br></pre></td></tr></table></figure></p>
-<p>使用scp 就是:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">scp -P (port) /usr/myfile   IP:/tmp</span><br></pre></td></tr></table></figure></p>
-<p>写于: 2012年05月05日<br>更新于: 2015年03月02日</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-debian修改crontab默认编辑器为vim" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/03/22/debian修改crontab默认编辑器为vim/" class="article-date">
-  	<time datetime="2015-03-22T08:46:03.000Z" itemprop="datePublished">2015-03-22</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/03/22/debian修改crontab默认编辑器为vim/">debian修改crontab默认编辑器为vim</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>debian终端下默认编辑器为nano,比如crontab -e就会打开nano,这个编辑器用起来很不习惯,想修改为vim,当然,你的debian系统必须先安装vim.如果已经安装vim,请输入如下命令:<br>输入命令:</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">update-alternatives --config editor</span><br></pre></td></tr></table></figure>
-<p>然后选择/usr/vim/vim.basic就OK了</p>
-<p>vim.tiny与vim.basic的区别是vim.basic为完全的vim,而vim.tiny为简化版,功能上有所区别,如不支持高亮等等.</p>
-<p>写于: 2012年5月04日<br>更新于: 2015年03月22日</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-正确用DD测试磁盘读写速度" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/03/22/正确用DD测试磁盘读写速度/" class="article-date">
-  	<time datetime="2015-03-22T08:36:15.000Z" itemprop="datePublished">2015-03-22</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/03/22/正确用DD测试磁盘读写速度/">正确用DD测试磁盘读写速度</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>问: 以下几种方式测试磁盘读写速度有什么区别?<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">dd <span class="keyword">if</span>=/dev/zero of=<span class="built_in">test</span> bs=<span class="number">1</span>M count=<span class="number">128</span> </span><br><span class="line">dd <span class="keyword">if</span>=/dev/zero of=<span class="built_in">test</span> bs=<span class="number">1</span>M count=<span class="number">128</span> ; sync</span><br><span class="line">dd <span class="keyword">if</span>=/dev/zero of=<span class="built_in">test</span> bs=<span class="number">1</span>M count=<span class="number">128</span> conv=fdatasync</span><br><span class="line">dd <span class="keyword">if</span>=/dev/zero of=<span class="built_in">test</span> bs=<span class="number">1</span>M count=<span class="number">128</span> oflag=dsync</span><br></pre></td></tr></table></figure></p>
-<p>答:区别在于内存中写缓存的处理方式。</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/03/22/正确用DD测试磁盘读写速度/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>

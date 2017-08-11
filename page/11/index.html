@@ -176,6 +176,185 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-加速OSD的启动" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/06/07/加速OSD的启动/" class="article-date">
+  	<time datetime="2016-06-07T14:50:02.000Z" itemprop="datePublished">2016-06-07</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/06/07/加速OSD的启动/">加速OSD的启动</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>ceph是目前开源分布式存储里面最好的一个，但是在高负载下会有很多异常的情况会发生，有些问题无法完全避免，但是可以进行一定的控制，比如：在虚拟化场景下，重启osd会让虚拟机挂起的情况</p>
+<p>重新启动osd会给这个osd进程所在的磁盘带来额外的负载，随着前面业务的需求的增长，会增加对存储的I/O的需求，虽然这个对于整个业务系统来说是好事，但是在某些情况下，会越来越接近存储吞吐量的极限，通常情况下没有异常发生的时候，都是正常的，一旦发生异常，集群超过了临界值，性能会变得剧烈的抖动</p>
+<p>对于这种情况，一般会升级硬件来避免集群从一个高负载的集群变成一个过载的集群。本章节的重点在重启osd进程这个问题<br>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2016/06/07/加速OSD的启动/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-rbd无法map-rbd-feature-disable" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/06/07/rbd无法map-rbd-feature-disable/" class="article-date">
+  	<time datetime="2016-06-07T05:02:44.000Z" itemprop="datePublished">2016-06-07</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/06/07/rbd无法map-rbd-feature-disable/">rbd无法map(rbd feature disable)</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在jewel版本下默认开启了rbd的一些属性<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ceph --show-config|grep rbd|grep features </span></span><br><span class="line">rbd_default_features = <span class="number">61</span></span><br></pre></td></tr></table></figure></p>
+<p>RBD属性表：<br><img src="http://static.zybuluo.com/zphj1987/1amw9dopkoohq90dfwme7z6p/%E5%B1%9E%E6%80%A7.png" alt="此处输入图片的描述"><br>61的意思是上面图中的bit码相加得到的值<br>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2016/06/07/rbd无法map-rbd-feature-disable/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-利用虚拟化环境虚拟nvme盘" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/06/04/利用虚拟化环境虚拟nvme盘/" class="article-date">
+  	<time datetime="2016-06-03T16:02:50.000Z" itemprop="datePublished">2016-06-04</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/06/04/利用虚拟化环境虚拟nvme盘/">利用虚拟化环境虚拟nvme盘</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="前情介绍">前情介绍</h2><h3 id="SPDK">SPDK</h3><p>SPDK的全称为Storage Performance Development Kit ，是Intel发起的一个开源驱动项目，这个是一个开发套件，可以让应用程序在用户态去访问存储资源，具体做能做什么可以去官网看一下 <a href="https://software.intel.com/en-us/articles/introduction-to-the-storage-performance-development-kit-spdk">SPDK官网</a></p>
+<h3 id="NVME">NVME</h3><p>NVMe其实与AHCI一样都是逻辑设备接口标准，NVMe全称Non-Volatile Memory Express，非易失性存储器标准，是使用PCI-E通道的SSD一种规范，NVMe的设计之初就有充分利用到PCI-E SSD的低延时以及并行性，还有当代处理器、平台与应用的并行性。SSD的并行性可以充分被主机的硬件与软件充分利用，相比与现在的AHCI标准，NVMe标准可以带来多方面的性能提升。</p>
+<h3 id="Bluestore">Bluestore</h3><p>BlueStore 是用来存储ceph的数据的地方，提供了一种在块设备上直接写入方式的存储。这个是因为之前ceph社区尝试做了一个kvstore，但是性能达不到想要的效果，然后基于rocksdb的原型，重新开发了一套存储系统，BlueStore直接消耗原始分区。还有一个分区是存储元数据的，实际上就是一个RocksDB键/值数据库存储，这个比之前的filestore最大的优势就是去掉了journal，从而提供了更平滑的IO</p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2016/06/04/利用虚拟化环境虚拟nvme盘/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-mon到底能坏几个" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -592,205 +771,6 @@
       
         <p class="article-more-link">
           <a  href="/2016/05/07/calamari不支持ceph的jewel版本/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-性能数据的可视化" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/04/27/性能数据的可视化/" class="article-date">
-  	<time datetime="2016-04-27T15:25:03.000Z" itemprop="datePublished">2016-04-27</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/04/27/性能数据的可视化/">性能数据的可视化</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>在工作当中，很多时候我们在去分析一个性能的时候，会产生大量的数据，面对数据的时候我们一般应该会有以下几个处理过程</p>
-<ul>
-<li>直接肉眼看<br>这个属于第一个级别，比如监控系统负载的时候去用top观察，这个方法是我最开始经常使用的一种方法，这个适合异常的时候使用，但是实际上获取的数据是有偏差的</li>
-<li>有监控系统<br>使用数据监控系统对需要监控的数据进行监控，这个前提是有一个监控系统，并且方便的去增加数据，可以根据需求去设定数据，这个监控系统有很多，能可视化的也很多，这篇文章就不做介绍</li>
-<li>使用监控脚本采集数据，采用excel进行可视化<br>使用脚本收集大量的数据，然后将数据导入到excel当中，然后显示出来，这个是我们公司测试人员采用的方法，也是比较容易实现的一个方式</li>
-</ul>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2016/04/27/性能数据的可视化/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-mon的稳定性问题" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/04/25/mon的稳定性问题/" class="article-date">
-  	<time datetime="2016-04-25T15:36:28.000Z" itemprop="datePublished">2016-04-25</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/04/25/mon的稳定性问题/">mon的稳定性问题</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="MON的稳定性问题：">MON的稳定性问题：</h3><ul>
-<li>mon的选举风暴影响客户端IO</li>
-<li>LevelDB的暴涨</li>
-<li>频繁的客户端请求的DDOS</li>
-</ul>
-<h4 id="mon选举风暴：">mon选举风暴：</h4><p>monmap会因为mon之间或者mon与客户端之间网络的影响或者消息传递的异常发生变化,从而触发选举<br>会造成客户端的请求变慢或者锁住</p>
-<h4 id="LevelDB的暴涨：">LevelDB的暴涨：</h4><p>LevelDB的大小会涨到几十GB然后影响了osd的请求<br>会造成客户端的请求变慢或者锁住</p>
-<h4 id="频繁的客户端请求的DDOS：">频繁的客户端请求的DDOS：</h4><p>mon的响应因为levelDB变慢或者选举风暴，都会造成客户端发出大量的消息流<br>让客户端操作失效，包括卷创建，rbd的连接</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2016/04/25/mon的稳定性问题/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-backfill和recovery的最优值" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/04/24/backfill和recovery的最优值/" class="article-date">
-  	<time datetime="2016-04-24T15:37:21.000Z" itemprop="datePublished">2016-04-24</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/04/24/backfill和recovery的最优值/">backfill和recovery的最优值</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>ceph在增加osd的时候会触发backfill，让数据得到平均，触发数据的迁移<br>ceph在移除osd的时候需要在节点上进行数据的恢复，也有数据的迁移和生成</p>
-<p>只要是集群里面有数据的变动就会有网卡流量，cpu，内存等资源的占用，并且最重要的是还有磁盘的占用，这个客户端也是需要对磁盘进行访问的，当请求出现碰撞的时候，肯定会比正常的情况下要慢很多，而且还有可能因为资源方面的原因而引起机器down机等异常状况的出现</p>
-<p>主要引起的问题可能：</p>
-<ul>
-<li>在peering的时候 block 了IO请求</li>
-<li>在backfill的引起了slow requests</li>
-<li>上面的两个情况会引起客户端的降速和出现soft lockup</li>
-</ul>
-<p>这个在一般情况下会出现不同的需求：</p>
-<ol>
-<li>慢点可以一定不能出问题，不能中断业务</li>
-<li>越快迁移完越好，早点结束维护服务</li>
-<li>需要又快又不能影响业务</li>
-</ol>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2016/04/24/backfill和recovery的最优值/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>

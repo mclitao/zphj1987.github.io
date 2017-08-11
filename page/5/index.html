@@ -176,6 +176,196 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-calamari-node-info" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/01/09/calamari-node-info/" class="article-date">
+  	<time datetime="2017-01-09T07:06:51.000Z" itemprop="datePublished">2017-01-09</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/01/09/calamari-node-info/">解决calamari无法获取节点信息的bug</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/saltstack.png" alt="salt-stack"><br></center>
+
+<h2 id="前言">前言</h2><p>一直在做calamari的相关的一些打包和安装的工作，都是业余弄的东西，所以并没有仔细的进行功能点的验证测试，正好ceph社区群里面有人问了个问题</p>
+<blockquote>
+<p>calamari上是不是能看到ceph的version?</p>
+</blockquote>
+<p>对于这个问题，好像确实没有见到过，而之前正好有个页面看到是空的，当时还不清楚这个是什么用的</p>
+<p><img src="http://static.zybuluo.com/zphj1987/mjyvzkd7q9x6eplb538o7ltc/image_1b611hfic17lj15ej1jp1pb31m979.png" alt="origin"></p>
+<p>而另外一位群友贴出了这个地方的是有值的，这个地方是有BUG的，在咨询了相关的问题描述以后，我们来看下，可以如何解决这个问题<br>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2017/01/09/calamari-node-info/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-Ceph-compile-speedup" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/01/05/Ceph-compile-speedup/" class="article-date">
+  	<time datetime="2017-01-05T09:46:54.000Z" itemprop="datePublished">2017-01-05</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/01/05/Ceph-compile-speedup/">Ceph编译加速的小技巧</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/octoalien.jpg" alt="此处输入图片的描述"><br></center>
+
+<p>总结了几个小技巧，用于在ceph编译过程中，能够更快一点<br>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2017/01/05/Ceph-compile-speedup/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-ceph-crush-straw" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/01/05/ceph-crush-straw/" class="article-date">
+  	<time datetime="2017-01-05T04:45:23.000Z" itemprop="datePublished">2017-01-05</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/01/05/ceph-crush-straw/">ceph 的crush算法 straw</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/crushmode.jpg" alt=""><br></center>
+
+<p>很多年以前，Sage 在写CRUSH的原始算法的时候，写了不同的Bucket类型，可以选择不同的伪随机选择算法，大部分的模型是基于RJ Honicky写的RUSH algorithms 这个算法，这个在网上可以找到资料，这里面有一个新的特性是sage很引以为豪的，straw算法，也就是我们现在常用的一些算法，这个算法有下面的特性：</p>
+<ul>
+<li>items 可以有任意的weight</li>
+<li>选择一个项目的算法复杂度是O(n)</li>
+<li>如果一个item的weight调高或者调低，只会在调整了的item直接变动，而没有调整的item是不会变动的
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2017/01/05/ceph-crush-straw/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-rbd-image-write-objects" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -591,182 +781,6 @@
       
         <p class="article-more-link">
           <a  href="/2016/12/13/Cephfs的快照功能/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-查询Ceph的OSD占用内存" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/12/08/查询Ceph的OSD占用内存/" class="article-date">
-  	<time datetime="2016-12-08T14:15:19.000Z" itemprop="datePublished">2016-12-08</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/12/08/查询Ceph的OSD占用内存/">查询Ceph的OSD占用内存</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/Memory.png" alt=""><br></center>
-
-<h2 id="前言">前言</h2><p>之前写过一篇关于查询OSD的运行的CPU的情况的分享，本篇是讲的获取内存占用的，代码包括两种输出，一种是直接的表格，一种是可以方便解析的json<br>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2016/12/08/查询Ceph的OSD占用内存/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-基于发行版本内核打造自己的内核" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/12/07/基于发行版本内核打造自己的内核/" class="article-date">
-  	<time datetime="2016-12-07T07:55:38.000Z" itemprop="datePublished">2016-12-07</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/12/07/基于发行版本内核打造自己的内核/">基于发行版本内核打造自己的内核</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/kernel.png" alt="此处输入图片的描述"><br></center>
-
-<p>Linux当中最核心的部分就是内核，这个也是最基础，最可能被忽视的一部分，随便找一个刚入职的运维，学习个两三天，网上找些资料也能能自己安装编译内核了，很多运维的初期培训就是做的这些学习，为什么在网上已经有这么多文章的情况下，还要写一篇关于内核的文章，这是因为，我想讲的是如何去选择内核<br>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2016/12/07/基于发行版本内核打造自己的内核/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-The-Dos-and-Don-ts-for-Ceph-for-OpenStack" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/11/29/The-Dos-and-Don-ts-for-Ceph-for-OpenStack/" class="article-date">
-  	<time datetime="2016-11-29T15:59:07.000Z" itemprop="datePublished">2016-11-29</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/11/29/The-Dos-and-Don-ts-for-Ceph-for-OpenStack/">The Dos and Don&#39;ts for Ceph for OpenStack</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/dos-and-dons.png" alt=""><br></center>
-
-<p>Ceph和OpenStack是一个非常有用和非常受欢迎的组合。 不过，部署Ceph / OpenStack经常会有一些容易避免的缺点 - 我们将帮助你解决它们</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2016/11/29/The-Dos-and-Don-ts-for-Ceph-for-OpenStack/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>

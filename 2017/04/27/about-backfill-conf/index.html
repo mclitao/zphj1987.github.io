@@ -220,10 +220,7 @@
 <blockquote>
 <p>mon_osd_full_ratio = 0.95<br>osd_backfill_full_ratio = 0.85<br>osd_max_backfills = 1</p>
 </blockquote>
-<p>最少的OSD的PG数目</p>
-<blockquote>
-<p>min_pg=`ceph osd df|awk ‘{print $9}’|awk ‘NF’|grep -v PGS|sort|head -n 1`</p>
-</blockquote>
+<p>最少的OSD的PG数目<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">min_pg=`ceph osd df|awk <span class="string">'&#123;print $9&#125;'</span>|awk <span class="string">'NF'</span>|grep -v PGS|sort|head -n <span class="number">1</span>`</span><br></pre></td></tr></table></figure></p>
 <p>那么最好满足</p>
 <blockquote>
 <p>(osd_max_backfills/min_pg)+osd_backfill_full_ratio &lt; mon_osd_full_ratio</p>

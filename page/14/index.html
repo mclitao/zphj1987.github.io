@@ -176,6 +176,185 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-磨磨谈-ceph-users-邮件列表之Vol-1-Issue-1" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/01/25/磨磨谈-ceph-users-邮件列表之Vol-1-Issue-1/" class="article-date">
+  	<time datetime="2016-01-24T16:06:58.000Z" itemprop="datePublished">2016-01-25</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/01/25/磨磨谈-ceph-users-邮件列表之Vol-1-Issue-1/">磨磨谈 ceph-users 邮件列表之Vol-1-Issue-1(完结)</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>关于归档方式本来开始准备采用邮件列表的vol和issue的方式，但是因为issue里面是以天为单位，而里面的问题可能是重复的，这个不好进行规整了，那么在我这里，准备以Thread的方式，每个Issue里面包含5个问题，每10个issue为一个vol，进行规整，以2016年开始为起点，前后去收集，会记录问题提问者和发起问题的时间</p>
+<h2 id="前言：">前言：</h2><p>一个技术的邮件列表其实是个大宝藏，看你怎么去挖掘它了，里面有太多的灵光一现，太多的大牛的引导，而我等也只能在某些出现问题的时候，去搜索的时候，才发现这些问题是很多人遇到过的，最近看到一个技术人说的一句话深有同感,意思是说，很多时候我们花精力重复解决问题</p>
+<ul>
+<li>一流的公司在从整体上去解决一批的问题</li>
+<li>二流的公司在一次又一次解决相同的问题</li>
+</ul>
+<p>与其等待别人去整理，还不如自己去做这个事情，没有压力，没有人催促，最后自己还能有所收获，何乐而不为，这个系列我会去将邮件列表的里面的内容进行整理，提出我个人的处理办法或者方式，或者总结一下里面别人的经验，这个系列将以现在的时间线往前和往后的方式进行整理，这个会是一个很长的过程，希望尽量的获取更多的东西，文档格式尽量保持一致</p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/momotan/">momotan</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2016/01/25/磨磨谈-ceph-users-邮件列表之Vol-1-Issue-1/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-关于ceph的rbd属性设置研究" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/01/20/关于ceph的rbd属性设置研究/" class="article-date">
+  	<time datetime="2016-01-20T14:57:53.000Z" itemprop="datePublished">2016-01-20</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/01/20/关于ceph的rbd属性设置研究/">关于ceph的rbd属性设置研究</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>一个rbd在存储到后台以后,在后台是对象存储的，对象</p>
+<p>[root@lab8106 rbdre]# rados -p rbd  listomapvals  rbd_directory<br>id_399a456aa808<br>value (6 bytes) :<br>0000 : 02 00 00 00 7a 70                               : ….zp</p>
+<p>name_zp<br>value (16 bytes) :<br>0000 : 0c 00 00 00 33 39 39 61 34 35 36 61 61 38 30 38 : ….399a456aa808</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-ceph单机多mon的实现" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/01/14/ceph单机多mon的实现/" class="article-date">
+  	<time datetime="2016-01-14T09:03:56.000Z" itemprop="datePublished">2016-01-14</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/01/14/ceph单机多mon的实现/">ceph单机多mon的实现</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>ceph默认情况下是以主机名来作为mon的识别的，所以这个情况下用部署工具是无法创建多个mon的，这个地方使用手动的方式可以很方便的创建多个mon</p>
+<h3 id="1、创建mon的数据存储目录">1、创建mon的数据存储目录</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkdir /var/lib/ceph/mon/ceph-<span class="number">1</span></span><br></pre></td></tr></table></figure>
+<h3 id="2、获取当前的monmap">2、获取当前的monmap</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph mon getmap -o /tmp/monmap</span><br></pre></td></tr></table></figure>
+<h3 id="3、根据当前的monmap生成mon的数据">3、根据当前的monmap生成mon的数据</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph-mon -i <span class="number">1</span>  --mkfs --monmap /tmp/monmap</span><br></pre></td></tr></table></figure>
+<h3 id="4、启动进程（后面指定端口）">4、启动进程（后面指定端口）</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph-mon -i <span class="number">1</span>  --public-addr  <span class="number">192.168</span>.<span class="number">8.106</span>:<span class="number">6791</span></span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2016/01/14/ceph单机多mon的实现/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-ceph使用memdisk做journal" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -623,197 +802,6 @@
       
         <p class="article-more-link">
           <a  href="/2015/12/13/如何在所有的mon的损坏情况下将数据恢复如初/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-关于开始写教程的事" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/12/12/关于开始写教程的事/" class="article-date">
-  	<time datetime="2015-12-11T16:37:22.000Z" itemprop="datePublished">2015-12-12</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/12/12/关于开始写教程的事/">关于开始写教程的事</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>在加入到ceph社区的群里以后，尝试着去回答一些有关ceph的问题，发现很多问题其实自己都遇到过，而且很多问题是反复的会被人提起，对于新手来说，由于资源太多，可能就无法比较系统的去学习这个东西，网上的文档也很多，到底从哪里开始，怎么去做，遇到的问题到底是什么造成的，这些都很难一下找到解决办法</p>
-<p>有一天想到了是不是自己也可以尝试着去做一下这个事情，网上也会有相关的教程，但是这个实在太少太少，一来专业的讲师可能不会非常的熟悉集群，二来非常熟悉集群的人，也不一定有精力去完成这个事情，而我也不确定能不能很好的去做这个事情，但是总算是起步了</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/12/12/关于开始写教程的事/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-ceph集群的安装和配置教程" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/12/12/ceph集群的安装和配置教程/" class="article-date">
-  	<time datetime="2015-12-11T16:36:48.000Z" itemprop="datePublished">2015-12-12</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/12/12/ceph集群的安装和配置教程/">ceph集群的安装和配置教程</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="本篇主题：">本篇主题：</h3><p>1、怎样配置ssh免登陆访问<br>2、为什么搭建集群要关闭防火墙和selinux，如何关闭<br>3、从哪里获取ceph的安装包，怎样安装才是快速正确的<br>4、为什么要配置时间同步服务，怎样配置<br>5、怎样创建集群<br>6、怎样使用不同的方式增加osd（这里我总结了五种）</p>
-<ul>
-<li>默认方式</li>
-<li>磁盘journal</li>
-<li>目录配置方式</li>
-<li>btrfs文件系统</li>
-<li>disk+ssd方式</li>
-</ul>
-<p>7、怎样配置文件系统<br>8、怎样配置块设备系统<br>9、怎样配置S3服务<br>10、如何干净的将集群清理到初始状态</p>
-<blockquote>
-<p>（本篇基于centos7,其他系统除了安装方式其他通用）</p>
-</blockquote>
-<h3 id="本篇资源:">本篇资源:</h3><p>包括了视频，操作文档，相关安装包资源，S3的windows客户端</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/12/12/ceph集群的安装和配置教程/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-在线调整ceph的参数" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/11/18/在线调整ceph的参数/" class="article-date">
-  	<time datetime="2015-11-18T15:11:44.000Z" itemprop="datePublished">2015-11-18</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/11/18/在线调整ceph的参数/">在线调整ceph的参数</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>能够动态的进行系统参数的调整是一个很重要并且有用的属性<br>ceph的集群提供两种方式的调整，使用tell的方式和daemon设置的方式</p>
-<h3 id="一、tell方式设置">一、tell方式设置</h3><p>调整配置使用命令：</p>
-<h4 id="调整mon的参数">调整mon的参数</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#ceph tell mon.* injectargs '--&#123;tunable value_to_be_set&#125;'</span></span><br></pre></td></tr></table></figure>
-<h4 id="调整osd的参数">调整osd的参数</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#ceph tell osd.* injectargs '--&#123;tunable value_to_be_set&#125;'</span></span><br></pre></td></tr></table></figure>
-<h3 id="调整mds的参数">调整mds的参数</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#ceph tell mds.* injectargs '--&#123;tunable value_to_be_set&#125;'</span></span><br></pre></td></tr></table></figure>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/11/18/在线调整ceph的参数/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>
