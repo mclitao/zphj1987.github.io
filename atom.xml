@@ -4,7 +4,7 @@
   <subtitle><![CDATA[但行好事，莫问前程]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2017-08-19T15:14:10.381Z</updated>
+  <updated>2017-08-21T06:03:03.343Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -15,11 +15,66 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title><![CDATA[为什么关不掉所有的OSD]]></title>
+    <link href="http://www.zphj1987.com/2017/08/21/why-can-not-stop-allosd/"/>
+    <id>http://www.zphj1987.com/2017/08/21/why-can-not-stop-allosd/</id>
+    <published>2017-08-21T05:39:09.000Z</published>
+    <updated>2017-08-21T06:03:03.343Z</updated>
+    <content type="html"><![CDATA[<h2 id="前言">前言</h2><p>碰到一个cepher问了一个问题：</p>
+<blockquote>
+<p>为什么我的OSD关闭到最后有92个OSD无法关闭,总共的OSD有300个左右</p>
+</blockquote>
+<p>想起来在很久以前帮人处理过一次问题，当时环境是遇上了一个BUG，需要升级到新版本进行解决，然后当时我来做操作，升级以后，发现osd无法启动，进程在，状态无法更新，当时又回滚回去，就可以了，当时好像是K版本升级到J版本，想起来之前看过这个版本里面有数据结构的变化，需要把osd全部停掉以后才能升级，然后就stop掉所有osd，当时发现有的osd还是无法stop，然后就手动去标记了，然后顺利升级<br><a id="more"></a><br>今天这个现象应该跟当时是一个问题，然后搜索了一番参数以后，最后定位在确实是参数进行了控制</p>
+<h2 id="实践">实践</h2><p>我的一个8个osd的单机环境，对所有OSD进行stop以后就是这个状态，还有2个状态无法改变<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ceph -s</span></span><br><span class="line">    cluster <span class="number">49</span>ee8a7f-fb7c-<span class="number">4239</span><span class="operator">-a</span>4b7-acf0bc37430d</span><br><span class="line">     health HEALTH_ERR</span><br><span class="line">            <span class="number">295</span> pgs are stuck inactive <span class="keyword">for</span> more than <span class="number">300</span> seconds</span><br><span class="line">            <span class="number">295</span> pgs stale</span><br><span class="line">            <span class="number">295</span> pgs stuck stale</span><br><span class="line">            too many PGs per OSD (<span class="number">400</span> &gt; max <span class="number">300</span>)</span><br><span class="line">     monmap e1: <span class="number">1</span> mons at &#123;lab8106=<span class="number">192.168</span>.<span class="number">8.106</span>:<span class="number">6789</span>/<span class="number">0</span>&#125;</span><br><span class="line">            election epoch <span class="number">3</span>, quorum <span class="number">0</span> lab8106</span><br><span class="line">     osdmap e77: <span class="number">8</span> osds: <span class="number">2</span> up, <span class="number">2</span> <span class="keyword">in</span>; <span class="number">178</span> remapped pgs</span><br><span class="line">            flags sortbitwise,require_jewel_osds</span><br><span class="line">      pgmap v296: <span class="number">400</span> pgs, <span class="number">1</span> pools, <span class="number">0</span> bytes data, <span class="number">0</span> objects</span><br><span class="line">            <span class="number">76440</span> kB used, <span class="number">548</span> GB / <span class="number">548</span> GB avail</span><br><span class="line">                 <span class="number">295</span> stale+active+clean</span><br><span class="line">                 <span class="number">105</span> active+clean</span><br></pre></td></tr></table></figure></p>
+<p>看下这组参数：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mon_osd_min_up_ratio = <span class="number">0.3</span></span><br><span class="line">mon_osd_min_<span class="keyword">in</span>_ratio = <span class="number">0.3</span></span><br></pre></td></tr></table></figure></p>
+<p>我们修改成0 后再测试</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mon_osd_min_up_ratio = <span class="number">0</span></span><br><span class="line">mon_osd_min_<span class="keyword">in</span>_ratio = <span class="number">0</span></span><br></pre></td></tr></table></figure>
+<p>停止进程<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">systemctl stop ceph-osd.target</span><br></pre></td></tr></table></figure></p>
+<p>查看状态<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ceph -s</span></span><br><span class="line">    cluster <span class="number">49</span>ee8a7f-fb7c-<span class="number">4239</span><span class="operator">-a</span>4b7-acf0bc37430d</span><br><span class="line">     health HEALTH_ERR</span><br><span class="line">            <span class="number">48</span> pgs are stuck inactive <span class="keyword">for</span> more than <span class="number">300</span> seconds</span><br><span class="line">            <span class="number">85</span> pgs degraded</span><br><span class="line">            <span class="number">15</span> pgs peering</span><br><span class="line">            <span class="number">400</span> pgs stale</span><br><span class="line">            <span class="number">48</span> pgs stuck inactive</span><br><span class="line">            <span class="number">48</span> pgs stuck unclean</span><br><span class="line">            <span class="number">85</span> pgs undersized</span><br><span class="line">            <span class="number">8</span>/<span class="number">8</span> <span class="keyword">in</span> osds are down</span><br><span class="line">     monmap e1: <span class="number">1</span> mons at &#123;lab8106=<span class="number">192.168</span>.<span class="number">8.106</span>:<span class="number">6789</span>/<span class="number">0</span>&#125;</span><br><span class="line">            election epoch <span class="number">4</span>, quorum <span class="number">0</span> lab8106</span><br><span class="line">     osdmap e86: <span class="number">8</span> osds: <span class="number">0</span> up, <span class="number">8</span> <span class="keyword">in</span></span><br><span class="line">            flags sortbitwise,require_jewel_osds</span><br><span class="line">      pgmap v310: <span class="number">400</span> pgs, <span class="number">1</span> pools, <span class="number">0</span> bytes data, <span class="number">0</span> objects</span><br><span class="line">            <span class="number">286</span> MB used, <span class="number">2193</span> GB / <span class="number">2194</span> GB avail</span><br><span class="line">                 <span class="number">300</span> stale+active+clean</span><br><span class="line">                  <span class="number">85</span> stale+undersized+degraded+peered</span><br><span class="line">                  <span class="number">15</span> stale+peering</span><br></pre></td></tr></table></figure></p>
+<p>可以看到状态已经可以正常全部关闭了</p>
+<h2 id="分析">分析</h2><p>这里不清楚官方做这个的理由，个人推断是这样的，默认的副本为3，那么在集群有三分之二的OSD都挂掉了以后，再出现OSD挂掉的情况下，这个集群其实就是一个废掉的状态的集群，而这个时候，还去触发down和out，对于环境来说已经是无效的操作了，触发的迁移也属于无效的迁移了，这个时候保持一个最终的可用的osdmap状态，对于整个环境的恢复也有一个基准点</p>
+<p>在Luminous版本中已经把这个参数改成</p>
+<blockquote>
+<p>mon_osd min_up_ratio = 0.3<br>mon_osd_min_in_ratio = 0.75</p>
+</blockquote>
+<p>来降低其他异常情况引起的down，来避免过量的迁移</p>
+<h2 id="总结">总结</h2><p>本篇就是一个参数的实践</p>
+<h2 id="变更记录">变更记录</h2><table>
+<thead>
+<tr>
+<th style="text-align:center">Why</th>
+<th style="text-align:center">Who</th>
+<th style="text-align:center">When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">创建</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2017-08-21</td>
+</tr>
+</tbody>
+</table>
+]]></content>
+    <summary type="html">
+    <![CDATA[<h2 id="前言">前言</h2><p>碰到一个cepher问了一个问题：</p>
+<blockquote>
+<p>为什么我的OSD关闭到最后有92个OSD无法关闭,总共的OSD有300个左右</p>
+</blockquote>
+<p>想起来在很久以前帮人处理过一次问题，当时环境是遇上了一个BUG，需要升级到新版本进行解决，然后当时我来做操作，升级以后，发现osd无法启动，进程在，状态无法更新，当时又回滚回去，就可以了，当时好像是K版本升级到J版本，想起来之前看过这个版本里面有数据结构的变化，需要把osd全部停掉以后才能升级，然后就stop掉所有osd，当时发现有的osd还是无法stop，然后就手动去标记了，然后顺利升级<br>]]>
+    
+    </summary>
+    
+      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
+    
+  </entry>
+  
+  <entry>
     <title><![CDATA[关于scrub的详细分析和建议]]></title>
     <link href="http://www.zphj1987.com/2017/08/19/about-scrub-suggestion/"/>
     <id>http://www.zphj1987.com/2017/08/19/about-scrub-suggestion/</id>
     <published>2017-08-19T15:08:56.000Z</published>
-    <updated>2017-08-19T15:14:10.381Z</updated>
+    <updated>2017-08-21T06:02:44.778Z</updated>
     <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/scrub.png" alt="scrub"><br></center>
 
 <h2 id="前言">前言</h2><p>关于scrub这块一直想写一篇文章的，这个在很久前，就做过一次测试，当时是看这个scrub到底有多大的影响，当时看到的是磁盘读占很高，启动deep-scrub后会有大量的读,前端可能会出现 slow request,这个是当时测试看到的现象，一个比较简单的处理办法就是直接给scrub关掉了，当然关掉了就无法检测底层到底有没有对象不一致的问题<br>关于这个scrub生产上是否开启，仁者见仁，智者见智，就是选择的问题了，这里不做讨论，个人觉得开和关都有各自的道理，本篇是讲述的如果想开启的情况下如何把scrub给控制住<br><a id="more"></a><br>最近在ceph群里看到一段大致这样的讨论：</p>
@@ -72,6 +127,22 @@
 <p>这个的影响就是扫描的速度而已，而如果你想加快扫描速度，就去调整sleep参数来控制这个扫描的速度了，这个就不在这里赘述了</p>
 <p>本篇讲述的是一个PG上开启deep-scrub以后的影响，默认的是到了最大的intelval以后就会开启自动开启scrub了，所以我建议的是不用系统自带的时间控制，而是自己去分析的scrub的时间戳和对象数目，然后计算好以后，可以是每天晚上，扫描指定个数的PG，然后等一轮全做完以后，中间就是自定义的一段时间的不扫描期，这个可以自己定义，是一个月或者两个月扫一轮都行，这个会在后面单独写一篇文章来讲述这个</p>
 <h2 id="总结">总结</h2><p>关于scrub，你需要了解，scrub什么时候会发生，发生以后会对你的osd产生多少的负载，每秒钟会扫描多少对象，如何去降低这个影响，这些问题就是本篇的来源了，很多问题是能从参数上进行解决的，关键是你要知道它们到底在干嘛</p>
+<h2 id="变更记录">变更记录</h2><table>
+<thead>
+<tr>
+<th style="text-align:center">Why</th>
+<th style="text-align:center">Who</th>
+<th style="text-align:center">When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">创建</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2017-08-19</td>
+</tr>
+</tbody>
+</table>
 ]]></content>
     <summary type="html">
     <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/scrub.png" alt="scrub"><br></center>
@@ -1440,52 +1511,6 @@
     <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/fill.gif" alt=""><br></center>
 
 <h2 id="前言">前言</h2><p>在做一个比较满的集群的扩容的时候，遇到了一些问题，在这里做下总结，一般来说很难遇到，扩容要趁早，不然出的问题都是稀奇古怪的一些问题<br>]]>
-    
-    </summary>
-    
-      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[mds/journal.cc: 2929: FAILED assert解决]]></title>
-    <link href="http://www.zphj1987.com/2017/04/27/mds-journal-cc-2929-FAILED-assert/"/>
-    <id>http://www.zphj1987.com/2017/04/27/mds-journal-cc-2929-FAILED-assert/</id>
-    <published>2017-04-27T01:24:39.000Z</published>
-    <updated>2017-04-27T01:31:00.360Z</updated>
-    <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/session.png" alt=""><br></center>
-
-<h2 id="前言">前言</h2><p>在处理一个其他双活MDS无法启动环境的时候，查看mds的日志看到了这个错误mds/journal.cc: 2929: FAILED assert(mds-&gt;sessionmap.get_version() == cmapv)，在查询资料以后，暂时得到了解决,在生产环境下还是不建议使用双活MDS<br><a id="more"></a></p>
-<h2 id="处理步骤">处理步骤</h2><p>这个是双MDS多活情况下出现的一个问题，在什么情况下出现还无法判断，目前只看到是有这个问题，并且有其他人也出现了 <a href="http://tracker.ceph.com/issues/17113" target="_blank" rel="external">issue17113</a><br>按照<a href="http://docs.ceph.com/docs/master/cephfs/disaster-recovery/" target="_blank" rel="external">disaster-recovery</a>建议的步骤做了如下处理：</p>
-<h3 id="备份下journal">备份下journal</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cephfs-journal-tool journal <span class="built_in">export</span> backup.bin</span><br></pre></td></tr></table></figure>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cephfs-journal-tool journal reset</span><br><span class="line">cephfs-table-tool all reset session</span><br></pre></td></tr></table></figure>
-<p>做了上两步后环境并没有恢复,还有个下面的操作没有做，这个操作会引起数据的丢失， MDS ranks other than 0 will be ignored: as a result it is possible for this to result in data loss，所以暂缓操作<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph fs reset &lt;fs name&gt; --yes-i-really-mean-it</span><br></pre></td></tr></table></figure></p>
-<p>再次启动后还是，看到日志提示的是sessionmap的问题，正常情况下这个地方重置了session应该是可以好的</p>
-<p>Yan, Zheng 2014年的时候在<a href="https://www.mail-archive.com/ceph-devel@vger.kernel.org/msg18629.html" target="_blank" rel="external">邮件列表</a>里面提过一个配置<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mds wipe_sessions = <span class="number">1</span></span><br></pre></td></tr></table></figure></p>
-<p>当时解决一个replay的问题，尝试加入这个参数，然后启动mds</p>
-<p>环境恢复了变成了双active，提示还有damage，但是数据属于可访问了</p>
-<h3 id="后续操作">后续操作</h3><p>建议是导出数据，重新配置为主备MDS集群，然后倒入数据</p>
-<h2 id="变更记录">变更记录</h2><table>
-<thead>
-<tr>
-<th style="text-align:center">Why</th>
-<th style="text-align:center">Who</th>
-<th style="text-align:center">When</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">创建</td>
-<td style="text-align:center">武汉-运维-磨渣</td>
-<td style="text-align:center">2017-04-27</td>
-</tr>
-</tbody>
-</table>
-]]></content>
-    <summary type="html">
-    <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/session.png" alt=""><br></center>
-
-<h2 id="前言">前言</h2><p>在处理一个其他双活MDS无法启动环境的时候，查看mds的日志看到了这个错误mds/journal.cc: 2929: FAILED assert(mds-&gt;sessionmap.get_version() == cmapv)，在查询资料以后，暂时得到了解决,在生产环境下还是不建议使用双活MDS<br>]]>
     
     </summary>
     

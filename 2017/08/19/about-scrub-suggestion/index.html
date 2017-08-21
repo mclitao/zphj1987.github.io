@@ -265,6 +265,22 @@
 <p>这个的影响就是扫描的速度而已，而如果你想加快扫描速度，就去调整sleep参数来控制这个扫描的速度了，这个就不在这里赘述了</p>
 <p>本篇讲述的是一个PG上开启deep-scrub以后的影响，默认的是到了最大的intelval以后就会开启自动开启scrub了，所以我建议的是不用系统自带的时间控制，而是自己去分析的scrub的时间戳和对象数目，然后计算好以后，可以是每天晚上，扫描指定个数的PG，然后等一轮全做完以后，中间就是自定义的一段时间的不扫描期，这个可以自己定义，是一个月或者两个月扫一轮都行，这个会在后面单独写一篇文章来讲述这个</p>
 <h2 id="总结">总结</h2><p>关于scrub，你需要了解，scrub什么时候会发生，发生以后会对你的osd产生多少的负载，每秒钟会扫描多少对象，如何去降低这个影响，这些问题就是本篇的来源了，很多问题是能从参数上进行解决的，关键是你要知道它们到底在干嘛</p>
+<h2 id="变更记录">变更记录</h2><table>
+<thead>
+<tr>
+<th style="text-align:center">Why</th>
+<th style="text-align:center">Who</th>
+<th style="text-align:center">When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">创建</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2017-08-19</td>
+</tr>
+</tbody>
+</table>
 
       
     </div>
@@ -273,6 +289,15 @@
   
     
 <nav id="article-nav">
+  
+    <a href="/2017/08/21/why-can-not-stop-allosd/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          为什么关不掉所有的OSD
+        
+      </div>
+    </a>
   
   
     <a href="/2017/08/10/how-to-get-Ceph-OSD-mem-used/" id="article-nav-older" class="article-nav-link-wrap">
