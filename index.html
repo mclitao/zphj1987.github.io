@@ -178,6 +178,74 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-osd-has-inode-cannot-write" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/09/04/osd-has-inode-cannot-write/" class="article-date">
+  	<time datetime="2017-09-04T15:06:17.000Z" itemprop="datePublished">2017-09-04</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/09/04/osd-has-inode-cannot-write/">osd磁盘空间足够无法写入数据的分析与解决</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/full.png" alt=""><br></center>
+
+<h2 id="前言">前言</h2><p>这个问题的来源是ceph社区里面一个群友的环境出现在85%左右的时候，启动osd报错，然后在本地文件系统当中进行touch文件的时候也是报错，df -i查询inode也是没用多少，使用的也是inode64挂载的，开始的时候排除了配置原因引起的，在ceph的邮件列表里面有一个相同<a href="http://lists.ceph.com/pipermail/ceph-users-ceph.com/2016-October/013929.html">问题</a>，也是没有得到解决</p>
+<p>看到这个问题比较感兴趣，就花了点时间来解决来定位和解决这个问题，现在分享出来，如果有类似的生产环境，可以提前做好检查预防工作</p>
+<h2 id="现象描述">现象描述</h2><p>ceph版本</p>
+<blockquote>
+<p>[root@lab8107 mnt]# ceph -v<br>ceph version 10.2.9 (2ee413f77150c0f375ff6f10edd6c8f9c7d060d0)<br>我复现的环境为这个版本<br>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2017/09/04/osd-has-inode-cannot-write/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+<div id="gitment"></div>
+<!-- 主页不要加载gitment -->
+
+
+
+
+  
     <article id="post-why-can-not-stop-allosd" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -759,71 +827,6 @@
       
         <p class="article-more-link">
           <a  href="/2017/07/13/CEPHFS-op-to-graylog/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-<div id="gitment"></div>
-<!-- 主页不要加载gitment -->
-
-
-
-
-  
-    <article id="post-ceph-luminous-new-osd-class" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/06/28/ceph-luminous-new-osd-class/" class="article-date">
-  	<time datetime="2017-06-28T07:51:07.000Z" itemprop="datePublished">2017-06-28</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/06/28/ceph-luminous-new-osd-class/">ceph luminous 新功能之磁盘智能分组</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/ssd.png" alt=""><br></center>
-
-<h2 id="前言">前言</h2><p>本篇是luminous一个新功能介绍，关于磁盘智能分组的，这个在ceph里面叫crush class，这个我自己起名叫磁盘智能分组，因为这个实现的功能就是根据磁盘类型进行属性关联，然后进行分类，减少了很多的人为操作</p>
-<p>以前我们需要对ssd和hdd进行分组的时候，需要大量的修改crush map，然后绑定不同的存储池到不同的 crush 树上面，现在这个逻辑简化了很多</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2017/06/28/ceph-luminous-new-osd-class/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>

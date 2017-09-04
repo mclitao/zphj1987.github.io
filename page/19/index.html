@@ -178,6 +178,70 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-ubuntu13-04修改默认启动内核" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/03/24/ubuntu13-04修改默认启动内核/" class="article-date">
+  	<time datetime="2015-03-24T00:01:44.000Z" itemprop="datePublished">2015-03-24</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/03/24/ubuntu13-04修改默认启动内核/">ubuntu13.04修改默认启动内核</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>ubuntu下面的启动内核选项跟其他操作系统不一样,有个子菜单,比如我在默认的ubuntu13.04上安装了一个新的内核3.14.5,那么默认的第一项是3.14.5内核,第二项是一个子菜单,第二项里面的第一项是3.14.5,第二项是3.14.5 recovery 模式,第三项是3.8.0,第四项是3.8.0(recover)</p>
+<p>那么应该修改<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">/boot/grub/grub.cfg</span><br></pre></td></tr></table></figure></p>
+<p>中的<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">GRUB_DEFAULT=0&#20026;GRUB_DEFAULT=&#34;1&#62;2&#34;</span><br></pre></td></tr></table></figure></p>
+<p>然后:<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">update-grub</span><br></pre></td></tr></table></figure></p>
+<p>重启即可</p>
+<p>写于: 2014年07月11日<br>更新于: 2015年03月24日</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ubuntu/">ubuntu</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+<div id="gitment"></div>
+<!-- 主页不要加载gitment -->
+
+
+
+
+  
     <article id="post-linux域名解析引起登陆慢" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -726,67 +790,6 @@
       
 	<div class="article-tag tagcloud">
 		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ubuntu/">ubuntu</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-<div id="gitment"></div>
-<!-- 主页不要加载gitment -->
-
-
-
-
-  
-    <article id="post-ssh配好无密码登录（RSA公钥）后，还要密码登录的问题的解决办法" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/03/23/ssh配好无密码登录（RSA公钥）后，还要密码登录的问题的解决办法/" class="article-date">
-  	<time datetime="2015-03-23T05:01:44.000Z" itemprop="datePublished">2015-03-23</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/03/23/ssh配好无密码登录（RSA公钥）后，还要密码登录的问题的解决办法/">ssh配好无密码登录（RSA公钥）后，还要密码登录的问题的解决办法</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>首先删除 /root/.ssh目录<br>然后ssh-keygen 生成新的认证目录<br>然后检查能否免密码登陆<br>如果还不能可能是/root/目录的权限不对了 可能被异常改到777了<br>做操作<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">chmod <span class="number">650</span> /root/</span><br></pre></td></tr></table></figure></p>
-<p>然后再尝试看能不能免登陆访问</p>
-<p>写于: 2013年11月28日<br>更新于: 2015年03日23日</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
 	</div>
 
       
