@@ -4,7 +4,7 @@
   <subtitle><![CDATA[止于至善]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2017-09-04T15:24:45.549Z</updated>
+  <updated>2017-09-05T02:42:23.055Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -19,15 +19,16 @@
     <link href="http://www.zphj1987.com/2017/09/04/osd-has-inode-cannot-write/"/>
     <id>http://www.zphj1987.com/2017/09/04/osd-has-inode-cannot-write/</id>
     <published>2017-09-04T15:06:17.000Z</published>
-    <updated>2017-09-04T15:24:45.549Z</updated>
+    <updated>2017-09-05T02:42:23.055Z</updated>
     <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/full.png" alt=""><br></center>
 
 <h2 id="前言">前言</h2><p>这个问题的来源是ceph社区里面一个群友的环境出现在85%左右的时候，启动osd报错，然后在本地文件系统当中进行touch文件的时候也是报错，df -i查询inode也是没用多少，使用的也是inode64挂载的，开始的时候排除了配置原因引起的，在ceph的邮件列表里面有一个相同<a href="http://lists.ceph.com/pipermail/ceph-users-ceph.com/2016-October/013929.html" target="_blank" rel="external">问题</a>，也是没有得到解决</p>
 <p>看到这个问题比较感兴趣，就花了点时间来解决来定位和解决这个问题，现在分享出来，如果有类似的生产环境，可以提前做好检查预防工作</p>
 <h2 id="现象描述">现象描述</h2><p>ceph版本</p>
 <blockquote>
-<p>[root@lab8107 mnt]# ceph -v<br>ceph version 10.2.9 (2ee413f77150c0f375ff6f10edd6c8f9c7d060d0)<br>我复现的环境为这个版本<br><a id="more"></a><br>查询使用空间</p>
+<p>[root@lab8107 mnt]# ceph -v<br>ceph version 10.2.9 (2ee413f77150c0f375ff6f10edd6c8f9c7d060d0)<br>我复现的环境为这个版本<br><a id="more"></a></p>
 </blockquote>
+<p>查询使用空间</p>
 <p><img src="http://static.zybuluo.com/zphj1987/mqyxyf1tthpo3596f0gt6ujj/image.png" alt="image.png-19.8kB"><br>可以看到空间才使用了54%<br><img src="http://static.zybuluo.com/zphj1987/434y23gzh7mhy3sjzmv9f8wg/image.png" alt="image.png-28kB"><br>可以看到，inode剩余比例很多，而文件确实无法创建</p>
 <p>这个时候把一个文件mv出来，然后又可以创建了，并且可以写入比mv出来的文件更大的文件，写完一个无法再写入更多文件了</p>
 <p>这里有个初步判断，不是容量写完了，而是文件的个数限制住了</p>
@@ -38,6 +39,7 @@
 <p><img src="http://static.zybuluo.com/zphj1987/2a48824pncg1g9up7n1npud3/image.png" alt="image.png-13.7kB"></p>
 <p>上面的输出结果这里简单解释一下，这里我也是反复比对和查看资料才理解这里的意思，这里有篇<a href="https://www.novell.com/support/kb/doc.php?id=7014320" target="_blank" rel="external">novell</a>的资料有提到这个，这里我再拿一个刚刚格式化完的分区结果来看下<br><img src="http://static.zybuluo.com/zphj1987/p1c3mb2e5kfypt4kw2ow9tm6/image.png" alt="image.png-14.3kB"></p>
 <p>这里用我自己的理解来描述下，这个extents的剩余数目是动态变化的，刚分完区的那个，有4个1048576-1220608左右的逻辑区间，而上面的无法写入数据的数据结构，剩下的extent的平均大小为22个block，而这样的blocks总数有1138886个，占总体的99.85，也就是剩余的空间的的extents所覆盖的区域全部是16个block到31个block的这种空洞，相当于蛋糕被切成很多小块了，大的都拿走了，剩下的总量还很多，但是都是很小的碎蛋糕，所以也没法取了</p>
+<p>默认来说inode chunk 为64 ，也就是需要64*inodesize的存储空间来存储inode，这个剩下的空间已经不够分配了</p>
 <h2 id="解决办法">解决办法</h2><p>下个段落会讲下为什么会出现上面的情况，现在先说解决办法，把文件mv出来，然后mv进去，这个是在其他场景下的一个解决方法，这个操作要小心，因为有扩展属性，操作不小心会弄掉了，这里建议用另外一个办法xfs_dump的方法</p>
 <p>我的环境比较小，20G的盘，如果盘大就准备大盘,这里是验证是否可行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">xfsdump -L osd0 -M osd0 <span class="operator">-f</span> /mnt/osd0 /var/lib/ceph/osd/ceph-<span class="number">0</span></span><br></pre></td></tr></table></figure></p>
 <p>还原回去<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8107 ceph-<span class="number">0</span>]<span class="comment"># xfsrestore -f /mnt/osd0 /var/lib/ceph/osd/ceph-0</span></span><br><span class="line">xfsrestore: using file dump (drive_simple) strategy</span><br><span class="line">xfsrestore: version <span class="number">3.1</span>.<span class="number">4</span> (dump format <span class="number">3.0</span>) - <span class="built_in">type</span> ^C <span class="keyword">for</span> status and control</span><br><span class="line">xfsrestore: ERROR: unable to create /var/lib/ceph/osd/ceph-<span class="number">0</span>/xfsrestorehousekeepingdir: No space left on device</span><br><span class="line">xfsrestore: Restore Status: ERROR</span><br></pre></td></tr></table></figure></p>
@@ -62,13 +64,20 @@
 <p><img src="http://static.zybuluo.com/zphj1987/l2bfn1hg02ot8oiz1bkpj2n4/image.png" alt="image.png-53.7kB"><br><img src="http://static.zybuluo.com/zphj1987/7myxv8qwe9cjrybah3gnoj5v/image.png" alt="image.png-64.2kB"><br>查看对象的数据，里面并没有连续起来，并且写入的数据的方式是:<br>打开文件，设置扩展属性，填充内容，设置属性，关闭，很多并发在一起做</p>
 <p>写完的数据结构<br><img src="http://static.zybuluo.com/zphj1987/9njqf9rlqfd8mfefub9sqp39/image.png" alt="image.png-30.9kB"></p>
 <p>结果就是在100K这个数据模型下，会产生很多小的block空隙，最后就是无法写完文件的情况，这里产生空隙并不是很大的问题，问题是这里剩下的空隙无法完成inode的动态分配的工作，这里跟一个格式化选项的变化有关</p>
-<p>准备一个集群<br>然后写入<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rados -p rbd bench -b <span class="number">100</span>K <span class="number">60</span> write --no-cleanup</span><br></pre></td></tr></table></figure></p>
+<p>准备一个集群<br>然后写入(一直写)<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rados -p rbd bench -b <span class="number">100</span>K <span class="number">6000</span> write --no-cleanup</span><br></pre></td></tr></table></figure></p>
 <p>就可以必现这个问题，可以看到上面的从16-31 block的区间从 12 extents涨到了111 extents</p>
 <h2 id="解决办法-1">解决办法</h2><p>用deploy在部署的时候默认的格式化参数为<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">command</span>_check_call: Running <span class="built_in">command</span>: /usr/sbin/mkfs -t xfs <span class="operator">-f</span> -i size=<span class="number">2048</span> -- /dev/sdb1</span><br></pre></td></tr></table></figure></p>
 <p>这个isize设置的是2048，这个在后面剩余的空洞比较小的时候就无法写入新的数据了，所以在ceph里面存储100K这种小文件的场景的时候，把mkfs.xfs的isize改成默认的256就可以提前避免这个问题<br>修改 /usr/lib/python2.7/site-packages/ceph_disk/main.py的256行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">xfs=[</span><br><span class="line">    <span class="comment"># xfs insists on not overwriting previous fs; even if we wipe</span></span><br><span class="line">    <span class="comment"># partition table, we often recreate it exactly the same way,</span></span><br><span class="line">    <span class="comment"># so we'll see ghosts of filesystems past</span></span><br><span class="line">    <span class="string">'-f'</span>,</span><br><span class="line">    <span class="string">'-i'</span>, <span class="string">'size=2048'</span>,</span><br><span class="line">],</span><br></pre></td></tr></table></figure></p>
 <p>改成<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="string">'-i'</span>, <span class="string">'size=256'</span>,</span><br></pre></td></tr></table></figure></p>
 <p><img src="http://static.zybuluo.com/zphj1987/crdjd24yzed9s0tdh8og3d1e/image.png" alt="image.png-24.4kB"><br>这个地方检查下是不是对的，然后就可以避免这个问题了，可以测试下是不是一直可以写到很多，我的这个测试环境写到91%还没问题</p>
 <h2 id="总结">总结</h2><p>在特定的数据写入模型下，可能出现一些可能无法预料的问题，而参数的改变可能也没法覆盖所有场景，本篇就是其中的一个比较特殊的问题，定位好问题，在遇到的时候能够解决，或者提前避免掉</p>
+<h2 id="后续">后续</h2><p>在升级了内核到<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8107 ~]<span class="comment"># uname  -a</span></span><br><span class="line">Linux lab8107 <span class="number">4.13</span>.<span class="number">0</span>-<span class="number">1</span>.el7.elrepo.x86_64 <span class="comment">#1 SMP Sun Sep 3 19:07:24 EDT 2017 x86_64 x86_64 x86_64 GNU/Linux</span></span><br></pre></td></tr></table></figure></p>
+<p>升级xfsprogs到<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8107 ~]<span class="comment"># rpm -qa|grep xfsprogs</span></span><br><span class="line">xfsprogs-<span class="number">4.12</span>.<span class="number">0</span>-<span class="number">4</span>.el7.centos.x86_64</span><br></pre></td></tr></table></figure></p>
+<p>重新部署osd，还是一样的isize=2048，一样的写入模型<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8107 ~]<span class="comment"># df -h /var/lib/ceph/osd/ceph-0</span></span><br><span class="line">Filesystem      Size  Used Avail Use% Mounted on</span><br><span class="line">/dev/sdb1       <span class="number">9.4</span>G  <span class="number">9.0</span>G  <span class="number">395</span>M  <span class="number">96</span>% /var/lib/ceph/osd/ceph-<span class="number">0</span></span><br></pre></td></tr></table></figure></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">meta_uuid = <span class="number">00000000</span>-<span class="number">0000</span>-<span class="number">0000</span>-<span class="number">0000</span>-<span class="number">000000000000</span></span><br><span class="line">   from      to extents  blocks    pct</span><br><span class="line">      <span class="number">1</span>       <span class="number">1</span>     <span class="number">545</span>     <span class="number">545</span>   <span class="number">0.50</span></span><br><span class="line">      <span class="number">2</span>       <span class="number">3</span>     <span class="number">665</span>    <span class="number">1666</span>   <span class="number">1.52</span></span><br><span class="line">      <span class="number">4</span>       <span class="number">7</span>    <span class="number">1624</span>    <span class="number">8927</span>   <span class="number">8.12</span></span><br><span class="line">      <span class="number">8</span>      <span class="number">15</span>    <span class="number">1853</span>   <span class="number">19063</span>  <span class="number">17.34</span></span><br><span class="line">     <span class="number">16</span>      <span class="number">31</span>      <span class="number">19</span>     <span class="number">352</span>   <span class="number">0.32</span></span><br><span class="line">   <span class="number">4096</span>    <span class="number">8191</span>       <span class="number">1</span>    <span class="number">7694</span>   <span class="number">7.00</span></span><br><span class="line">  <span class="number">16384</span>   <span class="number">32767</span>       <span class="number">3</span>   <span class="number">71659</span>  <span class="number">65.20</span></span><br><span class="line">total free extents <span class="number">4710</span></span><br><span class="line">total free blocks <span class="number">109906</span></span><br><span class="line">average free extent size <span class="number">23.3346</span></span><br><span class="line">[root@lab8107 ~]<span class="comment"># xfs_db -r -c "sb 0" -c "p" -c "freesp -s " /dev/sdb1</span></span><br></pre></td></tr></table></figure>
+<p>可以看到已经很少的稀疏空间了，留下比较大的空间，这个地方应该是优化了底层数据存储的算法</p>
+<p>另外，xfs的inode是动态分配的,xfs官方也考虑到了这个可能空洞太多无法分配inode问题，这个是最新的mkfs.xfs的man page<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sparse[=value]</span><br><span class="line">  Enable sparse inode chunk allocation. The value is either <span class="number">0</span> or <span class="number">1</span>, with <span class="number">1</span> signifying that sparse allocation is enabled.  If  the value  is omitted, <span class="number">1</span> is assumed. Sparse inode allocation is disabled by default. This feature is only available <span class="keyword">for</span> filesystems formatted with -m crc=<span class="number">1</span>.</span><br><span class="line">  </span><br><span class="line">   When enabled, sparse inode allocation allows the filesystem to allocate smaller than the  standard  <span class="number">64</span>-inode  chunk  when  free space  is  severely  limited. This feature is useful <span class="keyword">for</span> filesystems that might fragment free space over time such that no free extents are large enough to accommodate a chunk of <span class="number">64</span> inodes. Without this feature enabled, inode allocations can fail with out of space errors under severe fragmented free space conditions.</span><br></pre></td></tr></table></figure></p>
+<p>是以64个inode为chunk来进行动态分配的，应该是有两个chunk，也就是动态查询看到的是128个inode以下，在更新到最新的版本以后，因为已经没有那么多空洞了，所以即使在没开这个稀疏inode的情况下，ceph的小文件也能够把磁盘写满</p>
 <h2 id="变更记录">变更记录</h2><table>
 <thead>
 <tr>
@@ -82,6 +91,11 @@
 <td style="text-align:center">创建</td>
 <td style="text-align:center">武汉-运维-磨渣</td>
 <td style="text-align:center">2017-09-04</td>
+</tr>
+<tr>
+<td style="text-align:center">增加更新内核和xfsprogs的验证</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2017-09-05</td>
 </tr>
 </tbody>
 </table>
