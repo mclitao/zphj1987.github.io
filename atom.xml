@@ -4,7 +4,7 @@
   <subtitle><![CDATA[止于至善]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2017-09-06T05:34:31.655Z</updated>
+  <updated>2017-09-06T16:31:34.346Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -13,6 +13,68 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[怎样禁止Ceph OSD的自动挂载]]></title>
+    <link href="http://www.zphj1987.com/2017/09/07/how-to-disable-Ceph-OSD-automount/"/>
+    <id>http://www.zphj1987.com/2017/09/07/how-to-disable-Ceph-OSD-automount/</id>
+    <published>2017-09-06T16:29:55.000Z</published>
+    <updated>2017-09-06T16:31:34.346Z</updated>
+    <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/mount.png" alt="此处输入图片的描述"><br></center>
+
+<h2 id="前言">前言</h2><p>本篇来源于群里一个人的问题，有没有办法让ceph的磁盘不自动挂载，一般人的问题都是怎样让ceph能够自动挂载，在centos 7 平台下 ceph jewel版本以后都是有自动挂载的处理的，这个我之前也写过两篇文章 <a href="http://www.zphj1987.com/2016/03/31/ceph%E5%9C%A8centos7%E4%B8%8B%E4%B8%80%E4%B8%AA%E4%B8%8D%E5%AE%B9%E6%98%93%E5%8F%91%E7%8E%B0%E7%9A%84%E6%94%B9%E5%8F%98/" target="_blank" rel="external">ceph在centos7下一个不容易发现的改变</a>和<a href="http://www.zphj1987.com/2016/12/22/Ceph%E6%95%B0%E6%8D%AE%E7%9B%98%E6%80%8E%E6%A0%B7%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%8A%A8%E6%8C%82%E8%BD%BD/" target="_blank" rel="external">Ceph数据盘怎样实现自动挂载</a>，来讲述这个自动挂载的<br><a id="more"></a><br>这里讲下流程：</p>
+<blockquote>
+<p>开机后udev匹配95-ceph-osd.rules规则，触发ceph-disk  trigger，遍历磁盘，匹配到磁盘的标记后就触发了自动挂载</p>
+</blockquote>
+<p>为什么要取消挂载？<br>也许一般都会想：不就是停掉osd，然后umount掉，检查磁盘吗<br>这个想法如果放在一般情况下都没有问题，但是为什么有这个需求就是有不一般的情况，这个我在很久前遇到过，所以对这个需求的场景比较清楚</p>
+<p>在很久以前碰到过一次，机器启动都是正常的，但是只要某个磁盘一挂载，机器就直接挂掉了，所以这个是不能让它重启机器自动挂载的，也许还有其他的情况，这里总结成一个简单的需求就是不想它自动挂载</p>
+<h2 id="解决方法">解决方法</h2><p>从上面的自启动后的自动挂载流程里面，我们可以知道这里可以有两个方案去解决这个问题，第一种是改变磁盘的标记，第二种就是改变udev的rule的规则匹配，这里两个方法都行，一个是完全不动磁盘，一个是动了磁盘的标记</p>
+<h3 id="修改udev规则的方式">修改udev规则的方式</h3><p>这个因为曾经有一段时间看过udev相关的一些东西，所以处理起来还是比较简单的，这里顺便把调试过程也记录下来<br>/lib/udev/rules.d/95-ceph-osd.rules这个文件里面就是集群自动挂载的触发规则，所以在这里我们在最开始匹配上我们需要屏蔽的盘，然后绕过内部的所有匹配规则，具体办法就是<br>在这个文件里面第一行加上</p>
+<blockquote>
+<p>KERNEL==”sdb1|sdb2”, GOTO=”not_auto_mount”</p>
+</blockquote>
+<p>在最后一行加上</p>
+<blockquote>
+<p>LABEL=”not_auto_mount”</p>
+</blockquote>
+<p>验证规则是否正确<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">udevadm <span class="built_in">test</span> /sys/block/sdb/sdb1</span><br></pre></td></tr></table></figure></p>
+<p>我们先看下正常的可以挂载的盘符的触发测试显示<br><img src="http://static.zybuluo.com/zphj1987/4fuopv2z3ys36e3462svo72t/image.png" alt="image.png-17.2kB"><br>再看下屏蔽了后的规则是怎样的<br><img src="http://static.zybuluo.com/zphj1987/3phv4b3x8d2nf6mhaio68zk4/image.png" alt="image.png-16kB"><br>可以看到在加入屏蔽条件以后，就没有触发挂载了，这里要注意，做屏蔽规则的时候需要把这个osd相关的盘都屏蔽，不然在触发相关分区的时候可能顺带挂载起来了，上面的sdb1就是数据盘，sdb2就是bluestore的block盘</p>
+<p>测试没问题后就执行下<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">udevadm control --reload-rules</span><br></pre></td></tr></table></figure></p>
+<p>重启后验证是否自动挂载了</p>
+<h3 id="修改磁盘标记的方式">修改磁盘标记的方式</h3><p>查询磁盘的标记typecode,也就是ID_PART_ENTRY_TYPE这个属性<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># blkid -o udev -p /dev/sdb1</span></span><br><span class="line">ID_FS_UUID=<span class="number">7</span>a852eec-b32d-<span class="number">4</span>c0a-<span class="number">8</span>b8e-<span class="number">1</span>e056a67ee35</span><br><span class="line">ID_FS_UUID_ENC=<span class="number">7</span>a852eec-b32d-<span class="number">4</span>c0a-<span class="number">8</span>b8e-<span class="number">1</span>e056a67ee35</span><br><span class="line">ID_FS_TYPE=xfs</span><br><span class="line">ID_FS_USAGE=filesystem</span><br><span class="line">ID_PART_ENTRY_SCHEME=gpt</span><br><span class="line">ID_PART_ENTRY_NAME=ceph\x20data</span><br><span class="line">ID_PART_ENTRY_UUID=<span class="number">7</span>b321ca3-<span class="number">402</span>c-<span class="number">4557</span>-b121-<span class="number">887266</span>a1e1b8</span><br><span class="line">ID_PART_ENTRY_TYPE=<span class="number">4</span>fbd7e29-<span class="number">9</span>d25-<span class="number">41</span>b8-afd0-<span class="number">062</span>c0ceff05d</span><br><span class="line">ID_PART_ENTRY_NUMBER=<span class="number">1</span></span><br><span class="line">ID_PART_ENTRY_OFFSET=<span class="number">2048</span></span><br><span class="line">ID_PART_ENTRY_SIZE=<span class="number">204800</span></span><br><span class="line">ID_PART_ENTRY_DISK=<span class="number">8</span>:<span class="number">16</span></span><br></pre></td></tr></table></figure></p>
+<p>匹配到这个属性就认为是集群的节点，可以挂载的，那么我们先改变这个<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># /usr/sbin/sgdisk --typecode=1:4fbd7e29-9d25-41b8-afd0-062c0ceff0f9 -- /dev/sdb</span></span><br><span class="line">[root@lab8106 ~]<span class="comment"># blkid -o udev -p /dev/sdb1</span></span><br><span class="line">ID_FS_UUID=<span class="number">7</span>a852eec-b32d-<span class="number">4</span>c0a-<span class="number">8</span>b8e-<span class="number">1</span>e056a67ee35</span><br><span class="line">ID_FS_UUID_ENC=<span class="number">7</span>a852eec-b32d-<span class="number">4</span>c0a-<span class="number">8</span>b8e-<span class="number">1</span>e056a67ee35</span><br><span class="line">ID_FS_TYPE=xfs</span><br><span class="line">ID_FS_USAGE=filesystem</span><br><span class="line">ID_PART_ENTRY_SCHEME=gpt</span><br><span class="line">ID_PART_ENTRY_NAME=ceph\x20data</span><br><span class="line">ID_PART_ENTRY_UUID=<span class="number">7</span>b321ca3-<span class="number">402</span>c-<span class="number">4557</span>-b121-<span class="number">887266</span>a1e1b8</span><br><span class="line">ID_PART_ENTRY_TYPE=<span class="number">4</span>fbd7e29-<span class="number">9</span>d25-<span class="number">41</span>b8-afd0-<span class="number">062</span>c0ceff0f9</span><br><span class="line">ID_PART_ENTRY_NUMBER=<span class="number">1</span></span><br><span class="line">ID_PART_ENTRY_OFFSET=<span class="number">2048</span></span><br><span class="line">ID_PART_ENTRY_SIZE=<span class="number">204800</span></span><br><span class="line">ID_PART_ENTRY_DISK=<span class="number">8</span>:<span class="number">16</span></span><br></pre></td></tr></table></figure></p>
+<p>可以看到type的属性已经被修改了<br>再次测试，可以看到已经不匹配了<br><img src="http://static.zybuluo.com/zphj1987/ek3ocgg9w584u07x0pg8lqc0/image.png" alt="image.png-14.1kB"></p>
+<p>如果需要恢复就执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># /usr/sbin/sgdisk --typecode=1:4fbd7e29-9d25-41b8-afd0-062c0ceff05d -- /dev/sdb</span></span><br></pre></td></tr></table></figure></p>
+<p>这里同样需要改掉相关的block盘的标记，否则一样被关联的挂载起来了</p>
+<h2 id="总结">总结</h2><p>本篇用两种方法来实现了ceph osd的盘符的不自动挂载，这个一般情况下都不会用到，比较特殊的情况遇到了再这么处理就可以了，或者比较暴力的方法就是直接把挂载的匹配的规则全部取消掉，使用手动触发挂载的方式也行，这个方法很多，能够快速，简单的满足需求即可</p>
+<p>此mount非彼mount，题图无关</p>
+<h2 id="变更记录">变更记录</h2><table>
+<thead>
+<tr>
+<th style="text-align:center">Why</th>
+<th style="text-align:center">Who</th>
+<th style="text-align:center">When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">创建</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2017-09-07</td>
+</tr>
+</tbody>
+</table>
+]]></content>
+    <summary type="html">
+    <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/mount.png" alt="此处输入图片的描述"><br></center>
+
+<h2 id="前言">前言</h2><p>本篇来源于群里一个人的问题，有没有办法让ceph的磁盘不自动挂载，一般人的问题都是怎样让ceph能够自动挂载，在centos 7 平台下 ceph jewel版本以后都是有自动挂载的处理的，这个我之前也写过两篇文章 <a href="http://www.zphj1987.com/2016/03/31/ceph%E5%9C%A8centos7%E4%B8%8B%E4%B8%80%E4%B8%AA%E4%B8%8D%E5%AE%B9%E6%98%93%E5%8F%91%E7%8E%B0%E7%9A%84%E6%94%B9%E5%8F%98/">ceph在centos7下一个不容易发现的改变</a>和<a href="http://www.zphj1987.com/2016/12/22/Ceph%E6%95%B0%E6%8D%AE%E7%9B%98%E6%80%8E%E6%A0%B7%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%8A%A8%E6%8C%82%E8%BD%BD/">Ceph数据盘怎样实现自动挂载</a>，来讲述这个自动挂载的<br>]]>
+    
+    </summary>
+    
+      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[Ceph OSD服务失效自动启动控制]]></title>
@@ -1594,44 +1656,6 @@
     <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/blueprint.png" alt="myceph"><br></center>
 
 <h2 id="前言">前言</h2><p>前段时间看到<a href="https://mp.weixin.qq.com/s?__biz=MzI0NDE0NjUxMQ==&amp;mid=2651256389&amp;idx=1&amp;sn=e11edcce5722853f442b9a7b8211787e&amp;chksm=f2901e65c5e79773c7690f29e35dbd1870a5bfdb92c70541979f5d080d6580e3af9ba85fff66&amp;mpshare=1&amp;scene=23&amp;srcid=0502SazrSPsWnszP3xfdEId4#rd">豪迈的公众号</a>上提到了这个离线转换工具，最近看到群里有人问，找了下没什么相关文档，就自己写了一个，供参考<br>]]>
-    
-    </summary>
-    
-      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[多MDS变成单MDS的方法]]></title>
-    <link href="http://www.zphj1987.com/2017/05/03/mutimds-to-single-mds/"/>
-    <id>http://www.zphj1987.com/2017/05/03/mutimds-to-single-mds/</id>
-    <published>2017-05-03T07:53:10.000Z</published>
-    <updated>2017-05-03T07:54:24.241Z</updated>
-    <content type="html"><![CDATA[<h2 id="前言">前言</h2><p>之前有个cepher的环境上是双活MDS的，需要变成MDS，目前最新版本是支持这个操作的</p>
-<a id="more"></a>
-<h2 id="方法">方法</h2><h3 id="设置最大mds">设置最大mds</h3><p>多活的mds的max_mds会超过1，这里需要先将max_mds设置为1<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph mds <span class="built_in">set</span> max_mds <span class="number">1</span></span><br></pre></td></tr></table></figure></p>
-<h3 id="deactive_mds">deactive mds</h3><p>看下需要停掉的mds是rank 0 还是rank1,然后执行下面的命令即可<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@server8 ~]<span class="comment"># zbkc -s|grep mdsmap</span></span><br><span class="line">     mdsmap e13: <span class="number">1</span>/<span class="number">1</span>/<span class="number">1</span> up &#123;<span class="number">0</span>=lab8106=up:clientreplay&#125;</span><br></pre></td></tr></table></figure></p>
-<p>这个输出的lab8106前面的0，就是这个mds的rank，根据需要停止对应的rank<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph mds deactivate <span class="number">1</span></span><br></pre></td></tr></table></figure></p>
-<h2 id="总结">总结</h2><p>不建议用多活mds</p>
-<h2 id="变更记录">变更记录</h2><table>
-<thead>
-<tr>
-<th style="text-align:center">Why</th>
-<th style="text-align:center">Who</th>
-<th style="text-align:center">When</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">创建</td>
-<td style="text-align:center">武汉-运维-磨渣</td>
-<td style="text-align:center">2017-05-03</td>
-</tr>
-</tbody>
-</table>
-]]></content>
-    <summary type="html">
-    <![CDATA[<h2 id="前言">前言</h2><p>之前有个cepher的环境上是双活MDS的，需要变成MDS，目前最新版本是支持这个操作的</p>]]>
     
     </summary>
     

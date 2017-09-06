@@ -178,6 +178,67 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-Bad-magic-number-ImportError-in-python" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/03/22/Bad-magic-number-ImportError-in-python/" class="article-date">
+  	<time datetime="2015-03-22T14:50:44.000Z" itemprop="datePublished">2015-03-22</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/03/22/Bad-magic-number-ImportError-in-python/"> Bad magic number ImportError in python</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>是源码编译里面版本不对，删除掉源码pyc然后重新编译就可以了</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find .-name <span class="string">'*.pyc'</span>-delete</span><br><span class="line">python -m compileall .</span><br></pre></td></tr></table></figure>
+<p>写于: 2013年08月01日<br>更新于: 2015年03月22日</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/杂七杂八/">杂七杂八</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+<div id="gitment"></div>
+<!-- 主页不要加载gitment -->
+
+
+
+
+  
     <article id="post-修改centos6启动动画（plymouth方式）" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -731,67 +792,6 @@
       
       
 
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-<div id="gitment"></div>
-<!-- 主页不要加载gitment -->
-
-
-
-
-  
-    <article id="post-检查linux下服务器的带宽" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/03/22/检查linux下服务器的带宽/" class="article-date">
-  	<time datetime="2015-03-22T11:25:43.000Z" itemprop="datePublished">2015-03-22</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/03/22/检查linux下服务器的带宽/">检查linux下服务器的带宽</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>设想:公司 A 有一个名为 bsdocfs 的存储服务器,并通过名为 beckham 的客户端节点装载 NFS。公司 A 确定他们需要从 bsdocfs得到更多的带宽,因为有大量的节点需要访问 bsdocfs 的共享文件系统。<br>实现此操作的最常用和最便宜的方式是将两个千兆网卡组合在一起。这是最便宜的,因为您通常会有一个额外的可用 NIC 和一个额外的端口。<br>所以采取此这个方法。不过现在的问题是?到底需要多少带宽?</p>
-<p>千兆网卡以太网理论上的限制是 128MBit/s。这个数字从何而来,看看这些计算:<br>1Gb = 1024Mb;1024Mb/8 = 128MB;”b” = “bits,”、”B” = “bytes”</p>
-<p>但实际看到的是什么呢,有什么好的测量方法呢,我推荐一个工具 iperf。可以按照以下方法获得 iperf</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ wget http://dast.nlanr.net/Projects/Iperf2.<span class="number">0</span>/iperf-<span class="number">2.0</span>.<span class="number">2</span>.tar.gz</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/03/22/检查linux下服务器的带宽/#more">more >></a>
-        </p>
       
       <div class="clearfix"></div>
     </div>

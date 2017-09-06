@@ -178,6 +178,70 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-how-to-disable-Ceph-OSD-automount" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/09/07/how-to-disable-Ceph-OSD-automount/" class="article-date">
+  	<time datetime="2017-09-06T16:29:55.000Z" itemprop="datePublished">2017-09-07</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/09/07/how-to-disable-Ceph-OSD-automount/">怎样禁止Ceph OSD的自动挂载</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/mount.png" alt="此处输入图片的描述"><br></center>
+
+<h2 id="前言">前言</h2><p>本篇来源于群里一个人的问题，有没有办法让ceph的磁盘不自动挂载，一般人的问题都是怎样让ceph能够自动挂载，在centos 7 平台下 ceph jewel版本以后都是有自动挂载的处理的，这个我之前也写过两篇文章 <a href="http://www.zphj1987.com/2016/03/31/ceph%E5%9C%A8centos7%E4%B8%8B%E4%B8%80%E4%B8%AA%E4%B8%8D%E5%AE%B9%E6%98%93%E5%8F%91%E7%8E%B0%E7%9A%84%E6%94%B9%E5%8F%98/">ceph在centos7下一个不容易发现的改变</a>和<a href="http://www.zphj1987.com/2016/12/22/Ceph%E6%95%B0%E6%8D%AE%E7%9B%98%E6%80%8E%E6%A0%B7%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%8A%A8%E6%8C%82%E8%BD%BD/">Ceph数据盘怎样实现自动挂载</a>，来讲述这个自动挂载的<br>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2017/09/07/how-to-disable-Ceph-OSD-automount/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+<div id="gitment"></div>
+<!-- 主页不要加载gitment -->
+
+
+
+
+  
     <article id="post-Ceph-OSD-autorestart-when-fail" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -764,70 +828,6 @@
       
         <p class="article-more-link">
           <a  href="/2017/07/22/from-ceph-object-get-rbd-file/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-<div id="gitment"></div>
-<!-- 主页不要加载gitment -->
-
-
-
-
-  
-    <article id="post-use-flame-show-ceph-pg" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/07/18/use-flame-show-ceph-pg/" class="article-date">
-  	<time datetime="2017-07-18T05:35:07.000Z" itemprop="datePublished">2017-07-18</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/07/18/use-flame-show-ceph-pg/">利用火焰图分析ceph pg分布</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/flame.png" alt=""><br></center>
-
-<h2 id="前言">前言</h2><p>性能优化大神Brendan Gregg发明了火焰图来定位性能问题，通过图表就可以发现问题出在哪里，通过svg矢量图来查看性能卡在哪个点，哪个操作占用的资源最多<br>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2017/07/18/use-flame-show-ceph-pg/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>

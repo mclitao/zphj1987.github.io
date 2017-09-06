@@ -178,6 +178,68 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-mutimds-to-single-mds" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/05/03/mutimds-to-single-mds/" class="article-date">
+  	<time datetime="2017-05-03T07:53:10.000Z" itemprop="datePublished">2017-05-03</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/05/03/mutimds-to-single-mds/">多MDS变成单MDS的方法</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="前言">前言</h2><p>之前有个cepher的环境上是双活MDS的，需要变成MDS，目前最新版本是支持这个操作的</p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2017/05/03/mutimds-to-single-mds/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+<div id="gitment"></div>
+<!-- 主页不要加载gitment -->
+
+
+
+
+  
     <article id="post-Ceph-depend-Crush-read-data" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -730,71 +792,6 @@
       
         <p class="article-more-link">
           <a  href="/2017/03/29/Ceph-filesystem-scaleout/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-<div id="gitment"></div>
-<!-- 主页不要加载gitment -->
-
-
-
-
-  
-    <article id="post-from-hammerto-jewel-update-by-qinmuyang" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/03/24/from-hammerto-jewel-update-by-qinmuyang/" class="article-date">
-  	<time datetime="2017-03-24T08:11:03.000Z" itemprop="datePublished">2017-03-24</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/03/24/from-hammerto-jewel-update-by-qinmuyang/">从hammer到jewel的RGW升级实战-by秦牧羊</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/update.gif" alt=""><br></center>
-
-<h2 id="前言">前言</h2><p>本篇来自秦牧羊的一篇分享，讲述的是从hammer升级到jewel的过程，以及其中的一些故障的处理，是一篇非常详细的实战分享</p>
-<h2 id="初始状态">初始状态</h2><h3 id="pool状态">pool状态</h3><figure class="highlight asciidoc"><table><tr><td class="code"><pre><span class="line">root@demo:/home/demouser# rados lspools</span><br><span class="line">rbd</span><br><span class="line"><span class="title">.cn.rgw.root</span></span><br><span class="line"><span class="title">.cn-zone1.rgw.root</span></span><br><span class="line"><span class="title">.cn-zone1.rgw.domain</span></span><br><span class="line"><span class="title">.cn-zone1.rgw.control</span></span><br><span class="line"><span class="title">.cn-zone1.rgw.gc</span></span><br><span class="line"><span class="title">.cn-zone1.rgw.buckets.index</span></span><br><span class="line"><span class="title">.cn-zone1.rgw.buckets.extra</span></span><br><span class="line"><span class="title">.cn-zone1.rgw.buckets</span></span><br><span class="line"><span class="title">.cn-zone1.log</span></span><br><span class="line"><span class="title">.cn-zone1.intent-log</span></span><br><span class="line"><span class="title">.cn-zone1.usage</span></span><br><span class="line"><span class="title">.cn-zone1.users</span></span><br><span class="line"><span class="title">.cn-zone1.users.email</span></span><br><span class="line"><span class="title">.cn-zone1.users.swift</span></span><br><span class="line"><span class="title">.cn-zone1.users.uid</span></span><br></pre></td></tr></table></figure>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2017/03/24/from-hammerto-jewel-update-by-qinmuyang/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>
