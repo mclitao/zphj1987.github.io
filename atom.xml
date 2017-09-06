@@ -4,7 +4,7 @@
   <subtitle><![CDATA[止于至善]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2017-09-05T02:42:23.055Z</updated>
+  <updated>2017-09-06T05:34:31.655Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -13,6 +13,122 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[Ceph OSD服务失效自动启动控制]]></title>
+    <link href="http://www.zphj1987.com/2017/09/06/Ceph-OSD-autorestart-when-fail/"/>
+    <id>http://www.zphj1987.com/2017/09/06/Ceph-OSD-autorestart-when-fail/</id>
+    <published>2017-09-06T04:32:41.000Z</published>
+    <updated>2017-09-06T05:34:31.655Z</updated>
+    <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/restart.png" alt=""><br></center>
+
+<h2 id="前言">前言</h2><p>服务器上面的服务会因为各种各样的原因失败，磁盘故障，权限问题，或者是服务过载引起超时，这些都可能引起</p>
+<p>这个在ceph里面systemctl unit 默认有个on-fail restart,默认的可能并不适合所有的场景，所以自动化的服务应该是尽量去适配你手动处理的过程，手动怎么处理的，就怎么去设置<br><a id="more"></a></p>
+<h2 id="启动分析">启动分析</h2><p>如果有osd失败了，一般上去会先启动一次，尽快让服务启动，然后去检查是否有故障，如果失败了，就开启调试日志，再次重启，在问题解决之前，是不会再启动了，所以这里我们的自动启动设置也这么设置</p>
+<h2 id="参数配置">参数配置</h2><p>ceph的osd的启动配置在这个配置文件</p>
+<blockquote>
+<p>/usr/lib/systemd/system/ceph-osd@.service</p>
+</blockquote>
+<p>默认参数：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Restart=on-failure</span><br><span class="line">StartLimitInterval=<span class="number">30</span>min</span><br><span class="line">StartLimitBurst=<span class="number">30</span></span><br><span class="line">RestartSec=<span class="number">20</span>s</span><br></pre></td></tr></table></figure></p>
+<p>默认的参数意思是<br>在30min的周期内，如果没启动成功，那么在失败后20s进行启动，这样的启动尝试30次</p>
+<p>这个在启动机器的时候，是尽量在osd启动失败的情况下，能够在30min分钟内尽量把服务都启动起来，这个对于关机启动后的控制是没问题的</p>
+<p>参数解释：<br>StartLimitInterval不能设置太小，在osd崩溃的情况里面有一种是对象异常了，这个在启动了后，内部会加载一段时间的数据以后才会崩溃，所以RestartSec*StartLimitBurst 必须小于StartLimitInterval，否则可能出现无限重启的情况</p>
+<p>restart的触发条件</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Restart settings/Exit causes</th>
+<th style="text-align:center">always</th>
+<th style="text-align:center">on-success</th>
+<th style="text-align:center">on-failure</th>
+<th style="text-align:center">on-abnormal</th>
+<th style="text-align:center">on-abort</th>
+<th style="text-align:center">on-watchdog</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">Clean exit code or signal</td>
+<td style="text-align:center">X</td>
+<td style="text-align:center">X</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:left">Unclean exit code</td>
+<td style="text-align:center">X</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">X</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:left">Unclean signal</td>
+<td style="text-align:center">X</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">X</td>
+<td style="text-align:center">X</td>
+<td style="text-align:center">X</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:left">Timeout</td>
+<td style="text-align:center">X</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">X</td>
+<td style="text-align:center">X</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:left">Watchdog</td>
+<td style="text-align:center">X</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">X</td>
+<td style="text-align:center">X</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">X</td>
+</tr>
+</tbody>
+</table>
+<p>可调整项目<br>Restart=always就是只要非正常的退出了，就满足重启的条件，kill -9 进程也能够自动启动</p>
+<p>在osd崩溃的情况里面有一种情况是对象异常了，这个在启动了后，内部会加载一段时间的数据以后才会崩溃，这种崩溃的情况我们不需要尝试多次重启,所以适当降低重启频率<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">StartLimitBurst=<span class="number">3</span></span><br><span class="line">RestartSec=<span class="number">10</span>s</span><br></pre></td></tr></table></figure></p>
+<p>这个设置后能够在运行的集群当中比较好的处理异常退出的情况，但是设置后就要注意关机osd osd启动的问题，一般关机的时候肯定是有人在维护的，所以这个问题不大，人为处理下就行</p>
+<p>所以建议的参数是</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Restart=always</span><br><span class="line">StartLimitInterval=<span class="number">30</span>min</span><br><span class="line">StartLimitBurst=<span class="number">3</span></span><br><span class="line">RestartSec=<span class="number">10</span>s</span><br></pre></td></tr></table></figure>
+<p>可以根据自己的需要进行设置，这个设置下，停止osd就用systemctl 命令去 stop，然后其他的任何异常退出情况都会把osd给拉起来</p>
+<h2 id="总结">总结</h2><p>systemctl在服务控制方面有着很丰富的功能，可以根据自己的需求进行调整，特别是对启动条件有约束的场景，这个是最适合的</p>
+<h2 id="变更记录">变更记录</h2><table>
+<thead>
+<tr>
+<th style="text-align:center">Why</th>
+<th style="text-align:center">Who</th>
+<th style="text-align:center">When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">创建</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2017-09-06</td>
+</tr>
+</tbody>
+</table>
+]]></content>
+    <summary type="html">
+    <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/restart.png" alt=""><br></center>
+
+<h2 id="前言">前言</h2><p>服务器上面的服务会因为各种各样的原因失败，磁盘故障，权限问题，或者是服务过载引起超时，这些都可能引起</p>
+<p>这个在ceph里面systemctl unit 默认有个on-fail restart,默认的可能并不适合所有的场景，所以自动化的服务应该是尽量去适配你手动处理的过程，手动怎么处理的，就怎么去设置<br>]]>
+    
+    </summary>
+    
+      <category term="linux" scheme="http://www.zphj1987.com/tags/linux/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[osd磁盘空间足够无法写入数据的分析与解决]]></title>
@@ -1516,63 +1632,6 @@
 ]]></content>
     <summary type="html">
     <![CDATA[<h2 id="前言">前言</h2><p>之前有个cepher的环境上是双活MDS的，需要变成MDS，目前最新版本是支持这个操作的</p>]]>
-    
-    </summary>
-    
-      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[Ceph根据Crush位置读取数据]]></title>
-    <link href="http://www.zphj1987.com/2017/04/27/Ceph-depend-Crush-read-data/"/>
-    <id>http://www.zphj1987.com/2017/04/27/Ceph-depend-Crush-read-data/</id>
-    <published>2017-04-27T08:47:04.000Z</published>
-    <updated>2017-04-27T09:10:58.547Z</updated>
-    <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/read.gif?imageMogr2/thumbnail/!75p" alt=""><br></center>
-
-<h2 id="前言">前言</h2><p>在ceph研发群里面看到一个cepher在问关于怎么读取ceph的副本的问题，这个功能应该在2012年的时候,我们公司的研发就修改了代码去实现这个功能，只是当时的硬件条件所限，以及本身的稳定性问题，后来没有在生产当中使用<br><a id="more"></a><br>我们都知道ceph在写数据的时候，是先写主本，然后去写副本，而读取的时候，实际上只有主本能够提供服务，这对于磁盘的整体带宽来说，并没有充分的发挥其性能，所以能够读取副本当然是会有很大好处的，特别是对于读场景比较多的情况</p>
-<p>那么在ceph当中是不是有这个功能呢？其实是有的，这个地方ceph更往上走了一层，是基于crush定义的地址去进行文件的读取，这样在读取的客户端眼里，就没有什么主副之分，他会按自己想要的区域去尽量读取，当然这个区域没有的时候就按正常读取就可以了<br><!--more--></p>
-<h2 id="实践">实践</h2><p>如果你看过关于ceph hadoop的相关配置文档，应该会看到这么一个配置</p>
-<blockquote>
-<p>ceph.localize.reads<br>Allow reading from file replica objects<br>Default value: true</p>
-</blockquote>
-<p>显示的是可以从非主本去读取对象，这个对于hadoop场景肯定是越近越好的，可以在ceph的代码里面搜索下 localize-reads<br><a href="https://github.com/ceph/ceph/blob/master/src/ceph_fuse.cc" target="_blank" rel="external">https://github.com/ceph/ceph/blob/master/src/ceph_fuse.cc</a><br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> (std::vector&lt;const char*&gt;::iterator i = args.begin(); i != args.end(); ) &#123;</span><br><span class="line">  <span class="keyword">if</span> (ceph_argparse_double_dash(args, i)) &#123;</span><br><span class="line">    <span class="built_in">break</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (ceph_argparse_flag(args, i, <span class="string">"--localize-reads"</span>, (char*)NULL)) &#123;</span><br><span class="line">    cerr &lt;&lt; <span class="string">"setting CEPH_OSD_FLAG_LOCALIZE_READS"</span> &lt;&lt; std::endl;</span><br><span class="line">    filer_flags |= CEPH_OSD_FLAG_LOCALIZE_READS;</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (ceph_argparse_flag(args, i, <span class="string">"-h"</span>, <span class="string">"--help"</span>, (char*)NULL)) &#123;</span><br><span class="line">    usage();</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    ++i;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>可以看到在ceph-fuse的情况下，是有这个隐藏的一个参数的，本篇就是用这个隐藏的参数来进行实践</p>
-<h3 id="配置一个两节点集群">配置一个两节点集群</h3><p>配置完成了以后ceph的目录树如下,mon部署在lab8106上面<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8107 ~]<span class="comment"># ceph osd tree</span></span><br><span class="line">ID WEIGHT  TYPE NAME        UP/DOWN REWEIGHT PRIMARY-AFFINITY </span><br><span class="line">-<span class="number">1</span> <span class="number">1.07336</span> root default                                       </span><br><span class="line">-<span class="number">2</span> <span class="number">0.53778</span>     host lab8106                                   </span><br><span class="line"> <span class="number">1</span> <span class="number">0.26779</span>         osd.<span class="number">1</span>         up  <span class="number">1.00000</span>          <span class="number">1.00000</span> </span><br><span class="line"> <span class="number">0</span> <span class="number">0.26999</span>         osd.<span class="number">0</span>         up  <span class="number">1.00000</span>          <span class="number">1.00000</span> </span><br><span class="line">-<span class="number">3</span> <span class="number">0.53558</span>     host lab8107                                   </span><br><span class="line"> <span class="number">2</span> <span class="number">0.26779</span>         osd.<span class="number">2</span>         up  <span class="number">1.00000</span>          <span class="number">1.00000</span> </span><br><span class="line"> <span class="number">3</span> <span class="number">0.26779</span>         osd.<span class="number">3</span>         up  <span class="number">1.00000</span>          <span class="number">1.00000</span></span><br><span class="line">[root@lab8107 ~]<span class="comment"># ceph -s|grep mon</span></span><br><span class="line">monmap e1: <span class="number">1</span> mons at &#123;lab8106=<span class="number">192.168</span>.<span class="number">8.106</span>:<span class="number">6789</span>/<span class="number">0</span>&#125;</span><br></pre></td></tr></table></figure></p>
-<h3 id="在lab8107上挂载客户端">在lab8107上挂载客户端</h3><p>在/etc/ceph/ceph.conf中增加一个配置<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[client]</span><br><span class="line">crush_location = <span class="string">"host=lab8107 root=default"</span></span><br></pre></td></tr></table></figure></p>
-<p>这个配置的作用是告诉这个客户端尽量去读取lab8107上面的对象<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8107 ~]<span class="comment"># ceph-fuse -m lab8106:6789 /mnt  --localize-reads</span></span><br></pre></td></tr></table></figure></p>
-<p>写入一个大文件<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8107 ~]<span class="comment"># dd if=/dev/zero of=a bs=4M count=4000</span></span><br></pre></td></tr></table></figure></p>
-<p>在lab8106和lab8107上监控磁盘<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8107 ~]<span class="comment"># iostat -dm 1</span></span><br></pre></td></tr></table></figure></p>
-<p>读取数据<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8107 ~]<span class="comment"># dd if=a of=/dev/null</span></span><br></pre></td></tr></table></figure></p>
-<p>可以看到只有lab8107上有磁盘的读取，也就是读取的数据里面肯定也有副本，都是从lab8107上面读取了</p>
-<p>如果需要多次测试，需要清除下缓存<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sync; <span class="built_in">echo</span> <span class="number">3</span> &gt; /proc/sys/vm/drop_caches</span><br></pre></td></tr></table></figure></p>
-<p>并且重新挂载客户端，这个读取crush的位置的操作是在mount的时候读取的</p>
-<h2 id="使用场景">使用场景</h2><p>上面的配置是可以指定多个平级的位置的<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[client]</span><br><span class="line">crush_location = <span class="string">"host=lab8106 host=lab8107 root=default"</span></span><br></pre></td></tr></table></figure></p>
-<p>这样，在一些读请求很多的场景下，可以把整个后端按逻辑上划分为一个个的区域，然后前面的客户端就可以平级分配到这些区域当中，这样就可以比较大的限度去把副本的读取也调动起来的</p>
-<p>目前在ceph-fuse上已经实现，rbd里面也有类似的一些处理，这个是一个很不错的功能</p>
-<h2 id="总结">总结</h2><p>ceph里面有很多可配置的东西，怎么用好它，最大限度的去适配使用场景，还是有很大的可调的空间的，所谓学无止境，我也在学习python coding了，有很多想法等着去实现</p>
-<h2 id="变更记录">变更记录</h2><table>
-<thead>
-<tr>
-<th style="text-align:center">Why</th>
-<th style="text-align:center">Who</th>
-<th style="text-align:center">When</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">创建</td>
-<td style="text-align:center">武汉-运维-磨渣</td>
-<td style="text-align:center">2017-04-27</td>
-</tr>
-</tbody>
-</table>
-]]></content>
-    <summary type="html">
-    <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/read.gif?imageMogr2/thumbnail/!75p" alt=""><br></center>
-
-<h2 id="前言">前言</h2><p>在ceph研发群里面看到一个cepher在问关于怎么读取ceph的副本的问题，这个功能应该在2012年的时候,我们公司的研发就修改了代码去实现这个功能，只是当时的硬件条件所限，以及本身的稳定性问题，后来没有在生产当中使用<br>]]>
     
     </summary>
     

@@ -178,6 +178,71 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-Ceph数据盘怎样实现自动挂载" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/12/22/Ceph数据盘怎样实现自动挂载/" class="article-date">
+  	<time datetime="2016-12-22T15:16:23.000Z" itemprop="datePublished">2016-12-22</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/12/22/Ceph数据盘怎样实现自动挂载/">Ceph数据盘怎样实现自动挂载</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/mountain.png" alt="mount"><br></center>
+
+<h2 id="前言">前言</h2><p>在Centos7 下，现在采用了 systemctl来控制服务，这个刚开始用起来可能不太习惯，不过这个服务比之前的服务控制要强大的多，可以做更多的控制，本节将来介绍下关于 Ceph的 osd 磁盘挂载的问题</p>
+<p>很多人部署以后，发现在Centos7下用Jewel的时候没有去写fstab也没有写配置文件，重启服务器一样能够挂载起来了，关于这个有另外一篇文章：「<a href="http://www.zphj1987.com/2016/03/31/ceph%E5%9C%A8centos7%E4%B8%8B%E4%B8%80%E4%B8%AA%E4%B8%8D%E5%AE%B9%E6%98%93%E5%8F%91%E7%8E%B0%E7%9A%84%E6%94%B9%E5%8F%98/">ceph在centos7下一个不容易发现的改变</a>」<br>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2016/12/22/Ceph数据盘怎样实现自动挂载/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+<div id="gitment"></div>
+<!-- 主页不要加载gitment -->
+
+
+
+
+  
     <article id="post-cephonebox发布" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -735,75 +800,6 @@
       
         <p class="article-more-link">
           <a  href="/2016/11/16/查询OSD运行在哪些cpu上/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-<div id="gitment"></div>
-<!-- 主页不要加载gitment -->
-
-
-
-
-  
-    <article id="post-处理stale的pg" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/11/14/处理stale的pg/" class="article-date">
-  	<time datetime="2016-11-14T12:32:27.000Z" itemprop="datePublished">2016-11-14</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/11/14/处理stale的pg/">处理stale的pg</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/wremch.png" alt=""><br></center>
-
-<h2 id="前言">前言</h2><p>在某些场景下Ceph集群会出现stale的情况，也就是ceph集群PG的僵死状态，这个状态实际上是无法处理新的请求了，新的请求过来只会block，那么我们如何去恢复环境</p>
-<h2 id="实践过程">实践过程</h2><p>首先模拟stale环境，这个比较好模拟</p>
-<blockquote>
-<p>设置副本2，然后同时关闭两个OSD（不同故障域上），然后删除这两个OSD</p>
-</blockquote>
-<p>集群这个时候就会出现stale的情况了，因为两份数据都丢了，在一些环境下，数据本身就是临时的或者不是那么重要的，比如存储日志，这样的环境下，只需要快速的恢复环境即可，而不担心数据的丢失</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2016/11/14/处理stale的pg/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>

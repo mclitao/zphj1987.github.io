@@ -178,6 +178,68 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-利用现有的网络产品实现内网linux服务器文件的公网同步" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/03/22/利用现有的网络产品实现内网linux服务器文件的公网同步/" class="article-date">
+  	<time datetime="2015-03-22T05:23:41.000Z" itemprop="datePublished">2015-03-22</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/03/22/利用现有的网络产品实现内网linux服务器文件的公网同步/">利用现有的网络产品实现内网linux服务器文件的公网同步</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>更新这篇文章的时候发现原来引用的互联网产品everbox已经不在了,作为国内第一批网盘产品,模仿dropbox做出来的,说实话,这个产品真的还不错,不过可能由于盛大运营方向的改变,对于这个短期内不会有收益的产品，最终被废掉了,其实对于技术发展很快的今天,拥有数据才是重点,进行数据重复删除以后,对于企业的存储压力其实不太大了,该淘汰的终归要淘汰，就像盛大的没落</p>
+<p>下面介绍的是通用的方法,网盘产品很多,都可以使用:</p>
+<p>现在可能会出现这样的情况,你在用你的linux服务器开发一个产品,在公司的时候,你可以通过内网连接到你的机器进行开发,但是回家以后,这些东西怎么带回家,怎么实现在线同步,这是一个问题,最近公司在开发产品的时候就面临这个问题,正好在寻找怎么远程连接内网服务器的时候想到了这个办法,内网服务器的连接办法另外一篇介绍:</p>
+<p>注册网盘账号,方法就不在这里介绍了</p>
+<p>在你的linux机器上安装samba,将你需要使用的目录设置为共享目录<br>这个在/etc/samba/smb.conf中配置就可以</p>
+<p>然后找一台windows机器,将需要备份的目录映射到本地盘,然后将同步的目录指定到这个盘,就可以进行同步了,有的同步软件不支持指定到根目录,那么可以在本地运行一个同步软件,将盘符与本地目录同步起来,然后将同步的盘指定到这个目录即可</p>
+<p>现在有支持可以同步linux和windows的软件了,btsync,这个很简单,需要两边都可以上网即可</p>
+<p>写于: 2012年02月03日<br>更新于: 2015年03月22日</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+<div id="gitment"></div>
+<!-- 主页不要加载gitment -->
+
+
+
+
+  
     <article id="post-利用脚本自动下载ftp列表中的文件" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -718,78 +780,6 @@
       
       
 
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-<div id="gitment"></div>
-<!-- 主页不要加载gitment -->
-
-
-
-
-  
-    <article id="post-CTDB与LVS搭建集群" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/03/21/CTDB与LVS搭建集群/" class="article-date">
-  	<time datetime="2015-03-21T09:13:43.000Z" itemprop="datePublished">2015-03-21</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/03/21/CTDB与LVS搭建集群/">CTDB与LVS搭建集群</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>搭建一个采用lvs进行负载均衡的CTDB集群，整个集群的架构是采用如图所示</p>
-<p><img src="http://7xi6lo.com1.z0.glb.clouddn.com/ctdb.jpg" alt="ctdb"></p>
-<p>在上图所示的架构图中，后端采用的集群是我们的存储,集群存储的三个samba服务器的node在作为CTDB的节点的同时,也是运行着我们的内核客户端,将三个内核客户端挂载到后端的集群中,同时这三个samba客户端对外采用三个虚拟的IP,然后采用LVS的网络负载均衡技术,虚拟成一个对外的IP,这样就实现了samba的带宽聚合以及负载均衡。</p>
-<h2 id="第一步,搭建一个CTDB集群">第一步,搭建一个CTDB集群</h2><h3 id="一、配置环境">一、配置环境</h3><ul>
-<li><p>E5400采用2.6.39内核客户端挂在集群<br>IP:192.168.0.210<br>GW:192.168.1.1<br>NETMASK:255.255.0.0<br>samba node1</p>
-</li>
-<li><p>E5400采用2.6.39内核客户端挂在集群<br>IP:192.168.0.211<br>GW:192.168.1.1<br>NETMASK：255.255.0.0<br>samba node2 </p>
-</li>
-<li><p>E5400采用2.6.39内核客户端挂在集群<br>IP:192.168.0.212<br>GW:192.168.1.1<br>NETMASK:255.255.0.0<br>samba node3</p>
-</li>
-</ul>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/高可用/">高可用</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/03/21/CTDB与LVS搭建集群/#more">more >></a>
-        </p>
       
       <div class="clearfix"></div>
     </div>
