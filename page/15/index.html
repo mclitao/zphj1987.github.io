@@ -178,6 +178,78 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-centos7下做内存盘的方法" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/01/14/centos7下做内存盘的方法/" class="article-date">
+  	<time datetime="2016-01-14T01:07:28.000Z" itemprop="datePublished">2016-01-14</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/01/14/centos7下做内存盘的方法/">centos7下做内存盘的方法</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在找这个资料的时候，基本没几个能用的或者过时了的，或者是换了概念，做的不是需要的那种盘，只有少数文章有提到关键部分应该怎么去操作，现在还是自己总结一下</p>
+<h2 id="内存盘tmpfs和ramdisk的区别">内存盘tmpfs和ramdisk的区别</h2><p>这个在网上的很多资料里面都有提到，很多文章去写怎么做ramdisk的时候，都是去做的tmpfs，两者虽然都是使用的内存来存储东西，但是是完全有区别的</p>
+<ul>
+<li>tmpfs这个只需要mount挂载就可以分配一个目录使用内存了，只是一个目录</li>
+<li>ramdisk这个是真的分配一个空间，这个分区是可以格式化的（这个格式化是关键）</li>
+<li>tmpfs卸载再挂载数据会消失，ramdisk卸载再挂载数据还在</li>
+<li>二者共同点是，系统重启后，里面的东西会消失</li>
+</ul>
+<blockquote>
+<p>本文章主要是讲怎么去做ramdisk</p>
+</blockquote>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2016/01/14/centos7下做内存盘的方法/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+<div id="gitment"></div>
+<!-- 主页不要加载gitment -->
+
+
+
+
+  
     <article id="post-删除osd的正确方式" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -778,72 +850,6 @@
       
         <p class="article-more-link">
           <a  href="/2015/11/16/验证rbd的缓存是否开启/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-<div id="gitment"></div>
-<!-- 主页不要加载gitment -->
-
-
-
-
-  
-    <article id="post-如何删除一台OSD主机" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/11/12/如何删除一台OSD主机/" class="article-date">
-  	<time datetime="2015-11-12T13:33:41.000Z" itemprop="datePublished">2015-11-12</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/11/12/如何删除一台OSD主机/">如何删除一台OSD主机</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>在ceph的一台OSD主机出现故障的时候，数据可以通过副本的机制进行恢复，之后通过删除osd的操作也能够将故障osd从osd tree当中删除掉，但是故障的 osd 的主机仍然会留在集群当中，通过 ceph osd tree 或者打印 crush map 都可以看到这个损坏的节点主机名，所以这里讲下怎么删除掉这个无用的host</p>
-</blockquote>
-<p>首先集群环境为两台主机 node8109 node8110 , node8110主机出现故障需要清理掉</p>
-<h4 id="先看下当前的osd_tree状态">先看下当前的osd tree状态</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@node8109 webui]<span class="comment"># ceph osd tree</span></span><br><span class="line">ID WEIGHT  TYPE NAME             UP/DOWN REWEIGHT PRIMARY-AFFINITY </span><br><span class="line">-<span class="number">1</span> <span class="number">4.00000</span> root default                                            </span><br><span class="line">-<span class="number">3</span> <span class="number">4.00000</span>     rack localrack                                      </span><br><span class="line">-<span class="number">2</span> <span class="number">2.00000</span>         host node8109                                   </span><br><span class="line"> <span class="number">0</span> <span class="number">1.00000</span>             osd.<span class="number">0</span>          up  <span class="number">1.00000</span>          <span class="number">1.00000</span> </span><br><span class="line"> <span class="number">1</span> <span class="number">1.00000</span>             osd.<span class="number">1</span>          up  <span class="number">1.00000</span>          <span class="number">1.00000</span> </span><br><span class="line">-<span class="number">4</span> <span class="number">2.00000</span>         host node8110                                   </span><br><span class="line"> <span class="number">2</span> <span class="number">1.00000</span>             osd.<span class="number">2</span>        down  <span class="number">1.00000</span>          <span class="number">1.00000</span> </span><br><span class="line"> <span class="number">3</span> <span class="number">1.00000</span>             osd.<span class="number">3</span>        down  <span class="number">1.00000</span>          <span class="number">1.00000</span></span><br></pre></td></tr></table></figure>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/11/12/如何删除一台OSD主机/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>

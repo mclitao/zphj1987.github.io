@@ -4,7 +4,7 @@
   <subtitle><![CDATA[止于至善]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2017-09-06T16:31:34.346Z</updated>
+  <updated>2017-09-13T10:11:06.694Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -13,6 +13,55 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[Luminous监控界面中文语言包]]></title>
+    <link href="http://www.zphj1987.com/2017/09/13/maybe-the-first-chinese-for-luminous-dashboard/"/>
+    <id>http://www.zphj1987.com/2017/09/13/maybe-the-first-chinese-for-luminous-dashboard/</id>
+    <published>2017-09-13T09:30:32.000Z</published>
+    <updated>2017-09-13T10:11:06.694Z</updated>
+    <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/china.png" alt=""><br></center>
+
+<h2 id="前言">前言</h2><p>之前有各种ceph的管理平台，在部署方面大部分都比较麻烦，现在在luminous版本当中有一个原生的dashboard，虽然目前这个只能看，但是从界面上面，从接口方面都是非常不错的一个版本</p>
+<p>原生版本目前没有语言的选择，虽然IT方面都是推荐用英语去做，但是在数据展示方面因为毕竟是要人来看，所以这里做了一个中文的语言包，方便转换成中文的界面，这个语言包是跟着ceph版本走的，因为界面可能会调整，所以只能一一匹配，同时提供了原版语言包，可以方便的回退回去，如果版本有更新以最后一个链接为准</p>
+<p>如果有翻译的建议，欢迎在下面留言，或者其他方式告知我<br><a id="more"></a></p>
+<h2 id="语言包">语言包</h2><h3 id="ceph版本（ceph_version_12-2-0_(32ce2a3ae5239ee33d6150705cdb24d43bab910c)_luminous_(rc)">ceph版本（ceph version 12.2.0 (32ce2a3ae5239ee33d6150705cdb24d43bab910c) luminous (rc)</h3><p>中文包：</p>
+<p><a href="http://7xweck.com1.z0.glb.clouddn.com/dashboard/luminous-dashboard-chinese-12.2.0-1.0-1.x86_64.rpm" target="_blank" rel="external">http://7xweck.com1.z0.glb.clouddn.com/dashboard/luminous-dashboard-chinese-12.2.0-1.0-1.x86_64.rpm</a></p>
+<p>英文原版包：<br><a href="http://7xweck.com1.z0.glb.clouddn.com/dashboard/luminous-dashboard-english-12.2.0-1.0-1.x86_64.rpm" target="_blank" rel="external">http://7xweck.com1.z0.glb.clouddn.com/dashboard/luminous-dashboard-english-12.2.0-1.0-1.x86_64.rpm</a></p>
+<h3 id="安装方法">安装方法</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rpm -Uvh  http://xxxxx.rpm --force</span><br></pre></td></tr></table></figure>
+<h2 id="在线预览">在线预览</h2><p>为了方便看到效果，专门在本篇博客内放了一个预览，可以看看效果，数据是离线的，但是可以点击</p>
+<div class="video-container"> <object><br><embed src="http://ow7obg32z.bkt.clouddn.com" <="" embed=""></object><br></div>
+
+<h2 id="总结">总结</h2><p>一直有这个想法，花了点时间去实现，慢慢优化</p>
+<h2 id="变更记录">变更记录</h2><table>
+<thead>
+<tr>
+<th style="text-align:center">Why</th>
+<th style="text-align:center">Who</th>
+<th style="text-align:center">When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">创建</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2017-09-13</td>
+</tr>
+</tbody>
+</table>
+]]></content>
+    <summary type="html">
+    <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/china.png" alt=""><br></center>
+
+<h2 id="前言">前言</h2><p>之前有各种ceph的管理平台，在部署方面大部分都比较麻烦，现在在luminous版本当中有一个原生的dashboard，虽然目前这个只能看，但是从界面上面，从接口方面都是非常不错的一个版本</p>
+<p>原生版本目前没有语言的选择，虽然IT方面都是推荐用英语去做，但是在数据展示方面因为毕竟是要人来看，所以这里做了一个中文的语言包，方便转换成中文的界面，这个语言包是跟着ceph版本走的，因为界面可能会调整，所以只能一一匹配，同时提供了原版语言包，可以方便的回退回去，如果版本有更新以最后一个链接为准</p>
+<p>如果有翻译的建议，欢迎在下面留言，或者其他方式告知我<br>]]>
+    
+    </summary>
+    
+      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[怎样禁止Ceph OSD的自动挂载]]></title>
@@ -1598,68 +1647,6 @@
     </summary>
     
       <category term="freebsd" scheme="http://www.zphj1987.com/tags/freebsd/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[Ceph OSD从filestore 转换到 bluestore的方法]]></title>
-    <link href="http://www.zphj1987.com/2017/05/03/Ceph-filestore-to-bluestore/"/>
-    <id>http://www.zphj1987.com/2017/05/03/Ceph-filestore-to-bluestore/</id>
-    <published>2017-05-03T09:57:27.000Z</published>
-    <updated>2017-05-03T10:13:00.113Z</updated>
-    <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/blueprint.png" alt="myceph"><br></center>
-
-<h2 id="前言">前言</h2><p>前段时间看到<a href="https://mp.weixin.qq.com/s?__biz=MzI0NDE0NjUxMQ==&amp;mid=2651256389&amp;idx=1&amp;sn=e11edcce5722853f442b9a7b8211787e&amp;chksm=f2901e65c5e79773c7690f29e35dbd1870a5bfdb92c70541979f5d080d6580e3af9ba85fff66&amp;mpshare=1&amp;scene=23&amp;srcid=0502SazrSPsWnszP3xfdEId4#rd" target="_blank" rel="external">豪迈的公众号</a>上提到了这个离线转换工具，最近看到群里有人问，找了下没什么相关文档，就自己写了一个，供参考<br><a id="more"></a></p>
-<h2 id="实践步骤">实践步骤</h2><h3 id="获取代码并安装">获取代码并安装</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/ceph/ceph.git</span><br><span class="line"><span class="built_in">cd</span> ceph</span><br><span class="line">git submodule update --init --recursive</span><br><span class="line">./make-dist</span><br><span class="line">rpm -bb ceph.spec</span><br></pre></td></tr></table></figure>
-<p>生成rpm安装包后进行安装,这个过程就不讲太多，根据各种文档安装上最新的版本即可，这个代码合进去时间并不久，大概是上个月才合进去的</p>
-<h3 id="配置集群">配置集群</h3><p>首先配置一个filestore的集群，这个也是很简单的，我的环境配置一个单主机三个OSD的集群<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># ceph -s</span></span><br><span class="line">    cluster <span class="number">3</span>daaf51a-eeba-<span class="number">43</span>a6-<span class="number">9</span>f58-c26c5796f928</span><br><span class="line">     health HEALTH_WARN</span><br><span class="line">            mon.lab8106 low disk space</span><br><span class="line">     monmap e2: <span class="number">1</span> mons at &#123;lab8106=<span class="number">192.168</span>.<span class="number">8.106</span>:<span class="number">6789</span>/<span class="number">0</span>&#125;</span><br><span class="line">            election epoch <span class="number">4</span>, quorum <span class="number">0</span> lab8106</span><br><span class="line">        mgr active: lab8106 </span><br><span class="line">     osdmap e16: <span class="number">3</span> osds: <span class="number">3</span> up, <span class="number">3</span> <span class="keyword">in</span></span><br><span class="line">      pgmap v34: <span class="number">64</span> pgs, <span class="number">1</span> pools, <span class="number">0</span> bytes data, <span class="number">0</span> objects</span><br><span class="line">            <span class="number">323</span> MB used, <span class="number">822</span> GB / <span class="number">822</span> GB avail</span><br><span class="line">                  <span class="number">64</span> active+clean</span><br><span class="line">[root@lab8106 ceph]<span class="comment"># ceph osd tree</span></span><br><span class="line">ID WEIGHT  TYPE NAME        UP/DOWN REWEIGHT PRIMARY-AFFINITY </span><br><span class="line">-<span class="number">1</span> <span class="number">0.80338</span> root default                                       </span><br><span class="line">-<span class="number">2</span> <span class="number">0.80338</span>     host lab8106                                   </span><br><span class="line"> <span class="number">0</span> <span class="number">0.26779</span>         osd.<span class="number">0</span>         up  <span class="number">1.00000</span>          <span class="number">1.00000</span> </span><br><span class="line"> <span class="number">1</span> <span class="number">0.26779</span>         osd.<span class="number">1</span>         up  <span class="number">1.00000</span>          <span class="number">1.00000</span> </span><br><span class="line"> <span class="number">2</span> <span class="number">0.26779</span>         osd.<span class="number">2</span>         up  <span class="number">1.00000</span>          <span class="number">1.00000</span></span><br></pre></td></tr></table></figure></p>
-<h3 id="写入少量数据">写入少量数据</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># rados -p rbd bench 10 write --no-cleanup</span></span><br></pre></td></tr></table></figure>
-<h3 id="设置noout">设置noout</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ceph osd set noout</span></span><br><span class="line">noout is <span class="built_in">set</span></span><br></pre></td></tr></table></figure>
-<h3 id="停止OSD-0">停止OSD.0</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># systemctl stop ceph-osd@0</span></span><br><span class="line">[root@lab8106 ~]<span class="comment"># ceph osd down 0</span></span><br><span class="line">osd.<span class="number">0</span> is already down.</span><br></pre></td></tr></table></figure>
-<p>将数据换个目录挂载，换个新盘挂载到原路径<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># mkdir /var/lib/ceph/osd/ceph-0.old/</span></span><br><span class="line">[root@lab8106 ~]<span class="comment"># umount /var/lib/ceph/osd/ceph-0</span></span><br><span class="line">[root@lab8106 ~]<span class="comment"># mount /dev/sdb1 /var/lib/ceph/osd/ceph-0.old/</span></span><br><span class="line">[root@lab8106 ~]<span class="comment"># mount /dev/sde1 /var/lib/ceph/osd/ceph-0/</span></span><br><span class="line"></span><br><span class="line">[root@lab8106 ~]<span class="comment"># df -h|grep osd</span></span><br><span class="line">/dev/sdc1       <span class="number">275</span>G  <span class="number">833</span>M  <span class="number">274</span>G   <span class="number">1</span>% /var/lib/ceph/osd/ceph-<span class="number">1</span></span><br><span class="line">/dev/sdd1       <span class="number">275</span>G  <span class="number">833</span>M  <span class="number">274</span>G   <span class="number">1</span>% /var/lib/ceph/osd/ceph-<span class="number">2</span></span><br><span class="line">/dev/sdb1       <span class="number">275</span>G  <span class="number">759</span>M  <span class="number">274</span>G   <span class="number">1</span>% /var/lib/ceph/osd/ceph-<span class="number">0</span>.old</span><br><span class="line">/dev/sde1       <span class="number">280</span>G   <span class="number">33</span>M  <span class="number">280</span>G   <span class="number">1</span>% /var/lib/ceph/osd/ceph-<span class="number">0</span></span><br></pre></td></tr></table></figure></p>
-<p>在配置文件/etc/ceph/ceph.conf中添加<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">enable</span>_experimental_unrecoverable_data_corrupting_features = bluestore</span><br></pre></td></tr></table></figure></p>
-<p>如果需要指定osd的block的路径需要写配置文件<br>在做<code>ceph-objectstore-tool --type bluestore --data-path  --op mkfs</code>这个操作之前，在配置文件的全局里面添加上</p>
-<blockquote>
-<p>bluestore_block_path = /dev/sde2</p>
-</blockquote>
-<p>然后再创建的时候就可以是链接到设备了，这个地方写全局变量，然后创建完了后就删除掉这项配置文件，写单独的配置文件的时候发现没读取成功,生成后应该是这样的<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># ll /var/lib/ceph/osd/ceph-0</span></span><br><span class="line">total <span class="number">20</span></span><br><span class="line">lrwxrwxrwx <span class="number">1</span> root root  <span class="number">9</span> May  <span class="number">3</span> <span class="number">17</span>:<span class="number">40</span> block -&gt; /dev/sde2</span><br><span class="line">-rw-r--r-- <span class="number">1</span> root root  <span class="number">2</span> May  <span class="number">3</span> <span class="number">17</span>:<span class="number">40</span> bluefs</span><br><span class="line">-rw-r--r-- <span class="number">1</span> root root <span class="number">37</span> May  <span class="number">3</span> <span class="number">17</span>:<span class="number">40</span> fsid</span><br><span class="line">-rw-r--r-- <span class="number">1</span> root root  <span class="number">8</span> May  <span class="number">3</span> <span class="number">17</span>:<span class="number">40</span> kv_backend</span><br><span class="line">-rw-r--r-- <span class="number">1</span> root root  <span class="number">4</span> May  <span class="number">3</span> <span class="number">17</span>:<span class="number">40</span> mkfs_<span class="keyword">done</span></span><br><span class="line">-rw-r--r-- <span class="number">1</span> root root <span class="number">10</span> May  <span class="number">3</span> <span class="number">17</span>:<span class="number">40</span> <span class="built_in">type</span></span><br></pre></td></tr></table></figure></p>
-<p>如果不增加这个就是以文件形式的存在</p>
-<h3 id="获取osd-0的fsid">获取osd.0的fsid</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># cat /var/lib/ceph/osd/ceph-0.old/fsid </span></span><br><span class="line">b2f73450-<span class="number">5</span>c4a-<span class="number">45</span>fb-<span class="number">9</span>c24-<span class="number">8218</span>a5803434</span><br></pre></td></tr></table></figure>
-<h3 id="创建一个bluestore的osd-0">创建一个bluestore的osd.0</h3><figure class="highlight brainfuck"><table><tr><td class="code"><pre><span class="line"><span class="title">[</span><span class="comment">root@lab8106</span> <span class="comment">~</span><span class="title">]</span><span class="comment">#</span> <span class="comment">ceph</span><span class="literal">-</span><span class="comment">objectstore</span><span class="literal">-</span><span class="comment">tool</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">type</span> <span class="comment">bluestore</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">data</span><span class="literal">-</span><span class="comment">path</span> <span class="comment">/var/lib/ceph/osd/ceph</span><span class="literal">-</span><span class="comment">0</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">fsid</span> <span class="comment">b2f73450</span><span class="literal">-</span><span class="comment">5c4a</span><span class="literal">-</span><span class="comment">45fb</span><span class="literal">-</span><span class="comment">9c24</span><span class="literal">-</span><span class="comment">8218a5803434</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">op</span> <span class="comment">mkfs</span></span><br></pre></td></tr></table></figure>
-<h3 id="转移数据">转移数据</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ceph-objectstore-tool --data-path /var/lib/ceph/osd/ceph-0.old --target-data-path /var/lib/ceph/osd/ceph-0 --op dup</span></span><br><span class="line">[root@lab8106 ~]<span class="comment"># chown -R ceph:ceph /var/lib/ceph/osd/ceph-0</span></span><br></pre></td></tr></table></figure>
-<p>这个操作是将之前的filestore的数据转移到新的bluestore上了</p>
-<h3 id="启动OSD-0">启动OSD.0</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 osd]<span class="comment"># systemctl restart ceph-osd@0</span></span><br></pre></td></tr></table></figure>
-<p>检查状态<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 osd]<span class="comment"># ceph -s</span></span><br><span class="line"><span class="number">2017</span>-<span class="number">05</span>-<span class="number">03</span> <span class="number">17</span>:<span class="number">05</span>:<span class="number">13.119492</span> <span class="number">7</span>f20a501b700 -<span class="number">1</span> WARNING: the following dangerous and experimental features are enabled: bluestore</span><br><span class="line"><span class="number">2017</span>-<span class="number">05</span>-<span class="number">03</span> <span class="number">17</span>:<span class="number">05</span>:<span class="number">13.150181</span> <span class="number">7</span>f20a501b700 -<span class="number">1</span> WARNING: the following dangerous and experimental features are enabled: bluestore</span><br><span class="line">    cluster <span class="number">3</span>daaf51a-eeba-<span class="number">43</span>a6-<span class="number">9</span>f58-c26c5796f928</span><br><span class="line">     health HEALTH_WARN</span><br><span class="line">            noout flag(s) <span class="built_in">set</span></span><br><span class="line">            mon.lab8106 low disk space</span><br><span class="line">     monmap e2: <span class="number">1</span> mons at &#123;lab8106=<span class="number">192.168</span>.<span class="number">8.106</span>:<span class="number">6789</span>/<span class="number">0</span>&#125;</span><br><span class="line">            election epoch <span class="number">4</span>, quorum <span class="number">0</span> lab8106</span><br><span class="line">        mgr active: lab8106 </span><br><span class="line">     osdmap e25: <span class="number">3</span> osds: <span class="number">3</span> up, <span class="number">3</span> <span class="keyword">in</span></span><br><span class="line">            flags noout</span><br><span class="line">      pgmap v80: <span class="number">64</span> pgs, <span class="number">1</span> pools, <span class="number">724</span> MB data, <span class="number">182</span> objects</span><br><span class="line">            <span class="number">3431</span> MB used, <span class="number">555</span> GB / <span class="number">558</span> GB avail</span><br><span class="line">                  <span class="number">64</span> active+clean</span><br></pre></td></tr></table></figure></p>
-<p>成功转移</p>
-<h3 id="不同的block方式">不同的block方式</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># ll /var/lib/ceph/osd/ceph-0/ -al|grep block</span></span><br><span class="line">-rw-r--r--  <span class="number">1</span> ceph ceph <span class="number">10737418240</span> May  <span class="number">3</span> <span class="number">17</span>:<span class="number">32</span> block</span><br><span class="line">[root@lab8106 ceph]<span class="comment"># ll /var/lib/ceph/osd/ceph-4/ -al|grep block</span></span><br><span class="line">lrwxrwxrwx  <span class="number">1</span> ceph ceph  <span class="number">58</span> May  <span class="number">3</span> <span class="number">17</span>:<span class="number">16</span> block -&gt; /dev/disk/by-partuuid/<span class="number">846</span>e93a2-<span class="number">0</span>f6d-<span class="number">47</span>d4-<span class="number">8</span>a90-<span class="number">85</span>ab3cf4ec4e</span><br><span class="line">-rw-r--r--  <span class="number">1</span> ceph ceph  <span class="number">37</span> May  <span class="number">3</span> <span class="number">17</span>:<span class="number">16</span> block_uuid</span><br></pre></td></tr></table></figure>
-<p>可以看到直接创建的时候的block是以链接的方式链接到一个分区的，而不改配置文件的转移的方式里面是一个文件的形式，根据需要进行选择</p>
-<h2 id="总结">总结</h2><p>转移工具的出现方便了以后从filestore到bluestore的转移，可以采取一个个osd的转移方式将整个集群进行转移，而免去了剔除osd，再添加的方式，减少了迁移量，可以一个个的离线进行操作</p>
-<p>ceph的工具集越来越完整了</p>
-<h2 id="变更记录">变更记录</h2><table>
-<thead>
-<tr>
-<th style="text-align:center">Why</th>
-<th style="text-align:center">Who</th>
-<th style="text-align:center">When</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">创建</td>
-<td style="text-align:center">武汉-运维-磨渣</td>
-<td style="text-align:center">2017-05-03</td>
-</tr>
-</tbody>
-</table>
-]]></content>
-    <summary type="html">
-    <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/blueprint.png" alt="myceph"><br></center>
-
-<h2 id="前言">前言</h2><p>前段时间看到<a href="https://mp.weixin.qq.com/s?__biz=MzI0NDE0NjUxMQ==&amp;mid=2651256389&amp;idx=1&amp;sn=e11edcce5722853f442b9a7b8211787e&amp;chksm=f2901e65c5e79773c7690f29e35dbd1870a5bfdb92c70541979f5d080d6580e3af9ba85fff66&amp;mpshare=1&amp;scene=23&amp;srcid=0502SazrSPsWnszP3xfdEId4#rd">豪迈的公众号</a>上提到了这个离线转换工具，最近看到群里有人问，找了下没什么相关文档，就自己写了一个，供参考<br>]]>
-    
-    </summary>
-    
-      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
     
   </entry>
   
