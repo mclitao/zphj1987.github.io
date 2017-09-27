@@ -178,6 +178,76 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-Freebsd-pkg-destroy" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/05/24/Freebsd-pkg-destroy/" class="article-date">
+  	<time datetime="2017-05-24T02:40:34.000Z" itemprop="datePublished">2017-05-24</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/05/24/Freebsd-pkg-destroy/">Freebsd10.2安装包升级pkg引起环境破坏的解决</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/brock.png?imageMogr2/thumbnail/!75p" alt=""><br></center>
+
+
+<h2 id="前言">前言</h2><p>freebsd10.2环境在安装一个新软件包的时候提示升级pkg到1.10.1，然后点击了升级，然后整个pkg环境就无法使用了</p>
+<h2 id="记录">记录</h2><p>升级完了软件包以后第一个错误提示</p>
+<blockquote>
+<p>FreeBSD: /usr/local/lib/libpkg.so.3: Undefined symbol “utimensat” </p>
+</blockquote>
+<p>这个是因为这个库是在freebsd的10.3当中才有的库，而我的环境是10.2的环境<br>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/freebsd/">freebsd</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2017/05/24/Freebsd-pkg-destroy/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+<div id="gitment"></div>
+<!-- 主页不要加载gitment -->
+
+
+
+
+  
     <article id="post-Ceph-filestore-to-bluestore" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -735,67 +805,6 @@
       
         <p class="article-more-link">
           <a  href="/2017/04/19/ceph-delete-an-error-object/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-<div id="gitment"></div>
-<!-- 主页不要加载gitment -->
-
-
-
-
-  
-    <article id="post-ceph-cluster-connect-by-which-client" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/04/13/ceph-cluster-connect-by-which-client/" class="article-date">
-  	<time datetime="2017-04-13T06:18:34.000Z" itemprop="datePublished">2017-04-13</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/04/13/ceph-cluster-connect-by-which-client/">查看ceph集群被哪些客户端连接</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/earth.png" alt="connect"><br></center>
-
-<h2 id="前言">前言</h2><p>我们在使用集群的时候，一般来说比较关注的是后台的集群的状态，但是在做一些更人性化的管理功能的时候，就需要考虑到更多的细节</p>
-<p>本篇就是其中的一个点，查询ceph被哪些客户端连接了<br>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2017/04/13/ceph-cluster-connect-by-which-client/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>
