@@ -178,6 +178,70 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-利用虚拟化环境虚拟nvme盘" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/06/04/利用虚拟化环境虚拟nvme盘/" class="article-date">
+  	<time datetime="2016-06-03T16:02:50.000Z" itemprop="datePublished">2016-06-04</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/06/04/利用虚拟化环境虚拟nvme盘/">利用虚拟化环境虚拟nvme盘</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="前情介绍">前情介绍</h2><h3 id="SPDK">SPDK</h3><p>SPDK的全称为Storage Performance Development Kit ，是Intel发起的一个开源驱动项目，这个是一个开发套件，可以让应用程序在用户态去访问存储资源，具体做能做什么可以去官网看一下 <a href="https://software.intel.com/en-us/articles/introduction-to-the-storage-performance-development-kit-spdk">SPDK官网</a></p>
+<h3 id="NVME">NVME</h3><p>NVMe其实与AHCI一样都是逻辑设备接口标准，NVMe全称Non-Volatile Memory Express，非易失性存储器标准，是使用PCI-E通道的SSD一种规范，NVMe的设计之初就有充分利用到PCI-E SSD的低延时以及并行性，还有当代处理器、平台与应用的并行性。SSD的并行性可以充分被主机的硬件与软件充分利用，相比与现在的AHCI标准，NVMe标准可以带来多方面的性能提升。</p>
+<h3 id="Bluestore">Bluestore</h3><p>BlueStore 是用来存储ceph的数据的地方，提供了一种在块设备上直接写入方式的存储。这个是因为之前ceph社区尝试做了一个kvstore，但是性能达不到想要的效果，然后基于rocksdb的原型，重新开发了一套存储系统，BlueStore直接消耗原始分区。还有一个分区是存储元数据的，实际上就是一个RocksDB键/值数据库存储，这个比之前的filestore最大的优势就是去掉了journal，从而提供了更平滑的IO</p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2016/06/04/利用虚拟化环境虚拟nvme盘/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+<div id="gitment"></div>
+<!-- 主页不要加载gitment -->
+
+
+
+
+  
     <article id="post-mon到底能坏几个" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -754,81 +818,6 @@
       
         <p class="article-more-link">
           <a  href="/2016/04/25/mon的稳定性问题/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-<div id="gitment"></div>
-<!-- 主页不要加载gitment -->
-
-
-
-
-  
-    <article id="post-backfill和recovery的最优值" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/04/24/backfill和recovery的最优值/" class="article-date">
-  	<time datetime="2016-04-24T15:37:21.000Z" itemprop="datePublished">2016-04-24</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/04/24/backfill和recovery的最优值/">backfill和recovery的最优值</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>ceph在增加osd的时候会触发backfill，让数据得到平均，触发数据的迁移<br>ceph在移除osd的时候需要在节点上进行数据的恢复，也有数据的迁移和生成</p>
-<p>只要是集群里面有数据的变动就会有网卡流量，cpu，内存等资源的占用，并且最重要的是还有磁盘的占用，这个客户端也是需要对磁盘进行访问的，当请求出现碰撞的时候，肯定会比正常的情况下要慢很多，而且还有可能因为资源方面的原因而引起机器down机等异常状况的出现</p>
-<p>主要引起的问题可能：</p>
-<ul>
-<li>在peering的时候 block 了IO请求</li>
-<li>在backfill的引起了slow requests</li>
-<li>上面的两个情况会引起客户端的降速和出现soft lockup</li>
-</ul>
-<p>这个在一般情况下会出现不同的需求：</p>
-<ol>
-<li>慢点可以一定不能出问题，不能中断业务</li>
-<li>越快迁移完越好，早点结束维护服务</li>
-<li>需要又快又不能影响业务</li>
-</ol>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2016/04/24/backfill和recovery的最优值/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>

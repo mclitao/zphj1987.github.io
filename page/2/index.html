@@ -178,6 +178,70 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-Ceph-S3-nginx-mirror" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/08/10/Ceph-S3-nginx-mirror/" class="article-date">
+  	<time datetime="2017-08-10T01:37:59.000Z" itemprop="datePublished">2017-08-10</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/08/10/Ceph-S3-nginx-mirror/">Ceph S3 基于NGINX的集群复制方案</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/nginx.png" alt=""><br></center>
+
+<h2 id="前言">前言</h2><p>ceph的s3数据的同步可以通过radosgw-agent进行同步，同region可以同步data和metadata，不同region只能同步metadata，这个地方可以参考下秦牧羊梳理的 <a href="https://my.oschina.net/diluga/blog/391928">ceph radosgw 多集群同步部署流程</a>，本篇讲述的方案与radosgw-agent的复制方案不同在于,这个属于前端复制，后端相当于透明的两个相同集群，在入口层面就将数据进行了复制分流<br>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2017/08/10/Ceph-S3-nginx-mirror/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+<div id="gitment"></div>
+<!-- 主页不要加载gitment -->
+
+
+
+
+  
     <article id="post-RBD-fast-remove" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -756,74 +820,6 @@
       
         <p class="article-more-link">
           <a  href="/2017/06/06/Ceph-deploymon-with-error-address/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-<div id="gitment"></div>
-<!-- 主页不要加载gitment -->
-
-
-
-
-  
-    <article id="post-centos7-update-kernel-can-not-boot" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/06/01/centos7-update-kernel-can-not-boot/" class="article-date">
-  	<time datetime="2017-06-01T06:09:39.000Z" itemprop="datePublished">2017-06-01</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/06/01/centos7-update-kernel-can-not-boot/">Centos7升级内核后无法启动解决办法</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/newkernel.png?imageMogr2/thumbnail/!75p" alt="kernel"><br></center>
-
-<h2 id="前言">前言</h2><p>这个问题存在有一段时间了，之前做的centos7的ISO，在进行内核的升级以后就存在这个问题：</p>
-<ul>
-<li>系统盘在板载sata口上是可以正常启动新内核并且能识别面板硬盘</li>
-<li>系统盘插在面板口上新内核无法启动，调试发现无法找到系统盘</li>
-<li>系统盘插在面板上默认的3.10内核可以正常启动
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2017/06/01/centos7-update-kernel-can-not-boot/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>

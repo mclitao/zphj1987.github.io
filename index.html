@@ -178,6 +178,74 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-a-new-ceph-book" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/11/30/a-new-ceph-book/" class="article-date">
+  	<time datetime="2017-11-30T14:23:47.000Z" itemprop="datePublished">2017-11-30</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/11/30/a-new-ceph-book/">推荐一本书《Ceph设计原理与实现》</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <center><br><img src="http://7xopdu.com1.z0.glb.clouddn.com/book-rocket.png" alt=""><br></center>
+
+<h2 id="前言">前言</h2><p>本篇不是一篇技术文，而是推荐的一本书，对于写书来说，在多年以前觉得是一件可望而不可及的事情，而看到几本经典书籍的作者在讲述自己写书的过程的时候，都是自己注入了大量的精力的，所以我自己目前也只能是一个个知识点的以博客的方式进行记录</p>
+<p>对于买书来说，很多人会觉得很贵，其实一本书几百面，只要里面的书有两面是能够帮助到你的，书的价值其实已经回来了，所以对于技术书籍来说，基本不评价书的好坏，而是去看多少能提取的东西，多少未知的东西</p>
+<p>ceph的书籍最初的起步也是国外的一个作者写的，社区进行翻译，社区自己也出了一本书，还有ZETTAKIT（泽塔云）的研发常涛也出了一本《Ceph源码分析》，这些都是很好的书籍，之前也都有推荐，这些书籍都是一线的研发在繁忙之中抽出空余的时间写下来的</p>
+<p>本篇推荐的一篇是来自中兴的书籍，中兴也是国内ceph开发里面代码提交量很高的公司</p>
+<p>目前没能拿到书籍，所以只能从目录来讲下本书会提供哪些相关的知识了<br>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2017/11/30/a-new-ceph-book/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+<div id="gitment"></div>
+<!-- 主页不要加载gitment -->
+
+
+
+
+  
     <article id="post-lost-osdmap-recovery" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -742,70 +810,6 @@
       
         <p class="article-more-link">
           <a  href="/2017/08/10/Ceph-recover-speed-control/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-<div id="gitment"></div>
-<!-- 主页不要加载gitment -->
-
-
-
-
-  
-    <article id="post-Ceph-S3-nginx-mirror" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/08/10/Ceph-S3-nginx-mirror/" class="article-date">
-  	<time datetime="2017-08-10T01:37:59.000Z" itemprop="datePublished">2017-08-10</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/08/10/Ceph-S3-nginx-mirror/">Ceph S3 基于NGINX的集群复制方案</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/nginx.png" alt=""><br></center>
-
-<h2 id="前言">前言</h2><p>ceph的s3数据的同步可以通过radosgw-agent进行同步，同region可以同步data和metadata，不同region只能同步metadata，这个地方可以参考下秦牧羊梳理的 <a href="https://my.oschina.net/diluga/blog/391928">ceph radosgw 多集群同步部署流程</a>，本篇讲述的方案与radosgw-agent的复制方案不同在于,这个属于前端复制，后端相当于透明的两个相同集群，在入口层面就将数据进行了复制分流<br>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2017/08/10/Ceph-S3-nginx-mirror/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>

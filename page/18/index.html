@@ -178,6 +178,71 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-ubuntu配置简单的DNS服务器" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/03/24/ubuntu配置简单的DNS服务器/" class="article-date">
+  	<time datetime="2015-03-24T05:39:44.000Z" itemprop="datePublished">2015-03-24</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/03/24/ubuntu配置简单的DNS服务器/">ubuntu配置简单的DNS服务器</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>之所以说是简单的服务器，实现的功能很简单，通过这个dns server 查询制定域名的时候，能够根据设置的值来返回IP，当前的需求是需要轮询的返回IP</p>
+<p>DNS 轮询机制会受到多方面的影响，如：A记录的TTL时间长短的影响；别的 DNS 服务器 Cache 的影响；windows 客户端也有一个DNS Cache。这些都会影响 DNS 轮询的效果。</p>
+<p>下面的配置就是实现解析test.zp.com到不同的IP地址</p>
+<h3 id="安装dns_server软件包">安装dns server软件包</h3><p>ubuntu下是通过安装bind9软件包来配置dns-server的<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab5106 ~]<span class="comment"># apt-get install bind9</span></span><br></pre></td></tr></table></figure></p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ubuntu/">ubuntu</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2015/03/24/ubuntu配置简单的DNS服务器/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+<div id="gitment"></div>
+<!-- 主页不要加载gitment -->
+
+
+
+
+  
     <article id="post-mdtest测试工具" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -729,66 +794,6 @@
         <p class="article-more-link">
           <a  href="/2015/03/24/custom-ubuntu-server-iso/#more">more >></a>
         </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-<div id="gitment"></div>
-<!-- 主页不要加载gitment -->
-
-
-
-
-  
-    <article id="post-定制ubuntu的时候修改proseed" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/03/24/定制ubuntu的时候修改proseed/" class="article-date">
-  	<time datetime="2015-03-24T00:20:02.000Z" itemprop="datePublished">2015-03-24</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/03/24/定制ubuntu的时候修改proseed/">定制ubuntu的时候修改proseed</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <figure class="highlight"><table><tr><td class="code"><pre><span class="line">d-i clock-setup/utc-auto boolean false (&#19981;&#29992;utc)&#10;d-i clock-setup/ntp boolean false   (&#19981;&#26102;&#38388;&#21516;&#27493;)&#10;d-i netcfg/disable_autoconfig boolean true   (&#20851;&#38381;&#33258;&#21160;&#32593;&#32476;&#37197;&#32622;)&#10;d-i netcfg/use_autoconfig boolean false   (&#19981;&#20351;&#29992;&#33258;&#21160;&#37197;&#32622;&#25991;&#20214;)&#10;d-i apt-setup/use_mirror boolean false (&#19981;&#20351;&#29992;apt &#38236;&#20687;)</span><br></pre></td></tr></table></figure>
-<p>写于: 2014年08月07日<br>更新于: 2015年03月24日</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ubuntu/">ubuntu</a></li></ul>
-	</div>
-
-      
-
       
       <div class="clearfix"></div>
     </div>
