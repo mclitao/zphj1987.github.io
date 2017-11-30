@@ -178,6 +178,71 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-recovery-from-grub-damage" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/11/30/recovery-from-grub-damage/" class="article-date">
+  	<time datetime="2017-11-30T14:51:55.000Z" itemprop="datePublished">2017-11-30</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/11/30/recovery-from-grub-damage/">CentOS GRUB损坏修复方法</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/grub.jpg" alt="grub"><br></center>
+
+<h2 id="前言">前言</h2><p>博客很久没有更新了，一个原因就是原来存放部署博客的环境坏了，硬盘使用的是SSD，只要读取到某个文件，整个磁盘就直接识别不到了，还好博客环境之前有做备份，最近一直没有把部署环境做下恢复，今天抽空把环境做下恢复并且记录一篇基础的GRUB的处理文档</p>
+<p>这两天正好碰到GRUB损坏的事，很久前处理过，但是没留下文档，正好现在把流程梳理一下，来解决grub.cfg损坏的情况,或者无法启动的情况<br>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2017/11/30/recovery-from-grub-damage/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+<div id="gitment"></div>
+<!-- 主页不要加载gitment -->
+
+
+
+
+  
     <article id="post-a-new-ceph-book" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -746,70 +811,6 @@
       
         <p class="article-more-link">
           <a  href="/2017/08/10/how-to-get-Ceph-OSD-mem-used/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-<div id="gitment"></div>
-<!-- 主页不要加载gitment -->
-
-
-
-
-  
-    <article id="post-Ceph-recover-speed-control" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/08/10/Ceph-recover-speed-control/" class="article-date">
-  	<time datetime="2017-08-10T06:53:12.000Z" itemprop="datePublished">2017-08-10</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/08/10/Ceph-recover-speed-control/">Ceph recover的速度控制</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/recovery.png" alt=""><br></center>
-
-<h2 id="前言">前言</h2><p>磁盘损坏对于一个大集群来说，可以说是必然发生的事情，即使再小的概率，磁盘量上去，总会坏那么几块盘，这个时候就会触发内部的修复过程，修复就是让不满足副本要求的PG，恢复到满足的情况<br>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2017/08/10/Ceph-recover-speed-control/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>

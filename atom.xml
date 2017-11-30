@@ -4,7 +4,7 @@
   <subtitle><![CDATA[止于至善]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2017-11-30T14:47:50.773Z</updated>
+  <updated>2017-11-30T15:08:28.359Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -13,6 +13,84 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[CentOS GRUB损坏修复方法]]></title>
+    <link href="http://www.zphj1987.com/2017/11/30/recovery-from-grub-damage/"/>
+    <id>http://www.zphj1987.com/2017/11/30/recovery-from-grub-damage/</id>
+    <published>2017-11-30T14:51:55.000Z</published>
+    <updated>2017-11-30T15:08:28.359Z</updated>
+    <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/grub.jpg" alt="grub"><br></center>
+
+<h2 id="前言">前言</h2><p>博客很久没有更新了，一个原因就是原来存放部署博客的环境坏了，硬盘使用的是SSD，只要读取到某个文件，整个磁盘就直接识别不到了，还好博客环境之前有做备份，最近一直没有把部署环境做下恢复，今天抽空把环境做下恢复并且记录一篇基础的GRUB的处理文档</p>
+<p>这两天正好碰到GRUB损坏的事，很久前处理过，但是没留下文档，正好现在把流程梳理一下，来解决grub.cfg损坏的情况,或者无法启动的情况<br><a id="more"></a></p>
+<h2 id="实践步骤">实践步骤</h2><p>安装操作系统的时候会有多种可能分区的方法，一个直接的分区，一个是用了lvm,本篇将几种分区的情况分别写出来</p>
+<h3 id="lvm分区的情况">lvm分区的情况</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># df -h</span></span><br><span class="line">Filesystem               Size  Used Avail Use% Mounted on</span><br><span class="line">/dev/mapper/centos-root   <span class="number">17</span>G  <span class="number">927</span>M   <span class="number">17</span>G   <span class="number">6</span>% /</span><br><span class="line">devtmpfs                 <span class="number">901</span>M     <span class="number">0</span>  <span class="number">901</span>M   <span class="number">0</span>% /dev</span><br><span class="line">tmpfs                    <span class="number">912</span>M     <span class="number">0</span>  <span class="number">912</span>M   <span class="number">0</span>% /dev/shm</span><br><span class="line">tmpfs                    <span class="number">912</span>M  <span class="number">8.6</span>M  <span class="number">904</span>M   <span class="number">1</span>% /run</span><br><span class="line">tmpfs                    <span class="number">912</span>M     <span class="number">0</span>  <span class="number">912</span>M   <span class="number">0</span>% /sys/fs/cgroup</span><br><span class="line">/dev/sda1               <span class="number">1014</span>M  <span class="number">143</span>M  <span class="number">872</span>M  <span class="number">15</span>% /boot</span><br><span class="line">tmpfs                    <span class="number">183</span>M     <span class="number">0</span>  <span class="number">183</span>M   <span class="number">0</span>% /run/user/<span class="number">0</span></span><br></pre></td></tr></table></figure>
+<p>模拟/boot/grub2/grub.cfg的破坏</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># mv /boot/grub2/grub.cfg /boot/grub2/grub.cfgbk</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># reboot</span></span><br></pre></td></tr></table></figure>
+<p>重启后就会出现这个</p>
+<p><img src="http://static.zybuluo.com/zphj1987/agdslyms36u15eaar4h4d8gr/image.png" alt="image.png-13.4kB"></p>
+<p>使用ls查询当前的分区情况</p>
+<p><img src="http://static.zybuluo.com/zphj1987/fv6pjy9a3aw09ut819k8lvj9/image.png" alt="image.png-7.7kB"><br>查询分区情况<br><img src="http://static.zybuluo.com/zphj1987/uuj04u8y2dguvhqg85iavbe5/image.png" alt="image.png-29.1kB"></p>
+<p>可以看到(hd0,msdos1)可以列出/boot里面的内容，可以确定这个就是启动分区</p>
+<p>设置root<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">grub&gt; <span class="built_in">set</span> root=(hd0,msdos1)</span><br></pre></td></tr></table></figure></p>
+<p>命令后面的路径可以用tab键补全,/dev/mapper/centos-root为根分区，因为当前的分区模式是lvm的<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">grub&gt; linux16 /vmlinuz-<span class="number">3.10</span>.<span class="number">0</span>-<span class="number">693</span>.el7.x86_64 root=/dev/mapper/centos-root</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">grub&gt; initrd16 /initramfs-<span class="number">3.10</span>.<span class="number">0</span>-<span class="number">693</span>.el7.x86_64.img</span><br></pre></td></tr></table></figure>
+<p>启动<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">grub&gt; boot</span><br></pre></td></tr></table></figure></p>
+<p>进入系统后重新生成grub.cfg<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">grub2-mkconfig -o /boot/grub2/grub.cfg</span><br></pre></td></tr></table></figure></p>
+<p>然后重启下系统验证是否好了</p>
+<h3 id="一个完整的/分区的形式的">一个完整的/分区的形式的</h3><p>这种情况，整个安装的系统就一个分区，boot是作为/分区的一个子目录的情况<br>ls 查询分区<br><img src="http://static.zybuluo.com/zphj1987/o3d1wegh1nfpm6a3u7w5q8yo/image.png" alt="image.png-4.6kB"></p>
+<p>设置根分区<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">grub&gt; <span class="built_in">set</span> root=(hd0,msdos3)</span><br></pre></td></tr></table></figure></p>
+<p>可以看到上面是msdos3分区对应的就是root=/dev/sda3,下面就设置这个root</p>
+<p>设置linux16<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">grub&gt; linux16 /root/vmlinuz-<span class="number">3.10</span>.<span class="number">0</span>-<span class="number">693</span>.el7.x86_64 root=/dev/sda3</span><br></pre></td></tr></table></figure></p>
+<p>设置initrd16<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">grub&gt; initrd16 /root/initramfs-<span class="number">3.10</span>.<span class="number">0</span>-<span class="number">693</span>.el7.x86_64.img</span><br></pre></td></tr></table></figure></p>
+<p>启动<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">grub&gt; boot</span><br></pre></td></tr></table></figure></p>
+<p>进入系统后重新生成grub.cfg<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">grub2-mkconfig -o /boot/grub2/grub.cfg</span><br></pre></td></tr></table></figure></p>
+<p>然后重启下系统验证是否好了</p>
+<h3 id="/分区和/boot分区独立分区的情况">/分区和/boot分区独立分区的情况</h3><p><img src="http://static.zybuluo.com/zphj1987/bd481u09kfonua77zwc87jsc/image.png" alt="image.png-16.3kB"></p>
+<p>设置根分区<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">grub&gt; <span class="built_in">set</span> root=(hd0,msdos1)</span><br></pre></td></tr></table></figure></p>
+<p>根据/分区为msdos2可以知道root分区为/dev/sda2<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">grub&gt; linux16 /vmlinuz-<span class="number">3.10</span>.<span class="number">0</span>-<span class="number">693</span>.el7.x86_64 root=/dev/sda2</span><br></pre></td></tr></table></figure></p>
+<p>设置initrd16<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">grub&gt; initrd16 /initramfs-<span class="number">3.10</span>.<span class="number">0</span>-<span class="number">693</span>.el7.x86_64.img</span><br></pre></td></tr></table></figure></p>
+<p>启动<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">grub&gt; boot</span><br></pre></td></tr></table></figure></p>
+<p>进入系统后重新生成grub.cfg<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">grub2-mkconfig -o /boot/grub2/grub.cfg</span><br></pre></td></tr></table></figure></p>
+<p>然后重启下系统验证是否好了</p>
+<h2 id="总结">总结</h2><p>主要的处理流程如下：</p>
+<ul>
+<li>首先通过<code>ls</code>得到分区的情况</li>
+<li>通过<code>set</code>设置/boot所在的分区为root</li>
+<li>分别设置linux16，initrd16并且指定root分区为/分区所在的目录</li>
+<li>重启后重新生成grub即可</li>
+</ul>
+<p>本篇作为一个总结以备不时之需</p>
+<h2 id="变更记录">变更记录</h2><table>
+<thead>
+<tr>
+<th style="text-align:center">Why</th>
+<th style="text-align:center">Who</th>
+<th style="text-align:center">When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">创建</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2017-11-30</td>
+</tr>
+</tbody>
+</table>
+]]></content>
+    <summary type="html">
+    <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/grub.jpg" alt="grub"><br></center>
+
+<h2 id="前言">前言</h2><p>博客很久没有更新了，一个原因就是原来存放部署博客的环境坏了，硬盘使用的是SSD，只要读取到某个文件，整个磁盘就直接识别不到了，还好博客环境之前有做备份，最近一直没有把部署环境做下恢复，今天抽空把环境做下恢复并且记录一篇基础的GRUB的处理文档</p>
+<p>这两天正好碰到GRUB损坏的事，很久前处理过，但是没留下文档，正好现在把流程梳理一下，来解决grub.cfg损坏的情况,或者无法启动的情况<br>]]>
+    
+    </summary>
+    
+      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[推荐一本书《Ceph设计原理与实现》]]></title>
@@ -1621,50 +1699,6 @@
     <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/graylog.png" alt=""><br></center>
 
 <h2 id="前言">前言</h2><p>在看集群的配置文件的时候看到ceph里面有一个graylog的输出选择，目前看到的是可以收集mon日志和clog，osd单个的日志没有看到，Elasticsearch有整套的日志收集系统，可以很方便的将所有日志汇总到一起，这个graylog的收集采用的是自有的udp协议，从配置上来说可以很快的完成，这里只做一个最基本的实践<br>]]>
-    
-    </summary>
-    
-      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[Ceph部署mon出现0.0.0.0地址]]></title>
-    <link href="http://www.zphj1987.com/2017/06/06/Ceph-deploymon-with-error-address/"/>
-    <id>http://www.zphj1987.com/2017/06/06/Ceph-deploymon-with-error-address/</id>
-    <published>2017-06-06T09:42:22.000Z</published>
-    <updated>2017-06-06T09:48:16.851Z</updated>
-    <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/monitor.png" alt="monitor"><br></center>
-
-<h2 id="前言">前言</h2><p>最近在群里两次看到出现mon地址不对的问题，都是显示0.0.0.0:0地址，如下所示：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># ceph -s</span></span><br><span class="line">    cluster <span class="number">3137</span>d009<span class="operator">-e</span>41e-<span class="number">41</span>f0-b8f8-<span class="number">5</span>cb574502572</span><br><span class="line">     health HEALTH_ERR</span><br><span class="line">            <span class="number">1</span> mons down, quorum <span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span> lab8106,node8107,lab104</span><br><span class="line">     monmap e2: <span class="number">4</span> mons at &#123;lab104=<span class="number">192.168</span>.<span class="number">10.4</span>:<span class="number">6789</span>/<span class="number">0</span>,lab8106=<span class="number">192.168</span>.<span class="number">8.106</span>:<span class="number">6789</span>/<span class="number">0</span>,lab8107=<span class="number">0.0</span>.<span class="number">0.0</span>:<span class="number">0</span>/<span class="number">2</span>,node8107=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6789</span>/<span class="number">0</span>&#125;</span><br></pre></td></tr></table></figure></p>
-<a id="more"></a>
-<p>这个之前偶尔会看到有出现这个问题，但是自己一直没碰到过，想看下是什么情况下触发的，在征得这个cepher的同意后，登录上他的环境检查了一下，发现是主机名引起的这个问题</p>
-<h2 id="问题复现">问题复现</h2><p>在部署的过程中，已经规划好了主机名，而又去修改了这个机器的主机名的情况下就会出现这个问题<br>比如我的这个机器，开始规划好lab8107主机名是这个，然后再lab8107上执行hostname node8107，就会触发这个问题</p>
-<p>这个在deploy的部署输出日志中可以看得到<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[lab8107][WARNIN] ********************************************************************************</span><br><span class="line">[lab8107][WARNIN] provided hostname must match remote hostname</span><br><span class="line">[lab8107][WARNIN] provided hostname: lab8107</span><br><span class="line">[lab8107][WARNIN] remote hostname: node8107</span><br><span class="line">[lab8107][WARNIN] monitors may not reach quorum and create-keys will not complete</span><br><span class="line">[lab8107][WARNIN] ********************************************************************************</span><br></pre></td></tr></table></figure></p>
-<p>可以看到 provided hostname: lab8107 而remote hostname: node8107，就会出现这个问题了</p>
-<p>如果下次出现这个问题，首先就检查下规划的mon的主机名与真实的主机名是否一致</p>
-<h2 id="总结">总结</h2><p>新手在部署环境的时候，经常会犯一些比较基础的错误，这个是一个经验积累的过程，当然对于已经比较熟悉的cepher来说，也去尝试多看下各种异常问题，这个对于以后定位异常还是很有帮助的</p>
-<h2 id="变更记录">变更记录</h2><table>
-<thead>
-<tr>
-<th style="text-align:center">Why</th>
-<th style="text-align:center">Who</th>
-<th style="text-align:center">When</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">创建</td>
-<td style="text-align:center">武汉-运维-磨渣</td>
-<td style="text-align:center">2017-06-06</td>
-</tr>
-</tbody>
-</table>
-]]></content>
-    <summary type="html">
-    <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/monitor.png" alt="monitor"><br></center>
-
-<h2 id="前言">前言</h2><p>最近在群里两次看到出现mon地址不对的问题，都是显示0.0.0.0:0地址，如下所示：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># ceph -s</span></span><br><span class="line">    cluster <span class="number">3137</span>d009<span class="operator">-e</span>41e-<span class="number">41</span>f0-b8f8-<span class="number">5</span>cb574502572</span><br><span class="line">     health HEALTH_ERR</span><br><span class="line">            <span class="number">1</span> mons down, quorum <span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span> lab8106,node8107,lab104</span><br><span class="line">     monmap e2: <span class="number">4</span> mons at &#123;lab104=<span class="number">192.168</span>.<span class="number">10.4</span>:<span class="number">6789</span>/<span class="number">0</span>,lab8106=<span class="number">192.168</span>.<span class="number">8.106</span>:<span class="number">6789</span>/<span class="number">0</span>,lab8107=<span class="number">0.0</span>.<span class="number">0.0</span>:<span class="number">0</span>/<span class="number">2</span>,node8107=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6789</span>/<span class="number">0</span>&#125;</span><br></pre></td></tr></table></figure></p>]]>
     
     </summary>
     
