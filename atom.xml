@@ -4,7 +4,7 @@
   <subtitle><![CDATA[止于至善]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2017-11-30T14:36:52.909Z</updated>
+  <updated>2017-11-30T14:47:50.773Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -16,10 +16,10 @@
   
   <entry>
     <title><![CDATA[推荐一本书《Ceph设计原理与实现》]]></title>
-    <link href="http://www.zphj1987.com/2017/11/30/a-new-ceph-book/"/>
-    <id>http://www.zphj1987.com/2017/11/30/a-new-ceph-book/</id>
-    <published>2017-11-30T14:23:47.000Z</published>
-    <updated>2017-11-30T14:36:52.909Z</updated>
+    <link href="http://www.zphj1987.com/2017/09/28/a-new-ceph-book/"/>
+    <id>http://www.zphj1987.com/2017/09/28/a-new-ceph-book/</id>
+    <published>2017-09-28T14:23:47.000Z</published>
+    <updated>2017-11-30T14:47:50.773Z</updated>
     <content type="html"><![CDATA[<center><br><img src="http://7xopdu.com1.z0.glb.clouddn.com/book-rocket.png" alt=""><br></center>
 
 <h2 id="前言">前言</h2><p>本篇不是一篇技术文，而是推荐的一本书，对于写书来说，在多年以前觉得是一件可望而不可及的事情，而看到几本经典书籍的作者在讲述自己写书的过程的时候，都是自己注入了大量的精力的，所以我自己目前也只能是一个个知识点的以博客的方式进行记录</p>
