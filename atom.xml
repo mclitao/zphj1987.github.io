@@ -4,7 +4,7 @@
   <subtitle><![CDATA[止于至善]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2017-11-30T15:08:28.359Z</updated>
+  <updated>2017-12-04T15:03:23.028Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -15,11 +15,89 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title><![CDATA[mds的cpu占用问题分析以及解决办法]]></title>
+    <link href="http://www.zphj1987.com/2017/12/04/mds-use-too-more-cpu/"/>
+    <id>http://www.zphj1987.com/2017/12/04/mds-use-too-more-cpu/</id>
+    <published>2017-12-04T14:47:04.000Z</published>
+    <updated>2017-12-04T15:03:23.028Z</updated>
+    <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/ganesha.png" alt="ganesha"><br></center>
+
+<h2 id="前言">前言</h2><p>mds是ceph里面处理文件接口的组件，一旦使用文件系统，不可避免的会出现一种场景就是目录很多，目录里面的文件很多，而mds是一个单进程的组件，现在虽然有了muti mds，但稳定的使用的大部分场景还是单acitve mds的</p>
+<p>这就会出现一种情况，一旦一个目录里面有很多文件的时候，去查询这个目录里的文件就会在当前目录做一次遍历，这个需要一个比较长的时间，如果能比较好的缓存文件信息，也能避免一些过载情况，本篇讲述的是内核客户端正常，而export nfs后mds的负载长时间过高的情况<br><a id="more"></a></p>
+<h2 id="问题复现">问题复现</h2><h3 id="准备测试数据,准备好监控环境">准备测试数据,准备好监控环境</h3><p>监控mds cpu占用<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pidstat -u  <span class="number">1</span> -p <span class="number">27076</span> &gt; /tmp/mds.cpu.log</span><br><span class="line">UserParameter=mds.cpu,cat /tmp/mds.cpu.log|tail -n <span class="number">1</span>|grep -v Average| awk <span class="string">'&#123;print $8&#125;'</span></span><br></pre></td></tr></table></figure></p>
+<p>整个测试避免屏幕的打印影响时间统计,把输出需要重定向<br>测试一：<br>内核客户端写入10000文件查看时间以及cpu占用<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@nfsserver kc10000]<span class="comment"># time seq 10000|xargs -i dd if=/dev/zero of=a&#123;&#125; bs=1K count=1  2&gt;/dev/null</span></span><br><span class="line">real	<span class="number">0</span>m30.<span class="number">121</span>s</span><br><span class="line">user	<span class="number">0</span>m1.<span class="number">901</span>s</span><br><span class="line">sys	<span class="number">0</span>m10.<span class="number">420</span>s</span><br></pre></td></tr></table></figure></p>
+<p><img src="http://static.zybuluo.com/zphj1987/3no4iobedvhwujvtr8jfmrf7/aa.png" alt="aa.png-32.5kB"></p>
+<p>测试二：<br>内核客户端写入20000文件查看时间以及cpu占用<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@nfsserver kc20000]<span class="comment"># time seq 20000|xargs -i dd if=/dev/zero of=a&#123;&#125; bs=1K count=1  2&gt;/dev/null</span></span><br><span class="line">real	<span class="number">1</span>m38.<span class="number">233</span>s</span><br><span class="line">user	<span class="number">0</span>m3.<span class="number">761</span>s</span><br><span class="line">sys	<span class="number">0</span>m21.<span class="number">510</span>s</span><br></pre></td></tr></table></figure></p>
+<p><img src="http://static.zybuluo.com/zphj1987/ual9inmekpeth163muql8dyn/bbb.png" alt="bbb.png-39kB"><br>测试三：<br>内核客户端写入40000文件查看时间以及cpu占用<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@nfsserver kc40000]<span class="comment">#  time seq 40000|xargs -i dd if=/dev/zero of=a&#123;&#125; bs=1K count=1  2&gt;/dev/null</span></span><br><span class="line"></span><br><span class="line">real	<span class="number">2</span>m55.<span class="number">261</span>s</span><br><span class="line">user	<span class="number">0</span>m7.<span class="number">699</span>s</span><br><span class="line">sys	<span class="number">0</span>m42.<span class="number">410</span>s</span><br></pre></td></tr></table></figure></p>
+<p><img src="http://static.zybuluo.com/zphj1987/pnqr3lpjuydb8dj182cw6ffa/cccc.png" alt="cccc.png-57.3kB"></p>
+<p>测试4：<br>内核客户端列目录10000文件，第一次写完有缓存情况<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@nfsserver kc10000]<span class="comment"># time ll 2&gt;&amp;1 &gt; /dev/null</span></span><br><span class="line"></span><br><span class="line">real	<span class="number">0</span>m0.<span class="number">228</span>s</span><br><span class="line">user	<span class="number">0</span>m0.<span class="number">063</span>s</span><br><span class="line">sys	<span class="number">0</span>m0.<span class="number">048</span>s</span><br></pre></td></tr></table></figure></p>
+<p>内核客户端列目录20000文件，第一次写完有缓存情况<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@nfsserver kc20000]<span class="comment"># time ll 2&gt;&amp;1 &gt; /dev/null</span></span><br><span class="line"></span><br><span class="line">real	<span class="number">0</span>m0.<span class="number">737</span>s</span><br><span class="line">user	<span class="number">0</span>m0.<span class="number">141</span>s</span><br><span class="line">sys	<span class="number">0</span>m0.<span class="number">092</span>s</span><br></pre></td></tr></table></figure></p>
+<p>内核客户端列目录40000文件，第一次写完有缓存情况<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@nfsserver kc40000]<span class="comment"># time ll 2&gt;&amp;1 &gt; /dev/null</span></span><br><span class="line"></span><br><span class="line">real	<span class="number">0</span>m1.<span class="number">658</span>s</span><br><span class="line">user	<span class="number">0</span>m0.<span class="number">286</span>s</span><br><span class="line">sys	<span class="number">0</span>m0.<span class="number">196</span>s</span><br></pre></td></tr></table></figure></p>
+<p>都是比较快的返回，CPU可以忽略不计</p>
+<p>现在重启mds后再次列目录<br>客户端如果不umount,直接重启mds的话,还是会缓存在<br>新版本这个地方好像已经改了（重启了mds 显示inode还在，但是随着时间的增长inode会减少，说明还是有周期，会释放，这个还不知道哪个地方控制，用什么参数控制，这个不是本篇着重关注的地方，后续再看下,jewel版本已经比hammer版本的元数据时间快了很多了）<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@nfsserver kc10000]<span class="comment"># time ll 2&gt;&amp;1 &gt; /dev/null</span></span><br><span class="line"></span><br><span class="line">real	<span class="number">0</span>m0.<span class="number">380</span>s</span><br><span class="line">user	<span class="number">0</span>m0.<span class="number">065</span>s</span><br><span class="line">sys	<span class="number">0</span>m0.<span class="number">041</span>s</span><br><span class="line">[root@nfsserver kc10000]<span class="comment"># cd ../kc20000/</span></span><br><span class="line">[root@nfsserver kc20000]<span class="comment"># time ll 2&gt;&amp;1 &gt; /dev/null</span></span><br><span class="line"></span><br><span class="line">real	<span class="number">0</span>m0.<span class="number">868</span>s</span><br><span class="line">user	<span class="number">0</span>m0.<span class="number">154</span>s</span><br><span class="line">sys	<span class="number">0</span>m0.<span class="number">074</span>s</span><br><span class="line">[root@nfsserver kc20000]<span class="comment"># cd ../kc40000/</span></span><br><span class="line">[root@nfsserver kc40000]<span class="comment"># time ll 2&gt;&amp;1 &gt; /dev/null</span></span><br><span class="line"></span><br><span class="line">real	<span class="number">0</span>m1.<span class="number">947</span>s</span><br><span class="line">user	<span class="number">0</span>m0.<span class="number">300</span>s</span><br><span class="line">sys	<span class="number">0</span>m0.<span class="number">166</span>s</span><br></pre></td></tr></table></figure></p>
+<p>测试都是看到很快的返回，以上都是正常的，下面开始将这个目录exportnfs出去，看下是个什么情况</p>
+<h3 id="负载问题复现">负载问题复现</h3><p>从nfs客户端第一次列10000个小文件的目录</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@nfsclient kc10000]<span class="comment"># time ll 2&gt;&amp;1 &gt; /dev/null</span></span><br><span class="line"></span><br><span class="line">real	<span class="number">0</span>m4.<span class="number">038</span>s</span><br><span class="line">user	<span class="number">0</span>m0.<span class="number">095</span>s</span><br><span class="line">sys	<span class="number">0</span>m0.<span class="number">069</span>s</span><br></pre></td></tr></table></figure>
+<p><img src="http://static.zybuluo.com/zphj1987/2zkcsg31i5r0972clmsnwu9p/nfs10000.png" alt="nfs10000.png-36.7kB"></p>
+<p>从nfs客户端第一次列20000个小文件的目录<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@nfsclient kc20000]<span class="comment"># time ll 2&gt;&amp;1 &gt; /dev/null</span></span><br><span class="line"></span><br><span class="line">real	<span class="number">0</span>m17.<span class="number">446</span>s</span><br><span class="line">user	<span class="number">0</span>m0.<span class="number">175</span>s</span><br><span class="line">sys	<span class="number">0</span>m0.<span class="number">141</span>s</span><br></pre></td></tr></table></figure></p>
+<p><img src="http://static.zybuluo.com/zphj1987/jsd4ropqf7s80olmib2bm16t/nfs20000.png" alt="nfs20000.png-43.2kB"><br>从nfs客户端第二次列20000个小文件目录<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@nfsclient kc20000]<span class="comment"># time ll 2&gt;&amp;1 &gt; /dev/null</span></span><br><span class="line"></span><br><span class="line">real	<span class="number">0</span>m21.<span class="number">215</span>s</span><br><span class="line">user	<span class="number">0</span>m0.<span class="number">182</span>s</span><br><span class="line">sys	<span class="number">0</span>m0.<span class="number">151</span>s</span><br></pre></td></tr></table></figure></p>
+<p><img src="http://static.zybuluo.com/zphj1987/im9wby3cyze0fsvnvoifgita/nfs200002.png" alt="nfs200002.png-56.7kB"></p>
+<p>从nfs客户端第三次列20000个小文件目录<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@nfsclient kc20000]<span class="comment"># time ll 2&gt;&amp;1 &gt; /dev/null</span></span><br><span class="line"></span><br><span class="line">real	<span class="number">0</span>m16.<span class="number">222</span>s</span><br><span class="line">user	<span class="number">0</span>m0.<span class="number">189</span>s</span><br><span class="line">sys	<span class="number">0</span>m0.<span class="number">143</span>s</span><br></pre></td></tr></table></figure></p>
+<p>可以看到在20000量级的时候列目录维持在20000左右，CPU维持一个高位</p>
+<p>从nfs客户端列40000个小文件的目录<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@nfsclient kc40000]<span class="comment"># time ll 2&gt;&amp;1 &gt; /dev/null</span></span><br><span class="line"></span><br><span class="line">real	<span class="number">7</span>m15.<span class="number">663</span>s</span><br><span class="line">user	<span class="number">0</span>m0.<span class="number">319</span>s</span><br><span class="line">sys	<span class="number">0</span>m0.<span class="number">581</span>s</span><br><span class="line">[root@nfsclient kc40000]<span class="comment">#</span></span><br></pre></td></tr></table></figure></p>
+<p><img src="http://static.zybuluo.com/zphj1987/rflb49cxesc1g6uv0cuyfyse/nfs40000.png" alt="nfs40000.png-77.2kB"><br>第一次列完，马上第二次列看下情况<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@nfsclient kc40000]<span class="comment"># time ll 2&gt;&amp;1 &gt; /dev/null</span></span><br><span class="line"></span><br><span class="line">real	<span class="number">1</span>m12.<span class="number">816</span>s</span><br><span class="line">user	<span class="number">0</span>m0.<span class="number">163</span>s</span><br><span class="line">sys	<span class="number">0</span>m0.<span class="number">142</span>s</span><br></pre></td></tr></table></figure></p>
+<p>可以看到第二次列的时间已经缩短了，再来第三次<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@nfsclient kc40000]<span class="comment"># time ll 2&gt;&amp;1 &gt; /dev/null</span></span><br><span class="line"></span><br><span class="line">real	<span class="number">1</span>m33.<span class="number">549</span>s</span><br><span class="line">user	<span class="number">0</span>m0.<span class="number">162</span>s</span><br><span class="line">sys	<span class="number">0</span>m0.<span class="number">183</span>s</span><br></pre></td></tr></table></figure></p>
+<p><img src="http://static.zybuluo.com/zphj1987/nhx161bnwwt3ggiaommufvfx/nfs400003.png" alt="nfs400003.png-61.3kB"><br>可以看到在后面列的时候时间确实缩短了，但是还是维持一个非常高CPU的占用，以及比较长的一个时间，这个很容易造成过载</p>
+<p>这个地方目前看应该是内核客户端与内核NFS的结合的问题</p>
+<h2 id="解决办法:用ganesha的ceph用户态接口替代kernel_nfs">解决办法:用ganesha的ceph用户态接口替代kernel nfs</h2><p>我们看下另外一种方案用户态的NFS+ceph同样的环境下测试结果：</p>
+<p>从nfs客户端第一次列40000个小文件的目录<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@nfsclient kc40000]<span class="comment"># time ll 2&gt;&amp;1 &gt; /dev/null</span></span><br><span class="line"></span><br><span class="line">real	<span class="number">0</span>m3.<span class="number">289</span>s</span><br><span class="line">user	<span class="number">0</span>m0.<span class="number">335</span>s</span><br><span class="line">sys	<span class="number">0</span>m0.<span class="number">386</span>s</span><br></pre></td></tr></table></figure></p>
+<p>从nfs客户端第二次列40000个小文件的目录</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@nfsclient kc40000]<span class="comment"># time ll 2&gt;&amp;1 &gt; /dev/null</span></span><br><span class="line"></span><br><span class="line">real	<span class="number">0</span>m1.<span class="number">686</span>s</span><br><span class="line">user	<span class="number">0</span>m0.<span class="number">351</span>s</span><br><span class="line">sys	<span class="number">0</span>m0.<span class="number">389</span>s</span><br></pre></td></tr></table></figure>
+<p>从nfs客户端第三次列40000个小文件的目录<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@nfsclient kc40000]<span class="comment"># time ll 2&gt;&amp;1 &gt; /dev/null</span></span><br><span class="line"></span><br><span class="line">real	<span class="number">0</span>m1.<span class="number">675</span>s</span><br><span class="line">user	<span class="number">0</span>m0.<span class="number">320</span>s</span><br><span class="line">sys	<span class="number">0</span>m0.<span class="number">391</span>s</span><br></pre></td></tr></table></figure></p>
+<p><img src="http://static.zybuluo.com/zphj1987/mw0j9nj322p0slwymyicffvc/ganesha.png" alt="ganesha.png-51.5kB"><br>基本mds无多余的负载，非常快的返回</p>
+<p>可以从上面的测试看到差别是非常的大的，这个地方应该是内核模块与内核之间的问题，而采用用户态的以后解决了列目录慢以及卡顿的问题</p>
+<h2 id="如何配置ganesha支持ceph的nfs接口">如何配置ganesha支持ceph的nfs接口</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> -b V2.<span class="number">3</span>-stable https://github.com/nfs-ganesha/nfs-ganesha.git</span><br><span class="line"><span class="built_in">cd</span> nfs-ganesha/</span><br><span class="line">git submodule update --init --recursive</span><br><span class="line"><span class="built_in">cd</span> ..</span><br><span class="line"><span class="built_in">cd</span> nfs-ganesha/</span><br><span class="line">ll src/FSAL/FSAL_CEPH/</span><br><span class="line"><span class="built_in">cd</span> ..</span><br><span class="line">mkdir mybuild</span><br><span class="line"><span class="built_in">cd</span> mybuild/</span><br><span class="line">cmake -DUSE_FSAL_CEPH=ON ../nfs-ganesha/src/</span><br><span class="line">ll FSAL/FSAL_CEPH/</span><br><span class="line">make</span><br><span class="line">make -j <span class="number">12</span></span><br><span class="line">make install</span><br></pre></td></tr></table></figure>
+<p>vim /etc/ganesha/ganesha.conf<br>修改配置文件<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">EXPORT</span><br><span class="line">&#123;</span><br><span class="line">    Export_ID=<span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">    Path = <span class="string">"/"</span>;</span><br><span class="line"></span><br><span class="line">    Pseudo = <span class="string">"/"</span>;</span><br><span class="line"></span><br><span class="line">    Access_Type = RW;</span><br><span class="line"></span><br><span class="line">    NFS_Protocols = <span class="number">4</span>;</span><br><span class="line"></span><br><span class="line">    Transport_Protocols = TCP;</span><br><span class="line"></span><br><span class="line">    FSAL &#123;</span><br><span class="line">        Name = CEPH;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>停止掉原生的nfs<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">systemctl stop nfs</span><br></pre></td></tr></table></figure></p>
+<p>启用ganesha nfs<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">systemctl start  nfs-ganesha.service</span><br></pre></td></tr></table></figure></p>
+<p>然后在客户端进行nfs的挂载即可</p>
+<h2 id="总结">总结</h2><p>ganesha在需要用到cephfs又正好是要用到nfs接口的时候，可以考虑这个方案，至少在缓存文件，降低负载上面能够比kernel client有更好的效果，这个可以根据测试情况用数据来做比较</p>
+<h2 id="变更记录">变更记录</h2><table>
+<thead>
+<tr>
+<th style="text-align:center">Why</th>
+<th style="text-align:center">Who</th>
+<th style="text-align:center">When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">创建</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2017-12-04</td>
+</tr>
+</tbody>
+</table>
+<p><a href="http://static.zybuluo.com/zphj1987/3no4iobedvhwujvtr8jfmrf7/aa.png" target="_blank" rel="external">1</a>: </p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/ganesha.png" alt="ganesha"><br></center>
+
+<h2 id="前言">前言</h2><p>mds是ceph里面处理文件接口的组件，一旦使用文件系统，不可避免的会出现一种场景就是目录很多，目录里面的文件很多，而mds是一个单进程的组件，现在虽然有了muti mds，但稳定的使用的大部分场景还是单acitve mds的</p>
+<p>这就会出现一种情况，一旦一个目录里面有很多文件的时候，去查询这个目录里的文件就会在当前目录做一次遍历，这个需要一个比较长的时间，如果能比较好的缓存文件信息，也能避免一些过载情况，本篇讲述的是内核客户端正常，而export nfs后mds的负载长时间过高的情况<br>]]>
+    
+    </summary>
+    
+      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
+    
+  </entry>
+  
+  <entry>
     <title><![CDATA[CentOS GRUB损坏修复方法]]></title>
     <link href="http://www.zphj1987.com/2017/11/30/recovery-from-grub-damage/"/>
     <id>http://www.zphj1987.com/2017/11/30/recovery-from-grub-damage/</id>
     <published>2017-11-30T14:51:55.000Z</published>
-    <updated>2017-11-30T15:08:28.359Z</updated>
+    <updated>2017-11-30T15:22:39.682Z</updated>
     <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/grub.jpg" alt="grub"><br></center>
 
 <h2 id="前言">前言</h2><p>博客很久没有更新了，一个原因就是原来存放部署博客的环境坏了，硬盘使用的是SSD，只要读取到某个文件，整个磁盘就直接识别不到了，还好博客环境之前有做备份，最近一直没有把部署环境做下恢复，今天抽空把环境做下恢复并且记录一篇基础的GRUB的处理文档</p>
@@ -40,7 +118,7 @@
 <p>启动<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">grub&gt; boot</span><br></pre></td></tr></table></figure></p>
 <p>进入系统后重新生成grub.cfg<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">grub2-mkconfig -o /boot/grub2/grub.cfg</span><br></pre></td></tr></table></figure></p>
 <p>然后重启下系统验证是否好了</p>
-<h3 id="一个完整的/分区的形式的">一个完整的/分区的形式的</h3><p>这种情况，整个安装的系统就一个分区，boot是作为/分区的一个子目录的情况<br>ls 查询分区<br><img src="http://static.zybuluo.com/zphj1987/o3d1wegh1nfpm6a3u7w5q8yo/image.png" alt="image.png-4.6kB"></p>
+<h3 id="一个完整/分区形式">一个完整/分区形式</h3><p>这种情况，整个安装的系统就一个分区，boot是作为/分区的一个子目录的情况<br>ls 查询分区<br><img src="http://static.zybuluo.com/zphj1987/o3d1wegh1nfpm6a3u7w5q8yo/image.png" alt="image.png-4.6kB"></p>
 <p>设置根分区<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">grub&gt; <span class="built_in">set</span> root=(hd0,msdos3)</span><br></pre></td></tr></table></figure></p>
 <p>可以看到上面是msdos3分区对应的就是root=/dev/sda3,下面就设置这个root</p>
 <p>设置linux16<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">grub&gt; linux16 /root/vmlinuz-<span class="number">3.10</span>.<span class="number">0</span>-<span class="number">693</span>.el7.x86_64 root=/dev/sda3</span><br></pre></td></tr></table></figure></p>
@@ -1602,103 +1680,6 @@
 <p>最近自己的项目上也有pg调整的需求，这个需求一般来源于pg规划好了，后期出现节点扩容的情况，需要对pg进行增加的调整</p>
 <p>本篇用具体的数据来分析两种方式的差别</p>
 <p>因为本篇的篇幅较长，直接先把结论拿出来<br>]]>
-    
-    </summary>
-    
-      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[使用日志系统graylog获取Ceph集群状态]]></title>
-    <link href="http://www.zphj1987.com/2017/06/09/use-graylog-get-Ceph-status/"/>
-    <id>http://www.zphj1987.com/2017/06/09/use-graylog-get-Ceph-status/</id>
-    <published>2017-06-09T08:30:56.000Z</published>
-    <updated>2017-07-13T03:22:31.448Z</updated>
-    <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/graylog.png" alt=""><br></center>
-
-<h2 id="前言">前言</h2><p>在看集群的配置文件的时候看到ceph里面有一个graylog的输出选择，目前看到的是可以收集mon日志和clog，osd单个的日志没有看到，Elasticsearch有整套的日志收集系统，可以很方便的将所有日志汇总到一起，这个graylog的收集采用的是自有的udp协议，从配置上来说可以很快的完成，这里只做一个最基本的实践<br><a id="more"></a></p>
-<h2 id="系统实践">系统实践</h2><p>graylog日志系统主要由三个组件组成的</p>
-<ul>
-<li>MongoDB – 存储配置信息和一些元数据信息的，MongoDB (&gt;= 2.4)</li>
-<li>Elasticsearch – 用来存储Graylog server收取的log messages的，Elasticsearch (&gt;= 2.x)</li>
-<li>Graylog server – 用来解析日志的并且提供内置的web的访问接口</li>
-</ul>
-<p>配置好基础源文件</p>
-<blockquote>
-<p>CentOS-Base.repo<br>epel.repo</p>
-</blockquote>
-<h3 id="安装java">安装java</h3><p>要求版本Java (&gt;= 8)<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum install java-<span class="number">1.8</span>.<span class="number">0</span>-openjdk</span><br></pre></td></tr></table></figure></p>
-<h3 id="安装MongoDB">安装MongoDB</h3><p>安装软件<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum install mongodb mongodb-server</span><br></pre></td></tr></table></figure></p>
-<p>启动服务并且加入自启动<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">systemctl restart mongod</span><br><span class="line">systemctl <span class="built_in">enable</span> mongod</span><br></pre></td></tr></table></figure></p>
-<p>安装完成检查服务启动端口<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab102 ~]<span class="comment"># netstat -tunlp|grep 27017</span></span><br><span class="line">tcp        <span class="number">0</span>      <span class="number">0</span> <span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">27017</span>         <span class="number">0.0</span>.<span class="number">0.0</span>:*               LISTEN      <span class="number">151840</span>/mongod</span><br></pre></td></tr></table></figure></p>
-<h3 id="安装Elasticsearch">安装Elasticsearch</h3><p>倒入认证文件<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rpm --import https://packages.elastic.co/GPG-KEY-elasticsearch</span><br></pre></td></tr></table></figure></p>
-<p>添加源文件<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">vim /etc/yum.repos.d/elasticsearch.repo</span><br><span class="line">添加</span><br><span class="line">[elasticsearch-<span class="number">2</span>.x]</span><br><span class="line">name=Elasticsearch repository <span class="keyword">for</span> <span class="number">2</span>.x packages</span><br><span class="line">baseurl=https://packages.elastic.co/elasticsearch/<span class="number">2</span>.x/centos</span><br><span class="line">gpgcheck=<span class="number">1</span></span><br><span class="line">gpgkey=https://packages.elastic.co/GPG-KEY-elasticsearch</span><br><span class="line">enabled=<span class="number">1</span></span><br></pre></td></tr></table></figure></p>
-<p>安装elasticsearch包<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum install elasticsearch</span><br></pre></td></tr></table></figure></p>
-<p>配置自启动<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">systemctl <span class="built_in">enable</span> elasticsearch</span><br></pre></td></tr></table></figure></p>
-<p>修改配置文件<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># vim /etc/elasticsearch/elasticsearch.yml</span></span><br><span class="line"></span><br><span class="line">cluster.name: graylog</span><br></pre></td></tr></table></figure></p>
-<p>重启服务<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">systemctl restart  elasticsearch</span><br></pre></td></tr></table></figure></p>
-<p>检查运行服务端口<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab102 ~]<span class="comment"># netstat -tunlp|grep java</span></span><br><span class="line">tcp        <span class="number">0</span>      <span class="number">0</span> <span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">9200</span>          <span class="number">0.0</span>.<span class="number">0.0</span>:*               LISTEN      <span class="number">154116</span>/java </span><br><span class="line">tcp        <span class="number">0</span>      <span class="number">0</span> <span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">9300</span>          <span class="number">0.0</span>.<span class="number">0.0</span>:*               LISTEN      <span class="number">154116</span>/java</span><br></pre></td></tr></table></figure></p>
-<p>检查elasticsearch状态<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab102 ~]<span class="comment">#  curl -X GET http://localhost:9200</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">"name"</span> : <span class="string">"Vibro"</span>,</span><br><span class="line">  <span class="string">"cluster_name"</span> : <span class="string">"graylog"</span>,</span><br><span class="line">  <span class="string">"cluster_uuid"</span> : <span class="string">"11Y2GOTmQ9ynNbTlruFcyA"</span>,</span><br><span class="line">  <span class="string">"version"</span> : &#123;</span><br><span class="line">    <span class="string">"number"</span> : <span class="string">"2.4.5"</span>,</span><br><span class="line">    <span class="string">"build_hash"</span> : <span class="string">"c849dd13904f53e63e88efc33b2ceeda0b6a1276"</span>,</span><br><span class="line">    <span class="string">"build_timestamp"</span> : <span class="string">"2017-04-24T16:18:17Z"</span>,</span><br><span class="line">    <span class="string">"build_snapshot"</span> : <span class="literal">false</span>,</span><br><span class="line">    <span class="string">"lucene_version"</span> : <span class="string">"5.5.4"</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="string">"tagline"</span> : <span class="string">"You Know, for Search"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab102 ~]<span class="comment"># curl -XGET 'http://localhost:9200/_cluster/health?pretty=true'</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">"cluster_name"</span> : <span class="string">"graylog"</span>,</span><br><span class="line">  <span class="string">"status"</span> : <span class="string">"green"</span>,</span><br></pre></td></tr></table></figure>
-<p>状态应该是green</p>
-<h3 id="安装graylog">安装graylog</h3><p>安装源<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rpm -Uvh https://packages.graylog2.org/repo/packages/graylog-<span class="number">2.2</span>-repository_latest.rpm</span><br></pre></td></tr></table></figure></p>
-<p>安装软件包<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum install graylog-server pwgen</span><br></pre></td></tr></table></figure></p>
-<p>生成password_secret<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab102 ~]<span class="comment"># pwgen -N 1 -s 96</span></span><br><span class="line">DoqTYuvQPHaNW6XGFj5jru3FH8qxMjehj7Xk9OaVxhxaLYphF871CyiCMOKuAsHsJc0DtUUkK3ioFeqYo73mkMDUN7YklqgS</span><br></pre></td></tr></table></figure></p>
-<p>在配置文件/etc/graylog/server/server.conf中password_secret填上上面的输出</p>
-<p>生成root_password_sha2（后面生成的-不需要）<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab102 ~]<span class="comment"># echo -n 123456 |shasum -a 256</span></span><br><span class="line"><span class="number">8</span>d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92  -</span><br></pre></td></tr></table></figure></p>
-<p>123456是我设置的密码<br>在配置文件/etc/graylog/server/server.conf中root_password_sha2填上上面的输出</p>
-<p>设置时区<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root_timezone = Asia/Shanghai</span><br></pre></td></tr></table></figure></p>
-<p>配置web监听端口<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rest_listen_uri = http://<span class="number">192.168</span>.<span class="number">10.2</span>:<span class="number">9000</span>/api/</span><br><span class="line">web_listen_uri = http://<span class="number">192.168</span>.<span class="number">10.2</span>:<span class="number">9000</span>/</span><br></pre></td></tr></table></figure></p>
-<p>这里注意写上你的web准备使用的那个网卡的IP地址，不要全局监听</p>
-<p>启动服务并配置自启动<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab102 ~]<span class="comment"># systemctl restart graylog-server</span></span><br><span class="line">[root@lab102 ~]<span class="comment"># systemctl enable graylog-server</span></span><br></pre></td></tr></table></figure></p>
-<p>检查服务端口<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab102 ~]<span class="comment"># netstat -tunlp|grep 9000</span></span><br><span class="line">tcp        <span class="number">0</span>      <span class="number">0</span> <span class="number">192.168</span>.<span class="number">10.2</span>:<span class="number">9000</span>       <span class="number">0.0</span>.<span class="number">0.0</span>:*               LISTEN      <span class="number">160129</span>/java</span><br></pre></td></tr></table></figure></p>
-<h3 id="使用web进行访问">使用web进行访问</h3><p>使用地址<a href="http://192.168.10.2:9000进行访问" target="_blank" rel="external">http://192.168.10.2:9000进行访问</a><br><img src="http://static.zybuluo.com/zphj1987/c07fkvdhinqn3ewzg0slxc44/image.png" alt="image.png-312kB"><br>用户名admin<br>密码123456</p>
-<p><img src="http://static.zybuluo.com/zphj1987/6nvvez8axru9djfrn4iyx4hj/image.png" alt="image.png-69.9kB"><br>进来就是引导界面，这个地方是<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">1、把日志发送到graylog</span><br><span class="line">2、对收集到的数据做点搜索</span><br><span class="line">3、创建一个图表</span><br><span class="line">4、创建告警</span><br></pre></td></tr></table></figure></p>
-<p>到这里配置graylog平台的基础工作就完成了，现在看下怎么跟ceph对接</p>
-<p><img src="http://static.zybuluo.com/zphj1987/d2rbv3q5mfwvhkrqrf0bfyvc/image.png" alt="image.png-38.6kB"></p>
-<h2 id="配置ceph的支持">配置ceph的支持</h2><p>日志从ceph里面输出是采用的GELF UDP方式的</p>
-<p>GELF is Graylog2 的json格式的数据，内部采用键值对的方式，ceoh内部传输出来的数据不光有message还有下面的</p>
-<ul>
-<li>hostname</li>
-<li>thread id</li>
-<li>priority</li>
-<li>subsystem name and id</li>
-<li>fsid</li>
-</ul>
-<p><img src="http://static.zybuluo.com/zphj1987/0p2lgnam8tq0mn9ebcturx6i/image.png" alt="image.png-68.5kB"></p>
-<p>选择GELF UDP协议 </p>
-<p><img src="http://static.zybuluo.com/zphj1987/r5yibecnxsp04vo5hw8iboj2/image.png" alt="image.png-77.1kB"></p>
-<p>选择节点，配置监听端口为12201，保存</p>
-<p>在lab102上检查端口的监听情况<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab102 ~]<span class="comment"># netstat -tunlp|grep 12201</span></span><br><span class="line">udp        <span class="number">0</span>      <span class="number">0</span> <span class="number">0.0</span>.<span class="number">0.0</span>:<span class="number">12201</span>           <span class="number">0.0</span>.<span class="number">0.0</span>:*                           <span class="number">160129</span>/java</span><br></pre></td></tr></table></figure></p>
-<p>可以看到已经监听好了</p>
-<p>修改ceph的配置文件<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#log_to_graylog = true</span></span><br><span class="line"><span class="comment">#err_to_graylog = true</span></span><br><span class="line"><span class="comment">#log_graylog_host = 192.168.10.2</span></span><br><span class="line"><span class="comment">#log_graylog_port = 12201</span></span><br><span class="line">clog_to_graylog = <span class="literal">true</span></span><br><span class="line">clog_to_graylog_host = <span class="number">192.168</span>.<span class="number">10.2</span></span><br><span class="line">clog_to_graylog_port = <span class="number">12201</span></span><br><span class="line">mon_cluster_<span class="built_in">log</span>_to_graylog = <span class="literal">true</span></span><br><span class="line">mon_cluster_<span class="built_in">log</span>_to_graylog_host = <span class="number">192.168</span>.<span class="number">10.2</span></span><br><span class="line">mon_cluster_<span class="built_in">log</span>_to_graylog_port = <span class="number">12201</span></span><br></pre></td></tr></table></figure></p>
-<p>ceph.conf当中跟graylog有关的就是这些配置文件了，配置好端口是刚刚监听的那个udp端口，然后重启ceph服务，这里我只需要mon_cluster日志和clog，这个根据自己的需要选择</p>
-<p><img src="http://static.zybuluo.com/zphj1987/haiphagvwq5fwgpe8cls2bm0/image.png" alt="image.png-199.9kB"></p>
-<p>可以看到ceph -w的输出都可以在这个里面查询了</p>
-<h3 id="配置告警">配置告警</h3><p><img src="http://static.zybuluo.com/zphj1987/niv3p6tq44rv7xif0ao62ykg/image.png" alt="image.png-128.7kB"><br>出现异常的时候<br><img src="http://static.zybuluo.com/zphj1987/cz7qz8qdi0if4ddvtb60nike/image.png" alt="image.png-62.2kB"></p>
-<h2 id="总结">总结</h2><p>这个系统支持原生的接口接入，未来应该可以支持更多类型的日志倒入，这样相当于很容易就部署了一个日志搜索系统了，当然还有很多其他的方案，从功能完整性来说Elasticsearch要比这个强大，这套系统目前来看配置是非常的简单，也是一个优势</p>
-<h2 id="变更记录">变更记录</h2><table>
-<thead>
-<tr>
-<th style="text-align:center">Why</th>
-<th style="text-align:center">Who</th>
-<th style="text-align:center">When</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">创建</td>
-<td style="text-align:center">武汉-运维-磨渣</td>
-<td style="text-align:center">2017-06-09</td>
-</tr>
-</tbody>
-</table>
-]]></content>
-    <summary type="html">
-    <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/graylog.png" alt=""><br></center>
-
-<h2 id="前言">前言</h2><p>在看集群的配置文件的时候看到ceph里面有一个graylog的输出选择，目前看到的是可以收集mon日志和clog，osd单个的日志没有看到，Elasticsearch有整套的日志收集系统，可以很方便的将所有日志汇总到一起，这个graylog的收集采用的是自有的udp协议，从配置上来说可以很快的完成，这里只做一个最基本的实践<br>]]>
     
     </summary>
     

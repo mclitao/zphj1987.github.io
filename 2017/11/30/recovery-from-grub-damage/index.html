@@ -242,7 +242,7 @@
 <p>启动<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">grub&gt; boot</span><br></pre></td></tr></table></figure></p>
 <p>进入系统后重新生成grub.cfg<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">grub2-mkconfig -o /boot/grub2/grub.cfg</span><br></pre></td></tr></table></figure></p>
 <p>然后重启下系统验证是否好了</p>
-<h3 id="一个完整的/分区的形式的">一个完整的/分区的形式的</h3><p>这种情况，整个安装的系统就一个分区，boot是作为/分区的一个子目录的情况<br>ls 查询分区<br><img src="http://static.zybuluo.com/zphj1987/o3d1wegh1nfpm6a3u7w5q8yo/image.png" alt="image.png-4.6kB"></p>
+<h3 id="一个完整/分区形式">一个完整/分区形式</h3><p>这种情况，整个安装的系统就一个分区，boot是作为/分区的一个子目录的情况<br>ls 查询分区<br><img src="http://static.zybuluo.com/zphj1987/o3d1wegh1nfpm6a3u7w5q8yo/image.png" alt="image.png-4.6kB"></p>
 <p>设置根分区<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">grub&gt; <span class="built_in">set</span> root=(hd0,msdos3)</span><br></pre></td></tr></table></figure></p>
 <p>可以看到上面是msdos3分区对应的就是root=/dev/sda3,下面就设置这个root</p>
 <p>设置linux16<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">grub&gt; linux16 /root/vmlinuz-<span class="number">3.10</span>.<span class="number">0</span>-<span class="number">693</span>.el7.x86_64 root=/dev/sda3</span><br></pre></td></tr></table></figure></p>
@@ -289,6 +289,15 @@
   
     
 <nav id="article-nav">
+  
+    <a href="/2017/12/04/mds-use-too-more-cpu/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          mds的cpu占用问题分析以及解决办法
+        
+      </div>
+    </a>
   
   
     <a href="/2017/09/28/a-new-ceph-book/" id="article-nav-older" class="article-nav-link-wrap">

@@ -178,6 +178,71 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-mds-use-too-more-cpu" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/12/04/mds-use-too-more-cpu/" class="article-date">
+  	<time datetime="2017-12-04T14:47:04.000Z" itemprop="datePublished">2017-12-04</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/12/04/mds-use-too-more-cpu/">mds的cpu占用问题分析以及解决办法</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/ganesha.png" alt="ganesha"><br></center>
+
+<h2 id="前言">前言</h2><p>mds是ceph里面处理文件接口的组件，一旦使用文件系统，不可避免的会出现一种场景就是目录很多，目录里面的文件很多，而mds是一个单进程的组件，现在虽然有了muti mds，但稳定的使用的大部分场景还是单acitve mds的</p>
+<p>这就会出现一种情况，一旦一个目录里面有很多文件的时候，去查询这个目录里的文件就会在当前目录做一次遍历，这个需要一个比较长的时间，如果能比较好的缓存文件信息，也能避免一些过载情况，本篇讲述的是内核客户端正常，而export nfs后mds的负载长时间过高的情况<br>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2017/12/04/mds-use-too-more-cpu/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+<div id="gitment"></div>
+<!-- 主页不要加载gitment -->
+
+
+
+
+  
     <article id="post-recovery-from-grub-damage" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -746,71 +811,6 @@
       
         <p class="article-more-link">
           <a  href="/2017/08/19/about-scrub-suggestion/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-<div id="gitment"></div>
-<!-- 主页不要加载gitment -->
-
-
-
-
-  
-    <article id="post-how-to-get-Ceph-OSD-mem-used" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/08/10/how-to-get-Ceph-OSD-mem-used/" class="article-date">
-  	<time datetime="2017-08-10T08:55:41.000Z" itemprop="datePublished">2017-08-10</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/08/10/how-to-get-Ceph-OSD-mem-used/">如何测量Ceph OSD内存占用</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/newmemory.png" alt=""><br></center>
-
-<h2 id="前言">前言</h2><p>这个工具我第一次看到是在填坑群里面看到，是由研发-北京-蓝星同学分享的，看到比较有趣，就写一篇相关的记录下用法</p>
-<p>火焰图里面也可以定位内存方面的问题，那个是通过一段时间的统计，以一个汇总的方式来查看内存在哪个地方可能出了问题<br>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2017/08/10/how-to-get-Ceph-OSD-mem-used/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>
