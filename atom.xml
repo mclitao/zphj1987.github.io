@@ -4,7 +4,7 @@
   <subtitle><![CDATA[止于至善]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2017-12-04T15:03:23.028Z</updated>
+  <updated>2017-12-04T15:06:37.402Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="http://www.zphj1987.com/2017/12/04/mds-use-too-more-cpu/"/>
     <id>http://www.zphj1987.com/2017/12/04/mds-use-too-more-cpu/</id>
     <published>2017-12-04T14:47:04.000Z</published>
-    <updated>2017-12-04T15:03:23.028Z</updated>
+    <updated>2017-12-04T15:06:37.402Z</updated>
     <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/ganesha.png" alt="ganesha"><br></center>
 
 <h2 id="前言">前言</h2><p>mds是ceph里面处理文件接口的组件，一旦使用文件系统，不可避免的会出现一种场景就是目录很多，目录里面的文件很多，而mds是一个单进程的组件，现在虽然有了muti mds，但稳定的使用的大部分场景还是单acitve mds的</p>
@@ -78,7 +78,6 @@
 </tr>
 </tbody>
 </table>
-<p><a href="http://static.zybuluo.com/zphj1987/3no4iobedvhwujvtr8jfmrf7/aa.png" target="_blank" rel="external">1</a>: </p>
 ]]></content>
     <summary type="html">
     <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/ganesha.png" alt="ganesha"><br></center>
