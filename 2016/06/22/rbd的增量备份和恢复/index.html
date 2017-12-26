@@ -15,7 +15,6 @@ ceph里面也有快照的功能，同样的，在这里的快照是用来保存�
 ceph里面也有快照的功能，同样的，在这里的快照是用来保存存储系统上的状态的，数据的快照能成功恢复的前提是存储系统是好的">
 <meta property="og:image" content="http://static.zybuluo.com/zphj1987/t933vz49n801mowt0gj3mbts/image_1alqs3lm81ss11n1vg7k1mle1eq39.png">
 <meta property="og:image" content="http://static.zybuluo.com/zphj1987/ue1feys17yiya6doa2audkbo/image_1alpuprird31dltilpro7kf52a.png">
-<meta property="og:image" content="http://static.zybuluo.com/zphj1987/fi2557g55ucsdpyblopyfudl/newpay.png">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="rbd的增量备份和恢复">
 <meta name="twitter:description" content="一、前言快照的功能一般是基于时间点做一个标记，然后在某些需要的时候，将状态恢复到标记的那个点，这个有一个前提是底层的东西没用破坏，举个简单的例子，Vmware 里面对虚拟机做了一个快照，然后做了一些系统的操作，想恢复快照，前提是存储快照的存储系统没用破坏，一旦破坏了是无法恢复的
@@ -240,7 +239,7 @@ ceph里面也有快照的功能，同样的，在这里的快照是用来保存�
 <p>快照的恢复过程使用的是刚刚上面提到的备份到本地的那些文件<br>首先随便创建一个image,名称大小都不限制，因为后面恢复的时候会覆盖掉大小的信息<br><figure class="highlight livecodeserver"><table><tr><td class="code"><pre><span class="line">rbd <span class="built_in">create</span> testbacknew <span class="comment">--size 1</span></span><br></pre></td></tr></table></figure></p>
 <p>现在假如想恢复到v2那个快照的时间点，那么可以用两个方法</p>
 <p>1、直接基于v2的时间点的快照做恢复<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rbd import-diff testimage_v2 rbd/testbacknew</span><br></pre></td></tr></table></figure></p>
-<p>2、直接基于v1的时间点的数据，和后面的增量的v1_v2数据(要按顺序导入)<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rbd impot-diff testimage_v1 rbd/testbacknew</span><br><span class="line">rbd impot-diff testimage_v1_v2 rbd/testbacknew</span><br></pre></td></tr></table></figure></p>
+<p>2、直接基于v1的时间点的数据，和后面的增量的v1_v2数据(要按顺序导入)<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rbd import-diff testimage_v1 rbd/testbacknew</span><br><span class="line">rbd import-diff testimage_v1_v2 rbd/testbacknew</span><br></pre></td></tr></table></figure></p>
 <p>到这里数据就已经恢复了</p>
 <h3 id="四、如何利用这个">四、如何利用这个</h3><p>实际项目当中就是，定期做快照，然后导出某个时间点快照的数据，然后导出增量的快照的数据，就可以了，例如：<br>今天对所有的rbd的image做一个基础快照，然后导出这个快照的数据，然后从今天开始，每天晚上做一个快照，然后导出快照时间点之间的数据，这样每天导出来的就是一个增量的数据了，在做恢复的时候，就从第一个快照导入，然后按顺序导入增量的快照即可，也可以定期做一个快照，导出完整的快照数据，以防中间的增量快照漏了，然后就是要注意可以定期清理快照，如果是做备份的模式，在导入了快照数据后，也可以清理一些本地的数据，本地数据做异地机房复制的时候也可以做一下数据的压缩，来减少数据量的传输</p>
 <h3 id="五、相关文章">五、相关文章</h3><p><a href="https://github.com/skuicloud/openstack-hacker/tree/master/tsinghua-cluster/script/ceph/volume_backup" target="_blank" rel="external">rbd备份还原的脚本</a><br><a href="http://ceph.com/dev-notes/incremental-snapshots-with-rbd/" target="_blank" rel="external">INCREMENTAL SNAPSHOTS WITH RBD</a><br><a href="http://cephnotes.ksperis.com/blog/2014/08/12/rbd-replication" target="_blank" rel="external">RBD Replication</a><br><a href="http://www.evil0x.com/posts/14638.html" target="_blank" rel="external">云杉网络：基于Ceph RBD的快照技术实现异地灾备</a></p>
@@ -260,13 +259,16 @@ ceph里面也有快照的功能，同样的，在这里的快照是用来保存�
 </tr>
 <tr>
 <td style="text-align:center">修改错别字</td>
-<td style="text-align:center">武汉-运维-磨渣 -from- 运维-北京-小白</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
 <td style="text-align:center">2016-06-22</td>
+</tr>
+<tr>
+<td style="text-align:center">修改错别字</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2017-12-26</td>
 </tr>
 </tbody>
 </table>
-<h3 id="七、打赏通道">七、打赏通道</h3><center><br><img src="http://static.zybuluo.com/zphj1987/fi2557g55ucsdpyblopyfudl/newpay.png" alt="打赏" title="打赏"><br></center>
-
 
       
     </div>
