@@ -4,7 +4,7 @@
   <subtitle><![CDATA[止于至善]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2017-12-04T15:06:37.402Z</updated>
+  <updated>2018-01-02T14:33:49.656Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -13,6 +13,67 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[Ceph对象主本损坏的修复方法]]></title>
+    <link href="http://www.zphj1987.com/2018/01/02/ceph-primary-object-damage-recover/"/>
+    <id>http://www.zphj1987.com/2018/01/02/ceph-primary-object-damage-recover/</id>
+    <published>2018-01-02T14:21:23.000Z</published>
+    <updated>2018-01-02T14:33:49.656Z</updated>
+    <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/dog.jpg" alt="dog"><br></center>
+
+<h2 id="前言">前言</h2><p>问题的触发是在进行一个目录的查询的时候，osd就会挂掉，开始以为是osd操作超时了，后来发现每次访问这个对象都有问题<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">log</span> [WRN] ： slow request <span class="number">60.793196</span> seconds old, received at osd_op(mds.<span class="number">0.188</span>:<span class="number">728345234100006</span>c6ddc.<span class="number">00000000</span> [o map-get-header <span class="number">0</span>-<span class="number">0</span>,omap-get-vals <span class="number">0</span>~<span class="number">16</span>,getxattr parent] snapc <span class="number">0</span>=[] ack+<span class="built_in">read</span>+known_<span class="keyword">if</span>_redirected+full_force e218901) currently started</span><br><span class="line">heartbeat_map is_healthy  ··· osd_op_tp thread ··· had timed out after <span class="number">60</span></span><br></pre></td></tr></table></figure></p>
+<p>这个对象是元数据的一个空对象，保留数据在扩展属性当中<br><a id="more"></a><br>然后做了一个操作判断是对象损坏了，停止掉osd做操作<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rados -p metadata listomapvals <span class="number">100006</span>c6ddc.<span class="number">00000000</span></span><br></pre></td></tr></table></figure></p>
+<p>发现会卡住，然后关闭这个osd再次做操作，就可以了，启动后还是不行，这里可以判断是主本的对象已经有问题了，本篇将讲述多种方法来解决这个问题</p>
+<h2 id="处理办法">处理办法</h2><p>本章将会根据操作粒度的不同来讲述三种方法的恢复，根据自己的实际情况，和风险的判断来选择自己的操作</p>
+<h3 id="方法一：通过repair修复">方法一：通过repair修复</h3><p>首先能确定是主本损坏了，那么先把主本的对象进行一个备份，然后移除<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab71 <span class="number">2.0</span>_head]<span class="comment"># systemctl stop ceph-osd@0</span></span><br><span class="line">[root@lab71 <span class="number">2.0</span>_head]<span class="comment"># cp -ra 100.00000000__head_C5265AB3__2 ../../</span></span><br></pre></td></tr></table></figure></p>
+<p>通过ceph-object-tool进行移除的时候有bug,无法移除metadata的对象，已经提了一个<a href="http://tracker.ceph.com/issues/22553" target="_blank" rel="external">bug</a><br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab71 <span class="number">2.0</span>_head]<span class="comment"># mv 100.00000000__head_C5265AB3__2 ../</span></span><br></pre></td></tr></table></figure></p>
+<p>注意一下在老版本的时候，对对象进行删除以后，可能元数据里面记录了对象信息，而对象又不在的时候可能会引起osd无法启动，这个在10.2.10是没有这个问题</p>
+<p>重启osd<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab71 <span class="number">2.0</span>_head]<span class="comment"># systemctl restart ceph-osd@0</span></span><br></pre></td></tr></table></figure></p>
+<p>对pg做scrub<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab71 <span class="number">2.0</span>_head]<span class="comment"># ceph pg scrub 2.0</span></span><br><span class="line">instructing pg <span class="number">2.0</span> on osd.<span class="number">0</span> to scrub</span><br></pre></td></tr></table></figure></p>
+<p>这种方法就是需要做scrub的操作，如果对象特别多，并且是线上环境，可能不太好去做scrub的操作<br>检查状态<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab71 <span class="number">2.0</span>_head]<span class="comment"># ceph -s</span></span><br><span class="line">    cluster <span class="number">03580</span>f14-<span class="number">9906</span>-<span class="number">4257</span>-<span class="number">9182</span>-<span class="number">65</span>c886e7f5a7</span><br><span class="line">     health HEALTH_ERR</span><br><span class="line">            <span class="number">1</span> pgs inconsistent</span><br><span class="line">            <span class="number">1</span> scrub errors</span><br><span class="line">            too few PGs per OSD (<span class="number">3</span> &lt; min <span class="number">30</span>)</span><br><span class="line">     monmap e1: <span class="number">1</span> mons at &#123;lab71=<span class="number">20.20</span>.<span class="number">20.71</span>:<span class="number">6789</span>/<span class="number">0</span>&#125;</span><br><span class="line">            election epoch <span class="number">4</span>, quorum <span class="number">0</span> lab71</span><br><span class="line">      fsmap e30: <span class="number">1</span>/<span class="number">1</span>/<span class="number">1</span> up &#123;<span class="number">0</span>=lab71=up:active&#125;</span><br><span class="line">     osdmap e101: <span class="number">2</span> osds: <span class="number">2</span> up, <span class="number">2</span> <span class="keyword">in</span></span><br><span class="line">            flags sortbitwise,require_jewel_osds</span><br><span class="line">      pgmap v377: <span class="number">3</span> pgs, <span class="number">3</span> pools, <span class="number">100814</span> bytes data, <span class="number">41</span> objects</span><br><span class="line">            <span class="number">70196</span> kB used, <span class="number">189</span> GB / <span class="number">189</span> GB avail</span><br><span class="line">                   <span class="number">2</span> active+clean</span><br><span class="line">                   <span class="number">1</span> active+clean+inconsistent</span><br></pre></td></tr></table></figure></p>
+<p>发起修复请求<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab71 <span class="number">2.0</span>_head]<span class="comment"># ceph pg repair 2.0</span></span><br><span class="line">instructing pg <span class="number">2.0</span> on osd.<span class="number">0</span> to repair</span><br></pre></td></tr></table></figure></p>
+<p>修复完成后检查集群状态和对象，到这里可以恢复正常了</p>
+<h3 id="方法二：通过rsync拷贝数据方式恢复">方法二：通过rsync拷贝数据方式恢复</h3><p>跟上面一样这里首先能确定是主本损坏了，那么先把主本的对象进行一个备份，然后移除<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab71 <span class="number">2.0</span>_head]<span class="comment"># systemctl stop ceph-osd@0</span></span><br><span class="line">[root@lab71 <span class="number">2.0</span>_head]<span class="comment"># cp -ra 100.00000000__head_C5265AB3__2 ../../</span></span><br></pre></td></tr></table></figure></p>
+<p>移除对象<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab71 <span class="number">2.0</span>_head]<span class="comment"># mv 100.00000000__head_C5265AB3__2 ../</span></span><br></pre></td></tr></table></figure></p>
+<p>在副本的机器上执行rsync命令，这里我们直接从副本拷贝对象过来，注意下不能直接使用scp会掉扩展属性<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab72 <span class="number">2.0</span>_head]<span class="comment"># rsync  -avXH  /var/lib/ceph/osd/ceph-1/current/2.0_head/100.00000000__head_C5265AB3__2 20.20.20.71:/var/lib/ceph/osd/ceph-0/current/2.0_head/100.00000000__head_C5265AB3__2</span></span><br></pre></td></tr></table></figure></p>
+<p>在主本机器检查扩展属性<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab71 <span class="number">2.0</span>_head]<span class="comment"># getfattr 100.00000000__head_C5265AB3__2 </span></span><br><span class="line"><span class="comment"># file: 100.00000000__head_C5265AB3__2</span></span><br><span class="line">user.ceph._</span><br><span class="line">user.ceph._@<span class="number">1</span></span><br><span class="line">user.ceph.snapset</span><br><span class="line">user.cephos.spill_out</span><br></pre></td></tr></table></figure></p>
+<p>重启osd<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab71 <span class="number">2.0</span>_head]<span class="comment"># systemctl restart ceph-osd@0</span></span><br></pre></td></tr></table></figure></p>
+<p>检查对象的扩展属性<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab71 <span class="number">2.0</span>_head]<span class="comment"># rados -p metadata listomapvals 100.00000000</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="方法三：通过删除PG的方式恢复">方法三：通过删除PG的方式恢复</h3><p>这个方式是删除PG，然后重新启动的方式<br>这种方式操作比较危险，所以提前备份好pg的数据，最好主备pg都备份下，万一出了问题或者数据不对，可以根据需要再导入<br>备份PG<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph-objectstore-tool --pgid <span class="number">2.0</span> --op <span class="built_in">export</span> --data-path /var/lib/ceph/osd/ceph-<span class="number">0</span>/ --journal-path   /var/lib/ceph/osd/ceph-<span class="number">0</span>/journal --file /root/<span class="number">2.0</span></span><br></pre></td></tr></table></figure></p>
+<p>删除PG的操作<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab71 current]<span class="comment"># ceph-objectstore-tool --pgid 2.0  --op remove --data-path /var/lib/ceph/osd/ceph-0/ --journal-path /var/lib/ceph/osd/ceph-0/journal</span></span><br><span class="line">SG_IO: bad/missing sense data, sb[]:  <span class="number">70</span> <span class="number">00</span> <span class="number">05</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">0</span>a <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">20</span> <span class="number">00</span> <span class="number">00</span> c0 <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span></span><br><span class="line">SG_IO: bad/missing sense data, sb[]:  <span class="number">70</span> <span class="number">00</span> <span class="number">05</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">0</span>a <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">20</span> <span class="number">00</span> <span class="number">00</span> c0 <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span></span><br><span class="line"> marking collection <span class="keyword">for</span> removal</span><br><span class="line">setting <span class="string">'_remove'</span> omap key</span><br><span class="line">finish_remove_pgs <span class="number">2.0</span>_head removing <span class="number">2.0</span></span><br><span class="line">Remove successful</span><br></pre></td></tr></table></figure></p>
+<p>重启osd<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab71 current]<span class="comment"># systemctl restart ceph-osd@0</span></span><br></pre></td></tr></table></figure></p>
+<p>等待回复即可</p>
+<p>本方法里面还可以衍生一种就是，通过导出的副本的PG数据,在主本删除了相应的PG以后,进行导入的方法，这样就不会产生迁移<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab71 current]<span class="comment">#  ceph-objectstore-tool --pgid 2.0  --op import --data-path /var/lib/ceph/osd/ceph-0/ --journal-path /var/lib/ceph/osd/ceph-0/journal --file /root/2.0</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="总结">总结</h2><p>上面用三种方法来实现了副本向主本同步的操作，判断主本是否有问题的方法就是主动的把主本所在的OSD停掉，然后检查请求是否可达，在确定主本已经坏掉的情况下，就可以做将副本同步到主本的操作，可以根据PG的对象的多少来选择需要做哪种操作</p>
+<h2 id="变更记录">变更记录</h2><table>
+<thead>
+<tr>
+<th style="text-align:center">Why</th>
+<th style="text-align:center">Who</th>
+<th style="text-align:center">When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">创建</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2018-01-02</td>
+</tr>
+</tbody>
+</table>
+]]></content>
+    <summary type="html">
+    <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/dog.jpg" alt="dog"><br></center>
+
+<h2 id="前言">前言</h2><p>问题的触发是在进行一个目录的查询的时候，osd就会挂掉，开始以为是osd操作超时了，后来发现每次访问这个对象都有问题<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">log</span> [WRN] ： slow request <span class="number">60.793196</span> seconds old, received at osd_op(mds.<span class="number">0.188</span>:<span class="number">728345234100006</span>c6ddc.<span class="number">00000000</span> [o map-get-header <span class="number">0</span>-<span class="number">0</span>,omap-get-vals <span class="number">0</span>~<span class="number">16</span>,getxattr parent] snapc <span class="number">0</span>=[] ack+<span class="built_in">read</span>+known_<span class="keyword">if</span>_redirected+full_force e218901) currently started</span><br><span class="line">heartbeat_map is_healthy  ··· osd_op_tp thread ··· had timed out after <span class="number">60</span></span><br></pre></td></tr></table></figure></p>
+<p>这个对象是元数据的一个空对象，保留数据在扩展属性当中<br>]]>
+    
+    </summary>
+    
+      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[mds的cpu占用问题分析以及解决办法]]></title>
@@ -1542,147 +1603,6 @@
 <h2 id="前言">前言</h2><p>ceph luminous版本新增加了很多有意思的功能，这个也是一个长期支持版本，所以这些新功能的特性还是很值得期待的，从底层的存储改造，消息方式的改变，以及一些之前未实现的功能的完成，都让ceph变得更强，这里面有很多核心模块来自中国的开发者，在这里准备用一系列的文章对这些新功能进行一个简单的介绍，也是自己的一个学习的过程</p>]]>
     
     </summary>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[调整PG分多次调整和一次到位的迁移差别分析]]></title>
-    <link href="http://www.zphj1987.com/2017/06/14/different-change-pg/"/>
-    <id>http://www.zphj1987.com/2017/06/14/different-change-pg/</id>
-    <published>2017-06-14T05:39:26.000Z</published>
-    <updated>2017-06-14T05:41:18.539Z</updated>
-    <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/diff.png" alt="different"><br></center>
-
-<h2 id="前言">前言</h2><p>这个问题来源于我们研发的一个问题，在进行pg调整的时候，是一次调整到位好，还是分多次调整比较好，分多次调整的时候会不会出现某个pg反复挪动的问题，造成整体迁移量大于一次调整的</p>
-<p>最近自己的项目上也有pg调整的需求，这个需求一般来源于pg规划好了，后期出现节点扩容的情况，需要对pg进行增加的调整</p>
-<p>本篇用具体的数据来分析两种方式的差别</p>
-<p>因为本篇的篇幅较长，直接先把结论拿出来<br><a id="more"></a></p>
-<h2 id="数据结论">数据结论</h2><table>
-<thead>
-<tr>
-<th style="text-align:center">调整pg</th>
-<th style="text-align:center">迁移pg</th>
-<th style="text-align:center">迁移对象</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">1200-&gt;1440</td>
-<td style="text-align:center">460</td>
-<td style="text-align:center">27933</td>
-</tr>
-<tr>
-<td style="text-align:center">1440-&gt;1680</td>
-<td style="text-align:center">458</td>
-<td style="text-align:center">27730</td>
-</tr>
-<tr>
-<td style="text-align:center">1680-&gt;1920</td>
-<td style="text-align:center">465</td>
-<td style="text-align:center">27946</td>
-</tr>
-<tr>
-<td style="text-align:center">1920-&gt;2160</td>
-<td style="text-align:center">457</td>
-<td style="text-align:center">21141</td>
-</tr>
-<tr>
-<td style="text-align:center">2160-&gt;2400</td>
-<td style="text-align:center">458</td>
-<td style="text-align:center">13938</td>
-</tr>
-<tr>
-<td style="text-align:center">总和</td>
-<td style="text-align:center">2305</td>
-<td style="text-align:center">132696</td>
-</tr>
-</tbody>
-</table>
-<table>
-<thead>
-<tr>
-<th style="text-align:center">调整pg</th>
-<th style="text-align:center">迁移pg</th>
-<th style="text-align:center">迁移对象</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">1200-&gt;2400</td>
-<td style="text-align:center">2299</td>
-<td style="text-align:center">115361</td>
-</tr>
-</tbody>
-</table>
-<p>结论：<br>分多次调整的时候，PG迁移量比一次调整多了6个，多了0.2%，对象的迁移量多了17335，多了15%</p>
-<p>从数据上看pg迁移的数目基本一样，但是数据量是多了15%，这个是因为分多次迁移的时候，在pg基数比较小的时候，迁移一个pg里面的对象要比后期分裂以后的对象要多，就产生了这个数据量的差别</p>
-<p>从整体上来看二者需要迁移的pg基本差不多，数据量上面会增加15%，分多次的时候是可以进行周期性调整的，拆分到不同的时间段来做，所以各有好处</p>
-<h2 id="实践">实践</h2><h3 id="环境准备">环境准备</h3><p>本次测试采用的是开发环境，使用开发环境可以很快的部署一个需要的环境，本次分析采用的就是一台机器模拟的4台机器48个 4T osd的环境</p>
-<h4 id="环境搭建">环境搭建</h4><p>生成集群<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./vstart.sh -n  --mon_num <span class="number">1</span> --osd_num <span class="number">48</span> --mds_num <span class="number">1</span> --short  <span class="operator">-d</span></span><br></pre></td></tr></table></figure></p>
-<p>后续操作都在源码的src目录下面执行</p>
-<p>设置存储池副本为2</p>
-<p>修改crush weight 为3.7模拟4T盘<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">seq <span class="number">0</span> <span class="number">47</span>| xargs -i ./ceph -c ceph.conf osd crush reweight osd.&#123;&#125; <span class="number">3.8</span></span><br></pre></td></tr></table></figure></p>
-<p>模拟主机分组<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">seq <span class="number">0</span> <span class="number">11</span> |xargs -i ./ceph -c ceph.conf osd crush <span class="built_in">set</span> osd.&#123;&#125; <span class="number">3.8</span> host=lab8106 root=default</span><br><span class="line">seq <span class="number">12</span> <span class="number">23</span> |xargs -i ./ceph -c ceph.conf osd crush <span class="built_in">set</span> osd.&#123;&#125; <span class="number">3.8</span> host=lab8107 root=default</span><br><span class="line">seq <span class="number">24</span> <span class="number">35</span> |xargs -i ./ceph -c ceph.conf osd crush <span class="built_in">set</span> osd.&#123;&#125; <span class="number">3.8</span> host=lab8108 root=default</span><br><span class="line">seq <span class="number">36</span> <span class="number">47</span> |xargs -i ./ceph -c ceph.conf osd crush <span class="built_in">set</span> osd.&#123;&#125; <span class="number">3.8</span> host=lab8109 root=default</span><br></pre></td></tr></table></figure></p>
-<p>48个osd设置初始pg为1200，让每个osd上面差不多50个pg左右，做一下均衡操作，后续目标调整为pg为2400</p>
-<p>准备120000个小文件准备put进去集群，使每个pg上面对象100个左右<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./rados -c ceph.conf -p rbd bench -b <span class="number">1</span>K <span class="number">600</span> write --no-cleanup</span><br></pre></td></tr></table></figure></p>
-<h3 id="一次调整pg到2400">一次调整pg到2400</h3><p>统计一次调整到位的情况下的数据迁移情况<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./ceph  -c ceph.conf  osd pool <span class="built_in">set</span> rbd pg_num <span class="number">2400</span></span><br></pre></td></tr></table></figure></p>
-<p>记录当前的pg分布的情况<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./ceph -c ceph.conf pg dump pgs|awk <span class="string">'&#123;print $1,$2,$15,$17&#125;'</span> &gt; pgmappg_1200_pgp_2400</span><br></pre></td></tr></table></figure></p>
-<p>调整存储池的pgp为2400<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./ceph -c ceph.conf osd pool <span class="built_in">set</span> rbd  pgp_num <span class="number">2400</span></span><br></pre></td></tr></table></figure></p>
-<p>等迁移完成以后，统计最终的pg分布情况<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./ceph -c ceph.conf pg dump pgs|awk <span class="string">'&#123;print $1,$2,$15,$17&#125;'</span> &gt; pgmappg2400_pgp2400</span><br></pre></td></tr></table></figure></p>
-<p>这里说明一下，调整pg的时候只会触发pg的分裂，并不会影响集群的分布，也就是不会出现pg迁移的情况，调整pgp以后才会去改变pg的分布，所以本次数据分析统计的是pgp变动后的迁移的数据量，这个量才是集群的真正的迁移量</p>
-<p>用比较的脚本来进行统计（脚本会在本文文末提供）<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 src]<span class="comment">#python compair.py pgmappg_1200_pgp_2400 pgmappg2400_pgp2400</span></span><br><span class="line">| pgs | objects |</span><br><span class="line">-----------------</span><br><span class="line">[<span class="number">2299</span>, <span class="number">115361</span>]</span><br></pre></td></tr></table></figure></p>
-<p>也就是整个环境有2299次pg的变动，总共迁移的对象数目为115361个</p>
-<h3 id="分五次调整到2400PG">分五次调整到2400PG</h3><h4 id="初始pg为1200个第一次调整，1200PG调整到1440PG">初始pg为1200个第一次调整，1200PG调整到1440PG</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./ceph -c ceph.conf osd pool <span class="built_in">set</span> rbd pg_num <span class="number">1440</span></span><br></pre></td></tr></table></figure>
-<p>调整pg为1440,当前pgp为1200<br>记录当前的pg分布数据<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./ceph -c ceph.conf pg dump pgs|awk <span class="string">'&#123;print $1,$2,$15,$17&#125;'</span> &gt; pgmappaira1</span><br></pre></td></tr></table></figure></p>
-<p>调整pgp为1440,当前pg为1440<br>记录当前的pg分布数据<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./ceph -c ceph.conf pg dump pgs|awk <span class="string">'&#123;print $1,$2,$15,$17&#125;'</span> &gt; pgmappaira2</span><br></pre></td></tr></table></figure></p>
-<p>统计第一次调整后的迁移量<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 pgdata]<span class="comment"># python compair.py pgmappaira1 pgmappaira2</span></span><br><span class="line">| pgs | objects |</span><br><span class="line">-----------------</span><br><span class="line">[<span class="number">460</span>, <span class="number">27933</span>]</span><br></pre></td></tr></table></figure></p>
-<h4 id="第二次调整，1440PG调整到1680PG">第二次调整，1440PG调整到1680PG</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./ceph -c ceph.conf osd pool <span class="built_in">set</span> rbd pg_num <span class="number">1680</span></span><br></pre></td></tr></table></figure>
-<p>调整pg为1680,当前pgp为1440<br>记录当前的pg分布数据<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./ceph -c ceph.conf pg dump pgs|awk <span class="string">'&#123;print $1,$2,$15,$17&#125;'</span> &gt; pgmappairb1</span><br></pre></td></tr></table></figure></p>
-<p>调整pgp为1680,当前pg为1680<br>记录当前的pg分布数据<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./ceph -c ceph.conf pg dump pgs|awk <span class="string">'&#123;print $1,$2,$15,$17&#125;'</span> &gt; pgmappairb2</span><br></pre></td></tr></table></figure></p>
-<p>统计第二次调整后的迁移量<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 pgdata]<span class="comment"># python compair.py pgmappairb1 pgmappairb2</span></span><br><span class="line">| pgs | objects |</span><br><span class="line">-----------------</span><br><span class="line">[<span class="number">458</span>, <span class="number">27730</span>]</span><br></pre></td></tr></table></figure></p>
-<h4 id="第三次调整，1680PG调整到1920PG">第三次调整，1680PG调整到1920PG</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./ceph -c ceph.conf osd pool <span class="built_in">set</span> rbd pg_num <span class="number">1920</span></span><br></pre></td></tr></table></figure>
-<p>调整pg为1920,当前pgp为1680<br>记录当前的pg分布数据<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./ceph -c ceph.conf pg dump pgs|awk <span class="string">'&#123;print $1,$2,$15,$17&#125;'</span> &gt; pgmappairc1</span><br></pre></td></tr></table></figure></p>
-<p>调整pgp为1920,当前pg为1920<br>记录当前的pg分布数据<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./ceph -c ceph.conf pg dump pgs|awk <span class="string">'&#123;print $1,$2,$15,$17&#125;'</span> &gt; pgmappairc2</span><br></pre></td></tr></table></figure></p>
-<p>统计第三次调整后的迁移量<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 pgdata]<span class="comment"># python compair.py  pgmappairc1 pgmappairc2</span></span><br><span class="line">| pgs | objects |</span><br><span class="line">-----------------</span><br><span class="line">[<span class="number">465</span>, <span class="number">27946</span>]</span><br></pre></td></tr></table></figure></p>
-<h4 id="第四次调整，1920PG调整到2160PG">第四次调整，1920PG调整到2160PG</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./ceph -c ceph.conf osd pool <span class="built_in">set</span> rbd pg_num <span class="number">2160</span></span><br></pre></td></tr></table></figure>
-<p>调整pg为2160,当前pgp为1920<br>记录当前的pg分布数据<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./ceph -c ceph.conf pg dump pgs|awk <span class="string">'&#123;print $1,$2,$15,$17&#125;'</span> &gt; pgmappaird1</span><br></pre></td></tr></table></figure></p>
-<p>调整pgp为2160,当前pg为2160<br>记录当前的pg分布数据<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./ceph -c ceph.conf pg dump pgs|awk <span class="string">'&#123;print $1,$2,$15,$17&#125;'</span> &gt; pgmappaird2</span><br></pre></td></tr></table></figure></p>
-<p>统计第四次调整后的迁移量<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 pgdata]<span class="comment"># python compair.py pgmappaird1 pgmappaird2</span></span><br><span class="line">| pgs | objects |</span><br><span class="line">-----------------</span><br><span class="line">[<span class="number">457</span>, <span class="number">21141</span>]</span><br></pre></td></tr></table></figure></p>
-<h4 id="第五次调整，2160PG调整到2400PG">第五次调整，2160PG调整到2400PG</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./ceph -c ceph.conf osd pool <span class="built_in">set</span> rbd pg_num <span class="number">2400</span></span><br></pre></td></tr></table></figure>
-<p>调整pg为2400,当前pgp为2160<br>记录当前的pg分布数据<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./ceph -c ceph.conf pg dump pgs|awk <span class="string">'&#123;print $1,$2,$15,$17&#125;'</span> &gt; pgmappaire1</span><br></pre></td></tr></table></figure></p>
-<p>调整pgp为2400,当前pg为2400<br>记录当前的pg分布数据<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./ceph -c ceph.conf pg dump pgs|awk <span class="string">'&#123;print $1,$2,$15,$17&#125;'</span> &gt; pgmappaire2</span><br></pre></td></tr></table></figure></p>
-<p>统计第五次调整后的迁移量<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 pgdata]<span class="comment"># python compair.py pgmappaire1 pgmappaire2</span></span><br><span class="line">| pgs | objects |</span><br><span class="line">-----------------</span><br><span class="line">[<span class="number">458</span>, <span class="number">13938</span>]</span><br></pre></td></tr></table></figure></p>
-<p>上面五次加起来的总量为<br>2305 PGS    132696 objects</p>
-<h2 id="统计的脚本">统计的脚本</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"> <span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line">__author__ =<span class="string">"zp"</span></span><br><span class="line">import os,sys</span><br><span class="line"></span><br><span class="line">class filetojson(object):</span><br><span class="line">    def __init__(self,orin,new):</span><br><span class="line">        self.origin=orin</span><br><span class="line">        self.new=new</span><br><span class="line"></span><br><span class="line">    def tojson(self,filename):</span><br><span class="line">        data=&#123;&#125;</span><br><span class="line">        pginfo=&#123;&#125;</span><br><span class="line">        <span class="keyword">for</span> line <span class="keyword">in</span> open(filename):</span><br><span class="line">            <span class="keyword">if</span> <span class="string">"pg_stat"</span> <span class="keyword">in</span> line:</span><br><span class="line">                <span class="built_in">continue</span></span><br><span class="line">            lines=line.split()</span><br><span class="line">            pg=lines[<span class="number">0</span>]</span><br><span class="line">            objects=lines[<span class="number">1</span>]</span><br><span class="line">            withosd=lines[<span class="number">2</span>]</span><br><span class="line"></span><br><span class="line">            data[pg]=&#123;<span class="string">'objects'</span>:objects,<span class="string">'osd'</span>:list(<span class="built_in">eval</span>(withosd))&#125;</span><br><span class="line">        <span class="built_in">return</span> data</span><br><span class="line"></span><br><span class="line">    def compare(self):</span><br><span class="line">        movepg=<span class="number">0</span></span><br><span class="line">        allmovepg=<span class="number">0</span></span><br><span class="line">        allmoveobject=<span class="number">0</span></span><br><span class="line">        moveobject=<span class="number">0</span></span><br><span class="line">        oringinmap=self.tojson(self.origin)</span><br><span class="line">        newmap=self.tojson(self.new)</span><br><span class="line">        <span class="keyword">for</span> key <span class="keyword">in</span> oringinmap:</span><br><span class="line">            amapn=<span class="built_in">set</span>(oringinmap[key][<span class="string">'osd'</span>])</span><br><span class="line">            bmapn=<span class="built_in">set</span>(newmap[key][<span class="string">'osd'</span>])</span><br><span class="line">            movepg=len(list(amapn.difference(bmapn)))</span><br><span class="line">            <span class="keyword">if</span> movepg != <span class="number">0</span>:</span><br><span class="line">                moveobject=int(oringinmap[key][<span class="string">'objects'</span>]) * int(movepg)</span><br><span class="line">                allmovepg=allmovepg+movepg</span><br><span class="line">                allmoveobject=allmoveobject+moveobject</span><br><span class="line">        <span class="built_in">return</span> [allmovepg,allmoveobject]</span><br><span class="line"></span><br><span class="line">mycom=filetojson(sys.argv[<span class="number">1</span>],sys.argv[<span class="number">2</span>])</span><br><span class="line"><span class="built_in">print</span> <span class="string">"| pgs | objects |"</span></span><br><span class="line"><span class="built_in">print</span> <span class="string">"-----------------"</span></span><br><span class="line"><span class="built_in">print</span> mycom.compare()</span><br></pre></td></tr></table></figure>
-<h2 id="总结">总结</h2><p>本篇是对集群进行pg调整的这个场景下迁移的数据进行分析的，对于一个集群来说，还是要用数据来进行问题的说明会比较有说服力，凭感觉还是没有那么强的说服力，本篇因为环境所限，所以在模拟的时候采用的是单个pg100个对象的样本，如果需要更精确的数据可以采用多次测试，并且加大这个单个pg的对象数目</p>
-<h2 id="变更记录">变更记录</h2><table>
-<thead>
-<tr>
-<th style="text-align:center">Why</th>
-<th style="text-align:center">Who</th>
-<th style="text-align:center">When</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">创建</td>
-<td style="text-align:center">武汉-运维-磨渣</td>
-<td style="text-align:center">2017-06-14</td>
-</tr>
-</tbody>
-</table>
-]]></content>
-    <summary type="html">
-    <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/diff.png" alt="different"><br></center>
-
-<h2 id="前言">前言</h2><p>这个问题来源于我们研发的一个问题，在进行pg调整的时候，是一次调整到位好，还是分多次调整比较好，分多次调整的时候会不会出现某个pg反复挪动的问题，造成整体迁移量大于一次调整的</p>
-<p>最近自己的项目上也有pg调整的需求，这个需求一般来源于pg规划好了，后期出现节点扩容的情况，需要对pg进行增加的调整</p>
-<p>本篇用具体的数据来分析两种方式的差别</p>
-<p>因为本篇的篇幅较长，直接先把结论拿出来<br>]]>
-    
-    </summary>
-    
-      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
     
   </entry>
   
