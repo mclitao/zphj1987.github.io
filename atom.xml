@@ -4,7 +4,7 @@
   <subtitle><![CDATA[止于至善]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2018-01-02T14:33:49.656Z</updated>
+  <updated>2018-01-02T14:41:54.296Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -19,11 +19,13 @@
     <link href="http://www.zphj1987.com/2018/01/02/ceph-primary-object-damage-recover/"/>
     <id>http://www.zphj1987.com/2018/01/02/ceph-primary-object-damage-recover/</id>
     <published>2018-01-02T14:21:23.000Z</published>
-    <updated>2018-01-02T14:33:49.656Z</updated>
+    <updated>2018-01-02T14:41:54.296Z</updated>
     <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/dog.jpg" alt="dog"><br></center>
 
 <h2 id="前言">前言</h2><p>问题的触发是在进行一个目录的查询的时候，osd就会挂掉，开始以为是osd操作超时了，后来发现每次访问这个对象都有问题<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">log</span> [WRN] ： slow request <span class="number">60.793196</span> seconds old, received at osd_op(mds.<span class="number">0.188</span>:<span class="number">728345234100006</span>c6ddc.<span class="number">00000000</span> [o map-get-header <span class="number">0</span>-<span class="number">0</span>,omap-get-vals <span class="number">0</span>~<span class="number">16</span>,getxattr parent] snapc <span class="number">0</span>=[] ack+<span class="built_in">read</span>+known_<span class="keyword">if</span>_redirected+full_force e218901) currently started</span><br><span class="line">heartbeat_map is_healthy  ··· osd_op_tp thread ··· had timed out after <span class="number">60</span></span><br></pre></td></tr></table></figure></p>
-<p>这个对象是元数据的一个空对象，保留数据在扩展属性当中<br><a id="more"></a><br>然后做了一个操作判断是对象损坏了，停止掉osd做操作<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rados -p metadata listomapvals <span class="number">100006</span>c6ddc.<span class="number">00000000</span></span><br></pre></td></tr></table></figure></p>
+<p>这个对象是元数据的一个空对象，保留数据在扩展属性当中<br><a id="more"></a><br>然后做了一个操作判断是对象损坏了:</p>
+<p>直接列取omapkeys</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rados -p metadata listomapvals <span class="number">100006</span>c6ddc.<span class="number">00000000</span></span><br></pre></td></tr></table></figure>
 <p>发现会卡住，然后关闭这个osd再次做操作，就可以了，启动后还是不行，这里可以判断是主本的对象已经有问题了，本篇将讲述多种方法来解决这个问题</p>
 <h2 id="处理办法">处理办法</h2><p>本章将会根据操作粒度的不同来讲述三种方法的恢复，根据自己的实际情况，和风险的判断来选择自己的操作</p>
 <h3 id="方法一：通过repair修复">方法一：通过repair修复</h3><p>首先能确定是主本损坏了，那么先把主本的对象进行一个备份，然后移除<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab71 <span class="number">2.0</span>_head]<span class="comment"># systemctl stop ceph-osd@0</span></span><br><span class="line">[root@lab71 <span class="number">2.0</span>_head]<span class="comment"># cp -ra 100.00000000__head_C5265AB3__2 ../../</span></span><br></pre></td></tr></table></figure></p>
