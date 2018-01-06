@@ -4,7 +4,7 @@
   <subtitle><![CDATA[止于至善]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2018-01-06T15:54:37.196Z</updated>
+  <updated>2018-01-06T16:06:18.867Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="http://www.zphj1987.com/2018/01/06/CTDB-use-rados-object-as-lock-file/"/>
     <id>http://www.zphj1987.com/2018/01/06/CTDB-use-rados-object-as-lock-file/</id>
     <published>2018-01-06T15:29:59.000Z</published>
-    <updated>2018-01-06T15:54:37.196Z</updated>
+    <updated>2018-01-06T16:06:18.867Z</updated>
     <content type="html"><![CDATA[<p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/object.jpg" alt="object"><br></center></p>
 <h2 id="前言">前言</h2><p>服务器的服务做HA有很多种方式，其中有一种就是是用CTDB，之前这个是独立的软件来做HA的，现在已经跟着SAMBA主线里面了，也就是跟着samba发行包一起发行</p>
 <p>之前CTDB的模式是需要有一个共享文件系统，并且在这个共享文件系统里面所有的节点都去访问同一个文件，会有一个Master会获得这个文件的锁</p>
@@ -49,7 +49,7 @@
 <h3 id="配置ctdb">配置ctdb</h3><p>首先要升级安装下新的ctdb包，因为名称有改变，会提示依赖问题,这里忽略依赖的问题<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@customos ~]<span class="comment"># rpm -Uvh ctdb-4.6.2-12.el7.centos.x86_64.rpm --nodeps</span></span><br></pre></td></tr></table></figure></p>
 <p>添加一个虚拟IP配置<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@customos ~]<span class="comment"># cat /etc/ctdb/public_addresses </span></span><br><span class="line"><span class="number">192.168</span>.<span class="number">0.99</span>/<span class="number">16</span> ens33</span><br></pre></td></tr></table></figure></p>
 <p>添加node配置<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@customos ~]<span class="comment"># cat /etc/ctdb/nodes </span></span><br><span class="line"><span class="number">192.168</span>.<span class="number">0.18</span></span><br><span class="line"><span class="number">192.168</span>.<span class="number">0.201</span></span><br></pre></td></tr></table></figure></p>
-<p>修改配置文件<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@customos ~]<span class="comment"># cat /etc/ctdb/ctdbd.conf|grep -v "#"</span></span><br><span class="line"> CTDB_RECOVERY_LOCK=<span class="string">"!/usr/libexec/ctdb/ctdb_mutex_ceph_rados_helper ceph client.admin rbd lock"</span></span><br><span class="line"> CTDB_NODES=/etc/ctdb/nodes</span><br><span class="line"> CTDB_PUBLIC_ADDRESSES=/etc/ctdb/public_addresses</span><br><span class="line"> CTDB_LOGGING=file:/var/<span class="built_in">log</span>/log.ctdb</span><br><span class="line"><span class="comment"># CTDB_DEBUGLEVEL=debug</span></span><br></pre></td></tr></table></figure></p>
+<p>修改配置文件<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@customos ~]<span class="comment"># cat /etc/ctdb/ctdbd.conf|grep -v "#"</span></span><br><span class="line"> CTDB_RECOVERY_LOCK=<span class="string">"!/usr/libexec/ctdb/ctdb_mutex_ceph_rados_helper ceph client.admin rbd lockctdb"</span></span><br><span class="line"> CTDB_NODES=/etc/ctdb/nodes</span><br><span class="line"> CTDB_PUBLIC_ADDRESSES=/etc/ctdb/public_addresses</span><br><span class="line"> CTDB_LOGGING=file:/var/<span class="built_in">log</span>/log.ctdb</span><br><span class="line"><span class="comment"># CTDB_DEBUGLEVEL=debug</span></span><br></pre></td></tr></table></figure></p>
 <p>上面为了调试，我开启了debug来查看重要的信息</p>
 <blockquote>
 <p>CTDB_RECOVERY_LOCK=”!/usr/libexec/ctdb/ctdb_mutex_ceph_rados_helper ceph client.admin rbd lockctdb”<br>最重要的是这行配置文件规则是<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">CTDB_RECOVERY_LOCK=<span class="string">"!/usr/libexec/ctdb/ctdb_mutex_ceph_rados_helper [Cluster] [User] [Pool] [Object]"</span></span><br><span class="line">Cluster: Ceph cluster name (e.g. ceph)</span><br><span class="line">User: Ceph cluster user name (e.g. client.admin)</span><br><span class="line">Pool: Ceph RADOS pool name</span><br><span class="line">Object: Ceph RADOS object name</span><br></pre></td></tr></table></figure></p>
