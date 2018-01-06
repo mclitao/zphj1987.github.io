@@ -179,6 +179,131 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-使用Ganglia监控系统监控集群-debian" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/03/22/使用Ganglia监控系统监控集群-debian/" class="article-date">
+  	<time datetime="2015-03-22T09:20:06.000Z" itemprop="datePublished">2015-03-22</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/03/22/使用Ganglia监控系统监控集群-debian/">使用Ganglia监控系统监控集群(debian)</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>anglia是一个集群监控软件,底层使用RRDTool获得数据。<br>Ganglia分为ganglia-monitor和gmetad两部分,前者运行在集群每个节点上(被监控机器)收集RRDTool产生的数据,后者运行在监控服务器上,收集每个ganglia-monitor的数据,通过Web UI可以看到直观的各种图表。</p>
+<p>在debian上安装Ganglia非常简单,首先安装下面三个包。因为要使用Web服务器才能看到图表,所以如果没有安装apache的话,会自动安装apache服务器。<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">&#9;apt-get installganglia-monitor  #&#36825;&#20010;&#21253;&#23433;&#35013;&#22312;&#34987;&#30417;&#25511;&#26426;&#22120;&#21363;&#21487;&#10;&#9;apt-get install ganglia-webfront gmetad  #&#36825;&#20004;&#20010;&#21253;&#23433;&#35013;&#22312;&#30417;&#25511;&#26381;&#21153;&#22120;&#65292;&#21069;&#32773;&#25552;&#20379;web&#39029;&#38754;&#65292;&#21518;&#32773;&#25910;&#38598;&#20854;&#20182;&#26426;&#22120;&#30340;&#30417;&#25511;&#25968;&#25454;&#10;```   &#10;     &#10;&#34987;&#30417;&#25511;&#23433;&#35013;&#23436;&#25104;&#20043;&#21518;&#65292;gmond&#26381;&#21153;&#20250;&#36816;&#34892;&#36215;&#26469;&#65292;&#20351;&#29992;&#19979;&#38754;&#30340;&#21629;&#20196;&#21487;&#20197;&#21551;&#21160;&#36825;&#20010;&#26381;&#21153;&#12290;&#10;```raw&#10;&#9;/etc/init.d/ganglia-monitor restart</span><br></pre></td></tr></table></figure></p>
+<p>(配置文件的路径在/etc/ganglia/gmond.conf)基本不用配置就可以启用</p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2015/03/22/使用Ganglia监控系统监控集群-debian/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+<div id="gitment"></div>
+<!-- 主页不要加载gitment -->
+
+
+
+
+  
+    <article id="post-Linux下如何创建loop-device" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/03/22/Linux下如何创建loop-device/" class="article-date">
+  	<time datetime="2015-03-22T09:07:24.000Z" itemprop="datePublished">2015-03-22</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/03/22/Linux下如何创建loop-device/">Linux下如何创建loop device</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在Linux中,有一种特殊的块设备叫loop device,这种loop device设备是通过映射操作系统上的正常的文件而形成的虚拟块设备</p>
+<p>因为这种设备的存在,就为我们提供了一种创建一个存在于其他文件中的虚拟文件系统的机制.下面是一个示例:<br>第一步:用dd创建一个大文件:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">dd <span class="keyword">if</span>=/dev/zero of=node1 bs=<span class="number">4</span>M count=<span class="number">500</span></span><br></pre></td></tr></table></figure></p>
+<p>这样就在当前目录下创建了一个2G的文件”node1”</p>
+<p>第二步:使用losetup命令创建一个loop device<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">losetup /dev/loop0 node1</span><br></pre></td></tr></table></figure></p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2015/03/22/Linux下如何创建loop-device/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+<div id="gitment"></div>
+<!-- 主页不要加载gitment -->
+
+
+
+
+  
     <article id="post-用rsync备份一台linux服务器上的数据" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -628,126 +753,6 @@
         <p>win7 中“我的电脑”改名为了“计算机”,而且计算机中不再有我的文档共享文档等链接,虽然计算机左侧的链接中有常用文件夹的链接，用户也可以把自己的快捷方式放入其中。<br>但某些东西还是想直接放在计算机中，很简单，只要把文件或文件夹或它们的快捷方式放到以下目录即可。<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">C:\Users\&#20320;&#30340;&#29992;&#25143;&#21517;\AppData\Roaming\Microsoft\Windows\Network Shortcuts</span><br></pre></td></tr></table></figure></p>
 <p>即可在“计算机”中显示。</p>
 <p>写于: 2012年4月24日<br>更新于: 2015年03月22日</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-<div id="gitment"></div>
-<!-- 主页不要加载gitment -->
-
-
-
-
-  
-    <article id="post-关于nginx-upstream的几种配置方式" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/03/22/关于nginx-upstream的几种配置方式/" class="article-date">
-  	<time datetime="2015-03-22T07:55:56.000Z" itemprop="datePublished">2015-03-22</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/03/22/关于nginx-upstream的几种配置方式/">关于nginx upstream的几种配置方式</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>平时一直依赖硬件来作load blance,最近研究Nginx来做负载设备,记录下upstream的几种配置方式。</p>
-<p>第一种:轮询<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">upstream test&#123;&#10;    server 192.168.0.1:3000;&#10;    server 192.168.0.1:3001;&#10;&#125;</span><br></pre></td></tr></table></figure></p>
-<p>第二种:权重<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">upstream test&#123;&#10;    server 192.168.0.1 weight=2;&#10;    server 192.168.0.2 weight=3;&#10;&#125;</span><br></pre></td></tr></table></figure></p>
-<p>这种模式可解决服务器性能不等的情况下轮询比率的调配</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/03/22/关于nginx-upstream的几种配置方式/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-<div id="gitment"></div>
-<!-- 主页不要加载gitment -->
-
-
-
-
-  
-    <article id="post-win7安装系统出现“安装程序无法创建新的系统分区，也无法定位现有的系统分区”解决方法" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/03/22/win7安装系统出现“安装程序无法创建新的系统分区，也无法定位现有的系统分区”解决方法/" class="article-date">
-  	<time datetime="2015-03-22T07:52:01.000Z" itemprop="datePublished">2015-03-22</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/03/22/win7安装系统出现“安装程序无法创建新的系统分区，也无法定位现有的系统分区”解决方法/">win7安装系统出现“安装程序无法创建新的系统分区，也无法定位现有的系统分区”解决方法</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>原来服务器上的系统是debian的系统，现在需要在原系统和机器不动的基础上在这台服务器上安装一个win7系统,在安装过程中出现了标题中所说的问题,上网搜索了一下,发现最有效的解决办法就是修改bios中的磁盘的启动项:</p>
-<p>由于原来的系统盘插在第一个sata口,应该是占据着磁盘0,那么在热插拔的机器上插入的一块新的硬盘应该是占据着磁盘1</p>
-<p>而实际情况是在开机进行磁盘选择启动时 原来的debian系统盘是占据这第一启动项,后插入的硬盘占据着第二启动项,在进入到win7的安装程序的时候,会发现,后插入的那个硬盘居然占据着磁盘0,由于这个地方的显示跟bios启动看到的启动顺序对不上,所以就出现了安装程序无法创建新的系统分区,也无法定位现有系统。</p>
-<p>所以需要进入bios进行小的修改<br>进入bios修改界面<br>选择boot选项<br>选择Hard Disk Drivers<br>可以看到1st drive  对应的是原系统盘,在这里修改为后插入的那块硬盘<br>然后保存设置 重启<br>然后安装系统就不会有问题了<br>新插入的硬盘现在应该占据着磁盘1的位子了,安装win7到磁盘1 即可</p>
-<p>写于:2012年4月20日<br>更新于:2015年03月22日</p>
 
       
     </div>

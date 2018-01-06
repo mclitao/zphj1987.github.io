@@ -3,21 +3,21 @@
 <head>
   <meta charset="utf-8">
   
-  <title>&#39;sortbitwise&#39;是什么意思 | zphj1987&#39;Blog</title>
+  <title>Kernel RBD的QOS配置方案 | zphj1987&#39;Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="问题flag sortbitwise 在ceph中是什么意思,在Jewel版本下可以看到多了这个flags
-[root@lab8106 current]# ceph -s    cluster ffe7a8db-c671-4b45-a784-ddb41e633905     health HEALTH_OK     monmap e1: 1 mons at &amp;#123;lab8106=192.16">
+  <meta name="description" content="前言关于qos的讨论有很多，ceph内部也正在实现着一整套的基于dmclock的qos的方案，这个不是本篇的内容，之前在社区的邮件列表看过有研发在聊qos的相关的实现的，当时一个研发就提出了在使用kernel rbd的时候，可以直接使用linux的操作系统qos来实现，也就是cgroup来控制读取写入
+cgroup之前也有接触过，主要测试了限制cpu和内存相关的，没有做io相关的测试，这个当然可以">
 <meta property="og:type" content="article">
-<meta property="og:title" content="'sortbitwise'是什么意思">
-<meta property="og:url" content="http://www.zphj1987.com/2017/01/12/sortbitwise-mean/index.html">
+<meta property="og:title" content="Kernel RBD的QOS配置方案">
+<meta property="og:url" content="http://www.zphj1987.com/2018/01/05/Kernel-RBD-QOS/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
-<meta property="og:description" content="问题flag sortbitwise 在ceph中是什么意思,在Jewel版本下可以看到多了这个flags
-[root@lab8106 current]# ceph -s    cluster ffe7a8db-c671-4b45-a784-ddb41e633905     health HEALTH_OK     monmap e1: 1 mons at &amp;#123;lab8106=192.16">
-<meta property="og:image" content="http://7xweck.com1.z0.glb.clouddn.com/techie.jpg">
+<meta property="og:description" content="前言关于qos的讨论有很多，ceph内部也正在实现着一整套的基于dmclock的qos的方案，这个不是本篇的内容，之前在社区的邮件列表看过有研发在聊qos的相关的实现的，当时一个研发就提出了在使用kernel rbd的时候，可以直接使用linux的操作系统qos来实现，也就是cgroup来控制读取写入
+cgroup之前也有接触过，主要测试了限制cpu和内存相关的，没有做io相关的测试，这个当然可以">
+<meta property="og:image" content="http://7xweck.com1.z0.glb.clouddn.com/io.png">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="'sortbitwise'是什么意思">
-<meta name="twitter:description" content="问题flag sortbitwise 在ceph中是什么意思,在Jewel版本下可以看到多了这个flags
-[root@lab8106 current]# ceph -s    cluster ffe7a8db-c671-4b45-a784-ddb41e633905     health HEALTH_OK     monmap e1: 1 mons at &amp;#123;lab8106=192.16">
+<meta name="twitter:title" content="Kernel RBD的QOS配置方案">
+<meta name="twitter:description" content="前言关于qos的讨论有很多，ceph内部也正在实现着一整套的基于dmclock的qos的方案，这个不是本篇的内容，之前在社区的邮件列表看过有研发在聊qos的相关的实现的，当时一个研发就提出了在使用kernel rbd的时候，可以直接使用linux的操作系统qos来实现，也就是cgroup来控制读取写入
+cgroup之前也有接触过，主要测试了限制cpu和内存相关的，没有做io相关的测试，这个当然可以">
   
     <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
   
@@ -181,11 +181,11 @@
 		</header>				
 	</div>
 </nav>
-      <div class="body-wrap"><article id="post-sortbitwise-mean" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-Kernel-RBD-QOS" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/01/12/sortbitwise-mean/" class="article-date">
-  	<time datetime="2017-01-12T04:39:24.000Z" itemprop="datePublished">2017-01-12</time>
+      <a href="/2018/01/05/Kernel-RBD-QOS/" class="article-date">
+  	<time datetime="2018-01-05T07:23:30.000Z" itemprop="datePublished">2018-01-05</time>
 </a>
     </div>
   
@@ -198,7 +198,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      &#39;sortbitwise&#39;是什么意思
+      Kernel RBD的QOS配置方案
     </h1>
   
 
@@ -218,35 +218,27 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/techie.jpg" alt=""><br></center>
+        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/io.png" alt="io"><br></center>
 
-<h2 id="问题">问题</h2><p>flag sortbitwise 在ceph中是什么意思,在Jewel版本下可以看到多了这个flags</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 current]<span class="comment"># ceph -s</span></span><br><span class="line">    cluster ffe7a8db-c671-<span class="number">4</span>b45<span class="operator">-a</span>784-ddb41e633905</span><br><span class="line">     health HEALTH_OK</span><br><span class="line">     monmap e1: <span class="number">1</span> mons at &#123;lab8106=<span class="number">192.168</span>.<span class="number">8.106</span>:<span class="number">6789</span>/<span class="number">0</span>&#125;</span><br><span class="line">            election epoch <span class="number">4</span>, quorum <span class="number">0</span> lab8106</span><br><span class="line">      fsmap e4: <span class="number">1</span>/<span class="number">1</span>/<span class="number">1</span> up &#123;<span class="number">0</span>=lab8106=up:active&#125;</span><br><span class="line">     osdmap e132: <span class="number">8</span> osds: <span class="number">8</span> up, <span class="number">8</span> <span class="keyword">in</span></span><br><span class="line">            flags sortbitwise</span><br><span class="line">      pgmap v206294: <span class="number">201</span> pgs, <span class="number">5</span> pools, <span class="number">4684</span> MB data, <span class="number">1214</span> objects</span><br><span class="line">            <span class="number">9669</span> MB used, <span class="number">2216</span> GB / <span class="number">2226</span> GB avail</span><br><span class="line">                 <span class="number">201</span> active+clean</span><br></pre></td></tr></table></figure>
-<a id="more"></a>
-<h2 id="找到的相关资料">找到的相关资料</h2><blockquote>
-<p>After upgrading, users should set the ‘sortbitwise’ flag to enable the new internal object sort order: ceph osd set sortbitwise<br>This flag is important for the new object enumeration API and for new backends like BlueStore.</p>
-</blockquote>
-<p>From <a href="http://docs.ceph.com/docs/master/release-notes/#upgrading-from-infernalis-or-hammer" target="_blank" rel="external">Ceph release notes</a></p>
-<blockquote>
-<p>commit 383185bfbae74797cdb44f50b4bf651422800ff1<br>Author: Sage Weil <a href="&#109;&#97;&#105;&#108;&#x74;&#x6f;&#58;&#115;&#x61;&#103;&#101;&#x40;&#114;&#x65;&#x64;&#x68;&#x61;&#x74;&#46;&#x63;&#111;&#109;">&#115;&#x61;&#103;&#101;&#x40;&#114;&#x65;&#x64;&#x68;&#x61;&#x74;&#46;&#x63;&#111;&#109;</a><br>Date: Fri Aug 7 16:14:09 2015 -0400<br>mon/OSDMonitor: osd set/unset sortbitwise<br> Add monitor command to flip the switch on the OSD hobject_t sort<br> order.</p>
-</blockquote>
-<p>From git</p>
-<p>第一次在源码中出现:</p>
-<blockquote>
-<p>commit 138f58493715e386929f152424b70df37843541b<br>Author: John Spray <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#x3a;&#x6a;&#x6f;&#x68;&#110;&#x2e;&#115;&#x70;&#x72;&#97;&#121;&#x40;&#114;&#x65;&#100;&#104;&#x61;&#116;&#46;&#x63;&#x6f;&#x6d;">&#x6a;&#x6f;&#x68;&#110;&#x2e;&#115;&#x70;&#x72;&#97;&#121;&#x40;&#114;&#x65;&#100;&#104;&#x61;&#116;&#46;&#x63;&#x6f;&#x6d;</a><br>Date: Mon Aug 17 14:40:46 2015 -0400<br>osdc/Objecter: new-style pgls<br> Signed-off-by: John Spray <a href="&#x6d;&#x61;&#x69;&#x6c;&#x74;&#111;&#58;&#x6a;&#x6f;&#x68;&#x6e;&#x2e;&#x73;&#112;&#114;&#97;&#121;&#x40;&#x72;&#x65;&#x64;&#104;&#97;&#x74;&#46;&#x63;&#x6f;&#x6d;">&#x6a;&#x6f;&#x68;&#x6e;&#x2e;&#x73;&#112;&#114;&#97;&#121;&#x40;&#x72;&#x65;&#x64;&#104;&#97;&#x74;&#46;&#x63;&#x6f;&#x6d;</a><br> Signed-off-by: Sage Weil <a href="&#109;&#x61;&#x69;&#x6c;&#116;&#x6f;&#58;&#x73;&#97;&#103;&#x65;&#64;&#x72;&#x65;&#100;&#104;&#97;&#x74;&#46;&#99;&#111;&#x6d;">&#x73;&#97;&#103;&#x65;&#64;&#x72;&#x65;&#100;&#104;&#97;&#x74;&#46;&#99;&#111;&#x6d;</a></p>
-</blockquote>
-<p>From git</p>
-<p>Related github issue: <a href="https://github.com/ceph/ceph/pull/4919/commits" target="_blank" rel="external">https://github.com/ceph/ceph/pull/4919/commits</a></p>
-<p>初步结论: sortbitwise 内部排序算法的一个变化.之所以暴露出来是因为要兼容一些pre-jewel版本.在新的版本中应该保持开启状态.</p>
-<p>以上转载自博客：<a href="https://medium.com/@george.shuklin/what-is-sortbitwise-flag-means-in-ceph-b4176748da42#.dfaw54rpf" target="_blank" rel="external">What ‘sortbitwise’ flag means in Ceph?</a></p>
-<h2 id="红帽的官方回答">红帽的官方回答</h2><ul>
-<li>如果你使用dev版本Infernalis或仍在开发中的LTS版本的Ceph的Jewel版本，你会看到这个标志在ceph状态输出默认启用</li>
-<li>这个标志sortbitwise在Infernalis版本中引入</li>
-<li>这个标志是在这个版本提交的upstream commit 968261b11ac30622c0606d1e2ddf422009e7d330</li>
-</ul>
-<p>下载ceph的源码，进入源码目录<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 all]<span class="comment"># git show 968261b11ac30622c0606d1e2ddf422009e7d330</span></span><br><span class="line">commit <span class="number">968261</span>b11ac30622c0606d1e2ddf422009e7d330</span><br><span class="line">Author: Sage Weil &lt;sage@redhat.com&gt;</span><br><span class="line">Date:   Fri Aug <span class="number">7</span> <span class="number">16</span>:<span class="number">01</span>:<span class="number">12</span> <span class="number">2015</span> -<span class="number">0400</span></span><br><span class="line"></span><br><span class="line">    osd/OSDMap: add a SORTBITWISE OSDMap flag</span><br><span class="line"></span><br><span class="line">    This flag will indicate that hobject_t<span class="string">'s shall hence-forth be</span><br><span class="line">    sorted in a bitwise fashion.</span><br><span class="line"></span><br><span class="line">    Signed-off-by: Sage Weil &lt;sage@redhat.com&gt;</span></span><br></pre></td></tr></table></figure></p>
-<p>正如我们在上面给定的提交的描述中所说，该标志将表明hobject_t的将以 bitwise fashion方式排序。<br>现在意味着现在的对象将在OSDs中以按位方式排序，并且此标志默认在Infernalis和Jewel发布版本中启用。</p>
-<h2 id="总结">总结</h2><p>目前来看这个是底层的一个排序的算法的变动，对上层目前还不清楚是有什么可以可见的变化，总之，这个让它默认开启就行，不要去修改它就可以了</p>
+<h2 id="前言">前言</h2><p>关于qos的讨论有很多，ceph内部也正在实现着一整套的基于dmclock的qos的方案，这个不是本篇的内容，之前在社区的邮件列表看过有研发在聊qos的相关的实现的，当时一个研发就提出了在使用kernel rbd的时候，可以直接使用linux的操作系统qos来实现，也就是cgroup来控制读取写入</p>
+<p>cgroup之前也有接触过，主要测试了限制cpu和内存相关的，没有做io相关的测试，这个当然可以通过ceph内部来实现qos，但是有现成的解决方案的时候，可以减少很多开发周期，以及测试的成本</p>
+<p>本篇将介绍的是kernel rbd的qos方案<br><a id="more"></a></p>
+<h2 id="时间过长">时间过长</h2><p>首先介绍下几个测试qos相关的命令，用来比较设置前后的效果<br>验证写入IOPS命令<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">fio -filename=/dev/rbd0 -direct=<span class="number">1</span> -iodepth <span class="number">1</span> -thread -rw=write -ioengine=libaio -bs=<span class="number">4</span>K -size=<span class="number">1</span>G -numjobs=<span class="number">1</span> -runtime=<span class="number">60</span> -group_reporting -name=mytest</span><br></pre></td></tr></table></figure></p>
+<p>验证写入带宽的命令<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">fio -filename=/dev/rbd0 -direct=<span class="number">1</span> -iodepth <span class="number">1</span> -thread -rw=write -ioengine=libaio -bs=<span class="number">4</span>M -size=<span class="number">1</span>G -numjobs=<span class="number">1</span> -runtime=<span class="number">60</span> -group_reporting -name=mytest</span><br></pre></td></tr></table></figure></p>
+<p>验证读取IOPS命令<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">fio -filename=/dev/rbd0 -direct=<span class="number">1</span> -iodepth <span class="number">1</span> -thread -rw=<span class="built_in">read</span> -ioengine=libaio -bs=<span class="number">4</span>K -size=<span class="number">1</span>G -numjobs=<span class="number">1</span> -runtime=<span class="number">60</span> -group_reporting -name=mytest</span><br></pre></td></tr></table></figure></p>
+<p>验证读取带宽命令<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">fio -filename=/dev/rbd0 -direct=<span class="number">1</span> -iodepth <span class="number">1</span> -thread -rw=<span class="built_in">read</span> -ioengine=libaio -bs=<span class="number">4</span>M -size=<span class="number">1</span>G -numjobs=<span class="number">1</span> -runtime=<span class="number">60</span> -group_reporting -name=mytest</span><br></pre></td></tr></table></figure></p>
+<p>上面为什么会设置不同的块大小，这个是因为测试的存储是会受到带宽和iops的共同制约的，当测试小io的时候，这个时候的峰值是受到iops的限制的，测试大io的时候，受到的是带宽限制，所以在做测试的时候，需要测试iops是否被限制住的时候就使用小的bs=4K，需要测试大的带宽的限制的时候就采用bs=4M来测试</p>
+<p>测试的时候都是，开始不用做qos来进行测试得到一个当前不配置qos的性能数值，然后根据需要进行qos设置后通过上面的fio去测试是否能限制住</p>
+<p>启用cgroup的blkio模块<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkdir -p  /cgroup/blkio/</span><br><span class="line">mount -t cgroup -o blkio blkio /cgroup/blkio/</span><br></pre></td></tr></table></figure></p>
+<p>获取rbd磁盘的major/minor numbers<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab211 ~]<span class="comment"># lsblk </span></span><br><span class="line">NAME   MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT</span><br><span class="line">rbd0   <span class="number">252</span>:<span class="number">0</span>    <span class="number">0</span>  <span class="number">19.5</span>G  <span class="number">0</span> disk </span><br><span class="line">sda      <span class="number">8</span>:<span class="number">0</span>    <span class="number">1</span> <span class="number">238.4</span>G  <span class="number">0</span> disk </span><br><span class="line">├─sda4   <span class="number">8</span>:<span class="number">4</span>    <span class="number">1</span>     <span class="number">1</span>K  <span class="number">0</span> part </span><br><span class="line">├─sda2   <span class="number">8</span>:<span class="number">2</span>    <span class="number">1</span>  <span class="number">99.9</span>G  <span class="number">0</span> part </span><br><span class="line">├─sda5   <span class="number">8</span>:<span class="number">5</span>    <span class="number">1</span>     <span class="number">8</span>G  <span class="number">0</span> part [SWAP]</span><br><span class="line">├─sda3   <span class="number">8</span>:<span class="number">3</span>    <span class="number">1</span>     <span class="number">1</span>G  <span class="number">0</span> part /boot</span><br><span class="line">├─sda1   <span class="number">8</span>:<span class="number">1</span>    <span class="number">1</span>   <span class="number">100</span>M  <span class="number">0</span> part </span><br><span class="line">└─sda6   <span class="number">8</span>:<span class="number">6</span>    <span class="number">1</span> <span class="number">129.4</span>G  <span class="number">0</span> part /</span><br></pre></td></tr></table></figure></p>
+<p>通过lsblk命令可以获取到磁盘对应的major number和minor number,这里可以看到rbd0对应的编号为252:0</p>
+<p>设置rbd0的iops的qos为10<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">"252:0 10"</span> &gt; /cgroup/blkio/blkio.throttle.write_iops_device</span><br></pre></td></tr></table></figure></p>
+<p>如果想清理这个规则,把后面的数值设置为0就清理了，后面几个配置也是相同的方法<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">"252:0 0"</span> &gt; /cgroup/blkio/blkio.throttle.write_iops_device</span><br></pre></td></tr></table></figure></p>
+<p>限制写入的带宽为10MB/s<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">"252:0 10485760"</span> &gt; /cgroup/blkio/blkio.throttle.write_bps_device</span><br></pre></td></tr></table></figure></p>
+<p>限制读取的qos为10<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">"252:0 10"</span> &gt; /cgroup/blkio/blkio.throttle.read_iops_device</span><br></pre></td></tr></table></figure></p>
+<p>限制读取的带宽为10MB/s<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">"252:0 10485760"</span> &gt; /cgroup/blkio/blkio.throttle.read_bps_device</span><br></pre></td></tr></table></figure></p>
+<p>以上简单的设置就完成了kernel rbd的qos设置了，我测试了下，确实是生效了的</p>
+<h2 id="总结">总结</h2><p>这个知识点很久前就看到了，一直没总结，现在记录下，个人观点是能快速，有效，稳定的实现功能是最好的，所以使用这个在kernel rbd方式下可以不用再进行qos的开发了</p>
 <h2 id="变更记录">变更记录</h2><table>
 <thead>
 <tr>
@@ -259,7 +251,7 @@
 <tr>
 <td style="text-align:center">创建</td>
 <td style="text-align:center">武汉-运维-磨渣</td>
-<td style="text-align:center">2017-01-12</td>
+<td style="text-align:center">2018-01-05</td>
 </tr>
 </tbody>
 </table>
@@ -272,18 +264,18 @@
     
 <nav id="article-nav">
   
-    <a href="/2017/01/19/ceph-rbd-ceph-backup/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2018/01/06/CTDB-use-rados-object-as-lock-file/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption"><</strong>
       <div class="article-nav-title">
         
-          ceph的rbd备份软件ceph-backup
+          CTDB使用rados object作为lock file
         
       </div>
     </a>
   
   
-    <a href="/2017/01/09/calamari-node-info/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">解决calamari无法获取节点信息的bug</div>
+    <a href="/2018/01/02/ceph-primary-object-damage-recover/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Ceph对象主本损坏的修复方法</div>
       <strong class="article-nav-caption">></strong>
     </a>
   

@@ -179,6 +179,157 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-rbd-mirror-configure-onesidebackup" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/01/22/rbd-mirror-configure-onesidebackup/" class="article-date">
+  	<time datetime="2017-01-22T08:35:53.000Z" itemprop="datePublished">2017-01-22</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/01/22/rbd-mirror-configure-onesidebackup/">rbd-mirror配置指南-单向备份</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <center><br><img src="http://7xo9we.com1.z0.glb.clouddn.com/mirrorpng.png" alt=""><br></center>
+
+
+<p>RBD 的 mirroring 功能将在Jewel中实现的，这个Jewel版本已经发布了很久了,这个功能已经在这个发布的版本中实现了，本来之前写过一篇文章，但是有几个朋友根据文档配置后，发现还是有问题，自己在进行再次配置的时候也发现有些地方没讲清楚，容易造成误解，这里对文档进行再一次的梳理</p>
+<p>一、基本原理<br>我们试图解决的或者至少需要克服的问题是，ceph在内部是强一致性的，这个对于跨区域的情况数据同步是无法接受的，一个请求需要异地返回再确认完成，这个在性能上肯定是无法接受的，这就是为什么基本上无法部署跨区域的ceph集群</p>
+<p>因此我们需要有一种机制能够让我们在不同区域的集群之间复制块设备。这个能够帮助我们实现两个功能：</p>
+<ul>
+<li>灾难恢复</li>
+<li>全球块设备分布（跨地理位置）</li>
+</ul>
+<p>二、内部的实现</p>
+<p><img src="http://static.zybuluo.com/zphj1987/owvwxjz172f2aokh699fd008/%E7%94%BB%E5%9B%BE.png" alt="画图.png-34.8kB"></p>
+<p>从上图所示是进行的主备模式的备份，其实这个只是看怎么应用了，在里面是自动实现的主主的模式，双向同步的，只是在应用中需要注意不要去同时操作同一个image，这个功能是作为主备去使用的，以备真正有问题的时候去实现故障恢复，这个同步是异步的</p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2017/01/22/rbd-mirror-configure-onesidebackup/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+<div id="gitment"></div>
+<!-- 主页不要加载gitment -->
+
+
+
+
+  
+    <article id="post-ceph-rbd-ceph-backup" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/01/19/ceph-rbd-ceph-backup/" class="article-date">
+  	<time datetime="2017-01-19T14:49:33.000Z" itemprop="datePublished">2017-01-19</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/01/19/ceph-rbd-ceph-backup/">ceph的rbd备份软件ceph-backup</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <center><br><img src="http://7xo9we.com1.z0.glb.clouddn.com/backupmp.png" alt=""><br></center>
+
+<p>teralytics是一家国外的大数据公司，这个是他们开源的ceph的备份的工具，在twitter上搜索相关信息的时候看到，觉得不错就拿来试用一番</p>
+<h2 id="这是个什么软件">这是个什么软件</h2><p>一个用来备份 ceph 的 rbd 的image的开源软件，提供了两种模式<br>增量：在给定备份时间窗口内基于 rbd 快照的增量备份<br>完全：完整镜像导出时不包含快照</p>
+<blockquote>
+<p>注意一致性：此工具可以生成 rbd 镜像的快照，而不会感知到它们的文件系统的状态，注意下 rbd 快照的一致性限制（<a href="http://docs.ceph.com/docs/hammer/rbd/rbd-snapshot/">官网文档</a>） 由于“完全”模式不使用快照，“完全”模式下的实时映像备份不一致（“增量”模式始终使用快照）</p>
+</blockquote>
+<p>超过时间窗口以后，会进行一次全量备份，并且把之前的快照删除掉，重新进行一次全量备份，并且基于这个时间窗口计算是否需要删除备份的文件</p>
+<p>软件包含以下功能：</p>
+<ul>
+<li>支持存储池和多image的指定</li>
+<li>支持自定义备份目标路径</li>
+<li>配置文件支持</li>
+<li>支持备份窗口设置</li>
+<li>支持压缩选项</li>
+<li>支持增量和全量备份的配置
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2017/01/19/ceph-rbd-ceph-backup/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+<div id="gitment"></div>
+<!-- 主页不要加载gitment -->
+
+
+
+
+  
     <article id="post-sortbitwise-mean" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -689,138 +840,6 @@
       
         <p class="article-more-link">
           <a  href="/2016/12/22/Ceph数据盘怎样实现自动挂载/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-<div id="gitment"></div>
-<!-- 主页不要加载gitment -->
-
-
-
-
-  
-    <article id="post-cephonebox发布" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/12/18/cephonebox发布/" class="article-date">
-  	<time datetime="2016-12-18T14:25:48.000Z" itemprop="datePublished">2016-12-18</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/12/18/cephonebox发布/">cephonebox发布</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <center><br><img src="http://7xo9we.com1.z0.glb.clouddn.com/shipin/cephoneboxpre3.jpg" alt=""><br></center>
-
-<h2 id="前言">前言</h2><p>现在已经是2016年收官的一个月了，之前一直想做一个calamari的集成版本，之所以有这个想法，是因为，即使在已经打好包的情况下，因为各种软件版本的原因，造成很多人无法配置成功，calamari发布以后，因为版本的更迭，经常出现软件版本引起的BUG<br>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2016/12/18/cephonebox发布/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-<div id="gitment"></div>
-<!-- 主页不要加载gitment -->
-
-
-
-
-  
-    <article id="post-rbd的image快照与Pool快照" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/12/14/rbd的image快照与Pool快照/" class="article-date">
-  	<time datetime="2016-12-14T01:55:51.000Z" itemprop="datePublished">2016-12-14</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/12/14/rbd的image快照与Pool快照/">rbd的image快照与Pool快照</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/storagead.jpg" alt=""><br></center>
-
-<h2 id="前言">前言</h2><p>这个问题是不久前在ceph社区群里看到的，创建image的时候，当时的报错如下：</p>
-<blockquote>
-<p>2016-12-13 23:13:10.266865 7efbfb7fe700 -1 librbd::image::CreateRequest: pool not configured for self-managed RBD snapshot support<br>rbd: create error: (22) Invalid argument</p>
-</blockquote>
-<p>这个错我之前也没见过，并且因为很少用到快照，所以可能也就没有触发这个问题,在查看了一些资料以后，明白了原因，这里就梳理一下<br>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2016/12/14/rbd的image快照与Pool快照/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>

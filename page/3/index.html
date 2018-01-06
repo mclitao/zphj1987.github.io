@@ -179,6 +179,131 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-ceph-luminous-new-osd-class" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/06/28/ceph-luminous-new-osd-class/" class="article-date">
+  	<time datetime="2017-06-28T07:51:07.000Z" itemprop="datePublished">2017-06-28</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/06/28/ceph-luminous-new-osd-class/">ceph luminous 新功能之磁盘智能分组</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/ssd.png" alt=""><br></center>
+
+<h2 id="前言">前言</h2><p>本篇是luminous一个新功能介绍，关于磁盘智能分组的，这个在ceph里面叫crush class，这个我自己起名叫磁盘智能分组，因为这个实现的功能就是根据磁盘类型进行属性关联，然后进行分类，减少了很多的人为操作</p>
+<p>以前我们需要对ssd和hdd进行分组的时候，需要大量的修改crush map，然后绑定不同的存储池到不同的 crush 树上面，现在这个逻辑简化了很多</p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2017/06/28/ceph-luminous-new-osd-class/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+<div id="gitment"></div>
+<!-- 主页不要加载gitment -->
+
+
+
+
+  
+    <article id="post-ceph-luminous-new-dashboard" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/06/25/ceph-luminous-new-dashboard/" class="article-date">
+  	<time datetime="2017-06-25T15:59:44.000Z" itemprop="datePublished">2017-06-25</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/06/25/ceph-luminous-new-dashboard/">ceph luminous 新功能之内置dashboard</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/dashboard.jpg" alt=""><br></center>
+
+<h2 id="前言">前言</h2><p>ceph luminous版本新增加了很多有意思的功能，这个也是一个长期支持版本，所以这些新功能的特性还是很值得期待的，从底层的存储改造，消息方式的改变，以及一些之前未实现的功能的完成，都让ceph变得更强，这里面有很多核心模块来自中国的开发者，在这里准备用一系列的文章对这些新功能进行一个简单的介绍，也是自己的一个学习的过程</p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2017/06/25/ceph-luminous-new-dashboard/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+<div id="gitment"></div>
+<!-- 主页不要加载gitment -->
+
+
+
+
+  
     <article id="post-different-change-pg" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -682,134 +807,6 @@
       
         <p class="article-more-link">
           <a  href="/2017/04/27/Ceph-depend-Crush-read-data/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-<div id="gitment"></div>
-<!-- 主页不要加载gitment -->
-
-
-
-
-  
-    <article id="post-about-backfill-conf" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/04/27/about-backfill-conf/" class="article-date">
-  	<time datetime="2017-04-27T01:36:17.000Z" itemprop="datePublished">2017-04-27</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/04/27/about-backfill-conf/">关于backfill参数建议</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/fill.gif" alt=""><br></center>
-
-<h2 id="前言">前言</h2><p>在做一个比较满的集群的扩容的时候，遇到了一些问题，在这里做下总结，一般来说很难遇到，扩容要趁早，不然出的问题都是稀奇古怪的一些问题<br>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2017/04/27/about-backfill-conf/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-<div id="gitment"></div>
-<!-- 主页不要加载gitment -->
-
-
-
-
-  
-    <article id="post-mds-journal-cc-2929-FAILED-assert" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/04/27/mds-journal-cc-2929-FAILED-assert/" class="article-date">
-  	<time datetime="2017-04-27T01:24:39.000Z" itemprop="datePublished">2017-04-27</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/04/27/mds-journal-cc-2929-FAILED-assert/">mds/journal.cc: 2929: FAILED assert解决</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/session.png" alt=""><br></center>
-
-<h2 id="前言">前言</h2><p>在处理一个其他双活MDS无法启动环境的时候，查看mds的日志看到了这个错误mds/journal.cc: 2929: FAILED assert(mds-&gt;sessionmap.get_version() == cmapv)，在查询资料以后，暂时得到了解决,在生产环境下还是不建议使用双活MDS<br>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2017/04/27/mds-journal-cc-2929-FAILED-assert/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>

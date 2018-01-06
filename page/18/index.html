@@ -179,6 +179,134 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-linux下制作软件包安装服务器" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/04/28/linux下制作软件包安装服务器/" class="article-date">
+  	<time datetime="2015-04-28T08:43:29.000Z" itemprop="datePublished">2015-04-28</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/04/28/linux下制作软件包安装服务器/">linux下制作软件包安装服务器</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>linux下的软件包在有网络的情况下比较好安装，在ubuntu下，更新sourcelist，然后使用apt-get就可以很方便的安装包，在centos下面，更新yum列表，然后使用yum也可以进行方便的软件安装，但是在没有网络的情况下就比较难安装，可以用一个个包的安装的方式去安装，这个在少量的包的情况下比较好处理，在多的情况下就比较麻烦了，本篇文档，就是介绍了在无网的情况下，根据自己的需要制作内网的包的安装服务器</p>
+<h2 id="centos系列">centos系列</h2><h3 id="使用光驱作为安装源">使用光驱作为安装源</h3><p>1、将光驱挂载到服务器的本地目录</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@node1 ~]<span class="comment"># mount /dev/cdrom /mnt</span></span><br><span class="line">mount: block device /dev/sr0 is write-protected, mounting <span class="built_in">read</span>-only</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2015/04/28/linux下制作软件包安装服务器/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+<div id="gitment"></div>
+<!-- 主页不要加载gitment -->
+
+
+
+
+  
+    <article id="post-windows下命令行设置静态IP" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/04/03/windows下命令行设置静态IP/" class="article-date">
+  	<time datetime="2015-04-03T04:25:48.000Z" itemprop="datePublished">2015-04-03</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/04/03/windows下命令行设置静态IP/">windows下命令行设置静态IP</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>windows 10 预览版出现无法设置静态IP的bug，只能通过命令行进行设置，开启powershell，然后执行下列的命令即可<br>下面的“以太网 3” 为你设置的网卡的网卡名称,注意不要忘了空格</p>
+<p>设置静态IP:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">netsh interface ipv4 <span class="built_in">set</span> address <span class="string">"以太网 3"</span>  static <span class="number">192.168</span>.<span class="number">0.71</span> <span class="number">255.255</span>.<span class="number">0.0</span> <span class="number">192.168</span>.<span class="number">26.1</span></span><br></pre></td></tr></table></figure></p>
+<p>增加静态IP:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">netsh interface ipv4 <span class="built_in">set</span> dns <span class="string">"以太网 3"</span>  static <span class="number">223.5</span>.<span class="number">5.5</span></span><br></pre></td></tr></table></figure></p>
+<p>增加静态IP:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">netsh interface ipv4 add address <span class="string">"以太网 3"</span> <span class="number">11.12</span>.<span class="number">0.0</span> <span class="number">255.255</span>.<span class="number">0.0</span></span><br></pre></td></tr></table></figure></p>
+<p>重置为dhcp:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">netsh interface ipv4 <span class="built_in">set</span> address <span class="string">"以太网 3"</span>  dhcp</span><br></pre></td></tr></table></figure></p>
+<p>基本设置应该够用了</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/windows/">windows</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+<div id="gitment"></div>
+<!-- 主页不要加载gitment -->
+
+
+
+
+  
     <article id="post-shell脚本的自动交互" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -660,130 +788,6 @@
 
       
 
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-<div id="gitment"></div>
-<!-- 主页不要加载gitment -->
-
-
-
-
-  
-    <article id="post-让磁盘硬盘灯常闪定位盘" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/03/24/让磁盘硬盘灯常闪定位盘/" class="article-date">
-  	<time datetime="2015-03-24T05:23:26.000Z" itemprop="datePublished">2015-03-24</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/03/24/让磁盘硬盘灯常闪定位盘/">让磁盘硬盘灯常闪定位盘</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <figure class="highlight"><table><tr><td class="code"><pre><span class="line">#!/bin/bash&#10;hd=$1&#10;for num in &#123;1..5&#125;;do&#10;        dd if=&#34;$hd&#34; of=&#34;/dev/null&#34; bs=4M count=1000 iflag=direct conv=noerror &#62;/dev/null 2&#62;&#38;1&#10;        sleep 1&#10;done</span><br></pre></td></tr></table></figure>
-<p>写于: 2014年11月07日<br>更新于: 2015年03月24日</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-<div id="gitment"></div>
-<!-- 主页不要加载gitment -->
-
-
-
-
-  
-    <article id="post-软件注册码" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/03/24/软件注册码/" class="article-date">
-  	<time datetime="2015-03-24T05:19:03.000Z" itemprop="datePublished">2015-03-24</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/03/24/软件注册码/">软件注册码</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <hr>
-<p>markdownpad2 pro注册信息</p>
-<p>注册信息<br>邮箱地址:<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">Soar360@live.com</span><br></pre></td></tr></table></figure></p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/注册码/">注册码</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/03/24/软件注册码/#more">more >></a>
-        </p>
       
       <div class="clearfix"></div>
     </div>

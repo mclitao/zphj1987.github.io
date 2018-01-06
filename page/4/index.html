@@ -179,6 +179,134 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-about-backfill-conf" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/04/27/about-backfill-conf/" class="article-date">
+  	<time datetime="2017-04-27T01:36:17.000Z" itemprop="datePublished">2017-04-27</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/04/27/about-backfill-conf/">关于backfill参数建议</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/fill.gif" alt=""><br></center>
+
+<h2 id="前言">前言</h2><p>在做一个比较满的集群的扩容的时候，遇到了一些问题，在这里做下总结，一般来说很难遇到，扩容要趁早，不然出的问题都是稀奇古怪的一些问题<br>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2017/04/27/about-backfill-conf/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+<div id="gitment"></div>
+<!-- 主页不要加载gitment -->
+
+
+
+
+  
+    <article id="post-mds-journal-cc-2929-FAILED-assert" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/04/27/mds-journal-cc-2929-FAILED-assert/" class="article-date">
+  	<time datetime="2017-04-27T01:24:39.000Z" itemprop="datePublished">2017-04-27</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/04/27/mds-journal-cc-2929-FAILED-assert/">mds/journal.cc: 2929: FAILED assert解决</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/session.png" alt=""><br></center>
+
+<h2 id="前言">前言</h2><p>在处理一个其他双活MDS无法启动环境的时候，查看mds的日志看到了这个错误mds/journal.cc: 2929: FAILED assert(mds-&gt;sessionmap.get_version() == cmapv)，在查询资料以后，暂时得到了解决,在生产环境下还是不建议使用双活MDS<br>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2017/04/27/mds-journal-cc-2929-FAILED-assert/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+<div id="gitment"></div>
+<!-- 主页不要加载gitment -->
+
+
+
+
+  
     <article id="post-rados-put-strip-debug" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -667,135 +795,6 @@
       
         <p class="article-more-link">
           <a  href="/2017/03/24/small-file-test-prepare/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-<div id="gitment"></div>
-<!-- 主页不要加载gitment -->
-
-
-
-
-  
-    <article id="post-compile-ceph-binary-big" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/03/23/compile-ceph-binary-big/" class="article-date">
-  	<time datetime="2017-03-23T15:01:23.000Z" itemprop="datePublished">2017-03-23</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/03/23/compile-ceph-binary-big/">编译的Ceph二进制文件过大问题</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/codebug.jpg" alt="binary"><br></center>
-
-<h2 id="前言">前言</h2><p>在ceph的研发群里看到一个cepher提出一个问题，编译的ceph的二进制文件过大，因为我一直用的打包好的rpm包，没有关注这个问题，重新编译了一遍发现确实有这个问题</p>
-<p>本篇就是记录如何解决这个问题的<br>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2017/03/23/compile-ceph-binary-big/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-<div id="gitment"></div>
-<!-- 主页不要加载gitment -->
-
-
-
-
-  
-    <article id="post-ceph-no-distribute-all" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/03/22/ceph-no-distribute-all/" class="article-date">
-  	<time datetime="2017-03-22T07:49:16.000Z" itemprop="datePublished">2017-03-22</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/03/22/ceph-no-distribute-all/">Ceph实现数据的&#39;不拆分&#39;</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/octopus.png" alt="oct"><br></center>
-
-<h2 id="前言">前言</h2><p>之前看过一个朋友一篇文章，讲述的是Vsan为什么使用的是两副本，而ceph则大多数情况下需要三副本，当时个人观点是这个并不是关键点，但是在仔细考虑了问题的出发点以后，这个也可以说是其中的一个点<br>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2017/03/22/ceph-no-distribute-all/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>
