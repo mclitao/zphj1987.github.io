@@ -179,6 +179,71 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-catch-a-problem-with-network-in-ceph" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2018/01/16/catch-a-problem-with-network-in-ceph/" class="article-date">
+  	<time datetime="2018-01-16T15:10:59.000Z" itemprop="datePublished">2018-01-16</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/01/16/catch-a-problem-with-network-in-ceph/">定位一个网络问题引起的ceph异常</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/ne.png" alt="network"><br></center>
+
+
+<h2 id="前言">前言</h2><p>有一个ceph环境出现了异常，状态就是恢复异常的慢，但是所有数据又都在走，只是非常的慢，本篇将记录探测出问题的过程，以便以后处理类似的问题有个思路<br>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2018/01/16/catch-a-problem-with-network-in-ceph/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+<div id="gitment"></div>
+<!-- 主页不要加载gitment -->
+
+
+
+
+  
     <article id="post-CTDB-use-rados-object-as-lock-file" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -746,71 +811,6 @@
       
         <p class="article-more-link">
           <a  href="/2017/09/07/how-to-disable-Ceph-OSD-automount/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-<div id="gitment"></div>
-<!-- 主页不要加载gitment -->
-
-
-
-
-  
-    <article id="post-Ceph-OSD-autorestart-when-fail" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/09/06/Ceph-OSD-autorestart-when-fail/" class="article-date">
-  	<time datetime="2017-09-06T04:32:41.000Z" itemprop="datePublished">2017-09-06</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/06/Ceph-OSD-autorestart-when-fail/">Ceph OSD服务失效自动启动控制</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/restart.png" alt=""><br></center>
-
-<h2 id="前言">前言</h2><p>服务器上面的服务会因为各种各样的原因失败，磁盘故障，权限问题，或者是服务过载引起超时，这些都可能引起</p>
-<p>这个在ceph里面systemctl unit 默认有个on-fail restart,默认的可能并不适合所有的场景，所以自动化的服务应该是尽量去适配你手动处理的过程，手动怎么处理的，就怎么去设置<br>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2017/09/06/Ceph-OSD-autorestart-when-fail/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>

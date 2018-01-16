@@ -179,6 +179,70 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-修改centos6启动动画（plymouth方式）" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/03/22/修改centos6启动动画（plymouth方式）/" class="article-date">
+  	<time datetime="2015-03-22T14:38:36.000Z" itemprop="datePublished">2015-03-22</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/03/22/修改centos6启动动画（plymouth方式）/">修改centos6启动动画（plymouth方式）</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>centos6默认的启动动画是一个白蓝色的进度条,背景全黑色,现在需要对centos的启动动画进行定制<br>在查询了一些资料以后,发现有一个软件是可以对启动动画进行定制的，名字叫plymouth<br>这<br>个在centos6操作系统安装完成以后默认就带了的,主要涉及的是如下的几个操作<br>列出当前所有主题:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">plymouth-set-default-theme --list</span><br></pre></td></tr></table></figure></p>
+<p>主题存放目录:<br>/usr/share/plymouth/themes/</p>
+<p>不重启查看主题运行效果 Ctrl + Alt + F2(一定不要在F1操作)<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">plymouthd</span><br><span class="line">plymouth --show-splash</span><br><span class="line">plymouth --quit</span><br></pre></td></tr></table></figure></p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2015/03/22/修改centos6启动动画（plymouth方式）/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+<div id="gitment"></div>
+<!-- 主页不要加载gitment -->
+
+
+
+
+  
     <article id="post-用grub4dos来实现移动硬盘安装linux系统" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -728,67 +792,6 @@
       
         <p class="article-more-link">
           <a  href="/2015/03/22/检查linux下服务器的带宽/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-<div id="gitment"></div>
-<!-- 主页不要加载gitment -->
-
-
-
-
-  
-    <article id="post-linux利用screen进行shell下的屏幕协作" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/03/22/linux利用screen进行shell下的屏幕协作/" class="article-date">
-  	<time datetime="2015-03-22T11:22:22.000Z" itemprop="datePublished">2015-03-22</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/03/22/linux利用screen进行shell下的屏幕协作/">linux利用screen进行shell下的屏幕协作</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>我们都知道linux是支持多终端并行处理的<br>但是某些时候我们可能有比较特殊的需求需要两个人同时处理一个终端,screen 正好能满足这个要求</p>
-<p>首先需要安装screen软件:</p>
-<p>debian和ubuntu下面都是通过:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">apt-get install screen</span><br></pre></td></tr></table></figure></p>
-<p>进行安装的.</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/03/22/linux利用screen进行shell下的屏幕协作/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>

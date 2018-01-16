@@ -4,7 +4,7 @@
   <subtitle><![CDATA[止于至善]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2018-01-06T16:06:18.867Z</updated>
+  <updated>2018-01-16T15:45:03.002Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -13,6 +13,60 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[定位一个网络问题引起的ceph异常]]></title>
+    <link href="http://www.zphj1987.com/2018/01/16/catch-a-problem-with-network-in-ceph/"/>
+    <id>http://www.zphj1987.com/2018/01/16/catch-a-problem-with-network-in-ceph/</id>
+    <published>2018-01-16T15:10:59.000Z</published>
+    <updated>2018-01-16T15:45:03.002Z</updated>
+    <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/ne.png" alt="network"><br></center>
+
+
+<h2 id="前言">前言</h2><p>有一个ceph环境出现了异常，状态就是恢复异常的慢，但是所有数据又都在走，只是非常的慢，本篇将记录探测出问题的过程，以便以后处理类似的问题有个思路<br><a id="more"></a></p>
+<h2 id="处理过程">处理过程</h2><p>问题的现象是恢复的很慢，但是除此以外并没有其它的异常，通过iostat监控磁盘，也没有出现异常的100%的情况，暂时排除了是osd底层慢的问题</p>
+<h3 id="检测整体写入的速度">检测整体写入的速度</h3><p>通过rados bench写入<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rados -p rbd bench <span class="number">5</span> write</span><br></pre></td></tr></table></figure></p>
+<p>刚开始写入的时候没问题，但是写入了以后不久就会出现一只是0的情况，可以判断在写入某些对象的时候出现了异常</p>
+<p>本地生成一些文件<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">seq <span class="number">0</span> <span class="number">30</span>|xargs -i dd <span class="keyword">if</span>=/dev/zero of=benchmarkzp&#123;&#125; bs=<span class="number">4</span>M count=<span class="number">2</span></span><br></pre></td></tr></table></figure></p>
+<p>通过rados put 命令把对象put进去<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> a <span class="keyword">in</span> `ls ./`;<span class="keyword">do</span> time rados -p rbd put <span class="variable">$a</span> <span class="variable">$a</span>;<span class="built_in">echo</span> <span class="variable">$a</span>;ceph osd map rbd <span class="variable">$a</span>;<span class="keyword">done</span></span><br></pre></td></tr></table></figure></p>
+<p>得到的结果里面会有部分是好的，部分是非常长的时间，对结果进行过滤，分为bad 和good</p>
+<p>开始怀疑会不会是固定的盘符出了问题，首先把磁盘组合分出来，完全没问题的磁盘全部排除，结果最后都排除完了，所以磁盘本省是没问题的</p>
+<h3 id="根据pg的osd组合进行主机分类">根据pg的osd组合进行主机分类</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="number">1</span>  <span class="number">2</span>  <span class="number">4</span>  ok</span><br><span class="line"><span class="number">3</span>  <span class="number">1</span>   <span class="number">2</span>  bad</span><br><span class="line"><span class="number">2</span>  <span class="number">4</span>   <span class="number">1</span> ok</span><br><span class="line"><span class="number">3</span>  <span class="number">1</span> <span class="number">2</span>   bad</span><br><span class="line"><span class="number">3</span>  <span class="number">4</span>  <span class="number">2</span>  bad</span><br><span class="line">……</span><br></pre></td></tr></table></figure>
+<p>上面的编号是写入对象所在的pg对应的osd所在的主机，严格按照顺序写入，第一个主机为发送数据方，第二个和第三个为接收数据方，并且使用了cluster network</p>
+<p>通过上面的结果发现了从3往2进行发送副本数据的时候出现了问题，然后去主机上排查网络</p>
+<p>在主机2上面做iperf -s<br>在主机3上面做iperf -c host2然后就发现了网络异常了</p>
+<p>最终还是定位在了网络上面</p>
+<p>已经在好几个环境上面发现没装可以监控实时网络流量dstat工具或者ifstat的动态监控，做操作的时候监控下网络，可以发现一些异常</p>
+<h2 id="总结">总结</h2><p>这个环境在最开始的时候就怀疑是网络可能有问题，但是没有去进行全部服务器的网络的检测，这个在出现一些奇奇怪怪的异常的时候，还是可能出现在网络上面，特别是这种坏掉又不是完全坏掉，只是掉速的情况，通过集群的一些内部告警还没法完全体现出来，而主机很多的时候，又没有多少人愿意一个个的去检测，就容易出现这种疏漏了</p>
+<p>在做一个ceph的管理平台的时候，对整个集群做全员对等网络带宽测试还是很有必要的，如果有一天我来设计管理平台，一定会加入这个功能进去</p>
+<h2 id="变更记录">变更记录</h2><table>
+<thead>
+<tr>
+<th style="text-align:center">Why</th>
+<th style="text-align:center">Who</th>
+<th style="text-align:center">When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">创建</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2018-01-16</td>
+</tr>
+</tbody>
+</table>
+]]></content>
+    <summary type="html">
+    <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/ne.png" alt="network"><br></center>
+
+
+<h2 id="前言">前言</h2><p>有一个ceph环境出现了异常，状态就是恢复异常的慢，但是所有数据又都在走，只是非常的慢，本篇将记录探测出问题的过程，以便以后处理类似的问题有个思路<br>]]>
+    
+    </summary>
+    
+      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[CTDB使用rados object作为lock file]]></title>
@@ -1516,91 +1570,6 @@
     <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/flame.png" alt=""><br></center>
 
 <h2 id="前言">前言</h2><p>性能优化大神Brendan Gregg发明了火焰图来定位性能问题，通过图表就可以发现问题出在哪里，通过svg矢量图来查看性能卡在哪个点，哪个操作占用的资源最多<br>]]>
-    
-    </summary>
-    
-      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[Cephfs 操作输出到日志查询系统]]></title>
-    <link href="http://www.zphj1987.com/2017/07/13/CEPHFS-op-to-graylog/"/>
-    <id>http://www.zphj1987.com/2017/07/13/CEPHFS-op-to-graylog/</id>
-    <published>2017-07-13T03:32:04.000Z</published>
-    <updated>2017-07-13T04:02:53.320Z</updated>
-    <content type="html"><![CDATA[<center><br><img src="http://static.zybuluo.com/zphj1987/flhdkmrs0d5dqt02ymi30phy/log.png" alt="log.png-116.6kB"><br></center>
-
-<h2 id="前言">前言</h2><p>文件系统当中如果某些文件不见了，有什么办法判断是删除了还是自己不见了，这个就需要去日志里面定位了，通常情况下是去翻日志，而日志是会进行压缩的，并且查找起来非常的不方便,还有可能并没有开启<br><a id="more"></a><br>这个时候就需要日志系统了，最近正好看到一篇<a href="https://zhuanlan.zhihu.com/p/27363484" target="_blank" rel="external">最佳日志实践（v2.0）</a>，一篇非常好的文章，本篇日志属于文章里面所提到的统计日志，统计客户端做了什么操作</p>
-<p>对于日志系统来说，很重要的一点，能够很方便的进行查询，这就需要对日志信息进行一些处理了，怎么处理就是设计问题，要求就是不多不少</p>
-<h2 id="结构">结构</h2><center><br><img src="http://static.zybuluo.com/zphj1987/22grh70azoj3owga4lwmnpmk/mdslogsystem.png" alt="mdslogsystem.png-32.4kB"><br></center>
-
-<p>其中graylog配置部分在这篇<a href="http://www.zphj1987.com/2017/06/09/use-graylog-get-Ceph-status/" target="_blank" rel="external">使用日志系统graylog获取Ceph集群状态</a>，根据这篇的操作，配置出12201的udp监听端口即可，剩余部分就是本篇中的配置</p>
-<h2 id="配置">配置</h2><h3 id="集群的配置">集群的配置</h3><p>需要对MDS的配置进行debug_ms=1,在/etc/ceph/ceph.conf当中添加下面配置<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[mds.lab8106]</span><br><span class="line">debug_ms=<span class="number">1</span></span><br><span class="line">hostname=lab8106</span><br></pre></td></tr></table></figure></p>
-<p>这个地方集群的文件操作日志是记录在message里面的1级别的，所以把mds的debug_ms开到1<br>日志长这个样子：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="number">2017</span>-<span class="number">07</span>-<span class="number">13</span> <span class="number">11</span>:<span class="number">26</span>:<span class="number">23.703624</span> <span class="number">7</span><span class="built_in">fc</span>3128c3700  <span class="number">1</span> -- <span class="number">192.168</span>.<span class="number">8.106</span>:<span class="number">6804</span>/<span class="number">3280969928</span> &lt;== client.<span class="number">14180</span> <span class="number">192.168</span>.<span class="number">8.106</span>:<span class="number">0</span>/<span class="number">1092795882</span> <span class="number">2384</span> ==== client_request(client.<span class="number">14180</span>:<span class="number">2346</span> mkdir <span class="comment">#1/ppop 2017-07-13 11:26:23.702532 caller_uid=0, caller_gid=0&#123;&#125;) v2 ==== 170+0+0 (843685338 0 0) 0x5645ec243600 con 0x5645ec247000</span></span><br></pre></td></tr></table></figure></p>
-<p>下面会对这个日志进行提取</p>
-<h3 id="下载logstash">下载logstash</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">https://artifacts.elastic.co/downloads/logstash/logstash-<span class="number">5.5</span>.<span class="number">0</span>.rpm</span><br></pre></td></tr></table></figure>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># rpm -ivh logstash-5.5.0.rpm</span></span><br></pre></td></tr></table></figure>
-<p>修改启动进程为root权限<br>修改/etc/systemd/system/logstash.service文件当中的<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">User=root</span><br><span class="line">Group=root</span><br></pre></td></tr></table></figure></p>
-<p>因为logstash需要本地文件的读取权限，这里是为了方便直接给的root权限，方便使用，如果对权限要求比较严的环境，就给文件</p>
-<h3 id="创建一个配置文件">创建一个配置文件</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">vim /etc/logstash/conf.d/logstash.conf</span><br></pre></td></tr></table></figure>
-<p>添加下面的配置文件，这个配置文件包含的内容比较多，会在后面详细的介绍下处理过程<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">input &#123;</span><br><span class="line">    file &#123;</span><br><span class="line">    path =&gt; <span class="string">"/var/log/ceph/ceph-mds.*.log"</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">filter &#123;</span><br><span class="line">    grok &#123;</span><br><span class="line">     match =&gt;&#123;<span class="string">"message"</span> =&gt; <span class="string">"%&#123;TIMESTAMP_ISO8601:logtime&#125; %&#123;BASE16FLOAT&#125;  %&#123;BASE10NUM&#125; -- %&#123;HOSTPORT:mdsip&#125;%&#123;NOTSPACE&#125; &lt;== %&#123;NOTSPACE:clientid&#125; %&#123;IP:clientip&#125;%&#123;NOTSPACE&#125; %&#123;INT&#125; ==== client_request\(%&#123;NOTSPACE&#125; %&#123;WORD:do&#125; %&#123;NOTSPACE:where&#125; %&#123;TIMES</span><br><span class="line">TAMP_ISO8601:dotime&#125;%&#123;GREEDYDATA&#125;"</span>&#125;</span><br><span class="line">    overwrite =&gt; [<span class="string">"message"</span>]</span><br><span class="line">    remove_field =&gt;[<span class="string">"logtime"</span>]</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> ![dotime] &#123;</span><br><span class="line">        drop &#123;&#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> [<span class="keyword">do</span>] == <span class="string">"mkdir"</span> &#123;</span><br><span class="line">        mutate &#123;</span><br><span class="line">        replace =&gt; &#123; <span class="string">"do"</span> =&gt; <span class="string">"创建目录"</span>&#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> [<span class="keyword">do</span>] == <span class="string">"create"</span> &#123;</span><br><span class="line">        mutate &#123;</span><br><span class="line">        replace =&gt; &#123; <span class="string">"do"</span> =&gt; <span class="string">"创建文件"</span>&#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> [<span class="keyword">do</span>] == <span class="string">"unlink"</span> &#123;</span><br><span class="line">        mutate &#123;</span><br><span class="line">        replace =&gt; &#123; <span class="string">"do"</span> =&gt; <span class="string">"删除文件"</span>&#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> [<span class="keyword">do</span>] == <span class="string">"rmdir"</span> &#123;</span><br><span class="line">        mutate &#123;</span><br><span class="line">        replace =&gt; &#123; <span class="string">"do"</span> =&gt; <span class="string">"删除目录"</span>&#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> [<span class="keyword">do</span>] == <span class="string">"rename"</span> &#123;</span><br><span class="line">        mutate &#123;</span><br><span class="line">        replace =&gt; &#123; <span class="string">"do"</span> =&gt; <span class="string">"重命名"</span>&#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> [<span class="keyword">do</span>] == <span class="string">"symlink"</span> &#123;</span><br><span class="line">        mutate &#123;</span><br><span class="line">        replace =&gt; &#123; <span class="string">"do"</span> =&gt; <span class="string">"链接"</span>&#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> [<span class="keyword">do</span>] == <span class="string">"unlink"</span>&#123;</span><br><span class="line">        mutate &#123;</span><br><span class="line">        replace =&gt; &#123; <span class="string">"do"</span> =&gt; <span class="string">"删除链接"</span>&#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    mutate &#123;</span><br><span class="line">        replace =&gt; &#123; <span class="string">"message"</span> =&gt; <span class="string">"time:%&#123;dotime&#125; ClientIp:%&#123;clientip&#125;  ClintId:%&#123;clientid&#125;  MdsIp: %&#123;mdsip&#125; do:%&#123;do&#125; where:%&#123;where&#125;"</span>&#125;</span><br><span class="line">    &#125;</span><br><span class="line">    date &#123;</span><br><span class="line">        match =&gt; [ <span class="string">"dotime"</span>, <span class="string">"yyyy-MM-dd HH:mm:ss.SSSSSS"</span>]</span><br><span class="line">        target =&gt; <span class="string">"@timestamp"</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">output &#123;</span><br><span class="line">    gelf &#123;</span><br><span class="line">        host =&gt; <span class="string">"192.168.8.106"</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    stdout &#123; codec =&gt; json_lines&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>处理后的日志是这个样子：</p>
-<blockquote>
-<p>{“path”:”/var/log/ceph/ceph-mds.lab8106.log”,”@timestamp”:”2017-07-13T04:01:01.251Z”,”clientid”:”client.14180”,”clientip”:”192.168.8.106”,”@version”:”1”,”host”:”lab8106”,”where”:”#1/test1”,”do”:”创建目录”,”message”:”time:2017-07-13 12:01:01.251358 ClientIp:192.168.8.106  ClintId:client.14180  MdsIp: 192.168.8.106:6804 do:创建目录 where:#1/test1”,”mdsip”:”192.168.8.106:6804”,”dotime”:”2017-07-13 12:01:01.251358”}</p>
-</blockquote>
-<p>是一个json形式的，可以根据自己的需要增加减少字段，这些信息都会传递到graylog当中</p>
-<h3 id="解析配置文件">解析配置文件</h3><p>logstash配置文件的结构包括三个大模块：</p>
-<ul>
-<li>input</li>
-<li>filter</li>
-<li>output</li>
-</ul>
-<p>input是文件的来源，也就是我们需要解析的日志，filter是处理日志的模块，output是输出的模块，这里我们需要使用的是gelf的输出模式，在本地进行调试的时候，可以开启stdout来进行调试</p>
-<p>采用grok进行正则匹配，这个里面的匹配正则可以用 <a href="http://grokconstructor.appspot.com/do/construction" target="_blank" rel="external">http://grokconstructor.appspot.com/do/construction</a> 这个进行正则表达式的验证和书写，可以一步步的进行匹配，还是很方便的工具</p>
-<p>output输出gelf的信息流</p>
-<h3 id="grok内部解析">grok内部解析</h3><ul>
-<li>remove_field可以用来删除无用的字段</li>
-<li>if ![dotime] 这个是用来过滤消息的，如果没拿到这个值，也就是没匹配上的时候，就把消息丢弃</li>
-<li>使用mutate replace模块来进行字段的替换，将固定操作转换为中文</li>
-<li>使用mutate replace模块来重写message，根据自己定义的格式进行输出</li>
-<li>使用date 模块进行@timestamp的重写，将日志内的时间写入到这个里面</li>
-</ul>
-<p>查询插件<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/usr/share/logstash/bin/logstash-plugin list</span><br></pre></td></tr></table></figure></p>
-<p>logstash-output-gelf默认没有安装的,需要安装一下</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/usr/share/logstash/bin/logstash-plugin install logstash-output-gelf</span><br></pre></td></tr></table></figure>
-<p>这个安装可能有点慢，稍微多等一下</p>
-<p>调试方式的启动<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/usr/share/logstash/bin/logstash <span class="operator">-f</span> /etc/logstash/conf.d/logstash.conf</span><br></pre></td></tr></table></figure></p>
-<p>如果调试完毕了后就用系统命令启动<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># systemctl restart logstash</span></span><br></pre></td></tr></table></figure></p>
-<p><img src="http://static.zybuluo.com/zphj1987/95e2t54owr6ket33b9t00fa8/graylogfs.png" alt="graylogfs.png-188.3kB"></p>
-<p>通过graylog系统就可以很方便的看到日志里面节获取的内容了</p>
-<h3 id="总结">总结</h3><p>对于一套系统来说，日志系统是一个很重要的组成部分，可以更好的掌握系统内部的运行情况，并不是说出了问题再去找日志，这个日志的需求来源其实很简单</p>
-<blockquote>
-<p>哪个客户端对着哪个MDS做了一个什么操作</p>
-</blockquote>
-<p>然后就可以用这个搜索引擎去进行相关的搜索了，可以查询一段时间创建了多少文件，是不是删除了哪个文件</p>
-<p>本次实践的难点在于logstash对日志的相关解析的操作，掌握了方法以后，对于其他日志的提取也可以用类似的方法，提取自己需要的信息，然后进行整合，输出到一个系统当中，剩下的就是在界面上获取信息</p>
-<h2 id="变更记录">变更记录</h2><table>
-<thead>
-<tr>
-<th style="text-align:center">Why</th>
-<th style="text-align:center">Who</th>
-<th style="text-align:center">When</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">创建</td>
-<td style="text-align:center">武汉-运维-磨渣</td>
-<td style="text-align:center">2017-07-13</td>
-</tr>
-</tbody>
-</table>
-]]></content>
-    <summary type="html">
-    <![CDATA[<center><br><img src="http://static.zybuluo.com/zphj1987/flhdkmrs0d5dqt02ymi30phy/log.png" alt="log.png-116.6kB"><br></center>
-
-<h2 id="前言">前言</h2><p>文件系统当中如果某些文件不见了，有什么办法判断是删除了还是自己不见了，这个就需要去日志里面定位了，通常情况下是去翻日志，而日志是会进行压缩的，并且查找起来非常的不方便,还有可能并没有开启<br>]]>
     
     </summary>
     
