@@ -179,6 +179,85 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-REDHAT-7-5beta-with-VDO" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2018/02/10/REDHAT-7-5beta-with-VDO/" class="article-date">
+  	<time datetime="2018-02-10T08:25:08.000Z" itemprop="datePublished">2018-02-10</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/02/10/REDHAT-7-5beta-with-VDO/">REDHAT 7.5beta 新推出的VDO功能</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/hat.jpg" alt="network"><br></center>
+
+<h2 id="前言">前言</h2><h3 id="关于VDO">关于VDO</h3><p>VOD的技术来源于收购的Permabit公司，一个专门从事重删技术的公司，所以技术可靠性是没有问题的</p>
+<p>VDO是一个内核模块，目的是通过重删减少磁盘的空间占用，以及减少复制带宽，VDO是基于块设备层之上的，也就是在原设备基础上映射出mapper虚拟设备，然后直接使用即可，功能的实现主要基于以下技术：</p>
+<ul>
+<li><p>零区块的排除：</p>
+<p>在初始化阶段，整块为0的会被元数据记录下来，这个可以用水杯里面的水和沙子混合的例子来解释，使用滤纸（零块排除），把沙子（非零空间）给过滤出来，然后就是下一个阶段的处理</p>
+</li>
+</ul>
+<ul>
+<li><p>重复数据删除：</p>
+<p>在第二阶段，输入的数据会判断是不是冗余数据（在写入之前就判断），这个部分的数据通过UDS内核模块来判断（U niversal D eduplication S ervice），被判断为重复数据的部分不会被写入，然后对元数据进行更新，直接指向原始已经存储的数据块即可</p>
+</li>
+<li><p>压缩：</p>
+<p>一旦消零和重删完成，LZ4压缩会对每个单独的数据块进行处理，然后压缩好的数据块会以固定大小4KB的数据块存储在介质上，由于一个物理块可以包含很多的压缩块，这个也可以加速读取的性能</p>
+</li>
+</ul>
+<p>上面的技术看起来很容易理解，但是实际做成产品还是相当大的难度的，技术设想和实际输出还是有很大距离，不然redhat也不会通过收购来获取技术，而不是自己去重新写一套了<br>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2018/02/10/REDHAT-7-5beta-with-VDO/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+<div id="gitment"></div>
+<!-- 主页不要加载gitment -->
+
+
+
+
+  
     <article id="post-catch-a-problem-with-network-in-ceph" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -747,70 +826,6 @@
       
         <p class="article-more-link">
           <a  href="/2017/09/13/maybe-the-first-chinese-for-luminous-dashboard/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-<div id="gitment"></div>
-<!-- 主页不要加载gitment -->
-
-
-
-
-  
-    <article id="post-how-to-disable-Ceph-OSD-automount" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/09/07/how-to-disable-Ceph-OSD-automount/" class="article-date">
-  	<time datetime="2017-09-06T16:29:55.000Z" itemprop="datePublished">2017-09-07</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/07/how-to-disable-Ceph-OSD-automount/">怎样禁止Ceph OSD的自动挂载</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/mount.png" alt="此处输入图片的描述"><br></center>
-
-<h2 id="前言">前言</h2><p>本篇来源于群里一个人的问题，有没有办法让ceph的磁盘不自动挂载，一般人的问题都是怎样让ceph能够自动挂载，在centos 7 平台下 ceph jewel版本以后都是有自动挂载的处理的，这个我之前也写过两篇文章 <a href="http://www.zphj1987.com/2016/03/31/ceph%E5%9C%A8centos7%E4%B8%8B%E4%B8%80%E4%B8%AA%E4%B8%8D%E5%AE%B9%E6%98%93%E5%8F%91%E7%8E%B0%E7%9A%84%E6%94%B9%E5%8F%98/">ceph在centos7下一个不容易发现的改变</a>和<a href="http://www.zphj1987.com/2016/12/22/Ceph%E6%95%B0%E6%8D%AE%E7%9B%98%E6%80%8E%E6%A0%B7%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%8A%A8%E6%8C%82%E8%BD%BD/">Ceph数据盘怎样实现自动挂载</a>，来讲述这个自动挂载的<br>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2017/09/07/how-to-disable-Ceph-OSD-automount/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>
