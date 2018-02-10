@@ -179,66 +179,6 @@
 </nav>
       <div class="body-wrap">
   
-    <article id="post-ubuntu服务器启动过程中重启卡死的问题解决" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/03/24/ubuntu服务器启动过程中重启卡死的问题解决/" class="article-date">
-  	<time datetime="2015-03-24T00:14:36.000Z" itemprop="datePublished">2015-03-24</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/03/24/ubuntu服务器启动过程中重启卡死的问题解决/">ubuntu服务器启动过程中重启卡死的问题解决</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>在grub默认参数当中添加<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">GRUB_RECORDFAIL_TIMEOUT=0</span><br></pre></td></tr></table></figure></p>
-<p>写于: 2014年07月23日<br>更新于: 2015年03月24日</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ubuntu/">ubuntu</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-<div id="gitment"></div>
-<!-- 主页不要加载gitment -->
-
-
-
-
-  
     <article id="post-nginx开启目录浏览" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -792,6 +732,70 @@
       
         <p class="article-more-link">
           <a  href="/2015/03/23/ubuntu无法关机/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+<div id="gitment"></div>
+<!-- 主页不要加载gitment -->
+
+
+
+
+  
+    <article id="post-linux中KVM桥接网卡br0" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/03/23/linux中KVM桥接网卡br0/" class="article-date">
+  	<time datetime="2015-03-23T14:05:59.000Z" itemprop="datePublished">2015-03-23</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/03/23/linux中KVM桥接网卡br0/">linux中KVM桥接网卡br0</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在centos虚拟化当中需要增加一个桥接网卡,然后将虚拟化当中的机器的网卡桥接到桥接网卡,下面将描述设置方法:</p>
+<p>查看现有网卡<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">[root@zb ~]# vim /etc/sysconfig/network-scripts/ifcfg-eth0&#10;DEVICE=eth0&#10;HWADDR=70:71:BC:1F:E4:86&#10;TYPE=Ethernet&#10;UUID=0213211a-d451-4944-881c-e7475b8bee34&#10;ONBOOT=yes&#10;NM_CONTROLLED=yes&#10;BOOTPROTO=static&#10;IPADDR=192.168.7.107&#10;NETMASK=255.255.0.0&#10;GATEWAY=192.168.1.1</span><br></pre></td></tr></table></figure></p>
+<p>将网卡信息copy一份到br0再进行修改</p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2015/03/23/linux中KVM桥接网卡br0/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>
