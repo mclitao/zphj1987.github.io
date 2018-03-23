@@ -183,6 +183,70 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-manage-ceph-osd-journal-uuid" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/12/26/manage-ceph-osd-journal-uuid/" class="article-date">
+  	<time datetime="2016-12-26T05:41:14.000Z" itemprop="datePublished">2016-12-26</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/12/26/manage-ceph-osd-journal-uuid/">处理Ceph osd的journal的uuid问题</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/writefor.jpg" alt="write"><br></center>
+
+<h2 id="前言">前言</h2><p>之前有一篇文章介绍的是，在centos7的jewel下面如果自己做的分区如何处理自动挂载的问题，当时的环境对journal的地方采取的是文件的形式处理的，这样就没有了重启后journal的磁盘偏移的问题<br>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2016/12/26/manage-ceph-osd-journal-uuid/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+<div id="gitment"></div>
+<!-- 主页不要加载gitment -->
+
+
+
+
+  
     <article id="post-如何避免Cephfs被完全毁掉" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -740,71 +804,6 @@
       
         <p class="article-more-link">
           <a  href="/2016/11/29/Cephday武汉20161119分享回顾/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-<div id="gitment"></div>
-<!-- 主页不要加载gitment -->
-
-
-
-
-  
-    <article id="post-fio测试ceph的filestore" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/11/23/fio测试ceph的filestore/" class="article-date">
-  	<time datetime="2016-11-23T15:04:53.000Z" itemprop="datePublished">2016-11-23</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/11/23/fio测试ceph的filestore/">fio测试ceph的filestore</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/fio-banner.jpg" alt="fio"><br></center>
-
-<h2 id="前言">前言</h2><p>fio是一个适应性非常强的软件，基本上能够模拟所有的IO请求，是目前最全面的一款测试软件，之前在看德国电信的一篇分享的时候，里面就提到了，如果需要测试存储性能，尽量只用一款软件，这样从上层测试到底层去，才能更好的去比较差别</p>
-<p>fio对于ceph来说，可以测试文件系统，基于文件系统之上测试，可以测试内核rbd，将rbdmap到本地格式化以后进行测试，或者基于librbd直接对rbd进行测试，这个是目前都已经有的测试场景，这些不在本篇的讨论的范围内，今天讲的是一种新的测试场景，直接对ceph的底层存储进行测试</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2016/11/23/fio测试ceph的filestore/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>

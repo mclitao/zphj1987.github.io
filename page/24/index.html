@@ -183,6 +183,63 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-清理win7注册表后，没有了右键新建选项处理办法" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/03/22/清理win7注册表后，没有了右键新建选项处理办法/" class="article-date">
+  	<time datetime="2015-03-22T08:09:11.000Z" itemprop="datePublished">2015-03-22</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/03/22/清理win7注册表后，没有了右键新建选项处理办法/">清理win7注册表后，没有了右键新建选项处理办法</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>今天清理win7注册表的右键选项,发现清理完了后,居然没有了右键新建,什么文件都无法创建,搜索了下,发现有人给出了解决办法,如下:<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">REGEDIT4 [HKEY_CLASSES_ROOT\Directory\Background\shellex\ContextMenuHandlers\New] @=&#34;&#123;D969A300-E7FF-11d0-A93B-00A0C90F2719&#125;&#34; [HKEY_CLASSES_ROOT\Directory\Background\shellex\ContextMenuHandlers\New\command] @=hex(2):</span><br></pre></td></tr></table></figure></p>
+<p>建一个文本文件,把上面的内容拷过去,然后把文件后缀改成.reg。双击执行就可以了</p>
+<p>写于: 2012年04月25日<br>更新于: 2015年03月22日</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+<div id="gitment"></div>
+<!-- 主页不要加载gitment -->
+
+
+
+
+  
     <article id="post-把你的常用文件夹直接显示在“计算机”中" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -711,67 +768,6 @@
         <p class="article-more-link">
           <a  href="/2015/03/22/du查看的目录大小与df查看的大小不同的时候用lsof查找/#more">more >></a>
         </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-<div id="gitment"></div>
-<!-- 主页不要加载gitment -->
-
-
-
-
-  
-    <article id="post-遍历指定目录并且从子目录开始将目录输出到指定文件" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/03/22/遍历指定目录并且从子目录开始将目录输出到指定文件/" class="article-date">
-  	<time datetime="2015-03-22T06:18:05.000Z" itemprop="datePublished">2015-03-22</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/03/22/遍历指定目录并且从子目录开始将目录输出到指定文件/">遍历指定目录并且从子目录开始将目录输出到指定文件</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>shell脚本:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="shebang">#! /bin/sh</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"type a backup directory name:"</span></span><br><span class="line"><span class="built_in">read</span> <span class="operator">-e</span> r</span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$r</span>   </span><br><span class="line">python /zp/bianli.py <span class="variable">$r</span>                 <span class="comment">#传递参数到python脚本文件中</span></span><br><span class="line"><span class="keyword">for</span> dir <span class="keyword">in</span> `cat /zp/mulu.txt`</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$dir</span></span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure></p>
-<p>python脚本:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#! /usr/bin/env python</span></span><br><span class="line">import os,sys</span><br><span class="line">r=sys.argv[<span class="number">1</span>]                <span class="comment">#将第一个参数值传入到r当中</span></span><br><span class="line"><span class="keyword">for</span> root,<span class="built_in">dirs</span>,files <span class="keyword">in</span> os.walk(r,topdown=False):</span><br><span class="line">        <span class="keyword">for</span> dir <span class="keyword">in</span> <span class="built_in">dirs</span>:</span><br><span class="line">                <span class="built_in">print</span> os.path.join(root,dir)            <span class="comment">#输出路径</span></span><br></pre></td></tr></table></figure></p>
-<p>写于: 2012年3月13日<br>更新于: 2015年03月22日</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/脚本/">脚本</a></li></ul>
-	</div>
-
-      
-
       
       <div class="clearfix"></div>
     </div>

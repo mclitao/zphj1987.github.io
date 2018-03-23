@@ -183,6 +183,70 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-inkscope完整安装配置" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/04/19/inkscope完整安装配置/" class="article-date">
+  	<time datetime="2016-04-19T05:52:34.000Z" itemprop="datePublished">2016-04-19</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/04/19/inkscope完整安装配置/">inkscope完整安装配置</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="准备centos7基础系统">准备centos7基础系统</h3><p>首先安装基础系统centos7 在安装选项那里选择base web server ，选择其他的也可以，选择mini安装会缺很多常用的软件包，后续需要一个个安装比较麻烦</p>
+<h3 id="关闭防火墙相关">关闭防火墙相关</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@inkscope ~]<span class="comment"># setenforce 0</span></span><br><span class="line">[root@inkscope ~]<span class="comment"># sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config</span></span><br><span class="line">[root@inkscope ~]<span class="comment"># systemctl stop firewalld</span></span><br><span class="line">[root@inkscope ~]<span class="comment"># systemctl disable firewalld</span></span><br></pre></td></tr></table></figure>
+<h3 id="更新源相关的">更新源相关的</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@inkscope ~]<span class="comment"># rm -rf /etc/yum.repos.d/*.repo</span></span><br><span class="line">[root@inkscope ~]<span class="comment"># wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo</span></span><br><span class="line">[root@inkscope ~]<span class="comment"># wget -O /etc/yum.repos.d/epel.repo http://mirrors.aliyun.com/repo/epel-7.repo</span></span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2016/04/19/inkscope完整安装配置/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+<div id="gitment"></div>
+<!-- 主页不要加载gitment -->
+
+
+
+
+  
     <article id="post-记一次不完全成功到成功的失效恢复-20160412" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -754,71 +818,6 @@
       
         <p class="article-more-link">
           <a  href="/2016/03/03/快速增加osdmap的epoch/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-<div id="gitment"></div>
-<!-- 主页不要加载gitment -->
-
-
-
-
-  
-    <article id="post-yum安装指定版本ceph包" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/03/01/yum安装指定版本ceph包/" class="article-date">
-  	<time datetime="2016-03-01T04:21:56.000Z" itemprop="datePublished">2016-03-01</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/03/01/yum安装指定版本ceph包/">yum安装指定版本ceph包</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>安装ceph包的方式有很多，这里讲的是从官网直接通过yum源的安装方式进行安装</p>
-<p>yum源对应的地址为<br><a href="http://download.ceph.com/rpm-hammer/el6/x86_64/">http://download.ceph.com/rpm-hammer/el6/x86_64/</a></p>
-<p>怎么配置ceph源就不在这里赘述了</p>
-<p>下图为ceph官网的yum源里面的文件列表：</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2016/03/01/yum安装指定版本ceph包/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>
