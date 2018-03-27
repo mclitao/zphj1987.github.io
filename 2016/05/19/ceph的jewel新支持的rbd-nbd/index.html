@@ -26,7 +26,6 @@ rbd-ko的开发要慢于librbd，需要很多的时间才能追赶上librbd
 
 rbd-nbd是通过librbd这个用户空间通过nbd的内核模块实现了内核级别的驱动，稳定性和性能都有保障">
 <meta property="og:image" content="http://static.zybuluo.com/zphj1987/33s6u70sw4qhgqvfhvwe5d5b/nbd.png">
-<meta property="og:image" content="http://static.zybuluo.com/zphj1987/fi2557g55ucsdpyblopyfudl/newpay.png">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ceph的jewel新支持的rbd-nbd">
 <meta name="twitter:description" content="jewel版本新增加了一个驱动NBD，允许librbd实现一个内核级别的rbd
@@ -267,12 +266,32 @@ rbd-nbd是通过librbd这个用户空间通过nbd的内核模块实现了内核�
 </blockquote>
 <p>那么现在开启属性还行想用块设备方式怎么用，就可以用nbd了<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment">#  rbd-nbd map rbd/testnbdrbd</span></span><br><span class="line">/dev/nbd0</span><br></pre></td></tr></table></figure></p>
 <p>这样就可以用了。不用担心接口的问题了,因为只要librbd支持的属性，nbd就默认支持了</p>
+<h3 id="查询rbd和nbd对应关系">查询rbd和nbd对应关系</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab101 mnt]<span class="comment"># rbd-nbd list-mapped</span></span><br><span class="line">/dev/nbd0</span><br><span class="line">[root@lab101 mnt]<span class="comment"># cat /sys/block/nbd0/pid </span></span><br><span class="line"><span class="number">93059</span></span><br><span class="line">[root@lab101 mnt]<span class="comment"># ps -ef|grep 93059</span></span><br><span class="line">root      <span class="number">93059</span>      <span class="number">1</span>  <span class="number">0</span> <span class="number">14</span>:<span class="number">30</span> pts/<span class="number">1</span>    <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> rbd-nbd map testnbd</span><br><span class="line">root      <span class="number">97346</span>   <span class="number">8580</span>  <span class="number">0</span> <span class="number">14</span>:<span class="number">36</span> pts/<span class="number">1</span>    <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> grep --color=auto <span class="number">93059</span></span><br></pre></td></tr></table></figure>
 <p>rbd几种常用的模式和新模式图：<br><img src="http://static.zybuluo.com/zphj1987/33s6u70sw4qhgqvfhvwe5d5b/nbd.png" alt="nbd.png-40.5kB"></p>
 <h3 id="本篇ceph版本">本篇ceph版本</h3><blockquote>
 <p>ceph version 10.2.1 (3a66dd4f30852819c1bdaa8ec23c795d4ad77269)</p>
 </blockquote>
-<h3 id="打赏通道">打赏通道</h3><center><br><img src="http://static.zybuluo.com/zphj1987/fi2557g55ucsdpyblopyfudl/newpay.png" alt="打赏" title="打赏"><br></center>
-
+<h2 id="变更记录">变更记录</h2><table>
+<thead>
+<tr>
+<th style="text-align:center">Why</th>
+<th style="text-align:center">Who</th>
+<th style="text-align:center">When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">创建</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2016-05-19</td>
+</tr>
+<tr>
+<td style="text-align:center">增加映射关系查询方法</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2018-03-27</td>
+</tr>
+</tbody>
+</table>
 
       
     </div>
