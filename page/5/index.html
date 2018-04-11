@@ -183,6 +183,70 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-ceph-delete-an-error-object" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/04/19/ceph-delete-an-error-object/" class="article-date">
+  	<time datetime="2017-04-19T06:12:59.000Z" itemprop="datePublished">2017-04-19</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/04/19/ceph-delete-an-error-object/">Ceph删除OSD上一个异常object</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/delete.png" alt="delete"><br></center></p>
+<h2 id="前言">前言</h2><p>ceph里面的数据是以对象的形式存储在OSD当中的，有的时候因为磁盘的损坏或者其它的一些特殊情况，会引起集群当中的某一个对象的异常，那么我们需要对这个对象进行处理</p>
+<p>在对象损坏的情况下，启动OSD有的时候都会有问题，那么通过rados rm的方式是没法发送到这个无法启动的OSD的，也就无法删除，所以需要用其他的办法来处理这个情况<br>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2017/04/19/ceph-delete-an-error-object/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+<div id="gitment"></div>
+<!-- 主页不要加载gitment -->
+
+
+
+
+  
     <article id="post-ceph-cluster-connect-by-which-client" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -735,70 +799,6 @@
       
         <p class="article-more-link">
           <a  href="/2017/03/06/online-change-ulimit/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-<div id="gitment"></div>
-<!-- 主页不要加载gitment -->
-
-
-
-
-  
-    <article id="post-python-command-rados-sample" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/02/28/python-command-rados-sample/" class="article-date">
-  	<time datetime="2017-02-28T15:48:15.000Z" itemprop="datePublished">2017-02-28</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/02/28/python-command-rados-sample/">python执行rados命令例子</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/we-love-python-800-600.png" alt="python"><br></center>
-
-<h2 id="前言">前言</h2><p>我们以前的管理平台在python平台下面做的，内部做的一些操作采用的是命令执行，然后解析的方式去做的，ceph自身有python的rados接口，可以直接调用原生接口，然后直接解析json的方式，这样更靠近底层<br>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2017/02/28/python-command-rados-sample/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>

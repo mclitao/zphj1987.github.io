@@ -183,6 +183,72 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-在线调整ceph的参数" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/11/18/在线调整ceph的参数/" class="article-date">
+  	<time datetime="2015-11-18T15:11:44.000Z" itemprop="datePublished">2015-11-18</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/11/18/在线调整ceph的参数/">在线调整ceph的参数</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>能够动态的进行系统参数的调整是一个很重要并且有用的属性<br>ceph的集群提供两种方式的调整，使用tell的方式和daemon设置的方式</p>
+<h3 id="一、tell方式设置">一、tell方式设置</h3><p>调整配置使用命令：</p>
+<h4 id="调整mon的参数">调整mon的参数</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#ceph tell mon.* injectargs '--&#123;tunable value_to_be_set&#125;'</span></span><br></pre></td></tr></table></figure>
+<h4 id="调整osd的参数">调整osd的参数</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#ceph tell osd.* injectargs '--&#123;tunable value_to_be_set&#125;'</span></span><br></pre></td></tr></table></figure>
+<h3 id="调整mds的参数">调整mds的参数</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#ceph tell mds.* injectargs '--&#123;tunable value_to_be_set&#125;'</span></span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2015/11/18/在线调整ceph的参数/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+<div id="gitment"></div>
+<!-- 主页不要加载gitment -->
+
+
+
+
+  
     <article id="post-验证rbd的缓存是否开启" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -750,102 +816,6 @@
         <p class="article-more-link">
           <a  href="/2015/09/24/删除ceph集群mds/#more">more >></a>
         </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-<div id="gitment"></div>
-<!-- 主页不要加载gitment -->
-
-
-
-
-  
-    <article id="post-ceph客户端服务端属性匹配关系" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/09/18/ceph客户端服务端属性匹配关系/" class="article-date">
-  	<time datetime="2015-09-18T03:24:08.000Z" itemprop="datePublished">2015-09-18</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/09/18/ceph客户端服务端属性匹配关系/">ceph客户端服务端属性匹配关系</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>ceph的server是定期会发布版本，而它的客户端是放到linux 内核当中的，一些属性的支持是依赖于内核版本的，这样就存在一些问题，一些功能后端支持，而客户端旧了；还有可能是客户端用的很新的内核，而后端比较旧不支持，所以查看了下内核中的 <code>features</code> 文件，可以看到这个对应关系，总结了下就是下面的列表</p>
-<p>注意表中：</p>
-<ul>
-<li><strong>S</strong>=SUPPORTED_DEFAULT     代表客户端支持这个属性</li>
-<li><strong>R</strong>=REQUIRED_DEFAULT      代表需要服务端支持这个属性</li>
-</ul>
-<p><img src="http://7xi6lo.com1.z0.glb.clouddn.com/属性匹配的问题.png" alt=""></p>
-<p><code>missing 2040000</code> 意思是 <code>CEPH_FEATURE_CRUSH_TUNABLES (40000)</code> 和 <code>CEPH_FEATURE_CRUSH_TUNABLES2 (2000000)</code> 不被当前客户端支持，一般要么关闭新的server端的这个属性，或者升级到支持的版本的内核.</p>
-<p>内核代码查看地址：<a href="http://lxr.free-electrons.com/source/include/linux/ceph/ceph_features.h" target="_blank" rel="external">http://lxr.free-electrons.com/source/include/linux/ceph/ceph_features.h</a></p>
-<hr>
-<p>Some examples of errors that can be encountered :<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mon0 <span class="number">192.168</span>.<span class="number">0.1</span>:<span class="number">6789</span> feature <span class="built_in">set</span> mismatch, my XXXXXX &lt; server<span class="string">'s XXXXXX, missing 2040000</span></span><br></pre></td></tr></table></figure></p>
-<p>—&gt; Upgrade kernel client up to 3.9 or set tunables to legacy : ceph osd crush tunables legacy<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mon0 <span class="number">192.168</span>.<span class="number">0.1</span>:<span class="number">6789</span> feature <span class="built_in">set</span> mismatch, my XXXXXX &lt; server<span class="string">'s XXXXXX, missing 40000000</span></span><br></pre></td></tr></table></figure></p>
-<p>—&gt; Upgrade kernel client up to 3.9 or unset hashpspool : ceph osd pool set rbd hashpspool false<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mon0 <span class="number">192.168</span>.<span class="number">0.1</span>:<span class="number">6789</span> feature <span class="built_in">set</span> mismatch, my XXXXXX &lt; server<span class="string">'s XXXXXX, missing 800000000</span></span><br></pre></td></tr></table></figure></p>
-<p>—&gt; Remove cache pool and reload monitors or upgrade kernel client up to 3.14<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mon0 <span class="number">192.168</span>.<span class="number">0.1</span>:<span class="number">6789</span> feature <span class="built_in">set</span> mismatch, my XXXXXX &lt; server<span class="string">'s XXXXXX, missing 1000000000</span></span><br></pre></td></tr></table></figure></p>
-<p>—&gt; Upgrade kernel client up to 3.14<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mon0 <span class="number">192.168</span>.<span class="number">0.1</span>:<span class="number">6789</span> feature <span class="built_in">set</span> mismatch, my <span class="number">4</span>a042a42 &lt; server<span class="string">'s 2004a042a42, missing 20000000000</span></span><br></pre></td></tr></table></figure></p>
-<p>—&gt; Upgrade kernel client up to 3.15 or disable tunable 3 features</p>
-<h2 id="变更记录">变更记录</h2><table>
-<thead>
-<tr>
-<th style="text-align:center">Why</th>
-<th style="text-align:center">Who</th>
-<th style="text-align:center">When</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">创建</td>
-<td style="text-align:center">武汉-运维-磨渣</td>
-<td style="text-align:center">2015-09-18</td>
-</tr>
-<tr>
-<td style="text-align:center">增加解决方案</td>
-<td style="text-align:center">武汉-运维-磨渣</td>
-<td style="text-align:center">2017-01-12</td>
-</tr>
-</tbody>
-</table>
-<p>参考文档：<a href="http://cephnotes.ksperis.com/blog/2014/01/21/feature-set-mismatch-error-on-ceph-kernel-client/" target="_blank" rel="external">http://cephnotes.ksperis.com/blog/2014/01/21/feature-set-mismatch-error-on-ceph-kernel-client/</a></p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
       
       <div class="clearfix"></div>
     </div>

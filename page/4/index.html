@@ -183,6 +183,74 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-centos7-update-kernel-can-not-boot" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/06/01/centos7-update-kernel-can-not-boot/" class="article-date">
+  	<time datetime="2017-06-01T06:09:39.000Z" itemprop="datePublished">2017-06-01</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/06/01/centos7-update-kernel-can-not-boot/">Centos7升级内核后无法启动解决办法</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/newkernel.png?imageMogr2/thumbnail/!75p" alt="kernel"><br></center>
+
+<h2 id="前言">前言</h2><p>这个问题存在有一段时间了，之前做的centos7的ISO，在进行内核的升级以后就存在这个问题：</p>
+<ul>
+<li>系统盘在板载sata口上是可以正常启动新内核并且能识别面板硬盘</li>
+<li>系统盘插在面板口上新内核无法启动，调试发现无法找到系统盘</li>
+<li>系统盘插在面板上默认的3.10内核可以正常启动
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2017/06/01/centos7-update-kernel-can-not-boot/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+<div id="gitment"></div>
+<!-- 主页不要加载gitment -->
+
+
+
+
+  
     <article id="post-Freebsd-pkg-destroy" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -746,70 +814,6 @@
       
         <p class="article-more-link">
           <a  href="/2017/04/19/why-rm-object-can-get/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-<div id="gitment"></div>
-<!-- 主页不要加载gitment -->
-
-
-
-
-  
-    <article id="post-ceph-delete-an-error-object" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/04/19/ceph-delete-an-error-object/" class="article-date">
-  	<time datetime="2017-04-19T06:12:59.000Z" itemprop="datePublished">2017-04-19</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/04/19/ceph-delete-an-error-object/">Ceph删除OSD上一个异常object</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/delete.png" alt="delete"><br></center></p>
-<h2 id="前言">前言</h2><p>ceph里面的数据是以对象的形式存储在OSD当中的，有的时候因为磁盘的损坏或者其它的一些特殊情况，会引起集群当中的某一个对象的异常，那么我们需要对这个对象进行处理</p>
-<p>在对象损坏的情况下，启动OSD有的时候都会有问题，那么通过rados rm的方式是没法发送到这个无法启动的OSD的，也就无法删除，所以需要用其他的办法来处理这个情况<br>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2017/04/19/ceph-delete-an-error-object/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>

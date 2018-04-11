@@ -183,6 +183,72 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-通过ceph-deploy安装不同版本ceph" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/07/14/通过ceph-deploy安装不同版本ceph/" class="article-date">
+  	<time datetime="2016-07-14T15:28:33.000Z" itemprop="datePublished">2016-07-14</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/07/14/通过ceph-deploy安装不同版本ceph/">通过ceph-deploy安装不同版本ceph</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>之前有在论坛写了怎么用 yum 安装 ceph，但是看到ceph社区的群里还是有人经常用 ceph-deploy 进行安装，然后会出现各种不可控的情况，虽然不建议用ceph-deploy安装，但是既然想用，那就研究下怎么用好</p>
+<p>先给一个连接： <a href="http://bbs.ceph.org.cn/article/49">centos7通过yum安装ceph</a></p>
+<p>首先机器需要安装 ceph-deploy 这个工具，机器上应该安装好 epel 源和 base 源，这个可以参考上面的那个连接，也可以自己准备好</p>
+<h3 id="一、安装ceph-deploy">一、安装ceph-deploy</h3><p>使用yum直接安装<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 yum.repos.d]<span class="comment"># yum install ceph-deploy</span></span><br><span class="line">Loaded plugins: fastestmirror, langpacks, priorities</span><br><span class="line">Loading mirror speeds from cached hostfile</span><br><span class="line">Resolving Dependencies</span><br><span class="line">--&gt; Running transaction check</span><br><span class="line">---&gt; Package ceph-deploy.noarch <span class="number">0</span>:<span class="number">1.5</span>.<span class="number">25</span>-<span class="number">1</span>.el7 will be installed</span><br><span class="line">···</span><br><span class="line">===================================================================================================</span><br><span class="line"> Package            Arch            Version             Repository                    Size</span><br><span class="line">===================================================================================================</span><br><span class="line">Installing:</span><br><span class="line"> ceph-deploy        noarch          <span class="number">1.5</span>.<span class="number">25</span>-<span class="number">1</span>.el7         epel                         <span class="number">156</span> k</span><br><span class="line">···</span><br><span class="line">Installed:</span><br><span class="line">  ceph-deploy.noarch <span class="number">0</span>:<span class="number">1.5</span>.<span class="number">25</span>-<span class="number">1</span>.el7</span><br><span class="line">Complete!</span><br></pre></td></tr></table></figure></p>
+<p>可以看到是从 epel 的 repo 里面下载的版本为1.5.25，如果从ceph源里面下载的这个版本可能会更高一点，这个没什么问题</p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2016/07/14/通过ceph-deploy安装不同版本ceph/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+<div id="gitment"></div>
+<!-- 主页不要加载gitment -->
+
+
+
+
+  
     <article id="post-重构rbd镜像的元数据" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -746,70 +812,6 @@
       
         <p class="article-more-link">
           <a  href="/2016/06/07/rbd无法map-rbd-feature-disable/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-<div id="gitment"></div>
-<!-- 主页不要加载gitment -->
-
-
-
-
-  
-    <article id="post-利用虚拟化环境虚拟nvme盘" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/06/04/利用虚拟化环境虚拟nvme盘/" class="article-date">
-  	<time datetime="2016-06-03T16:02:50.000Z" itemprop="datePublished">2016-06-04</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/06/04/利用虚拟化环境虚拟nvme盘/">利用虚拟化环境虚拟nvme盘</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="前情介绍">前情介绍</h2><h3 id="SPDK">SPDK</h3><p>SPDK的全称为Storage Performance Development Kit ，是Intel发起的一个开源驱动项目，这个是一个开发套件，可以让应用程序在用户态去访问存储资源，具体做能做什么可以去官网看一下 <a href="https://software.intel.com/en-us/articles/introduction-to-the-storage-performance-development-kit-spdk">SPDK官网</a></p>
-<h3 id="NVME">NVME</h3><p>NVMe其实与AHCI一样都是逻辑设备接口标准，NVMe全称Non-Volatile Memory Express，非易失性存储器标准，是使用PCI-E通道的SSD一种规范，NVMe的设计之初就有充分利用到PCI-E SSD的低延时以及并行性，还有当代处理器、平台与应用的并行性。SSD的并行性可以充分被主机的硬件与软件充分利用，相比与现在的AHCI标准，NVMe标准可以带来多方面的性能提升。</p>
-<h3 id="Bluestore">Bluestore</h3><p>BlueStore 是用来存储ceph的数据的地方，提供了一种在块设备上直接写入方式的存储。这个是因为之前ceph社区尝试做了一个kvstore，但是性能达不到想要的效果，然后基于rocksdb的原型，重新开发了一套存储系统，BlueStore直接消耗原始分区。还有一个分区是存储元数据的，实际上就是一个RocksDB键/值数据库存储，这个比之前的filestore最大的优势就是去掉了journal，从而提供了更平滑的IO</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2016/06/04/利用虚拟化环境虚拟nvme盘/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>
