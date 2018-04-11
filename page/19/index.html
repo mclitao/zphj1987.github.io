@@ -183,6 +183,70 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-mdtest测试工具" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/03/24/mdtest测试工具/" class="article-date">
+  	<time datetime="2015-03-24T05:33:52.000Z" itemprop="datePublished">2015-03-24</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/03/24/mdtest测试工具/">mdtest测试工具</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>软件介绍</p>
+<p> mdstest是软件的元数据操作基准测试工具，用来模拟对文件或者目录的open、stat、close操作，然后报告性能</p>
+<p>下载软件压缩包：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum install openmpi openmpi-devel -y</span><br><span class="line">在/root/.bashrc中添加（注意也要添加mdtest的路径）</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:/usr/lib64/openmpi/bin/</span><br><span class="line"></span><br><span class="line"><span class="built_in">source</span> /root/.bashrc</span><br><span class="line">下载</span><br><span class="line">[root@lab8105 ~]<span class="comment"># wget http://sourceforge.net/projects/mdtest/files/latest/download</span></span><br><span class="line">解压</span><br><span class="line">[root@lab8105 ~]<span class="comment"># tar -xvf mdtest-1.9.3.tgz</span></span><br><span class="line">修改makefile：</span><br><span class="line">mdtest: mdtest.c</span><br><span class="line">       mpicc -Wall -D $(OS) $(LARGE_FILE) $(MDTEST_FLAGS) -g -o mdtest mdtest.c -lm</span><br></pre></td></tr></table></figure></p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/测试工具/">测试工具</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2015/03/24/mdtest测试工具/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+<div id="gitment"></div>
+<!-- 主页不要加载gitment -->
+
+
+
+
+  
     <article id="post-cgroup实践-资源控制" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -726,66 +790,6 @@
       
 	<div class="article-tag tagcloud">
 		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iptables/">iptables</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-<div id="gitment"></div>
-<!-- 主页不要加载gitment -->
-
-
-
-
-  
-    <article id="post-centos使用U盘做启动盘" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/03/24/centos使用U盘做启动盘/" class="article-date">
-  	<time datetime="2015-03-24T00:16:17.000Z" itemprop="datePublished">2015-03-24</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/03/24/centos使用U盘做启动盘/">centos使用U盘做启动盘</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>软件下载地址:<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">http://sourceforge.net/projects/iso2usb/files/latest/download?source=dlp</span><br></pre></td></tr></table></figure></p>
-<p>写于: 2014年08月04日<br>更新于: 2015年03月24日</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
 	</div>
 
       

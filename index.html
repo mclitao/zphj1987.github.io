@@ -183,6 +183,75 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-ceph-ISCSI-GATEWAY" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2018/04/11/ceph-ISCSI-GATEWAY/" class="article-date">
+  	<time datetime="2018-04-11T06:57:55.000Z" itemprop="datePublished">2018-04-11</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/04/11/ceph-ISCSI-GATEWAY/">ceph的ISCSI GATEWAY</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <center><br><br><img src="http://static.zybuluo.com/zphj1987/w0jdxwzox8vxnjagipexheoa/gateway.jpg" alt="gateway"><br><br></center>
+
+
+
+
+
+
+<h2 id="前言">前言</h2><p>最开始接触这个是在L版本的监控平台里面看到的，有个iscsi网关，但是没看到有类似的介绍，然后通过接口查询到了一些资料，当时由于有比较多的东西需要新内核，新版本的支持，所以并没有配置出来，由于内核已经更新迭代了几个小版本了，经过测试验证可以跑起来了，这里只是把东西跑起来，性能相关的对比需要根据去做</p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2018/04/11/ceph-ISCSI-GATEWAY/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+<div id="gitment"></div>
+<!-- 主页不要加载gitment -->
+
+
+
+
+  
     <article id="post-parted-may-start-your-osd" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -766,68 +835,6 @@
       
         <p class="article-more-link">
           <a  href="/2017/09/28/a-new-ceph-book/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-<div id="gitment"></div>
-<!-- 主页不要加载gitment -->
-
-
-
-
-  
-    <article id="post-lost-osdmap-recovery" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/09/27/lost-osdmap-recovery/" class="article-date">
-  	<time datetime="2017-09-27T06:03:59.000Z" itemprop="datePublished">2017-09-27</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/27/lost-osdmap-recovery/">掉电后osdmap丢失无法启动osd的解决方案</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/recuva.png" alt=""><br></center>
-
-<h2 id="前言">前言</h2><p>本篇讲述的是一个比较极端的故障的恢复场景，在整个集群全部服务器突然掉电的时候，osd里面的osdmap可能会出现没刷到磁盘上的情况，这个时候osdmap的最新版本为空或者为没有这个文件</p>
-<p>还有一种情况就是机器宕机了，没有马上处理，等了一段时间以后，服务器机器启动了起来，而这个时候osdmap已经更新了，全局找不到需要的旧版本的osdmap和incmap，osd无法启动</p>
-<p>一般情况下能找到的就直接从其他osd上面拷贝过来，然后就可以启动了，本篇讲述的是无法启动的情况<br>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2017/09/27/lost-osdmap-recovery/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>

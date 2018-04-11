@@ -183,6 +183,70 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-remember-a-ceph-recover" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/02/24/remember-a-ceph-recover/" class="article-date">
+  	<time datetime="2017-02-24T13:56:43.000Z" itemprop="datePublished">2017-02-24</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/02/24/remember-a-ceph-recover/">记最近一次ceph故障修复</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/zhengli.jpg" alt=""><br></center>
+
+<h2 id="前言">前言</h2><p>所谓吃一堑长一智，每次面对问题才是最好的学习机会，在面对问题的时候，尽量是能够自己去解决，或者去尝试能够最接近答案，确实无法解决再去寻求他人帮助，这样成长的会更快一些，在学校读书做题的时候，老师也是经常告诉我们要忍住，不要去直接翻答案，在当今的互联网飞速的发展下，在google的帮助下，基本上90%的问题都能找到正确的答案，而我们其实真正需要锻炼的是实践能力和甄别的能力<br>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2017/02/24/remember-a-ceph-recover/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+<div id="gitment"></div>
+<!-- 主页不要加载gitment -->
+
+
+
+
+  
     <article id="post-word-to-motion" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -775,76 +839,6 @@
       
         <p class="article-more-link">
           <a  href="/2017/01/05/ceph-crush-straw/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-<div id="gitment"></div>
-<!-- 主页不要加载gitment -->
-
-
-
-
-  
-    <article id="post-rbd-image-write-objects" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/01/03/rbd-image-write-objects/" class="article-date">
-  	<time datetime="2017-01-03T06:35:53.000Z" itemprop="datePublished">2017-01-03</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/01/03/rbd-image-write-objects/">rbd的image对象数与能写入文件数的关系</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/2017.png" alt=""><br></center>
-
-<h2 id="前言">前言</h2><p>收到一个问题如下：</p>
-<blockquote>
-<p>一个300TB 的RBD，只有7800万的objects，如果存储小文件的话，感觉不够用</p>
-</blockquote>
-<p>对于这个问题，我原来的理解是：对象默认设置的大小是4M一个，存储下去的数据，如果小于4M，就会占用一个小于4M的对象，如果超过4M，那么存储的数据就会进行拆分成多个4M，这个地方其实是不严谨的</p>
-<p>对于rados接口来说，数据是多大对象put进去就是多大的对象，并没有进行拆分，进行拆分的是再上一层的应用，比如rbd，比如cephfs</p>
-<p>那么对于rbd的image显示的对象数目和文件数目有什么关系呢？本篇将来看看这个问题，到底会不会出现上面的问题<br>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2017/01/03/rbd-image-write-objects/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>

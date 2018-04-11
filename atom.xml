@@ -4,7 +4,7 @@
   <subtitle><![CDATA[止于至善]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2018-03-23T16:13:59.765Z</updated>
+  <updated>2018-04-11T07:09:14.189Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -13,6 +13,117 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[ceph的ISCSI GATEWAY]]></title>
+    <link href="http://www.zphj1987.com/2018/04/11/ceph-ISCSI-GATEWAY/"/>
+    <id>http://www.zphj1987.com/2018/04/11/ceph-ISCSI-GATEWAY/</id>
+    <published>2018-04-11T06:57:55.000Z</published>
+    <updated>2018-04-11T07:09:14.189Z</updated>
+    <content type="html"><![CDATA[<center><br><br><img src="http://static.zybuluo.com/zphj1987/w0jdxwzox8vxnjagipexheoa/gateway.jpg" alt="gateway"><br><br></center>
+
+
+
+
+
+
+<h2 id="前言">前言</h2><p>最开始接触这个是在L版本的监控平台里面看到的，有个iscsi网关，但是没看到有类似的介绍，然后通过接口查询到了一些资料，当时由于有比较多的东西需要新内核，新版本的支持，所以并没有配置出来，由于内核已经更新迭代了几个小版本了，经过测试验证可以跑起来了，这里只是把东西跑起来，性能相关的对比需要根据去做</p>
+<a id="more"></a>
+<h2 id="实践过程">实践过程</h2><h3 id="架构图">架构图</h3><p><img src="http://static.zybuluo.com/zphj1987/hnknjcp8kkiha844m4fyejm4/Ceph_iSCSI_HA_424879_1116_ECE-01.png" alt="Ceph_iSCSI_HA_424879_1116_ECE-01.png-79.4kB"></p>
+<p>这个图是引用的红帽的架构图，可以理解为一个多路径的实现方式，那么这个跟之前的有什么不同</p>
+<p>主要是有个新的tcmu-runner来处理LIO TCM后端存储的用户空间端的守护进程，这个是在内核之上多了一个用户态的驱动层，这样只需要根据tcmu的标准来对接接口就可以了，而不用去直接跟内核进行交互</p>
+<h3 id="需要的软件">需要的软件</h3><p>Ceph Luminous 版本的集群或者更新的版本<br>RHEL/CentOS 7.5或者Linux kernel v4.16或者更新版本的内核<br>其他控制软件</p>
+<blockquote>
+<p>targetcli-2.1.fb47 or newer package<br> ython-rtslib-2.1.fb64 or newer package<br> cmu-runner-1.3.0 or newer package<br> eph-iscsi-config-2.4 or newer package<br> eph-iscsi-cli-2.5 or newer package</p>
+</blockquote>
+<p>以上为配置这个环境需要的软件，下面为我使用的版本的软件，统一打包放在一个下载路径<br>我安装的版本如下：</p>
+<blockquote>
+<p>kernel-4.16.0-0.rc5.git0.1<br>targetcli-fb-2.1.fb48<br>python-rtslib-2.1.67<br>tcmu-runner-1.3.0-rc4<br>ceph-iscsi-config-2.5<br>ceph-iscsi-cli-2.6</p>
+</blockquote>
+<p>下载链接：</p>
+<blockquote>
+<p>链接:<a href="https://pan.baidu.com/s/12OwR5ZNtWFW13feLXy3Ezg" target="_blank" rel="external">https://pan.baidu.com/s/12OwR5ZNtWFW13feLXy3Ezg</a> 密码:m09k</p>
+</blockquote>
+<p>如果环境之前有安装过其他版本，需要先卸载掉，并且需要提前部署好一个Luminous 最新版本的集群<br>官方建议调整的参数<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># ceph tell osd.* injectargs '--osd_client_watch_timeout 15'</span></span><br><span class="line"><span class="comment"># ceph tell osd.* injectargs '--osd_heartbeat_grace 20'</span></span><br><span class="line"><span class="comment"># ceph tell osd.* injectargs '--osd_heartbeat_interval 5'</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="配置过程">配置过程</h3><p>创建一个存储池<br>需要用到rbd存储池，用来存储iscsi的配置文件，提前创建好一个名字是rbd的存储池</p>
+<p>创建iscsi-gateway配置文件<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">touch /etc/ceph/iscsi-gateway.cfg</span><br></pre></td></tr></table></figure></p>
+<p>修改iscsi-gateway.cfg配置文件<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[config]</span><br><span class="line"><span class="comment"># Name of the Ceph storage cluster. A suitable Ceph configuration file allowing</span></span><br><span class="line"><span class="comment"># access to the Ceph storage cluster from the gateway node is required, if not</span></span><br><span class="line"><span class="comment"># colocated on an OSD node.</span></span><br><span class="line">cluster_name = ceph</span><br><span class="line"></span><br><span class="line"><span class="comment"># Place a copy of the ceph cluster's admin keyring in the gateway's /etc/ceph</span></span><br><span class="line"><span class="comment"># drectory and reference the filename here</span></span><br><span class="line">gateway_keyring = ceph.client.admin.keyring</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># API settings.</span></span><br><span class="line"><span class="comment"># The API supports a number of options that allow you to tailor it to your</span></span><br><span class="line"><span class="comment"># local environment. If you want to run the API under https, you will need to</span></span><br><span class="line"><span class="comment"># create cert/key files that are compatible for each iSCSI gateway node, that is</span></span><br><span class="line"><span class="comment"># not locked to a specific node. SSL cert and key files *must* be called</span></span><br><span class="line"><span class="comment"># 'iscsi-gateway.crt' and 'iscsi-gateway.key' and placed in the '/etc/ceph/' directory</span></span><br><span class="line"><span class="comment"># on *each* gateway node. With the SSL files in place, you can use 'api_secure = true'</span></span><br><span class="line"><span class="comment"># to switch to https mode.</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># To support the API, the bear minimum settings are:</span></span><br><span class="line">api_secure = <span class="literal">false</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Additional API configuration options are as follows, defaults shown.</span></span><br><span class="line"><span class="comment"># api_user = admin</span></span><br><span class="line"><span class="comment"># api_password = admin</span></span><br><span class="line"><span class="comment"># api_port = 5001</span></span><br><span class="line"><span class="comment"># trusted_ip_list = 192.168.0.10,192.168.0.11</span></span><br></pre></td></tr></table></figure></p>
+<p>最后一行的trusted_ip_list修改为用来配置网关的主机IP，我的环境为</p>
+<blockquote>
+<p>trusted_ip_list =192.168.219.128,192.168.219.129</p>
+</blockquote>
+<p>所有网关节点的这个配置文件的内容需要一致，修改好一台直接scp到每个网关节点上</p>
+<p>启动API服务<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab101 install]<span class="comment"># systemctl daemon-reload</span></span><br><span class="line">[root@lab101 install]<span class="comment"># systemctl enable rbd-target-api</span></span><br><span class="line">[root@lab101 install]<span class="comment"># systemctl start rbd-target-api</span></span><br><span class="line">[root@lab101 install]<span class="comment"># systemctl status rbd-target-api</span></span><br><span class="line">● rbd-target-api.service - Ceph iscsi target configuration API</span><br><span class="line">   Loaded: loaded (/usr/lib/systemd/system/rbd-target-api.service; enabled; vendor preset: disabled)</span><br><span class="line">   Active: active (running) since Thu <span class="number">2018</span>-<span class="number">03</span>-<span class="number">15</span> <span class="number">09</span>:<span class="number">44</span>:<span class="number">34</span> CST; <span class="number">18</span>min ago</span><br><span class="line"> Main PID: <span class="number">1493</span> (rbd-target-api)</span><br><span class="line">   CGroup: /system.slice/rbd-target-api.service</span><br><span class="line">           └─<span class="number">1493</span> /usr/bin/python /usr/bin/rbd-target-api</span><br><span class="line"></span><br><span class="line">Mar <span class="number">15</span> <span class="number">09</span>:<span class="number">44</span>:<span class="number">34</span> lab101 systemd[<span class="number">1</span>]: Started Ceph iscsi target configuration API.</span><br><span class="line">Mar <span class="number">15</span> <span class="number">09</span>:<span class="number">44</span>:<span class="number">34</span> lab101 systemd[<span class="number">1</span>]: Starting Ceph iscsi target configuration API...</span><br><span class="line">Mar <span class="number">15</span> <span class="number">09</span>:<span class="number">44</span>:<span class="number">58</span> lab101 rbd-target-api[<span class="number">1493</span>]: Started the configuration object watcher</span><br><span class="line">Mar <span class="number">15</span> <span class="number">09</span>:<span class="number">44</span>:<span class="number">58</span> lab101 rbd-target-api[<span class="number">1493</span>]: Checking <span class="keyword">for</span> config object changes every <span class="number">1</span>s</span><br><span class="line">Mar <span class="number">15</span> <span class="number">09</span>:<span class="number">44</span>:<span class="number">58</span> lab101 rbd-target-api[<span class="number">1493</span>]:  * Running on http://<span class="number">0.0</span>.<span class="number">0.0</span>:<span class="number">5000</span>/</span><br></pre></td></tr></table></figure></p>
+<p>配置iscsi<br>执行gwcli命令<br><img src="http://static.zybuluo.com/zphj1987/b74q5lumh96ui9uhknf2329i/image.png" alt="image.png-23kB"></p>
+<p>默认是这样的</p>
+<p>进入icsi-target创建一个target<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/&gt; <span class="built_in">cd</span> iscsi-target </span><br><span class="line">/iscsi-target&gt; create iqn.<span class="number">2003</span>-<span class="number">01</span>.com.redhat.iscsi-gw:iscsi-igw</span><br><span class="line">ok</span><br></pre></td></tr></table></figure></p>
+<p>创建iSCSI网关。以下使用的IP是用于iSCSI数据传输的IP,它们可以与trusted_ip_list中列出的用于管理操作的IP相同，也可以不同，看有没有做多网卡分离<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/iscsi-target&gt; <span class="built_in">cd</span> iqn.<span class="number">2003</span>-<span class="number">01</span>.com.redhat.iscsi-gw:iscsi-igw/</span><br><span class="line">/iscsi-target...-gw:iscsi-igw&gt; <span class="built_in">cd</span> gateways </span><br><span class="line">/iscsi-target...-igw/gateways&gt; create lab101 <span class="number">192.168</span>.<span class="number">219.128</span> skipchecks=<span class="literal">true</span></span><br><span class="line">OS version/package checks have been bypassed</span><br><span class="line">Adding gateway, syncing <span class="number">0</span> disk(s) and <span class="number">0</span> client(s)</span><br><span class="line">  /iscsi-target...-igw/gateways&gt; create lab102 <span class="number">192.168</span>.<span class="number">219.129</span> skipchecks=<span class="literal">true</span></span><br><span class="line">OS version/package checks have been bypassed</span><br><span class="line">Adding gateway, sync<span class="string">'ing 0 disk(s) and 0 client(s)</span><br><span class="line">ok</span><br><span class="line">/iscsi-target...-igw/gateways&gt; ls</span><br><span class="line">o- gateways ............. [Up: 2/2, Portals: 2]</span><br><span class="line">  o- lab101 ............. [192.168.219.128 (UP)]</span><br><span class="line">  o- lab102 ............. [192.168.219.129 (UP)]</span></span><br></pre></td></tr></table></figure></p>
+<p>创建一个rbd设备disk_1<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/iscsi-target...-igw/gateways&gt; <span class="built_in">cd</span> /disks </span><br><span class="line">/disks&gt; create pool=rbd image=disk_1 size=<span class="number">100</span>G</span><br><span class="line">ok</span><br></pre></td></tr></table></figure></p>
+<p>创建一个客户端名称iqn.1994-05.com.redhat:75c3d5efde0<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/disks&gt; <span class="built_in">cd</span> /iscsi-target/iqn.<span class="number">2003</span>-<span class="number">01</span>.com.redhat.iscsi-gw:iscsi-igw/hosts </span><br><span class="line">/iscsi-target...csi-igw/hosts&gt; create iqn.<span class="number">1994</span>-<span class="number">05</span>.com.redhat:<span class="number">75</span>c3d5efde0</span><br><span class="line">ok</span><br></pre></td></tr></table></figure></p>
+<p>创建chap的用户名密码，由于用户名密码都有特殊要求，如果你不确定，就按我给的去设置，并且chap必须设置，否则服务端是禁止连接的<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/iscsi-target...t:<span class="number">75</span>c3d5efde0&gt; auth chap=iqn.<span class="number">1994</span>-<span class="number">05</span>.com.redhat:<span class="number">75</span>c3d5efde0/admin@a_12a-bb</span><br><span class="line">ok</span><br></pre></td></tr></table></figure></p>
+<p>chap的命名规则可以这样查询<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/iscsi-target...t:<span class="number">75</span>c3d5efde0&gt; <span class="built_in">help</span> auth</span><br><span class="line"></span><br><span class="line">SYNTAX</span><br><span class="line">======</span><br><span class="line">auth [chap] </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">DESCRIPTION</span><br><span class="line">===========</span><br><span class="line"></span><br><span class="line">Client authentication can be <span class="built_in">set</span> to use CHAP by supplying the</span><br><span class="line">a string of the form &lt;username&gt;/&lt;password&gt;</span><br><span class="line"></span><br><span class="line">e.g.</span><br><span class="line">auth chap=username/password | nochap</span><br><span class="line"></span><br><span class="line">username ... the username is <span class="number">8</span>-<span class="number">64</span> character string. Each character</span><br><span class="line">             may either be an alphanumeric or use one of the following</span><br><span class="line">             special characters .,:,-,@.</span><br><span class="line">             Consider using the hosts <span class="string">'shortname'</span> or the initiators IQN</span><br><span class="line">             value as the username</span><br><span class="line"></span><br><span class="line">password ... the password must be between <span class="number">12</span>-<span class="number">16</span> chars <span class="keyword">in</span> length</span><br><span class="line">             containing alphanumeric characters, plus the following</span><br><span class="line">             special characters @,_,-</span><br><span class="line"></span><br><span class="line">WARNING: Using unsupported special characters may result <span class="keyword">in</span> truncation,</span><br><span class="line">         resulting <span class="keyword">in</span> failed logins.</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Specifying <span class="string">'nochap'</span> will remove chap authentication <span class="keyword">for</span> the client</span><br><span class="line">across all gateways.</span><br></pre></td></tr></table></figure></p>
+<p>增加磁盘到客户端<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/iscsi-target...t:<span class="number">75</span>c3d5efde0&gt; disk add rbd.disk_1</span><br><span class="line">ok</span><br></pre></td></tr></table></figure></p>
+<p>到这里就配置完成了，我们看下最终应该是怎么样的<br><img src="http://static.zybuluo.com/zphj1987/erpd7tv1gymtrdkny0h33afy/image.png" alt="image.png-38.5kB"></p>
+<h2 id="windows客户端配置">windows客户端配置</h2><p>这个地方我配置的时候用的win10配置的时候出现了无法连接的情况，可能是windows10自身的认证要求跟服务端冲突了，这里用windows server 2016 进行连接测试</p>
+<p>windows server开启下Multipath IO</p>
+<p>修改windows iscsi客户端的名称<br><img src="http://static.zybuluo.com/zphj1987/fqt0s8h75jm5joffglsm7z4t/image.png" alt="image.png-47.5kB"><br>修改为上面创建的客户端名称</p>
+<p>发现门户<br><img src="http://static.zybuluo.com/zphj1987/yp7pteay72mms7fbf7jf6z1u/image.png" alt="image.png-37.7kB"><br>点击发现门户，填写好服务端的IP后直接点确定，这里先不用高级里面的配置</p>
+<p><img src="http://static.zybuluo.com/zphj1987/3r2crtvesqir0f2qzhqow8dq/image.png" alt="image.png-35.1kB"></p>
+<p>这个时候目标里面已经有一个发现的目标了，显示状态是不活动的，准备点击连接</p>
+<p><img src="http://static.zybuluo.com/zphj1987/2oliqvnxb9rogfwimy8ogvx6/image.png" alt="image.png-80.7kB"><br>点击高级，选择门户IP，填写chap登陆信息，然后chap名称就是上面设置的用户名称，因为跟客户端名称设置的一致，也就是客户端的名称，密码就是上面设置的admin@a_12a-bb</p>
+<p><img src="http://static.zybuluo.com/zphj1987/138747o4l4cxch52sb5z2z5w/image.png" alt="image.png-21.9kB"></p>
+<p>切换到卷和设备，点击自动配置<br><img src="http://static.zybuluo.com/zphj1987/qn4zzyofhh2546fv4nxczbs3/image.png" alt="image.png-47.4kB"></p>
+<p>可以看到已经装载设备了</p>
+<p>在服务管理器，文件存储服务，卷，磁盘里面查看设备<br><img src="http://static.zybuluo.com/zphj1987/hi5flzjcsbdhv0wglrrkenda/image.png" alt="image.png-92.8kB"></p>
+<p>可以看到是配置的LIO-ORG TCMU设备，对设备进行格式化即可</p>
+<p><img src="http://static.zybuluo.com/zphj1987/h7yj7k87fllhxuqfz5utc4mv/image.png" alt="image.png-42.6kB"></p>
+<p>完成了连接了</p>
+<h2 id="Linux的客户端连接">Linux的客户端连接</h2><p>Linux客户端选择建议就选择3.10默认内核，选择高版本的内核的时候在配置多路径的时候碰到内核崩溃的问题</p>
+<p>安装连接软件<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab103 ~]<span class="comment"># yum install iscsi-initiator-utils</span></span><br><span class="line">[root@lab103 ~]<span class="comment"># yum install device-mapper-multipath</span></span><br></pre></td></tr></table></figure></p>
+<p>配置多路径</p>
+<p>开启服务<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab103 ~]<span class="comment"># mpathconf --enable --with_multipathd y</span></span><br></pre></td></tr></table></figure></p>
+<p>修改配置文件/etc/multipath.conf<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">devices &#123;</span><br><span class="line">        device &#123;</span><br><span class="line">                vendor                 <span class="string">"LIO-ORG"</span></span><br><span class="line">                hardware_handler       <span class="string">"1 alua"</span></span><br><span class="line">                path_grouping_policy   <span class="string">"failover"</span></span><br><span class="line">                path_selector          <span class="string">"queue-length 0"</span></span><br><span class="line">                failback               <span class="number">60</span></span><br><span class="line">                path_checker           tur</span><br><span class="line">                prio                   alua</span><br><span class="line">                prio_args              exclusive_pref_bit</span><br><span class="line">                fast_io_fail_tmo       <span class="number">25</span></span><br><span class="line">                no_path_retry          queue</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>重启多路径服务<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab103 ~]<span class="comment"># systemctl reload multipathd</span></span><br></pre></td></tr></table></figure></p>
+<p>配置chap的认证</p>
+<p>修改配置客户端的名称为上面设置的名称<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab103 ~]<span class="comment"># cat /etc/iscsi/initiatorname.iscsi </span></span><br><span class="line">InitiatorName=iqn.<span class="number">1994</span>-<span class="number">05</span>.com.redhat:<span class="number">75</span>c3d5efde0</span><br></pre></td></tr></table></figure></p>
+<p>修改认证的配置文件<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab103 ~]<span class="comment"># cat /etc/iscsi/iscsid.conf |grep "node.session.auth.username\|node.session.auth.password\|node.session.auth.authmethod"</span></span><br><span class="line">node.session.auth.authmethod = CHAP</span><br><span class="line">node.session.auth.username = iqn.<span class="number">1994</span>-<span class="number">05</span>.com.redhat:<span class="number">75</span>c3d5efde0</span><br><span class="line">node.session.auth.password = admin@a_12a-bb</span><br></pre></td></tr></table></figure></p>
+<p>查询iscsi target<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab103 ~]<span class="comment"># iscsiadm -m discovery -t st -p 192.168.219.128</span></span><br><span class="line"><span class="number">192.168</span>.<span class="number">219.128</span>:<span class="number">3260</span>,<span class="number">1</span> iqn.<span class="number">2003</span>-<span class="number">01</span>.com.redhat.iscsi-gw:iscsi-igw</span><br><span class="line"><span class="number">192.168</span>.<span class="number">219.129</span>:<span class="number">3260</span>,<span class="number">2</span> iqn.<span class="number">2003</span>-<span class="number">01</span>.com.redhat.iscsi-gw:iscsi-igw</span><br></pre></td></tr></table></figure></p>
+<p>连接target<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab103 ~]<span class="comment"># iscsiadm -m node -T iqn.2003-01.com.redhat.iscsi-gw:iscsi-igw -l</span></span><br><span class="line">Logging <span class="keyword">in</span> to [iface: default, target: iqn.<span class="number">2003</span>-<span class="number">01</span>.com.redhat.iscsi-gw:iscsi-igw, portal: <span class="number">192.168</span>.<span class="number">219.129</span>,<span class="number">3260</span>] (multiple)</span><br><span class="line">Logging <span class="keyword">in</span> to [iface: default, target: iqn.<span class="number">2003</span>-<span class="number">01</span>.com.redhat.iscsi-gw:iscsi-igw, portal: <span class="number">192.168</span>.<span class="number">219.129</span>,<span class="number">3260</span>] (multiple)</span><br><span class="line">Login to [iface: default, target: iqn.<span class="number">2003</span>-<span class="number">01</span>.com.redhat.iscsi-gw:iscsi-igw, portal: <span class="number">192.168</span>.<span class="number">219.129</span>,<span class="number">3260</span>] successful.</span><br><span class="line">Login to [iface: default, target: iqn.<span class="number">2003</span>-<span class="number">01</span>.com.redhat.iscsi-gw:iscsi-igw, portal: <span class="number">192.168</span>.<span class="number">219.129</span>,<span class="number">3260</span>] successful.</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab101 ~]<span class="comment"># multipath -ll</span></span><br><span class="line">mpathb (<span class="number">360014052</span><span class="built_in">fc</span>39ba627874fdba9aefcf6c) dm-<span class="number">4</span> LIO-ORG ,TCMU device     </span><br><span class="line">size=<span class="number">100</span>G features=<span class="string">'1 queue_if_no_path'</span> hwhandler=<span class="string">'1 alua'</span> wp=rw</span><br><span class="line">|-+- policy=<span class="string">'queue-length 0'</span> prio=<span class="number">10</span> status=active</span><br><span class="line">| `- <span class="number">5</span>:<span class="number">0</span>:<span class="number">0</span>:<span class="number">0</span> sdc <span class="number">8</span>:<span class="number">32</span> active ready running</span><br><span class="line">`-+- policy=<span class="string">'queue-length 0'</span> prio=<span class="number">10</span> status=enabled</span><br><span class="line">  `- <span class="number">6</span>:<span class="number">0</span>:<span class="number">0</span>:<span class="number">0</span> sdd <span class="number">8</span>:<span class="number">48</span> active ready running</span><br></pre></td></tr></table></figure>
+<p>查看盘符<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab101 ~]<span class="comment"># parted -s /dev/mapper/mpathb print</span></span><br><span class="line">Model: Linux device-mapper (multipath) (dm)</span><br><span class="line">Disk /dev/mapper/mpathb: <span class="number">107</span>GB</span><br><span class="line">Sector size (logical/physical): <span class="number">512</span>B/<span class="number">512</span>B</span><br><span class="line">Partition Table: gpt</span><br><span class="line">Disk Flags: </span><br><span class="line"></span><br><span class="line">Number  Start   End    Size   File system  Name                          Flags</span><br><span class="line"> <span class="number">1</span>      <span class="number">17.4</span>kB  <span class="number">134</span>MB  <span class="number">134</span>MB               Microsoft reserved partition  msftres</span><br><span class="line"> <span class="number">2</span>      <span class="number">135</span>MB   <span class="number">107</span>GB  <span class="number">107</span>GB  ntfs         Basic data partition</span><br></pre></td></tr></table></figure></p>
+<p>直接使用这个/dev/mapper/mpathb设备即可</p>
+<h2 id="变更记录">变更记录</h2><table>
+<thead>
+<tr>
+<th style="text-align:center">Why</th>
+<th style="text-align:center">Who</th>
+<th style="text-align:center">When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">创建</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2018-04-11</td>
+</tr>
+</tbody>
+</table>
+]]></content>
+    <summary type="html">
+    <![CDATA[<center><br><br><img src="http://static.zybuluo.com/zphj1987/w0jdxwzox8vxnjagipexheoa/gateway.jpg" alt="gateway"><br><br></center>
+
+
+
+
+
+
+<h2 id="前言">前言</h2><p>最开始接触这个是在L版本的监控平台里面看到的，有个iscsi网关，但是没看到有类似的介绍，然后通过接口查询到了一些资料，当时由于有比较多的东西需要新内核，新版本的支持，所以并没有配置出来，由于内核已经更新迭代了几个小版本了，经过测试验证可以跑起来了，这里只是把东西跑起来，性能相关的对比需要根据去做</p>]]>
+    
+    </summary>
+    
+      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[parted会启动你的ceph osd，意外不？]]></title>
@@ -1564,155 +1675,6 @@
     <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/nginx.png" alt=""><br></center>
 
 <h2 id="前言">前言</h2><p>ceph的s3数据的同步可以通过radosgw-agent进行同步，同region可以同步data和metadata，不同region只能同步metadata，这个地方可以参考下秦牧羊梳理的 <a href="https://my.oschina.net/diluga/blog/391928">ceph radosgw 多集群同步部署流程</a>，本篇讲述的方案与radosgw-agent的复制方案不同在于,这个属于前端复制，后端相当于透明的两个相同集群，在入口层面就将数据进行了复制分流<br>]]>
-    
-    </summary>
-    
-      <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[RBD快速删除的方法分析与改进]]></title>
-    <link href="http://www.zphj1987.com/2017/07/27/RBD-fast-remove/"/>
-    <id>http://www.zphj1987.com/2017/07/27/RBD-fast-remove/</id>
-    <published>2017-07-27T14:20:37.000Z</published>
-    <updated>2017-07-28T06:16:57.059Z</updated>
-    <content type="html"><![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/deleting.gif?imageMogr2/thumbnail/!75p" alt="delete"><br></center>
-
-<h2 id="前言">前言</h2><p>这个问题在很久以前就有一篇文章进行过讨论 <a href="http://cephnotes.ksperis.com/blog/2014/07/04/remove-big-rbd-image" target="_blank" rel="external">remove-big-rbd</a>,这个文章写的比较清楚了，并且对不同的方法做了分析，这里先把结论说下</p>
-<table>
-<thead>
-<tr>
-<th style="text-align:center">rbd类型</th>
-<th style="text-align:center">rbd rm 方法</th>
-<th style="text-align:center">rados -p rm方法</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">未填充很多</td>
-<td style="text-align:center">慢</td>
-<td style="text-align:center">快</td>
-</tr>
-<tr>
-<td style="text-align:center">已填充很多</td>
-<td style="text-align:center">快</td>
-<td style="text-align:center">慢</td>
-</tr>
-</tbody>
-</table>
-<a id="more"></a>
-<p>在rbd进行删除的时候，即使内部没有对象数据，也一样需要一个个对象去发请求，即使对象不存在，这个可以开日志看到</p>
-<h2 id="实验过程">实验过程</h2><h3 id="开启日志的方法">开启日志的方法</h3><p>在/etc/ceph/ceph.conf中添加<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[client]</span><br><span class="line">debug_ms=<span class="number">1</span></span><br><span class="line"><span class="built_in">log</span>_file=/var/<span class="built_in">log</span>/ceph/rados.log</span><br></pre></td></tr></table></figure></p>
-<p>这个默认也会在执行命令的时候打印到前台，所以处理下比较好，最简单的办法就是做alias<br>添加下面内容到 /etc/bashrc<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">alias</span> ceph=<span class="string">'ceph  --debug-ms=0'</span></span><br><span class="line"><span class="built_in">alias</span> rados=<span class="string">'rados  --debug-ms=0'</span></span><br></pre></td></tr></table></figure></p>
-<p>然后命令行执行<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">source</span> /etc/bashrc</span><br></pre></td></tr></table></figure></p>
-<p>在做操作的时候就只会记录日志，前台不会打印调试信息了,但是这个会影响到ceph daemon的命令，这个可以用这种方式在线屏蔽即可<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph --debug_ms=<span class="number">0</span>  <span class="operator">-s</span></span><br></pre></td></tr></table></figure></p>
-<p>然后执行操作后，去分析每秒钟的操作数目即可,类似下面的这个，也可以用日志系统进行分析，这里不赘述<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cat  /var/<span class="built_in">log</span>/ceph/rados.log|grep delete|grep -v <span class="string">"&gt;"</span>|grep <span class="number">13</span>:<span class="number">29</span>:<span class="number">46</span>|wc <span class="operator">-l</span></span><br></pre></td></tr></table></figure></p>
-<p>原始的快速删除方法<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rados -p rbd ls | grep <span class="string">'^rbd_data.25ae86b8b4567'</span> | xargs -n <span class="number">200</span>  rados -p rbd rm</span><br></pre></td></tr></table></figure></p>
-<h2 id="开启多进程删除的方法">开启多进程删除的方法</h2><p>这个比上面那种方法好的是：</p>
-<ul>
-<li>可以显示当前删除的进度</li>
-<li>可以指定删除的进程并发数</li>
-<li>可以显示当时正在删除的对象</li>
-<li>可以增加一个中断时间降低负载</li>
-</ul>
-<p>首先获取一个需要快速删除的rbd的列表<br>获取prifix<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 put]<span class="comment"># rbd info testrbd|grep prefix</span></span><br><span class="line">	block_name_prefix: rbd_data.<span class="number">32</span>c0f6b8b4567</span><br></pre></td></tr></table></figure></p>
-<p>获取列表<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 put]<span class="comment"># rados -p rbd ls |grep rbd_data.32c0f6b8b4567 &gt; delobject</span></span><br></pre></td></tr></table></figure></p>
-<p>这里可以看下内容有没有问题，检查确认下</p>
-<p>删除的fastremove.sh脚本如下：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="shebang">#!/bin/bash</span><br><span class="line"></span></span><br><span class="line"><span class="comment">#####config</span></span><br><span class="line">process=<span class="number">5</span></span><br><span class="line">objectlistfile=<span class="string">"./delobject"</span></span><br><span class="line">deletepool=rbd</span><br><span class="line"><span class="comment">#####</span></span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="title">delete_fun</span></span>()</span><br><span class="line">  &#123;</span><br><span class="line">      date <span class="string">"+%Y-%m-%d %H:%M:%S"</span></span><br><span class="line">      rados -p <span class="variable">$deletepool</span> rm <span class="variable">$1</span></span><br><span class="line">	  <span class="comment">#sleep 1</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="title">concurrent</span></span>()</span><br><span class="line"> &#123;</span><br><span class="line">     start=<span class="variable">$1</span> &amp;&amp; end=<span class="variable">$2</span> &amp;&amp; cur_num=<span class="variable">$3</span></span><br><span class="line">     mkfifo   ./fifo.$$ &amp;&amp;  <span class="built_in">exec</span> <span class="number">4</span>&lt;&gt; ./fifo.$$ &amp;&amp; rm <span class="operator">-f</span> ./fifo.$$</span><br><span class="line">     <span class="keyword">for</span> ((i=<span class="variable">$start</span>; i&lt;<span class="variable">$cur_num</span>+<span class="variable">$start</span>; i++)); <span class="keyword">do</span></span><br><span class="line">         <span class="built_in">echo</span> <span class="string">"init  start delete process <span class="variable">$i</span>"</span> &gt;&amp;<span class="number">4</span></span><br><span class="line">     <span class="keyword">done</span></span><br><span class="line"></span><br><span class="line">     <span class="keyword">for</span>((i=<span class="variable">$start</span>; i&lt;=<span class="variable">$end</span>; i++)); <span class="keyword">do</span></span><br><span class="line">         <span class="built_in">read</span> -u <span class="number">4</span></span><br><span class="line">         &#123;</span><br><span class="line">             <span class="built_in">echo</span> <span class="operator">-e</span> <span class="string">"-- current delete: [:delete <span class="variable">$i</span>/<span class="variable">$objectnum</span>  <span class="variable">$REPLY</span>]"</span></span><br><span class="line">             delob=`sed -n <span class="string">"<span class="variable">$&#123;i&#125;</span>p"</span> <span class="variable">$objectlistfile</span>`</span><br><span class="line">             delete_fun <span class="variable">$delob</span></span><br><span class="line">             <span class="built_in">echo</span> <span class="string">"delete <span class="variable">$delob</span> done"</span>  <span class="number">1</span>&gt;&amp;<span class="number">4</span> <span class="comment"># write to $ff_file</span></span><br><span class="line">         &#125; &amp;</span><br><span class="line">     <span class="keyword">done</span></span><br><span class="line">     <span class="built_in">wait</span></span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line">objectnum=`cat <span class="variable">$objectlistfile</span>|wc <span class="operator">-l</span>`</span><br><span class="line">concurrent <span class="number">1</span> <span class="variable">$objectnum</span> <span class="variable">$process</span></span><br></pre></td></tr></table></figure></p>
-<p>上面直接把配置写到脚本里面了，根据需要进行修改<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#####config</span></span><br><span class="line">process=<span class="number">10</span></span><br><span class="line">objectlistfile=<span class="string">"./delobject"</span></span><br><span class="line">deletepool=rbd</span><br><span class="line"><span class="comment">#####</span></span><br></pre></td></tr></table></figure></p>
-<p>指定并发数目，指定准备删除的对象的list文件，指定对象所在的存储池</p>
-<p>然后执行即可</p>
-<h2 id="本次测试删除的性能差别">本次测试删除的性能差别</h2><p>准备对象数据<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rbd map testrbd</span><br><span class="line">dd <span class="keyword">if</span>=/dev/zero of=/dev/rbd2 bs=<span class="number">4</span>M count=<span class="number">1200</span></span><br></pre></td></tr></table></figure></p>
-<p>获取列表<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 put]<span class="comment"># rados -p rbd ls |grep rbd_data.32c0f6b8b4567 &gt; delobject</span></span><br></pre></td></tr></table></figure></p>
-<p>执行删除脚本<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 put]<span class="comment"># sh fastremove.sh</span></span><br></pre></td></tr></table></figure></p>
-<p>测试结果如下：</p>
-<table>
-<thead>
-<tr>
-<th style="text-align:center">并发数</th>
-<th style="text-align:center">删除时间</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">1</td>
-<td style="text-align:center">71s</td>
-</tr>
-<tr>
-<td style="text-align:center">2</td>
-<td style="text-align:center">35s</td>
-</tr>
-<tr>
-<td style="text-align:center">5</td>
-<td style="text-align:center">5s</td>
-</tr>
-<tr>
-<td style="text-align:center">25</td>
-<td style="text-align:center">6s</td>
-</tr>
-<tr>
-<td style="text-align:center">50</td>
-<td style="text-align:center">5s</td>
-</tr>
-<tr>
-<td style="text-align:center">100</td>
-<td style="text-align:center">5s</td>
-</tr>
-</tbody>
-</table>
-<p>从测试结果来看在并发数为5的时候就能达到每秒删除200个对象了，根据自己的需要进行增减，也可以增减删除的间隔加上sleep</p>
-<p>下面看下这个过程：</p>
-<iframe src="http://7xweck.com1.z0.glb.clouddn.com/fastremove.html" height="530px" width="90%" align="center"></iframe>
-
-<h2 id="总结">总结</h2><p>在ceph里面一些系统的操作默认是单进程去处理的，一般情况下都没什么问题，在数据量超大，追求效率的时候，我们可以通过加上一些并发加速这个过程，本篇脚本当中的并发同样适用于其他需要并发的场景</p>
-<h2 id="变更记录">变更记录</h2><table>
-<thead>
-<tr>
-<th style="text-align:center">Why</th>
-<th style="text-align:center">Who</th>
-<th style="text-align:center">When</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">创建</td>
-<td style="text-align:center">武汉-运维-磨渣</td>
-<td style="text-align:center">2017-07-27</td>
-</tr>
-<tr>
-<td style="text-align:center">增加前台调试信息的屏蔽</td>
-<td style="text-align:center">武汉-运维-磨渣</td>
-<td style="text-align:center">2017-07-28</td>
-</tr>
-</tbody>
-</table>
-]]></content>
-    <summary type="html">
-    <![CDATA[<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/deleting.gif?imageMogr2/thumbnail/!75p" alt="delete"><br></center>
-
-<h2 id="前言">前言</h2><p>这个问题在很久以前就有一篇文章进行过讨论 <a href="http://cephnotes.ksperis.com/blog/2014/07/04/remove-big-rbd-image">remove-big-rbd</a>,这个文章写的比较清楚了，并且对不同的方法做了分析，这里先把结论说下</p>
-<table>
-<thead>
-<tr>
-<th style="text-align:center">rbd类型</th>
-<th style="text-align:center">rbd rm 方法</th>
-<th style="text-align:center">rados -p rm方法</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">未填充很多</td>
-<td style="text-align:center">慢</td>
-<td style="text-align:center">快</td>
-</tr>
-<tr>
-<td style="text-align:center">已填充很多</td>
-<td style="text-align:center">快</td>
-<td style="text-align:center">慢</td>
-</tr>
-</tbody>
-</table>]]>
     
     </summary>
     

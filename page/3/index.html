@@ -183,6 +183,91 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-RBD-fast-remove" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/07/27/RBD-fast-remove/" class="article-date">
+  	<time datetime="2017-07-27T14:20:37.000Z" itemprop="datePublished">2017-07-27</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/07/27/RBD-fast-remove/">RBD快速删除的方法分析与改进</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/deleting.gif?imageMogr2/thumbnail/!75p" alt="delete"><br></center>
+
+<h2 id="前言">前言</h2><p>这个问题在很久以前就有一篇文章进行过讨论 <a href="http://cephnotes.ksperis.com/blog/2014/07/04/remove-big-rbd-image">remove-big-rbd</a>,这个文章写的比较清楚了，并且对不同的方法做了分析，这里先把结论说下</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">rbd类型</th>
+<th style="text-align:center">rbd rm 方法</th>
+<th style="text-align:center">rados -p rm方法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">未填充很多</td>
+<td style="text-align:center">慢</td>
+<td style="text-align:center">快</td>
+</tr>
+<tr>
+<td style="text-align:center">已填充很多</td>
+<td style="text-align:center">快</td>
+<td style="text-align:center">慢</td>
+</tr>
+</tbody>
+</table>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2017/07/27/RBD-fast-remove/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+<div id="gitment"></div>
+<!-- 主页不要加载gitment -->
+
+
+
+
+  
     <article id="post-from-ceph-object-get-rbd-file" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -744,76 +829,6 @@
       
         <p class="article-more-link">
           <a  href="/2017/06/01/centos7-update-kernel-can-not-boot/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-<div id="gitment"></div>
-<!-- 主页不要加载gitment -->
-
-
-
-
-  
-    <article id="post-Freebsd-pkg-destroy" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/05/24/Freebsd-pkg-destroy/" class="article-date">
-  	<time datetime="2017-05-24T02:40:34.000Z" itemprop="datePublished">2017-05-24</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/05/24/Freebsd-pkg-destroy/">Freebsd10.2安装包升级pkg引起环境破坏的解决</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/brock.png?imageMogr2/thumbnail/!75p" alt=""><br></center>
-
-
-<h2 id="前言">前言</h2><p>freebsd10.2环境在安装一个新软件包的时候提示升级pkg到1.10.1，然后点击了升级，然后整个pkg环境就无法使用了</p>
-<h2 id="记录">记录</h2><p>升级完了软件包以后第一个错误提示</p>
-<blockquote>
-<p>FreeBSD: /usr/local/lib/libpkg.so.3: Undefined symbol “utimensat” </p>
-</blockquote>
-<p>这个是因为这个库是在freebsd的10.3当中才有的库，而我的环境是10.2的环境<br>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/freebsd/">freebsd</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2017/05/24/Freebsd-pkg-destroy/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>
