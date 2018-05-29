@@ -4,7 +4,7 @@
   <subtitle><![CDATA[止于至善]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2018-05-29T15:58:32.885Z</updated>
+  <updated>2018-05-29T16:01:56.305Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -19,11 +19,12 @@
     <link href="http://www.zphj1987.com/2018/05/29/cephfs-metadatapool-disaster-recover/"/>
     <id>http://www.zphj1987.com/2018/05/29/cephfs-metadatapool-disaster-recover/</id>
     <published>2018-05-29T15:37:52.000Z</published>
-    <updated>2018-05-29T15:58:32.885Z</updated>
+    <updated>2018-05-29T16:01:56.305Z</updated>
     <content type="html"><![CDATA[<h2 id="前言">前言</h2><p>cephfs 在L版本已经比较稳定了，这个稳定的意义个人觉得是在其故障恢复方面的成熟，一个文件系统可恢复是其稳定必须具备的属性，本篇就是根据官网的文档来实践下这个恢复的过程</p>
 <h2 id="实践过程">实践过程</h2><h3 id="部署一个ceph_Luminous集群">部署一个ceph  Luminous集群</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab102 ~]<span class="comment"># ceph -v</span></span><br><span class="line">ceph version <span class="number">12.2</span>.<span class="number">5</span> (cad919881333ac92274171586c827e01f554a70a) luminous (stable)</span><br></pre></td></tr></table></figure>
 <p>创建filestore<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph-deploy osd create  lab102  --filestore  --data /dev/sdb1  --journal /dev/sdb2</span><br></pre></td></tr></table></figure></p>
 <p>这里想用filestore进行测试就按上面的方法去创建osd即可</p>
+<a id="more"></a>
 <p>传入测试数据</p>
 <ul>
 <li>doc </li>
@@ -88,7 +89,10 @@
 ]]></content>
     <summary type="html">
     <![CDATA[<h2 id="前言">前言</h2><p>cephfs 在L版本已经比较稳定了，这个稳定的意义个人觉得是在其故障恢复方面的成熟，一个文件系统可恢复是其稳定必须具备的属性，本篇就是根据官网的文档来实践下这个恢复的过程</p>
-<h2 id="实践过程">实践过程</h2><h3 ]]>
+<h2 id="实践过程">实践过程</h2><h3 id="部署一个ceph_Luminous集群">部署一个ceph  Luminous集群</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab102 ~]<span class="comment"># ceph -v</span></span><br><span class="line">ceph version <span class="number">12.2</span>.<span class="number">5</span> (cad919881333ac92274171586c827e01f554a70a) luminous (stable)</span><br></pre></td></tr></table></figure>
+<p>创建filestore<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph-deploy osd create  lab102  --filestore  --data /dev/sdb1  --journal /dev/sdb2</span><br></pre></td></tr></table></figure></p>
+<p>这里想用filestore进行测试就按上面的方法去创建osd即可</p>]]>
+    
     </summary>
     
       <category term="ceph" scheme="http://www.zphj1987.com/tags/ceph/"/>

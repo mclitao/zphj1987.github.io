@@ -225,6 +225,7 @@
 <h2 id="实践过程">实践过程</h2><h3 id="部署一个ceph_Luminous集群">部署一个ceph  Luminous集群</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab102 ~]<span class="comment"># ceph -v</span></span><br><span class="line">ceph version <span class="number">12.2</span>.<span class="number">5</span> (cad919881333ac92274171586c827e01f554a70a) luminous (stable)</span><br></pre></td></tr></table></figure>
 <p>创建filestore<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph-deploy osd create  lab102  --filestore  --data /dev/sdb1  --journal /dev/sdb2</span><br></pre></td></tr></table></figure></p>
 <p>这里想用filestore进行测试就按上面的方法去创建osd即可</p>
+<a id="more"></a>
 <p>传入测试数据</p>
 <ul>
 <li>doc </li>
