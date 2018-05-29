@@ -183,6 +183,80 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-ceph集群的安装和配置教程" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/12/12/ceph集群的安装和配置教程/" class="article-date">
+  	<time datetime="2015-12-11T16:36:48.000Z" itemprop="datePublished">2015-12-12</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/12/12/ceph集群的安装和配置教程/">ceph集群的安装和配置教程</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="本篇主题：">本篇主题：</h3><p>1、怎样配置ssh免登陆访问<br>2、为什么搭建集群要关闭防火墙和selinux，如何关闭<br>3、从哪里获取ceph的安装包，怎样安装才是快速正确的<br>4、为什么要配置时间同步服务，怎样配置<br>5、怎样创建集群<br>6、怎样使用不同的方式增加osd（这里我总结了五种）</p>
+<ul>
+<li>默认方式</li>
+<li>磁盘journal</li>
+<li>目录配置方式</li>
+<li>btrfs文件系统</li>
+<li>disk+ssd方式</li>
+</ul>
+<p>7、怎样配置文件系统<br>8、怎样配置块设备系统<br>9、怎样配置S3服务<br>10、如何干净的将集群清理到初始状态</p>
+<blockquote>
+<p>（本篇基于centos7,其他系统除了安装方式其他通用）</p>
+</blockquote>
+<h3 id="本篇资源:">本篇资源:</h3><p>包括了视频，操作文档，相关安装包资源，S3的windows客户端</p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2015/12/12/ceph集群的安装和配置教程/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+<div id="gitment"></div>
+<!-- 主页不要加载gitment -->
+
+
+
+
+  
     <article id="post-在线调整ceph的参数" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -750,72 +824,6 @@
 
       
 
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-<div id="gitment"></div>
-<!-- 主页不要加载gitment -->
-
-
-
-
-  
-    <article id="post-删除ceph集群mds" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/09/24/删除ceph集群mds/" class="article-date">
-  	<time datetime="2015-09-24T03:10:49.000Z" itemprop="datePublished">2015-09-24</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/09/24/删除ceph集群mds/">删除ceph集群mds</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>ceph集群新搭建以后是只有一个默认的存储池rbd的池</p>
-<h2 id="创建文件接口集群">创建文件接口集群</h2><h3 id="1-创建一个元数据池">1.创建一个元数据池</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@mytest ~]<span class="comment"># ceph osd pool create metadata  20 20</span></span><br><span class="line">pool <span class="string">'metadata'</span> created</span><br></pre></td></tr></table></figure>
-<h3 id="2-创建一个数据池">2.创建一个数据池</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@mytest ~]<span class="comment"># ceph osd pool create data   20 20</span></span><br><span class="line">pool <span class="string">'data'</span> created</span><br></pre></td></tr></table></figure>
-<h3 id="3-创建一个文件系统">3.创建一个文件系统</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@mytest ~]<span class="comment"># ceph fs new ceph  metadata data</span></span><br><span class="line">new fs with metadata pool <span class="number">4</span> and data pool <span class="number">5</span></span><br></pre></td></tr></table></figure>
-<h3 id="4-创建一个mds">4.创建一个mds</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@mytest ~]<span class="comment"># ceph-deploy mds create mytest</span></span><br></pre></td></tr></table></figure>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/09/24/删除ceph集群mds/#more">more >></a>
-        </p>
       
       <div class="clearfix"></div>
     </div>

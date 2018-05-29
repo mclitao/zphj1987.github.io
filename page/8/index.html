@@ -183,6 +183,66 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-基于发行版本内核打造自己的内核" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/12/07/基于发行版本内核打造自己的内核/" class="article-date">
+  	<time datetime="2016-12-07T07:55:38.000Z" itemprop="datePublished">2016-12-07</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/12/07/基于发行版本内核打造自己的内核/">基于发行版本内核打造自己的内核</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/kernel.png" alt="此处输入图片的描述"><br></center>
+
+<p>Linux当中最核心的部分就是内核，这个也是最基础，最可能被忽视的一部分，随便找一个刚入职的运维，学习个两三天，网上找些资料也能能自己安装编译内核了，很多运维的初期培训就是做的这些学习，为什么在网上已经有这么多文章的情况下，还要写一篇关于内核的文章，这是因为，我想讲的是如何去选择内核<br>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2016/12/07/基于发行版本内核打造自己的内核/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+<div id="gitment"></div>
+<!-- 主页不要加载gitment -->
+
+
+
+
+  
     <article id="post-The-Dos-and-Don-ts-for-Ceph-for-OpenStack" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -758,76 +818,6 @@
       
         <p class="article-more-link">
           <a  href="/2016/11/08/Ceph用户邮件列表Vol45-Issue3/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-<div id="gitment"></div>
-<!-- 主页不要加载gitment -->
-
-
-
-
-  
-    <article id="post-Ceph用户邮件列表Vol45-Issue2" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/11/07/Ceph用户邮件列表Vol45-Issue2/" class="article-date">
-  	<time datetime="2016-11-07T05:26:01.000Z" itemprop="datePublished">2016-11-07</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/11/07/Ceph用户邮件列表Vol45-Issue2/">Ceph用户邮件列表Vol45-Issue2</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/number/daytwo.jpg" alt=""><br></center>
-
-<h2 id="ceph_Vol_45_Issue_2">ceph Vol 45 Issue 2</h2><h3 id="CephFS:_No_space_left_on_device">CephFS: No space left on device</h3><blockquote>
-<p>After upgrading to 10.2.3 we frequently see messages like</p>
-<p>‘rm: cannot remove ‘…’: No space left on device</p>
-<p>The folders we are trying to delete contain approx. 50K files 193 KB each.</p>
-<p>The cluster state and storage available are both OK:</p>
-<p>   cluster 98d72518-6619-4b5c-b148-9a781ef13bcb<br>     health HEALTH_WARN<br>            mds0: Client XXX.XXX.XXX.XXX failing to respond to cache pressure<br>            mds0: Client XXX.XXX.XXX.XXX failing to respond to cache pressure<br>            mds0: Client XXX.XXX.XXX.XXX failing to respond to cache pressure<br>            mds0: Client XXX.XXX.XXX.XXX failing to respond to cache pressure<br>            mds0: Client XXX.XXX.XXX.XXX failing to respond to cache pressure<br>     monmap e1: 1 mons at {000-s-ragnarok=XXX.XXX.XXX.XXX:6789/0}<br>            election epoch 11, quorum 0 000-s-ragnarok<br>      fsmap e62643: 1/1/1 up {0=000-s-ragnarok=up:active}<br>     osdmap e20203: 16 osds: 16 up, 16 in<br>            flags sortbitwise<br>      pgmap v15284654: 1088 pgs, 2 pools, 11263 GB data, 40801 kobjects<br>            23048 GB used, 6745 GB / 29793 GB avail<br>                1085 active+clean<br>                   2 active+clean+scrubbing<br>                   1 active+clean+scrubbing+deep</p>
-</blockquote>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2016/11/07/Ceph用户邮件列表Vol45-Issue2/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>

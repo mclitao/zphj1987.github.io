@@ -183,6 +183,69 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-rbd无法map-rbd-feature-disable" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/06/07/rbd无法map-rbd-feature-disable/" class="article-date">
+  	<time datetime="2016-06-07T05:02:44.000Z" itemprop="datePublished">2016-06-07</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/06/07/rbd无法map-rbd-feature-disable/">rbd无法map(rbd feature disable)</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在jewel版本下默认开启了rbd的一些属性<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ceph --show-config|grep rbd|grep features </span></span><br><span class="line">rbd_default_features = <span class="number">61</span></span><br></pre></td></tr></table></figure></p>
+<p>RBD属性表：<br><img src="http://static.zybuluo.com/zphj1987/1amw9dopkoohq90dfwme7z6p/%E5%B1%9E%E6%80%A7.png" alt="此处输入图片的描述"><br>61的意思是上面图中的bit码相加得到的值<br>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2016/06/07/rbd无法map-rbd-feature-disable/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+<div id="gitment"></div>
+<!-- 主页不要加载gitment -->
+
+
+
+
+  
     <article id="post-利用虚拟化环境虚拟nvme盘" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -754,75 +817,6 @@
       
         <p class="article-more-link">
           <a  href="/2016/04/27/性能数据的可视化/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-<div id="gitment"></div>
-<!-- 主页不要加载gitment -->
-
-
-
-
-  
-    <article id="post-mon的稳定性问题" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/04/25/mon的稳定性问题/" class="article-date">
-  	<time datetime="2016-04-25T15:36:28.000Z" itemprop="datePublished">2016-04-25</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/04/25/mon的稳定性问题/">mon的稳定性问题</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="MON的稳定性问题：">MON的稳定性问题：</h3><ul>
-<li>mon的选举风暴影响客户端IO</li>
-<li>LevelDB的暴涨</li>
-<li>频繁的客户端请求的DDOS</li>
-</ul>
-<h4 id="mon选举风暴：">mon选举风暴：</h4><p>monmap会因为mon之间或者mon与客户端之间网络的影响或者消息传递的异常发生变化,从而触发选举<br>会造成客户端的请求变慢或者锁住</p>
-<h4 id="LevelDB的暴涨：">LevelDB的暴涨：</h4><p>LevelDB的大小会涨到几十GB然后影响了osd的请求<br>会造成客户端的请求变慢或者锁住</p>
-<h4 id="频繁的客户端请求的DDOS：">频繁的客户端请求的DDOS：</h4><p>mon的响应因为levelDB变慢或者选举风暴，都会造成客户端发出大量的消息流<br>让客户端操作失效，包括卷创建，rbd的连接</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2016/04/25/mon的稳定性问题/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>

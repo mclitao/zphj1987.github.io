@@ -183,6 +183,70 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-Ceph-recover-speed-control" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/08/10/Ceph-recover-speed-control/" class="article-date">
+  	<time datetime="2017-08-10T06:53:12.000Z" itemprop="datePublished">2017-08-10</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/08/10/Ceph-recover-speed-control/">Ceph recover的速度控制</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/recovery.png" alt=""><br></center>
+
+<h2 id="前言">前言</h2><p>磁盘损坏对于一个大集群来说，可以说是必然发生的事情，即使再小的概率，磁盘量上去，总会坏那么几块盘，这个时候就会触发内部的修复过程，修复就是让不满足副本要求的PG，恢复到满足的情况<br>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2017/08/10/Ceph-recover-speed-control/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+<div id="gitment"></div>
+<!-- 主页不要加载gitment -->
+
+
+
+
+  
     <article id="post-Ceph-S3-nginx-mirror" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -761,70 +825,6 @@
       
         <p class="article-more-link">
           <a  href="/2017/06/09/use-graylog-get-Ceph-status/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-<div id="gitment"></div>
-<!-- 主页不要加载gitment -->
-
-
-
-
-  
-    <article id="post-Ceph-deploymon-with-error-address" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/06/06/Ceph-deploymon-with-error-address/" class="article-date">
-  	<time datetime="2017-06-06T09:42:22.000Z" itemprop="datePublished">2017-06-06</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/06/06/Ceph-deploymon-with-error-address/">Ceph部署mon出现0.0.0.0地址</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/monitor.png" alt="monitor"><br></center>
-
-<h2 id="前言">前言</h2><p>最近在群里两次看到出现mon地址不对的问题，都是显示0.0.0.0:0地址，如下所示：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># ceph -s</span></span><br><span class="line">    cluster <span class="number">3137</span>d009<span class="operator">-e</span>41e-<span class="number">41</span>f0-b8f8-<span class="number">5</span>cb574502572</span><br><span class="line">     health HEALTH_ERR</span><br><span class="line">            <span class="number">1</span> mons down, quorum <span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span> lab8106,node8107,lab104</span><br><span class="line">     monmap e2: <span class="number">4</span> mons at &#123;lab104=<span class="number">192.168</span>.<span class="number">10.4</span>:<span class="number">6789</span>/<span class="number">0</span>,lab8106=<span class="number">192.168</span>.<span class="number">8.106</span>:<span class="number">6789</span>/<span class="number">0</span>,lab8107=<span class="number">0.0</span>.<span class="number">0.0</span>:<span class="number">0</span>/<span class="number">2</span>,node8107=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6789</span>/<span class="number">0</span>&#125;</span><br></pre></td></tr></table></figure></p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2017/06/06/Ceph-deploymon-with-error-address/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>
