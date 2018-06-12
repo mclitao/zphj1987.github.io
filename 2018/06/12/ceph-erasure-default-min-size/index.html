@@ -240,6 +240,8 @@
 <p>当然真正生产环境出现了4+2挂掉两个变成了incomplete的时候，因为这个时候数据还是完整可拼接的，所以可以强制mark-complete或者自己把代码里面的min_size改掉来触发恢复也是可以的</p>
 <h2 id="总结">总结</h2><p>对于ec这块接触的很早，里面还是有很多有意思的可以研究的东西的，ec最适合的场景就是归档，当然在某些配置下面，性能也是很不错的，也能支持一些低延时的任务，这个最大的特点就是一定需要根据实际环境去跑性能测试，拆成几比几性能有多少，这个一般还是不太好预估的，跟写入的文件模型也有关联</p>
 <p>虽然作者的设计初衷是没问题的，但是这个默认配置实际是不符合生产要求的，所以个人觉得这个不是很合理，默认的应该是不需要调整也是可用的，一个osd也不允许down的话，真正也没法用起来，所以不清楚是否有其他可改变的配置来处理这个，自己配置的时候注意下这个min_size，如果未来有控制的参数，会补充进这篇文章</p>
+<h2 id="补充">补充</h2><p>通过测试发现，可以通过存储池设置这个min_size来实现继续使用<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph osd pool <span class="built_in">set</span> rbd min_size <span class="number">2</span></span><br></pre></td></tr></table></figure></p>
+<p>也就是这个地方跟副本池的设计类似，给定一个初始值，然后可以通过设置进行修改</p>
 <h2 id="变更记录">变更记录</h2><table>
 <thead>
 <tr>
@@ -251,6 +253,11 @@
 <tbody>
 <tr>
 <td style="text-align:center">创建</td>
+<td style="text-align:center">武汉-运维-磨渣</td>
+<td style="text-align:center">2018-06-12</td>
+</tr>
+<tr>
+<td style="text-align:center">更新ec的min_size设置</td>
 <td style="text-align:center">武汉-运维-磨渣</td>
 <td style="text-align:center">2018-06-12</td>
 </tr>
