@@ -3,21 +3,24 @@
 <head>
   <meta charset="utf-8">
   
-  <title>&#39;sortbitwise&#39;是什么意思 | zphj1987&#39;Blog</title>
+  <title>利用s3-test进行ceph的接口兼容性测试 | zphj1987&#39;Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="问题flag sortbitwise 在ceph中是什么意思,在Jewel版本下可以看到多了这个flags
-[root@lab8106 current]# ceph -s    cluster ffe7a8db-c671-4b45-a784-ddb41e633905     health HEALTH_OK     monmap e1: 1 mons at &amp;#123;lab8106=192.16">
+  <meta name="description" content="前言ceph的rgw能够提供一个兼容性的s3的接口，既然是兼容性，当然不可能是所有接口都会兼容，那么我们需要有一个工具来进行接口的验证以及测试，这个在其他测试工具里面有类似的posix接口验证工具，这类的工具就是跑测试用例，来输出通过或者不通过的列表
+用此类的工具有个好的地方就是，能够对接口进行验证，来避免版本的更新带来的接口破坏
+安装直接对官方的分支进行clone下来，总文件数不多，下载很快[r">
 <meta property="og:type" content="article">
-<meta property="og:title" content="'sortbitwise'是什么意思">
-<meta property="og:url" content="http://www.zphj1987.com/2017/01/12/sortbitwise-mean/index.html">
+<meta property="og:title" content="利用s3-test进行ceph的接口兼容性测试">
+<meta property="og:url" content="http://www.zphj1987.com/2018/06/27/use-s3-test-to-ceph-compatibility-tests/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
-<meta property="og:description" content="问题flag sortbitwise 在ceph中是什么意思,在Jewel版本下可以看到多了这个flags
-[root@lab8106 current]# ceph -s    cluster ffe7a8db-c671-4b45-a784-ddb41e633905     health HEALTH_OK     monmap e1: 1 mons at &amp;#123;lab8106=192.16">
-<meta property="og:image" content="http://7xweck.com1.z0.glb.clouddn.com/techie.jpg">
+<meta property="og:description" content="前言ceph的rgw能够提供一个兼容性的s3的接口，既然是兼容性，当然不可能是所有接口都会兼容，那么我们需要有一个工具来进行接口的验证以及测试，这个在其他测试工具里面有类似的posix接口验证工具，这类的工具就是跑测试用例，来输出通过或者不通过的列表
+用此类的工具有个好的地方就是，能够对接口进行验证，来避免版本的更新带来的接口破坏
+安装直接对官方的分支进行clone下来，总文件数不多，下载很快[r">
+<meta property="og:image" content="http://7xo9we.com1.z0.glb.clouddn.com/s3.jpg">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="'sortbitwise'是什么意思">
-<meta name="twitter:description" content="问题flag sortbitwise 在ceph中是什么意思,在Jewel版本下可以看到多了这个flags
-[root@lab8106 current]# ceph -s    cluster ffe7a8db-c671-4b45-a784-ddb41e633905     health HEALTH_OK     monmap e1: 1 mons at &amp;#123;lab8106=192.16">
+<meta name="twitter:title" content="利用s3-test进行ceph的接口兼容性测试">
+<meta name="twitter:description" content="前言ceph的rgw能够提供一个兼容性的s3的接口，既然是兼容性，当然不可能是所有接口都会兼容，那么我们需要有一个工具来进行接口的验证以及测试，这个在其他测试工具里面有类似的posix接口验证工具，这类的工具就是跑测试用例，来输出通过或者不通过的列表
+用此类的工具有个好的地方就是，能够对接口进行验证，来避免版本的更新带来的接口破坏
+安装直接对官方的分支进行clone下来，总文件数不多，下载很快[r">
   
     <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
   
@@ -185,11 +188,11 @@
 		</header>				
 	</div>
 </nav>
-      <div class="body-wrap"><article id="post-sortbitwise-mean" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-use-s3-test-to-ceph-compatibility-tests" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/01/12/sortbitwise-mean/" class="article-date">
-  	<time datetime="2017-01-12T04:39:24.000Z" itemprop="datePublished">2017-01-12</time>
+      <a href="/2018/06/27/use-s3-test-to-ceph-compatibility-tests/" class="article-date">
+  	<time datetime="2018-06-27T09:16:54.000Z" itemprop="datePublished">2018-06-27</time>
 </a>
     </div>
   
@@ -202,7 +205,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      &#39;sortbitwise&#39;是什么意思
+      利用s3-test进行ceph的接口兼容性测试
     </h1>
   
 
@@ -222,35 +225,20 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/techie.jpg" alt=""><br></center>
+        <center><br><img src="http://7xo9we.com1.z0.glb.clouddn.com/s3.jpg" alt="s3"><br></center>
 
-<h2 id="问题">问题</h2><p>flag sortbitwise 在ceph中是什么意思,在Jewel版本下可以看到多了这个flags</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 current]<span class="comment"># ceph -s</span></span><br><span class="line">    cluster ffe7a8db-c671-<span class="number">4</span>b45<span class="operator">-a</span>784-ddb41e633905</span><br><span class="line">     health HEALTH_OK</span><br><span class="line">     monmap e1: <span class="number">1</span> mons at &#123;lab8106=<span class="number">192.168</span>.<span class="number">8.106</span>:<span class="number">6789</span>/<span class="number">0</span>&#125;</span><br><span class="line">            election epoch <span class="number">4</span>, quorum <span class="number">0</span> lab8106</span><br><span class="line">      fsmap e4: <span class="number">1</span>/<span class="number">1</span>/<span class="number">1</span> up &#123;<span class="number">0</span>=lab8106=up:active&#125;</span><br><span class="line">     osdmap e132: <span class="number">8</span> osds: <span class="number">8</span> up, <span class="number">8</span> <span class="keyword">in</span></span><br><span class="line">            flags sortbitwise</span><br><span class="line">      pgmap v206294: <span class="number">201</span> pgs, <span class="number">5</span> pools, <span class="number">4684</span> MB data, <span class="number">1214</span> objects</span><br><span class="line">            <span class="number">9669</span> MB used, <span class="number">2216</span> GB / <span class="number">2226</span> GB avail</span><br><span class="line">                 <span class="number">201</span> active+clean</span><br></pre></td></tr></table></figure>
-<a id="more"></a>
-<h2 id="找到的相关资料">找到的相关资料</h2><blockquote>
-<p>After upgrading, users should set the ‘sortbitwise’ flag to enable the new internal object sort order: ceph osd set sortbitwise<br>This flag is important for the new object enumeration API and for new backends like BlueStore.</p>
-</blockquote>
-<p>From <a href="http://docs.ceph.com/docs/master/release-notes/#upgrading-from-infernalis-or-hammer" target="_blank" rel="external">Ceph release notes</a></p>
-<blockquote>
-<p>commit 383185bfbae74797cdb44f50b4bf651422800ff1<br>Author: Sage Weil <a href="&#x6d;&#x61;&#105;&#x6c;&#116;&#x6f;&#58;&#115;&#x61;&#x67;&#x65;&#64;&#114;&#101;&#100;&#x68;&#97;&#x74;&#x2e;&#x63;&#111;&#x6d;">&#115;&#x61;&#x67;&#x65;&#64;&#114;&#101;&#100;&#x68;&#97;&#x74;&#x2e;&#x63;&#111;&#x6d;</a><br>Date: Fri Aug 7 16:14:09 2015 -0400<br>mon/OSDMonitor: osd set/unset sortbitwise<br> Add monitor command to flip the switch on the OSD hobject_t sort<br> order.</p>
-</blockquote>
-<p>From git</p>
-<p>第一次在源码中出现:</p>
-<blockquote>
-<p>commit 138f58493715e386929f152424b70df37843541b<br>Author: John Spray <a href="&#x6d;&#97;&#105;&#108;&#x74;&#x6f;&#58;&#x6a;&#x6f;&#104;&#110;&#x2e;&#115;&#112;&#114;&#x61;&#x79;&#64;&#x72;&#x65;&#x64;&#x68;&#97;&#x74;&#x2e;&#x63;&#x6f;&#x6d;">&#x6a;&#x6f;&#104;&#110;&#x2e;&#115;&#112;&#114;&#x61;&#x79;&#64;&#x72;&#x65;&#x64;&#x68;&#97;&#x74;&#x2e;&#x63;&#x6f;&#x6d;</a><br>Date: Mon Aug 17 14:40:46 2015 -0400<br>osdc/Objecter: new-style pgls<br> Signed-off-by: John Spray <a href="&#x6d;&#x61;&#x69;&#x6c;&#116;&#x6f;&#x3a;&#106;&#x6f;&#104;&#110;&#46;&#115;&#x70;&#114;&#x61;&#121;&#x40;&#x72;&#x65;&#x64;&#104;&#97;&#116;&#46;&#x63;&#111;&#x6d;">&#106;&#x6f;&#104;&#110;&#46;&#115;&#x70;&#114;&#x61;&#121;&#x40;&#x72;&#x65;&#x64;&#104;&#97;&#116;&#46;&#x63;&#111;&#x6d;</a><br> Signed-off-by: Sage Weil <a href="&#x6d;&#97;&#x69;&#108;&#x74;&#x6f;&#58;&#x73;&#x61;&#103;&#101;&#64;&#114;&#101;&#x64;&#x68;&#x61;&#x74;&#x2e;&#99;&#111;&#109;">&#x73;&#x61;&#103;&#101;&#64;&#114;&#101;&#x64;&#x68;&#x61;&#x74;&#x2e;&#99;&#111;&#109;</a></p>
-</blockquote>
-<p>From git</p>
-<p>Related github issue: <a href="https://github.com/ceph/ceph/pull/4919/commits" target="_blank" rel="external">https://github.com/ceph/ceph/pull/4919/commits</a></p>
-<p>初步结论: sortbitwise 内部排序算法的一个变化.之所以暴露出来是因为要兼容一些pre-jewel版本.在新的版本中应该保持开启状态.</p>
-<p>以上转载自博客：<a href="https://medium.com/@george.shuklin/what-is-sortbitwise-flag-means-in-ceph-b4176748da42#.dfaw54rpf" target="_blank" rel="external">What ‘sortbitwise’ flag means in Ceph?</a></p>
-<h2 id="红帽的官方回答">红帽的官方回答</h2><ul>
-<li>如果你使用dev版本Infernalis或仍在开发中的LTS版本的Ceph的Jewel版本，你会看到这个标志在ceph状态输出默认启用</li>
-<li>这个标志sortbitwise在Infernalis版本中引入</li>
-<li>这个标志是在这个版本提交的upstream commit 968261b11ac30622c0606d1e2ddf422009e7d330</li>
-</ul>
-<p>下载ceph的源码，进入源码目录<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 all]<span class="comment"># git show 968261b11ac30622c0606d1e2ddf422009e7d330</span></span><br><span class="line">commit <span class="number">968261</span>b11ac30622c0606d1e2ddf422009e7d330</span><br><span class="line">Author: Sage Weil &lt;sage@redhat.com&gt;</span><br><span class="line">Date:   Fri Aug <span class="number">7</span> <span class="number">16</span>:<span class="number">01</span>:<span class="number">12</span> <span class="number">2015</span> -<span class="number">0400</span></span><br><span class="line"></span><br><span class="line">    osd/OSDMap: add a SORTBITWISE OSDMap flag</span><br><span class="line"></span><br><span class="line">    This flag will indicate that hobject_t<span class="string">'s shall hence-forth be</span><br><span class="line">    sorted in a bitwise fashion.</span><br><span class="line"></span><br><span class="line">    Signed-off-by: Sage Weil &lt;sage@redhat.com&gt;</span></span><br></pre></td></tr></table></figure></p>
-<p>正如我们在上面给定的提交的描述中所说，该标志将表明hobject_t的将以 bitwise fashion方式排序。<br>现在意味着现在的对象将在OSDs中以按位方式排序，并且此标志默认在Infernalis和Jewel发布版本中启用。</p>
-<h2 id="总结">总结</h2><p>目前来看这个是底层的一个排序的算法的变动，对上层目前还不清楚是有什么可以可见的变化，总之，这个让它默认开启就行，不要去修改它就可以了</p>
+<h2 id="前言">前言</h2><p>ceph的rgw能够提供一个兼容性的s3的接口，既然是兼容性，当然不可能是所有接口都会兼容，那么我们需要有一个工具来进行接口的验证以及测试，这个在其他测试工具里面有类似的posix接口验证工具，这类的工具就是跑测试用例，来输出通过或者不通过的列表</p>
+<p>用此类的工具有个好的地方就是，能够对接口进行验证，来避免版本的更新带来的接口破坏</p>
+<h2 id="安装">安装</h2><p>直接对官方的分支进行clone下来，总文件数不多，下载很快<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab101 s3]<span class="comment"># git clone https://github.com/ceph/s3-tests.git</span></span><br><span class="line">[root@lab101 s3]<span class="comment"># cd s3-tests/</span></span><br></pre></td></tr></table></figure></p>
+<p>这个地方注意下有版本之分，测试的时候需要用对应版本，这里我们测试的jewel版本就切换到jewel的分支(关键步骤)</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab101 s3-tests]<span class="comment"># git branch -a</span></span><br><span class="line">[root@lab101 s3-tests]<span class="comment"># git checkout -b jewel remotes/origin/ceph-jewel</span></span><br><span class="line">[root@lab101 s3-tests]<span class="comment"># ./bootstrap</span></span><br></pre></td></tr></table></figure>
+<p>进入到目录当中执行 ./bootstrap进行初始化相关的工作，这个是下载一些相关的库和软件包，并且创建了一个python的虚拟环境，如果从其他地方拷贝过来的代码最好是删除掉python虚拟环境，让程序自己去重新创建一套环境</p>
+<p>执行完了以后就是创建测试配置文件test.conf</p>
+<figure class="highlight nix"><table><tr><td class="code"><pre><span class="line">[DEFAULT]</span><br><span class="line"><span class="comment">## this section is just used as default for all the "s3 *"</span></span><br><span class="line"><span class="comment">## sections, you can place these variables also directly there</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## replace with e.g. "localhost" to run against local software</span></span><br><span class="line"><span class="variable">host =</span> <span class="number">192.168</span>.<span class="number">19.101</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## uncomment the port to use something other than 80</span></span><br><span class="line"><span class="variable">port =</span> <span class="number">7481</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## say "no" to disable TLS</span></span><br><span class="line"><span class="variable">is_secure =</span> no</span><br><span class="line"></span><br><span class="line">[fixtures]</span><br><span class="line"><span class="comment">## all the buckets created will start with this prefix;</span></span><br><span class="line"><span class="comment">## &#123;random&#125; will be filled with random characters to pad</span></span><br><span class="line"><span class="comment">## the prefix to 30 characters long, and avoid collisions</span></span><br><span class="line">bucket <span class="variable">prefix =</span> cephtest-&#123;random&#125;-</span><br><span class="line"></span><br><span class="line">[s3 main]</span><br><span class="line"><span class="comment">## the tests assume two accounts are defined, "main" and "alt".</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## user_id is a 64-character hexstring</span></span><br><span class="line"><span class="variable">user_id =</span> test1</span><br><span class="line"></span><br><span class="line"><span class="comment">## display name typically looks more like a unix login, "jdoe" etc</span></span><br><span class="line"><span class="variable">display_name =</span> test1</span><br><span class="line"></span><br><span class="line"><span class="comment">## replace these with your access keys</span></span><br><span class="line"><span class="variable">access_key =</span> test1</span><br><span class="line"><span class="variable">secret_key =</span> test1</span><br><span class="line"></span><br><span class="line"><span class="comment">## replace with key id obtained when secret is created, or delete if KMS not tested</span></span><br><span class="line"><span class="comment">#kms_keyid = 01234567-89ab-cdef-0123-456789abcdef</span></span><br><span class="line"></span><br><span class="line">[s3 alt]</span><br><span class="line"><span class="comment">## another user account, used for ACL-related tests</span></span><br><span class="line"><span class="variable">user_id =</span> test2</span><br><span class="line"><span class="variable">display_name =</span> test2</span><br><span class="line"><span class="comment">## the "alt" user needs to have email set, too</span></span><br><span class="line"><span class="variable">email =</span> test2@qq.com</span><br><span class="line"><span class="variable">access_key =</span> test2</span><br><span class="line"><span class="variable">secret_key =</span> test2</span><br></pre></td></tr></table></figure>
+<p>上面的用户信息是需要提前创建好的，这个用集群内的机器radosgw-admin命令创建即可<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">radosgw-admin user create --uid=<span class="built_in">test</span>01 --display-name=<span class="built_in">test</span>01 --access-key=<span class="built_in">test</span>01 --secret-key=<span class="built_in">test</span>01 --email=<span class="built_in">test</span>01@qq.com</span><br><span class="line">radosgw-admin user create --uid=<span class="built_in">test</span>02 --display-name=<span class="built_in">test</span>02 --access-key=<span class="built_in">test</span>02 --secret-key=<span class="built_in">test</span>02 --email=<span class="built_in">test</span>02@qq.com</span><br></pre></td></tr></table></figure></p>
+<p>创建好了以后就可以开始测试了<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab101 s3-tests]<span class="comment"># S3TEST_CONF=test.conf ./virtualenv/bin/nosetests -a '!fails_on_rgw'</span></span><br><span class="line">..................................................SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS.....................................................................................................................SSSS.......................................................................................................................................SSSS.......................................................</span><br><span class="line">----------------------------------------------------------------------</span><br><span class="line">Ran <span class="number">408</span> tests <span class="keyword">in</span> <span class="number">122.087</span>s</span><br><span class="line"></span><br><span class="line">OK (SKIP=<span class="number">51</span>)</span><br></pre></td></tr></table></figure></p>
+<p>正常测试完就应该是上面的ok的状态，也有可能某个版本的测试用例是写的支持，但是rgw也不一定就做好了，这个需要自己判断一下</p>
+<h2 id="总结">总结</h2><p>了解软件适配的接口，针对接口进行相关测试即可</p>
 <h2 id="变更记录">变更记录</h2><table>
 <thead>
 <tr>
@@ -263,7 +251,7 @@
 <tr>
 <td style="text-align:center">创建</td>
 <td style="text-align:center">武汉-运维-磨渣</td>
-<td style="text-align:center">2017-01-12</td>
+<td style="text-align:center">2018-06-27</td>
 </tr>
 </tbody>
 </table>
@@ -276,18 +264,18 @@
     
 <nav id="article-nav">
   
-    <a href="/2017/01/19/ceph-rbd-ceph-backup/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2018/07/17/ceph-web-monitor-system-grafana/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption"><</strong>
       <div class="article-nav-title">
         
-          ceph的rbd备份软件ceph-backup
+          快速构建ceph可视化监控系统
         
       </div>
     </a>
   
   
-    <a href="/2017/01/09/calamari-node-info/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">解决calamari无法获取节点信息的bug</div>
+    <a href="/2018/06/12/ceph-erasure-default-min-size/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">ceph erasure默认的min_size分析</div>
       <strong class="article-nav-caption">></strong>
     </a>
   
@@ -320,7 +308,7 @@
 
 <script>
 var gitment = new Gitment({
-  id: '&#39;sortbitwise&#39;是什么意思',
+  id: '利用s3-test进行ceph的接口兼容性测试',
   owner: 'zphj1987',
   repo: 'zphj1987.github.io',
   oauth: {
