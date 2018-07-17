@@ -6,21 +6,18 @@
   <title>利用s3-test进行ceph的接口兼容性测试 | zphj1987&#39;Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="前言ceph的rgw能够提供一个兼容性的s3的接口，既然是兼容性，当然不可能是所有接口都会兼容，那么我们需要有一个工具来进行接口的验证以及测试，这个在其他测试工具里面有类似的posix接口验证工具，这类的工具就是跑测试用例，来输出通过或者不通过的列表
-用此类的工具有个好的地方就是，能够对接口进行验证，来避免版本的更新带来的接口破坏
-安装直接对官方的分支进行clone下来，总文件数不多，下载很快[r">
+用此类的工具有个好的地方就是，能够对接口进行验证，来避免版本的更新带来的接口破坏">
 <meta property="og:type" content="article">
 <meta property="og:title" content="利用s3-test进行ceph的接口兼容性测试">
 <meta property="og:url" content="http://www.zphj1987.com/2018/06/27/use-s3-test-to-ceph-compatibility-tests/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
 <meta property="og:description" content="前言ceph的rgw能够提供一个兼容性的s3的接口，既然是兼容性，当然不可能是所有接口都会兼容，那么我们需要有一个工具来进行接口的验证以及测试，这个在其他测试工具里面有类似的posix接口验证工具，这类的工具就是跑测试用例，来输出通过或者不通过的列表
-用此类的工具有个好的地方就是，能够对接口进行验证，来避免版本的更新带来的接口破坏
-安装直接对官方的分支进行clone下来，总文件数不多，下载很快[r">
+用此类的工具有个好的地方就是，能够对接口进行验证，来避免版本的更新带来的接口破坏">
 <meta property="og:image" content="http://7xo9we.com1.z0.glb.clouddn.com/s3.jpg">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="利用s3-test进行ceph的接口兼容性测试">
 <meta name="twitter:description" content="前言ceph的rgw能够提供一个兼容性的s3的接口，既然是兼容性，当然不可能是所有接口都会兼容，那么我们需要有一个工具来进行接口的验证以及测试，这个在其他测试工具里面有类似的posix接口验证工具，这类的工具就是跑测试用例，来输出通过或者不通过的列表
-用此类的工具有个好的地方就是，能够对接口进行验证，来避免版本的更新带来的接口破坏
-安装直接对官方的分支进行clone下来，总文件数不多，下载很快[r">
+用此类的工具有个好的地方就是，能够对接口进行验证，来避免版本的更新带来的接口破坏">
   
     <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
   
@@ -228,7 +225,7 @@
         <center><br><img src="http://7xo9we.com1.z0.glb.clouddn.com/s3.jpg" alt="s3"><br></center>
 
 <h2 id="前言">前言</h2><p>ceph的rgw能够提供一个兼容性的s3的接口，既然是兼容性，当然不可能是所有接口都会兼容，那么我们需要有一个工具来进行接口的验证以及测试，这个在其他测试工具里面有类似的posix接口验证工具，这类的工具就是跑测试用例，来输出通过或者不通过的列表</p>
-<p>用此类的工具有个好的地方就是，能够对接口进行验证，来避免版本的更新带来的接口破坏</p>
+<p>用此类的工具有个好的地方就是，能够对接口进行验证，来避免版本的更新带来的接口破坏<br><a id="more"></a></p>
 <h2 id="安装">安装</h2><p>直接对官方的分支进行clone下来，总文件数不多，下载很快<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab101 s3]<span class="comment"># git clone https://github.com/ceph/s3-tests.git</span></span><br><span class="line">[root@lab101 s3]<span class="comment"># cd s3-tests/</span></span><br></pre></td></tr></table></figure></p>
 <p>这个地方注意下有版本之分，测试的时候需要用对应版本，这里我们测试的jewel版本就切换到jewel的分支(关键步骤)</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab101 s3-tests]<span class="comment"># git branch -a</span></span><br><span class="line">[root@lab101 s3-tests]<span class="comment"># git checkout -b jewel remotes/origin/ceph-jewel</span></span><br><span class="line">[root@lab101 s3-tests]<span class="comment"># ./bootstrap</span></span><br></pre></td></tr></table></figure>

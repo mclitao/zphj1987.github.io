@@ -265,6 +265,7 @@ Ceph grafana的插件- Clusterby Cristian Calin">
 <p><a href="http://static.zybuluo.com/zphj1987/jiwx305b8q1hwc5uulo0z7ft/ceph_exporter-2.0.0-1.x86_64.rpm" target="_blank" rel="external">http://static.zybuluo.com/zphj1987/jiwx305b8q1hwc5uulo0z7ft/ceph_exporter-2.0.0-1.x86_64.rpm</a><br><a href="http://static.zybuluo.com/zphj1987/1nu2k4cpcery94q2re3u6s1t/ceph-cluster_rev1.json" target="_blank" rel="external">http://static.zybuluo.com/zphj1987/1nu2k4cpcery94q2re3u6s1t/ceph-cluster_rev1.json</a><br><a href="http://static.zybuluo.com/zphj1987/7ro7up6r03kx52rkwy1qjuwm/prometheus-2.3.2-1.x86_64.rpm" target="_blank" rel="external">http://static.zybuluo.com/zphj1987/7ro7up6r03kx52rkwy1qjuwm/prometheus-2.3.2-1.x86_64.rpm</a><br><a href="http://7xweck.com1.z0.glb.clouddn.com/grafana-5.2.1-1.x86_64.rpm" target="_blank" rel="external">http://7xweck.com1.z0.glb.clouddn.com/grafana-5.2.1-1.x86_64.rpm</a></p>
 </blockquote>
 <p>以上资源均可以直接用wget进行下载，然后直接安装</p>
+<a id="more"></a>
 <h2 id="监控的架构介绍">监控的架构介绍</h2><p>通过ceph_exporter抓取的ceph相关的数据并且在本地监听端口9128端口</p>
 <p>prometheus抓取ceph_exporter的9128的端口的数据存储在本地的/var/lib/prometheus/目录下面</p>
 <p>grafana抓取prometheus的数据进行渲染成web页面</p>

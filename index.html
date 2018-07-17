@@ -223,49 +223,9 @@
 <p>适配的系统为centos7</p>
 <p>资源如下：</p>
 <blockquote>
-<p><a href="http://static.zybuluo.com/zphj1987/jiwx305b8q1hwc5uulo0z7ft/ceph_exporter-2.0.0-1.x86_64.rpm" target="_blank" rel="external">http://static.zybuluo.com/zphj1987/jiwx305b8q1hwc5uulo0z7ft/ceph_exporter-2.0.0-1.x86_64.rpm</a><br><a href="http://static.zybuluo.com/zphj1987/1nu2k4cpcery94q2re3u6s1t/ceph-cluster_rev1.json" target="_blank" rel="external">http://static.zybuluo.com/zphj1987/1nu2k4cpcery94q2re3u6s1t/ceph-cluster_rev1.json</a><br><a href="http://static.zybuluo.com/zphj1987/7ro7up6r03kx52rkwy1qjuwm/prometheus-2.3.2-1.x86_64.rpm" target="_blank" rel="external">http://static.zybuluo.com/zphj1987/7ro7up6r03kx52rkwy1qjuwm/prometheus-2.3.2-1.x86_64.rpm</a><br><a href="http://7xweck.com1.z0.glb.clouddn.com/grafana-5.2.1-1.x86_64.rpm" target="_blank" rel="external">http://7xweck.com1.z0.glb.clouddn.com/grafana-5.2.1-1.x86_64.rpm</a></p>
+<p><a href="http://static.zybuluo.com/zphj1987/jiwx305b8q1hwc5uulo0z7ft/ceph_exporter-2.0.0-1.x86_64.rpm">http://static.zybuluo.com/zphj1987/jiwx305b8q1hwc5uulo0z7ft/ceph_exporter-2.0.0-1.x86_64.rpm</a><br><a href="http://static.zybuluo.com/zphj1987/1nu2k4cpcery94q2re3u6s1t/ceph-cluster_rev1.json">http://static.zybuluo.com/zphj1987/1nu2k4cpcery94q2re3u6s1t/ceph-cluster_rev1.json</a><br><a href="http://static.zybuluo.com/zphj1987/7ro7up6r03kx52rkwy1qjuwm/prometheus-2.3.2-1.x86_64.rpm">http://static.zybuluo.com/zphj1987/7ro7up6r03kx52rkwy1qjuwm/prometheus-2.3.2-1.x86_64.rpm</a><br><a href="http://7xweck.com1.z0.glb.clouddn.com/grafana-5.2.1-1.x86_64.rpm">http://7xweck.com1.z0.glb.clouddn.com/grafana-5.2.1-1.x86_64.rpm</a></p>
 </blockquote>
 <p>以上资源均可以直接用wget进行下载，然后直接安装</p>
-<h2 id="监控的架构介绍">监控的架构介绍</h2><p>通过ceph_exporter抓取的ceph相关的数据并且在本地监听端口9128端口</p>
-<p>prometheus抓取ceph_exporter的9128的端口的数据存储在本地的/var/lib/prometheus/目录下面</p>
-<p>grafana抓取prometheus的数据进行渲染成web页面</p>
-<p>页面的模板就是使用的grafana的ceph模板插件</p>
-<p>那么我们就根据上面的架构去一步步的把系统配置起来</p>
-<h2 id="配置监控系统">配置监控系统</h2><h3 id="安装ceph_exporter">安装ceph_exporter</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab101 install]<span class="comment"># wget http://static.zybuluo.com/zphj1987/jiwx305b8q1hwc5uulo0z7ft/ceph_exporter-2.0.0-1.x86_64.rpm</span></span><br><span class="line">[root@lab101 install]<span class="comment"># rpm -qpl ceph_exporter-2.0.0-1.x86_64.rpm </span></span><br><span class="line">/usr/bin/ceph_exporter</span><br><span class="line">/usr/lib/systemd/system/ceph_exporter.service</span><br><span class="line">[root@lab101 install]<span class="comment"># rpm -ivh ceph_exporter-2.0.0-1.x86_64.rpm </span></span><br><span class="line">Preparing...                          <span class="comment">################################# [100%]</span></span><br><span class="line">Updating / installing...</span><br><span class="line">   <span class="number">1</span>:ceph_exporter-<span class="number">2</span>:<span class="number">2.0</span>.<span class="number">0</span>-<span class="number">1</span>          <span class="comment">################################# [100%]</span></span><br><span class="line">[root@lab101 install]<span class="comment"># systemctl start ceph_exporter</span></span><br><span class="line">[root@lab101 install]<span class="comment"># systemctl enable ceph_exporter</span></span><br><span class="line">[root@lab101 install]<span class="comment"># netstat -tunlp|grep 9128</span></span><br><span class="line">tcp6       <span class="number">0</span>      <span class="number">0</span> :::<span class="number">9128</span>                 :::*                    LISTEN      <span class="number">35853</span>/ceph_exporter</span><br></pre></td></tr></table></figure>
-<p>可以看到端口起来了就是安装成功了，这个ceph_exporter建议是安装在管理节点上，也就是能够执行出ceph -s的节点上面的</p>
-<h3 id="安装prometheus">安装prometheus</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab101 install]<span class="comment">#  wget http://static.zybuluo.com/zphj1987/7ro7up6r03kx52rkwy1qjuwm/prometheus-2.3.2-1.x86_64.rpm</span></span><br><span class="line">[root@lab101 install]<span class="comment"># rpm -qpl prometheus-2.3.2-1.x86_64.rpm </span></span><br><span class="line">/etc/ceph/prometheus.yml</span><br><span class="line">/usr/bin/prometheus</span><br><span class="line">/usr/lib/systemd/system/prometheus.service</span><br><span class="line">[root@lab101 install]<span class="comment"># rpm -ivh prometheus-2.3.2-1.x86_64.rpm </span></span><br><span class="line">Preparing...                          <span class="comment">################################# [100%]</span></span><br><span class="line">Updating / installing...</span><br><span class="line">   <span class="number">1</span>:prometheus-<span class="number">2</span>:<span class="number">2.3</span>.<span class="number">2</span>-<span class="number">1</span>             <span class="comment">################################# [100%]</span></span><br><span class="line">[root@lab101 install]<span class="comment"># systemctl start prometheus</span></span><br><span class="line">[root@lab101 install]<span class="comment"># netstat -tunlp|grep 9090</span></span><br><span class="line">tcp6       <span class="number">0</span>      <span class="number">0</span> :::<span class="number">9090</span>                 :::*                    LISTEN      <span class="number">36163</span>/prometheus</span><br></pre></td></tr></table></figure>
-<p>这个地方默认是认为prometheus和ceph_exporter在一台机器上面，所以配置文件的/etc/ceph/prometheus.yml里面的targets写的是127.0.0.1，根据需要修改成ceph_exporter的ip地址即可</p>
-<p>prometheus的默认监听端口为9090，到这个时候直接去web 上面就可以看到prometheus的抓取的数据了</p>
-<p><img src="http://static.zybuluo.com/zphj1987/g84qk6x6qye3zjtlninfwrwm/image.png" alt="prometheus"></p>
-<p>到这里是数据到prometheus的已经完成了，下面就去做跟grafana相关的配置了</p>
-<h3 id="安装grafana">安装grafana</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab101 install]<span class="comment"># wget http://7xweck.com1.z0.glb.clouddn.com/grafana-5.2.1-1.x86_64.rpm</span></span><br><span class="line">[root@lab101 install]<span class="comment"># yum localinstall grafana-5.2.1-1.x86_64.rpm</span></span><br><span class="line">[root@lab101 install]<span class="comment"># systemctl start grafana-server.service</span></span><br><span class="line">[root@lab101 install]<span class="comment"># netstat -tunlp|grep gra</span></span><br><span class="line">Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name    </span><br><span class="line">tcp6       <span class="number">0</span>      <span class="number">0</span> :::<span class="number">3000</span>                 :::*                    LISTEN      <span class="number">36730</span>/grafana-serve</span><br></pre></td></tr></table></figure>
-<p>grafana默认监听的3000的端口</p>
-<p><img src="http://static.zybuluo.com/zphj1987/cr0jun59v0gwbhee1mq3ixmw/image.png" alt="grafanalogin"><br>默认登陆的用户名密码为admin admin,登陆成功后会强制修改密码</p>
-<h3 id="配置grafana">配置grafana</h3><p><img src="http://static.zybuluo.com/zphj1987/c3czhtv5l7mml4hb6c4ztkvd/image.png" alt="add sour"><br>首先增加数据源<br><img src="http://static.zybuluo.com/zphj1987/kdunzb3s3hz7u0tkri3ntzzw/image.png" alt="配置9090"><br><img src="http://static.zybuluo.com/zphj1987/p2oec87wp1fszlldq1lrdkri/image.png" alt="import"></p>
-<p><img src="http://static.zybuluo.com/zphj1987/4gxwmkfkmr2do4g9v58x1kve/image.png" alt="image.png-97.2kB"></p>
-<p><img src="http://static.zybuluo.com/zphj1987/iah7t9cud3bnponoddq3iv9q/image.png" alt="image.png-96.2kB"></p>
-<p>这里如果能上网就直接输入id 917 ，如果不能上网就把上面的ceph-cluster_rev1.json文件弄到本地去，导入进去即可</p>
-<p><img src="http://static.zybuluo.com/zphj1987/488o6i5pn327d8udgrcpoilx/image.png" alt="granfa"></p>
-<p>到这里就完成了配置了</p>
-<h2 id="总结">总结</h2><p>以上为了方便都把相关的软件做成了rpm包，从安装方便角度来看，grafana，ceph_exporter，还有prometheus都采用的是单二进制文件的方式，稍微组合一下大大的降低了部署难度，比如那个ceph_exporter需要用go进行编译，封好包以后就不需要这个过程，并且接口因为有版本的限制，所以这样直接对应版本安装也避免了出错</p>
-<p>本篇的环境所述均为jewel适配版本</p>
-<h2 id="变更记录">变更记录</h2><table>
-<thead>
-<tr>
-<th style="text-align:center">Why</th>
-<th style="text-align:center">Who</th>
-<th style="text-align:center">When</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">创建</td>
-<td style="text-align:center">武汉-运维-磨渣</td>
-<td style="text-align:center">2018-07-17</td>
-</tr>
-</tbody>
-</table>
-
       
     </div>
     
@@ -278,6 +238,10 @@
 
       
 
+      
+        <p class="article-more-link">
+          <a  href="/2018/07/17/ceph-web-monitor-system-grafana/#more">more >></a>
+        </p>
       
       <div class="clearfix"></div>
     </div>
@@ -326,34 +290,7 @@
         <center><br><img src="http://7xo9we.com1.z0.glb.clouddn.com/s3.jpg" alt="s3"><br></center>
 
 <h2 id="前言">前言</h2><p>ceph的rgw能够提供一个兼容性的s3的接口，既然是兼容性，当然不可能是所有接口都会兼容，那么我们需要有一个工具来进行接口的验证以及测试，这个在其他测试工具里面有类似的posix接口验证工具，这类的工具就是跑测试用例，来输出通过或者不通过的列表</p>
-<p>用此类的工具有个好的地方就是，能够对接口进行验证，来避免版本的更新带来的接口破坏</p>
-<h2 id="安装">安装</h2><p>直接对官方的分支进行clone下来，总文件数不多，下载很快<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab101 s3]<span class="comment"># git clone https://github.com/ceph/s3-tests.git</span></span><br><span class="line">[root@lab101 s3]<span class="comment"># cd s3-tests/</span></span><br></pre></td></tr></table></figure></p>
-<p>这个地方注意下有版本之分，测试的时候需要用对应版本，这里我们测试的jewel版本就切换到jewel的分支(关键步骤)</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab101 s3-tests]<span class="comment"># git branch -a</span></span><br><span class="line">[root@lab101 s3-tests]<span class="comment"># git checkout -b jewel remotes/origin/ceph-jewel</span></span><br><span class="line">[root@lab101 s3-tests]<span class="comment"># ./bootstrap</span></span><br></pre></td></tr></table></figure>
-<p>进入到目录当中执行 ./bootstrap进行初始化相关的工作，这个是下载一些相关的库和软件包，并且创建了一个python的虚拟环境，如果从其他地方拷贝过来的代码最好是删除掉python虚拟环境，让程序自己去重新创建一套环境</p>
-<p>执行完了以后就是创建测试配置文件test.conf</p>
-<figure class="highlight nix"><table><tr><td class="code"><pre><span class="line">[DEFAULT]</span><br><span class="line"><span class="comment">## this section is just used as default for all the "s3 *"</span></span><br><span class="line"><span class="comment">## sections, you can place these variables also directly there</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## replace with e.g. "localhost" to run against local software</span></span><br><span class="line"><span class="variable">host =</span> <span class="number">192.168</span>.<span class="number">19.101</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## uncomment the port to use something other than 80</span></span><br><span class="line"><span class="variable">port =</span> <span class="number">7481</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## say "no" to disable TLS</span></span><br><span class="line"><span class="variable">is_secure =</span> no</span><br><span class="line"></span><br><span class="line">[fixtures]</span><br><span class="line"><span class="comment">## all the buckets created will start with this prefix;</span></span><br><span class="line"><span class="comment">## &#123;random&#125; will be filled with random characters to pad</span></span><br><span class="line"><span class="comment">## the prefix to 30 characters long, and avoid collisions</span></span><br><span class="line">bucket <span class="variable">prefix =</span> cephtest-&#123;random&#125;-</span><br><span class="line"></span><br><span class="line">[s3 main]</span><br><span class="line"><span class="comment">## the tests assume two accounts are defined, "main" and "alt".</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## user_id is a 64-character hexstring</span></span><br><span class="line"><span class="variable">user_id =</span> test1</span><br><span class="line"></span><br><span class="line"><span class="comment">## display name typically looks more like a unix login, "jdoe" etc</span></span><br><span class="line"><span class="variable">display_name =</span> test1</span><br><span class="line"></span><br><span class="line"><span class="comment">## replace these with your access keys</span></span><br><span class="line"><span class="variable">access_key =</span> test1</span><br><span class="line"><span class="variable">secret_key =</span> test1</span><br><span class="line"></span><br><span class="line"><span class="comment">## replace with key id obtained when secret is created, or delete if KMS not tested</span></span><br><span class="line"><span class="comment">#kms_keyid = 01234567-89ab-cdef-0123-456789abcdef</span></span><br><span class="line"></span><br><span class="line">[s3 alt]</span><br><span class="line"><span class="comment">## another user account, used for ACL-related tests</span></span><br><span class="line"><span class="variable">user_id =</span> test2</span><br><span class="line"><span class="variable">display_name =</span> test2</span><br><span class="line"><span class="comment">## the "alt" user needs to have email set, too</span></span><br><span class="line"><span class="variable">email =</span> test2@qq.com</span><br><span class="line"><span class="variable">access_key =</span> test2</span><br><span class="line"><span class="variable">secret_key =</span> test2</span><br></pre></td></tr></table></figure>
-<p>上面的用户信息是需要提前创建好的，这个用集群内的机器radosgw-admin命令创建即可<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">radosgw-admin user create --uid=<span class="built_in">test</span>01 --display-name=<span class="built_in">test</span>01 --access-key=<span class="built_in">test</span>01 --secret-key=<span class="built_in">test</span>01 --email=<span class="built_in">test</span>01@qq.com</span><br><span class="line">radosgw-admin user create --uid=<span class="built_in">test</span>02 --display-name=<span class="built_in">test</span>02 --access-key=<span class="built_in">test</span>02 --secret-key=<span class="built_in">test</span>02 --email=<span class="built_in">test</span>02@qq.com</span><br></pre></td></tr></table></figure></p>
-<p>创建好了以后就可以开始测试了<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab101 s3-tests]<span class="comment"># S3TEST_CONF=test.conf ./virtualenv/bin/nosetests -a '!fails_on_rgw'</span></span><br><span class="line">..................................................SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS.....................................................................................................................SSSS.......................................................................................................................................SSSS.......................................................</span><br><span class="line">----------------------------------------------------------------------</span><br><span class="line">Ran <span class="number">408</span> tests <span class="keyword">in</span> <span class="number">122.087</span>s</span><br><span class="line"></span><br><span class="line">OK (SKIP=<span class="number">51</span>)</span><br></pre></td></tr></table></figure></p>
-<p>正常测试完就应该是上面的ok的状态，也有可能某个版本的测试用例是写的支持，但是rgw也不一定就做好了，这个需要自己判断一下</p>
-<h2 id="总结">总结</h2><p>了解软件适配的接口，针对接口进行相关测试即可</p>
-<h2 id="变更记录">变更记录</h2><table>
-<thead>
-<tr>
-<th style="text-align:center">Why</th>
-<th style="text-align:center">Who</th>
-<th style="text-align:center">When</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">创建</td>
-<td style="text-align:center">武汉-运维-磨渣</td>
-<td style="text-align:center">2018-06-27</td>
-</tr>
-</tbody>
-</table>
-
+<p>用此类的工具有个好的地方就是，能够对接口进行验证，来避免版本的更新带来的接口破坏<br>
       
     </div>
     
@@ -366,6 +303,10 @@
 
       
 
+      
+        <p class="article-more-link">
+          <a  href="/2018/06/27/use-s3-test-to-ceph-compatibility-tests/#more">more >></a>
+        </p>
       
       <div class="clearfix"></div>
     </div>
