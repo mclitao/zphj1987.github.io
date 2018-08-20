@@ -183,6 +183,72 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-CTDB-use-rados-object-as-lock-file" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2018/01/06/CTDB-use-rados-object-as-lock-file/" class="article-date">
+  	<time datetime="2018-01-06T15:29:59.000Z" itemprop="datePublished">2018-01-06</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/01/06/CTDB-use-rados-object-as-lock-file/">CTDB使用rados object作为lock file</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/object.jpg" alt="object"><br></cemter></p>
+<h2 id="前言">前言</h2><p>服务器的服务做HA有很多种方式，其中有一种就是是用CTDB，之前这个是独立的软件来做HA的，现在已经跟着SAMBA主线里面了，也就是跟着samba发行包一起发行</p>
+<p>之前CTDB的模式是需要有一个共享文件系统，并且在这个共享文件系统里面所有的节点都去访问同一个文件，会有一个Master会获得这个文件的锁</p>
+<p>在cephfs的使用场景中可以用cephfs的目录作为这个锁文件的路径，这个有个问题就是一旦有一个节点down掉的时候，可能客户端也会卡住目录，这个目录访问会被卡住，文件锁在其他机器无法获取到，需要等到这个锁超时以后，其它节点才能获得到锁，这个切换的周期就会长一点了</p>
+<p>CTDB在最近的版本当中加入了cluster mutex helper using Ceph RADOS的支持，本篇将介绍这个方式锁文件配置方式<br>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2018/01/06/CTDB-use-rados-object-as-lock-file/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+<div id="gitment"></div>
+<!-- 主页不要加载gitment -->
+
+
+
+
+  
     <article id="post-Kernel-RBD-QOS" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -749,74 +815,6 @@
       
         <p class="article-more-link">
           <a  href="/2017/09/06/Ceph-OSD-autorestart-when-fail/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-<div id="gitment"></div>
-<!-- 主页不要加载gitment -->
-
-
-
-
-  
-    <article id="post-osd-has-inode-cannot-write" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/09/04/osd-has-inode-cannot-write/" class="article-date">
-  	<time datetime="2017-09-04T15:06:17.000Z" itemprop="datePublished">2017-09-04</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/04/osd-has-inode-cannot-write/">osd磁盘空间足够无法写入数据的分析与解决</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/full.png" alt=""><br></center>
-
-<h2 id="前言">前言</h2><p>这个问题的来源是ceph社区里面一个群友的环境出现在85%左右的时候，启动osd报错，然后在本地文件系统当中进行touch文件的时候也是报错，df -i查询inode也是没用多少，使用的也是inode64挂载的，开始的时候排除了配置原因引起的，在ceph的邮件列表里面有一个相同<a href="http://lists.ceph.com/pipermail/ceph-users-ceph.com/2016-October/013929.html">问题</a>，也是没有得到解决</p>
-<p>看到这个问题比较感兴趣，就花了点时间来解决来定位和解决这个问题，现在分享出来，如果有类似的生产环境，可以提前做好检查预防工作</p>
-<h2 id="现象描述">现象描述</h2><p>ceph版本</p>
-<blockquote>
-<p>[root@lab8107 mnt]# ceph -v<br>ceph version 10.2.9 (2ee413f77150c0f375ff6f10edd6c8f9c7d060d0)<br>我复现的环境为这个版本<br>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2017/09/04/osd-has-inode-cannot-write/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>

@@ -183,6 +183,70 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-zabbix自动发现的python方式数据生成" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/10/28/zabbix自动发现的python方式数据生成/" class="article-date">
+  	<time datetime="2016-10-27T17:11:08.000Z" itemprop="datePublished">2016-10-28</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/10/28/zabbix自动发现的python方式数据生成/">zabbix自动发现的python方式数据生成</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="一、前言">一、前言</h2><p>zabbix里面有个功能是自动发现，比如文件系统和网卡的获取的时候，因为预先无法知道这个网卡的名称，所以就有了这个自动发现的功能，这里我是因为要用到存储池的自动发现，所以需要对数据进行生成</p>
+<h2 id="二、实现">二、实现</h2><p>我们看下原生的接口的数据类型：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># zabbix_get -s 127.0.0.1 -k "net.if.discovery"</span></span><br><span class="line">&#123;<span class="string">"data"</span>:[&#123;<span class="string">"&#123;#IFNAME&#125;"</span>:<span class="string">"enp3s0"</span>&#125;,&#123;<span class="string">"&#123;#IFNAME&#125;"</span>:<span class="string">"virbr0-nic"</span>&#125;,&#123;<span class="string">"&#123;#IFNAME&#125;"</span>:<span class="string">"docker0"</span>&#125;,&#123;<span class="string">"&#123;#IFNAME&#125;"</span>:<span class="string">"enp4s0"</span>&#125;,&#123;<span class="string">"&#123;#IFNAME&#125;"</span>:<span class="string">"enp2s0f0"</span>&#125;,&#123;<span class="string">"&#123;#IFNAME&#125;"</span>:<span class="string">"enp2s0f1"</span>&#125;,&#123;<span class="string">"&#123;#IFNAME&#125;"</span>:<span class="string">"virbr0"</span>&#125;,&#123;<span class="string">"&#123;#IFNAME&#125;"</span>:<span class="string">"lo"</span>&#125;]&#125;</span><br></pre></td></tr></table></figure></p>
+<p>数据为格式化好了的json数据，这个地方弄了好半天，因为网上很多人是用字符串拼接的方式，实际这个是字典嵌套了列表，列表又嵌套了字典，就是后面的地方开始没弄懂怎么有大括号的<br>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/zabbix/">zabbix</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2016/10/28/zabbix自动发现的python方式数据生成/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+<div id="gitment"></div>
+<!-- 主页不要加载gitment -->
+
+
+
+
+  
     <article id="post-Docker与Ceph的分与合" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -755,65 +819,6 @@
       
         <p class="article-more-link">
           <a  href="/2016/09/28/fio测试数据的可视化/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-<div id="gitment"></div>
-<!-- 主页不要加载gitment -->
-
-
-
-
-  
-    <article id="post-Python生成csv中文乱码的解决办法" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/09/28/Python生成csv中文乱码的解决办法/" class="article-date">
-  	<time datetime="2016-09-28T06:36:43.000Z" itemprop="datePublished">2016-09-28</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/09/28/Python生成csv中文乱码的解决办法/">Python生成csv中文乱码解决办法</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/csv/parsing-csv-dribbble.gif" alt="csv"><br></center></p>
-<h2 id="一、前言">一、前言</h2><p>在Linux下面用python进行数据处理，然后输出为csv格式，如果没有中文一切正常，但是如果有中文，就会出现乱码的问题,本篇将讲述怎么处理这个问题<br>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2016/09/28/Python生成csv中文乱码的解决办法/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>

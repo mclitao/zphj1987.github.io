@@ -183,6 +183,72 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-ceph在centos7下一个不容易发现的改变" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/03/31/ceph在centos7下一个不容易发现的改变/" class="article-date">
+  	<time datetime="2016-03-31T08:19:27.000Z" itemprop="datePublished">2016-03-31</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/03/31/ceph在centos7下一个不容易发现的改变/">ceph在centos7下一个不容易发现的改变</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在centos6以及以前的osd版本，在启动osd的时候，回去根据ceph.conf的配置文件进行挂载osd，然后进行进程的启动，这个格式是这样的<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[osd.<span class="number">0</span>]</span><br><span class="line">host = hostname</span><br><span class="line">devs=/dev/sdb1</span><br></pre></td></tr></table></figure></p>
+<p>启动的时候就会把sdb1盘符挂载到0的目录里面去了</p>
+<p>然后在centos7的版本的时候，发现居然不写配置文件也能够自动挂载启动，这个地方是什么地方发生了变化，在做了一些日志的查询以后，发现centos7下居然做了一个改变</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># systemctl list-unit-files |grep ceph-disk</span></span><br><span class="line">ceph-disk@.service                          static</span><br></pre></td></tr></table></figure>
+<p>可以看到有这个服务</p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2016/03/31/ceph在centos7下一个不容易发现的改变/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+<div id="gitment"></div>
+<!-- 主页不要加载gitment -->
+
+
+
+
+  
     <article id="post-rbd-mirror新功能" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -747,71 +813,6 @@
       
         <p class="article-more-link">
           <a  href="/2016/02/23/内核参数比较/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-<div id="gitment"></div>
-<!-- 主页不要加载gitment -->
-
-
-
-
-  
-    <article id="post-nginx状态监控统计" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/02/22/nginx状态监控统计/" class="article-date">
-  	<time datetime="2016-02-22T15:58:02.000Z" itemprop="datePublished">2016-02-22</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/02/22/nginx状态监控统计/">nginx状态监控统计</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>nginx是一款很优秀的web服务器软件，很多地方都有接触和使用到他，大部分的场景压力还没达到需要调优的地步，而调优的难点其实不在于调，而在于各项状态的监控，能够很快的找到资源在什么时候出现问题，调整前后出现的变化，如果都不知道变化在哪里所做的调优只能是凭感觉的</p>
-<p>之前看到有技术人员用nginx作为rgw的前端的时候，通过优化去实现将nginx的并发提高到很大，而不出现4xx等问题，nginx的access.log里面是有记录访问的状态码的，而这个日志的分析如果是一次次的去看，这样的分析是无法用精确的数据去展示的</p>
-<p>最开始的想法是想根据时间点去统计时间点的状态码，后来发现这样做既复杂，又无法输出到一些数据展示软件当中，实际上我只需要统计一定时间的总的状态值，然后定期去取这个值，然后在数据展示的时候，就可以看到一个数值的曲线图，增量即为这个时间区间所产生的状态值</p>
-<p>下面就是我的实现，一个脚本就可以统计了，这个是最初的版本，纯统计状态码，还没有区分读写分离的情况，这个在后面会加入分离的情况</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nginx/">nginx</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2016/02/22/nginx状态监控统计/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>
