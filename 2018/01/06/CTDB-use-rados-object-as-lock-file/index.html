@@ -15,7 +15,7 @@
 <meta property="og:description" content="前言服务器的服务做HA有很多种方式，其中有一种就是是用CTDB，之前这个是独立的软件来做HA的，现在已经跟着SAMBA主线里面了，也就是跟着samba发行包一起发行
 之前CTDB的模式是需要有一个共享文件系统，并且在这个共享文件系统里面所有的节点都去访问同一个文件，会有一个Master会获得这个文件的锁
 在cephfs的使用场景中可以用cephfs的目录作为这个锁文件的路径，这个有个问题就是一旦有">
-<meta property="og:image" content="http://7xweck.com1.z0.glb.clouddn.com/object.jpg">
+<meta property="og:image" content="http://mysrc.ufile.ucloud.com.cn/object.jpg">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CTDB使用rados object作为lock file">
 <meta name="twitter:description" content="前言服务器的服务做HA有很多种方式，其中有一种就是是用CTDB，之前这个是独立的软件来做HA的，现在已经跟着SAMBA主线里面了，也就是跟着samba发行包一起发行
@@ -25,12 +25,12 @@
     <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
   
   
-    <link rel="icon" href="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png">
+    <link rel="icon" href="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png">
   
-  <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/style.css" type="text/css">
-   <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/asciinema/asciinema-player.css" type="text/css">
-   <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/gitment.css">
-   <script src="http://7xweck.com1.z0.glb.clouddn.com/gitment.js"></script>
+  <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/style.css" type="text/css">
+   <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/asciinema/asciinema-player.css" type="text/css">
+   <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/gitment.css">
+   <script src="http://mysrc.ufile.ucloud.com.cn/gitment.js"></script>
 </head>
 <body>
   <div id="container">
@@ -40,7 +40,7 @@
 	<header id="header" class="inner">
 		<a href="/" class="profilepic">
 			
-			<img lazy-src="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png" class="js-avatar">
+			<img lazy-src="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png" class="js-avatar">
 			
 		</a>
 
@@ -150,7 +150,7 @@
 	<div class="intrude-less">
 		<header id="header" class="inner">
 			<div class="profilepic">
-				<img lazy-src="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png" class="js-avatar">
+				<img lazy-src="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png" class="js-avatar">
 			</div>
 			<hgroup>
 			  <h1 class="header-author">zphj1987</h1>
@@ -225,7 +225,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/object.jpg" alt="object"><br></center></p>
+        <p><center><br><img src="http://mysrc.ufile.ucloud.com.cn/object.jpg" alt="object"><br></center></p>
 <h2 id="前言">前言</h2><p>服务器的服务做HA有很多种方式，其中有一种就是是用CTDB，之前这个是独立的软件来做HA的，现在已经跟着SAMBA主线里面了，也就是跟着samba发行包一起发行</p>
 <p>之前CTDB的模式是需要有一个共享文件系统，并且在这个共享文件系统里面所有的节点都去访问同一个文件，会有一个Master会获得这个文件的锁</p>
 <p>在cephfs的使用场景中可以用cephfs的目录作为这个锁文件的路径，这个有个问题就是一旦有一个节点down掉的时候，可能客户端也会卡住目录，这个目录访问会被卡住，文件锁在其他机器无法获取到，需要等到这个锁超时以后，其它节点才能获得到锁，这个切换的周期就会长一点了</p>
@@ -268,7 +268,7 @@
 <h2 id="总结">总结</h2><p>本篇是基于发行版本的ctdb包进行模块的加入重新发包，并且把配置做了一次实践，这个可以作为一个ctdb的方案之一，具体跟之前的方案相比切换时间可以改善多少，需要通过数据进行对比，这个进行测试即可</p>
 <h2 id="资源">资源</h2><p>已经打好包的ctdb共享一下，可以直接使用</p>
 <blockquote>
-<p><a href="http://7xweck.com1.z0.glb.clouddn.com/ctdb-4.6.2-12.el7.centos.x86_64.rpm" target="_blank" rel="external">http://7xweck.com1.z0.glb.clouddn.com/ctdb-4.6.2-12.el7.centos.x86_64.rpm</a></p>
+<p><a href="http://mysrc.ufile.ucloud.com.cn/ctdb-4.6.2-12.el7.centos.x86_64.rpm" target="_blank" rel="external">http://mysrc.ufile.ucloud.com.cn/ctdb-4.6.2-12.el7.centos.x86_64.rpm</a></p>
 </blockquote>
 <h2 id="变更记录">变更记录</h2><table>
 <thead>
@@ -402,7 +402,7 @@ show_date_time();
 </SCRIPT>
     </div>
     
-  <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/fancybox/jquery.fancybox.css" type="text/css">
+  <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/fancybox/jquery.fancybox.css" type="text/css">
 
 
 <script>
@@ -432,9 +432,9 @@ var _hmt = _hmt || [];
 
 
 
-<script src="http://7xweck.com1.z0.glb.clouddn.com/js/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
-<script src="http://7xweck.com1.z0.glb.clouddn.com/js/main.js" type="text/javascript"></script>
-<script src="http://7xweck.com1.z0.glb.clouddn.com/asciinema/asciinema-player.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/js/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/js/main.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/asciinema/asciinema-player.js" type="text/javascript"></script>
 
 
   </div>

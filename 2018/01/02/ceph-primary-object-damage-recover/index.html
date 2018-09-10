@@ -11,7 +11,7 @@
 <meta property="og:url" content="http://www.zphj1987.com/2018/01/02/ceph-primary-object-damage-recover/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
 <meta property="og:description" content="前言问题的触发是在进行一个目录的查询的时候，osd就会挂掉，开始以为是osd操作超时了，后来发现每次访问这个对象都有问题log [WRN] ： slow request 60.793196 seconds old, received at osd_op(mds.0.188:728345234100006c6ddc.00000000 [o map-get-header 0-0,omap-get-va">
-<meta property="og:image" content="http://7xweck.com1.z0.glb.clouddn.com/dog.jpg">
+<meta property="og:image" content="http://mysrc.ufile.ucloud.com.cn/dog.jpg">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Ceph对象主本损坏的修复方法">
 <meta name="twitter:description" content="前言问题的触发是在进行一个目录的查询的时候，osd就会挂掉，开始以为是osd操作超时了，后来发现每次访问这个对象都有问题log [WRN] ： slow request 60.793196 seconds old, received at osd_op(mds.0.188:728345234100006c6ddc.00000000 [o map-get-header 0-0,omap-get-va">
@@ -19,12 +19,12 @@
     <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
   
   
-    <link rel="icon" href="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png">
+    <link rel="icon" href="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png">
   
-  <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/style.css" type="text/css">
-   <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/asciinema/asciinema-player.css" type="text/css">
-   <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/gitment.css">
-   <script src="http://7xweck.com1.z0.glb.clouddn.com/gitment.js"></script>
+  <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/style.css" type="text/css">
+   <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/asciinema/asciinema-player.css" type="text/css">
+   <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/gitment.css">
+   <script src="http://mysrc.ufile.ucloud.com.cn/gitment.js"></script>
 </head>
 <body>
   <div id="container">
@@ -34,7 +34,7 @@
 	<header id="header" class="inner">
 		<a href="/" class="profilepic">
 			
-			<img lazy-src="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png" class="js-avatar">
+			<img lazy-src="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png" class="js-avatar">
 			
 		</a>
 
@@ -144,7 +144,7 @@
 	<div class="intrude-less">
 		<header id="header" class="inner">
 			<div class="profilepic">
-				<img lazy-src="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png" class="js-avatar">
+				<img lazy-src="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png" class="js-avatar">
 			</div>
 			<hgroup>
 			  <h1 class="header-author">zphj1987</h1>
@@ -219,7 +219,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/dog.jpg" alt="dog"><br></center>
+        <center><br><img src="http://mysrc.ufile.ucloud.com.cn/dog.jpg" alt="dog"><br></center>
 
 <h2 id="前言">前言</h2><p>问题的触发是在进行一个目录的查询的时候，osd就会挂掉，开始以为是osd操作超时了，后来发现每次访问这个对象都有问题<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">log</span> [WRN] ： slow request <span class="number">60.793196</span> seconds old, received at osd_op(mds.<span class="number">0.188</span>:<span class="number">728345234100006</span>c6ddc.<span class="number">00000000</span> [o map-get-header <span class="number">0</span>-<span class="number">0</span>,omap-get-vals <span class="number">0</span>~<span class="number">16</span>,getxattr parent] snapc <span class="number">0</span>=[] ack+<span class="built_in">read</span>+known_<span class="keyword">if</span>_redirected+full_force e218901) currently started</span><br><span class="line">heartbeat_map is_healthy  ··· osd_op_tp thread ··· had timed out after <span class="number">60</span></span><br></pre></td></tr></table></figure></p>
 <p>这个对象是元数据的一个空对象，保留数据在扩展属性当中<br><a id="more"></a><br>然后做了一个操作判断是对象损坏了:</p>
@@ -379,7 +379,7 @@ show_date_time();
 </SCRIPT>
     </div>
     
-  <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/fancybox/jquery.fancybox.css" type="text/css">
+  <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/fancybox/jquery.fancybox.css" type="text/css">
 
 
 <script>
@@ -409,9 +409,9 @@ var _hmt = _hmt || [];
 
 
 
-<script src="http://7xweck.com1.z0.glb.clouddn.com/js/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
-<script src="http://7xweck.com1.z0.glb.clouddn.com/js/main.js" type="text/javascript"></script>
-<script src="http://7xweck.com1.z0.glb.clouddn.com/asciinema/asciinema-player.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/js/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/js/main.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/asciinema/asciinema-player.js" type="text/javascript"></script>
 
 
   </div>

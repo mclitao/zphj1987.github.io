@@ -11,7 +11,7 @@
 <meta property="og:url" content="http://www.zphj1987.com/2017/09/07/how-to-disable-Ceph-OSD-automount/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
 <meta property="og:description" content="前言本篇来源于群里一个人的问题，有没有办法让ceph的磁盘不自动挂载，一般人的问题都是怎样让ceph能够自动挂载，在centos 7 平台下 ceph jewel版本以后都是有自动挂载的处理的，这个我之前也写过两篇文章 ceph在centos7下一个不容易发现的改变和Ceph数据盘怎样实现自动挂载，来讲述这个自动挂载的">
-<meta property="og:image" content="http://7xweck.com1.z0.glb.clouddn.com/mount.png">
+<meta property="og:image" content="http://mysrc.ufile.ucloud.com.cn/mount.png">
 <meta property="og:image" content="http://static.zybuluo.com/zphj1987/4fuopv2z3ys36e3462svo72t/image.png">
 <meta property="og:image" content="http://static.zybuluo.com/zphj1987/3phv4b3x8d2nf6mhaio68zk4/image.png">
 <meta property="og:image" content="http://static.zybuluo.com/zphj1987/ek3ocgg9w584u07x0pg8lqc0/image.png">
@@ -22,12 +22,12 @@
     <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
   
   
-    <link rel="icon" href="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png">
+    <link rel="icon" href="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png">
   
-  <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/style.css" type="text/css">
-   <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/asciinema/asciinema-player.css" type="text/css">
-   <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/gitment.css">
-   <script src="http://7xweck.com1.z0.glb.clouddn.com/gitment.js"></script>
+  <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/style.css" type="text/css">
+   <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/asciinema/asciinema-player.css" type="text/css">
+   <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/gitment.css">
+   <script src="http://mysrc.ufile.ucloud.com.cn/gitment.js"></script>
 </head>
 <body>
   <div id="container">
@@ -37,7 +37,7 @@
 	<header id="header" class="inner">
 		<a href="/" class="profilepic">
 			
-			<img lazy-src="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png" class="js-avatar">
+			<img lazy-src="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png" class="js-avatar">
 			
 		</a>
 
@@ -147,7 +147,7 @@
 	<div class="intrude-less">
 		<header id="header" class="inner">
 			<div class="profilepic">
-				<img lazy-src="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png" class="js-avatar">
+				<img lazy-src="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png" class="js-avatar">
 			</div>
 			<hgroup>
 			  <h1 class="header-author">zphj1987</h1>
@@ -222,7 +222,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/mount.png" alt="此处输入图片的描述"><br></center>
+        <center><br><img src="http://mysrc.ufile.ucloud.com.cn/mount.png" alt="此处输入图片的描述"><br></center>
 
 <h2 id="前言">前言</h2><p>本篇来源于群里一个人的问题，有没有办法让ceph的磁盘不自动挂载，一般人的问题都是怎样让ceph能够自动挂载，在centos 7 平台下 ceph jewel版本以后都是有自动挂载的处理的，这个我之前也写过两篇文章 <a href="http://www.zphj1987.com/2016/03/31/ceph%E5%9C%A8centos7%E4%B8%8B%E4%B8%80%E4%B8%AA%E4%B8%8D%E5%AE%B9%E6%98%93%E5%8F%91%E7%8E%B0%E7%9A%84%E6%94%B9%E5%8F%98/" target="_blank" rel="external">ceph在centos7下一个不容易发现的改变</a>和<a href="http://www.zphj1987.com/2016/12/22/Ceph%E6%95%B0%E6%8D%AE%E7%9B%98%E6%80%8E%E6%A0%B7%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%8A%A8%E6%8C%82%E8%BD%BD/" target="_blank" rel="external">Ceph数据盘怎样实现自动挂载</a>，来讲述这个自动挂载的<br><a id="more"></a><br>这里讲下流程：</p>
 <blockquote>
@@ -275,11 +275,11 @@
     
 <nav id="article-nav">
   
-    <a href="/2017/09/13/maybe-the-first-chinese-for-luminous-dashboard/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2017/09/27/lost-osdmap-recovery/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption"><</strong>
       <div class="article-nav-title">
         
-          Luminous监控界面中文语言包
+          掉电后osdmap丢失无法启动osd的解决方案
         
       </div>
     </a>
@@ -382,7 +382,7 @@ show_date_time();
 </SCRIPT>
     </div>
     
-  <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/fancybox/jquery.fancybox.css" type="text/css">
+  <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/fancybox/jquery.fancybox.css" type="text/css">
 
 
 <script>
@@ -412,9 +412,9 @@ var _hmt = _hmt || [];
 
 
 
-<script src="http://7xweck.com1.z0.glb.clouddn.com/js/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
-<script src="http://7xweck.com1.z0.glb.clouddn.com/js/main.js" type="text/javascript"></script>
-<script src="http://7xweck.com1.z0.glb.clouddn.com/asciinema/asciinema-player.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/js/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/js/main.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/asciinema/asciinema-player.js" type="text/javascript"></script>
 
 
   </div>

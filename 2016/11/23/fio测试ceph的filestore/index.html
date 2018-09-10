@@ -13,8 +13,8 @@ fio对于ceph来说，可以测试文件系统，基于文件系统之上测试�
 <meta property="og:site_name" content="zphj1987'Blog">
 <meta property="og:description" content="前言fio是一个适应性非常强的软件，基本上能够模拟所有的IO请求，是目前最全面的一款测试软件，之前在看德国电信的一篇分享的时候，里面就提到了，如果需要测试存储性能，尽量只用一款软件，这样从上层测试到底层去，才能更好的去比较差别
 fio对于ceph来说，可以测试文件系统，基于文件系统之上测试，可以测试内核rbd，将rbdmap到本地格式化以后进行测试，或者基于librbd直接对rbd进行测试，这个是">
-<meta property="og:image" content="http://7xweck.com1.z0.glb.clouddn.com/fio-banner.jpg">
-<meta property="og:image" content="http://7xweck.com1.z0.glb.clouddn.com/fiotest.png">
+<meta property="og:image" content="http://mysrc.ufile.ucloud.com.cn/fio-banner.jpg">
+<meta property="og:image" content="http://mysrc.ufile.ucloud.com.cn/fiotest.png">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="fio测试ceph的filestore">
 <meta name="twitter:description" content="前言fio是一个适应性非常强的软件，基本上能够模拟所有的IO请求，是目前最全面的一款测试软件，之前在看德国电信的一篇分享的时候，里面就提到了，如果需要测试存储性能，尽量只用一款软件，这样从上层测试到底层去，才能更好的去比较差别
@@ -23,12 +23,12 @@ fio对于ceph来说，可以测试文件系统，基于文件系统之上测试�
     <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
   
   
-    <link rel="icon" href="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png">
+    <link rel="icon" href="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png">
   
-  <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/style.css" type="text/css">
-   <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/asciinema/asciinema-player.css" type="text/css">
-   <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/gitment.css">
-   <script src="http://7xweck.com1.z0.glb.clouddn.com/gitment.js"></script>
+  <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/style.css" type="text/css">
+   <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/asciinema/asciinema-player.css" type="text/css">
+   <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/gitment.css">
+   <script src="http://mysrc.ufile.ucloud.com.cn/gitment.js"></script>
 </head>
 <body>
   <div id="container">
@@ -38,7 +38,7 @@ fio对于ceph来说，可以测试文件系统，基于文件系统之上测试�
 	<header id="header" class="inner">
 		<a href="/" class="profilepic">
 			
-			<img lazy-src="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png" class="js-avatar">
+			<img lazy-src="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png" class="js-avatar">
 			
 		</a>
 
@@ -148,7 +148,7 @@ fio对于ceph来说，可以测试文件系统，基于文件系统之上测试�
 	<div class="intrude-less">
 		<header id="header" class="inner">
 			<div class="profilepic">
-				<img lazy-src="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png" class="js-avatar">
+				<img lazy-src="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png" class="js-avatar">
 			</div>
 			<hgroup>
 			  <h1 class="header-author">zphj1987</h1>
@@ -223,12 +223,12 @@ fio对于ceph来说，可以测试文件系统，基于文件系统之上测试�
     
     <div class="article-entry" itemprop="articleBody">
       
-        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/fio-banner.jpg" alt="fio"><br></center>
+        <center><br><img src="http://mysrc.ufile.ucloud.com.cn/fio-banner.jpg" alt="fio"><br></center>
 
 <h2 id="前言">前言</h2><p>fio是一个适应性非常强的软件，基本上能够模拟所有的IO请求，是目前最全面的一款测试软件，之前在看德国电信的一篇分享的时候，里面就提到了，如果需要测试存储性能，尽量只用一款软件，这样从上层测试到底层去，才能更好的去比较差别</p>
 <p>fio对于ceph来说，可以测试文件系统，基于文件系统之上测试，可以测试内核rbd，将rbdmap到本地格式化以后进行测试，或者基于librbd直接对rbd进行测试，这个是目前都已经有的测试场景，这些不在本篇的讨论的范围内，今天讲的是一种新的测试场景，直接对ceph的底层存储进行测试</p>
 <a id="more"></a>
-<center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/fiotest.png" alt=""><br></center>
+<center><br><img src="http://mysrc.ufile.ucloud.com.cn/fiotest.png" alt=""><br></center>
 
 <p>为什么会有这个，因为在以前，如果你要测试一块磁盘是不是适合ceph使用的时候，都是直接对挂载的磁盘进行一些测试，这个是基于文件系统的，并没有真正的模拟到ceph自己的写入模型，所以在开发人员的努力下，模拟对象的写入的驱动已经完成了，这就是本篇需要讲述的内容</p>
 <h2 id="实践过程">实践过程</h2><p>fio engine for objectstore 这个是在ceph的11.0.2这个版本才正式发布出来的，可以看这个pr(<a href="https://github.com/ceph/ceph/pull/10267" target="_blank" rel="external">pr10267</a>),11.0.2是ceph第一个公开释放的KRAKEN版本的，也说明Jewel版本即将进入比较稳定的情况，新的功能可能会尽量在K版本进行开发</p>
@@ -363,7 +363,7 @@ show_date_time();
 </SCRIPT>
     </div>
     
-  <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/fancybox/jquery.fancybox.css" type="text/css">
+  <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/fancybox/jquery.fancybox.css" type="text/css">
 
 
 <script>
@@ -393,9 +393,9 @@ var _hmt = _hmt || [];
 
 
 
-<script src="http://7xweck.com1.z0.glb.clouddn.com/js/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
-<script src="http://7xweck.com1.z0.glb.clouddn.com/js/main.js" type="text/javascript"></script>
-<script src="http://7xweck.com1.z0.glb.clouddn.com/asciinema/asciinema-player.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/js/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/js/main.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/asciinema/asciinema-player.js" type="text/javascript"></script>
 
 
   </div>

@@ -14,7 +14,7 @@ ceph版本root@lab8107:~/ceph# ceph -vceph version 9.2.0 (bb2ecea240f3a1d525bcb3
 <meta property="og:description" content="ceph在Infernalis加入了一个功能是查询rbd的块设备的使用的大小，默认是可以查询的，但是无法快速查询，那么我们来看看这个功能是怎么开启的
 ceph版本root@lab8107:~/ceph# ceph -vceph version 9.2.0 (bb2ecea240f3a1d525bcb35670cb07bd1f0ca299)">
 <meta property="og:image" content="http://static.zybuluo.com/zphj1987/1amw9dopkoohq90dfwme7z6p/%E5%B1%9E%E6%80%A7.png">
-<meta property="og:image" content="http://7xo9we.com1.z0.glb.clouddn.com/payforzp.png">
+<meta property="og:image" content="http://mypic.ufile.ucloud.com.cn/payforzp.png">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ceph查询rbd的使用容量（快速）">
 <meta name="twitter:description" content="ceph在Infernalis加入了一个功能是查询rbd的块设备的使用的大小，默认是可以查询的，但是无法快速查询，那么我们来看看这个功能是怎么开启的
@@ -23,12 +23,12 @@ ceph版本root@lab8107:~/ceph# ceph -vceph version 9.2.0 (bb2ecea240f3a1d525bcb3
     <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
   
   
-    <link rel="icon" href="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png">
+    <link rel="icon" href="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png">
   
-  <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/style.css" type="text/css">
-   <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/asciinema/asciinema-player.css" type="text/css">
-   <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/gitment.css">
-   <script src="http://7xweck.com1.z0.glb.clouddn.com/gitment.js"></script>
+  <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/style.css" type="text/css">
+   <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/asciinema/asciinema-player.css" type="text/css">
+   <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/gitment.css">
+   <script src="http://mysrc.ufile.ucloud.com.cn/gitment.js"></script>
 </head>
 <body>
   <div id="container">
@@ -38,7 +38,7 @@ ceph版本root@lab8107:~/ceph# ceph -vceph version 9.2.0 (bb2ecea240f3a1d525bcb3
 	<header id="header" class="inner">
 		<a href="/" class="profilepic">
 			
-			<img lazy-src="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png" class="js-avatar">
+			<img lazy-src="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png" class="js-avatar">
 			
 		</a>
 
@@ -148,7 +148,7 @@ ceph版本root@lab8107:~/ceph# ceph -vceph version 9.2.0 (bb2ecea240f3a1d525bcb3
 	<div class="intrude-less">
 		<header id="header" class="inner">
 			<div class="profilepic">
-				<img lazy-src="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png" class="js-avatar">
+				<img lazy-src="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png" class="js-avatar">
 			</div>
 			<hgroup>
 			  <h1 class="header-author">zphj1987</h1>
@@ -246,7 +246,7 @@ ceph版本root@lab8107:~/ceph# ceph -vceph version 9.2.0 (bb2ecea240f3a1d525bcb3
 <p>创建后不做任何操作直接查询<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@lab8107:~/ceph<span class="comment"># rbd create test1 --size 1000</span></span><br><span class="line">root@lab8107:~/ceph<span class="comment"># rbd info test1</span></span><br><span class="line">rbd image <span class="string">'test1'</span>:</span><br><span class="line">	size <span class="number">1000</span> MB <span class="keyword">in</span> <span class="number">250</span> objects</span><br><span class="line">	order <span class="number">22</span> (<span class="number">4096</span> kB objects)</span><br><span class="line">	block_name_prefix: rbd_data.<span class="number">103</span>c29f2280d</span><br><span class="line">	format: <span class="number">2</span></span><br><span class="line">	features: layering, exclusive-lock, object-map, fast-diff</span><br><span class="line">	flags: </span><br><span class="line">root@lab8107:~/ceph<span class="comment"># rbd du test1</span></span><br><span class="line">NAME  PROVISIONED USED </span><br><span class="line"><span class="built_in">test</span>1       <span class="number">1000</span>M    <span class="number">0</span></span><br></pre></td></tr></table></figure></p>
 <p>可以看到默认就把几个属性都开启好了，关于这个属性的开启就记录到这里，之前已经测试了一次</p>
 <p><strong>如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作！</strong></p>
-<div style="text-align:center"><br><img src="http://7xo9we.com1.z0.glb.clouddn.com/payforzp.png" alt="支付宝" title="支付宝扫一扫"><br></div>
+<div style="text-align:center"><br><img src="http://mypic.ufile.ucloud.com.cn/payforzp.png" alt="支付宝" title="支付宝扫一扫"><br></div>
 
 
       
@@ -364,7 +364,7 @@ show_date_time();
 </SCRIPT>
     </div>
     
-  <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/fancybox/jquery.fancybox.css" type="text/css">
+  <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/fancybox/jquery.fancybox.css" type="text/css">
 
 
 <script>
@@ -394,9 +394,9 @@ var _hmt = _hmt || [];
 
 
 
-<script src="http://7xweck.com1.z0.glb.clouddn.com/js/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
-<script src="http://7xweck.com1.z0.glb.clouddn.com/js/main.js" type="text/javascript"></script>
-<script src="http://7xweck.com1.z0.glb.clouddn.com/asciinema/asciinema-player.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/js/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/js/main.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/asciinema/asciinema-player.js" type="text/javascript"></script>
 
 
   </div>

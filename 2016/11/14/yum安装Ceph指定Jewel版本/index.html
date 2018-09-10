@@ -13,7 +13,7 @@
 <meta property="og:site_name" content="zphj1987'Blog">
 <meta property="og:description" content="前言通过yum安装指定的rpm包，这个一般是 yum --showduplicates list ceph | expand,然后去通过yum安装指定的版本即可，这个在hammer下是没有问题的，但是在Jewel下进行安装的时候却出现了问题，我们来看下怎么解决这个问题的
 实践过程我们需要安装 ceph-10.2.0-0.el7 这个版本的，根据之前的方法[root@lab8106 ~]# yum">
-<meta property="og:image" content="http://7xweck.com1.z0.glb.clouddn.com/yum-logo.png">
+<meta property="og:image" content="http://mysrc.ufile.ucloud.com.cn/yum-logo.png">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="yum安装Ceph指定Jewel版本">
 <meta name="twitter:description" content="前言通过yum安装指定的rpm包，这个一般是 yum --showduplicates list ceph | expand,然后去通过yum安装指定的版本即可，这个在hammer下是没有问题的，但是在Jewel下进行安装的时候却出现了问题，我们来看下怎么解决这个问题的
@@ -22,12 +22,12 @@
     <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
   
   
-    <link rel="icon" href="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png">
+    <link rel="icon" href="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png">
   
-  <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/style.css" type="text/css">
-   <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/asciinema/asciinema-player.css" type="text/css">
-   <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/gitment.css">
-   <script src="http://7xweck.com1.z0.glb.clouddn.com/gitment.js"></script>
+  <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/style.css" type="text/css">
+   <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/asciinema/asciinema-player.css" type="text/css">
+   <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/gitment.css">
+   <script src="http://mysrc.ufile.ucloud.com.cn/gitment.js"></script>
 </head>
 <body>
   <div id="container">
@@ -37,7 +37,7 @@
 	<header id="header" class="inner">
 		<a href="/" class="profilepic">
 			
-			<img lazy-src="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png" class="js-avatar">
+			<img lazy-src="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png" class="js-avatar">
 			
 		</a>
 
@@ -147,7 +147,7 @@
 	<div class="intrude-less">
 		<header id="header" class="inner">
 			<div class="profilepic">
-				<img lazy-src="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png" class="js-avatar">
+				<img lazy-src="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png" class="js-avatar">
 			</div>
 			<hgroup>
 			  <h1 class="header-author">zphj1987</h1>
@@ -222,7 +222,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/yum-logo.png" alt=""><br></center>
+        <center><br><img src="http://mysrc.ufile.ucloud.com.cn/yum-logo.png" alt=""><br></center>
 
 <h2 id="前言">前言</h2><p>通过yum安装指定的rpm包，这个一般是 <code>yum --showduplicates list ceph | expand</code>,然后去通过yum安装指定的版本即可，这个在hammer下是没有问题的，但是在Jewel下进行安装的时候却出现了问题，我们来看下怎么解决这个问题的</p>
 <h2 id="实践过程">实践过程</h2><p>我们需要安装 <code>ceph-10.2.0-0.el7</code> 这个版本的，根据之前的方法<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># yum install  ceph-10.2.0-0.el7</span></span><br><span class="line">Loaded plugins: fastestmirror, langpacks, priorities</span><br><span class="line">base                                                                            | <span class="number">3.6</span> kB  <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>     </span><br><span class="line">ceph                                                                            | <span class="number">2.9</span> kB  <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>     </span><br><span class="line">ceph-noarch                                                                     | <span class="number">2.9</span> kB  <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>     </span><br><span class="line">epel                                                                            | <span class="number">4.3</span> kB  <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span></span><br><span class="line">···</span><br><span class="line">Error: Package: <span class="number">1</span>:ceph-base-<span class="number">10.2</span>.<span class="number">0</span>-<span class="number">0</span>.el7.x86_64 (ceph)</span><br><span class="line">           Requires: librados2 = <span class="number">1</span>:<span class="number">10.2</span>.<span class="number">0</span>-<span class="number">0</span>.el7</span><br><span class="line">           Removing: <span class="number">1</span>:librados2-<span class="number">0.94</span>.<span class="number">6</span>-<span class="number">0</span>.el7.x86_64 (@ceph)</span><br><span class="line">               librados2 = <span class="number">1</span>:<span class="number">0.94</span>.<span class="number">6</span>-<span class="number">0</span>.el7</span><br><span class="line">           Updated By: <span class="number">1</span>:librados2-<span class="number">10.2</span>.<span class="number">3</span>-<span class="number">0</span>.el7.x86_64 (ceph)</span><br><span class="line">               librados2 = <span class="number">1</span>:<span class="number">10.2</span>.<span class="number">3</span>-<span class="number">0</span>.el7</span><br><span class="line">           Available: <span class="number">1</span>:librados2-<span class="number">0.80</span>.<span class="number">7</span>-<span class="number">0.8</span>.el7.x86_64 (epel)</span><br><span class="line">               librados2 = <span class="number">1</span>:<span class="number">0.80</span>.<span class="number">7</span>-<span class="number">0.8</span>.el7</span><br><span class="line">           Available: <span class="number">1</span>:librados2-<span class="number">0.80</span>.<span class="number">7</span>-<span class="number">3</span>.el7.x86_64 (base)</span><br><span class="line">               librados2 = <span class="number">1</span>:<span class="number">0.80</span>.<span class="number">7</span>-<span class="number">3</span>.el7</span><br><span class="line">           Available: <span class="number">1</span>:librados2-<span class="number">10.1</span>.<span class="number">0</span>-<span class="number">0</span>.el7.x86_64 (ceph)</span><br></pre></td></tr></table></figure></p>
@@ -366,7 +366,7 @@ show_date_time();
 </SCRIPT>
     </div>
     
-  <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/fancybox/jquery.fancybox.css" type="text/css">
+  <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/fancybox/jquery.fancybox.css" type="text/css">
 
 
 <script>
@@ -396,9 +396,9 @@ var _hmt = _hmt || [];
 
 
 
-<script src="http://7xweck.com1.z0.glb.clouddn.com/js/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
-<script src="http://7xweck.com1.z0.glb.clouddn.com/js/main.js" type="text/javascript"></script>
-<script src="http://7xweck.com1.z0.glb.clouddn.com/asciinema/asciinema-player.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/js/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/js/main.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/asciinema/asciinema-player.js" type="text/javascript"></script>
 
 
   </div>

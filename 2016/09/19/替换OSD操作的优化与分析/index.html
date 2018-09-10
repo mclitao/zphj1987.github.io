@@ -15,7 +15,7 @@
 <meta property="og:description" content="前言之前有写过一篇删除OSD的正确方式，里面只是简单的讲了下删除的方式怎样能减少迁移量，本篇属于一个扩展，讲述了 Ceph 运维当中经常出现的坏盘提换盘的步骤的优化
 基础环境两台主机每台主机8个 OSD，一共 16 个 OSD，副本设置为2，PG 数设置为800，计算下来平均每个 OSD 上的 P G数目为100个，本篇将通过数据来分析不同的处理方法的差别
 开始测试前先把环境设置为 noout，然">
-<meta property="og:image" content="http://7xweck.com1.z0.glb.clouddn.com/reolaceosd/terminal.png">
+<meta property="og:image" content="http://mysrc.ufile.ucloud.com.cn/reolaceosd/terminal.png">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="替换OSD操作的优化与分析">
 <meta name="twitter:description" content="前言之前有写过一篇删除OSD的正确方式，里面只是简单的讲了下删除的方式怎样能减少迁移量，本篇属于一个扩展，讲述了 Ceph 运维当中经常出现的坏盘提换盘的步骤的优化
@@ -25,12 +25,12 @@
     <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
   
   
-    <link rel="icon" href="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png">
+    <link rel="icon" href="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png">
   
-  <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/style.css" type="text/css">
-   <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/asciinema/asciinema-player.css" type="text/css">
-   <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/gitment.css">
-   <script src="http://7xweck.com1.z0.glb.clouddn.com/gitment.js"></script>
+  <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/style.css" type="text/css">
+   <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/asciinema/asciinema-player.css" type="text/css">
+   <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/gitment.css">
+   <script src="http://mysrc.ufile.ucloud.com.cn/gitment.js"></script>
 </head>
 <body>
   <div id="container">
@@ -40,7 +40,7 @@
 	<header id="header" class="inner">
 		<a href="/" class="profilepic">
 			
-			<img lazy-src="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png" class="js-avatar">
+			<img lazy-src="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png" class="js-avatar">
 			
 		</a>
 
@@ -150,7 +150,7 @@
 	<div class="intrude-less">
 		<header id="header" class="inner">
 			<div class="profilepic">
-				<img lazy-src="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png" class="js-avatar">
+				<img lazy-src="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png" class="js-avatar">
 			</div>
 			<hgroup>
 			  <h1 class="header-author">zphj1987</h1>
@@ -225,7 +225,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/reolaceosd/terminal.png" alt="replaceosd"><br></center></p>
+        <p><center><br><img src="http://mysrc.ufile.ucloud.com.cn/reolaceosd/terminal.png" alt="replaceosd"><br></center></p>
 <h2 id="前言">前言</h2><p>之前有写过一篇<a href="http://www.zphj1987.com/2016/01/12/%E5%88%A0%E9%99%A4osd%E7%9A%84%E6%AD%A3%E7%A1%AE%E6%96%B9%E5%BC%8F/" target="_blank" rel="external">删除OSD的正确方式</a>，里面只是简单的讲了下删除的方式怎样能减少迁移量，本篇属于一个扩展，讲述了 Ceph 运维当中经常出现的坏盘提换盘的步骤的优化</p>
 <p>基础环境两台主机每台主机8个 OSD，一共 16 个 OSD，副本设置为2，PG 数设置为800，计算下来平均每个 OSD 上的 P G数目为100个，本篇将通过数据来分析不同的处理方法的差别</p>
 <p>开始测试前先把环境设置为 <code>noout</code>，然后通过停止 OSD 来模拟 OSD 出现了异常，之后进行不同处理方法<br><a id="more"></a></p>
@@ -462,7 +462,7 @@ show_date_time();
 </SCRIPT>
     </div>
     
-  <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/fancybox/jquery.fancybox.css" type="text/css">
+  <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/fancybox/jquery.fancybox.css" type="text/css">
 
 
 <script>
@@ -492,9 +492,9 @@ var _hmt = _hmt || [];
 
 
 
-<script src="http://7xweck.com1.z0.glb.clouddn.com/js/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
-<script src="http://7xweck.com1.z0.glb.clouddn.com/js/main.js" type="text/javascript"></script>
-<script src="http://7xweck.com1.z0.glb.clouddn.com/asciinema/asciinema-player.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/js/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/js/main.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/asciinema/asciinema-player.js" type="text/javascript"></script>
 
 
   </div>

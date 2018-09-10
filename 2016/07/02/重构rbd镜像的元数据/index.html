@@ -14,7 +14,7 @@
 <meta property="og:description" content="这个已经很久之前已经实践成功了，现在正好有时间就来写一写，目前并没有在其他地方有类似的分享，虽然我们自己的业务并没有涉及到云计算的场景，之前还是对rbd镜像这一块做了一些基本的了解，因为一直比较关注故障恢复这一块，东西并不难，总之一切不要等到出了问题再去想办法，提前准备总是好的，如果你有集群的问题，生产环境需要恢复的欢迎找我
 一、前言rbd的镜像的元数据，这个是什么？这里所提到的元数据信息，是指跟">
 <meta property="og:image" content="http://static.zybuluo.com/zphj1987/fi2557g55ucsdpyblopyfudl/newpay.png">
-<meta property="og:image" content="http://7xi6lo.com1.z0.glb.clouddn.com/qqqun2.png">
+<meta property="og:image" content="http://zphj1987.ufile.ucloud.com.cn/qqqun2.png">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="重构rbd镜像的元数据">
 <meta name="twitter:description" content="这个已经很久之前已经实践成功了，现在正好有时间就来写一写，目前并没有在其他地方有类似的分享，虽然我们自己的业务并没有涉及到云计算的场景，之前还是对rbd镜像这一块做了一些基本的了解，因为一直比较关注故障恢复这一块，东西并不难，总之一切不要等到出了问题再去想办法，提前准备总是好的，如果你有集群的问题，生产环境需要恢复的欢迎找我
@@ -23,12 +23,12 @@
     <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
   
   
-    <link rel="icon" href="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png">
+    <link rel="icon" href="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png">
   
-  <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/style.css" type="text/css">
-   <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/asciinema/asciinema-player.css" type="text/css">
-   <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/gitment.css">
-   <script src="http://7xweck.com1.z0.glb.clouddn.com/gitment.js"></script>
+  <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/style.css" type="text/css">
+   <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/asciinema/asciinema-player.css" type="text/css">
+   <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/gitment.css">
+   <script src="http://mysrc.ufile.ucloud.com.cn/gitment.js"></script>
 </head>
 <body>
   <div id="container">
@@ -38,7 +38,7 @@
 	<header id="header" class="inner">
 		<a href="/" class="profilepic">
 			
-			<img lazy-src="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png" class="js-avatar">
+			<img lazy-src="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png" class="js-avatar">
 			
 		</a>
 
@@ -148,7 +148,7 @@
 	<div class="intrude-less">
 		<header id="header" class="inner">
 			<div class="profilepic">
-				<img lazy-src="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png" class="js-avatar">
+				<img lazy-src="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png" class="js-avatar">
 			</div>
 			<hgroup>
 			  <h1 class="header-author">zphj1987</h1>
@@ -275,7 +275,7 @@
 <h3 id="七、打赏通道">七、打赏通道</h3><center><br><img src="http://static.zybuluo.com/zphj1987/fi2557g55ucsdpyblopyfudl/newpay.png" alt="打赏" title="打赏"><br></center>
 
 <h3 id="打个广告">打个广告</h3><p>私人朋友ceph技术讨论收费群：</p>
-<p><center><br><img src="http://7xi6lo.com1.z0.glb.clouddn.com/qqqun2.png" alt=""><br></center><br>欢迎咨询入群事宜</p>
+<p><center><br><img src="http://zphj1987.ufile.ucloud.com.cn/qqqun2.png" alt=""><br></center><br>欢迎咨询入群事宜</p>
 
       
     </div>
@@ -392,7 +392,7 @@ show_date_time();
 </SCRIPT>
     </div>
     
-  <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/fancybox/jquery.fancybox.css" type="text/css">
+  <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/fancybox/jquery.fancybox.css" type="text/css">
 
 
 <script>
@@ -422,9 +422,9 @@ var _hmt = _hmt || [];
 
 
 
-<script src="http://7xweck.com1.z0.glb.clouddn.com/js/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
-<script src="http://7xweck.com1.z0.glb.clouddn.com/js/main.js" type="text/javascript"></script>
-<script src="http://7xweck.com1.z0.glb.clouddn.com/asciinema/asciinema-player.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/js/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/js/main.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/asciinema/asciinema-player.js" type="text/javascript"></script>
 
 
   </div>

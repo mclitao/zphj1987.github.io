@@ -48,12 +48,12 @@ Ceph grafana的插件- Clusterby Cristian Calin">
     <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
   
   
-    <link rel="icon" href="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png">
+    <link rel="icon" href="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png">
   
-  <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/style.css" type="text/css">
-   <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/asciinema/asciinema-player.css" type="text/css">
-   <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/gitment.css">
-   <script src="http://7xweck.com1.z0.glb.clouddn.com/gitment.js"></script>
+  <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/style.css" type="text/css">
+   <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/asciinema/asciinema-player.css" type="text/css">
+   <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/gitment.css">
+   <script src="http://mysrc.ufile.ucloud.com.cn/gitment.js"></script>
 </head>
 <body>
   <div id="container">
@@ -63,7 +63,7 @@ Ceph grafana的插件- Clusterby Cristian Calin">
 	<header id="header" class="inner">
 		<a href="/" class="profilepic">
 			
-			<img lazy-src="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png" class="js-avatar">
+			<img lazy-src="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png" class="js-avatar">
 			
 		</a>
 
@@ -173,7 +173,7 @@ Ceph grafana的插件- Clusterby Cristian Calin">
 	<div class="intrude-less">
 		<header id="header" class="inner">
 			<div class="profilepic">
-				<img lazy-src="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png" class="js-avatar">
+				<img lazy-src="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png" class="js-avatar">
 			</div>
 			<hgroup>
 			  <h1 class="header-author">zphj1987</h1>
@@ -262,7 +262,7 @@ Ceph grafana的插件- Clusterby Cristian Calin">
 <p>适配的系统为centos7</p>
 <p>资源如下：</p>
 <blockquote>
-<p><a href="http://static.zybuluo.com/zphj1987/jiwx305b8q1hwc5uulo0z7ft/ceph_exporter-2.0.0-1.x86_64.rpm" target="_blank" rel="external">http://static.zybuluo.com/zphj1987/jiwx305b8q1hwc5uulo0z7ft/ceph_exporter-2.0.0-1.x86_64.rpm</a><br><a href="http://static.zybuluo.com/zphj1987/1nu2k4cpcery94q2re3u6s1t/ceph-cluster_rev1.json" target="_blank" rel="external">http://static.zybuluo.com/zphj1987/1nu2k4cpcery94q2re3u6s1t/ceph-cluster_rev1.json</a><br><a href="http://static.zybuluo.com/zphj1987/7ro7up6r03kx52rkwy1qjuwm/prometheus-2.3.2-1.x86_64.rpm" target="_blank" rel="external">http://static.zybuluo.com/zphj1987/7ro7up6r03kx52rkwy1qjuwm/prometheus-2.3.2-1.x86_64.rpm</a><br><a href="http://7xweck.com1.z0.glb.clouddn.com/grafana-5.2.1-1.x86_64.rpm" target="_blank" rel="external">http://7xweck.com1.z0.glb.clouddn.com/grafana-5.2.1-1.x86_64.rpm</a></p>
+<p><a href="http://static.zybuluo.com/zphj1987/jiwx305b8q1hwc5uulo0z7ft/ceph_exporter-2.0.0-1.x86_64.rpm" target="_blank" rel="external">http://static.zybuluo.com/zphj1987/jiwx305b8q1hwc5uulo0z7ft/ceph_exporter-2.0.0-1.x86_64.rpm</a><br><a href="http://static.zybuluo.com/zphj1987/1nu2k4cpcery94q2re3u6s1t/ceph-cluster_rev1.json" target="_blank" rel="external">http://static.zybuluo.com/zphj1987/1nu2k4cpcery94q2re3u6s1t/ceph-cluster_rev1.json</a><br><a href="http://static.zybuluo.com/zphj1987/7ro7up6r03kx52rkwy1qjuwm/prometheus-2.3.2-1.x86_64.rpm" target="_blank" rel="external">http://static.zybuluo.com/zphj1987/7ro7up6r03kx52rkwy1qjuwm/prometheus-2.3.2-1.x86_64.rpm</a><br><a href="http://mysrc.ufile.ucloud.com.cn/grafana-5.2.1-1.x86_64.rpm" target="_blank" rel="external">http://mysrc.ufile.ucloud.com.cn/grafana-5.2.1-1.x86_64.rpm</a></p>
 </blockquote>
 <p>以上资源均可以直接用wget进行下载，然后直接安装</p>
 <a id="more"></a>
@@ -278,7 +278,7 @@ Ceph grafana的插件- Clusterby Cristian Calin">
 <p>prometheus的默认监听端口为9090，到这个时候直接去web 上面就可以看到prometheus的抓取的数据了</p>
 <p><img src="http://static.zybuluo.com/zphj1987/g84qk6x6qye3zjtlninfwrwm/image.png" alt="prometheus"></p>
 <p>到这里是数据到prometheus的已经完成了，下面就去做跟grafana相关的配置了</p>
-<h3 id="安装grafana">安装grafana</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab101 install]<span class="comment"># wget http://7xweck.com1.z0.glb.clouddn.com/grafana-5.2.1-1.x86_64.rpm</span></span><br><span class="line">[root@lab101 install]<span class="comment"># yum localinstall grafana-5.2.1-1.x86_64.rpm</span></span><br><span class="line">[root@lab101 install]<span class="comment"># systemctl start grafana-server.service</span></span><br><span class="line">[root@lab101 install]<span class="comment"># netstat -tunlp|grep gra</span></span><br><span class="line">Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name    </span><br><span class="line">tcp6       <span class="number">0</span>      <span class="number">0</span> :::<span class="number">3000</span>                 :::*                    LISTEN      <span class="number">36730</span>/grafana-serve</span><br></pre></td></tr></table></figure>
+<h3 id="安装grafana">安装grafana</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab101 install]<span class="comment"># wget http://mysrc.ufile.ucloud.com.cn/grafana-5.2.1-1.x86_64.rpm</span></span><br><span class="line">[root@lab101 install]<span class="comment"># yum localinstall grafana-5.2.1-1.x86_64.rpm</span></span><br><span class="line">[root@lab101 install]<span class="comment"># systemctl start grafana-server.service</span></span><br><span class="line">[root@lab101 install]<span class="comment"># netstat -tunlp|grep gra</span></span><br><span class="line">Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name    </span><br><span class="line">tcp6       <span class="number">0</span>      <span class="number">0</span> :::<span class="number">3000</span>                 :::*                    LISTEN      <span class="number">36730</span>/grafana-serve</span><br></pre></td></tr></table></figure>
 <p>grafana默认监听的3000的端口</p>
 <p><img src="http://static.zybuluo.com/zphj1987/cr0jun59v0gwbhee1mq3ixmw/image.png" alt="grafanalogin"><br>默认登陆的用户名密码为admin admin,登陆成功后会强制修改密码</p>
 <h3 id="配置grafana">配置grafana</h3><p><img src="http://static.zybuluo.com/zphj1987/c3czhtv5l7mml4hb6c4ztkvd/image.png" alt="add sour"><br>首先增加数据源<br><img src="http://static.zybuluo.com/zphj1987/kdunzb3s3hz7u0tkri3ntzzw/image.png" alt="配置9090"><br><img src="http://static.zybuluo.com/zphj1987/p2oec87wp1fszlldq1lrdkri/image.png" alt="import"></p>
@@ -421,7 +421,7 @@ show_date_time();
 </SCRIPT>
     </div>
     
-  <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/fancybox/jquery.fancybox.css" type="text/css">
+  <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/fancybox/jquery.fancybox.css" type="text/css">
 
 
 <script>
@@ -451,9 +451,9 @@ var _hmt = _hmt || [];
 
 
 
-<script src="http://7xweck.com1.z0.glb.clouddn.com/js/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
-<script src="http://7xweck.com1.z0.glb.clouddn.com/js/main.js" type="text/javascript"></script>
-<script src="http://7xweck.com1.z0.glb.clouddn.com/asciinema/asciinema-player.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/js/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/js/main.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/asciinema/asciinema-player.js" type="text/javascript"></script>
 
 
   </div>

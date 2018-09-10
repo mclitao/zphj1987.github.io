@@ -11,7 +11,7 @@
 <meta property="og:url" content="http://www.zphj1987.com/2017/05/03/Ceph-filestore-to-bluestore/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
 <meta property="og:description" content="前言前段时间看到豪迈的公众号上提到了这个离线转换工具，最近看到群里有人问，找了下没什么相关文档，就自己写了一个，供参考">
-<meta property="og:image" content="http://7xweck.com1.z0.glb.clouddn.com/blueprint.png">
+<meta property="og:image" content="http://mysrc.ufile.ucloud.com.cn/blueprint.png">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Ceph OSD从filestore 转换到 bluestore的方法">
 <meta name="twitter:description" content="前言前段时间看到豪迈的公众号上提到了这个离线转换工具，最近看到群里有人问，找了下没什么相关文档，就自己写了一个，供参考">
@@ -19,12 +19,12 @@
     <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
   
   
-    <link rel="icon" href="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png">
+    <link rel="icon" href="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png">
   
-  <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/style.css" type="text/css">
-   <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/asciinema/asciinema-player.css" type="text/css">
-   <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/gitment.css">
-   <script src="http://7xweck.com1.z0.glb.clouddn.com/gitment.js"></script>
+  <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/style.css" type="text/css">
+   <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/asciinema/asciinema-player.css" type="text/css">
+   <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/gitment.css">
+   <script src="http://mysrc.ufile.ucloud.com.cn/gitment.js"></script>
 </head>
 <body>
   <div id="container">
@@ -34,7 +34,7 @@
 	<header id="header" class="inner">
 		<a href="/" class="profilepic">
 			
-			<img lazy-src="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png" class="js-avatar">
+			<img lazy-src="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png" class="js-avatar">
 			
 		</a>
 
@@ -144,7 +144,7 @@
 	<div class="intrude-less">
 		<header id="header" class="inner">
 			<div class="profilepic">
-				<img lazy-src="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png" class="js-avatar">
+				<img lazy-src="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png" class="js-avatar">
 			</div>
 			<hgroup>
 			  <h1 class="header-author">zphj1987</h1>
@@ -219,7 +219,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/blueprint.png" alt="myceph"><br></center>
+        <center><br><img src="http://mysrc.ufile.ucloud.com.cn/blueprint.png" alt="myceph"><br></center>
 
 <h2 id="前言">前言</h2><p>前段时间看到<a href="https://mp.weixin.qq.com/s?__biz=MzI0NDE0NjUxMQ==&amp;mid=2651256389&amp;idx=1&amp;sn=e11edcce5722853f442b9a7b8211787e&amp;chksm=f2901e65c5e79773c7690f29e35dbd1870a5bfdb92c70541979f5d080d6580e3af9ba85fff66&amp;mpshare=1&amp;scene=23&amp;srcid=0502SazrSPsWnszP3xfdEId4#rd" target="_blank" rel="external">豪迈的公众号</a>上提到了这个离线转换工具，最近看到群里有人问，找了下没什么相关文档，就自己写了一个，供参考<br><a id="more"></a></p>
 <h2 id="实践步骤">实践步骤</h2><h3 id="获取代码并安装">获取代码并安装</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/ceph/ceph.git</span><br><span class="line"><span class="built_in">cd</span> ceph</span><br><span class="line">git submodule update --init --recursive</span><br><span class="line">./make-dist</span><br><span class="line">rpm -bb ceph.spec</span><br></pre></td></tr></table></figure>
@@ -379,7 +379,7 @@ show_date_time();
 </SCRIPT>
     </div>
     
-  <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/fancybox/jquery.fancybox.css" type="text/css">
+  <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/fancybox/jquery.fancybox.css" type="text/css">
 
 
 <script>
@@ -409,9 +409,9 @@ var _hmt = _hmt || [];
 
 
 
-<script src="http://7xweck.com1.z0.glb.clouddn.com/js/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
-<script src="http://7xweck.com1.z0.glb.clouddn.com/js/main.js" type="text/javascript"></script>
-<script src="http://7xweck.com1.z0.glb.clouddn.com/asciinema/asciinema-player.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/js/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/js/main.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/asciinema/asciinema-player.js" type="text/javascript"></script>
 
 
   </div>

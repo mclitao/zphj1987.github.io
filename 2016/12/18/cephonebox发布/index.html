@@ -11,7 +11,7 @@
 <meta property="og:url" content="http://www.zphj1987.com/2016/12/18/cephonebox发布/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
 <meta property="og:description" content="前言现在已经是2016年收官的一个月了，之前一直想做一个calamari的集成版本，之所以有这个想法，是因为，即使在已经打好包的情况下，因为各种软件版本的原因，造成很多人无法配置成功，calamari发布以后，因为版本的更迭，经常出现软件版本引起的BUG">
-<meta property="og:image" content="http://7xo9we.com1.z0.glb.clouddn.com/shipin/cephoneboxpre3.jpg">
+<meta property="og:image" content="http://mypic.ufile.ucloud.com.cn/shipin/cephoneboxpre3.jpg">
 <meta property="og:image" content="http://static.zybuluo.com/zphj1987/ui9hlsqffofb26ofgz7zz6i7/%E6%95%85%E9%9A%9C%E4%B8%80%E5%A4%84%E7%90%86.jpg">
 <meta property="og:image" content="http://static.zybuluo.com/zphj1987/wwwynt1mzipi2knbkmj8x8w4/%E6%95%85%E9%9A%9C%E4%BA%8C%E5%A4%84%E7%90%86.jpg">
 <meta name="twitter:card" content="summary">
@@ -21,12 +21,12 @@
     <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
   
   
-    <link rel="icon" href="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png">
+    <link rel="icon" href="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png">
   
-  <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/style.css" type="text/css">
-   <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/asciinema/asciinema-player.css" type="text/css">
-   <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/gitment.css">
-   <script src="http://7xweck.com1.z0.glb.clouddn.com/gitment.js"></script>
+  <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/style.css" type="text/css">
+   <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/asciinema/asciinema-player.css" type="text/css">
+   <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/gitment.css">
+   <script src="http://mysrc.ufile.ucloud.com.cn/gitment.js"></script>
 </head>
 <body>
   <div id="container">
@@ -36,7 +36,7 @@
 	<header id="header" class="inner">
 		<a href="/" class="profilepic">
 			
-			<img lazy-src="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png" class="js-avatar">
+			<img lazy-src="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png" class="js-avatar">
 			
 		</a>
 
@@ -146,7 +146,7 @@
 	<div class="intrude-less">
 		<header id="header" class="inner">
 			<div class="profilepic">
-				<img lazy-src="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png" class="js-avatar">
+				<img lazy-src="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png" class="js-avatar">
 			</div>
 			<hgroup>
 			  <h1 class="header-author">zphj1987</h1>
@@ -221,13 +221,13 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <center><br><img src="http://7xo9we.com1.z0.glb.clouddn.com/shipin/cephoneboxpre3.jpg" alt=""><br></center>
+        <center><br><img src="http://mypic.ufile.ucloud.com.cn/shipin/cephoneboxpre3.jpg" alt=""><br></center>
 
 <h2 id="前言">前言</h2><p>现在已经是2016年收官的一个月了，之前一直想做一个calamari的集成版本，之所以有这个想法，是因为，即使在已经打好包的情况下，因为各种软件版本的原因，造成很多人无法配置成功，calamari发布以后，因为版本的更迭，经常出现软件版本引起的BUG<br><a id="more"></a><br>这里直接把需要的软件集成在一起了，按照本篇指导，一步一步是能够很简单的配置起来的，并且提供了一个视频的指导，应该能够很大程度上降低calamari的部署难度，希望能够帮助到更多的人</p>
 <h2 id="集成软件版本说明">集成软件版本说明</h2><h3 id="操作系统_Centos_7-3">操作系统 Centos 7.3</h3><p>之所以选择这个版本是因为这个是最新发布的，centos小版本的发布能够解决一些BUG，并且不会做很大的改动，并且能够让这个集成系统保持一定的生命周期</p>
 <h3 id="ceph">ceph</h3><p>ceph采用的是Jewel版本的10.2.5，这个是最新发布的，因为Jewel版本是一个长期支持版本，并且小版本号已经到5了，已经在一定程度上达到了稳定</p>
 <h3 id="calamari">calamari</h3><p>calamari采用的是1.3版本，因为calamari要做新的接口，基本上这个就是当前系统的最后的一个稳定版本，集成的版本适配Jewel版本接口名称的变化<br>集成版本的diamond解决了无法获取iops的BUG</p>
-<h2 id="视频演示教程">视频演示教程</h2><div class="video-container"><object><video play="false" poster="http://7xo9we.com1.z0.glb.clouddn.com/shipin/cephoneboxpre2.jpg" src="http://7xo9we.com1.z0.glb.clouddn.com/shipin/cephonebox.mp4" controls="controls"></video></object></div>
+<h2 id="视频演示教程">视频演示教程</h2><div class="video-container"><object><video play="false" poster="http://mypic.ufile.ucloud.com.cn/shipin/cephoneboxpre2.jpg" src="http://mypic.ufile.ucloud.com.cn/shipin/cephonebox.mp4" controls="controls"></video></object></div>
 
 <h2 id="配置教程">配置教程</h2><h3 id="获取ISO">获取ISO</h3><p>地址如下：<br>链接：<a href="http://pan.baidu.com/s/1cimGYa" target="_blank" rel="external">http://pan.baidu.com/s/1cimGYa</a> 密码：1bs6<br>大小为811M</p>
 <p>安装完成后默认：<br>用户名为root ,密码为123456</p>
@@ -370,7 +370,7 @@ show_date_time();
 </SCRIPT>
     </div>
     
-  <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/fancybox/jquery.fancybox.css" type="text/css">
+  <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/fancybox/jquery.fancybox.css" type="text/css">
 
 
 <script>
@@ -400,9 +400,9 @@ var _hmt = _hmt || [];
 
 
 
-<script src="http://7xweck.com1.z0.glb.clouddn.com/js/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
-<script src="http://7xweck.com1.z0.glb.clouddn.com/js/main.js" type="text/javascript"></script>
-<script src="http://7xweck.com1.z0.glb.clouddn.com/asciinema/asciinema-player.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/js/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/js/main.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/asciinema/asciinema-player.js" type="text/javascript"></script>
 
 
   </div>

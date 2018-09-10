@@ -11,8 +11,8 @@
 <meta property="og:url" content="http://www.zphj1987.com/2016/03/24/Ceph-Bluestore首测/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
 <meta property="og:description" content="Bluestore 作为 Ceph Jewel 版本推出的一个重大的更新，提供了一种之前没有的存储形式，一直以来ceph的存储方式一直是以filestore的方式存储的，也就是对象是以文件方式存储在osd的磁盘上的，pg是以目录的方式存在于osd的磁盘上的在发展过程中，中间出现了kvstore，这个还是存储在文件系统之上，以leveldb或者rocksdb的方式存储对象数据，这个也没有推广开来，性">
-<meta property="og:image" content="http://7xi6lo.com1.z0.glb.clouddn.com/blue%E7%A1%AC%E4%BB%B6.png">
-<meta property="og:image" content="http://7xi6lo.com1.z0.glb.clouddn.com/blue%E8%BD%AF%E4%BB%B6.png">
+<meta property="og:image" content="http://zphj1987.ufile.ucloud.com.cn/blue%E7%A1%AC%E4%BB%B6.png">
+<meta property="og:image" content="http://zphj1987.ufile.ucloud.com.cn/blue%E8%BD%AF%E4%BB%B6.png">
 <meta property="og:image" content="http://static.zybuluo.com/zphj1987/5azadvfqzqny89fduyodbwpw/filestorefio%E8%BF%87%E7%A8%8B.png">
 <meta property="og:image" content="http://static.zybuluo.com/zphj1987/455zwwxtc16zs4m49wfd5qhq/filestoreresul.png">
 <meta property="og:image" content="http://static.zybuluo.com/zphj1987/89bnflxt1imyzld02ur78qum/filestorefio%E8%BF%87%E7%A8%8B4M.png">
@@ -21,8 +21,8 @@
 <meta property="og:image" content="http://static.zybuluo.com/zphj1987/xbr4sjr3u8ahmf2sfcr2x72l/bluefinal4K.png">
 <meta property="og:image" content="http://static.zybuluo.com/zphj1987/o7r57lpqf49rlpmfmchfwrrt/blueresult4M.png">
 <meta property="og:image" content="http://static.zybuluo.com/zphj1987/7kkhhmnxy55jwwseljw767e1/blueiostatfinal4M.png">
-<meta property="og:image" content="http://7xi6lo.com1.z0.glb.clouddn.com/blue%E6%AF%94%E8%BE%83.png">
-<meta property="og:image" content="http://7xo9we.com1.z0.glb.clouddn.com/payforzp.png">
+<meta property="og:image" content="http://zphj1987.ufile.ucloud.com.cn/blue%E6%AF%94%E8%BE%83.png">
+<meta property="og:image" content="http://mypic.ufile.ucloud.com.cn/payforzp.png">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Ceph Bluestore首测">
 <meta name="twitter:description" content="Bluestore 作为 Ceph Jewel 版本推出的一个重大的更新，提供了一种之前没有的存储形式，一直以来ceph的存储方式一直是以filestore的方式存储的，也就是对象是以文件方式存储在osd的磁盘上的，pg是以目录的方式存在于osd的磁盘上的在发展过程中，中间出现了kvstore，这个还是存储在文件系统之上，以leveldb或者rocksdb的方式存储对象数据，这个也没有推广开来，性">
@@ -30,12 +30,12 @@
     <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
   
   
-    <link rel="icon" href="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png">
+    <link rel="icon" href="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png">
   
-  <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/style.css" type="text/css">
-   <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/asciinema/asciinema-player.css" type="text/css">
-   <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/gitment.css">
-   <script src="http://7xweck.com1.z0.glb.clouddn.com/gitment.js"></script>
+  <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/style.css" type="text/css">
+   <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/asciinema/asciinema-player.css" type="text/css">
+   <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/gitment.css">
+   <script src="http://mysrc.ufile.ucloud.com.cn/gitment.js"></script>
 </head>
 <body>
   <div id="container">
@@ -45,7 +45,7 @@
 	<header id="header" class="inner">
 		<a href="/" class="profilepic">
 			
-			<img lazy-src="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png" class="js-avatar">
+			<img lazy-src="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png" class="js-avatar">
 			
 		</a>
 
@@ -155,7 +155,7 @@
 	<div class="intrude-less">
 		<header id="header" class="inner">
 			<div class="profilepic">
-				<img lazy-src="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png" class="js-avatar">
+				<img lazy-src="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png" class="js-avatar">
 			</div>
 			<hgroup>
 			  <h1 class="header-author">zphj1987</h1>
@@ -230,8 +230,8 @@
 <p>在这里不做过多的探讨技术上的细节，bluestore处于开发阶段，在最新的版本的ceph中，发现已经集成了这个，虽然还是实验阶段，但是还是体现出其未来巨大的价值</p>
 <a id="more"></a>
 <h3 id="环境准备">环境准备</h3><p>由于没有测试大量的设备，就在一个小环境下进行性能的验证，基准的性能不需要大量的机器，至于数据可靠性，就靠自己去判断了</p>
-<h4 id="硬件环境：">硬件环境：</h4><p><img src="http://7xi6lo.com1.z0.glb.clouddn.com/blue%E7%A1%AC%E4%BB%B6.png" alt=""></p>
-<h4 id="软件环境：">软件环境：</h4><p><img src="http://7xi6lo.com1.z0.glb.clouddn.com/blue%E8%BD%AF%E4%BB%B6.png" alt=""></p>
+<h4 id="硬件环境：">硬件环境：</h4><p><img src="http://zphj1987.ufile.ucloud.com.cn/blue%E7%A1%AC%E4%BB%B6.png" alt=""></p>
+<h4 id="软件环境：">软件环境：</h4><p><img src="http://zphj1987.ufile.ucloud.com.cn/blue%E8%BD%AF%E4%BB%B6.png" alt=""></p>
 <h3 id="一、先测试Filestore">一、先测试Filestore</h3><p>ceph-disk有个update_partition的bug，部署过程需要处理一下，后期发版本应该会解决</p>
 <h4 id="1、4K随机写200G的rbd测试时间300s">1、4K随机写200G的rbd测试时间300s</h4><p><img src="http://static.zybuluo.com/zphj1987/5azadvfqzqny89fduyodbwpw/filestorefio%E8%BF%87%E7%A8%8B.png" alt="filestorefio过程.png-132.1kB"><br>测试的io的抖动的情况</p>
 <p><img src="http://static.zybuluo.com/zphj1987/455zwwxtc16zs4m49wfd5qhq/filestoreresul.png" alt="filestoreresul.png-89.4kB"><br>测试的FIO结果的页面</p>
@@ -239,10 +239,10 @@
 <h3 id="二、测试bluestore">二、测试bluestore</h3><h4 id="1、4K随机写200G的rbd测试时间300s-1">1、4K随机写200G的rbd测试时间300s</h4><p><img src="http://static.zybuluo.com/zphj1987/iqy1lk80fa07aq8f71dug2xh/blueresult4K.png" alt="blueresult4K.png-99.6kB"><br><img src="http://static.zybuluo.com/zphj1987/xbr4sjr3u8ahmf2sfcr2x72l/bluefinal4K.png" alt="bluefinal4K.png-87.9kB"></p>
 <h4 id="2、4M顺序写200G的rbd测试时间300s-1">2、4M顺序写200G的rbd测试时间300s</h4><p><img src="http://static.zybuluo.com/zphj1987/o7r57lpqf49rlpmfmchfwrrt/blueresult4M.png" alt="blueresult4M.png-133.6kB"><br><img src="http://static.zybuluo.com/zphj1987/7kkhhmnxy55jwwseljw767e1/blueiostatfinal4M.png" alt="blueiostatfinal4M.png-90.9kB"></p>
 <p>以上为测试过程的数据记录，下面为对比的</p>
-<p><img src="http://7xi6lo.com1.z0.glb.clouddn.com/blue%E6%AF%94%E8%BE%83.png" alt=""></p>
+<p><img src="http://zphj1987.ufile.ucloud.com.cn/blue%E6%AF%94%E8%BE%83.png" alt=""></p>
 <p>整个测试来看改进非常的大，数据的曲线比之前要平滑很多，延时也变得更小，但是还是开发阶段，估计bug还是很多，不可控因素太多，并且暂时还没有修复工具，作为对未来ceph发展的一种期待吧，肯定会越来越好</p>
 <p><strong>如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作！</strong></p>
-<div style="text-align:center"><br><img src="http://7xo9we.com1.z0.glb.clouddn.com/payforzp.png" alt="支付宝" title="支付宝扫一扫"><br></div>
+<div style="text-align:center"><br><img src="http://mypic.ufile.ucloud.com.cn/payforzp.png" alt="支付宝" title="支付宝扫一扫"><br></div>
 
 
       
@@ -360,7 +360,7 @@ show_date_time();
 </SCRIPT>
     </div>
     
-  <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/fancybox/jquery.fancybox.css" type="text/css">
+  <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/fancybox/jquery.fancybox.css" type="text/css">
 
 
 <script>
@@ -390,9 +390,9 @@ var _hmt = _hmt || [];
 
 
 
-<script src="http://7xweck.com1.z0.glb.clouddn.com/js/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
-<script src="http://7xweck.com1.z0.glb.clouddn.com/js/main.js" type="text/javascript"></script>
-<script src="http://7xweck.com1.z0.glb.clouddn.com/asciinema/asciinema-player.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/js/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/js/main.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/asciinema/asciinema-player.js" type="text/javascript"></script>
 
 
   </div>

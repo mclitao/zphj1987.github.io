@@ -18,12 +18,12 @@
     <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
   
   
-    <link rel="icon" href="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png">
+    <link rel="icon" href="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png">
   
-  <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/style.css" type="text/css">
-   <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/asciinema/asciinema-player.css" type="text/css">
-   <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/gitment.css">
-   <script src="http://7xweck.com1.z0.glb.clouddn.com/gitment.js"></script>
+  <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/style.css" type="text/css">
+   <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/asciinema/asciinema-player.css" type="text/css">
+   <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/gitment.css">
+   <script src="http://mysrc.ufile.ucloud.com.cn/gitment.js"></script>
 </head>
 <body>
   <div id="container">
@@ -33,7 +33,7 @@
 	<header id="header" class="inner">
 		<a href="/" class="profilepic">
 			
-			<img lazy-src="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png" class="js-avatar">
+			<img lazy-src="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png" class="js-avatar">
 			
 		</a>
 
@@ -143,7 +143,7 @@
 	<div class="intrude-less">
 		<header id="header" class="inner">
 			<div class="profilepic">
-				<img lazy-src="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png" class="js-avatar">
+				<img lazy-src="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png" class="js-avatar">
 			</div>
 			<hgroup>
 			  <h1 class="header-author">zphj1987</h1>
@@ -183,70 +183,6 @@
 </nav>
       <div class="body-wrap">
   
-    <article id="post-zabbix自动发现的python方式数据生成" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/10/28/zabbix自动发现的python方式数据生成/" class="article-date">
-  	<time datetime="2016-10-27T17:11:08.000Z" itemprop="datePublished">2016-10-28</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/10/28/zabbix自动发现的python方式数据生成/">zabbix自动发现的python方式数据生成</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="一、前言">一、前言</h2><p>zabbix里面有个功能是自动发现，比如文件系统和网卡的获取的时候，因为预先无法知道这个网卡的名称，所以就有了这个自动发现的功能，这里我是因为要用到存储池的自动发现，所以需要对数据进行生成</p>
-<h2 id="二、实现">二、实现</h2><p>我们看下原生的接口的数据类型：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># zabbix_get -s 127.0.0.1 -k "net.if.discovery"</span></span><br><span class="line">&#123;<span class="string">"data"</span>:[&#123;<span class="string">"&#123;#IFNAME&#125;"</span>:<span class="string">"enp3s0"</span>&#125;,&#123;<span class="string">"&#123;#IFNAME&#125;"</span>:<span class="string">"virbr0-nic"</span>&#125;,&#123;<span class="string">"&#123;#IFNAME&#125;"</span>:<span class="string">"docker0"</span>&#125;,&#123;<span class="string">"&#123;#IFNAME&#125;"</span>:<span class="string">"enp4s0"</span>&#125;,&#123;<span class="string">"&#123;#IFNAME&#125;"</span>:<span class="string">"enp2s0f0"</span>&#125;,&#123;<span class="string">"&#123;#IFNAME&#125;"</span>:<span class="string">"enp2s0f1"</span>&#125;,&#123;<span class="string">"&#123;#IFNAME&#125;"</span>:<span class="string">"virbr0"</span>&#125;,&#123;<span class="string">"&#123;#IFNAME&#125;"</span>:<span class="string">"lo"</span>&#125;]&#125;</span><br></pre></td></tr></table></figure></p>
-<p>数据为格式化好了的json数据，这个地方弄了好半天，因为网上很多人是用字符串拼接的方式，实际这个是字典嵌套了列表，列表又嵌套了字典，就是后面的地方开始没弄懂怎么有大括号的<br>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/zabbix/">zabbix</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2016/10/28/zabbix自动发现的python方式数据生成/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-<div id="gitment"></div>
-<!-- 主页不要加载gitment -->
-
-
-
-
-  
     <article id="post-Docker与Ceph的分与合" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -273,7 +209,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p><center><br><img src="http://7xopdu.com1.z0.glb.clouddn.com/ceph/cephdocker.png" alt="dockerceph"><br></center></p>
+        <p><center><br><img src="http://calamaribook.ufile.ucloud.com.cn/ceph/cephdocker.png" alt="dockerceph"><br></center></p>
 <h2 id="一、前言">一、前言</h2><p>docker是一个管理工具，在操作系统之上提供了一个新的独立轻环境，好处是本地提供了一个基础镜像，然后基于镜像再运行环境，也可以把环境重新打包为镜像，管理起来类似于git，感觉非常的方便，并且能够做到一处提交，处处可以取到相同的环境，大大的减少了因为环境偏差造成的系统不稳定</p>
 <p>目前有不少生成环境已经把ceph和docker结合在一起运行了，这个有的是确实能够理解docker的好处，也能够有技术力量去进行维护，这个地方相当于两套系统了，并且关于技术的传递也增加了难度，特别是一套系统是docker+ceph的环境，并且又出现相关人员离职的情况，新来的人如果不是技术很熟，之前的技术文档没有记录很全的话，再去运维这一套系统还是比较有难度的</p>
 <p>本篇目的是记录一下docker与ceph的结合的方式，关于ceph和docker的分与合，只有做到能剥离的系统，才不会因为技术原因受限<br>
@@ -338,7 +274,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/ceph/pgnew.png" alt="pg"><br></center></p>
+        <p><center><br><img src="http://mysrc.ufile.ucloud.com.cn/ceph/pgnew.png" alt="pg"><br></center></p>
 <h2 id="一、前言">一、前言</h2><p>首先来一段英文关于PG和PGP区别的解释：</p>
 <blockquote>
 <p>PG = Placement Group<br>PGP = Placement Group for Placement purpose </p>
@@ -408,7 +344,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/ceph/ipv6.jpeg" alt="ipv6"><br></center><br>一、前言<br>对于IPV6实在是非常的陌生，所以本篇开始会讲一下最基本的网络配置，首先让网络能通起来，最开始就是因为不熟悉IPV6,而直接使用了link local地址，造成了mon部署的时候进程无法绑定到IP，从而端口没有启动，这个是在ceph社区群友 <code>ceph-长沙-柠檬</code> 同学的帮助下才发现问题的</p>
+        <p><center><br><img src="http://mysrc.ufile.ucloud.com.cn/ceph/ipv6.jpeg" alt="ipv6"><br></center><br>一、前言<br>对于IPV6实在是非常的陌生，所以本篇开始会讲一下最基本的网络配置，首先让网络能通起来，最开始就是因为不熟悉IPV6,而直接使用了link local地址，造成了mon部署的时候进程无法绑定到IP，从而端口没有启动，这个是在ceph社区群友 <code>ceph-长沙-柠檬</code> 同学的帮助下才发现问题的</p>
 <p>IPV6是会有个link local地址的，在一个接口可以配置很多IPv6地址，所以学习路由就有可能出现很多下一跳。所以出现Link Local地址唯一标识一个节点。在本地链路看到下一跳都是对端的Link Local地址。这个地址一般是以fe80开头的，子网掩码为64，这个地方需要给机器配置一个唯一的全局单播地址</p>
 <blockquote>
 <p>However, with IPv6, all (IPv6) interfaces will have a link local address. This address is intended to allow communications over the attached links and so is defined to be usable only on that link.</p>
@@ -474,7 +410,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/cephskill/cephskill.png" alt="cephskill"><br></center></p>
+        <p><center><br><img src="http://mysrc.ufile.ucloud.com.cn/cephskill/cephskill.png" alt="cephskill"><br></center></p>
 <h2 id="一、前言">一、前言</h2><p>之前在ceph中国社区看到有一个ceph的技能树，因为是一个图片，所以没法编辑，修改，所以完全copy了一份，方便查看，如果有侵犯到原作者的版权，欢迎沟通，从内容来看，感觉出自有云的一位工程师</p>
       
     </div>
@@ -608,7 +544,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p><center><br><img src="http://7xopdu.com1.z0.glb.clouddn.com/screen/roadmap.png" alt="参数"><br></center></p>
+        <p><center><br><img src="http://calamaribook.ufile.ucloud.com.cn/screen/roadmap.png" alt="参数"><br></center></p>
 <h2 id="一、前言">一、前言</h2><p>之前跟一个朋友沟通一个其他的问题的时候，发现了有一个参数 <code>mon osd down out subtree limit</code> 一直没有接触到，看了一下这个参数还是很有作用的，本篇将讲述这个参数的作用和使用的场景</p>
 <h2 id="二、测试环境准备">二、测试环境准备</h2><p>首先配置一个集群环境，配置基本参数<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">mon_osd_down_out_interval = 20</span><br></pre></td></tr></table></figure></p>
 <p>调整这个参数为20s,默认为300s,默认一个osd,down超过300s就会标记为out，然后触发迁移,这个是为了方便尽快看到测试的效果，很多测试都是可以这样缩短测试周期的</p>
@@ -738,7 +674,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/php/php-elephant-01.png" alt=""><br></center></p>
+        <p><center><br><img src="http://mysrc.ufile.ucloud.com.cn/php/php-elephant-01.png" alt=""><br></center></p>
 <h2 id="一、前言">一、前言</h2><p>因为项目上的需要，需要用到php，一般来说，用默认的版本和配置就可以满足大多数的场景，因为需要加入多线程，所以需要自己编译一个包</p>
 <p>一般来说，发行的包的版本的配置选项和代码都是最稳定的，所以在大多数情况下，我都不会直接去拿原始的源码做编译，这里我的经验是用别人发布版本的源码包，然后根据自己的需要，做修改，然后打包，这次的处理方法还是一样<br>
       
@@ -839,6 +775,65 @@
 
 
   
+    <article id="post-Python生成csv中文乱码的解决办法" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/09/28/Python生成csv中文乱码的解决办法/" class="article-date">
+  	<time datetime="2016-09-28T06:36:43.000Z" itemprop="datePublished">2016-09-28</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/09/28/Python生成csv中文乱码的解决办法/">Python生成csv中文乱码解决办法</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><center><br><img src="http://mysrc.ufile.ucloud.com.cn/csv/parsing-csv-dribbble.gif" alt="csv"><br></center></p>
+<h2 id="一、前言">一、前言</h2><p>在Linux下面用python进行数据处理，然后输出为csv格式，如果没有中文一切正常，但是如果有中文，就会出现乱码的问题,本篇将讲述怎么处理这个问题<br>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2016/09/28/Python生成csv中文乱码的解决办法/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+<div id="gitment"></div>
+<!-- 主页不要加载gitment -->
+
+
+
+
+  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/page/9/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="page-number" href="/page/9/">9</a><span class="page-number current">10</span><a class="page-number" href="/page/11/">11</a><a class="page-number" href="/page/12/">12</a><span class="space">&hellip;</span><a class="page-number" href="/page/27/">27</a><a class="extend next" rel="next" href="/page/11/">Next &raquo;</a>
@@ -880,7 +875,7 @@ show_date_time();
 </SCRIPT>
     </div>
     
-  <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/fancybox/jquery.fancybox.css" type="text/css">
+  <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/fancybox/jquery.fancybox.css" type="text/css">
 
 
 <script>
@@ -910,9 +905,9 @@ var _hmt = _hmt || [];
 
 
 
-<script src="http://7xweck.com1.z0.glb.clouddn.com/js/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
-<script src="http://7xweck.com1.z0.glb.clouddn.com/js/main.js" type="text/javascript"></script>
-<script src="http://7xweck.com1.z0.glb.clouddn.com/asciinema/asciinema-player.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/js/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/js/main.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/asciinema/asciinema-player.js" type="text/javascript"></script>
 
 
   </div>

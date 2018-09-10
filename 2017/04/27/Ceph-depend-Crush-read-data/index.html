@@ -11,7 +11,7 @@
 <meta property="og:url" content="http://www.zphj1987.com/2017/04/27/Ceph-depend-Crush-read-data/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
 <meta property="og:description" content="前言在ceph研发群里面看到一个cepher在问关于怎么读取ceph的副本的问题，这个功能应该在2012年的时候,我们公司的研发就修改了代码去实现这个功能，只是当时的硬件条件所限，以及本身的稳定性问题，后来没有在生产当中使用">
-<meta property="og:image" content="http://7xweck.com1.z0.glb.clouddn.com/read.gif?imageMogr2/thumbnail/!75p">
+<meta property="og:image" content="http://mysrc.ufile.ucloud.com.cn/read.gif?imageMogr2/thumbnail/!75p">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Ceph根据Crush位置读取数据">
 <meta name="twitter:description" content="前言在ceph研发群里面看到一个cepher在问关于怎么读取ceph的副本的问题，这个功能应该在2012年的时候,我们公司的研发就修改了代码去实现这个功能，只是当时的硬件条件所限，以及本身的稳定性问题，后来没有在生产当中使用">
@@ -19,12 +19,12 @@
     <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
   
   
-    <link rel="icon" href="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png">
+    <link rel="icon" href="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png">
   
-  <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/style.css" type="text/css">
-   <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/asciinema/asciinema-player.css" type="text/css">
-   <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/gitment.css">
-   <script src="http://7xweck.com1.z0.glb.clouddn.com/gitment.js"></script>
+  <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/style.css" type="text/css">
+   <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/asciinema/asciinema-player.css" type="text/css">
+   <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/gitment.css">
+   <script src="http://mysrc.ufile.ucloud.com.cn/gitment.js"></script>
 </head>
 <body>
   <div id="container">
@@ -34,7 +34,7 @@
 	<header id="header" class="inner">
 		<a href="/" class="profilepic">
 			
-			<img lazy-src="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png" class="js-avatar">
+			<img lazy-src="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png" class="js-avatar">
 			
 		</a>
 
@@ -144,7 +144,7 @@
 	<div class="intrude-less">
 		<header id="header" class="inner">
 			<div class="profilepic">
-				<img lazy-src="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png" class="js-avatar">
+				<img lazy-src="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png" class="js-avatar">
 			</div>
 			<hgroup>
 			  <h1 class="header-author">zphj1987</h1>
@@ -219,7 +219,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/read.gif?imageMogr2/thumbnail/!75p" alt=""><br></center>
+        <center><br><img src="http://mysrc.ufile.ucloud.com.cn/read.gif?imageMogr2/thumbnail/!75p" alt=""><br></center>
 
 <h2 id="前言">前言</h2><p>在ceph研发群里面看到一个cepher在问关于怎么读取ceph的副本的问题，这个功能应该在2012年的时候,我们公司的研发就修改了代码去实现这个功能，只是当时的硬件条件所限，以及本身的稳定性问题，后来没有在生产当中使用<br><a id="more"></a><br>我们都知道ceph在写数据的时候，是先写主本，然后去写副本，而读取的时候，实际上只有主本能够提供服务，这对于磁盘的整体带宽来说，并没有充分的发挥其性能，所以能够读取副本当然是会有很大好处的，特别是对于读场景比较多的情况</p>
 <p>那么在ceph当中是不是有这个功能呢？其实是有的，这个地方ceph更往上走了一层，是基于crush定义的地址去进行文件的读取，这样在读取的客户端眼里，就没有什么主副之分，他会按自己想要的区域去尽量读取，当然这个区域没有的时候就按正常读取就可以了<br><!--more--></p>
@@ -374,7 +374,7 @@ show_date_time();
 </SCRIPT>
     </div>
     
-  <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/fancybox/jquery.fancybox.css" type="text/css">
+  <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/fancybox/jquery.fancybox.css" type="text/css">
 
 
 <script>
@@ -404,9 +404,9 @@ var _hmt = _hmt || [];
 
 
 
-<script src="http://7xweck.com1.z0.glb.clouddn.com/js/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
-<script src="http://7xweck.com1.z0.glb.clouddn.com/js/main.js" type="text/javascript"></script>
-<script src="http://7xweck.com1.z0.glb.clouddn.com/asciinema/asciinema-player.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/js/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/js/main.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/asciinema/asciinema-player.js" type="text/javascript"></script>
 
 
   </div>

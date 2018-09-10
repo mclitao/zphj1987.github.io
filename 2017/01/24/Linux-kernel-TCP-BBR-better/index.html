@@ -11,7 +11,7 @@
 <meta property="og:url" content="http://www.zphj1987.com/2017/01/24/Linux-kernel-TCP-BBR-better/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
 <meta property="og:description" content="如果你有订阅一些科技新闻，应该会有看过内核在4.9当中加入了一个新的算法，来解决在有一定的丢包率的情况下的带宽稳定的问题，这个是谷歌为我们带来的干货，新的 TCP 拥塞控制算法 BBR (Bottleneck Bandwidth and RTT)，谷歌一向的做法是，先上生产，然后发论文，然后有可能开源，所以这个已经合并到了内核4.9分支当中，算法带来的改变在出的测试报告当中有很详细的数据展示，这个">
-<meta property="og:image" content="http://7xo9we.com1.z0.glb.clouddn.com/tcp_ip_protocol.gif">
+<meta property="og:image" content="http://mypic.ufile.ucloud.com.cn/tcp_ip_protocol.gif">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Linux 升级内核开启 TCP BBR 有多大好处">
 <meta name="twitter:description" content="如果你有订阅一些科技新闻，应该会有看过内核在4.9当中加入了一个新的算法，来解决在有一定的丢包率的情况下的带宽稳定的问题，这个是谷歌为我们带来的干货，新的 TCP 拥塞控制算法 BBR (Bottleneck Bandwidth and RTT)，谷歌一向的做法是，先上生产，然后发论文，然后有可能开源，所以这个已经合并到了内核4.9分支当中，算法带来的改变在出的测试报告当中有很详细的数据展示，这个">
@@ -19,12 +19,12 @@
     <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
   
   
-    <link rel="icon" href="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png">
+    <link rel="icon" href="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png">
   
-  <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/style.css" type="text/css">
-   <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/asciinema/asciinema-player.css" type="text/css">
-   <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/gitment.css">
-   <script src="http://7xweck.com1.z0.glb.clouddn.com/gitment.js"></script>
+  <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/style.css" type="text/css">
+   <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/asciinema/asciinema-player.css" type="text/css">
+   <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/gitment.css">
+   <script src="http://mysrc.ufile.ucloud.com.cn/gitment.js"></script>
 </head>
 <body>
   <div id="container">
@@ -34,7 +34,7 @@
 	<header id="header" class="inner">
 		<a href="/" class="profilepic">
 			
-			<img lazy-src="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png" class="js-avatar">
+			<img lazy-src="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png" class="js-avatar">
 			
 		</a>
 
@@ -144,7 +144,7 @@
 	<div class="intrude-less">
 		<header id="header" class="inner">
 			<div class="profilepic">
-				<img lazy-src="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png" class="js-avatar">
+				<img lazy-src="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png" class="js-avatar">
 			</div>
 			<hgroup>
 			  <h1 class="header-author">zphj1987</h1>
@@ -219,7 +219,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <center><br><img src="http://7xo9we.com1.z0.glb.clouddn.com/tcp_ip_protocol.gif" alt=""><br></center>
+        <center><br><img src="http://mypic.ufile.ucloud.com.cn/tcp_ip_protocol.gif" alt=""><br></center>
 
 <p>如果你有订阅一些科技新闻，应该会有看过内核在4.9当中加入了一个新的算法，来解决在有一定的丢包率的情况下的带宽稳定的问题，这个是谷歌为我们带来的干货，新的 TCP 拥塞控制算法 BBR (Bottleneck Bandwidth and RTT)，谷歌一向的做法是，先上生产，然后发论文，然后有可能开源，所以这个已经合并到了内核4.9分支当中，算法带来的改变在出的测试报告当中有很详细的数据展示，这个看多了可能反而不知道到底会有什么明显改变，特别是对于我们自己的场景</p>
 <p>那么本篇就是来做一个实践的，开看看在通用的一些场景下，这个改变有多大，先说下结果，是真的非常大<br><a id="more"></a></p>
@@ -383,7 +383,7 @@ show_date_time();
 </SCRIPT>
     </div>
     
-  <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/fancybox/jquery.fancybox.css" type="text/css">
+  <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/fancybox/jquery.fancybox.css" type="text/css">
 
 
 <script>
@@ -413,9 +413,9 @@ var _hmt = _hmt || [];
 
 
 
-<script src="http://7xweck.com1.z0.glb.clouddn.com/js/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
-<script src="http://7xweck.com1.z0.glb.clouddn.com/js/main.js" type="text/javascript"></script>
-<script src="http://7xweck.com1.z0.glb.clouddn.com/asciinema/asciinema-player.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/js/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/js/main.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/asciinema/asciinema-player.js" type="text/javascript"></script>
 
 
   </div>

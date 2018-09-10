@@ -15,8 +15,8 @@
 <meta property="og:description" content="修改同步服务器的配置文件/etc/ntp.conf ,删除所有的内容,添加restrict default nomodify&amp;#10;server  127.127.1.0     # local clock&amp;#10;fudge   127.127.1.0 stratum 8
 重启ntpd/etc/init.d/ntpd restart
 等待ntp服务器自身同步完成watch ntpq -p">
-<meta property="og:image" content="http://7xi6lo.com1.z0.glb.clouddn.com/centosntp1.jpg">
-<meta property="og:image" content="http://7xi6lo.com1.z0.glb.clouddn.com/centosntp2.jpg">
+<meta property="og:image" content="http://zphj1987.ufile.ucloud.com.cn/centosntp1.jpg">
+<meta property="og:image" content="http://zphj1987.ufile.ucloud.com.cn/centosntp2.jpg">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="centos做时间同步服务器">
 <meta name="twitter:description" content="修改同步服务器的配置文件/etc/ntp.conf ,删除所有的内容,添加restrict default nomodify&amp;#10;server  127.127.1.0     # local clock&amp;#10;fudge   127.127.1.0 stratum 8
@@ -26,12 +26,12 @@
     <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
   
   
-    <link rel="icon" href="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png">
+    <link rel="icon" href="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png">
   
-  <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/style.css" type="text/css">
-   <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/asciinema/asciinema-player.css" type="text/css">
-   <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/gitment.css">
-   <script src="http://7xweck.com1.z0.glb.clouddn.com/gitment.js"></script>
+  <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/style.css" type="text/css">
+   <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/asciinema/asciinema-player.css" type="text/css">
+   <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/gitment.css">
+   <script src="http://mysrc.ufile.ucloud.com.cn/gitment.js"></script>
 </head>
 <body>
   <div id="container">
@@ -41,7 +41,7 @@
 	<header id="header" class="inner">
 		<a href="/" class="profilepic">
 			
-			<img lazy-src="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png" class="js-avatar">
+			<img lazy-src="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png" class="js-avatar">
 			
 		</a>
 
@@ -151,7 +151,7 @@
 	<div class="intrude-less">
 		<header id="header" class="inner">
 			<div class="profilepic">
-				<img lazy-src="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png" class="js-avatar">
+				<img lazy-src="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png" class="js-avatar">
 			</div>
 			<hgroup>
 			  <h1 class="header-author">zphj1987</h1>
@@ -230,9 +230,9 @@
 <p>重启ntpd<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/etc/init.d/ntpd restart</span><br></pre></td></tr></table></figure></p>
 <p>等待ntp服务器自身同步完成<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">watch ntpq -p</span><br></pre></td></tr></table></figure></p>
 <a id="more"></a>
-<p><img src="http://7xi6lo.com1.z0.glb.clouddn.com/centosntp1.jpg" alt=""></p>
+<p><img src="http://zphj1987.ufile.ucloud.com.cn/centosntp1.jpg" alt=""></p>
 <p>观察这个reach需要超过17<br>否则其他机器ntpdate同步的时候会报错</p>
-<p><img src="http://7xi6lo.com1.z0.glb.clouddn.com/centosntp2.jpg" alt=""></p>
+<p><img src="http://zphj1987.ufile.ucloud.com.cn/centosntp2.jpg" alt=""></p>
 <hr>
 <p>配置文件方式<br>服务器端配置<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">restrict default nomodify</span><br><span class="line">server  <span class="number">127.127</span>.<span class="number">1.0</span></span><br><span class="line">fudge   <span class="number">127.127</span>.<span class="number">1.0</span> stratum <span class="number">8</span></span><br></pre></td></tr></table></figure></p>
 <p>客户端配置<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">driftfile /var/lib/ntp/drift</span><br><span class="line">server <span class="number">192.168</span>.<span class="number">8.102</span></span><br><span class="line">includefile /etc/ntp/crypto/pw</span><br><span class="line">keys /etc/ntp/keys</span><br></pre></td></tr></table></figure></p>
@@ -358,7 +358,7 @@ show_date_time();
 </SCRIPT>
     </div>
     
-  <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/fancybox/jquery.fancybox.css" type="text/css">
+  <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/fancybox/jquery.fancybox.css" type="text/css">
 
 
 <script>
@@ -388,9 +388,9 @@ var _hmt = _hmt || [];
 
 
 
-<script src="http://7xweck.com1.z0.glb.clouddn.com/js/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
-<script src="http://7xweck.com1.z0.glb.clouddn.com/js/main.js" type="text/javascript"></script>
-<script src="http://7xweck.com1.z0.glb.clouddn.com/asciinema/asciinema-player.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/js/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/js/main.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/asciinema/asciinema-player.js" type="text/javascript"></script>
 
 
   </div>

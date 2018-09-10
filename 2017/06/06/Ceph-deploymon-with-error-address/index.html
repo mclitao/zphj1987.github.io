@@ -11,7 +11,7 @@
 <meta property="og:url" content="http://www.zphj1987.com/2017/06/06/Ceph-deploymon-with-error-address/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
 <meta property="og:description" content="前言最近在群里两次看到出现mon地址不对的问题，都是显示0.0.0.0:0地址，如下所示：[root@lab8106 ceph]# ceph -s    cluster 3137d009-e41e-41f0-b8f8-5cb574502572     health HEALTH_ERR            1 mons down, quorum 0,1,2 lab8106,node8107,la">
-<meta property="og:image" content="http://7xweck.com1.z0.glb.clouddn.com/monitor.png">
+<meta property="og:image" content="http://mysrc.ufile.ucloud.com.cn/monitor.png">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Ceph部署mon出现0.0.0.0地址">
 <meta name="twitter:description" content="前言最近在群里两次看到出现mon地址不对的问题，都是显示0.0.0.0:0地址，如下所示：[root@lab8106 ceph]# ceph -s    cluster 3137d009-e41e-41f0-b8f8-5cb574502572     health HEALTH_ERR            1 mons down, quorum 0,1,2 lab8106,node8107,la">
@@ -19,12 +19,12 @@
     <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
   
   
-    <link rel="icon" href="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png">
+    <link rel="icon" href="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png">
   
-  <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/style.css" type="text/css">
-   <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/asciinema/asciinema-player.css" type="text/css">
-   <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/gitment.css">
-   <script src="http://7xweck.com1.z0.glb.clouddn.com/gitment.js"></script>
+  <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/style.css" type="text/css">
+   <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/asciinema/asciinema-player.css" type="text/css">
+   <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/gitment.css">
+   <script src="http://mysrc.ufile.ucloud.com.cn/gitment.js"></script>
 </head>
 <body>
   <div id="container">
@@ -34,7 +34,7 @@
 	<header id="header" class="inner">
 		<a href="/" class="profilepic">
 			
-			<img lazy-src="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png" class="js-avatar">
+			<img lazy-src="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png" class="js-avatar">
 			
 		</a>
 
@@ -144,7 +144,7 @@
 	<div class="intrude-less">
 		<header id="header" class="inner">
 			<div class="profilepic">
-				<img lazy-src="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png" class="js-avatar">
+				<img lazy-src="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png" class="js-avatar">
 			</div>
 			<hgroup>
 			  <h1 class="header-author">zphj1987</h1>
@@ -219,7 +219,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/monitor.png" alt="monitor"><br></center>
+        <center><br><img src="http://mysrc.ufile.ucloud.com.cn/monitor.png" alt="monitor"><br></center>
 
 <h2 id="前言">前言</h2><p>最近在群里两次看到出现mon地址不对的问题，都是显示0.0.0.0:0地址，如下所示：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># ceph -s</span></span><br><span class="line">    cluster <span class="number">3137</span>d009<span class="operator">-e</span>41e-<span class="number">41</span>f0-b8f8-<span class="number">5</span>cb574502572</span><br><span class="line">     health HEALTH_ERR</span><br><span class="line">            <span class="number">1</span> mons down, quorum <span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span> lab8106,node8107,lab104</span><br><span class="line">     monmap e2: <span class="number">4</span> mons at &#123;lab104=<span class="number">192.168</span>.<span class="number">10.4</span>:<span class="number">6789</span>/<span class="number">0</span>,lab8106=<span class="number">192.168</span>.<span class="number">8.106</span>:<span class="number">6789</span>/<span class="number">0</span>,lab8107=<span class="number">0.0</span>.<span class="number">0.0</span>:<span class="number">0</span>/<span class="number">2</span>,node8107=<span class="number">192.168</span>.<span class="number">8.107</span>:<span class="number">6789</span>/<span class="number">0</span>&#125;</span><br></pre></td></tr></table></figure></p>
 <a id="more"></a>
@@ -361,7 +361,7 @@ show_date_time();
 </SCRIPT>
     </div>
     
-  <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/fancybox/jquery.fancybox.css" type="text/css">
+  <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/fancybox/jquery.fancybox.css" type="text/css">
 
 
 <script>
@@ -391,9 +391,9 @@ var _hmt = _hmt || [];
 
 
 
-<script src="http://7xweck.com1.z0.glb.clouddn.com/js/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
-<script src="http://7xweck.com1.z0.glb.clouddn.com/js/main.js" type="text/javascript"></script>
-<script src="http://7xweck.com1.z0.glb.clouddn.com/asciinema/asciinema-player.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/js/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/js/main.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/asciinema/asciinema-player.js" type="text/javascript"></script>
 
 
   </div>

@@ -11,9 +11,9 @@
 <meta property="og:url" content="http://www.zphj1987.com/2016/07/27/Ceph-状态报警告-pool-rbd-has-many-more-objects-per-pg-than-average-too-few-pgs/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
 <meta property="og:description" content="定位问题[root@lab8106 ~]# ceph -s    cluster fa7ec1a1-662a-4ba3-b478-7cb570482b62     health HEALTH_WARN            pool rbd has many more objects per pg than average (too few pgs?)     monmap e1: 1 mons">
-<meta property="og:image" content="http://7xweck.com1.z0.glb.clouddn.com/ceph%E7%8A%B6%E6%80%81%E8%AD%A6%E5%91%8A/d-a.gif">
+<meta property="og:image" content="http://mysrc.ufile.ucloud.com.cn/ceph%E7%8A%B6%E6%80%81%E8%AD%A6%E5%91%8A/d-a.gif">
 <meta property="og:image" content="http://static.zybuluo.com/zphj1987/fi2557g55ucsdpyblopyfudl/newpay.png">
-<meta property="og:image" content="http://7xi6lo.com1.z0.glb.clouddn.com/qqqun2.png">
+<meta property="og:image" content="http://zphj1987.ufile.ucloud.com.cn/qqqun2.png">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Ceph 状态报警告 pool rbd has many more objects per pg than average (too few pgs?)">
 <meta name="twitter:description" content="定位问题[root@lab8106 ~]# ceph -s    cluster fa7ec1a1-662a-4ba3-b478-7cb570482b62     health HEALTH_WARN            pool rbd has many more objects per pg than average (too few pgs?)     monmap e1: 1 mons">
@@ -21,12 +21,12 @@
     <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
   
   
-    <link rel="icon" href="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png">
+    <link rel="icon" href="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png">
   
-  <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/style.css" type="text/css">
-   <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/asciinema/asciinema-player.css" type="text/css">
-   <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/gitment.css">
-   <script src="http://7xweck.com1.z0.glb.clouddn.com/gitment.js"></script>
+  <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/style.css" type="text/css">
+   <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/asciinema/asciinema-player.css" type="text/css">
+   <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/gitment.css">
+   <script src="http://mysrc.ufile.ucloud.com.cn/gitment.js"></script>
 </head>
 <body>
   <div id="container">
@@ -36,7 +36,7 @@
 	<header id="header" class="inner">
 		<a href="/" class="profilepic">
 			
-			<img lazy-src="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png" class="js-avatar">
+			<img lazy-src="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png" class="js-avatar">
 			
 		</a>
 
@@ -146,7 +146,7 @@
 	<div class="intrude-less">
 		<header id="header" class="inner">
 			<div class="profilepic">
-				<img lazy-src="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png" class="js-avatar">
+				<img lazy-src="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png" class="js-avatar">
 			</div>
 			<hgroup>
 			  <h1 class="header-author">zphj1987</h1>
@@ -221,7 +221,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/ceph%E7%8A%B6%E6%80%81%E8%AD%A6%E5%91%8A/d-a.gif" alt=""><br></center>
+        <center><br><img src="http://mysrc.ufile.ucloud.com.cn/ceph%E7%8A%B6%E6%80%81%E8%AD%A6%E5%91%8A/d-a.gif" alt=""><br></center>
 
 
 <h2 id="定位问题">定位问题</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ceph -s</span></span><br><span class="line">    cluster fa7ec1a1-<span class="number">662</span>a-<span class="number">4</span>ba3-b478-<span class="number">7</span>cb570482b62</span><br><span class="line">     health HEALTH_WARN</span><br><span class="line">            pool rbd has many more objects per pg than average (too few pgs?)</span><br><span class="line">     monmap e1: <span class="number">1</span> mons at &#123;lab8106=<span class="number">192.168</span>.<span class="number">8.106</span>:<span class="number">6789</span>/<span class="number">0</span>&#125;</span><br><span class="line">            election epoch <span class="number">30</span>, quorum <span class="number">0</span> lab8106</span><br><span class="line">     osdmap e157: <span class="number">2</span> osds: <span class="number">2</span> up, <span class="number">2</span> <span class="keyword">in</span></span><br><span class="line">            flags sortbitwise</span><br><span class="line">      pgmap v1023: <span class="number">417</span> pgs, <span class="number">13</span> pools, <span class="number">18519</span> MB data, <span class="number">15920</span> objects</span><br><span class="line">            <span class="number">18668</span> MB used, <span class="number">538</span> GB / <span class="number">556</span> GB avail</span><br><span class="line">                 <span class="number">417</span> active+clean</span><br></pre></td></tr></table></figure>
@@ -276,7 +276,7 @@
 
 
 <h2 id="广告">广告</h2><p>收费小群（适合新手，大牛忽略）：</p>
-<center><br><img src="http://7xi6lo.com1.z0.glb.clouddn.com/qqqun2.png" alt=""><br></center>
+<center><br><img src="http://zphj1987.ufile.ucloud.com.cn/qqqun2.png" alt=""><br></center>
 
 
 
@@ -395,7 +395,7 @@ show_date_time();
 </SCRIPT>
     </div>
     
-  <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/fancybox/jquery.fancybox.css" type="text/css">
+  <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/fancybox/jquery.fancybox.css" type="text/css">
 
 
 <script>
@@ -425,9 +425,9 @@ var _hmt = _hmt || [];
 
 
 
-<script src="http://7xweck.com1.z0.glb.clouddn.com/js/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
-<script src="http://7xweck.com1.z0.glb.clouddn.com/js/main.js" type="text/javascript"></script>
-<script src="http://7xweck.com1.z0.glb.clouddn.com/asciinema/asciinema-player.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/js/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/js/main.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/asciinema/asciinema-player.js" type="text/javascript"></script>
 
 
   </div>

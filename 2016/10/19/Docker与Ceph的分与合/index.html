@@ -13,7 +13,7 @@
 <meta property="og:site_name" content="zphj1987'Blog">
 <meta property="og:description" content="一、前言docker是一个管理工具，在操作系统之上提供了一个新的独立轻环境，好处是本地提供了一个基础镜像，然后基于镜像再运行环境，也可以把环境重新打包为镜像，管理起来类似于git，感觉非常的方便，并且能够做到一处提交，处处可以取到相同的环境，大大的减少了因为环境偏差造成的系统不稳定
 目前有不少生成环境已经把ceph和docker结合在一起运行了，这个有的是确实能够理解docker的好处，也能够有技">
-<meta property="og:image" content="http://7xopdu.com1.z0.glb.clouddn.com/ceph/cephdocker.png">
+<meta property="og:image" content="http://calamaribook.ufile.ucloud.com.cn/ceph/cephdocker.png">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Docker与Ceph的分与合">
 <meta name="twitter:description" content="一、前言docker是一个管理工具，在操作系统之上提供了一个新的独立轻环境，好处是本地提供了一个基础镜像，然后基于镜像再运行环境，也可以把环境重新打包为镜像，管理起来类似于git，感觉非常的方便，并且能够做到一处提交，处处可以取到相同的环境，大大的减少了因为环境偏差造成的系统不稳定
@@ -22,12 +22,12 @@
     <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
   
   
-    <link rel="icon" href="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png">
+    <link rel="icon" href="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png">
   
-  <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/style.css" type="text/css">
-   <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/asciinema/asciinema-player.css" type="text/css">
-   <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/gitment.css">
-   <script src="http://7xweck.com1.z0.glb.clouddn.com/gitment.js"></script>
+  <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/style.css" type="text/css">
+   <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/asciinema/asciinema-player.css" type="text/css">
+   <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/gitment.css">
+   <script src="http://mysrc.ufile.ucloud.com.cn/gitment.js"></script>
 </head>
 <body>
   <div id="container">
@@ -37,7 +37,7 @@
 	<header id="header" class="inner">
 		<a href="/" class="profilepic">
 			
-			<img lazy-src="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png" class="js-avatar">
+			<img lazy-src="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png" class="js-avatar">
 			
 		</a>
 
@@ -147,7 +147,7 @@
 	<div class="intrude-less">
 		<header id="header" class="inner">
 			<div class="profilepic">
-				<img lazy-src="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png" class="js-avatar">
+				<img lazy-src="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png" class="js-avatar">
 			</div>
 			<hgroup>
 			  <h1 class="header-author">zphj1987</h1>
@@ -222,7 +222,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p><center><br><img src="http://7xopdu.com1.z0.glb.clouddn.com/ceph/cephdocker.png" alt="dockerceph"><br></center></p>
+        <p><center><br><img src="http://calamaribook.ufile.ucloud.com.cn/ceph/cephdocker.png" alt="dockerceph"><br></center></p>
 <h2 id="一、前言">一、前言</h2><p>docker是一个管理工具，在操作系统之上提供了一个新的独立轻环境，好处是本地提供了一个基础镜像，然后基于镜像再运行环境，也可以把环境重新打包为镜像，管理起来类似于git，感觉非常的方便，并且能够做到一处提交，处处可以取到相同的环境，大大的减少了因为环境偏差造成的系统不稳定</p>
 <p>目前有不少生成环境已经把ceph和docker结合在一起运行了，这个有的是确实能够理解docker的好处，也能够有技术力量去进行维护，这个地方相当于两套系统了，并且关于技术的传递也增加了难度，特别是一套系统是docker+ceph的环境，并且又出现相关人员离职的情况，新来的人如果不是技术很熟，之前的技术文档没有记录很全的话，再去运维这一套系统还是比较有难度的</p>
 <p>本篇目的是记录一下docker与ceph的结合的方式，关于ceph和docker的分与合，只有做到能剥离的系统，才不会因为技术原因受限<br><a id="more"></a></p>
@@ -395,7 +395,7 @@ show_date_time();
 </SCRIPT>
     </div>
     
-  <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/fancybox/jquery.fancybox.css" type="text/css">
+  <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/fancybox/jquery.fancybox.css" type="text/css">
 
 
 <script>
@@ -425,9 +425,9 @@ var _hmt = _hmt || [];
 
 
 
-<script src="http://7xweck.com1.z0.glb.clouddn.com/js/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
-<script src="http://7xweck.com1.z0.glb.clouddn.com/js/main.js" type="text/javascript"></script>
-<script src="http://7xweck.com1.z0.glb.clouddn.com/asciinema/asciinema-player.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/js/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/js/main.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/asciinema/asciinema-player.js" type="text/javascript"></script>
 
 
   </div>

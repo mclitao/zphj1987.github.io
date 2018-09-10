@@ -11,7 +11,7 @@
 <meta property="og:url" content="http://www.zphj1987.com/2017/02/08/预估ceph的迁移数据量/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
 <meta property="og:description" content="引言我们在进行 ceph 的 osd 的增加和减少的维护的时候，会碰到迁移数据，但是我们平时会怎么去回答关于迁移数据量的问题，一般来说，都是说很多，或者说根据环境来看，有没有精确的一个说法，到底要迁移多少数据?这个我以前也有思考过这个问题，当时想是对比前后的pg的分布，然后进行计算，正好在翻一些资料的时候，看到有alram写的一篇博客，alram是Inktank的程序员，也就是sage所在的公司，">
-<meta property="og:image" content="http://7xweck.com1.z0.glb.clouddn.com/calculator.png">
+<meta property="og:image" content="http://mysrc.ufile.ucloud.com.cn/calculator.png">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="预估ceph的迁移数据量">
 <meta name="twitter:description" content="引言我们在进行 ceph 的 osd 的增加和减少的维护的时候，会碰到迁移数据，但是我们平时会怎么去回答关于迁移数据量的问题，一般来说，都是说很多，或者说根据环境来看，有没有精确的一个说法，到底要迁移多少数据?这个我以前也有思考过这个问题，当时想是对比前后的pg的分布，然后进行计算，正好在翻一些资料的时候，看到有alram写的一篇博客，alram是Inktank的程序员，也就是sage所在的公司，">
@@ -19,12 +19,12 @@
     <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
   
   
-    <link rel="icon" href="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png">
+    <link rel="icon" href="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png">
   
-  <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/style.css" type="text/css">
-   <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/asciinema/asciinema-player.css" type="text/css">
-   <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/gitment.css">
-   <script src="http://7xweck.com1.z0.glb.clouddn.com/gitment.js"></script>
+  <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/style.css" type="text/css">
+   <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/asciinema/asciinema-player.css" type="text/css">
+   <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/gitment.css">
+   <script src="http://mysrc.ufile.ucloud.com.cn/gitment.js"></script>
 </head>
 <body>
   <div id="container">
@@ -34,7 +34,7 @@
 	<header id="header" class="inner">
 		<a href="/" class="profilepic">
 			
-			<img lazy-src="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png" class="js-avatar">
+			<img lazy-src="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png" class="js-avatar">
 			
 		</a>
 
@@ -144,7 +144,7 @@
 	<div class="intrude-less">
 		<header id="header" class="inner">
 			<div class="profilepic">
-				<img lazy-src="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png" class="js-avatar">
+				<img lazy-src="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png" class="js-avatar">
 			</div>
 			<hgroup>
 			  <h1 class="header-author">zphj1987</h1>
@@ -219,7 +219,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/calculator.png" alt="cal"><br></center>
+        <center><br><img src="http://mysrc.ufile.ucloud.com.cn/calculator.png" alt="cal"><br></center>
 
 <h2 id="引言">引言</h2><p>我们在进行 ceph 的 osd 的增加和减少的维护的时候，会碰到迁移数据，但是我们平时会怎么去回答关于迁移数据量的问题，一般来说，都是说很多，或者说根据环境来看，有没有精确的一个说法，到底要迁移多少数据?这个我以前也有思考过这个问题，当时想是对比前后的pg的分布，然后进行计算，正好在翻一些资料的时候，看到有alram写的一篇博客，alram是Inktank的程序员，也就是sage所在的公司，程序是一个python脚本，本篇会分析下这个对比的思路，以及运行效果</p>
 <p>计算迁移量只需要一个修改后的crushmap就可以了，这个是离线计算的，所以不会对集群有什么影响<br><a id="more"></a></p>
@@ -378,7 +378,7 @@ show_date_time();
 </SCRIPT>
     </div>
     
-  <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/fancybox/jquery.fancybox.css" type="text/css">
+  <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/fancybox/jquery.fancybox.css" type="text/css">
 
 
 <script>
@@ -408,9 +408,9 @@ var _hmt = _hmt || [];
 
 
 
-<script src="http://7xweck.com1.z0.glb.clouddn.com/js/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
-<script src="http://7xweck.com1.z0.glb.clouddn.com/js/main.js" type="text/javascript"></script>
-<script src="http://7xweck.com1.z0.glb.clouddn.com/asciinema/asciinema-player.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/js/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/js/main.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/asciinema/asciinema-player.js" type="text/javascript"></script>
 
 
   </div>

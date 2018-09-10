@@ -21,12 +21,12 @@
     <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
   
   
-    <link rel="icon" href="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png">
+    <link rel="icon" href="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png">
   
-  <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/style.css" type="text/css">
-   <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/asciinema/asciinema-player.css" type="text/css">
-   <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/gitment.css">
-   <script src="http://7xweck.com1.z0.glb.clouddn.com/gitment.js"></script>
+  <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/style.css" type="text/css">
+   <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/asciinema/asciinema-player.css" type="text/css">
+   <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/gitment.css">
+   <script src="http://mysrc.ufile.ucloud.com.cn/gitment.js"></script>
 </head>
 <body>
   <div id="container">
@@ -36,7 +36,7 @@
 	<header id="header" class="inner">
 		<a href="/" class="profilepic">
 			
-			<img lazy-src="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png" class="js-avatar">
+			<img lazy-src="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png" class="js-avatar">
 			
 		</a>
 
@@ -146,7 +146,7 @@
 	<div class="intrude-less">
 		<header id="header" class="inner">
 			<div class="profilepic">
-				<img lazy-src="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png" class="js-avatar">
+				<img lazy-src="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png" class="js-avatar">
 			</div>
 			<hgroup>
 			  <h1 class="header-author">zphj1987</h1>
@@ -247,7 +247,7 @@
 <h3 id="开始测试">开始测试</h3><p>测试一：采用内存盘journal的方式<br>使用radosbench进行测试（采取默认的写，并且不删除的测试，尽量把内存写满，未进行任何调优）<br><figure class="highlight groovy"><table><tr><td class="code"><pre><span class="line">[root<span class="annotation">@lab</span>8106 ceph]# rados bench -p rbd <span class="number">120</span> write --no-cleanup --run-name testmemdisk</span><br><span class="line">Total time <span class="string">run:</span>         <span class="number">120.568031</span></span><br><span class="line">Total writes <span class="string">made:</span>      <span class="number">5857</span></span><br><span class="line">Write <span class="string">size:</span>             <span class="number">4194304</span></span><br><span class="line">Bandwidth (MB/sec):     <span class="number">194.314</span> </span><br><span class="line"></span><br><span class="line">Stddev <span class="string">Bandwidth:</span>       <span class="number">144.18</span></span><br><span class="line">Max bandwidth (MB/sec): <span class="number">504</span></span><br><span class="line">Min bandwidth (MB/sec): <span class="number">0</span></span><br><span class="line">Average <span class="string">Latency:</span>        <span class="number">0.329322</span></span><br><span class="line">Stddev <span class="string">Latency:</span>         <span class="number">0.48777</span></span><br><span class="line">Max <span class="string">latency:</span>            <span class="number">3.01612</span></span><br><span class="line">Min <span class="string">latency:</span>            <span class="number">0.0377235</span></span><br></pre></td></tr></table></figure></p>
 <p>测试二：采用默认的磁盘journal的方式，环境恢复要原始的情况<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ceph]<span class="comment"># rados bench -p rbd 120 write --no-cleanup --run-name testmemdisk</span></span><br><span class="line">Total time run:         <span class="number">120.613851</span></span><br><span class="line">Total writes made:      <span class="number">3404</span></span><br><span class="line">Write size:             <span class="number">4194304</span></span><br><span class="line">Bandwidth (MB/sec):     <span class="number">112.889</span> </span><br><span class="line"></span><br><span class="line">Stddev Bandwidth:       <span class="number">26.3641</span></span><br><span class="line">Max bandwidth (MB/sec): <span class="number">160</span></span><br><span class="line">M<span class="keyword">in</span> bandwidth (MB/sec): <span class="number">0</span></span><br><span class="line">Average Latency:        <span class="number">0.566656</span></span><br><span class="line">Stddev Latency:         <span class="number">0.305038</span></span><br><span class="line">Max latency:            <span class="number">2.00623</span></span><br><span class="line">M<span class="keyword">in</span> latency:            <span class="number">0.105026</span></span><br></pre></td></tr></table></figure></p>
 <p>测试的结果如上，上表格也许看的更直观，正好之前在找一个表格插件，现在用用</p>
-<h3 id="内存盘journal与磁盘journal性能对比">内存盘journal与磁盘journal性能对比</h3><p></p><p><link rel="stylesheet" href="http://7xo9we.com1.z0.glb.clouddn.com/compareninja%2Fskin.css" type="text/css"></p><div id="tableWrapper" style="width: 100%; "><table id="vsTable"><tbody><tr><td class="cat title" style="width: 20%; "></td><td class="title" style="width: 40%; "><div class="">内存盘journal</div></td><td class="title" style="width: 40%; "><div class="">磁盘journal</div></td></tr><tr class="second"><td class="cat" style="width: 20%; "><div class="">测试时间(s)</div></td><td style="width: 40%; "><div class="">120.568031</div></td><td style="width: 40%; "><div class="">120.613851</div></td></tr><tr><td class="cat" style="width: 20%; "><div class="">写数据块数</div></td><td style="width: 40%; "><div class="">5857</div></td><td style="width: 40%; "><div class="">3404</div></td></tr><tr><td class="cat" style="width: 20%; "><div class="">总共写入数据(MB)</div></td><td style="width: 40%; "><div class="">23428</div></td><td style="width: 40%; "><div class="">13616</div></td></tr><tr><td class="cat" style="width: 20%; "><div class="">数据块大小</div></td><td style="width: 40%; "><div class="">4194304</div></td><td style="width: 40%; "><div class="">4194304</div></td></tr><tr class="second"><td class="cat" style="width: 20%; "><div class="">写带宽(MB/sec)</div></td><td style="width: 40%; "><div class="">194.314</div></td><td style="width: 40%; "><div class="">112.889</div></td></tr><tr><td class="cat" style="width: 20%; "><div class="">带宽标准偏差</div></td><td style="width: 40%; "><div class="">144.18</div></td><td style="width: 40%; "><div class="">26.3641</div></td></tr><tr class="second"><td class="cat" style="width: 20%; "><div class="">最大带宽(MB/sec)</div></td><td style="width: 40%; "><div class="">504</div></td><td style="width: 40%; "><div class="">160</div></td></tr><tr><td class="cat" style="width: 20%; "><div class="">平均延时</div></td><td style="width: 40%; "><div class="">0.32932</div></td><td style="width: 40%; "><div class="">0.566656</div></td></tr><tr class="second"><td class="cat" style="width: 20%; "><div class="">延时偏差</div></td><td style="width: 40%; "><div class="">0.48777</div></td><td style="width: 40%; "><div class="">0.305038</div></td></tr><tr class="second"><td class="cat" style="width: 20%; "><div class="">最大延时</div></td><td style="width: 40%; "><div class="">3.01612</div></td><td style="width: 40%; "><div class="">2.00623</div></td></tr><tr class="second"><td class="cat" style="width: 20%; "><div class="">最小延时</div></td><td style="width: 40%; "><div class="">0.0377235</div></td><td style="width: 40%; "><div class="">0.105026</div></td></tr></tbody></table></div><p></p>
+<h3 id="内存盘journal与磁盘journal性能对比">内存盘journal与磁盘journal性能对比</h3><p></p><p><link rel="stylesheet" href="http://mypic.ufile.ucloud.com.cn/compareninja%2Fskin.css" type="text/css"></p><div id="tableWrapper" style="width: 100%; "><table id="vsTable"><tbody><tr><td class="cat title" style="width: 20%; "></td><td class="title" style="width: 40%; "><div class="">内存盘journal</div></td><td class="title" style="width: 40%; "><div class="">磁盘journal</div></td></tr><tr class="second"><td class="cat" style="width: 20%; "><div class="">测试时间(s)</div></td><td style="width: 40%; "><div class="">120.568031</div></td><td style="width: 40%; "><div class="">120.613851</div></td></tr><tr><td class="cat" style="width: 20%; "><div class="">写数据块数</div></td><td style="width: 40%; "><div class="">5857</div></td><td style="width: 40%; "><div class="">3404</div></td></tr><tr><td class="cat" style="width: 20%; "><div class="">总共写入数据(MB)</div></td><td style="width: 40%; "><div class="">23428</div></td><td style="width: 40%; "><div class="">13616</div></td></tr><tr><td class="cat" style="width: 20%; "><div class="">数据块大小</div></td><td style="width: 40%; "><div class="">4194304</div></td><td style="width: 40%; "><div class="">4194304</div></td></tr><tr class="second"><td class="cat" style="width: 20%; "><div class="">写带宽(MB/sec)</div></td><td style="width: 40%; "><div class="">194.314</div></td><td style="width: 40%; "><div class="">112.889</div></td></tr><tr><td class="cat" style="width: 20%; "><div class="">带宽标准偏差</div></td><td style="width: 40%; "><div class="">144.18</div></td><td style="width: 40%; "><div class="">26.3641</div></td></tr><tr class="second"><td class="cat" style="width: 20%; "><div class="">最大带宽(MB/sec)</div></td><td style="width: 40%; "><div class="">504</div></td><td style="width: 40%; "><div class="">160</div></td></tr><tr><td class="cat" style="width: 20%; "><div class="">平均延时</div></td><td style="width: 40%; "><div class="">0.32932</div></td><td style="width: 40%; "><div class="">0.566656</div></td></tr><tr class="second"><td class="cat" style="width: 20%; "><div class="">延时偏差</div></td><td style="width: 40%; "><div class="">0.48777</div></td><td style="width: 40%; "><div class="">0.305038</div></td></tr><tr class="second"><td class="cat" style="width: 20%; "><div class="">最大延时</div></td><td style="width: 40%; "><div class="">3.01612</div></td><td style="width: 40%; "><div class="">2.00623</div></td></tr><tr class="second"><td class="cat" style="width: 20%; "><div class="">最小延时</div></td><td style="width: 40%; "><div class="">0.0377235</div></td><td style="width: 40%; "><div class="">0.105026</div></td></tr></tbody></table></div><p></p>
 <p>可以看到相关数据，光写带宽就提升了接近一倍，这个是因为，在磁盘journal情况下，写入journal的同时还有filestore的数据写入，相当于同时有两个写入在磁盘上，磁盘的性能自然只有一半了</p>
 <p>以上就是关于journal的内存盘实现，这里面还会面临着其他的问题</p>
 <ul>
@@ -403,7 +403,7 @@ show_date_time();
 </SCRIPT>
     </div>
     
-  <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/fancybox/jquery.fancybox.css" type="text/css">
+  <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/fancybox/jquery.fancybox.css" type="text/css">
 
 
 <script>
@@ -433,9 +433,9 @@ var _hmt = _hmt || [];
 
 
 
-<script src="http://7xweck.com1.z0.glb.clouddn.com/js/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
-<script src="http://7xweck.com1.z0.glb.clouddn.com/js/main.js" type="text/javascript"></script>
-<script src="http://7xweck.com1.z0.glb.clouddn.com/asciinema/asciinema-player.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/js/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/js/main.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/asciinema/asciinema-player.js" type="text/javascript"></script>
 
 
   </div>

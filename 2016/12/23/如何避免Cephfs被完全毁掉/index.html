@@ -11,7 +11,7 @@
 <meta property="og:url" content="http://www.zphj1987.com/2016/12/23/如何避免Cephfs被完全毁掉/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
 <meta property="og:description" content="前提一套系统的最低要求是可恢复，也就是数据不丢失，但是在各种各样的原因下，整套系统都有被毁掉的可能，一直以来有个观点就是存储是需要两套的，一般情况下很难实现，但是如何把故障发生的概率降低到最低，这个是我们需要考虑的问题">
-<meta property="og:image" content="http://7xweck.com1.z0.glb.clouddn.com/kulesza-215.jpg">
+<meta property="og:image" content="http://mysrc.ufile.ucloud.com.cn/kulesza-215.jpg">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="如何避免Cephfs被完全毁掉">
 <meta name="twitter:description" content="前提一套系统的最低要求是可恢复，也就是数据不丢失，但是在各种各样的原因下，整套系统都有被毁掉的可能，一直以来有个观点就是存储是需要两套的，一般情况下很难实现，但是如何把故障发生的概率降低到最低，这个是我们需要考虑的问题">
@@ -19,12 +19,12 @@
     <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
   
   
-    <link rel="icon" href="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png">
+    <link rel="icon" href="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png">
   
-  <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/style.css" type="text/css">
-   <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/asciinema/asciinema-player.css" type="text/css">
-   <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/gitment.css">
-   <script src="http://7xweck.com1.z0.glb.clouddn.com/gitment.js"></script>
+  <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/style.css" type="text/css">
+   <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/asciinema/asciinema-player.css" type="text/css">
+   <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/gitment.css">
+   <script src="http://mysrc.ufile.ucloud.com.cn/gitment.js"></script>
 </head>
 <body>
   <div id="container">
@@ -34,7 +34,7 @@
 	<header id="header" class="inner">
 		<a href="/" class="profilepic">
 			
-			<img lazy-src="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png" class="js-avatar">
+			<img lazy-src="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png" class="js-avatar">
 			
 		</a>
 
@@ -144,7 +144,7 @@
 	<div class="intrude-less">
 		<header id="header" class="inner">
 			<div class="profilepic">
-				<img lazy-src="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png" class="js-avatar">
+				<img lazy-src="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png" class="js-avatar">
 			</div>
 			<hgroup>
 			  <h1 class="header-author">zphj1987</h1>
@@ -219,7 +219,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/kulesza-215.jpg" alt="rollback"><br></center>
+        <center><br><img src="http://mysrc.ufile.ucloud.com.cn/kulesza-215.jpg" alt="rollback"><br></center>
 
 <h2 id="前提">前提</h2><p>一套系统的最低要求是可恢复，也就是数据不丢失，但是在各种各样的原因下，整套系统都有被毁掉的可能，一直以来有个观点就是存储是需要两套的，一般情况下很难实现，但是如何把故障发生的概率降低到最低，这个是我们需要考虑的问题<br><a id="more"></a><br>最近在社区群里面又听闻一个案例，一套系统的文件系统被重置掉了，也就是fs被重建了，实际上这属于一个不应该有的操作，但是已经发生的事情，就看怎么样能在下次避免或者把损失降到最低，对于hammer版本来说，重建cephfs只是把目录树给冲掉了，实际的目录还是能创建起来，但是这其实是一个BUG，并且在最新的Jewel下已经解决掉这个问题，这就造成无法重建目录树，在Jewel下，在不修改代码的情况下，文件都可以扫描回来，但是全部塞到了一个目录下，对于某些场景来说，这个已经是最大限度的恢复了，至少文件还在，如果文件类型可知，也可以一个个去人工识别的，虽然工作量异常的大，但至少文件回来了，这种情况，如果有保留文件名和文件md5值的强制要求的话，文件是可以完全找回来的，当然，这都是一些防范措施，看有没有重视，或者提前做好了预备</p>
 <p>本篇就是对于情况下，如何基于快照做一个防范措施，以防误操作引起的数据无法挽回的措施</p>
@@ -357,7 +357,7 @@ show_date_time();
 </SCRIPT>
     </div>
     
-  <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/fancybox/jquery.fancybox.css" type="text/css">
+  <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/fancybox/jquery.fancybox.css" type="text/css">
 
 
 <script>
@@ -387,9 +387,9 @@ var _hmt = _hmt || [];
 
 
 
-<script src="http://7xweck.com1.z0.glb.clouddn.com/js/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
-<script src="http://7xweck.com1.z0.glb.clouddn.com/js/main.js" type="text/javascript"></script>
-<script src="http://7xweck.com1.z0.glb.clouddn.com/asciinema/asciinema-player.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/js/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/js/main.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/asciinema/asciinema-player.js" type="text/javascript"></script>
 
 
   </div>

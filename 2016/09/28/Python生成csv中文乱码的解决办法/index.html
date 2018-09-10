@@ -11,7 +11,7 @@
 <meta property="og:url" content="http://www.zphj1987.com/2016/09/28/Python生成csv中文乱码的解决办法/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
 <meta property="og:description" content="一、前言在Linux下面用python进行数据处理，然后输出为csv格式，如果没有中文一切正常，但是如果有中文，就会出现乱码的问题,本篇将讲述怎么处理这个问题">
-<meta property="og:image" content="http://7xweck.com1.z0.glb.clouddn.com/csv/parsing-csv-dribbble.gif">
+<meta property="og:image" content="http://mysrc.ufile.ucloud.com.cn/csv/parsing-csv-dribbble.gif">
 <meta property="og:image" content="http://static.zybuluo.com/zphj1987/2cve2nr8jyy4chs7kvur5wwt/image_1atnnp5i41b7lf7tumgj6175k9.png">
 <meta property="og:image" content="http://static.zybuluo.com/zphj1987/k9m15wfa83wbrhuc6b0xyftg/image_1atnnsp1713931d1h1e641l4f13kim.png">
 <meta name="twitter:card" content="summary">
@@ -21,12 +21,12 @@
     <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
   
   
-    <link rel="icon" href="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png">
+    <link rel="icon" href="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png">
   
-  <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/style.css" type="text/css">
-   <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/asciinema/asciinema-player.css" type="text/css">
-   <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/gitment.css">
-   <script src="http://7xweck.com1.z0.glb.clouddn.com/gitment.js"></script>
+  <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/style.css" type="text/css">
+   <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/asciinema/asciinema-player.css" type="text/css">
+   <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/gitment.css">
+   <script src="http://mysrc.ufile.ucloud.com.cn/gitment.js"></script>
 </head>
 <body>
   <div id="container">
@@ -36,7 +36,7 @@
 	<header id="header" class="inner">
 		<a href="/" class="profilepic">
 			
-			<img lazy-src="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png" class="js-avatar">
+			<img lazy-src="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png" class="js-avatar">
 			
 		</a>
 
@@ -146,7 +146,7 @@
 	<div class="intrude-less">
 		<header id="header" class="inner">
 			<div class="profilepic">
-				<img lazy-src="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png" class="js-avatar">
+				<img lazy-src="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png" class="js-avatar">
 			</div>
 			<hgroup>
 			  <h1 class="header-author">zphj1987</h1>
@@ -217,7 +217,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/csv/parsing-csv-dribbble.gif" alt="csv"><br></center></p>
+        <p><center><br><img src="http://mysrc.ufile.ucloud.com.cn/csv/parsing-csv-dribbble.gif" alt="csv"><br></center></p>
 <h2 id="一、前言">一、前言</h2><p>在Linux下面用python进行数据处理，然后输出为csv格式，如果没有中文一切正常，但是如果有中文，就会出现乱码的问题,本篇将讲述怎么处理这个问题<br><a id="more"></a></p>
 <h2 id="二、处理过程">二、处理过程</h2><h3 id="原始代码">原始代码</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># -*- coding: UTF-8 -*-</span></span><br><span class="line">import csv</span><br><span class="line"><span class="comment">#import codecs</span></span><br><span class="line">with open(<span class="string">'test.csv'</span>, <span class="string">'wb'</span>) as csvfile:</span><br><span class="line"><span class="comment">#    csvfile.write(codecs.BOM_UTF8)</span></span><br><span class="line">    spamwriter = csv.writer(csvfile, dialect=<span class="string">'excel'</span>)</span><br><span class="line">    spamwriter.writerow([<span class="string">'测试'</span>] * <span class="number">5</span> + [<span class="string">'Baked Beans'</span>])</span><br><span class="line">    spamwriter.writerow([<span class="string">'Spam'</span>, <span class="string">'Lovely Spam'</span>, <span class="string">'Wonderful Spam'</span>])</span><br></pre></td></tr></table></figure>
 <p>运行以后：<br>Linux下的效果<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># cat test.csv </span></span><br><span class="line">测试,测试,测试,测试,测试,Baked Beans</span><br><span class="line">Spam,Lovely Spam,Wonderful Spam</span><br></pre></td></tr></table></figure></p>
@@ -362,7 +362,7 @@ show_date_time();
 </SCRIPT>
     </div>
     
-  <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/fancybox/jquery.fancybox.css" type="text/css">
+  <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/fancybox/jquery.fancybox.css" type="text/css">
 
 
 <script>
@@ -392,9 +392,9 @@ var _hmt = _hmt || [];
 
 
 
-<script src="http://7xweck.com1.z0.glb.clouddn.com/js/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
-<script src="http://7xweck.com1.z0.glb.clouddn.com/js/main.js" type="text/javascript"></script>
-<script src="http://7xweck.com1.z0.glb.clouddn.com/asciinema/asciinema-player.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/js/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/js/main.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/asciinema/asciinema-player.js" type="text/javascript"></script>
 
 
   </div>

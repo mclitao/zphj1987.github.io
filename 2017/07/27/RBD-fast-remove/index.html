@@ -47,7 +47,7 @@ rados -p rm方法
 已填充很多
 快
 慢">
-<meta property="og:image" content="http://7xweck.com1.z0.glb.clouddn.com/deleting.gif?imageMogr2/thumbnail/!75p">
+<meta property="og:image" content="http://mysrc.ufile.ucloud.com.cn/deleting.gif?imageMogr2/thumbnail/!75p">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="RBD快速删除的方法分析与改进">
 <meta name="twitter:description" content="前言这个问题在很久以前就有一篇文章进行过讨论 remove-big-rbd,这个文章写的比较清楚了，并且对不同的方法做了分析，这里先把结论说下
@@ -73,12 +73,12 @@ rados -p rm方法
     <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
   
   
-    <link rel="icon" href="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png">
+    <link rel="icon" href="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png">
   
-  <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/style.css" type="text/css">
-   <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/asciinema/asciinema-player.css" type="text/css">
-   <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/gitment.css">
-   <script src="http://7xweck.com1.z0.glb.clouddn.com/gitment.js"></script>
+  <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/style.css" type="text/css">
+   <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/asciinema/asciinema-player.css" type="text/css">
+   <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/gitment.css">
+   <script src="http://mysrc.ufile.ucloud.com.cn/gitment.js"></script>
 </head>
 <body>
   <div id="container">
@@ -88,7 +88,7 @@ rados -p rm方法
 	<header id="header" class="inner">
 		<a href="/" class="profilepic">
 			
-			<img lazy-src="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png" class="js-avatar">
+			<img lazy-src="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png" class="js-avatar">
 			
 		</a>
 
@@ -198,7 +198,7 @@ rados -p rm方法
 	<div class="intrude-less">
 		<header id="header" class="inner">
 			<div class="profilepic">
-				<img lazy-src="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png" class="js-avatar">
+				<img lazy-src="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png" class="js-avatar">
 			</div>
 			<hgroup>
 			  <h1 class="header-author">zphj1987</h1>
@@ -273,7 +273,7 @@ rados -p rm方法
     
     <div class="article-entry" itemprop="articleBody">
       
-        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/deleting.gif?imageMogr2/thumbnail/!75p" alt="delete"><br></center>
+        <center><br><img src="http://mysrc.ufile.ucloud.com.cn/deleting.gif?imageMogr2/thumbnail/!75p" alt="delete"><br></center>
 
 <h2 id="前言">前言</h2><p>这个问题在很久以前就有一篇文章进行过讨论 <a href="http://cephnotes.ksperis.com/blog/2014/07/04/remove-big-rbd-image" target="_blank" rel="external">remove-big-rbd</a>,这个文章写的比较清楚了，并且对不同的方法做了分析，这里先把结论说下</p>
 <table>
@@ -359,7 +359,7 @@ rados -p rm方法
 </table>
 <p>从测试结果来看在并发数为5的时候就能达到每秒删除200个对象了，根据自己的需要进行增减，也可以增减删除的间隔加上sleep</p>
 <p>下面看下这个过程：</p>
-<iframe src="http://7xweck.com1.z0.glb.clouddn.com/fastremove.html" height="530px" width="90%" align="center"></iframe>
+<iframe src="http://mysrc.ufile.ucloud.com.cn/fastremove.html" height="530px" width="90%" align="center"></iframe>
 
 <h3 id="删除rbd的元数据信息">删除rbd的元数据信息</h3><p>因为只删除了对象没删除元数据信息<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab101 ceph]<span class="comment"># rados -p rbd listomapvals rbd_directory</span></span><br><span class="line">id_519216b8b4567</span><br><span class="line">value (<span class="number">6</span> bytes) :</span><br><span class="line"><span class="number">00000000</span>  <span class="number">02</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">7</span>a <span class="number">70</span>                                 |....zp|</span><br><span class="line"><span class="number">00000006</span></span><br><span class="line"></span><br><span class="line">name_zp</span><br><span class="line">value (<span class="number">17</span> bytes) :</span><br><span class="line"><span class="number">00000000</span>  <span class="number">0</span>d <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">35</span> <span class="number">31</span> <span class="number">39</span> <span class="number">32</span>  <span class="number">31</span> <span class="number">36</span> <span class="number">62</span> <span class="number">38</span> <span class="number">62</span> <span class="number">34</span> <span class="number">35</span> <span class="number">36</span>  |....<span class="number">519216</span>b8b456|</span><br><span class="line"><span class="number">00000010</span>  <span class="number">37</span>                                                |<span class="number">7</span>|</span><br><span class="line"><span class="number">00000011</span></span><br><span class="line"></span><br><span class="line">[root@lab101 ceph]<span class="comment"># rados -p rbd rmomapkey rbd_directory id_519216b8b4567 </span></span><br><span class="line">[root@lab101 ceph]<span class="comment"># rados -p rbd listomapvals rbd_directory</span></span><br><span class="line">name_zp</span><br><span class="line">value (<span class="number">17</span> bytes) :</span><br><span class="line"><span class="number">00000000</span>  <span class="number">0</span>d <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">35</span> <span class="number">31</span> <span class="number">39</span> <span class="number">32</span>  <span class="number">31</span> <span class="number">36</span> <span class="number">62</span> <span class="number">38</span> <span class="number">62</span> <span class="number">34</span> <span class="number">35</span> <span class="number">36</span>  |....<span class="number">519216</span>b8b456|</span><br><span class="line"><span class="number">00000010</span>  <span class="number">37</span>                                                |<span class="number">7</span>|</span><br><span class="line"><span class="number">00000011</span></span><br><span class="line"></span><br><span class="line">[root@lab101 ceph]<span class="comment"># rados -p rbd rmomapkey rbd_directory name_zp</span></span><br></pre></td></tr></table></figure></p>
 <p>这样就把名称为zp的rbd删除了</p>
@@ -506,7 +506,7 @@ show_date_time();
 </SCRIPT>
     </div>
     
-  <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/fancybox/jquery.fancybox.css" type="text/css">
+  <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/fancybox/jquery.fancybox.css" type="text/css">
 
 
 <script>
@@ -536,9 +536,9 @@ var _hmt = _hmt || [];
 
 
 
-<script src="http://7xweck.com1.z0.glb.clouddn.com/js/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
-<script src="http://7xweck.com1.z0.glb.clouddn.com/js/main.js" type="text/javascript"></script>
-<script src="http://7xweck.com1.z0.glb.clouddn.com/asciinema/asciinema-player.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/js/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/js/main.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/asciinema/asciinema-player.js" type="text/javascript"></script>
 
 
   </div>

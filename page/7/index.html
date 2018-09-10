@@ -18,12 +18,12 @@
     <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
   
   
-    <link rel="icon" href="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png">
+    <link rel="icon" href="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png">
   
-  <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/style.css" type="text/css">
-   <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/asciinema/asciinema-player.css" type="text/css">
-   <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/gitment.css">
-   <script src="http://7xweck.com1.z0.glb.clouddn.com/gitment.js"></script>
+  <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/style.css" type="text/css">
+   <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/asciinema/asciinema-player.css" type="text/css">
+   <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/gitment.css">
+   <script src="http://mysrc.ufile.ucloud.com.cn/gitment.js"></script>
 </head>
 <body>
   <div id="container">
@@ -33,7 +33,7 @@
 	<header id="header" class="inner">
 		<a href="/" class="profilepic">
 			
-			<img lazy-src="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png" class="js-avatar">
+			<img lazy-src="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png" class="js-avatar">
 			
 		</a>
 
@@ -143,7 +143,7 @@
 	<div class="intrude-less">
 		<header id="header" class="inner">
 			<div class="profilepic">
-				<img lazy-src="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png" class="js-avatar">
+				<img lazy-src="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png" class="js-avatar">
 			</div>
 			<hgroup>
 			  <h1 class="header-author">zphj1987</h1>
@@ -183,80 +183,6 @@
 </nav>
       <div class="body-wrap">
   
-    <article id="post-rbd-mirror-configure-onesidebackup" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/01/22/rbd-mirror-configure-onesidebackup/" class="article-date">
-  	<time datetime="2017-01-22T08:35:53.000Z" itemprop="datePublished">2017-01-22</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/01/22/rbd-mirror-configure-onesidebackup/">rbd-mirror配置指南-单向备份</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <center><br><img src="http://7xo9we.com1.z0.glb.clouddn.com/mirrorpng.png" alt=""><br></center>
-
-
-<p>RBD 的 mirroring 功能将在Jewel中实现的，这个Jewel版本已经发布了很久了,这个功能已经在这个发布的版本中实现了，本来之前写过一篇文章，但是有几个朋友根据文档配置后，发现还是有问题，自己在进行再次配置的时候也发现有些地方没讲清楚，容易造成误解，这里对文档进行再一次的梳理</p>
-<p>一、基本原理<br>我们试图解决的或者至少需要克服的问题是，ceph在内部是强一致性的，这个对于跨区域的情况数据同步是无法接受的，一个请求需要异地返回再确认完成，这个在性能上肯定是无法接受的，这就是为什么基本上无法部署跨区域的ceph集群</p>
-<p>因此我们需要有一种机制能够让我们在不同区域的集群之间复制块设备。这个能够帮助我们实现两个功能：</p>
-<ul>
-<li>灾难恢复</li>
-<li>全球块设备分布（跨地理位置）</li>
-</ul>
-<p>二、内部的实现</p>
-<p><img src="http://static.zybuluo.com/zphj1987/owvwxjz172f2aokh699fd008/%E7%94%BB%E5%9B%BE.png" alt="画图.png-34.8kB"></p>
-<p>从上图所示是进行的主备模式的备份，其实这个只是看怎么应用了，在里面是自动实现的主主的模式，双向同步的，只是在应用中需要注意不要去同时操作同一个image，这个功能是作为主备去使用的，以备真正有问题的时候去实现故障恢复，这个同步是异步的</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2017/01/22/rbd-mirror-configure-onesidebackup/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-<div id="gitment"></div>
-<!-- 主页不要加载gitment -->
-
-
-
-
-  
     <article id="post-ceph-rbd-ceph-backup" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -283,7 +209,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <center><br><img src="http://7xo9we.com1.z0.glb.clouddn.com/backupmp.png" alt=""><br></center>
+        <center><br><img src="http://mypic.ufile.ucloud.com.cn/backupmp.png" alt=""><br></center>
 
 <p>teralytics是一家国外的大数据公司，这个是他们开源的ceph的备份的工具，在twitter上搜索相关信息的时候看到，觉得不错就拿来试用一番</p>
 <h2 id="这是个什么软件">这是个什么软件</h2><p>一个用来备份 ceph 的 rbd 的image的开源软件，提供了两种模式<br>增量：在给定备份时间窗口内基于 rbd 快照的增量备份<br>完全：完整镜像导出时不包含快照</p>
@@ -360,7 +286,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/techie.jpg" alt=""><br></center>
+        <center><br><img src="http://mysrc.ufile.ucloud.com.cn/techie.jpg" alt=""><br></center>
 
 <h2 id="问题">问题</h2><p>flag sortbitwise 在ceph中是什么意思,在Jewel版本下可以看到多了这个flags</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 current]<span class="comment"># ceph -s</span></span><br><span class="line">    cluster ffe7a8db-c671-<span class="number">4</span>b45<span class="operator">-a</span>784-ddb41e633905</span><br><span class="line">     health HEALTH_OK</span><br><span class="line">     monmap e1: <span class="number">1</span> mons at &#123;lab8106=<span class="number">192.168</span>.<span class="number">8.106</span>:<span class="number">6789</span>/<span class="number">0</span>&#125;</span><br><span class="line">            election epoch <span class="number">4</span>, quorum <span class="number">0</span> lab8106</span><br><span class="line">      fsmap e4: <span class="number">1</span>/<span class="number">1</span>/<span class="number">1</span> up &#123;<span class="number">0</span>=lab8106=up:active&#125;</span><br><span class="line">     osdmap e132: <span class="number">8</span> osds: <span class="number">8</span> up, <span class="number">8</span> <span class="keyword">in</span></span><br><span class="line">            flags sortbitwise</span><br><span class="line">      pgmap v206294: <span class="number">201</span> pgs, <span class="number">5</span> pools, <span class="number">4684</span> MB data, <span class="number">1214</span> objects</span><br><span class="line">            <span class="number">9669</span> MB used, <span class="number">2216</span> GB / <span class="number">2226</span> GB avail</span><br><span class="line">                 <span class="number">201</span> active+clean</span><br></pre></td></tr></table></figure>
@@ -425,7 +351,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/saltstack.png" alt="salt-stack"><br></center>
+        <center><br><img src="http://mysrc.ufile.ucloud.com.cn/saltstack.png" alt="salt-stack"><br></center>
 
 <h2 id="前言">前言</h2><p>一直在做calamari的相关的一些打包和安装的工作，都是业余弄的东西，所以并没有仔细的进行功能点的验证测试，正好ceph社区群里面有人问了个问题</p>
 <blockquote>
@@ -495,7 +421,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/octoalien.jpg" alt="此处输入图片的描述"><br></center>
+        <center><br><img src="http://mysrc.ufile.ucloud.com.cn/octoalien.jpg" alt="此处输入图片的描述"><br></center>
 
 <p>总结了几个小技巧，用于在ceph编译过程中，能够更快一点<br>
       
@@ -559,7 +485,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/crushmode.jpg" alt=""><br></center>
+        <center><br><img src="http://mysrc.ufile.ucloud.com.cn/crushmode.jpg" alt=""><br></center>
 
 <p>很多年以前，Sage 在写CRUSH的原始算法的时候，写了不同的Bucket类型，可以选择不同的伪随机选择算法，大部分的模型是基于RJ Honicky写的RUSH algorithms 这个算法，这个在网上可以找到资料，这里面有一个新的特性是sage很引以为豪的，straw算法，也就是我们现在常用的一些算法，这个算法有下面的特性：</p>
 <ul>
@@ -627,7 +553,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/2017.png" alt=""><br></center>
+        <center><br><img src="http://mysrc.ufile.ucloud.com.cn/2017.png" alt=""><br></center>
 
 <h2 id="前言">前言</h2><p>收到一个问题如下：</p>
 <blockquote>
@@ -697,7 +623,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/writefor.jpg" alt="write"><br></center>
+        <center><br><img src="http://mysrc.ufile.ucloud.com.cn/writefor.jpg" alt="write"><br></center>
 
 <h2 id="前言">前言</h2><p>之前有一篇文章介绍的是，在centos7的jewel下面如果自己做的分区如何处理自动挂载的问题，当时的环境对journal的地方采取的是文件的形式处理的，这样就没有了重启后journal的磁盘偏移的问题<br>
       
@@ -761,7 +687,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/kulesza-215.jpg" alt="rollback"><br></center>
+        <center><br><img src="http://mysrc.ufile.ucloud.com.cn/kulesza-215.jpg" alt="rollback"><br></center>
 
 <h2 id="前提">前提</h2><p>一套系统的最低要求是可恢复，也就是数据不丢失，但是在各种各样的原因下，整套系统都有被毁掉的可能，一直以来有个观点就是存储是需要两套的，一般情况下很难实现，但是如何把故障发生的概率降低到最低，这个是我们需要考虑的问题<br>
       
@@ -825,7 +751,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/mountain.png" alt="mount"><br></center>
+        <center><br><img src="http://mysrc.ufile.ucloud.com.cn/mountain.png" alt="mount"><br></center>
 
 <h2 id="前言">前言</h2><p>在Centos7 下，现在采用了 systemctl来控制服务，这个刚开始用起来可能不太习惯，不过这个服务比之前的服务控制要强大的多，可以做更多的控制，本节将来介绍下关于 Ceph的 osd 磁盘挂载的问题</p>
 <p>很多人部署以后，发现在Centos7下用Jewel的时候没有去写fstab也没有写配置文件，重启服务器一样能够挂载起来了，关于这个有另外一篇文章：「<a href="http://www.zphj1987.com/2016/03/31/ceph%E5%9C%A8centos7%E4%B8%8B%E4%B8%80%E4%B8%AA%E4%B8%8D%E5%AE%B9%E6%98%93%E5%8F%91%E7%8E%B0%E7%9A%84%E6%94%B9%E5%8F%98/">ceph在centos7下一个不容易发现的改变</a>」<br>
@@ -844,6 +770,70 @@
       
         <p class="article-more-link">
           <a  href="/2016/12/22/Ceph数据盘怎样实现自动挂载/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+<div id="gitment"></div>
+<!-- 主页不要加载gitment -->
+
+
+
+
+  
+    <article id="post-cephonebox发布" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/12/18/cephonebox发布/" class="article-date">
+  	<time datetime="2016-12-18T14:25:48.000Z" itemprop="datePublished">2016-12-18</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/12/18/cephonebox发布/">cephonebox发布</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <center><br><img src="http://mypic.ufile.ucloud.com.cn/shipin/cephoneboxpre3.jpg" alt=""><br></center>
+
+<h2 id="前言">前言</h2><p>现在已经是2016年收官的一个月了，之前一直想做一个calamari的集成版本，之所以有这个想法，是因为，即使在已经打好包的情况下，因为各种软件版本的原因，造成很多人无法配置成功，calamari发布以后，因为版本的更迭，经常出现软件版本引起的BUG<br>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2016/12/18/cephonebox发布/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>
@@ -905,7 +895,7 @@ show_date_time();
 </SCRIPT>
     </div>
     
-  <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/fancybox/jquery.fancybox.css" type="text/css">
+  <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/fancybox/jquery.fancybox.css" type="text/css">
 
 
 <script>
@@ -935,9 +925,9 @@ var _hmt = _hmt || [];
 
 
 
-<script src="http://7xweck.com1.z0.glb.clouddn.com/js/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
-<script src="http://7xweck.com1.z0.glb.clouddn.com/js/main.js" type="text/javascript"></script>
-<script src="http://7xweck.com1.z0.glb.clouddn.com/asciinema/asciinema-player.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/js/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/js/main.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/asciinema/asciinema-player.js" type="text/javascript"></script>
 
 
   </div>

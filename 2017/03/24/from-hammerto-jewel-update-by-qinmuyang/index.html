@@ -13,7 +13,7 @@
 <meta property="og:site_name" content="zphj1987'Blog">
 <meta property="og:description" content="前言本篇来自秦牧羊的一篇分享，讲述的是从hammer升级到jewel的过程，以及其中的一些故障的处理，是一篇非常详细的实战分享
 初始状态pool状态root@demo:/home/demouser# rados lspoolsrbd.cn.rgw.root.cn-zone1.rgw.root.cn-zone1.rgw.domain.cn-zone1.rgw.control.cn-zone1.rgw">
-<meta property="og:image" content="http://7xweck.com1.z0.glb.clouddn.com/update.gif">
+<meta property="og:image" content="http://mysrc.ufile.ucloud.com.cn/update.gif">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="从hammer到jewel的RGW升级实战-by秦牧羊">
 <meta name="twitter:description" content="前言本篇来自秦牧羊的一篇分享，讲述的是从hammer升级到jewel的过程，以及其中的一些故障的处理，是一篇非常详细的实战分享
@@ -22,12 +22,12 @@
     <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
   
   
-    <link rel="icon" href="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png">
+    <link rel="icon" href="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png">
   
-  <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/style.css" type="text/css">
-   <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/asciinema/asciinema-player.css" type="text/css">
-   <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/gitment.css">
-   <script src="http://7xweck.com1.z0.glb.clouddn.com/gitment.js"></script>
+  <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/style.css" type="text/css">
+   <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/asciinema/asciinema-player.css" type="text/css">
+   <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/gitment.css">
+   <script src="http://mysrc.ufile.ucloud.com.cn/gitment.js"></script>
 </head>
 <body>
   <div id="container">
@@ -37,7 +37,7 @@
 	<header id="header" class="inner">
 		<a href="/" class="profilepic">
 			
-			<img lazy-src="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png" class="js-avatar">
+			<img lazy-src="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png" class="js-avatar">
 			
 		</a>
 
@@ -147,7 +147,7 @@
 	<div class="intrude-less">
 		<header id="header" class="inner">
 			<div class="profilepic">
-				<img lazy-src="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png" class="js-avatar">
+				<img lazy-src="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png" class="js-avatar">
 			</div>
 			<hgroup>
 			  <h1 class="header-author">zphj1987</h1>
@@ -222,7 +222,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/update.gif" alt=""><br></center>
+        <center><br><img src="http://mysrc.ufile.ucloud.com.cn/update.gif" alt=""><br></center>
 
 <h2 id="前言">前言</h2><p>本篇来自秦牧羊的一篇分享，讲述的是从hammer升级到jewel的过程，以及其中的一些故障的处理，是一篇非常详细的实战分享</p>
 <h2 id="初始状态">初始状态</h2><h3 id="pool状态">pool状态</h3><figure class="highlight asciidoc"><table><tr><td class="code"><pre><span class="line">root@demo:/home/demouser# rados lspools</span><br><span class="line">rbd</span><br><span class="line"><span class="title">.cn.rgw.root</span></span><br><span class="line"><span class="title">.cn-zone1.rgw.root</span></span><br><span class="line"><span class="title">.cn-zone1.rgw.domain</span></span><br><span class="line"><span class="title">.cn-zone1.rgw.control</span></span><br><span class="line"><span class="title">.cn-zone1.rgw.gc</span></span><br><span class="line"><span class="title">.cn-zone1.rgw.buckets.index</span></span><br><span class="line"><span class="title">.cn-zone1.rgw.buckets.extra</span></span><br><span class="line"><span class="title">.cn-zone1.rgw.buckets</span></span><br><span class="line"><span class="title">.cn-zone1.log</span></span><br><span class="line"><span class="title">.cn-zone1.intent-log</span></span><br><span class="line"><span class="title">.cn-zone1.usage</span></span><br><span class="line"><span class="title">.cn-zone1.users</span></span><br><span class="line"><span class="title">.cn-zone1.users.email</span></span><br><span class="line"><span class="title">.cn-zone1.users.swift</span></span><br><span class="line"><span class="title">.cn-zone1.users.uid</span></span><br></pre></td></tr></table></figure>
@@ -376,7 +376,7 @@ show_date_time();
 </SCRIPT>
     </div>
     
-  <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/fancybox/jquery.fancybox.css" type="text/css">
+  <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/fancybox/jquery.fancybox.css" type="text/css">
 
 
 <script>
@@ -406,9 +406,9 @@ var _hmt = _hmt || [];
 
 
 
-<script src="http://7xweck.com1.z0.glb.clouddn.com/js/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
-<script src="http://7xweck.com1.z0.glb.clouddn.com/js/main.js" type="text/javascript"></script>
-<script src="http://7xweck.com1.z0.glb.clouddn.com/asciinema/asciinema-player.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/js/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/js/main.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/asciinema/asciinema-player.js" type="text/javascript"></script>
 
 
   </div>

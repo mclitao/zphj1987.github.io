@@ -13,7 +13,7 @@
 <meta property="og:site_name" content="zphj1987'Blog">
 <meta property="og:description" content="前言ceph里面的数据是以对象的形式存储在OSD当中的，有的时候因为磁盘的损坏或者其它的一些特殊情况，会引起集群当中的某一个对象的异常，那么我们需要对这个对象进行处理
 在对象损坏的情况下，启动OSD有的时候都会有问题，那么通过rados rm的方式是没法发送到这个无法启动的OSD的，也就无法删除，所以需要用其他的办法来处理这个情况">
-<meta property="og:image" content="http://7xweck.com1.z0.glb.clouddn.com/delete.png">
+<meta property="og:image" content="http://mysrc.ufile.ucloud.com.cn/delete.png">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Ceph删除OSD上一个异常object">
 <meta name="twitter:description" content="前言ceph里面的数据是以对象的形式存储在OSD当中的，有的时候因为磁盘的损坏或者其它的一些特殊情况，会引起集群当中的某一个对象的异常，那么我们需要对这个对象进行处理
@@ -22,12 +22,12 @@
     <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
   
   
-    <link rel="icon" href="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png">
+    <link rel="icon" href="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png">
   
-  <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/style.css" type="text/css">
-   <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/asciinema/asciinema-player.css" type="text/css">
-   <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/gitment.css">
-   <script src="http://7xweck.com1.z0.glb.clouddn.com/gitment.js"></script>
+  <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/style.css" type="text/css">
+   <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/asciinema/asciinema-player.css" type="text/css">
+   <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/gitment.css">
+   <script src="http://mysrc.ufile.ucloud.com.cn/gitment.js"></script>
 </head>
 <body>
   <div id="container">
@@ -37,7 +37,7 @@
 	<header id="header" class="inner">
 		<a href="/" class="profilepic">
 			
-			<img lazy-src="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png" class="js-avatar">
+			<img lazy-src="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png" class="js-avatar">
 			
 		</a>
 
@@ -147,7 +147,7 @@
 	<div class="intrude-less">
 		<header id="header" class="inner">
 			<div class="profilepic">
-				<img lazy-src="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png" class="js-avatar">
+				<img lazy-src="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png" class="js-avatar">
 			</div>
 			<hgroup>
 			  <h1 class="header-author">zphj1987</h1>
@@ -222,7 +222,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/delete.png" alt="delete"><br></center></p>
+        <p><center><br><img src="http://mysrc.ufile.ucloud.com.cn/delete.png" alt="delete"><br></center></p>
 <h2 id="前言">前言</h2><p>ceph里面的数据是以对象的形式存储在OSD当中的，有的时候因为磁盘的损坏或者其它的一些特殊情况，会引起集群当中的某一个对象的异常，那么我们需要对这个对象进行处理</p>
 <p>在对象损坏的情况下，启动OSD有的时候都会有问题，那么通过rados rm的方式是没法发送到这个无法启动的OSD的，也就无法删除，所以需要用其他的办法来处理这个情况<br><a id="more"></a></p>
 <h2 id="处理步骤">处理步骤</h2><h3 id="查找对象的路径">查找对象的路径</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># ceph osd map rbd  rbd_data.857e6b8b4567.00000000000000ba</span></span><br><span class="line">osdmap e53 pool <span class="string">'rbd'</span> (<span class="number">0</span>) object <span class="string">'rbd_data.857e6b8b4567.00000000000000ba'</span> -&gt; pg <span class="number">0.2</span>daee1ba (<span class="number">0.3</span>a) -&gt; up ([<span class="number">1</span>], p1) acting ([<span class="number">1</span>], p1)</span><br></pre></td></tr></table></figure>
@@ -368,7 +368,7 @@ show_date_time();
 </SCRIPT>
     </div>
     
-  <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/fancybox/jquery.fancybox.css" type="text/css">
+  <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/fancybox/jquery.fancybox.css" type="text/css">
 
 
 <script>
@@ -398,9 +398,9 @@ var _hmt = _hmt || [];
 
 
 
-<script src="http://7xweck.com1.z0.glb.clouddn.com/js/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
-<script src="http://7xweck.com1.z0.glb.clouddn.com/js/main.js" type="text/javascript"></script>
-<script src="http://7xweck.com1.z0.glb.clouddn.com/asciinema/asciinema-player.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/js/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/js/main.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/asciinema/asciinema-player.js" type="text/javascript"></script>
 
 
   </div>

@@ -15,7 +15,7 @@
 <meta property="og:description" content="前言本篇讲述的是一个比较极端的故障的恢复场景，在整个集群全部服务器突然掉电的时候，osd里面的osdmap可能会出现没刷到磁盘上的情况，这个时候osdmap的最新版本为空或者为没有这个文件
 还有一种情况就是机器宕机了，没有马上处理，等了一段时间以后，服务器机器启动了起来，而这个时候osdmap已经更新了，全局找不到需要的旧版本的osdmap和incmap，osd无法启动
 一般情况下能找到的就直接从">
-<meta property="og:image" content="http://7xweck.com1.z0.glb.clouddn.com/recuva.png">
+<meta property="og:image" content="http://mysrc.ufile.ucloud.com.cn/recuva.png">
 <meta property="og:image" content="http://static.zybuluo.com/zphj1987/bj2fr68otco4oh6lloy9j7ly/image.png">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="掉电后osdmap丢失无法启动osd的解决方案">
@@ -26,12 +26,12 @@
     <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
   
   
-    <link rel="icon" href="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png">
+    <link rel="icon" href="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png">
   
-  <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/style.css" type="text/css">
-   <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/asciinema/asciinema-player.css" type="text/css">
-   <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/gitment.css">
-   <script src="http://7xweck.com1.z0.glb.clouddn.com/gitment.js"></script>
+  <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/style.css" type="text/css">
+   <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/asciinema/asciinema-player.css" type="text/css">
+   <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/gitment.css">
+   <script src="http://mysrc.ufile.ucloud.com.cn/gitment.js"></script>
 </head>
 <body>
   <div id="container">
@@ -41,7 +41,7 @@
 	<header id="header" class="inner">
 		<a href="/" class="profilepic">
 			
-			<img lazy-src="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png" class="js-avatar">
+			<img lazy-src="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png" class="js-avatar">
 			
 		</a>
 
@@ -151,7 +151,7 @@
 	<div class="intrude-less">
 		<header id="header" class="inner">
 			<div class="profilepic">
-				<img lazy-src="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png" class="js-avatar">
+				<img lazy-src="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png" class="js-avatar">
 			</div>
 			<hgroup>
 			  <h1 class="header-author">zphj1987</h1>
@@ -222,7 +222,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/recuva.png" alt=""><br></center>
+        <center><br><img src="http://mysrc.ufile.ucloud.com.cn/recuva.png" alt=""><br></center>
 
 <h2 id="前言">前言</h2><p>本篇讲述的是一个比较极端的故障的恢复场景，在整个集群全部服务器突然掉电的时候，osd里面的osdmap可能会出现没刷到磁盘上的情况，这个时候osdmap的最新版本为空或者为没有这个文件</p>
 <p>还有一种情况就是机器宕机了，没有马上处理，等了一段时间以后，服务器机器启动了起来，而这个时候osdmap已经更新了，全局找不到需要的旧版本的osdmap和incmap，osd无法启动</p>
@@ -301,8 +301,8 @@
     </a>
   
   
-    <a href="/2017/09/13/maybe-the-first-chinese-for-luminous-dashboard/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">Luminous监控界面中文语言包</div>
+    <a href="/2017/09/07/how-to-disable-Ceph-OSD-automount/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">怎样禁止Ceph OSD的自动挂载</div>
       <strong class="article-nav-caption">></strong>
     </a>
   
@@ -398,7 +398,7 @@ show_date_time();
 </SCRIPT>
     </div>
     
-  <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/fancybox/jquery.fancybox.css" type="text/css">
+  <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/fancybox/jquery.fancybox.css" type="text/css">
 
 
 <script>
@@ -428,9 +428,9 @@ var _hmt = _hmt || [];
 
 
 
-<script src="http://7xweck.com1.z0.glb.clouddn.com/js/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
-<script src="http://7xweck.com1.z0.glb.clouddn.com/js/main.js" type="text/javascript"></script>
-<script src="http://7xweck.com1.z0.glb.clouddn.com/asciinema/asciinema-player.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/js/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/js/main.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/asciinema/asciinema-player.js" type="text/javascript"></script>
 
 
   </div>

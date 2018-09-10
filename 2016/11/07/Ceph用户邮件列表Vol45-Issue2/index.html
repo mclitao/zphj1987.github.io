@@ -17,8 +17,8 @@ The folders we are trying to delete contain">
 After upgrading to 10.2.3 we frequently see messages like
 ‘rm: cannot remove ‘…’: No space left on device
 The folders we are trying to delete contain">
-<meta property="og:image" content="http://7xweck.com1.z0.glb.clouddn.com/number/daytwo.jpg">
-<meta property="og:image" content="http://7xweck.com1.z0.glb.clouddn.com/cache.png">
+<meta property="og:image" content="http://mysrc.ufile.ucloud.com.cn/number/daytwo.jpg">
+<meta property="og:image" content="http://mysrc.ufile.ucloud.com.cn/cache.png">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Ceph用户邮件列表Vol45-Issue2">
 <meta name="twitter:description" content="ceph Vol 45 Issue 2CephFS: No space left on device
@@ -29,12 +29,12 @@ The folders we are trying to delete contain">
     <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
   
   
-    <link rel="icon" href="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png">
+    <link rel="icon" href="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png">
   
-  <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/style.css" type="text/css">
-   <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/asciinema/asciinema-player.css" type="text/css">
-   <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/gitment.css">
-   <script src="http://7xweck.com1.z0.glb.clouddn.com/gitment.js"></script>
+  <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/style.css" type="text/css">
+   <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/asciinema/asciinema-player.css" type="text/css">
+   <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/gitment.css">
+   <script src="http://mysrc.ufile.ucloud.com.cn/gitment.js"></script>
 </head>
 <body>
   <div id="container">
@@ -44,7 +44,7 @@ The folders we are trying to delete contain">
 	<header id="header" class="inner">
 		<a href="/" class="profilepic">
 			
-			<img lazy-src="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png" class="js-avatar">
+			<img lazy-src="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png" class="js-avatar">
 			
 		</a>
 
@@ -154,7 +154,7 @@ The folders we are trying to delete contain">
 	<div class="intrude-less">
 		<header id="header" class="inner">
 			<div class="profilepic">
-				<img lazy-src="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png" class="js-avatar">
+				<img lazy-src="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png" class="js-avatar">
 			</div>
 			<hgroup>
 			  <h1 class="header-author">zphj1987</h1>
@@ -229,7 +229,7 @@ The folders we are trying to delete contain">
     
     <div class="article-entry" itemprop="articleBody">
       
-        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/number/daytwo.jpg" alt=""><br></center>
+        <center><br><img src="http://mysrc.ufile.ucloud.com.cn/number/daytwo.jpg" alt=""><br></center>
 
 <h2 id="ceph_Vol_45_Issue_2">ceph Vol 45 Issue 2</h2><h3 id="CephFS:_No_space_left_on_device">CephFS: No space left on device</h3><blockquote>
 <p>After upgrading to 10.2.3 we frequently see messages like</p>
@@ -296,7 +296,7 @@ The folders we are trying to delete contain">
 <p>可以观察到cachepool的对象数目大概在1100-1200之间，一直写也会是这个数字，在停止写以后，观察cachepool的对象数目在960左右，我们设置的 target_max_objects 为1000，在超过了这个值以后，并且写停止的情况下，系统会把这个cache pool的对象控制在比target_max少50左右，现在我们修改下<code>cache_min_evict_age</code>这个参数，看下会发生些什么</p>
 <p>我们把这个参数调整为30<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph osd pool <span class="built_in">set</span> cachepool cache_min_evict_age <span class="number">30</span></span><br></pre></td></tr></table></figure></p>
 <p>设置完了以后，可以看到cache pool的对象数目在 744左右，现在再写入数据，然后等待，看下会是多少，还是756，如果按我们设置的<code>cache_target_full_ratio</code>0.8就正好是800，我们尝试再次调整大cache_min_evict_age看下情况，对象维持在960左右，根据这个测试，基本上可以看出来是如何控制缓存的数据了，下面用一张图来看下这个问题</p>
-<p><img src="http://7xweck.com1.z0.glb.clouddn.com/cache.png" alt=""></p>
+<p><img src="http://mysrc.ufile.ucloud.com.cn/cache.png" alt=""></p>
 <p>来总结一下：</p>
 <ul>
 <li>如果cache pool对象到了 target_max_objects，那么会边flush，边evic，然后因为前面有客户端请求，这个时候实际是会阻塞的</li>
@@ -445,7 +445,7 @@ show_date_time();
 </SCRIPT>
     </div>
     
-  <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/fancybox/jquery.fancybox.css" type="text/css">
+  <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/fancybox/jquery.fancybox.css" type="text/css">
 
 
 <script>
@@ -475,9 +475,9 @@ var _hmt = _hmt || [];
 
 
 
-<script src="http://7xweck.com1.z0.glb.clouddn.com/js/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
-<script src="http://7xweck.com1.z0.glb.clouddn.com/js/main.js" type="text/javascript"></script>
-<script src="http://7xweck.com1.z0.glb.clouddn.com/asciinema/asciinema-player.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/js/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/js/main.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/asciinema/asciinema-player.js" type="text/javascript"></script>
 
 
   </div>

@@ -11,7 +11,7 @@
 <meta property="og:url" content="http://www.zphj1987.com/2016/09/20/Ceph的Mon数据重新构建工具/index.html">
 <meta property="og:site_name" content="zphj1987'Blog">
 <meta property="og:description" content="关于mon的数据的问题，一般正常情况下都是配置的3个mon的，但是还是有人会担心 Mon 万一三个同时都挂掉了怎么办，那么集群所有的数据是不是都丢了，关于后台真实数据恢复，有去后台取对象，然后一个个拼接起来的方案，这个是确定可以成功的，但是这个方法对于生产的集群耗时巨大，并且需要导出数据，然后又配置新的集群，工程比较耗大，考虑到这个问题，Ceph 的中国（Redhat）的一位开发者 tchaiko">
-<meta property="og:image" content="http://7xweck.com1.z0.glb.clouddn.com/rebuild/rebuild-shot.png">
+<meta property="og:image" content="http://mysrc.ufile.ucloud.com.cn/rebuild/rebuild-shot.png">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Ceph的Mon数据重新构建工具">
 <meta name="twitter:description" content="关于mon的数据的问题，一般正常情况下都是配置的3个mon的，但是还是有人会担心 Mon 万一三个同时都挂掉了怎么办，那么集群所有的数据是不是都丢了，关于后台真实数据恢复，有去后台取对象，然后一个个拼接起来的方案，这个是确定可以成功的，但是这个方法对于生产的集群耗时巨大，并且需要导出数据，然后又配置新的集群，工程比较耗大，考虑到这个问题，Ceph 的中国（Redhat）的一位开发者 tchaiko">
@@ -19,12 +19,12 @@
     <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
   
   
-    <link rel="icon" href="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png">
+    <link rel="icon" href="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png">
   
-  <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/style.css" type="text/css">
-   <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/asciinema/asciinema-player.css" type="text/css">
-   <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/gitment.css">
-   <script src="http://7xweck.com1.z0.glb.clouddn.com/gitment.js"></script>
+  <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/style.css" type="text/css">
+   <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/asciinema/asciinema-player.css" type="text/css">
+   <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/gitment.css">
+   <script src="http://mysrc.ufile.ucloud.com.cn/gitment.js"></script>
 </head>
 <body>
   <div id="container">
@@ -34,7 +34,7 @@
 	<header id="header" class="inner">
 		<a href="/" class="profilepic">
 			
-			<img lazy-src="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png" class="js-avatar">
+			<img lazy-src="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png" class="js-avatar">
 			
 		</a>
 
@@ -144,7 +144,7 @@
 	<div class="intrude-less">
 		<header id="header" class="inner">
 			<div class="profilepic">
-				<img lazy-src="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png" class="js-avatar">
+				<img lazy-src="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png" class="js-avatar">
 			</div>
 			<hgroup>
 			  <h1 class="header-author">zphj1987</h1>
@@ -219,7 +219,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p><center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/rebuild/rebuild-shot.png" alt="rebuild"><br></center><br>关于mon的数据的问题，一般正常情况下都是配置的3个mon的，但是还是有人会担心 Mon 万一三个同时都挂掉了怎么办，那么集群所有的数据是不是都丢了，关于后台真实数据恢复，有去后台取对象，然后一个个拼接起来的方案，这个是确定可以成功的，但是这个方法对于生产的集群耗时巨大，并且需要导出数据，然后又配置新的集群，工程比较耗大，考虑到这个问题，Ceph 的中国（Redhat）的一位开发者 <a href="https://github.com/tchaikov" target="_blank" rel="external">tchaikov</a> 就写了一个新的工具，来对损坏的MON的数据进行原集群的重构，这个比起其他方案要好很多，本篇将讲述怎么使用这个工具，代码已经合并到 Ceph 的master分支当中去了</p>
+        <p><center><br><img src="http://mysrc.ufile.ucloud.com.cn/rebuild/rebuild-shot.png" alt="rebuild"><br></center><br>关于mon的数据的问题，一般正常情况下都是配置的3个mon的，但是还是有人会担心 Mon 万一三个同时都挂掉了怎么办，那么集群所有的数据是不是都丢了，关于后台真实数据恢复，有去后台取对象，然后一个个拼接起来的方案，这个是确定可以成功的，但是这个方法对于生产的集群耗时巨大，并且需要导出数据，然后又配置新的集群，工程比较耗大，考虑到这个问题，Ceph 的中国（Redhat）的一位开发者 <a href="https://github.com/tchaikov" target="_blank" rel="external">tchaikov</a> 就写了一个新的工具，来对损坏的MON的数据进行原集群的重构，这个比起其他方案要好很多，本篇将讲述怎么使用这个工具，代码已经合并到 Ceph 的master分支当中去了</p>
 <p>关于这个工具相关的<a href="http://tracker.ceph.com/issues/17292" target="_blank" rel="external">issue</a></p>
 <a id="more"></a>
 <h2 id="打包一个合进新代码的master版本的ceph包">打包一个合进新代码的master版本的ceph包</h2><h3 id="从github上面获取代码">从github上面获取代码</h3><p>默认的分支就是master的直接去clone就可以了<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab8106 ~]<span class="comment"># git clone https://github.com/ceph/ceph.git</span></span><br></pre></td></tr></table></figure></p>
@@ -385,7 +385,7 @@ show_date_time();
 </SCRIPT>
     </div>
     
-  <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/fancybox/jquery.fancybox.css" type="text/css">
+  <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/fancybox/jquery.fancybox.css" type="text/css">
 
 
 <script>
@@ -415,9 +415,9 @@ var _hmt = _hmt || [];
 
 
 
-<script src="http://7xweck.com1.z0.glb.clouddn.com/js/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
-<script src="http://7xweck.com1.z0.glb.clouddn.com/js/main.js" type="text/javascript"></script>
-<script src="http://7xweck.com1.z0.glb.clouddn.com/asciinema/asciinema-player.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/js/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/js/main.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/asciinema/asciinema-player.js" type="text/javascript"></script>
 
 
   </div>

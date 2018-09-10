@@ -13,7 +13,7 @@
 <meta property="og:site_name" content="zphj1987'Blog">
 <meta property="og:description" content="前言在Centos7 下，现在采用了 systemctl来控制服务，这个刚开始用起来可能不太习惯，不过这个服务比之前的服务控制要强大的多，可以做更多的控制，本节将来介绍下关于 Ceph的 osd 磁盘挂载的问题
 很多人部署以后，发现在Centos7下用Jewel的时候没有去写fstab也没有写配置文件，重启服务器一样能够挂载起来了，关于这个有另外一篇文章：「ceph在centos7下一个不容易发现">
-<meta property="og:image" content="http://7xweck.com1.z0.glb.clouddn.com/mountain.png">
+<meta property="og:image" content="http://mysrc.ufile.ucloud.com.cn/mountain.png">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Ceph数据盘怎样实现自动挂载">
 <meta name="twitter:description" content="前言在Centos7 下，现在采用了 systemctl来控制服务，这个刚开始用起来可能不太习惯，不过这个服务比之前的服务控制要强大的多，可以做更多的控制，本节将来介绍下关于 Ceph的 osd 磁盘挂载的问题
@@ -22,12 +22,12 @@
     <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
   
   
-    <link rel="icon" href="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png">
+    <link rel="icon" href="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png">
   
-  <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/style.css" type="text/css">
-   <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/asciinema/asciinema-player.css" type="text/css">
-   <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/gitment.css">
-   <script src="http://7xweck.com1.z0.glb.clouddn.com/gitment.js"></script>
+  <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/style.css" type="text/css">
+   <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/asciinema/asciinema-player.css" type="text/css">
+   <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/gitment.css">
+   <script src="http://mysrc.ufile.ucloud.com.cn/gitment.js"></script>
 </head>
 <body>
   <div id="container">
@@ -37,7 +37,7 @@
 	<header id="header" class="inner">
 		<a href="/" class="profilepic">
 			
-			<img lazy-src="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png" class="js-avatar">
+			<img lazy-src="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png" class="js-avatar">
 			
 		</a>
 
@@ -147,7 +147,7 @@
 	<div class="intrude-less">
 		<header id="header" class="inner">
 			<div class="profilepic">
-				<img lazy-src="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png" class="js-avatar">
+				<img lazy-src="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png" class="js-avatar">
 			</div>
 			<hgroup>
 			  <h1 class="header-author">zphj1987</h1>
@@ -222,7 +222,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/mountain.png" alt="mount"><br></center>
+        <center><br><img src="http://mysrc.ufile.ucloud.com.cn/mountain.png" alt="mount"><br></center>
 
 <h2 id="前言">前言</h2><p>在Centos7 下，现在采用了 systemctl来控制服务，这个刚开始用起来可能不太习惯，不过这个服务比之前的服务控制要强大的多，可以做更多的控制，本节将来介绍下关于 Ceph的 osd 磁盘挂载的问题</p>
 <p>很多人部署以后，发现在Centos7下用Jewel的时候没有去写fstab也没有写配置文件，重启服务器一样能够挂载起来了，关于这个有另外一篇文章：「<a href="http://www.zphj1987.com/2016/03/31/ceph%E5%9C%A8centos7%E4%B8%8B%E4%B8%80%E4%B8%AA%E4%B8%8D%E5%AE%B9%E6%98%93%E5%8F%91%E7%8E%B0%E7%9A%84%E6%94%B9%E5%8F%98/" target="_blank" rel="external">ceph在centos7下一个不容易发现的改变</a>」<br><a id="more"></a><br>还有一些人发现自己的却启动不起来，需要写配置文件或者fstab</p>
@@ -361,7 +361,7 @@ show_date_time();
 </SCRIPT>
     </div>
     
-  <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/fancybox/jquery.fancybox.css" type="text/css">
+  <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/fancybox/jquery.fancybox.css" type="text/css">
 
 
 <script>
@@ -391,9 +391,9 @@ var _hmt = _hmt || [];
 
 
 
-<script src="http://7xweck.com1.z0.glb.clouddn.com/js/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
-<script src="http://7xweck.com1.z0.glb.clouddn.com/js/main.js" type="text/javascript"></script>
-<script src="http://7xweck.com1.z0.glb.clouddn.com/asciinema/asciinema-player.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/js/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/js/main.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/asciinema/asciinema-player.js" type="text/javascript"></script>
 
 
   </div>

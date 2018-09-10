@@ -13,7 +13,7 @@
 <meta property="og:site_name" content="zphj1987'Blog">
 <meta property="og:description" content="前言前一篇介绍了docker在命令行下面进行的ceph部署，本篇用docker的UI进行ceph的部署，目前来说市面上还没有一款能够比较简单就能直接在OS上面去部署Ceph的管理平台，这是因为OS的环境差异化太大，并且包的版本，以及各种软件的适配都可能造成失败，而docker比较固化环境，因此即使一个通用的UI也能很方便的部署出一个Cpeh集群
 本篇就是对Docker UI部署集群做一个实践，对c">
-<meta property="og:image" content="http://7xweck.com1.z0.glb.clouddn.com/docker2.png">
+<meta property="og:image" content="http://mysrc.ufile.ucloud.com.cn/docker2.png">
 <meta property="og:image" content="http://static.zybuluo.com/zphj1987/0qlepujxmrt4wqadoa01zfg1/image_1bbb4ogmqu1ir8049n1okfq4j9.png">
 <meta property="og:image" content="http://static.zybuluo.com/zphj1987/6grz7nooae5smur1bcb54lb6/image_1bbb4r1eb1qnj0pcjmsbf1ucgm.png">
 <meta property="og:image" content="http://static.zybuluo.com/zphj1987/zvhkf4ujoblfwfvzx6860fxt/image_1bbb4vs5h1ri522q8avkrb1ko716.png">
@@ -38,12 +38,12 @@
     <link rel="alternative" href="/atom.xml" title="zphj1987&#39;Blog" type="application/atom+xml">
   
   
-    <link rel="icon" href="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png">
+    <link rel="icon" href="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png">
   
-  <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/style.css" type="text/css">
-   <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/asciinema/asciinema-player.css" type="text/css">
-   <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/gitment.css">
-   <script src="http://7xweck.com1.z0.glb.clouddn.com/gitment.js"></script>
+  <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/style.css" type="text/css">
+   <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/asciinema/asciinema-player.css" type="text/css">
+   <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/gitment.css">
+   <script src="http://mysrc.ufile.ucloud.com.cn/gitment.js"></script>
 </head>
 <body>
   <div id="container">
@@ -53,7 +53,7 @@
 	<header id="header" class="inner">
 		<a href="/" class="profilepic">
 			
-			<img lazy-src="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png" class="js-avatar">
+			<img lazy-src="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png" class="js-avatar">
 			
 		</a>
 
@@ -163,7 +163,7 @@
 	<div class="intrude-less">
 		<header id="header" class="inner">
 			<div class="profilepic">
-				<img lazy-src="http://7xweck.com1.z0.glb.clouddn.com/logo/favicon.png" class="js-avatar">
+				<img lazy-src="http://mysrc.ufile.ucloud.com.cn/logo/favicon.png" class="js-avatar">
 			</div>
 			<hgroup>
 			  <h1 class="header-author">zphj1987</h1>
@@ -238,7 +238,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <center><br><img src="http://7xweck.com1.z0.glb.clouddn.com/docker2.png" alt=""><br></center>
+        <center><br><img src="http://mysrc.ufile.ucloud.com.cn/docker2.png" alt=""><br></center>
 
 <h2 id="前言">前言</h2><p>前一篇介绍了docker在命令行下面进行的ceph部署，本篇用docker的UI进行ceph的部署，目前来说市面上还没有一款能够比较简单就能直接在OS上面去部署Ceph的管理平台，这是因为OS的环境差异化太大，并且包的版本，以及各种软件的适配都可能造成失败，而docker比较固化环境，因此即使一个通用的UI也能很方便的部署出一个Cpeh集群</p>
 <p>本篇就是对Docker UI部署集群做一个实践，对ceph了解，对docker了解，对dokcer的UI操作进行一定的了解的情况下，再做实践会比较好，总体上还是比较简单的<br><a id="more"></a></p>
@@ -452,7 +452,7 @@ show_date_time();
 </SCRIPT>
     </div>
     
-  <link rel="stylesheet" href="http://7xweck.com1.z0.glb.clouddn.com/fancybox/jquery.fancybox.css" type="text/css">
+  <link rel="stylesheet" href="http://mysrc.ufile.ucloud.com.cn/fancybox/jquery.fancybox.css" type="text/css">
 
 
 <script>
@@ -482,9 +482,9 @@ var _hmt = _hmt || [];
 
 
 
-<script src="http://7xweck.com1.z0.glb.clouddn.com/js/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
-<script src="http://7xweck.com1.z0.glb.clouddn.com/js/main.js" type="text/javascript"></script>
-<script src="http://7xweck.com1.z0.glb.clouddn.com/asciinema/asciinema-player.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/js/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/js/main.js" type="text/javascript"></script>
+<script src="http://mysrc.ufile.ucloud.com.cn/asciinema/asciinema-player.js" type="text/javascript"></script>
 
 
   </div>
