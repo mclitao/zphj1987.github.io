@@ -4,7 +4,7 @@
   <subtitle><![CDATA[止于至善]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zphj1987.com/"/>
-  <updated>2018-08-20T03:40:45.253Z</updated>
+  <updated>2018-09-10T09:58:34.028Z</updated>
   <id>http://www.zphj1987.com/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="http://www.zphj1987.com/2018/08/19/show-useage-for-cephfs-pool/"/>
     <id>http://www.zphj1987.com/2018/08/19/show-useage-for-cephfs-pool/</id>
     <published>2018-08-19T03:29:16.000Z</published>
-    <updated>2018-08-20T03:40:45.253Z</updated>
+    <updated>2018-09-10T09:58:34.028Z</updated>
     <content type="html"><![CDATA[<center><br><img src="http://static.zybuluo.com/zphj1987/x7qsgok0tlsl6cttnul0em0z/pool1.png" alt="pool.png-115.2kB"><br></center>
 
 <h2 id="前言">前言</h2><p>如果用cephfs比较多，应该都知道，在cephfs的客户端进行mount以后，看到的容量显示的是集群的总的容量，也就是你的总的磁盘空间是多少这个地方显示的就是多少</p>
@@ -205,7 +205,7 @@
     <link href="http://www.zphj1987.com/2018/06/27/use-s3-test-to-ceph-compatibility-tests/"/>
     <id>http://www.zphj1987.com/2018/06/27/use-s3-test-to-ceph-compatibility-tests/</id>
     <published>2018-06-27T09:16:54.000Z</published>
-    <updated>2018-09-10T09:52:24.309Z</updated>
+    <updated>2018-09-10T09:58:33.948Z</updated>
     <content type="html"><![CDATA[<center><br><img src="http://mypic.ufile.ucloud.com.cn/s3.jpg" alt="s3"><br></center>
 
 <h2 id="前言">前言</h2><p>ceph的rgw能够提供一个兼容性的s3的接口，既然是兼容性，当然不可能是所有接口都会兼容，那么我们需要有一个工具来进行接口的验证以及测试，这个在其他测试工具里面有类似的posix接口验证工具，这类的工具就是跑测试用例，来输出通过或者不通过的列表</p>
@@ -259,7 +259,7 @@
     <link href="http://www.zphj1987.com/2018/06/12/ceph-erasure-default-min-size/"/>
     <id>http://www.zphj1987.com/2018/06/12/ceph-erasure-default-min-size/</id>
     <published>2018-06-12T02:43:10.000Z</published>
-    <updated>2018-06-12T06:56:17.609Z</updated>
+    <updated>2018-09-10T09:58:33.854Z</updated>
     <content type="html"><![CDATA[<center><br><img src="http://static.zybuluo.com/zphj1987/w3q75obfzlripq5usixlk73m/desk.jpg" alt="desk.jpg-47.1kB"><br></center>
 
 <h2 id="引言">引言</h2><p>最近接触了两个集群都使用到了erasure code,一个集群是hammer版本的，一个环境是luminous版本的，两个环境都出现了incomplete，触发的原因有类似的地方，都是有osd的离线的问题</p>
@@ -319,7 +319,7 @@
     <link href="http://www.zphj1987.com/2018/05/29/cephfs-metadatapool-disaster-recover/"/>
     <id>http://www.zphj1987.com/2018/05/29/cephfs-metadatapool-disaster-recover/</id>
     <published>2018-05-29T15:37:52.000Z</published>
-    <updated>2018-05-29T16:01:56.305Z</updated>
+    <updated>2018-09-10T09:58:33.851Z</updated>
     <content type="html"><![CDATA[<h2 id="前言">前言</h2><p>cephfs 在L版本已经比较稳定了，这个稳定的意义个人觉得是在其故障恢复方面的成熟，一个文件系统可恢复是其稳定必须具备的属性，本篇就是根据官网的文档来实践下这个恢复的过程</p>
 <h2 id="实践过程">实践过程</h2><h3 id="部署一个ceph_Luminous集群">部署一个ceph  Luminous集群</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@lab102 ~]<span class="comment"># ceph -v</span></span><br><span class="line">ceph version <span class="number">12.2</span>.<span class="number">5</span> (cad919881333ac92274171586c827e01f554a70a) luminous (stable)</span><br></pre></td></tr></table></figure>
 <p>创建filestore<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph-deploy osd create  lab102  --filestore  --data /dev/sdb1  --journal /dev/sdb2</span><br></pre></td></tr></table></figure></p>
@@ -404,7 +404,7 @@
     <link href="http://www.zphj1987.com/2018/04/12/cosbench-how-to-use/"/>
     <id>http://www.zphj1987.com/2018/04/12/cosbench-how-to-use/</id>
     <published>2018-04-11T17:18:33.000Z</published>
-    <updated>2018-04-11T17:38:02.798Z</updated>
+    <updated>2018-09-10T09:58:33.752Z</updated>
     <content type="html"><![CDATA[<center><br><img src="http://static.zybuluo.com/zphj1987/f1bbph3hxt9twexfcgmh3wtp/cosbenchnnnn.png" alt="cosbench.png-10.4kB"><br></center>
 
 <h2 id="前言">前言</h2><p>cosbench的功能很强大，但是配置起来可能就有点不是太清楚怎么配置了，本篇将梳理一下这个测试的配置过程，以及一些测试注意项目，以免无法完成自己配置模型的情况</p>
@@ -533,7 +533,7 @@
     <link href="http://www.zphj1987.com/2018/04/11/ceph-ISCSI-GATEWAY/"/>
     <id>http://www.zphj1987.com/2018/04/11/ceph-ISCSI-GATEWAY/</id>
     <published>2018-04-11T06:57:55.000Z</published>
-    <updated>2018-04-11T07:09:14.189Z</updated>
+    <updated>2018-09-10T09:58:33.746Z</updated>
     <content type="html"><![CDATA[<center><br><br><img src="http://static.zybuluo.com/zphj1987/w0jdxwzox8vxnjagipexheoa/gateway.jpg" alt="gateway"><br><br></center>
 
 
@@ -1339,7 +1339,7 @@
     <link href="http://www.zphj1987.com/2017/09/28/a-new-ceph-book/"/>
     <id>http://www.zphj1987.com/2017/09/28/a-new-ceph-book/</id>
     <published>2017-09-28T14:23:47.000Z</published>
-    <updated>2018-09-10T09:21:57.689Z</updated>
+    <updated>2018-09-10T09:58:33.252Z</updated>
     <content type="html"><![CDATA[<center><br><img src="http://calamaribook.ufile.ucloud.com.cn/book-rocket.png" alt=""><br></center>
 
 <h2 id="前言">前言</h2><p>本篇不是一篇技术文，而是推荐的一本书，对于写书来说，在多年以前觉得是一件可望而不可及的事情，而看到几本经典书籍的作者在讲述自己写书的过程的时候，都是自己注入了大量的精力的，所以我自己目前也只能是一个个知识点的以博客的方式进行记录</p>
